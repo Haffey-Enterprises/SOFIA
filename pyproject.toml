@@ -1,0 +1,60 @@
+##############################################################################
+# File: pyproject.toml
+# Project: conformance — graph data-layer contract tests
+# Author: Haffey Enterprises LLC
+# Standards: house Python conventions (ruff lint, coverage gate, mypy strict)
+#
+# Repo-level tooling project (not a per-service app tree). The conformance
+# library is the first body of Python under this repo; scripts/ at root (R21)
+# is the precedent for repo-level tooling placement.
+##############################################################################
+
+[project]
+name = "conformance"
+version = "0.1.0"
+description = "ADR-002 §6 / DDR-001 / DDR-002 §7 graph data-layer contract tests."
+requires-python = ">=3.11"
+
+[tool.setuptools]
+packages = ["conformance", "conformance.assertions", "conformance.contracts", "conformance.fixtures"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+# Rule sets per house conventions (minimum E, F, W, I, B, C4, UP, RUF).
+select = ["E", "F", "W", "I", "B", "C4", "UP", "RUF"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+files = ["conformance"]
+
+[[tool.mypy.overrides]]
+# testcontainers does not ship type information.
+module = ["testcontainers.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+# tests/ holds the graph-state validator-correctness tests; contracts/ holds the
+# 1b gateway-behavioral xfail contracts (which are measured for coverage).
+testpaths = ["conformance/tests", "conformance/contracts"]
+addopts = "--cov=conformance --cov-report=term-missing --cov-fail-under=90"
+
+[tool.coverage.run]
+# Measure the library + the 1b contract bodies; omit only the graph-state test
+# suite (tests live inside the package per substrate §4.1). `source` lets the
+# split CI jobs measure via `coverage run --parallel-mode` and combine, so the
+# >=90 gate spans the full conformance/ surface across both jobs.
+source = ["conformance"]
+omit = ["conformance/tests/*"]
+# Relative paths so `coverage combine` merges data produced in separate CI jobs.
+relative_files = true
+
+[tool.coverage.report]
+exclude_also = [
+    # GraphGateway Protocol method bodies are a principled omit
+    # (a pure-typing construct with no testable implementation).
+    "\\.\\.\\.",
+]

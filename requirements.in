@@ -1,0 +1,3 @@
+# Runtime dependencies for the conformance library (RBT-33).
+# Hash-pinned lockfile generated via pip-compile (ENG-STD-001 §7).
+neo4j>=5.26,<6

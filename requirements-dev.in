@@ -1,0 +1,10 @@
+# Development + test dependencies for the conformance library (RBT-33).
+# Hash-pinned lockfile generated via pip-compile (ENG-STD-001 §7).
+# Versions for pytest / pytest-cov / ruff / mypy track the ENG-STD-001 §1.3
+# approved-library table.
+-r requirements.in
+pytest==8.0.0
+pytest-cov==4.1.0
+testcontainers[neo4j]>=4.0,<5
+ruff==0.4.0
+mypy==1.9.0
