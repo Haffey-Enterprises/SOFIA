@@ -93,15 +93,9 @@ class ScriptedTransport:
         self.calls: list[dict] = []
         self._script = list(script)
 
-    def __call__(self, system, user, model, temperature, max_tokens):  # noqa: ANN001
+    def __call__(self, system, user, model, max_tokens):  # noqa: ANN001
         self.calls.append(
-            {
-                "system": system,
-                "user": user,
-                "model": model,
-                "temperature": temperature,
-                "max_tokens": max_tokens,
-            }
+            {"system": system, "user": user, "model": model, "max_tokens": max_tokens}
         )
         item = self._script.pop(0)
         if isinstance(item, Exception):
@@ -119,11 +113,44 @@ class RoutingTransport:
         self._reviewer_text = reviewer_text
         self._arbiter_text = arbiter_text
 
-    def __call__(self, system, user, model, temperature, max_tokens):  # noqa: ANN001
-        self.calls.append({"system": system, "model": model})
+    def __call__(self, system, user, model, max_tokens):  # noqa: ANN001
+        self.calls.append({"system": system, "model": model, "max_tokens": max_tokens})
+        if system == "probe":
+            return LlmResponse(text="ok", input_tokens=1, output_tokens=1)
         if "Arbiter-Classifier" in system:
             return LlmResponse(text=self._arbiter_text, input_tokens=100, output_tokens=20)
         return LlmResponse(text=self._reviewer_text, input_tokens=200, output_tokens=50)
+
+
+class DispatchTransport:
+    """Routes by system prompt: probe / arbiter / reviewer to configured outcomes.
+
+    Each outcome is an LlmResponse, a str (→ response text), or an Exception
+    (raised). Probe defaults to a successful minimal response.
+    """
+
+    def __init__(self, *, probe=None, reviewer=None, arbiter=None):  # noqa: ANN001
+        self.calls: list[dict] = []
+        self._probe = probe if probe is not None else LlmResponse("ok", 1, 1)
+        self._reviewer = reviewer
+        self._arbiter = arbiter
+
+    def __call__(self, system, user, model, max_tokens):  # noqa: ANN001
+        self.calls.append({"system": system, "model": model, "max_tokens": max_tokens})
+        if system == "probe":
+            item = self._probe
+        elif "Arbiter-Classifier" in system:
+            item = self._arbiter
+        else:
+            item = self._reviewer
+        if isinstance(item, Exception):
+            raise item
+        if isinstance(item, str):
+            return LlmResponse(text=item, input_tokens=10, output_tokens=5)
+        return item
+
+    def non_probe_calls(self) -> list[dict]:
+        return [c for c in self.calls if c["system"] != "probe"]
 
 
 _VALID_FINDING_JSON = json.dumps(
@@ -372,7 +399,6 @@ def test_emitter_success_logs_llm_call_with_params_and_hash() -> None:
     emit = build_api_emitter(
         site_label="antagonist-LAA",
         model="claude-opus-4-8",
-        temperature=0.0,
         max_tokens=8192,
         log=log,
         transport=transport,
@@ -383,7 +409,6 @@ def test_emitter_success_logs_llm_call_with_params_and_hash() -> None:
     assert out == "reviewer output"
     # params + system reached the transport exactly as configured.
     assert transport.calls[0]["model"] == "claude-opus-4-8"
-    assert transport.calls[0]["temperature"] == 0.0
     assert transport.calls[0]["max_tokens"] == 8192
     assert transport.calls[0]["system"] == "SYSTEM"
     # provenance fields present.
@@ -401,7 +426,6 @@ def test_emitter_one_transport_failure_then_success() -> None:
     emit = build_api_emitter(
         site_label="antagonist-SA",
         model="m",
-        temperature=0.0,
         max_tokens=100,
         log=log,
         transport=transport,
@@ -422,7 +446,6 @@ def test_emitter_two_transport_failures_raise_no_llm_call() -> None:
     emit = build_api_emitter(
         site_label="antagonist-EA",
         model="m",
-        temperature=0.0,
         max_tokens=100,
         log=log,
         transport=transport,
@@ -448,7 +471,6 @@ def test_emitter_failure_aborts_run_with_no_partial_admission(tmp_path) -> None:
         return build_api_emitter(
             site_label="s",
             model="m",
-            temperature=0.0,
             max_tokens=10,
             log=log,
             transport=transport,
@@ -486,7 +508,6 @@ def test_truncated_json_surfaces_as_parse_drop(tmp_path) -> None:
     emit = build_api_emitter(
         site_label="antagonist-LAA",
         model="m",
-        temperature=0.0,
         max_tokens=10,
         log=log,
         transport=transport,
@@ -511,7 +532,6 @@ def _api_arbiter(log, transport):
         transport=transport,
         log=log,
         model="claude-opus-4-8",
-        temperature=0.0,
         max_tokens=8192,
         now=_counter_now(),
         sleeper=lambda s: None,
@@ -591,10 +611,19 @@ def test_anthropic_transport_extracts_text_and_usage() -> None:
         content=[SimpleNamespace(text="hello "), SimpleNamespace(text="world")],
         usage=SimpleNamespace(input_tokens=12, output_tokens=3),
     )
-    client = SimpleNamespace(messages=SimpleNamespace(create=lambda **kw: message))
-    response = AnthropicTransport(client)("sys", "usr", "m", 0.0, 100)
+    seen: dict = {}
+
+    def create(**kw):
+        seen.update(kw)
+        return message
+
+    client = SimpleNamespace(messages=SimpleNamespace(create=create))
+    response = AnthropicTransport(client)("sys", "usr", "m", 100)
     assert response.text == "hello world"
     assert response.input_tokens == 12 and response.output_tokens == 3
+    # No sampling parameters reach the API — only max_tokens (amendment).
+    assert "temperature" not in seen and "top_p" not in seen and "top_k" not in seen
+    assert seen["max_tokens"] == 100
 
 
 def test_anthropic_transport_wraps_sdk_errors() -> None:
@@ -603,7 +632,7 @@ def test_anthropic_transport_wraps_sdk_errors() -> None:
 
     client = SimpleNamespace(messages=SimpleNamespace(create=boom))
     with pytest.raises(LlmTransportError):
-        AnthropicTransport(client)("s", "u", "m", 0.0, 10)
+        AnthropicTransport(client)("s", "u", "m", 10)
 
 
 # --- §10g: provenance + manifest ---------------------------------------------
@@ -630,7 +659,7 @@ def test_manifest_prep_then_finalize(tmp_path) -> None:
         prompt_hashes={"a.prompt.md": "hash"},
         substrate_manifest_ref="substrate/manifest.json",
         model="claude-opus-4-8",
-        parameters={"temperature": 0.0, "max_tokens": 8192},
+        parameters={"max_tokens": 8192},
     )
     prep = json.loads(manifest_path.read_text())
     assert prep["head_sha"] == "48e031a" and prep["finalized"] is False
@@ -713,7 +742,9 @@ def _prep_env(tmp_path: Path, doc_ids: list[str]):
     }
 
 
-def test_all_gates_pass_on_a_valid_prep(tmp_path) -> None:
+def test_gates_only_with_key_passes_1_6_and_reports_probe_pending(tmp_path) -> None:
+    # Gates-only (validate_prep) makes no API call: gate 7 reports pending even
+    # with a key, because no probe is configured.
     env = _prep_env(tmp_path, ["ADR-001", "ADR-002", "DDR-001", "DDR-002"])
     report = validate_prep(
         env["run_id"],
@@ -724,8 +755,28 @@ def test_all_gates_pass_on_a_valid_prep(tmp_path) -> None:
         git_status=env["git_status"],
         env=env["env"],
     )
-    assert report.ok, report.failures()
-    assert [r.number for r in report.results] == [1, 2, 3, 4, 5, 6]
+    assert [r.number for r in report.results] == [1, 2, 3, 4, 5, 6, 7]
+    assert all(r.passed for r in report.results if r.number <= 6)
+    gate7 = next(r for r in report.results if r.number == 7)
+    assert gate7.pending and not gate7.passed
+    assert not report.ok  # a pending probe means the run cannot launch yet
+
+
+def test_gates_only_without_key_reports_6_and_7_pending(tmp_path) -> None:
+    # Phase-3 shape: no key → gates 1-5 pass, 6 and 7 pending.
+    env = _prep_env(tmp_path, ["ADR-001", "ADR-002", "DDR-001", "DDR-002"])
+    report = validate_prep(
+        env["run_id"],
+        env["doc_ids"],
+        sofia_root=env["sofia_root"],
+        runs_root=env["runs_root"],
+        prompt_dir=env["prompt_dir"],
+        git_status=env["git_status"],
+        env={},  # no ANTHROPIC_API_KEY
+    )
+    assert all(r.passed for r in report.results if r.number <= 5)
+    pending = {r.number for r in report.results if r.pending}
+    assert pending == {6, 7}
 
 
 def test_gate5_empty_system_prompt_is_reported(tmp_path) -> None:
@@ -843,9 +894,109 @@ def test_run_real_integration_writes_finalized_manifest_and_log(tmp_path) -> Non
         "arbiter",
     }
     assert manifest["passes_run"] == result.passes_run
+    # Manifest parameters reflect the actual request payload: max_tokens only.
+    assert manifest["parameters"] == {"max_tokens": 8192}
+    # The gate-7 probe made prep-time contact (system == "probe").
+    assert any(c["system"] == "probe" for c in transport.calls)
 
     # Live log streamed to disk and carries llm_call provenance.
     log_lines = (run_dir / "action-log.jsonl").read_text().splitlines()
     kinds = [json.loads(line)["kind"] for line in log_lines]
     assert "llm_call" in kinds
     assert len(log_lines) == len(result.log.events)
+
+
+# --- launch-hardening amendments (2026-07-02) --------------------------------
+
+
+def test_gate7_probe_pass_when_probe_succeeds(tmp_path) -> None:
+    env = _prep_env(tmp_path, ["ADR-001", "ADR-002", "DDR-001", "DDR-002"])
+    calls: list[int] = []
+    report = run_prep_gates(
+        env["run_id"], env["doc_ids"], sofia_root=env["sofia_root"],
+        runs_root=env["runs_root"], prompt_dir=env["prompt_dir"],
+        git_status=env["git_status"], env=env["env"],
+        probe=lambda: calls.append(1),
+    )
+    assert report.ok
+    gate7 = next(r for r in report.results if r.number == 7)
+    assert gate7.passed and not gate7.pending
+    assert calls == [1]  # probe was invoked exactly once
+
+
+def test_gate7_probe_fail_is_a_prep_failure(tmp_path) -> None:
+    env = _prep_env(tmp_path, ["ADR-001", "ADR-002", "DDR-001", "DDR-002"])
+
+    def boom():
+        raise LlmTransportError("401 invalid key")
+
+    report = run_prep_gates(
+        env["run_id"], env["doc_ids"], sofia_root=env["sofia_root"],
+        runs_root=env["runs_root"], prompt_dir=env["prompt_dir"],
+        git_status=env["git_status"], env=env["env"], probe=boom,
+    )
+    assert not report.ok
+    gate7 = next(r for r in report.results if r.number == 7)
+    assert not gate7.passed and not gate7.pending and "401" in gate7.detail
+
+
+def test_gate7_not_probed_when_earlier_gate_fails(tmp_path) -> None:
+    # Fast-fail: an earlier gate failing means the token is never spent.
+    env = _prep_env(tmp_path, ["ADR-001", "ADR-002", "DDR-001", "DDR-002"])
+    calls: list[int] = []
+    report = run_prep_gates(
+        env["run_id"], env["doc_ids"], sofia_root=env["sofia_root"],
+        runs_root=env["runs_root"], prompt_dir=env["prompt_dir"],
+        git_status=lambda root: " M docs/adr/ADR-001.md\n",  # gate 2 fails (dirty docs)
+        env=env["env"], probe=lambda: calls.append(1),
+    )
+    assert calls == []  # probe not attempted
+    gate7 = next(r for r in report.results if r.number == 7)
+    assert gate7.pending
+
+
+def test_run_real_probe_failure_aborts_before_any_reviewer_call(tmp_path) -> None:
+    env = _prep_env(tmp_path, ["ADR-001", "ADR-002", "DDR-001", "DDR-002"])
+    transport = DispatchTransport(probe=LlmTransportError("400 parameter shape"))
+    with pytest.raises(PrepGateError):
+        run_real(
+            env["run_id"], env["doc_ids"], sofia_root=env["sofia_root"],
+            runs_root=env["runs_root"], prompt_dir=env["prompt_dir"],
+            transport=transport, git_status=env["git_status"], head_sha="H",
+            now=_counter_now(), sleeper=lambda s: None, env=dict(env["env"]),
+        )
+    # The probe was attempted; no reviewer/arbiter call followed.
+    assert transport.non_probe_calls() == []
+
+
+def test_run_aborted_event_on_transport_exhaustion(tmp_path) -> None:
+    env = _prep_env(tmp_path, ["ADR-001", "ADR-002", "DDR-001", "DDR-002"])
+    transport = DispatchTransport(reviewer=LlmTransportError("5xx"))  # probe ok, reviewers die
+    with pytest.raises(LlmTransportError):
+        run_real(
+            env["run_id"], env["doc_ids"], sofia_root=env["sofia_root"],
+            runs_root=env["runs_root"], prompt_dir=env["prompt_dir"],
+            transport=transport, git_status=env["git_status"], head_sha="H",
+            now=_counter_now(), sleeper=lambda s: None, env=dict(env["env"]),
+        )
+    run_dir = env["runs_root"] / env["run_id"]
+    lines = (run_dir / "action-log.jsonl").read_text().splitlines()
+    last = json.loads(lines[-1])
+    assert last["kind"] == "run_aborted" and "5xx" in last["reason"]
+    # Manifest left unfinalized on abort.
+    assert json.loads((run_dir / "manifest.json").read_text())["finalized"] is False
+
+
+def test_run_aborted_event_on_arbiter_content_exhaustion(tmp_path) -> None:
+    env = _prep_env(tmp_path, ["ADR-001", "ADR-002", "DDR-001", "DDR-002"])
+    transport = DispatchTransport(reviewer=_VALID_FINDING_JSON, arbiter="not a classification")
+    with pytest.raises(ArbiterParseError):
+        run_real(
+            env["run_id"], env["doc_ids"], sofia_root=env["sofia_root"],
+            runs_root=env["runs_root"], prompt_dir=env["prompt_dir"],
+            transport=transport, git_status=env["git_status"], head_sha="H",
+            now=_counter_now(), sleeper=lambda s: None, env=dict(env["env"]),
+        )
+    run_dir = env["runs_root"] / env["run_id"]
+    lines = (run_dir / "action-log.jsonl").read_text().splitlines()
+    assert json.loads(lines[-1])["kind"] == "run_aborted"

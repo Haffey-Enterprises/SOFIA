@@ -55,7 +55,7 @@ def write_prep_manifest(
         prompt_hashes: Map of prompt-file name → SHA-256 (all five prompts).
         substrate_manifest_ref: Path/reference to the substrate manifest.
         model: The fixed run model.
-        parameters: The call parameters (temperature, max_tokens, ...).
+        parameters: The request-payload parameters recorded (max_tokens).
     """
     manifest = {
         "run_id": run_id,

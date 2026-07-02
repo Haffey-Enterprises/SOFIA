@@ -1,7 +1,7 @@
 # Module: agent_loop.transport
 # Purpose: The real LLM transport, emitter, and arbiter adapter for supervised
 #          runs (run-prep.contract.md §5, §6, §7). One fixed model per run,
-#          temperature 0, no tools, one user turn; sequential calls in admission
+#          no sampling parameters, no tools, one user turn; sequential calls in admission
 #          order. Transport-level failure gets ONE retry after a bounded backoff
 #          then aborts loudly; the arbiter additionally gets ONE content retry on
 #          malformed output then aborts — never a fabricated classification.
@@ -61,10 +61,15 @@ class LlmResponse:
 
 
 class Transport(Protocol):
-    """The transport port: one stateless API call, or raise LlmTransportError."""
+    """The transport port: one stateless API call, or raise LlmTransportError.
+
+    No sampling parameters are part of the signature: `temperature`, `top_p`,
+    and `top_k` are deprecated on Claude Opus 4.7+ and 400 on non-default values
+    (run-prep §6, amended 2026-07-02). Only `max_tokens` is sent.
+    """
 
     def __call__(
-        self, system: str, user: str, model: str, temperature: float, max_tokens: int
+        self, system: str, user: str, model: str, max_tokens: int
     ) -> LlmResponse:
         """Make one Messages API call and return the response, or raise."""
         ...
@@ -87,14 +92,17 @@ class AnthropicTransport:
         self._client = client
 
     def __call__(
-        self, system: str, user: str, model: str, temperature: float, max_tokens: int
+        self, system: str, user: str, model: str, max_tokens: int
     ) -> LlmResponse:
-        """Call the API and normalize the response, wrapping failures."""
+        """Call the API and normalize the response, wrapping failures.
+
+        Sends `max_tokens` only — no `temperature`/`top_p`/`top_k` (deprecated
+        on Opus 4.7+; omitted entirely, not sent as null).
+        """
         try:
             message = self._client.messages.create(  # type: ignore[attr-defined]
                 model=model,
                 max_tokens=max_tokens,
-                temperature=temperature,
                 system=system,
                 messages=[{"role": "user", "content": user}],
             )
@@ -120,20 +128,18 @@ def _timed_call(
     user: str,
     site_label: str,
     model: str,
-    temperature: float,
     max_tokens: int,
     log: ActionLog,
     now: Callable[[], float],
 ) -> LlmResponse:
     """Make one transport call, timing it and logging the `llm_call` on success."""
     start = now()
-    response = transport(system, user, model, temperature, max_tokens)
+    response = transport(system, user, model, max_tokens)
     latency_ms = (now() - start) * 1000.0
     log.emit(
         "llm_call",
         site=site_label,
         model=model,
-        temperature=temperature,
         max_tokens=max_tokens,
         system_sha256=sha256_text(system),
         input_tokens=response.input_tokens,
@@ -149,7 +155,6 @@ def _call_with_transport_retry(
     user: str,
     site_label: str,
     model: str,
-    temperature: float,
     max_tokens: int,
     log: ActionLog,
     sleeper: Callable[[float], None],
@@ -164,7 +169,7 @@ def _call_with_transport_retry(
     """
     try:
         return _timed_call(
-            transport, system, user, site_label, model, temperature, max_tokens, log, now
+            transport, system, user, site_label, model, max_tokens, log, now
         )
     except LlmTransportError as first_error:
         log.emit(
@@ -176,7 +181,7 @@ def _call_with_transport_retry(
         )
         sleeper(backoff_seconds)
         return _timed_call(
-            transport, system, user, site_label, model, temperature, max_tokens, log, now
+            transport, system, user, site_label, model, max_tokens, log, now
         )
 
 
@@ -184,7 +189,6 @@ def build_api_emitter(
     *,
     site_label: str,
     model: str,
-    temperature: float,
     max_tokens: int,
     log: ActionLog,
     transport: Transport,
@@ -197,7 +201,8 @@ def build_api_emitter(
     Per-call-site construction is what lands token attribution per hat: every
     call this emitter makes logs an `llm_call` under `site_label`. The emitter's
     signature is the unchanged `LlmEmitter` port; content-level malformation is
-    returned as-is for the parse seam, never retried here.
+    returned as-is for the parse seam, never retried here. Only `max_tokens` is
+    sent — no sampling parameters (run-prep §6).
     """
 
     def emit(system: str, user: str) -> str:
@@ -207,7 +212,6 @@ def build_api_emitter(
             user,
             site_label,
             model,
-            temperature,
             max_tokens,
             log,
             sleeper,
@@ -284,7 +288,6 @@ class ApiArbiter:
         transport: Transport,
         log: ActionLog,
         model: str,
-        temperature: float,
         max_tokens: int,
         now: Callable[[], float] = time.monotonic,
         sleeper: Callable[[float], None] = time.sleep,
@@ -295,7 +298,6 @@ class ApiArbiter:
         self._transport = transport
         self._log = log
         self._model = model
-        self._temperature = temperature
         self._max_tokens = max_tokens
         self._now = now
         self._sleeper = sleeper
@@ -313,7 +315,6 @@ class ApiArbiter:
                 user,
                 "arbiter",
                 self._model,
-                self._temperature,
                 self._max_tokens,
                 self._log,
                 self._sleeper,

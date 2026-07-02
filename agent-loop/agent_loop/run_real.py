@@ -58,9 +58,10 @@ ARBITER_PROMPT = "arbiter-classifier.prompt.md"
 ALL_PROMPT_FILES: tuple[str, ...] = tuple(REVIEWER_PROMPTS.values()) + (ARBITER_PROMPT,)
 
 # Run-one configuration (model/params live in config, never hardcoded in the
-# transport module — run-prep §6).
+# transport module — run-prep §6). No sampling parameters: temperature/top_p/
+# top_k are deprecated on Opus 4.7+ and 400 on non-default values (amended
+# 2026-07-02); the request payload carries max_tokens only.
 RUN_ONE_MODEL = "claude-opus-4-8"
-RUN_ONE_TEMPERATURE = 0.0
 RUN_ONE_MAX_TOKENS = 8192
 RUN_ONE_MAX_PASSES = 10
 
@@ -70,12 +71,19 @@ RUN_ONE_MAX_PASSES = 10
 
 @dataclass(frozen=True)
 class GateResult:
-    """The outcome of one prep gate."""
+    """The outcome of one prep gate.
+
+    `pending` marks a gate that could not be evaluated yet (no key for gate 6/7,
+    or no probe configured in gates-only mode) — distinct from an outright
+    failure, though both leave the report not-ok (a run cannot launch until every
+    gate passes).
+    """
 
     number: int
     name: str
     passed: bool
     detail: str
+    pending: bool = False
 
 
 @dataclass
@@ -90,7 +98,7 @@ class GateReport:
         return all(result.passed for result in self.results)
 
     def failures(self) -> list[GateResult]:
-        """The gates that did not pass, in order."""
+        """The gates that did not pass (including pending), in order."""
         return [result for result in self.results if not result.passed]
 
 
@@ -143,17 +151,27 @@ def run_prep_gates(
     create_missing_dir: bool = False,
     git_status: Callable[[Path], str] = _default_git_docs_status,
     env: Mapping[str, str] | None = None,
+    probe: Callable[[], None] | None = None,
 ) -> GateReport:
-    """Run the six prep gates (run-prep §8), collecting every result.
+    """Run the seven prep gates (run-prep §8), collecting every result.
 
-    Never makes an LLM call. With `create_missing_dir=False` (the gates-only
-    default) it has no side effects; the full run passes `create_missing_dir=True`
-    so gate 1 creates the prepared folder.
+    Makes no reviewer or arbiter call. Gate 7's one-token probe is the only
+    prep-time API contact, and only when a `probe` is supplied AND gates 1-6 all
+    pass; gates-only validation passes no probe, so gate 7 reports pending. With
+    `create_missing_dir=False` (the gates-only default) there are no side effects;
+    the full run passes `create_missing_dir=True` so gate 1 creates the prepared
+    folder.
 
     Gate 1 (run-prep §8, ratified): `ledger.json` is the discriminator — refuse a
     used run (ledger present; a used run-id is immutable evidence, retries take a
     new run-id per run-supervision.protocol.md §4), pass a prepared folder
     (substrate present, no ledger), and create the folder if absent.
+
+    Gate 6/7: `ANTHROPIC_API_KEY` presence is the fast fail ahead of the probe;
+    without a key both report pending. Gate 7 sends one minimal message
+    (`max_tokens: 1`) through the run's emitter configuration — converting
+    transport-class misconfiguration (bad key, bad parameter shape) into a prep
+    failure at the cost of one token.
     """
     resolved_env = env if env is not None else os.environ
     sofia_root = Path(sofia_root)
@@ -214,11 +232,36 @@ def run_prep_gates(
         GateResult(5, "prompts", not prompt_problems, "all present" if not prompt_problems else "; ".join(prompt_problems))
     )
 
-    # Gate 6 — ANTHROPIC_API_KEY present in the environment.
+    # Gate 6 — ANTHROPIC_API_KEY present in the environment (fast fail).
     has_key = bool(resolved_env.get("ANTHROPIC_API_KEY"))
     results.append(
-        GateResult(6, "api-key", has_key, "present" if has_key else "ANTHROPIC_API_KEY not set")
+        GateResult(
+            6,
+            "api-key",
+            has_key,
+            "present" if has_key else "ANTHROPIC_API_KEY not set",
+            pending=not has_key,
+        )
     )
+
+    # Gate 7 — one-token probe through the run's emitter configuration. Only when
+    # gates 1-6 all pass and a probe is supplied; else pending (gates-only, or an
+    # earlier gate already fails fast — never spend a token on a doomed prep).
+    gates_1_6_pass = all(result.passed for result in results)
+    if not gates_1_6_pass:
+        results.append(
+            GateResult(7, "probe", False, "pending — gates 1-6 not all passing", pending=True)
+        )
+    elif probe is None:
+        results.append(
+            GateResult(7, "probe", False, "pending — no probe configured (gates-only)", pending=True)
+        )
+    else:
+        try:
+            probe()
+            results.append(GateResult(7, "probe", True, "one-token probe succeeded"))
+        except Exception as exc:  # noqa: BLE001 — any probe failure is a prep failure
+            results.append(GateResult(7, "probe", False, f"probe failed: {exc}"))
 
     return GateReport(results=results)
 
@@ -264,7 +307,6 @@ def run_real(
     prompt_dir: str | Path,
     transport: Transport,
     model: str = RUN_ONE_MODEL,
-    temperature: float = RUN_ONE_TEMPERATURE,
     max_tokens: int = RUN_ONE_MAX_TOKENS,
     max_passes: int = RUN_ONE_MAX_PASSES,
     git_status: Callable[[Path], str] = _default_git_docs_status,
@@ -277,15 +319,21 @@ def run_real(
 ) -> RunResult:
     """Assemble and run the supervised dry run against an injected transport.
 
-    Runs the prep gates fail-loud (before any LLM call), then assembles the
-    ledger home, real fetchers, four per-call-site API reviewers, the real
-    arbiter, and the real plan; writes the prep manifest; streams the action log
-    to `action-log.jsonl`; runs the loop (dry, fix_changes empty); and finalizes
-    the manifest with the exit, passes, per-site token totals, and wall-clock.
+    Runs the prep gates fail-loud (gate 7's one-token probe is the only prep-time
+    API contact, before any reviewer or arbiter call), then assembles the ledger
+    home, real fetchers, four per-call-site API reviewers, the real arbiter, and
+    the real plan; writes the prep manifest; streams the action log to
+    `action-log.jsonl`; runs the loop (dry, fix_changes empty); and finalizes the
+    manifest. On any run-path abort a `run_aborted` event is logged (and streamed)
+    before the exception propagates, and the manifest is left unfinalized.
 
     Raises:
-        PrepGateError: If any prep gate fails (no LLM call is made).
+        PrepGateError: If any prep gate fails (no reviewer/arbiter call is made).
     """
+    # Gate 7 probe: one minimal (max_tokens=1) call through the run's transport.
+    def _probe() -> None:
+        transport("probe", "probe", model, 1)
+
     report = run_prep_gates(
         run_id,
         doc_ids,
@@ -295,6 +343,7 @@ def run_real(
         create_missing_dir=True,
         git_status=git_status,
         env=env,
+        probe=_probe,
     )
     if not report.ok:
         raise PrepGateError(report)
@@ -318,7 +367,6 @@ def run_real(
         emitter = build_api_emitter(
             site_label=identity.label,
             model=model,
-            temperature=temperature,
             max_tokens=max_tokens,
             log=log,
             transport=transport,
@@ -338,7 +386,6 @@ def run_real(
         transport=transport,
         log=log,
         model=model,
-        temperature=temperature,
         max_tokens=max_tokens,
         now=now,
         sleeper=sleeper,
@@ -367,7 +414,7 @@ def run_real(
         prompt_hashes=prompt_hashes,
         substrate_manifest_ref="substrate/manifest.json",
         model=model,
-        parameters={"temperature": temperature, "max_tokens": max_tokens},
+        parameters={"max_tokens": max_tokens},
     )
 
     wall_start = now()
@@ -386,6 +433,12 @@ def run_real(
             max_passes=max_passes,
             log=log,
         )
+    except Exception as exc:
+        # §7: mark the terminal abort on the live stream before it propagates,
+        # so the tail distinguishes an aborted run from one sitting in backoff.
+        # The manifest is deliberately left unfinalized.
+        log.emit("run_aborted", reason=str(exc), error_type=type(exc).__name__)
+        raise
     finally:
         sink.close()
 
