@@ -13,7 +13,8 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass, field
-from typing import Literal
+from pathlib import Path
+from typing import Callable, Literal
 
 EventKind = Literal[
     "admitted",  # new finding entered the ledger
@@ -25,6 +26,8 @@ EventKind = Literal[
     "classified",  # arbiter set a finding's classification
     "proposed_resolution",  # author proposed a fix (dry — nothing applied)
     "proposed_escalation",  # router proposed a ticket (dry — nothing opened)
+    "llm_call",  # a real LLM call completed (provenance/cost — run-prep §7)
+    "llm_retry",  # a real LLM call was retried (transport or content — run-prep §6)
     "converged",
     "continue",
     "halt",
@@ -46,13 +49,26 @@ class LogEvent:
 
 @dataclass
 class ActionLog:
-    """Ordered collector of run events."""
+    """Ordered collector of run events, with an optional live sink.
+
+    Attributes:
+        events: The in-memory event list — unchanged for every existing
+            consumer.
+        sink: An optional callable invoked with each event as it is emitted
+            (run-prep §7 live-log stream). Default None keeps behaviour
+            identical to the skeleton; a not-None sink is a purely additive
+            side channel that never affects the in-memory list.
+    """
 
     events: list[LogEvent] = field(default_factory=list)
+    sink: Callable[[LogEvent], None] | None = None
 
     def emit(self, kind: EventKind, **detail: object) -> None:
-        """Append a structured event."""
-        self.events.append(LogEvent(kind=kind, detail=detail))
+        """Append a structured event and stream it to the sink if present."""
+        event = LogEvent(kind=kind, detail=detail)
+        self.events.append(event)
+        if self.sink is not None:
+            self.sink(event)
 
     def of_kind(self, kind: EventKind) -> list[LogEvent]:
         """Return events of a single kind, in order."""
@@ -60,6 +76,33 @@ class ActionLog:
 
     def render(self) -> str:
         """Render the log as JSON lines for a human reading the run."""
-        return "\n".join(
-            json.dumps({"kind": event.kind, **event.detail}) for event in self.events
-        )
+        return "\n".join(_event_to_json(event) for event in self.events)
+
+
+def _event_to_json(event: LogEvent) -> str:
+    """Serialize one event to a single JSON line."""
+    return json.dumps({"kind": event.kind, **event.detail})
+
+
+class JsonlFileSink:
+    """Append-per-event, flushed live sink to a `.jsonl` file (run-prep §7).
+
+    Each emitted event is written as one JSON line and flushed immediately, so
+    the attended run can be tailed live (`tail -f`). The file handle stays open
+    for the run's duration; call `close()` when the run ends.
+    """
+
+    def __init__(self, path: str | Path) -> None:
+        """Open the sink file for appending (creating parent dirs as needed)."""
+        self._path = Path(path)
+        self._path.parent.mkdir(parents=True, exist_ok=True)
+        self._handle = self._path.open("a", encoding="utf-8")
+
+    def __call__(self, event: LogEvent) -> None:
+        """Write one event as a flushed JSON line."""
+        self._handle.write(_event_to_json(event) + "\n")
+        self._handle.flush()
+
+    def close(self) -> None:
+        """Close the underlying file handle."""
+        self._handle.close()
