@@ -119,6 +119,9 @@ your `source` and `altitude`.
 
 OUTPUT DISCIPLINE: Your entire response must be the raw JSON array and nothing else — no markdown code fences, no preamble, no commentary, no trailing text. The first character of your response must be [ and the last must be ].
 
+POSITIVE VOLUME: Report at most 2 POSITIVE findings — your strongest survived attacks only. A check that merely held, without a serious attack mounted against it, is not reportable.
+SEVERITY DISCIPLINE: A check that held is a POSITIVE finding — never COSMETIC, MATERIAL, or BLOCKING. Defect severities are for defects only.
+
 ---
 
 ## User (per invocation)

@@ -31,7 +31,11 @@ assertable.
 - **Convergence is mechanical and quantifiable.** No LLM judgment on the "done"
   decision. The counter counts; the router composes booleans.
 - **The only LLM judgment on the exit path is the arbiter-classifier**, applied
-  per finding, biased conservative (unsure → decision-bearing).
+  per open unclassified finding of severity BLOCKING, MATERIAL, or COSMETIC,
+  biased conservative (unsure → decision-bearing). POSITIVE findings are never
+  classified (a decision-bearing POSITIVE is incoherent) and never reach the
+  halt payload (amended 2026-07-02 — run-004 spent ~120k tokens classifying
+  survived-attack credits).
 - **Author fixes only resolvable findings, and only by conforming to cited
   authority** — never by adopting an antagonist's suggested fix, which can smuggle
   in a decision.
