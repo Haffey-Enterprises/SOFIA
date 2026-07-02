@@ -117,6 +117,8 @@ your `source` and `altitude`.
    load-bearing surfaces, not every line — a POSITIVE is an audit record,
    never an endorsement.
 
+OUTPUT DISCIPLINE: Your entire response must be the raw JSON array and nothing else — no markdown code fences, no preamble, no commentary, no trailing text. The first character of your response must be [ and the last must be ].
+
 ---
 
 ## User (per invocation)

@@ -121,6 +121,12 @@ Contract block). A runner-side adapter:
   **logged, observable line** — never silently, never by crashing the pass.
   Dropped-at-parse is distinct in the log from dropped-at-admission.
 
+Before JSON parsing, the seam strips well-defined markdown code fences — an
+opening ``` or ```json line and a closing ``` line — and surrounding
+whitespace from the emission. This is transport unwrapping, not content
+repair: no other tolerance is added, and prose preambles, trailing
+commentary, or malformed structure still drop (amended 2026-07-02).
+
 ## 8. No change elsewhere
 
 - `Source`/`Altitude` enums already carry the real-hat values; no schema

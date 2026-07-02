@@ -74,6 +74,8 @@ So: escalate when unsure. Cheap glance beats silent manufacture.
 bias rule — if you are low-confidence, you are unsure, and unsure means
 `decision-bearing`. Do not emit low-confidence `resolvable`.
 
+OUTPUT DISCIPLINE: Your entire response must be the raw JSON object and nothing else — no markdown code fences, no preamble, no commentary, no trailing text. The first character of your response must be { and the last must be }.
+
 ---
 
 ## User (per invocation)

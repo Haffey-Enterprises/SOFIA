@@ -170,6 +170,14 @@ stream is a named supervision watch. A real `Arbiter` adapter:
 
 ## §7 — Provenance, cost capture, and the live log (ratified 4c)
 
+- **Raw-emission capture:** every LLM response body (reviewer and
+  arbiter, parse success or failure) is written verbatim to
+  `runs/<run-id>/emissions/pass<NN>-<site>-<seq>.txt` before any parsing
+  (`seq` is a per-pass, per-site call counter — the arbiter makes
+  multiple calls per pass); `llm_call` events carry the API `request_id`
+  and the emission file path, and `parse_dropped` events reference the
+  same file (amended 2026-07-02 after run-003: a parse-drop storm
+  discarded all first-run output undiagnosably).
 - **Per LLM call**, logged to the action log as `llm_call`: call-site
   label (`antagonist-LAA` … `coherence`, `arbiter`), model, parameters,
   SHA-256 of the system-prompt text, input tokens, output tokens, latency
