@@ -1,0 +1,324 @@
+# Module: agent_loop.real_hats
+# Purpose: The real-reviewer machinery specified by runner-real-hats.contract.md
+#          §4–§7: load a reviewer's prompt as data, assemble its per-pass User
+#          block, parse+stamp its JSON emissions, and schedule the sweep. NO real
+#          LLM is invoked here — reviewers compose an injected emitter callable;
+#          first dry runs of the real hats are a separate, supervised session.
+# Scope:   Prompt loading, input assembly (§5), the emission-parsing seam (§7),
+#          the real-hat pass plan + coherence scheduling (§6). Admission,
+#          arbiter, gates, router, author, and mode are untouched (§8).
+
+from __future__ import annotations
+
+import json
+from dataclasses import asdict
+from pathlib import Path
+from typing import Callable
+
+from agent_loop.ledger import CitedAuthority, Finding, Ledger
+from agent_loop.log import ActionLog
+from agent_loop.reviewers import (
+    IDENTITY_COHERENCE,
+    IDENTITY_EA,
+    IDENTITY_LAA,
+    IDENTITY_SA,
+    DocumentSet,
+    Plan,
+    ReviewerIdentity,
+    ScheduledReviewer,
+    Substrate,
+)
+
+_VALID_KINDS = {"canonical", "design-intent", "coherence", "soundness"}
+_VALID_SEVERITIES = {"BLOCKING", "MATERIAL", "COSMETIC", "POSITIVE"}
+_REQUIRED_FIELDS = ("severity", "target", "locus", "claim", "cited_authority")
+
+# An LLM emitter: given the system + user prompts, return the model's raw text
+# (a JSON array of findings). Not invoked in this task — real wiring is a
+# separate supervised session; tests inject fakes.
+LlmEmitter = Callable[[str, str], str]
+
+
+# --- §4: prompt loading (## System block, loaded as data) --------------------
+
+
+def load_system_prompt(prompt_path: str | Path) -> str:
+    """Extract the `## System` block from a reviewer prompt file.
+
+    The block runs from the `## System` heading to the next top-level (`## `)
+    heading (the `## User` template, which the runner assembles itself per §5).
+
+    Args:
+        prompt_path: Path to the reviewer's `.prompt.md` (loaded as data — the
+            file content is never edited).
+
+    Returns:
+        The system prompt text, stripped.
+
+    Raises:
+        ValueError: If the file has no `## System` section.
+    """
+    text = Path(prompt_path).read_text(encoding="utf-8")
+    lines = text.splitlines()
+    collected: list[str] = []
+    in_system = False
+    for line in lines:
+        if line.strip() == "## System":
+            in_system = True
+            continue
+        if in_system and line.startswith("## "):
+            break
+        if in_system:
+            collected.append(line)
+    if not in_system:
+        raise ValueError(f"no '## System' section in {prompt_path}")
+    return "\n".join(collected).strip()
+
+
+# --- §5: input assembly (runner is the fetch point) --------------------------
+
+
+def assemble_user_prompt(
+    records: DocumentSet, substrate: Substrate, snapshot: Ledger
+) -> str:
+    """Assemble the reviewer's `## User` block from the fetched-fresh inputs.
+
+    Args:
+        records: The document set under review.
+        substrate: Ratified authorities + design intent in scope.
+        snapshot: The immutable prior-pass ledger snapshot (§2).
+
+    Returns:
+        The assembled user-prompt text.
+    """
+    docs = "\n".join(
+        f"### {doc_id}\n{content}" for doc_id, content in sorted(records.documents.items())
+    )
+    authorities = (
+        "\n".join(f"- {k}: {v}" for k, v in sorted(substrate.authorities.items()))
+        or "(none in scope)"
+    )
+    design_intent = (
+        "\n".join(f"- {k}: {v}" for k, v in sorted(substrate.design_intent.items()))
+        or "(none in scope)"
+    )
+    snapshot_json = json.dumps(asdict(snapshot), indent=2, sort_keys=False)
+    return (
+        "DOCUMENT SET (fetched fresh):\n"
+        f"{docs}\n\n"
+        "SUBSTRATE (fetched fresh):\n"
+        f"Authorities:\n{authorities}\n"
+        f"Design intent:\n{design_intent}\n\n"
+        "LEDGER SNAPSHOT (immutable, prior-pass):\n"
+        f"{snapshot_json}"
+    )
+
+
+# --- §7: emission-parsing seam (validate, construct, stamp, drop) ------------
+
+
+def _valid_cited_authority(raw: object) -> bool:
+    """Shape/vocabulary check for a cited_authority payload (not scope/honesty).
+
+    A `null` authority is a *valid shape* here — it passes parse and is dropped
+    at admission as out-of-scope, keeping drop-at-parse distinct from
+    drop-at-admission. A present authority must be a dict with a valid `kind`
+    enum and a string `ref`.
+    """
+    if raw is None:
+        return True
+    if not isinstance(raw, dict):
+        return False
+    if raw.get("kind") not in _VALID_KINDS:
+        return False
+    return isinstance(raw.get("ref"), str)
+
+
+def parse_emissions(
+    identity: ReviewerIdentity, raw_text: str, log: ActionLog
+) -> list[Finding]:
+    """Parse one reviewer's raw JSON emission into stamped Finding templates.
+
+    Validates shape and vocabulary, constructs Finding templates, and **stamps
+    `source`/`altitude` from the invoked reviewer's identity, ignoring whatever
+    the model emitted** (§7; ledger-schema §Identity — hardcode over trust). A
+    malformed emission (bad JSON, not an array, missing field, invalid enum) is
+    dropped with an observable `parse_dropped` line — never silently, never by
+    crashing the pass. Scope drops (null/bare authority) remain admission's job.
+
+    Args:
+        identity: The invoking reviewer's identity (source/altitude to stamp).
+        raw_text: The model's raw output (expected: a JSON array of findings).
+        log: The structured action log.
+
+    Returns:
+        The list of well-formed, stamped Finding templates (possibly empty).
+    """
+    try:
+        data = json.loads(raw_text)
+    except json.JSONDecodeError:
+        log.emit("parse_dropped", reviewer=identity.label, reason="invalid JSON")
+        return []
+    if not isinstance(data, list):
+        log.emit(
+            "parse_dropped",
+            reviewer=identity.label,
+            reason="emission is not a JSON array",
+        )
+        return []
+
+    findings: list[Finding] = []
+    for index, item in enumerate(data):
+        reason = _emission_defect(item)
+        if reason is not None:
+            log.emit(
+                "parse_dropped", reviewer=identity.label, index=index, reason=reason
+            )
+            continue
+        raw_authority = item["cited_authority"]
+        authority = (
+            None
+            if raw_authority is None
+            else CitedAuthority(kind=raw_authority["kind"], ref=raw_authority["ref"])
+        )
+        findings.append(
+            Finding(
+                # Stamped from identity — emitted source/altitude are ignored.
+                source=identity.source,
+                altitude=identity.altitude,
+                severity=item["severity"],
+                target=list(item["target"]),
+                locus=item["locus"],
+                claim=item["claim"],
+                cited_authority=authority,
+            )
+        )
+    return findings
+
+
+def _emission_defect(item: object) -> str | None:
+    """Return a reason string if `item` is a malformed emission, else None."""
+    if not isinstance(item, dict):
+        return "emission is not an object"
+    for field_name in _REQUIRED_FIELDS:
+        if field_name not in item:
+            return f"missing field '{field_name}'"
+    if item["severity"] not in _VALID_SEVERITIES:
+        return f"invalid severity {item['severity']!r}"
+    if not isinstance(item["target"], list) or not all(
+        isinstance(t, str) for t in item["target"]
+    ):
+        return "target must be a list of strings"
+    if not isinstance(item["locus"], str):
+        return "locus must be a string"
+    if not isinstance(item["claim"], str):
+        return "claim must be a string"
+    if not _valid_cited_authority(item["cited_authority"]):
+        return "cited_authority malformed (bad kind or ref shape)"
+    return None
+
+
+# --- §4/§5: build a real reviewer (LLM call + parse seam) --------------------
+
+
+def build_real_reviewer(
+    identity: ReviewerIdentity, prompt_path: str | Path, emitter: LlmEmitter
+) -> ScheduledReviewer:
+    """Compose a real reviewer: load prompt, assemble User, emit, parse+stamp.
+
+    The returned ScheduledReviewer runs in its own context per invocation (§4):
+    the system prompt is loaded from the file, the user block is assembled from
+    the fetched-fresh inputs and the frozen snapshot, the injected emitter is
+    called, and the raw output is parsed and stamped. No conversation or context
+    is shared between reviewers.
+
+    Args:
+        identity: The reviewer's canonical identity.
+        prompt_path: Path to its `.prompt.md`.
+        emitter: The LLM emitter (injected; a fake in tests).
+
+    Returns:
+        A ScheduledReviewer ready for the runner's plan.
+    """
+    system_prompt = load_system_prompt(prompt_path)
+
+    def run(
+        pass_number: int,
+        snapshot: Ledger,
+        records: DocumentSet,
+        substrate: Substrate,
+        log: ActionLog,
+    ) -> list[Finding]:
+        user_prompt = assemble_user_prompt(records, substrate, snapshot)
+        raw_text = emitter(system_prompt, user_prompt)
+        return parse_emissions(identity, raw_text, log)
+
+    return ScheduledReviewer(identity, run)
+
+
+# --- §6: coherence scheduling (runner-scheduled, not self-gating) ------------
+
+
+def _coherence_due(pass_number: int, snapshot: Ledger) -> bool:
+    """Whether the real coherence sweep runs this pass.
+
+    Pass 1 always (initial sweep); thereafter iff any document in the set was
+    recorded changed in the immediately preceding pass (fire-on-trigger).
+    """
+    if pass_number == 1:
+        return True
+    return any(
+        snapshot.doc_changed_in_pass(doc, pass_number - 1)
+        for doc in snapshot.header.set
+    )
+
+
+def real_hat_plan(
+    laa: ScheduledReviewer,
+    sa: ScheduledReviewer,
+    ea: ScheduledReviewer,
+    coherence: ScheduledReviewer,
+) -> Plan:
+    """Build the real-hat pass plan: three hats every pass; coherence per §6.
+
+    The coherence sweep is runner-scheduled (each real invocation costs an LLM
+    call): invoked on pass 1 and on any pass after a recorded document change;
+    otherwise skipped, and the skip is logged (a silent skip is
+    indistinguishable from a bug).
+    """
+
+    def plan(
+        pass_number: int, snapshot: Ledger, log: ActionLog
+    ) -> list[ScheduledReviewer]:
+        scheduled = [laa, sa, ea]
+        if _coherence_due(pass_number, snapshot):
+            scheduled.append(coherence)
+        else:
+            log.emit(
+                "coherence_skip",
+                pass_number=pass_number,
+                reason="no document change recorded in the prior pass",
+            )
+        return scheduled
+
+    return plan
+
+
+def build_real_hat_plan(
+    prompt_dir: str | Path, emitter: LlmEmitter
+) -> Plan:
+    """Convenience: build the real-hat plan from the four prompt files.
+
+    Loads antagonist-LAA/SA/EA and coherence-sweep prompts from `prompt_dir` and
+    wires each to `emitter`. Provided so a supervised real run has one entry
+    point; not exercised against a real LLM in this task.
+    """
+    directory = Path(prompt_dir)
+    return real_hat_plan(
+        build_real_reviewer(IDENTITY_LAA, directory / "antagonist-LAA.prompt.md", emitter),
+        build_real_reviewer(IDENTITY_SA, directory / "antagonist-SA.prompt.md", emitter),
+        build_real_reviewer(IDENTITY_EA, directory / "antagonist-EA.prompt.md", emitter),
+        build_real_reviewer(
+            IDENTITY_COHERENCE, directory / "coherence-sweep.prompt.md", emitter
+        ),
+    )
