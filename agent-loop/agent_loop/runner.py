@@ -100,12 +100,18 @@ def _gather_then_admit(
     # The plan's scheduling view is its own isolated copy of the state.
     scheduled = plan(pass_number, copy.deepcopy(snapshot_state), log)
 
-    # Gather — no admission yet. Each reviewer gets its own frozen copy.
+    # Gather — no admission yet. Each reviewer gets its OWN frozen copy of the
+    # snapshot AND of records/substrate, made at the same point (run-prep §4):
+    # DocumentSet/Substrate are frozen dataclasses with mutable dict fields, so
+    # sharing them left the same one-level-down cross-anchoring seam the §2
+    # amendment closed for the snapshot.
     gathered = []
     for scheduled_reviewer in scheduled:
         reviewer_snapshot = copy.deepcopy(snapshot_state)
+        reviewer_records = copy.deepcopy(records)
+        reviewer_substrate = copy.deepcopy(substrate)
         findings = scheduled_reviewer.run(
-            pass_number, reviewer_snapshot, records, substrate, log
+            pass_number, reviewer_snapshot, reviewer_records, reviewer_substrate, log
         )
         gathered.append((scheduled_reviewer.identity, findings))
 
@@ -134,6 +140,7 @@ def run_loop(
     label: str = "review loop",
     max_passes: int = 50,
     clock: Callable[[], str] = _default_clock,
+    log: ActionLog | None = None,
 ) -> RunResult:
     """Drive the design-review loop to its router exit.
 
@@ -156,6 +163,10 @@ def run_loop(
         label: Name used in the loop-bound error message.
         max_passes: Loud safety bound against a non-terminating loop.
         clock: Injectable timestamp source.
+        log: Optional pre-built action log. None uses a fresh in-memory log
+            (the skeleton default). The real run injects a log wired to the
+            live JSONL sink (run-prep §7) and shared with the LLM emitters/
+            arbiter so their `llm_call` provenance lands on the same stream.
 
     Returns:
         The RunResult with the final exit, pass count, ledger, and action log.
@@ -163,7 +174,7 @@ def run_loop(
     Raises:
         LoopBoundExceeded: If the loop does not terminate within max_passes.
     """
-    log = ActionLog()
+    log = log if log is not None else ActionLog()
     store.save(Ledger(header=header))
     effective_fix_changes = fix_changes or {}
 

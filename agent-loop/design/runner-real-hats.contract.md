@@ -85,6 +85,13 @@ iteration; the runner is the fetch point):
   scope for the set;
 - the §2 snapshot.
 
+Each reviewer receives its **own deep copy** of the document set and substrate
+— not a shared reference — made at the same point as its §2 snapshot copy, per
+`run-prep.contract.md` §4 (ratified 2026-07-02). This closes the shared-inputs
+seam carried from PR #2: `DocumentSet` and `Substrate` are frozen dataclasses
+with mutable dict fields, so conventional sharing left the same one-level-down
+cross-anchoring seam the §2 amendment rejected for the snapshot.
+
 ## 6. Coherence scheduling
 
 The real sweep is **runner-scheduled**, not self-gating (each real invocation
