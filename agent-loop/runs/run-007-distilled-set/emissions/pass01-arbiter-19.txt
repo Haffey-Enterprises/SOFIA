@@ -1,0 +1,7 @@
+{
+  "finding_id": "df072a4bb899d80e",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding exposes a mismatch between ADR-002's upstream state class ('immutable workflow snapshots') and DDR-002's concretization ('produced-solution/ASD body snapshots'); no ratified authority states whether these are the same class or how to reconcile them, so choosing which characterization governs is an unratified choice.",
+  "confidence": "high"
+}

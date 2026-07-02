@@ -1,0 +1,62 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["DDR-002"],
+"locus": "§2.6 Cost plane — first Extension registration",
+"claim": "DDR-002 commits the cost plane as a live schema-bearing registration (RateCard, CostFactor, CapabilityCostEstimate node schemas, Cost edges in §3, cost-estimation SDD hand-off) with no cited upstream authority requiring cost as a platform concern at this altitude; neither ADR-001, ADR-002, nor DDR-001 names a cost capability or a cost-estimation requirement. Standing up a fully-specified cost plane — as opposed to naming the Extension mechanism and deferring its first real registration to when a cost use case is ratified — commits the platform to a cost-modeling posture that arguably deserves its own decision record before the schema locks it (DDR-002 gates twelve SDDs).",
+"cited_authority": {
+"kind": "coherence",
+"ref": "DDR-002 §2.6 cost-plane schema vs. DDR-001 Decision.2 (five typed planes + Extension) — Extension named as mechanism only, cost not sourced from any upstream ratified need"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-002"],
+"locus": "§2.4 Governance — GateDecision / promoted-verdict precedence; §7 #15",
+"claim": "The re-decidable PromotionDecision model with append-only edges and 'governing verdict = latest decided_at' introduces a hard-to-reverse consistency commitment that depends on unsettled DDR-003 governance (batch-eligibility policy, remedy-boundary supersession-vs-retraction). The schema locks a verdict-precedence mechanic (latest-decided_at governs, retraction as reversing CandidatePromotion) whose accountability semantics turn on DDR-003 criteria not yet authored. Committing the precedence and retraction shapes into the T1/T2 locked contract ahead of the governance decision they realize is a timing hazard: if DDR-003 rules the remedy boundary differently, the locked shape carries blast radius across the twelve gated SDDs.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "DDR-002 §2.4 / §7 #15 / #21 verdict-precedence + retraction schema vs. DDR-003 (forthcoming, unratified) owning remedy-boundary and batch-eligibility governance"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-002", "DDR-001"],
+"locus": "ADR-002 §2.2 substitution contract / DDR-001 Substitution-Contract Capability Bar",
+"claim": "ADR-002 §2.2 commits Neo4j Enterprise as the system of record and defers the precise capability bar to DDR-001's spike-findings section, while DDR-001's Spike Findings explicitly records that 'the specific edition-feature blocker from the original trial is not in the captured record and is not reconstructed here.' The hard-to-reverse commitment to Enterprise licensing and self-managed GKE operational burden rests on a substitution bar whose empirical grounding — the specific Enterprise capability the plane model depends on — is by the authors' own statement absent from the record. Reversibility is not proportionate to the commitment's cost: the platform accepts a standing operational and licensing burden justified by a ratified-but-unrecoverable spike outcome.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-002 §2.2 (edition + runtime commitment deferring capability bar to DDR-001) vs. DDR-001 Spike Findings 'Recovery-boundary note' — blocker not in captured record, not reconstructed"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["ADR-001"],
+"locus": "§2.5 / §7 cross-reference to DDR-003",
+"claim": "ADR-001 §2.5 commits that the encoding-density promotion mechanism 'exists, is EA-gated, and is the engine of the Position 4 trajectory,' with its governance designed in DDR-003 (forthcoming). DDR-003 is unratified and absent from the document set and ledger. ADR-001's core drift-resistance claim (the trajectory is real, not rhetorical) and its named risk mitigation both rest on a forthcoming document; the ADR stands accepted while the mechanism that distinguishes committed-trajectory from Position-5-forever is undesigned.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-001 §2.5 / §5.3 risk 'Encoding density never grows' mitigation vs. DDR-003 absent from set and ledger snapshot"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-002", "DDR-001", "DDR-002"],
+"locus": "graph-as-system-of-record integration across the ADR/DDR chain",
+"claim": "Attacked whether the graph-as-system-of-record commitment holds coherent posture as it descends ADR-002 → DDR-001 → DDR-002: the sole-owner gateway, three-store backbone, no-vector prohibition, logical-not-physical realization, and write-authority assignments each propagate downward with explicit ownership-line citation and no altitude inversion (schema never re-opens architecture; DDR-001 does not depend on DDR-002). The chain held — each downstream ruling cites its upstream authority and stays within its altitude.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "ADR-002 §2.1–§2.5 vs. DDR-001 Decisions 1–6 vs. DDR-002 Decision.6 / Boundary Routing Map — consistent downward integration"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-002"],
+"locus": "§2.7 no-CMEK / no-PHI-by-design posture",
+"claim": "Attacked the no-CMEK posture as a premature or under-justified data-protection commitment. It held: the posture is explicitly scoped to the initial build, tied to an enforced no-PHI-by-design constraint with compensating-control backstop, names a concrete reversal trigger (a PHI scope-change is its own ADR), and aligns with the sofia-vision operating-environment constraint. Reversibility is proportionate — the commitment is a scoped-and-triggered posture, not an irreversible foreclosure.",
+"cited_authority": {
+"kind": "design-intent",
+"ref": "sofia-vision operating-environment constraints (no PHI by design, no CMEK initial build, future PHI scope-change is its own ADR) vs. ADR-002 §2.7"
+}
+}
+]

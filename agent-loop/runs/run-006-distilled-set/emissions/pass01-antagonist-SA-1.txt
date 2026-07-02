@@ -1,0 +1,58 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["DDR-002"],
+"locus": "§4 confidence rollup / §7 conformance set",
+"claim": "The rollup rule states ReasoningProgress.confidence is 'upper-bounded by its strongest supporting evidence path' — a fixed, testable invariant on a locked T2 property — yet no conformance check in the §7 set (1–21) enforces this bound. The rollup exists only as prose with the function deferred to SDD, leaving the one property DDR-002 does fix (the upper bound) unverified by any named check.",
+"cited_authority": {"kind": "coherence", "ref": "DDR-002 §4 confidence canonical definition (upper-bound commitment) vs. §7 conformance-checked invariant set (no bound check present)"}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-002"],
+"locus": "§2.4 GateDecision origin_mechanism vs §7 existence-constraint scope",
+"claim": "GateDecision carries origin_mechanism as a 'live property' whose reserved value is 'authored' for a future SOFIA-as-authoritative-decider state. But §7 check #7 fixes ADR-002 §2.6 write-authority as 'ASA authors ReasoningProgress; AOE session-lifecycle only.' A SOFIA-authored GateDecision is a reasoning-state-adjacent authoritative write by neither ASA nor AOE; the design provides no write-authority home for the reserved 'authored' GateDecision state it claims is expressible 'without re-architecture.' The forward-compatibility claim is unsubstantiated against the write-authority invariant it must satisfy.",
+"cited_authority": {"kind": "canonical", "ref": "ADR-002 §2.6 reasoning-state write authority (component-scoped) vs. DDR-002 §2.4 GateDecision origin_mechanism: authored reserved state"}
+},
+{
+"severity": "COSMETIC",
+"target": ["ADR-001"],
+"locus": "§6 check 2 vs §2.2 illustrative-vocabulary clause",
+"claim": "§6 compliance check 2 requires 'a RejectedAlternative artifact for each option weighed and discarded' as a mandatory verified check, but §2.2 states the artifact kinds (ReasoningProgress, Evidence, RejectedAlternative) are 'illustrative' and their canonical labels are owned by DDR-002 'not fixed here.' A mandatory check citing an artifact kind the same ADR declares illustrative-not-fixed is internally in tension: the check's testability depends on a name §2.2 disclaims fixing.",
+"cited_authority": {"kind": "soundness", "ref": "ADR-001 §6 check 2 (mandatory RejectedAlternative check) vs §2.2 (artifact kinds illustrative, canonical labels deferred to DDR-002)"}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-002"],
+"locus": "§2.4 PromotionDecision verdict precedence / §7 check #15",
+"claim": "The governing verdict is defined as the outcome of the edge whose PromotionDecision has the 'latest decided_at.' decided_at is a T2 timestamp with no stated uniqueness or monotonicity constraint. If two PromotionDecision nodes carry equal decided_at values on the same candidate with differing outcomes, 'the latest' is undefined and check #15 (which keys promotion authority off the governing edge) has no deterministic result — a tie-break rule is absent where the schema permits ties.",
+"cited_authority": {"kind": "soundness", "ref": "DDR-002 §2.4 verdict-precedence (latest decided_at) — silent on decided_at ties where the schema imposes no uniqueness"}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-002"],
+"locus": "§5 applicability_state supersession carry-forward vs §7 check #19",
+"claim": "The design concedes its own coverage gap: a successor to a conditional node that is not explicitly re-scoped 'would no longer be marked conditional' so 'check #19 cannot catch' the over-admission. DDR-002 'commits this integrity expectation' but routes the enforcing mechanism (and whether it warrants a CI invariant) entirely to the SDD, leaving a named safety-relevant integrity property (never consume conditional knowledge out-of-scope, §7 #19 'blocking safety control') with no invariant in the locked set that guards its supersession case.",
+"cited_authority": {"kind": "soundness", "ref": "DDR-002 §5 applicability_state per-version carry-forward (self-stated gap: successor not marked conditional, #19 cannot catch) with no CI invariant covering supersession"}
+},
+{
+"severity": "COSMETIC",
+"target": ["DDR-001"],
+"locus": "Two-Graph Model — Governance plane source-class",
+"claim": "The Governance plane source-class is 'IAM + SOFIA workflow events' and node types include 'users, roles.' DDR-002 §2.4 states Actor/Role are 'governance-participating identities, not an IAM mirror' and the per-action disposition-event stream is 'excluded (transient → orchestration/observability SoR).' DDR-001's naming of IAM and workflow events as the plane source-class reads as broader than DDR-002's narrowed realization; the source-class label is not reconciled to the not-an-IAM-mirror / events-excluded refinement.",
+"cited_authority": {"kind": "coherence", "ref": "DDR-001 Governance-plane source-class (IAM + SOFIA workflow events) vs DDR-002 §2.4 (not an IAM mirror; disposition-event stream excluded)"}
+},
+{
+"severity": "POSITIVE",
+"target": ["DDR-002"],
+"locus": "§7 checks #15 and #21 (promotion / retraction gating)",
+"claim": "Attacked the SOFIA-never-self-modifies invariant (ADR-001 §2.5, DDR-001 Decision.5) for a bypass path: a KG fact promoted then un-promoted, or promoted on a since-reversed decision. Check #15 keys off the *governing* (latest decided_at) approving edge so a stale approved edge cannot authorize a node whose verdict flipped to rejected; check #21 requires un-promotion to trace to an approving PromotionDecision via RETRACTS, closing bare-delete. Both the forward and reverse mutation paths trace to an EA gate; the invariant held.",
+"cited_authority": {"kind": "canonical", "ref": "ADR-001 §2.5 SOFIA-does-not-self-modify + DDR-001 Decision.5 vs DDR-002 §7 checks #15/#21"}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-002", "DDR-001", "DDR-002"],
+"locus": "no-vector-store commitment propagation",
+"claim": "Attacked the no-vector-store commitment (ADR-002 §2.4) for silent re-introduction across the stack. ADR-002 §5.2/§5.3 frame reversal as an ADR-triggering store-set change; DDR-001 conformance and the three-store backbone carry it; DDR-002 §1 restates it as a binding conformance check (§7 #2, negative half) and names the positive substitute (l1/l2/l3 taxonomy + selection-edge web) rather than leaving a vacuum. The prohibition is enforced at each altitude with no downstream design admitting a vector index; the commitment held.",
+"cited_authority": {"kind": "canonical", "ref": "ADR-002 §2.4 no-vector-store vs DDR-001 three-store backbone + DDR-002 §7 check #2"}
+}
+]

@@ -1,0 +1,7 @@
+{
+  "finding_id": "b94454b71166d513",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding exposes a genuine gap: §1's provenance scoping matrix has no entry establishing a SOFIA-issued PromotionDecision's origin_mechanism value (authored? derived?), and §7 check #17's ingested⇒source_record_ref obligation does not enumerate Governance-plane Decision nodes, so whether a PromotionDecision must carry source_record_ref is undetermined by existing authority.",
+  "confidence": "high"
+}

@@ -1,0 +1,7 @@
+{
+  "finding_id": "0b50157190da1433",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record-SKILL 'Authoring discipline' — 'State decisions testably' + ddr-template §Decision ('expand the ruling's components as numbered subsections')",
+  "rationale": "The authority is explicit that decisions must be stated testably and that the Decision section enumerates the ruling's substantive components; a new authority commitment (the third component-scoped author class) established in the body but absent from the enumeration is a determinable conformance defect, and the fix — surface it as an enumerated sub-decision — is dictated by that discipline, not a new choice.",
+  "confidence": "medium"
+}

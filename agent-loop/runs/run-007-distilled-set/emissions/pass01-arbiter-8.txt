@@ -1,0 +1,7 @@
+{
+  "finding_id": "d89119a321e1cc28",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The ADR internally conflicts — §2.2 disclaims RejectedAlternative as illustrative/owned by DDR-002 while §6 binds it as a mandatory conformance check — and no cited higher authority disambiguates whether the check's object is canonical here or resolves the term downward; whether to promote the term, defer the check, or restructure is an unratified choice.",
+  "confidence": "high"
+}

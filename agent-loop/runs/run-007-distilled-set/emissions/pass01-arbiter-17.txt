@@ -1,0 +1,7 @@
+{
+  "finding_id": "35bd79e11a4908ab",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "No ratified authority disambiguates whether the Governance plane represents IAM identities: DDR-001 names the source-class as 'IAM + SOFIA workflow events' while DDR-002 §2.4 states Actor/Role are 'not an IAM mirror'. This is a cross-document conflict on the shared Governance-plane term with no cited higher authority resolving which characterization governs.",
+  "confidence": "high"
+}

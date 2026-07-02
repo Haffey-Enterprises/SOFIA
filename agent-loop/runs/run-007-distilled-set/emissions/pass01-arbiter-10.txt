@@ -1,0 +1,7 @@
+{
+  "finding_id": "ede8ad3e4a70e567",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding exposes a genuine gap: §1/§7 mandate that every KG node carry a provenance group with a DB-enforced origin_mechanism drawn from {ingested, authored, promoted, derived}, yet §2.4 leaves PromotionDecision's origin_mechanism unspecified while forbidding source_record_ref, and no ratified authority disambiguates which of the four values (or a new one) a SOFIA-issued Governance-plane decision node must carry. Selecting the value is an unratified choice that the document's own authorities leave contradictory.",
+  "confidence": "high"
+}

@@ -1,0 +1,7 @@
+{
+  "finding_id": "877ab44c8e297716",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding surfaces a scope boundary asserted against the 'Directives-Context-Envelope Bridge' — an artifact named nowhere else in the record and grounded in no ratified authority. No template locus or design intent determines whether this non-relationship is correct, should be cross-referenced, or removed; resolving it requires a decision about an undeclared dependency that authority is silent on.",
+  "confidence": "high"
+}

@@ -1,0 +1,7 @@
+{
+  "finding_id": "7bc0b9a27f4ce2a1",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding exposes an internal inconsistency in DDR-002 — a six-value enum claimed to map onto seven surfaces, with OverrideFlag left unmapped. No ratified authority or design intent specifies the correct enum-to-surface correspondence, so reconciling it requires a design choice (which value maps where, or whether OverrideFlag is a surface at all) that has not been made.",
+  "confidence": "high"
+}

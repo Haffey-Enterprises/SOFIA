@@ -1,0 +1,72 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["ADR-002"],
+"locus": "§2.2 / §4.1 — Community-trial spike finding",
+"claim": "ADR-002 asserts as ratified fact that 'Community was trialed for it and failed' and that the rejection is 'empirically established and ratified,' while simultaneously conceding the trial 'predates this corpus's formal capture' and that its durable home is DDR-001's spike-findings section. DDR-001's spike-findings section in turn concedes the specific edition-feature blocker 'is not in the captured record and is not reconstructed here.' The ADR thus claims an empirically-established rejection whose empirical content is admitted nowhere to exist. The decision to commit Enterprise rests on a consequence (the trial outcome) the substrate does not actually carry.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-002 §2.2/§4.1 empirical-rejection claim vs. DDR-001 Spike Findings 'Recovery-boundary note' ('specific edition-feature blocker... not reconstructed here')"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-002"],
+"locus": "Change Log 1.1.0 (2026-07-01) — 'no decision change' vs. §2.3 derive/promote authority seam",
+"claim": "The 2026-07-01 distillation row is labeled 'documentation-purity pass ... no decision change,' but §2.3 introduces a substantive decision — the 'derive/promote authority seam' establishing that non-EA-gated `derived` Operational-plane writes (the `archived` transition and distillation writes) do not breach ADR-001's SOFIA-never-self-modifies invariant. This is a load-bearing carve-out from an ADR-001 invariant, not a documentation-purity edit. Either it is a decision change mis-logged as none, or its introduction pass is unattributed in the change log.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "DDR-002 Change Log '1.1.0 ... no decision change' vs. DDR-002 §2.3 derive/promote authority seam carve-out against ADR-001 SOFIA-never-self-modifies"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-001"],
+"locus": "Feedback-Loop Architecture — write-authority extension beyond ADR-002 §2.6",
+"claim": "DDR-001's Decision list (Decision.1–.6) and top-line Decision statement do not surface the feedback-loop write-authority assignment as a decision, yet the body establishes a *third component-scoped author class* (the scheduled feedback-loop job authoring `CandidatePromotion`) and gateway-materialized writes 'beyond ADR-002 §2.6's synthesis-time ASA/AOE.' This is a substantive new authority commitment — the change log confirms it was the RBT-45 amendment's central act — that rides in the body without being declared among the DDR's enumerated testable sub-decisions.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "DDR-001 Decision.1–.6 enumeration vs. DDR-001 Feedback-Loop Architecture 'third component-scoped author class' / RBT-45 change-log entry"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["ADR-001"],
+"locus": "§6 Propagation vs. §2 Decision scope",
+"claim": "§6's Propagation paragraph decides a scope boundary — that this ADR's commitment 'is distinct from the runtime Directives-Context-Envelope Bridge, which §6 neither requires nor pre-empts.' The Directives-Context-Envelope Bridge is named nowhere else in the record, has no cross-reference, and its relationship to this ADR is asserted as a decided non-relationship. A boundary decision against an artifact the record otherwise never introduces is an undeclared dependency surfaced only in passing.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-001 §6 Propagation 'Directives-Context-Envelope Bridge' — named and scoped-out but declared in no dependency/cross-reference locus"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-002"],
+"locus": "§7 Authority split — DDR-002 binding the safety-critical classification and precede-gateway rule",
+"claim": "DDR-002 §7 declares it 'binds' the precede-gateway sequencing rule and the safety-critical classification for the CI-only invariant set — a sequencing/enforcement-ordering commitment that constrains the knowledge-service SDD and the conformance-mechanization work. This is a decision about enforcement sequencing, not a node/relationship/constraint/index schema fact. Decision.5/Decision.6 scope this DDR to 'the schema contract only' and route service realization and mechanization out; binding an enforcement-ordering rule exceeds the claimed schema-only scope of the record.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "DDR-002 Decision.6 ('owns the schema contract only; ... service realization ... routed, not authored, here') vs. §7 'Authority split — DDR-002 binds ... the precede-gateway rule'"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-001"],
+"locus": "§2.2 / §2.5 — reasoning-capture invariant vs. RG-vocabulary ownership",
+"claim": "I attacked ADR-001 for scope creep into DDR-002's schema territory — whether naming ReasoningProgress/Evidence/RejectedAlternative and the source-attribution categories smuggles a schema decision. The record explicitly fences these as 'illustrative' and defers canonical labels, property names, attribution vocabulary, and constraints to DDR-002 (§2.2), and confines its own commitment to the 'conceptual capture contract.' The claim matches the decision content; no smuggled schema decision. Held.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-001 §2.2 illustrative-vocabulary deferral to DDR-002 vs. DDR-002 Decision.1/§4 schema ownership"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-002"],
+"locus": "§2.7 — no-CMEK / no-PHI-by-design posture scope",
+"claim": "I attacked §2.7 for over-claiming: whether it silently decides future PHI/CMEK policy or retracts the platform's compliance posture. The record scopes the commitment to 'the initial build only,' names the consequence (no-PHI classification must be enforced for no-CMEK to remain sound — surfaced as constraint §5.2 and risk §5.3), and defers any PHI-in-scope change to its own ADR. Title, decision, and consequences align with design-intent (sofia-vision operating-environment constraints). Held.",
+"cited_authority": {
+"kind": "design-intent",
+"ref": "sofia-vision 'no PHI by design ... no CMEK in the initial build (a future PHI scope change is its own ADR)' vs. ADR-002 §2.7 / §5.2 / §5.3"
+}
+}
+]

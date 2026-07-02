@@ -1,0 +1,7 @@
+{
+  "finding_id": "5840457edf817402",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The shared DECIDED_ON {approved, approved_conditional, rejected} vocabulary admits 'approved_conditional' for GateDecision→Solution, but no ratified authority defines its semantics or a Condition-attachment path for that case; §5 is silent where a choice (forbid it, define its meaning, or provide an attachment path) is required.",
+  "confidence": "high"
+}

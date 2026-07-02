@@ -1,0 +1,62 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["DDR-002"],
+"locus": "§2.6 Cost plane — first Extension registration",
+"claim": "DDR-002 introduces the cost plane as the first Extension registration and commits its full node/edge schema (RateCard, CostFactor, CapabilityCostEstimate, cost edges, compute-on-read cost model, estimate-vs-actual variance). ADR-002 §2.3 and DDR-001 name only the five core planes plus a generic Extension mechanism; nothing in the ratified substrate commits a cost domain, its versioned-reference-plus-immutable-as-of-record model, or a cost-estimation SDD. Standing up a full cost domain as the schema-layer 'worked exemplar' commits the platform to a cost-modeling position that plausibly deserves its own design record before its schema is locked into the T1/T2 contract that gates twelve SDDs.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "DDR-002 §2.6 (full cost-domain schema + cost-estimation SDD hand-off) vs ADR-002 §2.3 / DDR-001 Decision.2 (Extension mechanism named, no cost domain committed)"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-002"],
+"locus": "§2.4 / §5 Governance decision model, PromotionDecision, RETRACTS, batch verdict, verdict-precedence",
+"claim": "DDR-002 commits substantial feedback-loop governance shape at the schema layer — batch per-candidate verdict semantics, verdict-precedence by latest decided_at without a SUPERSEDES edge, retraction as a reversing CandidatePromotion, the approving-state set {approved, approved_conditional}, and the remedy-boundary framing. DDR-003 (feedback-loop governance) is forthcoming and named as the owner of exactly these concerns. Locking governance-bearing verdict and retraction semantics into the frozen schema contract ahead of the governance record that should decide them is a timing inversion: the schema is committing to positions whose governing decision record does not yet exist.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "DDR-002 §2.4/§5/§7 (#15, #21, verdict-precedence, retraction shape) vs DDR-001 Cross-References + DDR-002 →DDR-003 routing (feedback-loop governance is DDR-003's, forthcoming)"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-002", "DDR-001", "DDR-002"],
+"locus": "ADR-002 §2.2 / DDR-001 Spike Findings / DDR-002 §7 (Enterprise-edition dependency)",
+"claim": "ADR-002 commits Neo4j Enterprise on the strength of a Community-edition trial whose specific edition-feature blocker is explicitly not in the captured record and is 'not reconstructed' (DDR-001 Spike Findings, recovery-boundary note). DDR-002 §7 then makes the DB-enforced existence-constraint capability load-bearing ('the Enterprise edition committed in ADR-002 buys existence-constraint capability'). A hard-to-reverse, licensing-and-operational-footprint commitment (self-managed cluster on GKE, accepted as a standing burden) rests on a rejection rationale whose decisive capability is admittedly unrecorded — the justification is not proportionate to the cost of undoing the commitment.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "DDR-001 Spike Findings (recovery-boundary note: blocker not reconstructed) vs ADR-002 §2.2/§4.1 (Enterprise as empirically-established requirement) + DDR-002 §7 (Enterprise buys existence-constraints)"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-001"],
+"locus": "§2.4 / §2.5 — later-stage lifecycle scope and promotion mechanism binding",
+"claim": "ADR-001 binds the reasoning-capture invariant across the full SDLC (idea capture through operational onboarding plus an always-on operational feedback substrate) and commits that the encoding-density promotion mechanism 'exists, is EA-gated, and is the engine of the Position 4 trajectory' — while DDR-003, which designs that mechanism's governance, is forthcoming, and the later lifecycle stages are conceded to be 'architecturally committed, design forthcoming' with provisional shapes. Committing the platform to a lifecycle-spanning invariant and to an unbuilt promotion engine as the load-bearing trajectory mechanism, ahead of the governance design that would establish whether the engine is realizable, is a posture commitment whose reversibility is not proportionate to how much downstream depends on it.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-001 §2.4 (later stages provisional / design forthcoming) + §2.5 (promotion mechanism governance = DDR-003 forthcoming) vs §5.3 risk 'Encoding density never grows' (trajectory becomes rhetorical if mechanism never built)"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-002"],
+"locus": "§5.2 topology deferral / §2.2 runtime-vs-topology axis split",
+"claim": "Attacked the deferral of production topology as a premature-vs-stale timing defect — a system-of-record ADR that leaves cluster count and HA unspecified could be pulling against buildability. It held: the ADR isolates runtime placement (GKE, committed) from production topology (deferred), gives an explicit forcing-function reason for deferral (size to real workload after dev implement-and-test), and confirms topology does not gate acceptance or the CMEK posture. The deferral is a proportionate reversibility choice, not an unsettled dependency.",
+"cited_authority": {
+"kind": "design-intent",
+"ref": "ADR-002 §2.2 runtime/topology axis split + §5.2 'Production topology is intentionally unspecified' vs adr-template §2 (include only sub-decisions this ADR constrains)"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-002", "ADR-001"],
+"locus": "ADR-002 §2.4 no-vector-store commitment integrated with ADR-001 Position 5",
+"claim": "Attacked the no-vector-store decision as a commitment that pulls against system posture or deserves its own record. It held: the rejection integrates with ADR-001's deterministic Position 4–5 ethos (graph-native retrieval is deterministic/auditable where vector similarity is neither), the reversibility cost is named honestly (§5.3 — reintroduction re-opens the three-store backbone, not a cheap toggle), and a genuine future need is routed to a new ADR rather than silently precluded. The commitment is posture-consistent and its irreversibility is disclosed proportionately.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-002 §2.4 + §4.3 + §5.3 no-vector reversibility framing vs ADR-001 §2.3 deterministic-output framing / Position 4–5 ethos"
+}
+}
+]

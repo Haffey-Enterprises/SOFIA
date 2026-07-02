@@ -1,0 +1,7 @@
+{
+  "finding_id": "64319dcec18fe4d5",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "ADR-001 §2.2 defers canonical labels for 'captured reasoning categories' but scopes its capture-contract to reasoner output + evidence + rejected alternatives; DDR-002 introduces ProvenanceSummary and an Artifact family (explicitly 'neither a KG plane nor RG') that no ratified authority authorizes under that deferral, so resolving the gap requires deciding whether ADR-001's scope covers produced-deliverable artifacts — a choice not yet ratified.",
+  "confidence": "high"
+}

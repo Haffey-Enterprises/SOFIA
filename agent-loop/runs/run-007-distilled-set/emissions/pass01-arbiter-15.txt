@@ -1,0 +1,7 @@
+{
+  "finding_id": "a4d078fef34fd4f4",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "ADR-001 rests its trajectory claim and a named risk mitigation on DDR-003, which is unratified and absent from the set/ledger; no ratified authority supplies the promotion-mechanism governance that would close the gap, so resolving this requires designing an undesigned mechanism — a choice not yet made.",
+  "confidence": "high"
+}

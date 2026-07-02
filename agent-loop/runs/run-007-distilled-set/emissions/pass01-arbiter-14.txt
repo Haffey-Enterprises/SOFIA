@@ -1,0 +1,7 @@
+{
+  "finding_id": "ddefe9fbf0809d01",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding exposes that the substitution capability bar grounding a hard-to-reverse Enterprise licensing/GKE commitment rests on an empirical spike outcome the authors state is absent and unreconstructed; no ratified authority supplies the missing bar or dictates whether the commitment should stand, be re-grounded, or be reversed. Resolving requires a choice (re-run spike, re-scope, accept the gap) that authority does not disambiguate.",
+  "confidence": "high"
+}

@@ -1,0 +1,72 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["DDR-002", "DDR-001"],
+"locus": "§2.4 GateDecision origin_mechanism (authored reserved) vs ADR-001 §2.3/§6.5 LLM-as-renderer",
+"claim": "DDR-002 §2.4 reserves `origin_mechanism: authored` on GateDecision for 'a future SOFIA-as-authoritative-decider state, ADR-001 Position 4' with approving Actor = system, treating a SOFIA-authored gate decision as consistent with ADR-001. ADR-001 §2.3 and Compliance check 5 state the LLM does not select, decide, evaluate, or detect, and §2.2 records human override as a distinct authoritative category; a SOFIA/system-authored *gate approval decision* (an approval act) is neither the encoded-reasoning nor human-override category ADR-001 enumerates. The downstream schema introduces a decision-authorship state the upstream ADR-001 authoritative-flag/reasoner taxonomy does not supply.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "DDR-002 §2.4 GateDecision origin_mechanism `authored`-reserved + ADR-001 §2.2 capture-invariant reasoner categories / §6.5 LLM-as-renderer"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["DDR-001", "ADR-002"],
+"locus": "DDR-001 Two-Graph Model, Governance plane 'IAM + SOFIA workflow events' vs DDR-002 §2.4 'Actor/Role are not an IAM mirror'",
+"claim": "DDR-001's Governance-plane table names the source-class as 'IAM + SOFIA workflow events' with node types 'users, roles, approval decisions', while DDR-002 §2.4 states Actor/Role are 'governance-participating identities, not an IAM mirror'. The shared Governance-plane term has drifted between the owning data-architecture document and the schema document on whether IAM identities are represented.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "DDR-001 Governance-plane source-class 'IAM + SOFIA workflow events' vs DDR-002 §2.4 'Actor/Role are governance-participating identities, not an IAM mirror'"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-001", "DDR-002"],
+"locus": "ADR-001 §2.2 RG-vocabulary deferral to DDR-002 vs DDR-002 §4 ProvenanceSummary / Artifact family",
+"claim": "ADR-001 §2.2 says the artifact kinds it names (ReasoningProgress, Evidence, RejectedAlternative) are illustrative of 'the categories of captured reasoning' and defers canonical labels to DDR-002. DDR-002 §4/§5 introduce two additional first-class node families in the reasoning/produced-artifact region — `(:Reasoning:ProvenanceSummary)` and the `(:Artifact …)` family — that are not captured-reasoning categories ADR-001 enumerates or gestures at; the Artifact family is explicitly 'neither a KG plane nor RG'. ADR-001's stated capture-contract scope (each reasoner's output recorded with evidence linkage + rejected alternatives) does not supply the produced-deliverable Artifact family the schema asserts under that deferral.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-001 §2.2 illustrative-RG-categories deferral vs DDR-002 §4 ProvenanceSummary / §5 Artifact node-family"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["ADR-002", "DDR-002"],
+"locus": "ADR-002 §2.4 Firestore 'immutable workflow snapshots' vs DDR-002 §6 Firestore 'immutable per-version snapshots of produced solutions (ASD bodies)'",
+"claim": "ADR-002 §2.4 assigns Firestore the state class 'immutable workflow snapshots'. DDR-001 and DDR-002 §6 concretize Firestore's content as 'immutable per-version snapshots of produced solutions (ASD bodies)' for revert/audit. 'Workflow snapshots' and 'produced-solution body snapshots' are different state classes; the downstream concretization narrows/redirects the upstream store-authority assignment rather than instantiating it, and no reconciliation of 'workflow' vs 'solution-body' is stated at the upstream.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-002 §2.4 Firestore = 'immutable workflow snapshots' vs DDR-002 §6 / DDR-001 Hybrid Persistence Model Firestore = immutable produced-solution (ASD) body snapshots"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-001", "ADR-002"],
+"locus": "DDR-001 Feedback-Loop write authority (gateway materializes KG node on EA approval) vs ADR-002 §2.5/§2.6 gateway-as-access-boundary",
+"claim": "DDR-001 assigns the gateway (knowledge-service) as the *author* of the materialized KG node + PROMOTES_TO_KNOWLEDGE edge and of the at-promotion provenance snapshot ('materialized by the gateway on EA approval'). ADR-002 §2.5 frames knowledge-service strictly as the sole-owner graph-access boundary (driver lifecycle, write-boundary enforcement, single-source-of-truth) — an access/enforcement role — and §2.6 fixes reasoning-state *authorship* as component-scoped to ASA/AOE. Casting the gateway as itself the authoring authority for authoritative KG writes is a write-authorship role ADR-002's gateway definition does not supply; ADR-002 §2.6's component-scoped-authorship principle names no gateway-as-author case.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "DDR-001 Feedback-Loop 'materialized by the gateway on EA approval' / 'at-promotion provenance snapshot materialized by the gateway' vs ADR-002 §2.5 gateway = access boundary + §2.6 component-scoped authorship (ASA/AOE)"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["DDR-002", "ADR-002"],
+"locus": "DDR-002 §7 Existence constraints depend on Neo4j Enterprise vs ADR-002 §2.2 Enterprise edition commitment",
+"claim": "Checked whether DDR-002's DB-enforced existence-constraint set (§7) rests on a capability the substrate actually commits: DDR-002 §7 notes 'the Enterprise edition committed in ADR-002 buys existence-constraint capability', ADR-002 §2.2 commits Neo4j Enterprise (Community trialed and failed), and DDR-001 Spike Findings carries the rejection as ratified memory. The chain holds — the schema's use of existence constraints is grounded in the committed edition; no downstream capability is asserted beyond what ADR-002 ratifies.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "DDR-002 §7 existence-constraint dependency vs ADR-002 §2.2 Neo4j Enterprise commitment + DDR-001 Spike Findings"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["DDR-002", "ADR-001"],
+"locus": "DDR-002 §2.3/§4 promoted-fact determinism + EA gate vs ADR-001 §2.5 SOFIA-never-self-modifies",
+"claim": "Attacked the promoted-knowledge path for a self-modification breach of ADR-001 §2.5 (SOFIA does not self-modify encoded reasoning without EA approval). DDR-002 §2.3 routes the non-EA-gated `derived` ObservedPattern distillation write through a staging tier (Operational) that sits below the EA gate, and §4/§5 route every authoritative KG materialization and retraction through an EA-gated PromotionDecision, with the gateway materializing only on EA approval and conformance checks #4/#15/#21 keying off the approving decision. The invariant holds across distillation, promotion, and retraction — no path materializes authoritative ground truth without the EA gate.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "DDR-002 §2.3 derive/promote authority seam + §5/§7 checks #4/#15/#21 vs ADR-001 §2.5 SOFIA-never-self-modifies-without-EA-approval"
+}
+}
+]

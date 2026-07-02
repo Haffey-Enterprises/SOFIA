@@ -1,0 +1,7 @@
+{
+  "finding_id": "cae82b89111347a0",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding exposes a fork not disambiguated by authority: either the 2026-07-01 pass is a mislogged decision change (requiring a Change Log/version correction under the version rules) or §2.3's derive/promote seam is an unattributed substantive carve-out from ADR-001's SOFIA-never-self-modifies invariant — determining which, and whether that carve-out is authorized against ADR-001, is a choice no ratified authority settles (ADR-001 itself was not fetched here).",
+  "confidence": "high"
+}

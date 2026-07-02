@@ -1,0 +1,51 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["ADR-002"],
+"locus": "§2.2 Deployment runtime — self-managed on GKE",
+"claim": "The ADR title, summary, and stated decision (§2 one-sentence) commit only 'the Neo4j Enterprise graph is the system of record ... with state-class authority divided across a three-store persistence backbone.' The GKE self-managed deployment-runtime exception is a separate decision (runtime placement + accepted operational responsibility for a self-managed cluster) that the one-sentence decision statement and the Description header never surface as a committed sub-decision — it rides along inside §2.2 without appearing in the Decision claim. A commitment of this weight decided but not surfaced in the record's stated decision is a claim-fidelity/scope defect.",
+"cited_authority": {"kind": "coherence", "ref": "ADR-002 §2 Decision statement vs §2.2 'Deployment runtime' + §5.2 accepted operational-responsibility constraint"}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-002"],
+"locus": "§2.2 / §4.1 Community-trial rejection",
+"claim": "The record asserts as decided-fact that 'Community was trialed for it and failed' and that the rejection is 'empirically established and ratified,' while simultaneously conceding the trial 'predates this corpus's formal capture' and that its durable home is DDR-001's spike-findings section. DDR-001's Spike Findings in turn concedes 'the specific edition-feature blocker from the original trial is not in the captured record and is not reconstructed here.' The ADR thus claims an empirical foundation whose supporting artifact does not, on the set's own admission, contain the blocker it rests on — the prose claims more support than the substrate carries.",
+"cited_authority": {"kind": "coherence", "ref": "ADR-002 §4.1 'empirically-established requirement, not a preference' vs DDR-001 Spike Findings 'the specific edition-feature blocker ... is not in the captured record and is not reconstructed here'"}
+},
+{
+"severity": "COSMETIC",
+"target": ["ADR-001"],
+"locus": "§6 Compliance / Propagation",
+"claim": "The Propagation paragraph asserts a negative scope boundary — that §6 'neither requires nor pre-empts' a 'runtime Directives-Context-Envelope Bridge' — naming an artifact that appears nowhere else in the record set or substrate. Introducing and disclaiming an undefined external artifact inside the Compliance section decides a scope relationship against something the record never establishes, leaving a dangling undeclared dependency reference.",
+"cited_authority": {"kind": "coherence", "ref": "ADR-001 §6 Propagation 'runtime Directives-Context-Envelope Bridge' — referent absent from the document set and substrate"}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-002"],
+"locus": "§2.4 GateDecision — origin_mechanism 'authored reserved-and-available'",
+"claim": "DDR-002 §2.4 provisions a future SOFIA-as-authoritative-decider state (origin_mechanism: authored, Actor=system, ADR-001 Position 4) as an 'existing field taking its other live value.' This bakes a forward-commitment shape for a state that ADR-001 §2.4 flags as provisional/forthcoming and that no accepted design instantiates. Provisioning a schema value for an un-designed decision-authority state is a commitment riding along in the schema contract without being surfaced as a decision the DDR claims to make.",
+"cited_authority": {"kind": "coherence", "ref": "DDR-002 §2.4 GateDecision 'authored reserved-and-available for a future SOFIA-as-authoritative-decider state' vs ADR-001 §2.4 later-stage shapes are 'provisional ... not settled by this ADR'"}
+},
+{
+"severity": "COSMETIC",
+"target": ["DDR-001"],
+"locus": "Rationale",
+"claim": "DDR-001's Rationale claims the ruling is 'both empirical-grounded (the Community-edition rejection) and deliberation-grounded (the scoping session whose design substrate this DDR realizes),' asserting the deliberation grounding 'over-satisfies the DDR-route substrate gate.' The named scoping session is not otherwise evidenced in the record; the claim of grounding leans on an artifact the body neither summarizes nor cross-references, so the stated basis exceeds what the record substantiates.",
+"cited_authority": {"kind": "coherence", "ref": "DDR-001 Rationale 'the scoping session whose design substrate this DDR realizes' — artifact unnamed and uncited in Cross-References"}
+},
+{
+"severity": "POSITIVE",
+"target": ["DDR-002"],
+"locus": "§5 / §7 write-authority boundary (ADR-002 §2.6 feedback-loop extension)",
+"claim": "I attacked DDR-001/DDR-002's homing of the three feedback-loop writes for scope creep against ADR-002 §2.6 (which enumerates only ASA/AOE synthesis-capture authorship). The records explicitly declare that ADR-002 §2.6 'neither closes against nor extends to the feedback loop's own writes' and home the new writes under §2.6's stated component-scoped *principle* while flagging CandidatePromotion as 'a third component-scoped author class ... distinct from its synthesis-capture assignment.' The extension is surfaced as its own decision (DDR-001 change RBT-45, conformance check 7), not smuggled — the scope claim holds.",
+"cited_authority": {"kind": "coherence", "ref": "DDR-001 §Feedback-Loop 'ADR-002 §2.6 neither closes against nor extends to the feedback loop's own writes' + DDR-002 §7 check #7 vs ADR-002 §2.6"}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-001"],
+"locus": "§2.2 / §2.5 / §7 — RG artifact vocabulary deferral to DDR-002",
+"claim": "I attacked ADR-001 for deciding more than it claims by fixing artifact schema (ReasoningProgress/Evidence/RejectedAlternative) that belongs downstream. The ADR explicitly scopes those names as 'illustrative,' commits only the 'conceptual capture contract,' and names DDR-002 as owner of canonical labels/properties/vocabulary. DDR-002 §4 in turn holds that contract without the ADR having pre-empted it. The claim-boundary between principle and schema is stated and honored — no scope overreach.",
+"cited_authority": {"kind": "coherence", "ref": "ADR-001 §2.2 'illustrative ... owned by the Graph Schema document (DDR-002), not fixed here' vs DDR-002 §4 RG node schemas"}
+}
+]

@@ -1,0 +1,82 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["DDR-002"],
+"locus": "§4 ReasoningProgress conclusion_type ↔ §7 check #16 / §2.4 Decision subtype",
+"claim": "DDR-002 §4 states the six conclusion_type values 'map onto the seven correction-surfaces of §5 (technology, pattern, capability, integration, risk, compliance, cost)', but §5's Generalized correction mechanism enumerates the same seven surfaces while §4 asserts only six conclusion_type enum values (PatternMatch / TechnologySelection / GapConclusion / OverrideFlag / RiskSignal / ComplianceEvaluation) — the text reconciles the count by saying 'integration and cost surface as TechnologySelection/GapConclusion variants,' yet no OverrideFlag surface appears among the seven correction-surfaces and no 'override' surface is listed, leaving OverrideFlag unmapped and the stated six-to-seven correspondence internally unverifiable as written.",
+"cited_authority": {
+"kind": "soundness",
+"ref": "DDR-002 §4 conclusion_type↔correction-surface mapping vs §5 Generalized correction mechanism seven-surface enumeration"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-002"],
+"locus": "§2.4 GateDecision.DECIDED_ON outcome vocabulary vs §5 Selection among produced candidates",
+"claim": "§2.4 defines the DECIDED_ON edge outcome set as {approved, approved_conditional, rejected} uniformly for both Decision subtypes, but a GateDecision decides a Solution (§5), where 'approved_conditional' has no defined meaning — §5 defines selection solely as an 'approved' DECIDED_ON edge plus lifecycle advancement, and 'approved_conditional' with its HAS_CONDITION applicability Condition is described exclusively for PromotionDecision→CandidatePromotion. A GateDecision carrying outcome:approved_conditional is admitted by the schema shape but has no specified semantics for a Solution, and no Condition attachment path exists for GateDecision.",
+"cited_authority": {
+"kind": "soundness",
+"ref": "DDR-002 §2.4 shared DECIDED_ON {outcome} vocabulary vs §5 Solution selection / §2.4 HAS_CONDITION scoped to PromotionDecision"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-001"],
+"locus": "§2.2 illustrative artifact kinds vs §6 mandatory compliance check 2",
+"claim": "§2.2 states the artifact kinds ReasoningProgress/Evidence/RejectedAlternative are 'illustrative' and their canonical labels are owned by DDR-002, but §6 compliance check 2 makes it mandatory that 'a RejectedAlternative artifact for each option weighed and discarded' exists — binding a named artifact kind the same ADR declares non-canonical and illustrative. A mandatory conformance check cannot be verified against a term the ADR simultaneously disclaims as illustrative and defers to another document; the check's object is undefined at this ADR's altitude.",
+"cited_authority": {
+"kind": "soundness",
+"ref": "ADR-001 §2.2 (kinds 'illustrative', vocabulary owned by DDR-002) vs §6 check 2 (mandatory RejectedAlternative artifact)"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-002"],
+"locus": "§2.4 PromotionDecision source_record_ref vs §7 check #17",
+"claim": "§7 check #17 mandates 'every origin_mechanism: ingested node carries a source_record_ref,' and §2.4 states PromotionDecision has 'no source_record_ref' because SOFIA is the issuer. But §2.4 does not state PromotionDecision's origin_mechanism value, and §1's provenance scoping matrix has no entry establishing what a SOFIA-issued PromotionDecision's origin_mechanism is (authored? derived?). Governance decisions are not enumerated in the provenance-existence-constraint scope of §7 (which lists KG nodes, three authored RG types, ProvenanceSummary, Artifact family) — Governance-plane Decision nodes carry provenance (T1) per §2.4 but their origin_mechanism value and its check-#17 obligation are unspecified, leaving whether a PromotionDecision must carry source_record_ref undetermined.",
+"cited_authority": {
+"kind": "soundness",
+"ref": "DDR-002 §2.4 PromotionDecision 'no source_record_ref' vs §7 check #17 ingested⇒source_record_ref vs §1 provenance scoping matrix (no Governance-Decision origin_mechanism entry)"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-002"],
+"locus": "§7 provenance existence-constraint scope vs §2.4 Governance/§2.6 Cost/§2.1-2.3 KG node claims",
+"claim": "§7's DB-enforced existence constraint scopes provenance to 'every KG node' plus enumerated RG/Artifact types, and §1 states 'Every KG node carries a provenance group.' But GateDecision/PromotionDecision/Actor/Role/Attestation/Condition (§2.4) are Governance-plane KG nodes, and PromotionDecision is described as SOFIA-issued with origin_mechanism unspecified — if the DB existence constraint on origin_mechanism applies to all KG nodes, PromotionDecision must carry one of the four defined origin_mechanism values, yet none of {ingested, authored, promoted, derived} is asserted for it and check #17 would fire on 'ingested' while §2.4 forbids source_record_ref. The set of enforced values on Governance-plane decision nodes is left contradictory between §1/§7 (all KG nodes constrained) and §2.4 (PromotionDecision provenance underspecified).",
+"cited_authority": {
+"kind": "soundness",
+"ref": "DDR-002 §1 'Every KG node carries provenance' / §7 existence-constraint 'every KG node' vs §2.4 PromotionDecision origin_mechanism unspecified"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["ADR-002"],
+"locus": "§2.2 substitution contract cross-reference resolution",
+"claim": "§2.2's substitution contract states 'the precise capability bar is the one DDR-001 establishes,' and DDR-001 supplies a five-item Substitution-Contract Capability Bar; the reference resolves. However ADR-002 §2.2 was authored 'against' DDR-001 while DDR-001's References list ADR-002 v1.0.0 as upstream-implemented — a mutual authoring dependency where ADR-002's capability bar is defined only by forward-reference to a document that declares itself downstream of ADR-002, so the capability bar has no home in the ADR itself and is unverifiable at the ADR's own altitude at acceptance time.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-002 §2.2 (bar deferred to DDR-001) vs DDR-001 References (ADR-002 upstream) — ADR-002+DDR-001"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["DDR-002"],
+"locus": "§7 #15 promoted-origin governing-approving-decision invariant",
+"claim": "I attacked the promoted-node approval invariant for the stale-verdict edge case: a node promoted on an approval later flipped to rejection. The design keys #15 off the 'governing' edge (latest decided_at PromotionDecision) rather than any approving edge, and pairs it with the retraction shape (#21) for remediation — the append-only re-decision model with per-edge outcomes holds against the multi-decision attack without a SUPERSEDES edge type. The invariant is sound as specified.",
+"cited_authority": {
+"kind": "soundness",
+"ref": "DDR-002 §7 check #15 governing-edge keying + §2.4 PromotionDecision verdict-precedence + §7 #21 retraction shape"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-002", "DDR-001"],
+"locus": "ADR-002 §2.3 logical-not-physical realization vs DDR-001 Spike Findings recovery-boundary note",
+"claim": "I attacked the Community-rejection provenance for a contradiction: a rejection attributed to a single-database limit would contradict ADR-002 §2.3's logical-subgraphs-in-one-instance commitment. DDR-001's Spike Findings explicitly declines to reconstruct the unrecorded edition-feature blocker and flags that attributing it to Community's single-database limit would contradict §2.3 — the seam is anticipated and defended rather than left to collide. The conformance between the spike record and the logical-realization commitment holds.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-002 §2.3 logical-not-physical vs DDR-001 Spike Findings recovery-boundary note"
+}
+}
+]

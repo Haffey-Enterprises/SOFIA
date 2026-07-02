@@ -1,0 +1,7 @@
+{
+  "finding_id": "f59dd1206b5e3e05",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding surfaces a scope conflict: DDR-002 Decision.6 constrains the record to 'the schema contract only' while §7 binds an enforcement-sequencing (precede-gateway) rule and a safety-critical classification, and no cited higher authority disambiguates whether that ordering commitment belongs in this schema-only DDR or must be routed elsewhere. Resolving it requires a choice about where the enforcement-sequencing decision lives, which authority does not settle.",
+  "confidence": "high"
+}

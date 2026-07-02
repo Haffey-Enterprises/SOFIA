@@ -1,0 +1,19 @@
+{
+  "header": {
+    "set": [
+      "ADR-001",
+      "ADR-002",
+      "DDR-001",
+      "DDR-002"
+    ],
+    "counted_severities": [
+      "BLOCKING",
+      "MATERIAL"
+    ],
+    "plateau_N": 3,
+    "mode": "dry"
+  },
+  "findings": [],
+  "passes": [],
+  "doc_changes": []
+}

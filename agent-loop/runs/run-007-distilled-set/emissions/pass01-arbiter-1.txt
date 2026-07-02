@@ -1,0 +1,7 @@
+{
+  "finding_id": "784d7a9e092fe8f1",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The deliberation gate forbids fabricated/ungrounded rationale, but authority does not disambiguate the multiple conforming fixes available here — softening the ADR's claim to 'deliberatively-grounded,' reconstructing the missing empirical blocker, or re-grounding the Enterprise commitment on other rationale — and the substrate simply lacks the empirical content, which is a gap authority cannot fill.",
+  "confidence": "high"
+}

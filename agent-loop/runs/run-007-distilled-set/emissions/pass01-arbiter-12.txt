@@ -1,0 +1,7 @@
+{
+  "finding_id": "aba94bdab901df30",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "No cited ratified authority (ADR-001, ADR-002, DDR-001) names a cost capability or cost-estimation requirement; DDR-001 names Extension as a mechanism only. Whether to stand up a fully-specified cost plane now versus deferring its first registration is a choice authority is silent on — a gap, not a determined fix.",
+  "confidence": "high"
+}

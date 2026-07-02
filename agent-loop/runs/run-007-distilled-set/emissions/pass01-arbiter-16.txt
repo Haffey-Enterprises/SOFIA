@@ -1,0 +1,7 @@
+{
+  "finding_id": "e7b94bac779795e7",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "DDR-002 §2.4 introduces a decision-authorship state (SOFIA/system-authored gate approval with Actor=system) that ADR-001's reasoner/authoritative-flag taxonomy does not enumerate; the referenced 'Position 4 / SOFIA-as-authoritative-decider' is a future, unratified state, so no existing authority disambiguates whether an approval act belongs to the encoded-reasoning or human-override categories.",
+  "confidence": "high"
+}

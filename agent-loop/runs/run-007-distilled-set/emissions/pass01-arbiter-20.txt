@@ -1,0 +1,7 @@
+{
+  "finding_id": "b8be270ee9070d84",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "ADR-002 §2.5 casts knowledge-service/gateway as an access/enforcement boundary and §2.6 scopes reasoning-state authorship to ASA/AOE, naming no gateway-as-author case; DDR-001's assignment of the gateway as the author of the materialized KG node and provenance snapshot falls into a silence (no authority names who authors at-promotion KG writes) and/or a conflict between DDR-001 and ADR-002 that no higher authority resolves.",
+  "confidence": "high"
+}

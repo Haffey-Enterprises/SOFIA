@@ -1,0 +1,7 @@
+{
+  "finding_id": "b1863ae1569a76cd",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding exposes a mutual authoring dependency (ADR-002 §2.2 defers its capability bar to DDR-001, which declares ADR-002 upstream) that no ratified authority resolves; the templates and skill do not dictate whether a bar may live only by forward-reference downstream or must be homed in the ADR, so the fix requires an unmade choice.",
+  "confidence": "high"
+}

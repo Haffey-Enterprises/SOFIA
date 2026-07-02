@@ -1,0 +1,7 @@
+{
+  "finding_id": "2b6ac1a880ba7b5a",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding turns on DDR-003 governance (batch-eligibility policy, remedy-boundary supersession-vs-retraction) that is explicitly forthcoming and unratified; whether to lock verdict-precedence/retraction shapes now or defer pending that governance is a choice no existing authority disambiguates. The ADR/DDR templates offer ACCEPTED-WITH-CONDITIONS as a lifecycle option but do not decide which path applies here.",
+  "confidence": "high"
+}
