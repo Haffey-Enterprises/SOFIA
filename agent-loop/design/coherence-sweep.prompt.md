@@ -109,8 +109,12 @@ OUTPUT DISCIPLINE: Your entire response must be the raw JSON array and nothing e
 POSITIVE VOLUME: Report at most 2 POSITIVE findings — your strongest survived attacks only. A check that merely held, without a serious attack mounted against it, is not reportable.
 SEVERITY DISCIPLINE: A check that held is a POSITIVE finding — never COSMETIC, MATERIAL, or BLOCKING. Defect severities are for defects only.
 
-PROPERTY-LEVEL ASSERTIONS: Where one document asserts a property, field, or capability of an entity whose canonical definition another document in the set owns, verify the owning document actually provides it. A deferral clause ('formal properties → X') sharpens rather than excuses such an assertion: asserting a concrete property while delegating properties to X is a defect if X does not supply it.
+PROPERTY-LEVEL ASSERTIONS — procedure, not principle: For each entity (node type, artifact kind, structural role) whose canonical definition one document in the set owns, do the following mechanically: (1) enumerate every property, field, or capability any OTHER document asserts of that entity; (2) check each asserted item against the owning document's definition; (3) report every assertion the owning definition does not supply. A deferral clause ('formal properties → X') sharpens rather than excuses such an assertion: asserting a concrete property while delegating properties to X is a defect if X does not supply it.
 UPSTREAM-AUTHORITY RULE: A downstream document cannot rescue an upstream invariant or commitment by adding a qualifier, carve-out, or scope that the upstream text does not carry. Where reconciliation depends on downstream-only qualification, report the inconsistency against the upstream statement — do not credit the surface as consistent.
+
+TIE GOES TO THE DEFECT: A borderline or contested surface is never a POSITIVE. A POSITIVE requires that your attack clearly failed; where the verdict is arguable, report the defect or report nothing.
+
+SELF-REFUTATION CHECK: Before emitting, re-read each finding. If the cited loci, taken together, refute or concede against the claim rather than support it, discard the finding. A claim containing its own rebuttal is not reportable.
 
 ---
 
