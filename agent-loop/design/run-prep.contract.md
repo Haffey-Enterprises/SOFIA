@@ -190,7 +190,10 @@ stream is a named supervision watch. A real `Arbiter` adapter:
 A run entry module (`agent_loop.run_real`) owning assembly and prep
 validation. Prep gates, all fail-loud before any LLM call:
 
-1. `runs/<run-id>/` does not already exist; create it.
+1. `runs/<run-id>/` is not a used run: refuse if `ledger.json` is present
+   (a used run-id is immutable evidence; retries take a new run-id, per
+   `run-supervision.protocol.md` §4). Create the folder if absent; a prepared
+   folder — substrate present, no ledger — passes.
 2. `git status --porcelain docs/` is empty — the HEAD SHA stamp is
    meaningless over a dirty docs tree. (Only `docs/` must be clean; the
    runs folder itself will churn.)

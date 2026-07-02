@@ -150,12 +150,10 @@ def run_prep_gates(
     default) it has no side effects; the full run passes `create_missing_dir=True`
     so gate 1 creates the prepared folder.
 
-    Gate 1 note: the contract's literal "folder must not already exist" cannot
-    coexist with §3/§1 (substrate is hand-assembled INTO the folder at prep) or
-    with the Phase-3 prep flow (which pre-creates the folder and then expects all
-    six gates to pass). Reconciled here as "refuse an already-RUN folder
-    (ledger.json present); create the prepared folder if absent" — which
-    preserves the re-run/clobber protection and satisfies the prep flow.
+    Gate 1 (run-prep §8, ratified): `ledger.json` is the discriminator — refuse a
+    used run (ledger present; a used run-id is immutable evidence, retries take a
+    new run-id per run-supervision.protocol.md §4), pass a prepared folder
+    (substrate present, no ledger), and create the folder if absent.
     """
     resolved_env = env if env is not None else os.environ
     sofia_root = Path(sofia_root)
