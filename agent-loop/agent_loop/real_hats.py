@@ -11,9 +11,34 @@
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import asdict
 from pathlib import Path
 from typing import Callable
+
+# A well-defined opening code-fence line: ``` optionally followed by a `json`
+# language tag (case-insensitive). Nothing else counts as a fence.
+_FENCE_OPEN = re.compile(r"^```(?:json)?$", re.IGNORECASE)
+
+
+def strip_code_fences(text: str) -> str:
+    """Strip a well-defined markdown code fence around an emission.
+
+    Removes an opening ``` / ```json line and a closing ``` line (plus
+    surrounding whitespace) — transport unwrapping only, applied when BOTH a
+    matching open and close fence are present. No other tolerance: prose
+    preambles, trailing commentary, or malformed structure are left intact and
+    still fail parsing (runner-real-hats.contract.md §7, amended 2026-07-02).
+    """
+    stripped = text.strip()
+    lines = stripped.split("\n")
+    if (
+        len(lines) >= 2
+        and _FENCE_OPEN.match(lines[0].strip())
+        and lines[-1].strip() == "```"
+    ):
+        return "\n".join(lines[1:-1]).strip()
+    return stripped
 
 from agent_loop.ledger import CitedAuthority, Finding, Ledger
 from agent_loop.log import ActionLog
@@ -135,35 +160,48 @@ def _valid_cited_authority(raw: object) -> bool:
 
 
 def parse_emissions(
-    identity: ReviewerIdentity, raw_text: str, log: ActionLog
+    identity: ReviewerIdentity,
+    raw_text: str,
+    log: ActionLog,
+    emission_path: str | None = None,
 ) -> list[Finding]:
     """Parse one reviewer's raw JSON emission into stamped Finding templates.
 
-    Validates shape and vocabulary, constructs Finding templates, and **stamps
-    `source`/`altitude` from the invoked reviewer's identity, ignoring whatever
-    the model emitted** (§7; ledger-schema §Identity — hardcode over trust). A
-    malformed emission (bad JSON, not an array, missing field, invalid enum) is
-    dropped with an observable `parse_dropped` line — never silently, never by
-    crashing the pass. Scope drops (null/bare authority) remain admission's job.
+    Fence-unwraps the raw text, then validates shape and vocabulary, constructs
+    Finding templates, and **stamps `source`/`altitude` from the invoked
+    reviewer's identity, ignoring whatever the model emitted** (§7; ledger-schema
+    §Identity — hardcode over trust). A malformed emission (bad JSON, not an
+    array, missing field, invalid enum) is dropped with an observable
+    `parse_dropped` line referencing the captured raw file — never silently,
+    never by crashing the pass. Scope drops (null/bare authority) remain
+    admission's job.
 
     Args:
         identity: The invoking reviewer's identity (source/altitude to stamp).
         raw_text: The model's raw output (expected: a JSON array of findings).
         log: The structured action log.
+        emission_path: Path to the captured raw emission, referenced on a drop.
 
     Returns:
         The list of well-formed, stamped Finding templates (possibly empty).
     """
+    text = strip_code_fences(raw_text)
     try:
-        data = json.loads(raw_text)
+        data = json.loads(text)
     except json.JSONDecodeError:
-        log.emit("parse_dropped", reviewer=identity.label, reason="invalid JSON")
+        log.emit(
+            "parse_dropped",
+            reviewer=identity.label,
+            reason="invalid JSON",
+            emission_path=emission_path,
+        )
         return []
     if not isinstance(data, list):
         log.emit(
             "parse_dropped",
             reviewer=identity.label,
             reason="emission is not a JSON array",
+            emission_path=emission_path,
         )
         return []
 
@@ -172,7 +210,11 @@ def parse_emissions(
         reason = _emission_defect(item)
         if reason is not None:
             log.emit(
-                "parse_dropped", reviewer=identity.label, index=index, reason=reason
+                "parse_dropped",
+                reviewer=identity.label,
+                index=index,
+                reason=reason,
+                emission_path=emission_path,
             )
             continue
         raw_authority = item["cited_authority"]
@@ -222,7 +264,10 @@ def _emission_defect(item: object) -> str | None:
 
 
 def build_real_reviewer(
-    identity: ReviewerIdentity, prompt_path: str | Path, emitter: LlmEmitter
+    identity: ReviewerIdentity,
+    prompt_path: str | Path,
+    emitter: LlmEmitter,
+    capture: object | None = None,
 ) -> ScheduledReviewer:
     """Compose a real reviewer: load prompt, assemble User, emit, parse+stamp.
 
@@ -232,10 +277,16 @@ def build_real_reviewer(
     called, and the raw output is parsed and stamped. No conversation or context
     is shared between reviewers.
 
+    When a raw-emission `capture` is supplied, the reviewer sets the capture's
+    `current_pass` before emitting (so the emitter writes the raw under the right
+    pass, and the arbiter — running later this pass — inherits it) and references
+    the captured file path on any parse drop.
+
     Args:
         identity: The reviewer's canonical identity.
         prompt_path: Path to its `.prompt.md`.
         emitter: The LLM emitter (injected; a fake in tests).
+        capture: Optional EmissionCapture (raw-emission provenance).
 
     Returns:
         A ScheduledReviewer ready for the runner's plan.
@@ -249,9 +300,14 @@ def build_real_reviewer(
         substrate: Substrate,
         log: ActionLog,
     ) -> list[Finding]:
+        if capture is not None:
+            capture.current_pass = pass_number  # type: ignore[attr-defined]
         user_prompt = assemble_user_prompt(records, substrate, snapshot)
         raw_text = emitter(system_prompt, user_prompt)
-        return parse_emissions(identity, raw_text, log)
+        emission_path = (
+            capture.last_path.get(identity.label) if capture is not None else None  # type: ignore[attr-defined]
+        )
+        return parse_emissions(identity, raw_text, log, emission_path=emission_path)
 
     return ScheduledReviewer(identity, run)
 
@@ -305,20 +361,21 @@ def real_hat_plan(
 
 
 def build_real_hat_plan(
-    prompt_dir: str | Path, emitter: LlmEmitter
+    prompt_dir: str | Path, emitter: LlmEmitter, capture: object | None = None
 ) -> Plan:
     """Convenience: build the real-hat plan from the four prompt files.
 
     Loads antagonist-LAA/SA/EA and coherence-sweep prompts from `prompt_dir` and
-    wires each to `emitter`. Provided so a supervised real run has one entry
-    point; not exercised against a real LLM in this task.
+    wires each to `emitter` (and the optional raw-emission `capture`). Provided so
+    a supervised real run has one entry point; not exercised against a real LLM
+    in this task.
     """
     directory = Path(prompt_dir)
     return real_hat_plan(
-        build_real_reviewer(IDENTITY_LAA, directory / "antagonist-LAA.prompt.md", emitter),
-        build_real_reviewer(IDENTITY_SA, directory / "antagonist-SA.prompt.md", emitter),
-        build_real_reviewer(IDENTITY_EA, directory / "antagonist-EA.prompt.md", emitter),
+        build_real_reviewer(IDENTITY_LAA, directory / "antagonist-LAA.prompt.md", emitter, capture),
+        build_real_reviewer(IDENTITY_SA, directory / "antagonist-SA.prompt.md", emitter, capture),
+        build_real_reviewer(IDENTITY_EA, directory / "antagonist-EA.prompt.md", emitter, capture),
         build_real_reviewer(
-            IDENTITY_COHERENCE, directory / "coherence-sweep.prompt.md", emitter
+            IDENTITY_COHERENCE, directory / "coherence-sweep.prompt.md", emitter, capture
         ),
     )

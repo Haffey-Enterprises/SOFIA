@@ -38,12 +38,28 @@ from agent_loop.scenarios import Scenario
 from agent_loop.stubs import author_pass
 
 
-class LoopBoundExceeded(RuntimeError):
+class RunHalted(RuntimeError):
+    """Base for the runner's fail-loud halts (never a real CONVERGED/HALT exit)."""
+
+
+class LoopBoundExceeded(RunHalted):
     """Raised when a run exceeds max_passes.
 
     A safety backstop, not a spec exit: a loop that routes CONTINUE forever
     would otherwise spin. It fails loudly so it can never be mistaken for a real
     CONVERGED/HALT exit.
+    """
+
+
+class InstrumentCompromisedError(RunHalted):
+    """Raised when a scheduled reviewer is effectively absent this pass.
+
+    A pass in which any scheduled reviewer produced >=1 parse-dropped emission
+    and 0 admitted findings is instrument-compromised (mechanical-gates.md §3,
+    amended 2026-07-02 after run-003's false CONVERGED): CONVERGED must never be
+    reachable through a fully-dropped reviewer. Fail-loud before routing. Partial
+    drops and legitimately empty emissions (zero findings, zero drops) do not
+    trip the guard.
     """
 
 
@@ -79,7 +95,7 @@ def _gather_then_admit(
     records: DocumentSet,
     substrate: Substrate,
     log: ActionLog,
-) -> list[str]:
+) -> tuple[list[str], list[str]]:
     """Run all scheduled reviewers against the snapshot, then admit in order.
 
     Implements contract §3 (gather-then-admit) over §2's amended snapshot
@@ -94,8 +110,12 @@ def _gather_then_admit(
     proceeds in fixed rank order (LAA, SA, EA, coherence) with each reviewer's
     emission order preserved. No admission interleaves with any review.
 
+    Also tracks, per reviewer, its parse-drops this pass (via the log delta) and
+    whether any of its findings reached the ledger, so the instrument-compromised
+    guard (mechanical-gates §3) can fire.
+
     Returns:
-        The `agents_run` labels, in admission order.
+        (agents_run labels in admission order, compromised-reviewer labels).
     """
     # The plan's scheduling view is its own isolated copy of the state.
     scheduled = plan(pass_number, copy.deepcopy(snapshot_state), log)
@@ -110,20 +130,34 @@ def _gather_then_admit(
         reviewer_snapshot = copy.deepcopy(snapshot_state)
         reviewer_records = copy.deepcopy(records)
         reviewer_substrate = copy.deepcopy(substrate)
+        drops_before = len(log.of_kind("parse_dropped"))
         findings = scheduled_reviewer.run(
             pass_number, reviewer_snapshot, reviewer_records, reviewer_substrate, log
         )
-        gathered.append((scheduled_reviewer.identity, findings))
+        parse_drops = len(log.of_kind("parse_dropped")) - drops_before
+        gathered.append((scheduled_reviewer.identity, findings, parse_drops))
 
     # Admit in fixed deterministic order (stable sort preserves schedule order
     # on ties); emission order within a reviewer is preserved.
-    gathered.sort(key=lambda pair: pair[0].admission_rank)
+    gathered.sort(key=lambda triple: triple[0].admission_rank)
     agents_run: list[str] = []
-    for identity, findings in gathered:
+    reached_ledger = {identity.label: 0 for identity, _, _ in gathered}
+    for identity, findings, _ in gathered:
         agents_run.append(identity.label)
         for finding in findings:
-            admit(ledger, finding, pass_number, log)
-    return agents_run
+            result = admit(ledger, finding, pass_number, log)
+            if not result.dropped:  # admitted, reopened, or matched an open id
+                reached_ledger[identity.label] += 1
+
+    # Instrument-compromised guard: a reviewer that parse-dropped at least once
+    # and put nothing on the ledger is effectively absent. Partial drops and
+    # legitimately empty emissions (zero drops) never trip it.
+    compromised = [
+        identity.label
+        for identity, _, parse_drops in gathered
+        if parse_drops >= 1 and reached_ledger[identity.label] == 0
+    ]
+    return agents_run, compromised
 
 
 def run_loop(
@@ -202,9 +236,22 @@ def run_loop(
         substrate = fetch_substrate(list(header.set))
 
         # §3: gather all emissions, then admit in fixed order.
-        agents_run = _gather_then_admit(
+        agents_run, compromised = _gather_then_admit(
             ledger, snapshot_state, plan, pass_number, records, substrate, log
         )
+
+        # Instrument-compromised guard (mechanical-gates §3): before any
+        # arbiter/routing, fail loud if a scheduled reviewer parse-dropped and
+        # admitted nothing — CONVERGED must never be reachable through a
+        # fully-dropped reviewer. run_aborted is emitted by the run-path wrapper
+        # (run_real) as the exception propagates.
+        if compromised:
+            store.save(ledger)
+            raise InstrumentCompromisedError(
+                f"{label} pass {pass_number}: reviewer(s) {compromised} produced "
+                "parse-dropped emissions and admitted no findings — instrument "
+                "compromised, refusing to route (would risk a false CONVERGED)"
+            )
 
         # Arbiter — the only LLM judgment — classifies open/unclassified findings.
         classified_any = False
