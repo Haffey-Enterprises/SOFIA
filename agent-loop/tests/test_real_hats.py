@@ -362,6 +362,40 @@ def test_emitted_source_and_altitude_are_overridden_by_identity() -> None:
     assert findings[0].altitude == "LAA"
 
 
+# --- fence unwrapping (emission hardening 2026-07-02) ------------------------
+
+
+def test_strip_code_fences_unwraps_and_leaves_bare_or_unmatched() -> None:
+    from agent_loop.real_hats import strip_code_fences
+
+    assert strip_code_fences("```json\n[1]\n```") == "[1]"
+    assert strip_code_fences("```\n{\"a\": 1}\n```") == '{"a": 1}'
+    assert strip_code_fences("[1]") == "[1]"  # bare — unchanged
+    # unmatched (open, no close) is left intact so it still fails parsing:
+    assert strip_code_fences("```json\n[1]") == "```json\n[1]"
+
+
+def test_fenced_json_array_parses() -> None:
+    raw = "```json\n" + json.dumps([_json_finding("c", bad_source=False)]) + "\n```"
+    findings = parse_emissions(IDENTITY_LAA, raw, ActionLog())
+    assert len(findings) == 1
+
+
+def test_bare_json_array_still_parses() -> None:
+    raw = json.dumps([_json_finding("c", bad_source=False)])
+    findings = parse_emissions(IDENTITY_LAA, raw, ActionLog())
+    assert len(findings) == 1
+
+
+def test_prose_preamble_still_drops() -> None:
+    log = ActionLog()
+    raw = "Here are the findings:\n" + json.dumps([_json_finding("c", bad_source=False)])
+    findings = parse_emissions(IDENTITY_LAA, raw, log, emission_path="e.txt")
+    assert findings == []
+    drop = log.of_kind("parse_dropped")[0]
+    assert drop.detail["emission_path"] == "e.txt"  # drop references the raw file
+
+
 # --- §9f: malformed-emission drop --------------------------------------------
 
 
@@ -432,9 +466,12 @@ def test_null_authority_passes_parse_and_is_left_for_admission() -> None:
     assert log.of_kind("parse_dropped") == []
 
 
-def test_malformed_emission_pass_completes(tmp_path) -> None:
-    # A hat emitting garbage does not crash the pass: nothing is admitted, the
-    # run converges, and the parse-drop is observable.
+def test_fully_dropped_reviewer_is_instrument_compromised(tmp_path) -> None:
+    # A hat emitting garbage does not crash the pass at the parse level, but the
+    # instrument-compromised guard (Item E) now fails loud rather than allowing a
+    # false CONVERGED: LAA parse-drops and admits nothing, so the pass aborts.
+    from agent_loop.runner import InstrumentCompromisedError
+
     plan = real_hat_plan(
         build_real_reviewer(
             IDENTITY_LAA,
@@ -454,16 +491,13 @@ def test_malformed_emission_pass_completes(tmp_path) -> None:
         ),
     )
 
-    result = run_loop(
-        header=_header(),
-        plan=plan,
-        arbiter=CannedArbiter(),  # never called — nothing admitted
-        store=LedgerStore(tmp_path / "f.json"),
-    )
-
-    assert result.exit.kind == "CONVERGED"
-    assert result.ledger.findings == []
-    assert len(result.log.of_kind("parse_dropped")) == 1
+    with pytest.raises(InstrumentCompromisedError):
+        run_loop(
+            header=_header(),
+            plan=plan,
+            arbiter=CannedArbiter(),  # never reached
+            store=LedgerStore(tmp_path / "f.json"),
+        )
 
 
 # --- prompt loading + input assembly (§4/§5) ---------------------------------

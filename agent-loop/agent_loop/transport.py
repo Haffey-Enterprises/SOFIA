@@ -25,7 +25,7 @@ from agent_loop.arbiter import ArbiterResult
 from agent_loop.fetchers import sha256_text
 from agent_loop.ledger import Finding
 from agent_loop.log import ActionLog
-from agent_loop.real_hats import load_system_prompt
+from agent_loop.real_hats import load_system_prompt, strip_code_fences
 
 # An LLM emitter (matches real_hats.LlmEmitter): (system, user) -> raw text.
 LlmEmitter = Callable[[str, str], str]
@@ -53,11 +53,13 @@ class LlmResponse:
         text: The model's raw text output.
         input_tokens: Prompt tokens, from the API usage block.
         output_tokens: Completion tokens, from the API usage block.
+        request_id: The API request id (from the SDK response), or None.
     """
 
     text: str
     input_tokens: int
     output_tokens: int
+    request_id: str | None = None
 
 
 class Transport(Protocol):
@@ -116,6 +118,7 @@ class AnthropicTransport:
             text=text,
             input_tokens=usage.input_tokens,
             output_tokens=usage.output_tokens,
+            request_id=getattr(message, "_request_id", None),
         )
 
 
@@ -131,11 +134,19 @@ def _timed_call(
     max_tokens: int,
     log: ActionLog,
     now: Callable[[], float],
+    capture: object | None,
 ) -> LlmResponse:
-    """Make one transport call, timing it and logging the `llm_call` on success."""
+    """Make one transport call; capture the raw body, then log the `llm_call`.
+
+    The raw response body is written to the emissions folder BEFORE any parsing
+    (run-prep §7); the `llm_call` carries the API request_id and the emission
+    file path. When `capture` is None (unit tests without a run folder), no file
+    is written and `emission_path` is None.
+    """
     start = now()
     response = transport(system, user, model, max_tokens)
     latency_ms = (now() - start) * 1000.0
+    emission_path = capture.write(site_label, response.text) if capture is not None else None  # type: ignore[attr-defined]
     log.emit(
         "llm_call",
         site=site_label,
@@ -145,6 +156,8 @@ def _timed_call(
         input_tokens=response.input_tokens,
         output_tokens=response.output_tokens,
         latency_ms=latency_ms,
+        request_id=response.request_id,
+        emission_path=emission_path,
     )
     return response
 
@@ -160,6 +173,7 @@ def _call_with_transport_retry(
     sleeper: Callable[[float], None],
     backoff_seconds: float,
     now: Callable[[], float],
+    capture: object | None,
 ) -> LlmResponse:
     """One transport call with a single bounded-backoff retry, then abort.
 
@@ -169,7 +183,7 @@ def _call_with_transport_retry(
     """
     try:
         return _timed_call(
-            transport, system, user, site_label, model, max_tokens, log, now
+            transport, system, user, site_label, model, max_tokens, log, now, capture
         )
     except LlmTransportError as first_error:
         log.emit(
@@ -181,7 +195,7 @@ def _call_with_transport_retry(
         )
         sleeper(backoff_seconds)
         return _timed_call(
-            transport, system, user, site_label, model, max_tokens, log, now
+            transport, system, user, site_label, model, max_tokens, log, now, capture
         )
 
 
@@ -195,6 +209,7 @@ def build_api_emitter(
     now: Callable[[], float] = time.monotonic,
     sleeper: Callable[[float], None] = time.sleep,
     backoff_seconds: float = 30.0,
+    capture: object | None = None,
 ) -> LlmEmitter:
     """Build a per-call-site emitter binding a hat's label to the transport.
 
@@ -202,7 +217,8 @@ def build_api_emitter(
     call this emitter makes logs an `llm_call` under `site_label`. The emitter's
     signature is the unchanged `LlmEmitter` port; content-level malformation is
     returned as-is for the parse seam, never retried here. Only `max_tokens` is
-    sent — no sampling parameters (run-prep §6).
+    sent — no sampling parameters (run-prep §6). When `capture` is supplied, the
+    raw body is written before parsing and its path lands on the `llm_call`.
     """
 
     def emit(system: str, user: str) -> str:
@@ -217,6 +233,7 @@ def build_api_emitter(
             sleeper,
             backoff_seconds,
             now,
+            capture,
         )
         return response.text
 
@@ -257,9 +274,10 @@ def _parse_arbiter_output(raw_text: str, finding_id: str) -> ArbiterResult | Non
     ArbiterResult construction. `finding_id` is stamped from the actual finding,
     not trusted from the model's echo. Any structural or vocabulary defect
     returns None (a content malformation), never a fabricated classification.
+    The raw text is fence-unwrapped first (transport unwrapping only).
     """
     try:
-        data = json.loads(raw_text)
+        data = json.loads(strip_code_fences(raw_text))
         return ArbiterResult(
             finding_id=finding_id,
             classification=data["classification"],
@@ -292,6 +310,7 @@ class ApiArbiter:
         now: Callable[[], float] = time.monotonic,
         sleeper: Callable[[float], None] = time.sleep,
         backoff_seconds: float = 30.0,
+        capture: object | None = None,
     ) -> None:
         """Load the arbiter prompt and bind transport + call policy."""
         self._system = load_system_prompt(prompt_path)
@@ -302,6 +321,7 @@ class ApiArbiter:
         self._now = now
         self._sleeper = sleeper
         self._backoff = backoff_seconds
+        self._capture = capture
 
     def classify(
         self, finding: Finding, authorities: object, design_intent: object
@@ -320,6 +340,7 @@ class ApiArbiter:
                 self._sleeper,
                 self._backoff,
                 self._now,
+                self._capture,
             )
             parsed = _parse_arbiter_output(response.text, finding.id)
             if parsed is not None:

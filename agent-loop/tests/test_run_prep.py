@@ -115,11 +115,16 @@ class RoutingTransport:
 
     def __call__(self, system, user, model, max_tokens):  # noqa: ANN001
         self.calls.append({"system": system, "model": model, "max_tokens": max_tokens})
+        rid = f"req-{len(self.calls)}"
         if system == "probe":
-            return LlmResponse(text="ok", input_tokens=1, output_tokens=1)
+            return LlmResponse(text="ok", input_tokens=1, output_tokens=1, request_id=rid)
         if "Arbiter-Classifier" in system:
-            return LlmResponse(text=self._arbiter_text, input_tokens=100, output_tokens=20)
-        return LlmResponse(text=self._reviewer_text, input_tokens=200, output_tokens=50)
+            return LlmResponse(
+                text=self._arbiter_text, input_tokens=100, output_tokens=20, request_id=rid
+            )
+        return LlmResponse(
+            text=self._reviewer_text, input_tokens=200, output_tokens=50, request_id=rid
+        )
 
 
 class DispatchTransport:
@@ -1000,3 +1005,79 @@ def test_run_aborted_event_on_arbiter_content_exhaustion(tmp_path) -> None:
     run_dir = env["runs_root"] / env["run_id"]
     lines = (run_dir / "action-log.jsonl").read_text().splitlines()
     assert json.loads(lines[-1])["kind"] == "run_aborted"
+
+
+# --- emission hardening (2026-07-02): capture, fence, instrument guard --------
+
+
+def test_arbiter_parses_fenced_classification() -> None:
+    log = ActionLog()
+    fenced = "```json\n" + _VALID_CLASSIFICATION_JSON + "\n```"
+    arbiter = _api_arbiter(log, ScriptedTransport([fenced]))
+    result = arbiter.classify(_finding("f"), {}, {})
+    assert result.classification == "decision-bearing"
+
+
+def test_run_real_captures_raw_emissions_and_stamps_provenance(tmp_path) -> None:
+    env = _prep_env(tmp_path, ["ADR-001", "ADR-002", "DDR-001", "DDR-002"])
+    transport = RoutingTransport(_VALID_FINDING_JSON, _VALID_CLASSIFICATION_JSON)
+    result = run_real(
+        env["run_id"], env["doc_ids"], sofia_root=env["sofia_root"],
+        runs_root=env["runs_root"], prompt_dir=env["prompt_dir"], transport=transport,
+        git_status=env["git_status"], head_sha="H", created="2026-07-02T00:00:00Z",
+        now=_counter_now(), sleeper=lambda s: None, env=env["env"],
+    )
+    run_dir = env["runs_root"] / env["run_id"]
+    emissions = sorted(p.name for p in (run_dir / "emissions").glob("*.txt"))
+    # One raw file per reviewer call plus the arbiter call, correctly named.
+    assert "pass01-antagonist-LAA-1.txt" in emissions
+    assert "pass01-coherence-1.txt" in emissions
+    assert "pass01-arbiter-1.txt" in emissions
+    # Raw body written verbatim (before parsing).
+    assert (run_dir / "emissions" / "pass01-antagonist-LAA-1.txt").read_text() == _VALID_FINDING_JSON
+    # llm_call events carry request_id + emission_path.
+    for event in result.log.of_kind("llm_call"):
+        assert event.detail["request_id"] is not None
+        assert event.detail["emission_path"] is not None
+
+
+def _dispatch_run(tmp_path, env, transport):
+    return run_real(
+        env["run_id"], env["doc_ids"], sofia_root=env["sofia_root"],
+        runs_root=env["runs_root"], prompt_dir=env["prompt_dir"], transport=transport,
+        git_status=env["git_status"], head_sha="H", now=_counter_now(),
+        sleeper=lambda s: None, env=dict(env["env"]),
+    )
+
+
+def test_item_e_fully_dropped_reviewer_aborts_no_converged(tmp_path) -> None:
+    from agent_loop.runner import InstrumentCompromisedError
+
+    env = _prep_env(tmp_path, ["ADR-001", "ADR-002", "DDR-001", "DDR-002"])
+    transport = DispatchTransport(reviewer="not json at all")  # every reviewer drops
+    with pytest.raises(InstrumentCompromisedError):
+        _dispatch_run(tmp_path, env, transport)
+    run_dir = env["runs_root"] / env["run_id"]
+    kinds = [json.loads(x)["kind"] for x in (run_dir / "action-log.jsonl").read_text().splitlines()]
+    assert "run_aborted" in kinds
+    assert "converged" not in kinds  # a false CONVERGED was NOT reachable
+
+
+def test_item_e_partial_drop_proceeds(tmp_path) -> None:
+    env = _prep_env(tmp_path, ["ADR-001", "ADR-002", "DDR-001", "DDR-002"])
+    good = json.loads(_VALID_FINDING_JSON)[0]
+    partial = json.dumps([good, {"severity": "MATERIAL"}])  # 1 valid + 1 malformed item
+    transport = DispatchTransport(reviewer=partial, arbiter=_VALID_CLASSIFICATION_JSON)
+    result = _dispatch_run(tmp_path, env, transport)
+    # A parse-drop occurred but the reviewer also admitted a finding → not
+    # compromised; the run proceeds to a legitimate router exit.
+    assert result.exit.kind == "HALT_DECISION"
+    assert len(result.log.of_kind("parse_dropped")) >= 1
+
+
+def test_item_e_empty_emission_proceeds_to_converged(tmp_path) -> None:
+    env = _prep_env(tmp_path, ["ADR-001", "ADR-002", "DDR-001", "DDR-002"])
+    transport = DispatchTransport(reviewer="[]")  # zero findings, zero drops
+    result = _dispatch_run(tmp_path, env, transport)
+    assert result.exit.kind == "CONVERGED"
+    assert result.log.of_kind("parse_dropped") == []

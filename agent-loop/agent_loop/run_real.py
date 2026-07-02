@@ -28,6 +28,7 @@ from agent_loop.fetchers import (
     sha256_text,
     validate_substrate_manifest,
 )
+from agent_loop.emissions import EmissionCapture
 from agent_loop.ledger import DEFAULT_COUNTED_SEVERITIES, LedgerHeader, LedgerStore
 from agent_loop.log import ActionLog, JsonlFileSink
 from agent_loop.manifest import (
@@ -361,6 +362,7 @@ def run_real(
 
     sink = JsonlFileSink(run_dir / "action-log.jsonl")
     log = ActionLog(sink=sink)
+    capture = EmissionCapture(run_dir / "emissions")
 
     reviewers = {}
     for identity, prompt_name in REVIEWER_PROMPTS.items():
@@ -373,8 +375,11 @@ def run_real(
             now=now,
             sleeper=sleeper,
             backoff_seconds=backoff_seconds,
+            capture=capture,
         )
-        reviewers[identity] = build_real_reviewer(identity, prompt_dir / prompt_name, emitter)
+        reviewers[identity] = build_real_reviewer(
+            identity, prompt_dir / prompt_name, emitter, capture
+        )
     plan = real_hat_plan(
         reviewers[IDENTITY_LAA],
         reviewers[IDENTITY_SA],
@@ -390,6 +395,7 @@ def run_real(
         now=now,
         sleeper=sleeper,
         backoff_seconds=backoff_seconds,
+        capture=capture,
     )
 
     header = LedgerHeader(

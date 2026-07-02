@@ -92,6 +92,15 @@ CONVERGED fires  iff  open_cbm == 0
 All three are booleans over ledger state and arbiter labels. **No LLM in the "done"
 decision.** This is the ratified guarantee, expressed as code Claude Code implements.
 
+### Instrument-compromised guard
+
+A pass in which any scheduled reviewer produced ≥1 parse-dropped emission and 0
+admitted findings is instrument-compromised: the runner raises
+`InstrumentCompromisedError` (fail-loud, `run_aborted` emitted first) before
+routing — CONVERGED must never be reachable through a fully-dropped reviewer.
+Partial drops and legitimately empty emissions (zero findings, zero drops) do
+not trip the guard (amended 2026-07-02 after run-003's false CONVERGED).
+
 ## Escalation surfacing (dry mode)
 
 On `HALT_DECISION`, the runner emits **one escalation per finding, unbundled** — in
