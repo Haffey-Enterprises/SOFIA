@@ -1,0 +1,7 @@
+{
+  "finding_id": "66a041a216d8e3eb",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding exposes that DDR-003 — the governance authority the Position-4 trajectory and downstream schema depend on — does not exist and has no draft; no ratified authority determines whether ADR-001 should stay ACCEPTED, be demoted, or how the absent governance is to be settled. Resolving this requires a choice (author the DDR, re-scope, condition acceptance) that no existing authority dictates.",
+  "confidence": "high"
+}

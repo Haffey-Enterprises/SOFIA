@@ -1,0 +1,112 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["DDR-002"],
+"locus": "§2.4 Governance — GateDecision.DECIDED_ON vs §3 edge catalog / §5 bridge edges",
+"claim": "DDR-002 asserts (§2.4) that the GateDecision verdict rides `DECIDED_ON {outcome}` → Solution, and §5 declares `(GateDecision)-[:DECIDED_ON {outcome}]->(Solution)`. But §3's Decision/audit edge catalog lists `(GateDecision)-[:REVIEWED {hash}]->(Artifact)` and does not list any `DECIDED_ON` edge, while `DECIDED_ON` appears only under the §5 promotion/solution edges. The GateDecision→Solution `DECIDED_ON` edge is used by the selection mechanism (§5 'Selection among produced candidates') and by conformance check #15's contrast, yet the core edge catalog (§3) that purports to enumerate the Governance sub-graph edges omits it — an internal inconsistency about where the load-bearing gate verdict edge is defined.",
+"cited_authority": {
+"kind": "soundness",
+"ref": "DDR-002 §3 edge catalog omits GateDecision-[:DECIDED_ON]->Solution while §2.4/§5 depend on it"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-002"],
+"locus": "§7 check #19 vs §5 applicability_state supersession carry-forward",
+"claim": "§5 states that a successor to a `conditional` node must not be consumed `unconditional` absent an explicit EA re-scoping, and explicitly says this is 'a failure §7 check #19 cannot catch because the successor would no longer be marked conditional.' The document then commits only an 'integrity expectation' and routes the carry-forward mechanism to the knowledge-service SDD, leaving no enforceable invariant in the schema layer for a named safety-relevant over-admission failure (consuming EA-conditioned knowledge out of scope). The claim that conditional knowledge 'is never consumed out-of-scope' (§7 #19, 'blocking safety control') is therefore not substantiated for the supersession case the document itself surfaces.",
+"cited_authority": {
+"kind": "soundness",
+"ref": "DDR-002 §5 acknowledged gap in #19 coverage on supersession vs. its stated blocking safety guarantee"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["DDR-002"],
+"locus": "§2.4 GateDecision.origin_mechanism vs §7 provenance existence-constraint scope",
+"claim": "§7's provenance existence constraint is scoped to 'KG nodes' plus enumerated RG/Artifact types. GateDecision is a Governance-plane KG node whose §2.4 schema treats `origin_mechanism` as a 'live property' currently `ingested`. This is consistent, but §2.4 also states the intermediate case (SOFIA issues, external holds authoritative record) 'has no current instance'; the schema provides no discriminator today between `ingested` (external-captured) and a future `authored` SOFIA-authoritative gate other than the source_record_ref presence rule (#17). The reader is left to infer that #17 alone distinguishes the two live values — the constraint is stated but the distinguishing invariant is not cross-linked at §2.4.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "DDR-002 §2.4 GateDecision origin_mechanism live-values + DDR-002 §7 #17 source_record_ref rule"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-002", "DDR-001"],
+"locus": "ADR-002 §2.2 / §4.1 Community-trial substantiation vs DDR-001 Spike Findings",
+"claim": "ADR-002 §2.2 and §4.1 assert the Community-edition rejection is 'empirically established and ratified' and route its durable home to 'DDR-001's spike-findings section.' DDR-001's Spike Findings section explicitly records that 'the specific edition-feature blocker from the original trial is not in the captured record and is not reconstructed here.' The claim substantiating Enterprise-as-requirement therefore rests on a spike whose determinative finding (which Enterprise capability Community lacked) is, by the cited authority's own admission, absent from the record. The substantiation ADR-002 §2.2 claims ('records the specific Enterprise capability the plane model depends on') is not met by the cited locus.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "ADR-002 §2.2/§4.1 substantiation claim vs DDR-001 Spike Findings recovery-boundary note"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["DDR-002"],
+"locus": "§7 check #17 vs §1 source_record_ref applicability on derived",
+"claim": "§1 states `source_record_ref` is 'applicable as a source/stream ref on derived-from-external' and 'N/A on authored/promoted'. §7 #17 enforces it on `ingested` and on `derivation_class: distilled` (scoped explicitly to distilled, not aggregated). This is internally reconciled, but §1's phrasing 'derived-from-external' is not identical to §7's 'distilled', and a `derived`/`aggregated` node that happened to reference an external source would be permitted-but-unenforced. The §1↔§7 alignment is asserted but the vocabulary ('derived-from-external' vs 'distilled') is not fully unified.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "DDR-002 §1 source_record_ref applicability wording vs §7 #17 scoping to distilled"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-001", "DDR-002"],
+"locus": "ADR-001 §2.2 illustrative artifact kinds vs DDR-002 canonical RG vocabulary — Evidence provenance",
+"claim": "ADR-001 §2.2's capture invariant states each reasoner's output 'is recorded with evidence linkage, source attribution by category, and an authoritative flag.' DDR-002 §4 makes `Evidence` the sole surrogate-only RG type carrying NO provenance group and NO authoritative flag, recovering provenance structurally via SOURCED_FROM. Whether a KG-sourced Evidence surrogate satisfies ADR-001's 'source attribution by category' obligation for that node is not reconciled: ADR-001's invariant is stated per captured-reasoning artifact, and DDR-002 exempts Evidence from carrying source attribution as a property. The conformance claim (DDR-002 realizes ADR-001's capture invariant) is not substantiated for the Evidence type against ADR-001 §2.2's per-artifact attribution requirement.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "ADR-001 §2.2 (source attribution by category, authoritative flag per captured artifact) vs DDR-002 §4 Evidence surrogate-only posture"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-002"],
+"locus": "§7 CI-only invariant set — enforcement posture vs ADR-002 §2.7 / DDR-002 §1 no-PHI",
+"claim": "DDR-002 §7 #13 (no-PHI) is listed in the safety-critical tier as 'classification, gateway-enforced,' but the enforcement posture paragraph states the entire CI-only set is 'review-enforced (three-hat / authoring time), not CI-enforced' until mechanization lands. No-PHI is simultaneously described as gateway-enforced (§1: 'single no-PHI enforcement point') and as an aspirational CI-only check awaiting mechanization (§7). Whether PHI exclusion is actually enforced at initial build — on which ADR-002 §2.7's no-CMEK soundness explicitly depends — is left contradictory within DDR-002.",
+"cited_authority": {
+"kind": "soundness",
+"ref": "DDR-002 §1 (gateway-enforced no-PHI) vs §7 (no-PHI is CI-only, review-enforced until mechanization lands)"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["DDR-001"],
+"locus": "Cross-References — DDR-003 status",
+"claim": "DDR-001 repeatedly routes governance concerns (retention policy, EA criteria, archival policy, thresholds) to DDR-003, and ADR-001 §2.5/§7 cite DDR-003 as 'forthcoming.' DDR-003 is not present in the document set under review, yet DDR-001 and DDR-002 are ACCEPTED with numerous load-bearing obligations (RG retention, archival trigger, multi-condition interim posture) deferred to a document that does not yet exist. The cross-reference resolves to a named-but-absent artifact; the deferral targets cannot be confirmed to exist.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "DDR-001/DDR-002 cross-references to DDR-003 (governance) — named artifact absent from the set"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["DDR-002"],
+"locus": "§4 / §5 / §7 #15 / #21 promotion provenance chain",
+"claim": "Checked the promoted-node provenance chain for conformance to ADR-001's auditability commitment and DDR-001 check #6 (promoted distinguishable from ingested): the chain PROMOTES_TO_KNOWLEDGE ← CandidatePromotion ← governing DECIDED_ON edge → PromotionDecision, keyed off the latest-decided_at governing edge, with origin_mechanism: promoted stamping, and the un-promotion mirror (#21 retraction-gated), holds internally — a superseded-verdict promotion and an unauthorized un-promotion are both detectable by the stated invariants. The surface is load-bearing and the invariant set is self-consistent as written.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "ADR-001 §3 (auditability structural) + DDR-001 conformance check #6, checked against DDR-002 §5/§7 #15/#21"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-002", "DDR-001", "DDR-002"],
+"locus": "no-vector-store conformance across the three records",
+"claim": "Attempted to fault the no-vector-store commitment for a conformance gap across altitudes: ADR-002 §2.4 commits three stores no vector; DDR-001 restates it and names the graph-native retrieval substrate; DDR-002 §1 restates both the negative (no vector/embedding properties, check #2) and positive (l1/l2/l3 taxonomy + selection edges) halves and routes the retrieval affordance to SDDs. The commitment propagates without contradiction and each downstream record cites the authority it conforms to; the surface held.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "ADR-002 §2.4 no-vector-store, checked against DDR-001 Hybrid Persistence Model and DDR-002 §1/§7 #2"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["DDR-001", "DDR-002"],
+"locus": "ADR-002 §2.6 write-authority propagation (ASA/AOE)",
+"claim": "Checked the reasoning-state write-authority assignment for conformance to ADR-002 §2.6: DDR-001 §Reasoning Graph and DDR-002 §4 both fix ASA as sole author of ReasoningProgress and AOE as owner of ReasoningSession lifecycle only, gateway-mediated and driver-less, with DDR-001's feedback-loop-write extension explicitly reconciled as a third component-scoped author class 'consistent with, distinct from' §2.6's synthesis-capture assignment. The extension does not silently contradict the upstream assignment; conformance holds.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "ADR-002 §2.6 write authority, checked against DDR-001 feedback-loop write-authority section and DDR-002 §4/§7 #7"
+}
+}
+]

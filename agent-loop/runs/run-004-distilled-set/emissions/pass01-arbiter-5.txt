@@ -1,0 +1,7 @@
+{
+  "finding_id": "7686768d9b2bf042",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "ADR-002 §2.6 fixes ASA/AOE assignment and makes no statement about feedback-loop writes; DDR-001 asserts this silence as license to introduce a third write-authority author class. Resolving whether that extension conforms requires a write-authority decision no ratified authority makes — a gap/silence, not a determined fix.",
+  "confidence": "high"
+}

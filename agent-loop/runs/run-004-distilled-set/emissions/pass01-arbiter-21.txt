@@ -1,0 +1,7 @@
+{
+  "finding_id": "563b4d5a4941a7fd",
+  "classification": "resolvable",
+  "authority_locus": "sofia-vision design-intent — 'on a trajectory toward SOFIA-as-reasoner, LLM-as-tool' + reasoning-capture invariant; ADR-001 §2.4 (provisional per-stage mechanics)",
+  "rationale": "This is a POSITIVE finding affirming that the ADR's trajectory-commitment posture already conforms to the stated design intent's non-binary trajectory framing and capture-discipline invariant; no new choice is introduced and the determining authority is named.",
+  "confidence": "high"
+}

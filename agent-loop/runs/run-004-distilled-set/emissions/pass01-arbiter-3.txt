@@ -1,0 +1,7 @@
+{
+  "finding_id": "e1bb7e0cf93351dd",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding exposes a substrate gap: ADR-002 §2.2 claims an 'empirically established' rejection whose defining evidence DDR-001's Spike Findings admits is not in the captured record — no ratified authority disambiguates whether to soften the ADR's claim, reconstruct the missing blocker, or re-run the spike, so resolution requires an unratified choice.",
+  "confidence": "high"
+}

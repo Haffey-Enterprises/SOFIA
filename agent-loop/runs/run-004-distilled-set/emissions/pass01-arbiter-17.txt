@@ -1,0 +1,7 @@
+{
+  "finding_id": "d736488754d32bb9",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "Whether load-bearing governance obligations may be deferred to a not-yet-authored DDR-003, and how such an unresolved forward reference should be handled while DDR-001/DDR-002 are ACCEPTED, is not determined by any ratified authority — the templates and skill are silent on cross-references to absent artifacts, so the resolution requires an unratified choice.",
+  "confidence": "high"
+}

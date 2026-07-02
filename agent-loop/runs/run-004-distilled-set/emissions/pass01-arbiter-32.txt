@@ -1,0 +1,7 @@
+{
+  "finding_id": "b22ce0b04569ce03",
+  "classification": "resolvable",
+  "authority_locus": "ADR-002 §2.2 (defers bar to DDR-001) + DDR-001 Substitution-Contract Capability Bar (authors it) + DDR-002 (references without re-authoring)",
+  "rationale": "This is a POSITIVE coherence confirmation that the substitution-contract routing already conforms to the cited authorities; no new choice is introduced and the chain is internally consistent, so nothing needs deciding.",
+  "confidence": "high"
+}

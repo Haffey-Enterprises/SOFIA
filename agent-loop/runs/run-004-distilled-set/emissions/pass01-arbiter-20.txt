@@ -1,0 +1,7 @@
+{
+  "finding_id": "18eaa4533a3ba726",
+  "classification": "resolvable",
+  "authority_locus": "ADR-002 §2.6 write authority, as reconciled in DDR-001 feedback-loop write-authority section and DDR-002 §4/§7#7",
+  "rationale": "The finding is a POSITIVE conformance confirmation: it asserts the write-authority assignment conforms to the already-ratified ADR-002 §2.6, with DDR-001's third author class explicitly reconciled as 'consistent with, distinct from' the upstream assignment. No new choice is introduced; conformance is determined by named existing authority.",
+  "confidence": "high"
+}

@@ -1,0 +1,7 @@
+{
+  "finding_id": "01b84a95a200e985",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "No ratified authority sets a gating rule for when the gateway may be authored against a schema whose safety-critical invariants remain CI-only/unmechanized; the conformance-mechanization effort is neither scheduled nor ratified, so resolving this requires an unmade posture/sequencing decision.",
+  "confidence": "high"
+}

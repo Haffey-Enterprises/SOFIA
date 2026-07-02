@@ -1,0 +1,54 @@
+{
+  "run_id": "run-004-distilled-set",
+  "created": "2026-07-02T15:12:25.500617+00:00",
+  "document_set": {
+    "ADR-001": "/Users/thaffey/Documents/GitHub/SOFIA/docs/adr/ADR-001-reasoning-architecture.md",
+    "ADR-002": "/Users/thaffey/Documents/GitHub/SOFIA/docs/adr/ADR-002-graph-system-of-record.md",
+    "DDR-001": "/Users/thaffey/Documents/GitHub/SOFIA/docs/ddr/DDR-001-data-architecture.md",
+    "DDR-002": "/Users/thaffey/Documents/GitHub/SOFIA/docs/ddr/DDR-002-graph-schema.md"
+  },
+  "head_sha": "1ae0d8ba736363773fb7f07c0dddd7acadb46b35",
+  "prompt_sha256": {
+    "antagonist-LAA.prompt.md": "03dac5bd45b13c318cf5a566623f45d477818b9909605109d4b54e9826d1cfb2",
+    "antagonist-SA.prompt.md": "a13fdd862f3dbdce223f4840e8593e47286c7447c225f2480064d18cf6007d5c",
+    "antagonist-EA.prompt.md": "7ea0cde968c238f25003c3ec8bd2809808a39dc3ba424023e6d8cf6b6c4a3ace",
+    "coherence-sweep.prompt.md": "ae34d3fe013d8d13b968d451c038adf3dd1e762db2eef38739c2ef093e35ae4f",
+    "arbiter-classifier.prompt.md": "523e0506c3ea567c8f0adf0971f78494ce4153ce5b7c5a7316021c8607b73a1b"
+  },
+  "substrate_manifest": "substrate/manifest.json",
+  "model": "claude-opus-4-8",
+  "parameters": {
+    "max_tokens": 8192
+  },
+  "finalized": true,
+  "router_exit": "HALT_DECISION:decision-bearing",
+  "passes_run": 1,
+  "per_site_tokens": {
+    "antagonist-LAA": {
+      "input_tokens": 63629,
+      "output_tokens": 3067,
+      "calls": 1
+    },
+    "antagonist-SA": {
+      "input_tokens": 63649,
+      "output_tokens": 4263,
+      "calls": 1
+    },
+    "antagonist-EA": {
+      "input_tokens": 63589,
+      "output_tokens": 2570,
+      "calls": 1
+    },
+    "coherence": {
+      "input_tokens": 63318,
+      "output_tokens": 2547,
+      "calls": 1
+    },
+    "arbiter": {
+      "input_tokens": 286955,
+      "output_tokens": 7293,
+      "calls": 36
+    }
+  },
+  "wall_clock_seconds": 335.9647228750109
+}

@@ -1,0 +1,7 @@
+{
+  "finding_id": "c288829a4851e6f4",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "DDR-002 internally contradicts itself on whether no-PHI is gateway-enforced at initial build (§1) or merely review-enforced until mechanization lands (§7), and ADR-002 §2.7's no-CMEK soundness depends on which is true; the sofia-vision intent says 'enforced via data classification at intake/ingestion' but does not disambiguate whether that enforcement is mechanized at initial build or deferred, leaving the choice unmade.",
+  "confidence": "high"
+}

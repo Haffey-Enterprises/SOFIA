@@ -1,0 +1,7 @@
+{
+  "finding_id": "986612a3d6c09b38",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The cited authority (DDR-001 Spike Findings) admits the determinative finding is absent from the record, so no ratified authority substantiates ADR-002's Enterprise-as-requirement claim; resolving this requires either reconstructing/re-running the spike or restating the substantiation on other grounds — a choice authority does not dictate.",
+  "confidence": "high"
+}

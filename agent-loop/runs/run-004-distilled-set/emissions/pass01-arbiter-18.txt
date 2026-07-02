@@ -1,0 +1,7 @@
+{
+  "finding_id": "cf062ba0be78ca2c",
+  "classification": "resolvable",
+  "authority_locus": "ADR-001 §3 (auditability structural) + DDR-001 conformance check #6, against DDR-002 §5/§7 #15/#21",
+  "rationale": "This is a POSITIVE confirmation that the promotion provenance chain already conforms to existing ratified authority; no new choice is introduced and the finding names the exact authorities that determine the conformance verdict.",
+  "confidence": "high"
+}

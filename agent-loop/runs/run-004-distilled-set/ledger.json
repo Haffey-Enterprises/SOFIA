@@ -1,0 +1,848 @@
+{
+  "header": {
+    "set": [
+      "ADR-001",
+      "ADR-002",
+      "DDR-001",
+      "DDR-002"
+    ],
+    "counted_severities": [
+      "BLOCKING",
+      "MATERIAL"
+    ],
+    "plateau_N": 3,
+    "mode": "dry"
+  },
+  "findings": [
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-002"
+      ],
+      "locus": "\u00a72.4 GateDecision \u2014 origin_mechanism as live property with authored reserved; \u00a72.6 / \u00a75 CandidatePromotion; \u00a75 retraction shape",
+      "claim": "DDR-002's stated scope (Decision.6, Rationale) is that it 'owns the schema contract only' and routes architecture, feedback-loop governance, and service realization elsewhere. But \u00a72.4 decides a forward-compatibility posture ('authored reserved-and-available for a future SOFIA-as-authoritative-decider state, ADR-001 Position 4, expressible without re-architecture'), which is a design-lifecycle/trajectory commitment, not a node/relationship/constraint/index fact. This commitment is never surfaced as a numbered sub-decision and rides along inside a node schema.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-002 Decision.6 ('This DDR owns the schema contract only') vs DDR-002 \u00a72.4 GateDecision forward-compatibility posture"
+      },
+      "id": "d69da3e8893398d8",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-002"
+      ],
+      "locus": "Change Log v1.1.0 (2026-06-22, RBT-43) vs Decision block",
+      "claim": "The Change Log records that checks #20 and #21, the ProvenanceSummary node, RETRACTS edge, and archived status were added as an additive MINOR amendment (CI-only set 19 \u2192 21). These are load-bearing schema decisions, but the top-level Decision block (Decision.1\u2013.6) never enumerates retraction, the ProvenanceSummary/provenance-survival guarantee, or the archived terminal state as decided components \u2014 they appear only in body prose. The title/summary/decision-content match is incomplete: substantive decisions in the body are not reflected in what the record claims to decide.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-002 Decision.1\u2013.6 vs \u00a75 (retraction shape / ProvenanceSummary) + \u00a72.3 (archived) + Change Log RBT-43"
+      },
+      "id": "0b6e871a9b03bc7f",
+      "classification": "resolvable",
+      "authority_locus": "author-decision-record-SKILL \u2014 DDR-002 Decision section discipline ('Then expand the ruling's components as numbered subsections if needed'; 'State decisions testably') + ddr-template Decision section",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-002"
+      ],
+      "locus": "\u00a72.2 substitution contract / spike-findings dependency",
+      "claim": "ADR-002 \u00a72.2 states 'Community was trialed for it and failed' and asserts 'The rejection is empirically established and ratified,' then locates the durable evidence in 'DDR-001's spike-findings section.' But DDR-001's Spike Findings section explicitly records that 'the specific edition-feature blocker from the original trial is not in the captured record and is not reconstructed here.' The ADR's prose claims an empirically-established rejection whose defining evidence (the specific capability blocker) the cited home admits it does not hold \u2014 the decision leans on support the substrate does not supply.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-002 \u00a72.2 ('empirically established and ratified' + edition capability the plane model depends on) vs DDR-001 Spike Findings ('specific edition-feature blocker ... not reconstructed here')"
+      },
+      "id": "e1bb7e0cf93351dd",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "COSMETIC",
+      "target": [
+        "ADR-002"
+      ],
+      "locus": "\u00a76 Enforcement / Compliance",
+      "claim": "\u00a76 states 'Compliance is currently aspirational' and 'Mechanized enforcement ... is not built yet.' The ADR template \u00a76 requires that an unbuilt compliance mechanism 'point at a tracking item.' No tracking pointer accompanies the aspirational-compliance admission; the deferred consequence is declared but its tracking artifact is not named.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "adr-template \u00a76 ('Compliance is currently aspirational, tracked at {{ticket}}')"
+      },
+      "id": "f4738b7babc51196",
+      "classification": "resolvable",
+      "authority_locus": "adr-template \u00a76 ('Compliance is currently aspirational, tracked at {{ticket}}, ... point at a tracking item')",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-001"
+      ],
+      "locus": "Feedback-Loop Architecture \u2014 third component-scoped author class",
+      "claim": "DDR-001 introduces a third write-authority author class (the scheduled feedback-loop job authoring CandidatePromotion, plus gateway-authored provenance snapshot and materialized KG node) and states ADR-002 \u00a72.6 'neither closes against nor extends to the feedback loop's own writes.' This is a new write-authority decision homed under ADR-002's principle but not enumerated by ADR-002 \u00a72.6. It is surfaced (Decision.5, conformance check 7), so scope is declared \u2014 but the claim that ADR-002 \u00a72.6 'neither closes against nor extends to' the feedback-loop writes is a reading of ADR-002 that ADR-002 itself does not state; DDR-001 is asserting the silence of an upstream authority as license to extend it.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-001 Feedback-Loop Architecture ('ADR-002 \u00a72.6 neither closes against nor extends to') vs ADR-002 \u00a72.6 (fixes ASA/AOE assignment; makes no statement about feedback-loop writes)"
+      },
+      "id": "7686768d9b2bf042",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "COSMETIC",
+      "target": [
+        "DDR-001"
+      ],
+      "locus": "References / Cross-References \u2014 DDR-003 status",
+      "claim": "DDR-001 repeatedly routes governance concerns to DDR-003 (feedback-loop governance) as a sibling and forward dependency, and ADR-001 \u00a72.5/\u00a77 name DDR-003 as 'forthcoming.' DDR-003 is not in the document set under review and its status (PROPOSED/ACCEPTED/nonexistent) is undeclared. DDR-001's dependence on an artifact whose existence and status are unstated leaves a named dependency unresolved at this altitude \u2014 DDR-001 declares the dependency but not whether the depended-on artifact exists.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-001 Cross-References ('DDR-003 \u2014 feedback-loop governance') + ADR-001 \u00a77 ('DDR-003, forthcoming') vs absent DDR-003 with undeclared status"
+      },
+      "id": "d6053ce6b5a6c552",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "POSITIVE",
+      "target": [
+        "DDR-002"
+      ],
+      "locus": "\u00a71 / \u00a72 / \u00a75 \u2014 scope routing to DDR-001 / DDR-003 / SDDs",
+      "claim": "I checked whether DDR-002's decision content stays within its claimed schema-contract scope at each substantive boundary (feedback-loop mechanics, governance policy, gateway API, retrieval affordance, retention policy). At the boundaries that route mechanics/policy elsewhere (\u00a75 ownership line, Boundary Routing Map, Named Gaps), the record consistently names what it owns (node/edge/constraint shape) versus what it cites, and the routing targets are explicitly identified. The scope discipline holds across those routings.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-002 Decision.6 + \u00a75 ownership line + Cross-References Boundary Routing Map"
+      },
+      "id": "f84ac10b6cf8bda2",
+      "classification": "resolvable",
+      "authority_locus": "DDR-002 Decision.6 + \u00a75 ownership line + Cross-References Boundary Routing Map (the record's own ratified scope-routing content)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-002"
+      ],
+      "locus": "\u00a72.7 / \u00a74.4 \u2014 no-CMEK / no-PHI-by-design posture",
+      "claim": "I tried to fault the no-CMEK decision as an undeclared scope commitment. The record cleanly scopes it to the initial build, names the enabling constraint (no-PHI-by-design, classification-enforced), declares the consequence (\u00a75.2 constraint, \u00a75.3 risk with mitigation), and defers a PHI scope-change to its own ADR. The decision decides exactly what it claims, with its dependency (classification enforcement) and side effect (compliance obligation) surfaced. Held.",
+      "cited_authority": {
+        "kind": "design-intent",
+        "ref": "sofia-vision operating-environment constraints ('no PHI by design ... no CMEK in the initial build; a future PHI scope change is its own ADR')"
+      },
+      "id": "2e6d76050607058d",
+      "classification": "resolvable",
+      "authority_locus": "sofia-vision operating-environment constraints ('no PHI by design ... no CMEK in the initial build; a future PHI scope change is its own ADR')",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-001"
+      ],
+      "locus": "\u00a72.2 / \u00a72.5 \u2014 reasoning-capture invariant scope claim",
+      "claim": "I checked whether ADR-001 claims to decide the artifact vocabulary/schema (which would overreach into DDR-002's scope). \u00a72.2 explicitly marks ReasoningProgress/Evidence/RejectedAlternative as illustrative and defers canonical labels, properties, and vocabulary to DDR-002; \u00a72.5 commits only the principle that the promotion mechanism exists and is EA-gated, deferring governance to DDR-003. The record decides the conceptual capture contract and no more. Claim-fidelity held.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-001 \u00a72.2 ('illustrative ... owned by the Graph Schema document (DDR-002)') + \u00a72.5 deferral to DDR-003"
+      },
+      "id": "2363f5164fd05b0b",
+      "classification": "resolvable",
+      "authority_locus": "ADR-001 \u00a72.2 (labels/vocabulary deferred to DDR-002) + \u00a72.5 (governance deferred to DDR-003); author-decision-record-SKILL altitude-routing (ADR = platform principle, schema/vocabulary \u2192 DDR)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-002"
+      ],
+      "locus": "\u00a72.4 Governance \u2014 GateDecision.DECIDED_ON vs \u00a73 edge catalog / \u00a75 bridge edges",
+      "claim": "DDR-002 asserts (\u00a72.4) that the GateDecision verdict rides `DECIDED_ON {outcome}` \u2192 Solution, and \u00a75 declares `(GateDecision)-[:DECIDED_ON {outcome}]->(Solution)`. But \u00a73's Decision/audit edge catalog lists `(GateDecision)-[:REVIEWED {hash}]->(Artifact)` and does not list any `DECIDED_ON` edge, while `DECIDED_ON` appears only under the \u00a75 promotion/solution edges. The GateDecision\u2192Solution `DECIDED_ON` edge is used by the selection mechanism (\u00a75 'Selection among produced candidates') and by conformance check #15's contrast, yet the core edge catalog (\u00a73) that purports to enumerate the Governance sub-graph edges omits it \u2014 an internal inconsistency about where the load-bearing gate verdict edge is defined.",
+      "cited_authority": {
+        "kind": "soundness",
+        "ref": "DDR-002 \u00a73 edge catalog omits GateDecision-[:DECIDED_ON]->Solution while \u00a72.4/\u00a75 depend on it"
+      },
+      "id": "1f683374da965c65",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-002"
+      ],
+      "locus": "\u00a77 check #19 vs \u00a75 applicability_state supersession carry-forward",
+      "claim": "\u00a75 states that a successor to a `conditional` node must not be consumed `unconditional` absent an explicit EA re-scoping, and explicitly says this is 'a failure \u00a77 check #19 cannot catch because the successor would no longer be marked conditional.' The document then commits only an 'integrity expectation' and routes the carry-forward mechanism to the knowledge-service SDD, leaving no enforceable invariant in the schema layer for a named safety-relevant over-admission failure (consuming EA-conditioned knowledge out of scope). The claim that conditional knowledge 'is never consumed out-of-scope' (\u00a77 #19, 'blocking safety control') is therefore not substantiated for the supersession case the document itself surfaces.",
+      "cited_authority": {
+        "kind": "soundness",
+        "ref": "DDR-002 \u00a75 acknowledged gap in #19 coverage on supersession vs. its stated blocking safety guarantee"
+      },
+      "id": "6f145a1749693d3d",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "COSMETIC",
+      "target": [
+        "DDR-002"
+      ],
+      "locus": "\u00a72.4 GateDecision.origin_mechanism vs \u00a77 provenance existence-constraint scope",
+      "claim": "\u00a77's provenance existence constraint is scoped to 'KG nodes' plus enumerated RG/Artifact types. GateDecision is a Governance-plane KG node whose \u00a72.4 schema treats `origin_mechanism` as a 'live property' currently `ingested`. This is consistent, but \u00a72.4 also states the intermediate case (SOFIA issues, external holds authoritative record) 'has no current instance'; the schema provides no discriminator today between `ingested` (external-captured) and a future `authored` SOFIA-authoritative gate other than the source_record_ref presence rule (#17). The reader is left to infer that #17 alone distinguishes the two live values \u2014 the constraint is stated but the distinguishing invariant is not cross-linked at \u00a72.4.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-002 \u00a72.4 GateDecision origin_mechanism live-values + DDR-002 \u00a77 #17 source_record_ref rule"
+      },
+      "id": "2fd875885b9d0e6e",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-002",
+        "DDR-001"
+      ],
+      "locus": "ADR-002 \u00a72.2 / \u00a74.1 Community-trial substantiation vs DDR-001 Spike Findings",
+      "claim": "ADR-002 \u00a72.2 and \u00a74.1 assert the Community-edition rejection is 'empirically established and ratified' and route its durable home to 'DDR-001's spike-findings section.' DDR-001's Spike Findings section explicitly records that 'the specific edition-feature blocker from the original trial is not in the captured record and is not reconstructed here.' The claim substantiating Enterprise-as-requirement therefore rests on a spike whose determinative finding (which Enterprise capability Community lacked) is, by the cited authority's own admission, absent from the record. The substantiation ADR-002 \u00a72.2 claims ('records the specific Enterprise capability the plane model depends on') is not met by the cited locus.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "ADR-002 \u00a72.2/\u00a74.1 substantiation claim vs DDR-001 Spike Findings recovery-boundary note"
+      },
+      "id": "986612a3d6c09b38",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "COSMETIC",
+      "target": [
+        "DDR-002"
+      ],
+      "locus": "\u00a77 check #17 vs \u00a71 source_record_ref applicability on derived",
+      "claim": "\u00a71 states `source_record_ref` is 'applicable as a source/stream ref on derived-from-external' and 'N/A on authored/promoted'. \u00a77 #17 enforces it on `ingested` and on `derivation_class: distilled` (scoped explicitly to distilled, not aggregated). This is internally reconciled, but \u00a71's phrasing 'derived-from-external' is not identical to \u00a77's 'distilled', and a `derived`/`aggregated` node that happened to reference an external source would be permitted-but-unenforced. The \u00a71\u2194\u00a77 alignment is asserted but the vocabulary ('derived-from-external' vs 'distilled') is not fully unified.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-002 \u00a71 source_record_ref applicability wording vs \u00a77 #17 scoping to distilled"
+      },
+      "id": "958411d3664ab72f",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-001",
+        "DDR-002"
+      ],
+      "locus": "ADR-001 \u00a72.2 illustrative artifact kinds vs DDR-002 canonical RG vocabulary \u2014 Evidence provenance",
+      "claim": "ADR-001 \u00a72.2's capture invariant states each reasoner's output 'is recorded with evidence linkage, source attribution by category, and an authoritative flag.' DDR-002 \u00a74 makes `Evidence` the sole surrogate-only RG type carrying NO provenance group and NO authoritative flag, recovering provenance structurally via SOURCED_FROM. Whether a KG-sourced Evidence surrogate satisfies ADR-001's 'source attribution by category' obligation for that node is not reconciled: ADR-001's invariant is stated per captured-reasoning artifact, and DDR-002 exempts Evidence from carrying source attribution as a property. The conformance claim (DDR-002 realizes ADR-001's capture invariant) is not substantiated for the Evidence type against ADR-001 \u00a72.2's per-artifact attribution requirement.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "ADR-001 \u00a72.2 (source attribution by category, authoritative flag per captured artifact) vs DDR-002 \u00a74 Evidence surrogate-only posture"
+      },
+      "id": "f789ddb859146767",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-002"
+      ],
+      "locus": "\u00a77 CI-only invariant set \u2014 enforcement posture vs ADR-002 \u00a72.7 / DDR-002 \u00a71 no-PHI",
+      "claim": "DDR-002 \u00a77 #13 (no-PHI) is listed in the safety-critical tier as 'classification, gateway-enforced,' but the enforcement posture paragraph states the entire CI-only set is 'review-enforced (three-hat / authoring time), not CI-enforced' until mechanization lands. No-PHI is simultaneously described as gateway-enforced (\u00a71: 'single no-PHI enforcement point') and as an aspirational CI-only check awaiting mechanization (\u00a77). Whether PHI exclusion is actually enforced at initial build \u2014 on which ADR-002 \u00a72.7's no-CMEK soundness explicitly depends \u2014 is left contradictory within DDR-002.",
+      "cited_authority": {
+        "kind": "soundness",
+        "ref": "DDR-002 \u00a71 (gateway-enforced no-PHI) vs \u00a77 (no-PHI is CI-only, review-enforced until mechanization lands)"
+      },
+      "id": "c288829a4851e6f4",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "COSMETIC",
+      "target": [
+        "DDR-001"
+      ],
+      "locus": "Cross-References \u2014 DDR-003 status",
+      "claim": "DDR-001 repeatedly routes governance concerns (retention policy, EA criteria, archival policy, thresholds) to DDR-003, and ADR-001 \u00a72.5/\u00a77 cite DDR-003 as 'forthcoming.' DDR-003 is not present in the document set under review, yet DDR-001 and DDR-002 are ACCEPTED with numerous load-bearing obligations (RG retention, archival trigger, multi-condition interim posture) deferred to a document that does not yet exist. The cross-reference resolves to a named-but-absent artifact; the deferral targets cannot be confirmed to exist.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-001/DDR-002 cross-references to DDR-003 (governance) \u2014 named artifact absent from the set"
+      },
+      "id": "d736488754d32bb9",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "POSITIVE",
+      "target": [
+        "DDR-002"
+      ],
+      "locus": "\u00a74 / \u00a75 / \u00a77 #15 / #21 promotion provenance chain",
+      "claim": "Checked the promoted-node provenance chain for conformance to ADR-001's auditability commitment and DDR-001 check #6 (promoted distinguishable from ingested): the chain PROMOTES_TO_KNOWLEDGE \u2190 CandidatePromotion \u2190 governing DECIDED_ON edge \u2192 PromotionDecision, keyed off the latest-decided_at governing edge, with origin_mechanism: promoted stamping, and the un-promotion mirror (#21 retraction-gated), holds internally \u2014 a superseded-verdict promotion and an unauthorized un-promotion are both detectable by the stated invariants. The surface is load-bearing and the invariant set is self-consistent as written.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "ADR-001 \u00a73 (auditability structural) + DDR-001 conformance check #6, checked against DDR-002 \u00a75/\u00a77 #15/#21"
+      },
+      "id": "cf062ba0be78ca2c",
+      "classification": "resolvable",
+      "authority_locus": "ADR-001 \u00a73 (auditability structural) + DDR-001 conformance check #6, against DDR-002 \u00a75/\u00a77 #15/#21",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-002",
+        "DDR-001",
+        "DDR-002"
+      ],
+      "locus": "no-vector-store conformance across the three records",
+      "claim": "Attempted to fault the no-vector-store commitment for a conformance gap across altitudes: ADR-002 \u00a72.4 commits three stores no vector; DDR-001 restates it and names the graph-native retrieval substrate; DDR-002 \u00a71 restates both the negative (no vector/embedding properties, check #2) and positive (l1/l2/l3 taxonomy + selection edges) halves and routes the retrieval affordance to SDDs. The commitment propagates without contradiction and each downstream record cites the authority it conforms to; the surface held.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "ADR-002 \u00a72.4 no-vector-store, checked against DDR-001 Hybrid Persistence Model and DDR-002 \u00a71/\u00a77 #2"
+      },
+      "id": "7a4e02d07810d163",
+      "classification": "resolvable",
+      "authority_locus": "ADR-002 \u00a72.4 no-vector-store, conformed to by DDR-001 Hybrid Persistence Model and DDR-002 \u00a71/\u00a77 #2",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "POSITIVE",
+      "target": [
+        "DDR-001",
+        "DDR-002"
+      ],
+      "locus": "ADR-002 \u00a72.6 write-authority propagation (ASA/AOE)",
+      "claim": "Checked the reasoning-state write-authority assignment for conformance to ADR-002 \u00a72.6: DDR-001 \u00a7Reasoning Graph and DDR-002 \u00a74 both fix ASA as sole author of ReasoningProgress and AOE as owner of ReasoningSession lifecycle only, gateway-mediated and driver-less, with DDR-001's feedback-loop-write extension explicitly reconciled as a third component-scoped author class 'consistent with, distinct from' \u00a72.6's synthesis-capture assignment. The extension does not silently contradict the upstream assignment; conformance holds.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "ADR-002 \u00a72.6 write authority, checked against DDR-001 feedback-loop write-authority section and DDR-002 \u00a74/\u00a77 #7"
+      },
+      "id": "18eaa4533a3ba726",
+      "classification": "resolvable",
+      "authority_locus": "ADR-002 \u00a72.6 write authority, as reconciled in DDR-001 feedback-loop write-authority section and DDR-002 \u00a74/\u00a77#7",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-001"
+      ],
+      "locus": "\u00a72.1 trajectory commitment / \u00a72.5 encoding-density growth",
+      "claim": "Attacked the Position-5-on-a-trajectory-toward-Position-4 commitment for premature/over-commitment: whether committing a directional north-star (Position 4) before any service or per-phase design exists over-commits the platform to an unreachable end-state. It holds \u2014 the ADR explicitly frames Position 4 as a non-binary trajectory ('may never be strictly reached'), keeps the capture-discipline invariant as the only hard commitment, and defers per-stage mechanics as 'provisional' (\u00a72.4), so the timing posture is proportionate to what is settled.",
+      "cited_authority": {
+        "kind": "design-intent",
+        "ref": "sofia-vision \u2014 'on a trajectory toward SOFIA-as-reasoner, LLM-as-tool'"
+      },
+      "id": "563b4d5a4941a7fd",
+      "classification": "resolvable",
+      "authority_locus": "sofia-vision design-intent \u2014 'on a trajectory toward SOFIA-as-reasoner, LLM-as-tool' + reasoning-capture invariant; ADR-001 \u00a72.4 (provisional per-stage mechanics)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-002"
+      ],
+      "locus": "\u00a72.2 / \u00a75.2 topology deferral vs edition commitment",
+      "claim": "Attacked ADR-002 for reversibility-proportionality: it commits a hard-to-reverse edition + runtime choice (Neo4j Enterprise, self-managed GKE) while deferring production topology. Checked whether the hard commitment carries justification proportionate to undoing cost \u2014 it does: the edition rests on a ratified spike (Community failed the plane model), the GKE runtime is a forced exception (no managed Neo4j on GCP), and only the genuinely workload-dependent axis (topology) is deferred. Posture is sound.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "ADR-002 \u00a72.2 substitution contract + \u00a75.2 topology deferral"
+      },
+      "id": "e1e97a39d70ba5f2",
+      "classification": "resolvable",
+      "authority_locus": "ADR-002 \u00a72.2 substitution contract + \u00a75.2 topology deferral (the ratified spike grounding edition choice)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-001",
+        "DDR-003"
+      ],
+      "locus": "ADR-001 \u00a72.5 / \u00a75.3 \u2014 Position-4 trajectory engine deferred to unwritten DDR-003",
+      "claim": "The Position-4 trajectory \u2014 ADR-001's central non-rhetorical differentiator over a static Position 5 \u2014 is made real solely by the EA-gated promotion mechanism whose entire governance is deferred to DDR-003, which does not exist in the set and has no draft. ADR-001 \u00a75.3 itself flags that if the mechanism 'is never built the trajectory becomes rhetorical.' The ADR is ACCEPTED and multiple downstream records (DDR-001, DDR-002) commit substantial schema (CandidatePromotion, PROMOTES_TO_KNOWLEDGE, ProvenanceSummary, retraction) against a governance authority that has never been ratified \u2014 a commitment to a position whose load-bearing dependency is unsettled.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-001 \u00a72.5/\u00a75.3 commits the trajectory engine; DDR-001 \u00a7Feedback-Loop and DDR-002 \u00a75 build schema against DDR-003 governance that is absent from the set"
+      },
+      "id": "66a041a216d8e3eb",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-002"
+      ],
+      "locus": "\u00a77 named exposure window \u2014 safety-critical CI-only invariants unmechanized across an accepted schema",
+      "claim": "DDR-002 is ACCEPTED and declared to gate twelve downstream SDDs, yet its entire safety-critical invariant tier (#1, #7, #13, #14, #15, #16, #17, #19, #21 \u2014 including no-PHI, write-authority, no-unapproved-promotion, no-unauthorized-retraction) is CI-only and unmechanized, enforced only by three-hat review. The set accepts a schema whose ground-truth-integrity guarantees depend entirely on a mechanization effort ('conformance-mechanization') that is neither scheduled nor ratified as a decision record. Accepting a system-of-record schema whose safety controls are aspirational is a posture commitment that deserves an explicit gating decision on when the gateway may be authored against it.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "DDR-002 \u00a77 'Named exposure window + sequencing' + ADR-002 \u00a72.7 no-PHI enforcement dependency"
+      },
+      "id": "01b84a95a200e985",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-002",
+        "ADR-002"
+      ],
+      "locus": "DDR-002 \u00a72.4 GateDecision.origin_mechanism 'authored' reserved for Position-4 SOFIA-as-decider",
+      "claim": "DDR-002 \u00a72.4 reserves-and-makes-available an `origin_mechanism: authored` GateDecision path for 'a future SOFIA-as-authoritative-decider state (Position 4)' \u2014 schema that lets SOFIA itself author authoritative SDLC gate decisions. This anticipates a platform-posture shift (SOFIA making authoritative approval decisions rather than capturing externally-made ones) that ADR-001 treats as the audacious end-state never explicitly ratified as reachable, and that ADR-001 \u00a72.5 subordinates to an EA-gated promotion mechanism. Baking a forward-compatible authoritative-decider surface into the schema commits the platform toward a position that arguably deserves its own decision record before the schema affordance is fixed.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-002 \u00a72.4 GateDecision authored-reserved vs ADR-001 \u00a72.1 Position 4 as unratified end-state / \u00a72.2 human-override authority"
+      },
+      "id": "912767fffccabfa6",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-002",
+        "DDR-001",
+        "DDR-002"
+      ],
+      "locus": "no-vector-store reversibility framing across the three records",
+      "claim": "Attacked the no-vector-store commitment as a hard-to-reverse posture stated once and inherited downstream. Checked whether reversal cost is honestly acknowledged proportionate to blast radius \u2014 it is: ADR-002 \u00a75.3 frames re-introduction as 'a store-set change with real blast radius, not a routine trigger' with an explicit ADR trigger, and DDR-002 \u00a71 names the positive graph-native substitute rather than leaving the rejection bare. The reversibility posture is proportionate and coherent across records.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "ADR-002 \u00a72.4/\u00a74.3/\u00a75.3 no-vector reversibility + DDR-002 \u00a71 no-vector positive half"
+      },
+      "id": "653c1afac60a15da",
+      "classification": "resolvable",
+      "authority_locus": "ADR-002 \u00a75.3 (re-introduction framed as store-set change with ADR trigger) + DDR-002 \u00a71 (graph-native positive substitute)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "COSMETIC",
+      "target": [
+        "DDR-001",
+        "DDR-002"
+      ],
+      "locus": "DDR-003 referenced as sibling authority for policy across both DDRs while absent from the set",
+      "claim": "Both DDR-001 and DDR-002 route a large, load-bearing volume of policy (retention windows, EA approval criteria, archival triggers, remedy-boundary supersession-vs-retraction, multi-condition governance, judgment-consolidation health) forward to DDR-003, which is not present in the review set and has no ratified status. The architecture/governance split is asserted as 'settled,' but the governance half has no ratified home \u2014 the timing question of whether these DDRs should stand fully accepted while their designated policy authority is unwritten is worth recording.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-001 \u00a7Cross-References 'architecture/governance split is settled' + DDR-002 \u00a7Cross-References \u2192 DDR-003 forward-routing, DDR-003 absent from set"
+      },
+      "id": "23c287081787c96f",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-001",
+        "ADR-002",
+        "DDR-001",
+        "DDR-002"
+      ],
+      "locus": "Reasoning-state write authority \u2014 ASA/AOE split",
+      "claim": "Checked the ASA-authors-ReasoningProgress / AOE-owns-ReasoningSession-lifecycle assignment across all four documents for drift: ADR-002 \u00a72.6 fixes it, DDR-001 \u00a7Reasoning Graph and conformance check 3 restate it, and DDR-002 \u00a74 write-authority and \u00a77 check #7 realize it identically. The assignment holds consistently with no term or scope drift.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-002 \u00a72.6 vs DDR-001 \u00a7Reasoning Graph vs DDR-002 \u00a74/\u00a77#7 \u2014 write-authority assignment"
+      },
+      "id": "6bc833082de0b3d8",
+      "classification": "resolvable",
+      "authority_locus": "ADR-002 \u00a72.6 (ASA-authors-ReasoningProgress / AOE-owns-ReasoningSession-lifecycle), restated in DDR-001 \u00a7Reasoning Graph and realized in DDR-002 \u00a74/\u00a77#7",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-002",
+        "DDR-001",
+        "DDR-002"
+      ],
+      "locus": "No-vector-store commitment",
+      "claim": "Checked the no-vector-store invariant against reintroduction across the stack: ADR-002 \u00a72.4/\u00a74.3 commits three stores no vector; DDR-001 Hybrid Persistence and conformance echo it; DDR-002 \u00a71 no-vectors-both-halves names the graph-native retrieval substitute and \u00a77 check #2 binds the prohibition. Consistent; the positive-half substrate (l1/l2/l3 taxonomy, selection edges) is named without contradicting the prohibition.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-002 \u00a72.4 vs DDR-001 Hybrid Persistence vs DDR-002 \u00a71/\u00a77#2"
+      },
+      "id": "1b25ae0a0a772d75",
+      "classification": "resolvable",
+      "authority_locus": "ADR-002 \u00a72.4/\u00a74.3 (three stores, no vector) + DDR-002 \u00a71 no-vectors-both-halves / \u00a77 check #2",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-002",
+        "DDR-001",
+        "DDR-002"
+      ],
+      "locus": "SOFIA-never-self-modifies / EA-gated promotion",
+      "claim": "Attempted to fault the never-self-modifies invariant against the derived Operational-plane distillation write (ObservedPattern, non-EA-gated). DDR-002 \u00a72.3 resolves it via the derive/promote authority seam (Operational is staging tier, EA gate sits between it and authoritative knowledge), consistent with DDR-001 Decision.5 and ADR-001 \u00a72.5. The invariant holds; the distillation write does not breach it.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-001 \u00a72.5 / DDR-001 Decision.5 vs DDR-002 \u00a72.3 derive/promote seam"
+      },
+      "id": "d677da647b43842e",
+      "classification": "resolvable",
+      "authority_locus": "DDR-002 \u00a72.3 derive/promote authority seam, consistent with DDR-001 Decision.5 and ADR-001 \u00a72.5",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "COSMETIC",
+      "target": [
+        "ADR-001"
+      ],
+      "locus": "\u00a72.2 vs \u00a77 \u2014 illustrative RG artifact kinds",
+      "claim": "\u00a72.2 names the illustrative artifact kinds as 'ReasoningProgress, Evidence, RejectedAlternative' and \u00a76 check 2 repeats that trio, but \u00a77's cross-reference and DDR-002 fix the fuller vocabulary as ReasoningSession/ReasoningProgress/Evidence/RejectedAlternative; ADR-001's illustrative list omits ReasoningSession, which the canonical schema treats as a first-class RG type.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-001 \u00a72.2 illustrative kinds vs DDR-002 \u00a74 RG type set"
+      },
+      "id": "5f103fc4aca36ca8",
+      "classification": "resolvable",
+      "authority_locus": "DDR-002 \u00a74 RG type set (ReasoningSession/ReasoningProgress/Evidence/RejectedAlternative), cross-referenced by ADR-001 \u00a77",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-002",
+        "DDR-001",
+        "DDR-002"
+      ],
+      "locus": "Substitution contract / capability bar routing",
+      "claim": "Checked the substitution-contract chain: ADR-002 \u00a72.2 defers the precise capability bar to DDR-001, DDR-001 establishes the five-point bar in its Substitution-Contract section, and DDR-002 references it without re-authoring. The routing is consistent and no document over-claims ownership of the bar.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-002 \u00a72.2 vs DDR-001 Substitution-Contract Capability Bar"
+      },
+      "id": "b22ce0b04569ce03",
+      "classification": "resolvable",
+      "authority_locus": "ADR-002 \u00a72.2 (defers bar to DDR-001) + DDR-001 Substitution-Contract Capability Bar (authors it) + DDR-002 (references without re-authoring)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-002",
+        "DDR-001",
+        "DDR-002"
+      ],
+      "locus": "Community-trial spike-finding home",
+      "claim": "Checked the Community-rejection empirical claim for a durable home and for consistency with logical-not-physical realization. ADR-002 \u00a72.2/\u00a74.1 route the spike finding to DDR-001; DDR-001 Spike Findings records it and deliberately avoids attributing the rejection to a single-database limit (which would contradict ADR-002 \u00a72.3's one-instance logical realization). The narrative and substrate are aligned.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-002 \u00a72.2/\u00a74.1 vs DDR-001 Spike Findings vs ADR-002 \u00a72.3 logical realization"
+      },
+      "id": "5ef4b0fe961ee2cd",
+      "classification": "resolvable",
+      "authority_locus": "ADR-002 \u00a72.3 (one-instance logical realization) reconciled with ADR-002 \u00a72.2/\u00a74.1 routing and DDR-001 Spike Findings",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "COSMETIC",
+      "target": [
+        "DDR-002"
+      ],
+      "locus": "Layer of Abstraction note \u2014 'twelve SDDs'",
+      "claim": "The Rationale and Layer-of-Abstraction sections state DDR-002 gates 'twelve SDDs' / 'the twelve downstream service SDDs', but no document in the set enumerates or otherwise substantiates a count of twelve; the figure appears only as an unsupported magnitude within DDR-002 itself.",
+      "cited_authority": {
+        "kind": "design-intent",
+        "ref": "author-decision-record-SKILL \u2014 'Be specific'; a stranger with no tracker access should be able to build from the record"
+      },
+      "id": "e8cdf1c0e6e1aea8",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-002",
+        "DDR-001",
+        "DDR-002"
+      ],
+      "locus": "Feedback-loop write-authority extension beyond ADR-002 \u00a72.6",
+      "claim": "Attempted to fault DDR-001's homing of the three feedback-loop writes (CandidatePromotion job, gateway provenance snapshot, gateway KG materialization) against ADR-002 \u00a72.6, whose enumerated assignment is synthesis-capture-scoped. DDR-001 correctly frames these as a same-principle extension (component-scoped, gateway-routed) rather than a contradiction of \u00a72.6, and DDR-002 \u00a75/\u00a77 realize them consistently. No conflict.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-002 \u00a72.6 vs DDR-001 Feedback-Loop write authority vs DDR-002 \u00a75 promotion edges"
+      },
+      "id": "5eb0b1f391d72f3a",
+      "classification": "resolvable",
+      "authority_locus": "ADR-002 \u00a72.6 (write-authority principle) as extended and realized by DDR-001 Feedback-Loop write-authority section and DDR-002 \u00a75/\u00a77",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "COSMETIC",
+      "target": [
+        "DDR-001"
+      ],
+      "locus": "References field vs no-Migration-Path claim consistency",
+      "claim": "DDR-001 header lists References ADR-001 v1.0.0; ADR-002 v1.0.0, but the metadata table omits a Version-per-reference alignment check against DDR-002 which cites DDR-001 v1.2.0 \u2014 the cross-version references resolve consistently across the set (DDR-002 \u2192 DDR-001 v1.2.0 matches DDR-001's stated version), so this was checked and holds.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-001 metadata v1.2.0 vs DDR-002 References 'DDR-001 v1.2.0'"
+      },
+      "id": "8ed91773d69cab5c",
+      "classification": "resolvable",
+      "authority_locus": "Finding self-attests the cross-version reference check holds (DDR-002 \u2192 DDR-001 v1.2.0 matches DDR-001 metadata v1.2.0); coherence itself is the authority and it reports consistency.",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    }
+  ],
+  "passes": [
+    {
+      "pass_number": 1,
+      "open_cbm_count": 12,
+      "agents_run": [
+        "antagonist-LAA",
+        "antagonist-SA",
+        "antagonist-EA",
+        "coherence",
+        "arbiter"
+      ],
+      "timestamp": "2026-07-02T15:18:01.501643+00:00"
+    }
+  ],
+  "doc_changes": []
+}

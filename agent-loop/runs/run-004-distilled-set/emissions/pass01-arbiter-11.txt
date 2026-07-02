@@ -1,0 +1,7 @@
+{
+  "finding_id": "6f145a1749693d3d",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The document itself acknowledges §7 check #19 cannot catch the supersession over-admission case and routes the carry-forward mechanism to the knowledge-service SDD as only an 'integrity expectation'; no ratified authority specifies whether the enforceable invariant must live in the schema layer, and closing the gap requires choosing where/how to enforce it — a choice not yet made.",
+  "confidence": "high"
+}

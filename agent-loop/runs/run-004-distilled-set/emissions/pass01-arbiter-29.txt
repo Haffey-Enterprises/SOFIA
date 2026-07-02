@@ -1,0 +1,7 @@
+{
+  "finding_id": "1b25ae0a0a772d75",
+  "classification": "resolvable",
+  "authority_locus": "ADR-002 §2.4/§4.3 (three stores, no vector) + DDR-002 §1 no-vectors-both-halves / §7 check #2",
+  "rationale": "This is a POSITIVE coherence confirmation that the no-vector-store invariant holds consistently across ADR-002, DDR-001, and DDR-002; no new choice is introduced and the named authorities already dictate the state, so nothing requires an unratified decision.",
+  "confidence": "high"
+}

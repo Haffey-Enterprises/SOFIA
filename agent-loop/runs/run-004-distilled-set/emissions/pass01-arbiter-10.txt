@@ -1,0 +1,7 @@
+{
+  "finding_id": "1f683374da965c65",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding exposes an internal inconsistency within DDR-002 about where the load-bearing DECIDED_ON edge is canonically defined (§3 catalog omits it; §2.4/§5 depend on it). No ratified authority or design intent dictates whether §3 should be the exhaustive edge catalog or whether promotion edges legitimately live only in §5 — resolving it requires choosing the canonical locus, a choice not yet made.",
+  "confidence": "high"
+}

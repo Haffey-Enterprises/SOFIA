@@ -1,0 +1,7 @@
+{
+  "finding_id": "0b6e871a9b03bc7f",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record-SKILL — DDR-002 Decision section discipline ('Then expand the ruling's components as numbered subsections if needed'; 'State decisions testably') + ddr-template Decision section",
+  "rationale": "The template/skill authority dictates that the Decision block must enumerate the ruling's substantive, load-bearing components as testable subsections; retraction, ProvenanceSummary/provenance-survival, and the archived terminal state are substantive decided components currently living only in body prose, so conforming to the existing Decision-block discipline determines the fix (surface them in Decision.1–.6) without introducing any new design choice.",
+  "confidence": "high"
+}

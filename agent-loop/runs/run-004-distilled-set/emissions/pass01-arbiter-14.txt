@@ -1,0 +1,7 @@
+{
+  "finding_id": "958411d3664ab72f",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding exposes a vocabulary gap: §1's 'derived-from-external' does not map cleanly onto §7's 'distilled', leaving a derived/aggregated node referencing an external source permitted-but-unenforced. No cited authority disambiguates which scope is correct or how to unify the terms, so resolving it requires a choice not yet ratified.",
+  "confidence": "high"
+}

@@ -1,0 +1,7 @@
+{
+  "finding_id": "8ed91773d69cab5c",
+  "classification": "resolvable",
+  "authority_locus": "Finding self-attests the cross-version reference check holds (DDR-002 \u2192 DDR-001 v1.2.0 matches DDR-001 metadata v1.2.0); coherence itself is the authority and it reports consistency.",
+  "rationale": "The finding is a cosmetic coherence note that states the cross-reference versions resolve consistently and the check holds; no choice is introduced and no authority is silent \u2014 the fix (if any) is determined by the already-verified consistency it reports.",
+  "confidence": "high"
+}

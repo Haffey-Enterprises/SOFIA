@@ -1,0 +1,7 @@
+{
+  "finding_id": "5ef4b0fe961ee2cd",
+  "classification": "resolvable",
+  "authority_locus": "ADR-002 §2.3 (one-instance logical realization) reconciled with ADR-002 §2.2/§4.1 routing and DDR-001 Spike Findings",
+  "rationale": "This is a POSITIVE coherence confirmation that the spike-finding home and its logical-not-physical framing already conform to the named ratified authorities; no new choice is introduced and the fix (if any) is dictated by the cited loci themselves.",
+  "confidence": "high"
+}

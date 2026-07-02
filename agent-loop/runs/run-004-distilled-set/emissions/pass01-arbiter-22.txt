@@ -1,0 +1,7 @@
+{
+  "finding_id": "e1e97a39d70ba5f2",
+  "classification": "resolvable",
+  "authority_locus": "ADR-002 §2.2 substitution contract + §5.2 topology deferral (the ratified spike grounding edition choice)",
+  "rationale": "This is a POSITIVE finding affirming that the existing document conforms to its own ratified authority — the edition rests on a ratified spike, the GKE runtime is a forced exception, and only the workload-dependent topology axis is deferred; no new choice is introduced and the affirming authority is nameable.",
+  "confidence": "high"
+}

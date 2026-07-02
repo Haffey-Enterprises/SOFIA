@@ -1,0 +1,7 @@
+{
+  "finding_id": "2363f5164fd05b0b",
+  "classification": "resolvable",
+  "authority_locus": "ADR-001 §2.2 (labels/vocabulary deferred to DDR-002) + §2.5 (governance deferred to DDR-003); author-decision-record-SKILL altitude-routing (ADR = platform principle, schema/vocabulary → DDR)",
+  "rationale": "This is a POSITIVE finding confirming ADR-001 stays within its altitude and correctly defers vocabulary/schema to DDR-002 and governance to DDR-003; the boundary is already dictated by the doctype-altitude authority and the record's own explicit deferrals, so no new choice is introduced.",
+  "confidence": "high"
+}

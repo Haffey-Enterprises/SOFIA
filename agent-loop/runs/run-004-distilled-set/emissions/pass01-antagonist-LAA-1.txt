@@ -1,0 +1,92 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["DDR-002"],
+"locus": "§2.4 GateDecision — origin_mechanism as live property with authored reserved; §2.6 / §5 CandidatePromotion; §5 retraction shape",
+"claim": "DDR-002's stated scope (Decision.6, Rationale) is that it 'owns the schema contract only' and routes architecture, feedback-loop governance, and service realization elsewhere. But §2.4 decides a forward-compatibility posture ('authored reserved-and-available for a future SOFIA-as-authoritative-decider state, ADR-001 Position 4, expressible without re-architecture'), which is a design-lifecycle/trajectory commitment, not a node/relationship/constraint/index fact. This commitment is never surfaced as a numbered sub-decision and rides along inside a node schema.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "DDR-002 Decision.6 ('This DDR owns the schema contract only') vs DDR-002 §2.4 GateDecision forward-compatibility posture"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-002"],
+"locus": "Change Log v1.1.0 (2026-06-22, RBT-43) vs Decision block",
+"claim": "The Change Log records that checks #20 and #21, the ProvenanceSummary node, RETRACTS edge, and archived status were added as an additive MINOR amendment (CI-only set 19 → 21). These are load-bearing schema decisions, but the top-level Decision block (Decision.1–.6) never enumerates retraction, the ProvenanceSummary/provenance-survival guarantee, or the archived terminal state as decided components — they appear only in body prose. The title/summary/decision-content match is incomplete: substantive decisions in the body are not reflected in what the record claims to decide.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "DDR-002 Decision.1–.6 vs §5 (retraction shape / ProvenanceSummary) + §2.3 (archived) + Change Log RBT-43"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-002"],
+"locus": "§2.2 substitution contract / spike-findings dependency",
+"claim": "ADR-002 §2.2 states 'Community was trialed for it and failed' and asserts 'The rejection is empirically established and ratified,' then locates the durable evidence in 'DDR-001's spike-findings section.' But DDR-001's Spike Findings section explicitly records that 'the specific edition-feature blocker from the original trial is not in the captured record and is not reconstructed here.' The ADR's prose claims an empirically-established rejection whose defining evidence (the specific capability blocker) the cited home admits it does not hold — the decision leans on support the substrate does not supply.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-002 §2.2 ('empirically established and ratified' + edition capability the plane model depends on) vs DDR-001 Spike Findings ('specific edition-feature blocker ... not reconstructed here')"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["ADR-002"],
+"locus": "§6 Enforcement / Compliance",
+"claim": "§6 states 'Compliance is currently aspirational' and 'Mechanized enforcement ... is not built yet.' The ADR template §6 requires that an unbuilt compliance mechanism 'point at a tracking item.' No tracking pointer accompanies the aspirational-compliance admission; the deferred consequence is declared but its tracking artifact is not named.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "adr-template §6 ('Compliance is currently aspirational, tracked at {{ticket}}')"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-001"],
+"locus": "Feedback-Loop Architecture — third component-scoped author class",
+"claim": "DDR-001 introduces a third write-authority author class (the scheduled feedback-loop job authoring CandidatePromotion, plus gateway-authored provenance snapshot and materialized KG node) and states ADR-002 §2.6 'neither closes against nor extends to the feedback loop's own writes.' This is a new write-authority decision homed under ADR-002's principle but not enumerated by ADR-002 §2.6. It is surfaced (Decision.5, conformance check 7), so scope is declared — but the claim that ADR-002 §2.6 'neither closes against nor extends to' the feedback-loop writes is a reading of ADR-002 that ADR-002 itself does not state; DDR-001 is asserting the silence of an upstream authority as license to extend it.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "DDR-001 Feedback-Loop Architecture ('ADR-002 §2.6 neither closes against nor extends to') vs ADR-002 §2.6 (fixes ASA/AOE assignment; makes no statement about feedback-loop writes)"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["DDR-001"],
+"locus": "References / Cross-References — DDR-003 status",
+"claim": "DDR-001 repeatedly routes governance concerns to DDR-003 (feedback-loop governance) as a sibling and forward dependency, and ADR-001 §2.5/§7 name DDR-003 as 'forthcoming.' DDR-003 is not in the document set under review and its status (PROPOSED/ACCEPTED/nonexistent) is undeclared. DDR-001's dependence on an artifact whose existence and status are unstated leaves a named dependency unresolved at this altitude — DDR-001 declares the dependency but not whether the depended-on artifact exists.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "DDR-001 Cross-References ('DDR-003 — feedback-loop governance') + ADR-001 §7 ('DDR-003, forthcoming') vs absent DDR-003 with undeclared status"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["DDR-002"],
+"locus": "§1 / §2 / §5 — scope routing to DDR-001 / DDR-003 / SDDs",
+"claim": "I checked whether DDR-002's decision content stays within its claimed schema-contract scope at each substantive boundary (feedback-loop mechanics, governance policy, gateway API, retrieval affordance, retention policy). At the boundaries that route mechanics/policy elsewhere (§5 ownership line, Boundary Routing Map, Named Gaps), the record consistently names what it owns (node/edge/constraint shape) versus what it cites, and the routing targets are explicitly identified. The scope discipline holds across those routings.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "DDR-002 Decision.6 + §5 ownership line + Cross-References Boundary Routing Map"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-002"],
+"locus": "§2.7 / §4.4 — no-CMEK / no-PHI-by-design posture",
+"claim": "I tried to fault the no-CMEK decision as an undeclared scope commitment. The record cleanly scopes it to the initial build, names the enabling constraint (no-PHI-by-design, classification-enforced), declares the consequence (§5.2 constraint, §5.3 risk with mitigation), and defers a PHI scope-change to its own ADR. The decision decides exactly what it claims, with its dependency (classification enforcement) and side effect (compliance obligation) surfaced. Held.",
+"cited_authority": {
+"kind": "design-intent",
+"ref": "sofia-vision operating-environment constraints ('no PHI by design ... no CMEK in the initial build; a future PHI scope change is its own ADR')"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-001"],
+"locus": "§2.2 / §2.5 — reasoning-capture invariant scope claim",
+"claim": "I checked whether ADR-001 claims to decide the artifact vocabulary/schema (which would overreach into DDR-002's scope). §2.2 explicitly marks ReasoningProgress/Evidence/RejectedAlternative as illustrative and defers canonical labels, properties, and vocabulary to DDR-002; §2.5 commits only the principle that the promotion mechanism exists and is EA-gated, deferring governance to DDR-003. The record decides the conceptual capture contract and no more. Claim-fidelity held.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-001 §2.2 ('illustrative ... owned by the Graph Schema document (DDR-002)') + §2.5 deferral to DDR-003"
+}
+}
+]

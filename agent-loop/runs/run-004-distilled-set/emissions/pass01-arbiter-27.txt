@@ -1,0 +1,7 @@
+{
+  "finding_id": "23c287081787c96f",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding exposes a timing/status gap: both DDRs route load-bearing policy to DDR-003, which is absent from the set and has no ratified status, and no ratified authority dictates whether these DDRs may stand fully accepted while their designated policy home is unwritten. Resolving this requires a choice (accept-as-is vs. ACCEPTED-WITH-CONDITIONS vs. hold) that authority does not disambiguate.",
+  "confidence": "high"
+}

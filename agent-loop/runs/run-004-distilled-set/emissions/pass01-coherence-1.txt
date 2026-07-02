@@ -1,0 +1,92 @@
+[
+{
+"severity": "POSITIVE",
+"target": ["ADR-001", "ADR-002", "DDR-001", "DDR-002"],
+"locus": "Reasoning-state write authority — ASA/AOE split",
+"claim": "Checked the ASA-authors-ReasoningProgress / AOE-owns-ReasoningSession-lifecycle assignment across all four documents for drift: ADR-002 §2.6 fixes it, DDR-001 §Reasoning Graph and conformance check 3 restate it, and DDR-002 §4 write-authority and §7 check #7 realize it identically. The assignment holds consistently with no term or scope drift.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-002 §2.6 vs DDR-001 §Reasoning Graph vs DDR-002 §4/§7#7 — write-authority assignment"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-002", "DDR-001", "DDR-002"],
+"locus": "No-vector-store commitment",
+"claim": "Checked the no-vector-store invariant against reintroduction across the stack: ADR-002 §2.4/§4.3 commits three stores no vector; DDR-001 Hybrid Persistence and conformance echo it; DDR-002 §1 no-vectors-both-halves names the graph-native retrieval substitute and §7 check #2 binds the prohibition. Consistent; the positive-half substrate (l1/l2/l3 taxonomy, selection edges) is named without contradicting the prohibition.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-002 §2.4 vs DDR-001 Hybrid Persistence vs DDR-002 §1/§7#2"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-002", "DDR-001", "DDR-002"],
+"locus": "SOFIA-never-self-modifies / EA-gated promotion",
+"claim": "Attempted to fault the never-self-modifies invariant against the derived Operational-plane distillation write (ObservedPattern, non-EA-gated). DDR-002 §2.3 resolves it via the derive/promote authority seam (Operational is staging tier, EA gate sits between it and authoritative knowledge), consistent with DDR-001 Decision.5 and ADR-001 §2.5. The invariant holds; the distillation write does not breach it.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-001 §2.5 / DDR-001 Decision.5 vs DDR-002 §2.3 derive/promote seam"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["ADR-001"],
+"locus": "§2.2 vs §7 — illustrative RG artifact kinds",
+"claim": "§2.2 names the illustrative artifact kinds as 'ReasoningProgress, Evidence, RejectedAlternative' and §6 check 2 repeats that trio, but §7's cross-reference and DDR-002 fix the fuller vocabulary as ReasoningSession/ReasoningProgress/Evidence/RejectedAlternative; ADR-001's illustrative list omits ReasoningSession, which the canonical schema treats as a first-class RG type.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-001 §2.2 illustrative kinds vs DDR-002 §4 RG type set"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-002", "DDR-001", "DDR-002"],
+"locus": "Substitution contract / capability bar routing",
+"claim": "Checked the substitution-contract chain: ADR-002 §2.2 defers the precise capability bar to DDR-001, DDR-001 establishes the five-point bar in its Substitution-Contract section, and DDR-002 references it without re-authoring. The routing is consistent and no document over-claims ownership of the bar.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-002 §2.2 vs DDR-001 Substitution-Contract Capability Bar"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-002", "DDR-001", "DDR-002"],
+"locus": "Community-trial spike-finding home",
+"claim": "Checked the Community-rejection empirical claim for a durable home and for consistency with logical-not-physical realization. ADR-002 §2.2/§4.1 route the spike finding to DDR-001; DDR-001 Spike Findings records it and deliberately avoids attributing the rejection to a single-database limit (which would contradict ADR-002 §2.3's one-instance logical realization). The narrative and substrate are aligned.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-002 §2.2/§4.1 vs DDR-001 Spike Findings vs ADR-002 §2.3 logical realization"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["DDR-002"],
+"locus": "Layer of Abstraction note — 'twelve SDDs'",
+"claim": "The Rationale and Layer-of-Abstraction sections state DDR-002 gates 'twelve SDDs' / 'the twelve downstream service SDDs', but no document in the set enumerates or otherwise substantiates a count of twelve; the figure appears only as an unsupported magnitude within DDR-002 itself.",
+"cited_authority": {
+"kind": "design-intent",
+"ref": "author-decision-record-SKILL — 'Be specific'; a stranger with no tracker access should be able to build from the record"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-002", "DDR-001", "DDR-002"],
+"locus": "Feedback-loop write-authority extension beyond ADR-002 §2.6",
+"claim": "Attempted to fault DDR-001's homing of the three feedback-loop writes (CandidatePromotion job, gateway provenance snapshot, gateway KG materialization) against ADR-002 §2.6, whose enumerated assignment is synthesis-capture-scoped. DDR-001 correctly frames these as a same-principle extension (component-scoped, gateway-routed) rather than a contradiction of §2.6, and DDR-002 §5/§7 realize them consistently. No conflict.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-002 §2.6 vs DDR-001 Feedback-Loop write authority vs DDR-002 §5 promotion edges"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["DDR-001"],
+"locus": "References field vs no-Migration-Path claim consistency",
+"claim": "DDR-001 header lists References ADR-001 v1.0.0; ADR-002 v1.0.0, but the metadata table omits a Version-per-reference alignment check against DDR-002 which cites DDR-001 v1.2.0 — the cross-version references resolve consistently across the set (DDR-002 → DDR-001 v1.2.0 matches DDR-001's stated version), so this was checked and holds.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "DDR-001 metadata v1.2.0 vs DDR-002 References 'DDR-001 v1.2.0'"
+}
+}
+]

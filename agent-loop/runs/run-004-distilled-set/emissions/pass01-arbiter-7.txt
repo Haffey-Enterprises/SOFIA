@@ -1,0 +1,7 @@
+{
+  "finding_id": "f84ac10b6cf8bda2",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 Decision.6 + §5 ownership line + Cross-References Boundary Routing Map (the record's own ratified scope-routing content)",
+  "rationale": "This is a POSITIVE confirmation that DDR-002's scope discipline already holds at each boundary by conforming to its own ratified ownership/routing statements; no new choice is introduced and the determining loci are named.",
+  "confidence": "high"
+}

@@ -1,0 +1,7 @@
+{
+  "finding_id": "f789ddb859146767",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "ADR-001 §2.2 states a per-artifact 'source attribution by category' obligation while DDR-002 §4 exempts the Evidence type from carrying provenance as a property, recovering it structurally via SOURCED_FROM; no cited higher authority reconciles whether structural provenance satisfies the per-artifact attribution obligation, so resolving requires a ruling that has not been made.",
+  "confidence": "high"
+}

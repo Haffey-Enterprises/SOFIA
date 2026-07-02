@@ -1,0 +1,7 @@
+{
+  "finding_id": "2fd875885b9d0e6e",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding exposes a gap: §2.4 leaves the reader to infer that rule #17 alone discriminates `ingested` from a future `authored` gate, but no ratified authority establishes that #17 is the sole/definitive discriminator — closing this requires deciding what invariant distinguishes the two live values, a choice not yet made.",
+  "confidence": "medium"
+}

@@ -1,0 +1,7 @@
+{
+  "finding_id": "d6053ce6b5a6c552",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "No ratified authority declares whether DDR-003 exists or its status; resolving requires a choice (declare status, mark forthcoming/tracked, or restructure the dependency) that the templates and stated intent do not disambiguate. The SDD routing note about ACCEPTED-vs-PROPOSED prerequisites is not on point since the depended-on artifact's existence itself is unstated.",
+  "confidence": "high"
+}

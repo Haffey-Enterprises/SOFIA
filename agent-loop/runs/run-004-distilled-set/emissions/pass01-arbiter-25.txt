@@ -1,0 +1,7 @@
+{
+  "finding_id": "912767fffccabfa6",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding cites ADR-001 as treating Position-4 SOFIA-as-authoritative-decider as an unratified end-state subordinated to an EA-gated promotion mechanism; whether baking a forward-compatible authoritative-decider schema affordance into DDR-002 is permissible before that promotion is ratified is precisely the unmade choice — no cited authority disambiguates 'reserve the surface now' vs 'defer until Position-4 is ratified'.",
+  "confidence": "high"
+}

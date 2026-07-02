@@ -1,0 +1,7 @@
+{
+  "finding_id": "d69da3e8893398d8",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "DDR-002's own scope statement (Decision.6: 'owns the schema contract only') conflicts with §2.4 which embeds a forward-compatibility/trajectory commitment; whether to surface that as a numbered sub-decision, relocate it (e.g., to ADR-001), or narrow the scope statement is an unratified choice among conforming options that no higher authority disambiguates.",
+  "confidence": "high"
+}

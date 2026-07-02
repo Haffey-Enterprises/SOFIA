@@ -1,0 +1,7 @@
+{
+  "finding_id": "f4738b7babc51196",
+  "classification": "resolvable",
+  "authority_locus": "adr-template §6 ('Compliance is currently aspirational, tracked at {{ticket}}, ... point at a tracking item')",
+  "rationale": "The template §6 explicitly dictates that an unbuilt compliance mechanism must point at a tracking item; conforming to it requires adding the named tracking pointer, a fix determined by the authority with no new choice introduced.",
+  "confidence": "high"
+}

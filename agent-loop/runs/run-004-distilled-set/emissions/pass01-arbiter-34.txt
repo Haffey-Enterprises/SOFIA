@@ -1,0 +1,7 @@
+{
+  "finding_id": "e8cdf1c0e6e1aea8",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The 'Be specific' intent flags that the count of twelve is unsubstantiated, but it does not determine the fix — resolving it requires either establishing the true number of downstream SDDs or choosing to soften/remove the figure, and no authority supplies the count or dictates which correction is right.",
+  "confidence": "high"
+}

@@ -1,0 +1,51 @@
+[
+{
+"severity": "POSITIVE",
+"target": ["ADR-001"],
+"locus": "§2.1 trajectory commitment / §2.5 encoding-density growth",
+"claim": "Attacked the Position-5-on-a-trajectory-toward-Position-4 commitment for premature/over-commitment: whether committing a directional north-star (Position 4) before any service or per-phase design exists over-commits the platform to an unreachable end-state. It holds — the ADR explicitly frames Position 4 as a non-binary trajectory ('may never be strictly reached'), keeps the capture-discipline invariant as the only hard commitment, and defers per-stage mechanics as 'provisional' (§2.4), so the timing posture is proportionate to what is settled.",
+"cited_authority": {"kind": "design-intent", "ref": "sofia-vision — 'on a trajectory toward SOFIA-as-reasoner, LLM-as-tool'"}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-002"],
+"locus": "§2.2 / §5.2 topology deferral vs edition commitment",
+"claim": "Attacked ADR-002 for reversibility-proportionality: it commits a hard-to-reverse edition + runtime choice (Neo4j Enterprise, self-managed GKE) while deferring production topology. Checked whether the hard commitment carries justification proportionate to undoing cost — it does: the edition rests on a ratified spike (Community failed the plane model), the GKE runtime is a forced exception (no managed Neo4j on GCP), and only the genuinely workload-dependent axis (topology) is deferred. Posture is sound.",
+"cited_authority": {"kind": "canonical", "ref": "ADR-002 §2.2 substitution contract + §5.2 topology deferral"}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-001", "DDR-003"],
+"locus": "ADR-001 §2.5 / §5.3 — Position-4 trajectory engine deferred to unwritten DDR-003",
+"claim": "The Position-4 trajectory — ADR-001's central non-rhetorical differentiator over a static Position 5 — is made real solely by the EA-gated promotion mechanism whose entire governance is deferred to DDR-003, which does not exist in the set and has no draft. ADR-001 §5.3 itself flags that if the mechanism 'is never built the trajectory becomes rhetorical.' The ADR is ACCEPTED and multiple downstream records (DDR-001, DDR-002) commit substantial schema (CandidatePromotion, PROMOTES_TO_KNOWLEDGE, ProvenanceSummary, retraction) against a governance authority that has never been ratified — a commitment to a position whose load-bearing dependency is unsettled.",
+"cited_authority": {"kind": "coherence", "ref": "ADR-001 §2.5/§5.3 commits the trajectory engine; DDR-001 §Feedback-Loop and DDR-002 §5 build schema against DDR-003 governance that is absent from the set"}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-002"],
+"locus": "§7 named exposure window — safety-critical CI-only invariants unmechanized across an accepted schema",
+"claim": "DDR-002 is ACCEPTED and declared to gate twelve downstream SDDs, yet its entire safety-critical invariant tier (#1, #7, #13, #14, #15, #16, #17, #19, #21 — including no-PHI, write-authority, no-unapproved-promotion, no-unauthorized-retraction) is CI-only and unmechanized, enforced only by three-hat review. The set accepts a schema whose ground-truth-integrity guarantees depend entirely on a mechanization effort ('conformance-mechanization') that is neither scheduled nor ratified as a decision record. Accepting a system-of-record schema whose safety controls are aspirational is a posture commitment that deserves an explicit gating decision on when the gateway may be authored against it.",
+"cited_authority": {"kind": "canonical", "ref": "DDR-002 §7 'Named exposure window + sequencing' + ADR-002 §2.7 no-PHI enforcement dependency"}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-002", "ADR-002"],
+"locus": "DDR-002 §2.4 GateDecision.origin_mechanism 'authored' reserved for Position-4 SOFIA-as-decider",
+"claim": "DDR-002 §2.4 reserves-and-makes-available an `origin_mechanism: authored` GateDecision path for 'a future SOFIA-as-authoritative-decider state (Position 4)' — schema that lets SOFIA itself author authoritative SDLC gate decisions. This anticipates a platform-posture shift (SOFIA making authoritative approval decisions rather than capturing externally-made ones) that ADR-001 treats as the audacious end-state never explicitly ratified as reachable, and that ADR-001 §2.5 subordinates to an EA-gated promotion mechanism. Baking a forward-compatible authoritative-decider surface into the schema commits the platform toward a position that arguably deserves its own decision record before the schema affordance is fixed.",
+"cited_authority": {"kind": "coherence", "ref": "DDR-002 §2.4 GateDecision authored-reserved vs ADR-001 §2.1 Position 4 as unratified end-state / §2.2 human-override authority"}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-002", "DDR-001", "DDR-002"],
+"locus": "no-vector-store reversibility framing across the three records",
+"claim": "Attacked the no-vector-store commitment as a hard-to-reverse posture stated once and inherited downstream. Checked whether reversal cost is honestly acknowledged proportionate to blast radius — it is: ADR-002 §5.3 frames re-introduction as 'a store-set change with real blast radius, not a routine trigger' with an explicit ADR trigger, and DDR-002 §1 names the positive graph-native substitute rather than leaving the rejection bare. The reversibility posture is proportionate and coherent across records.",
+"cited_authority": {"kind": "canonical", "ref": "ADR-002 §2.4/§4.3/§5.3 no-vector reversibility + DDR-002 §1 no-vector positive half"}
+},
+{
+"severity": "COSMETIC",
+"target": ["DDR-001", "DDR-002"],
+"locus": "DDR-003 referenced as sibling authority for policy across both DDRs while absent from the set",
+"claim": "Both DDR-001 and DDR-002 route a large, load-bearing volume of policy (retention windows, EA approval criteria, archival triggers, remedy-boundary supersession-vs-retraction, multi-condition governance, judgment-consolidation health) forward to DDR-003, which is not present in the review set and has no ratified status. The architecture/governance split is asserted as 'settled,' but the governance half has no ratified home — the timing question of whether these DDRs should stand fully accepted while their designated policy authority is unwritten is worth recording.",
+"cited_authority": {"kind": "coherence", "ref": "DDR-001 §Cross-References 'architecture/governance split is settled' + DDR-002 §Cross-References → DDR-003 forward-routing, DDR-003 absent from set"}
+}
+]

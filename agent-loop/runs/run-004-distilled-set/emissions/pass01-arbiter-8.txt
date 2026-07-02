@@ -1,0 +1,7 @@
+{
+  "finding_id": "2e6d76050607058d",
+  "classification": "resolvable",
+  "authority_locus": "sofia-vision operating-environment constraints ('no PHI by design ... no CMEK in the initial build; a future PHI scope change is its own ADR')",
+  "rationale": "The finding is a POSITIVE hold that confirms ADR-002 conforms exactly to the stated design intent; no choice remains open since intent explicitly scopes no-CMEK to the initial build and defers PHI scope-change to its own ADR.",
+  "confidence": "high"
+}

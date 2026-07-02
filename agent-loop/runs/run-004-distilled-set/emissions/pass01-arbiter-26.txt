@@ -1,0 +1,7 @@
+{
+  "finding_id": "653c1afac60a15da",
+  "classification": "resolvable",
+  "authority_locus": "ADR-002 §5.3 (re-introduction framed as store-set change with ADR trigger) + DDR-002 §1 (graph-native positive substitute)",
+  "rationale": "This is a POSITIVE finding affirming that the no-vector-store reversibility posture already conforms to the cited canonical loci; it introduces no new choice and names no gap, so it is determined by existing authority.",
+  "confidence": "high"
+}

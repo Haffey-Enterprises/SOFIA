@@ -1,0 +1,7 @@
+{
+  "finding_id": "7a4e02d07810d163",
+  "classification": "resolvable",
+  "authority_locus": "ADR-002 §2.4 no-vector-store, conformed to by DDR-001 Hybrid Persistence Model and DDR-002 §1/§7 #2",
+  "rationale": "This is a POSITIVE finding confirming the no-vector-store commitment propagates without contradiction and each downstream record cites the authority it conforms to; no new choice is introduced and the governing authority is named.",
+  "confidence": "high"
+}
