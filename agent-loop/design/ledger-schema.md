@@ -99,6 +99,12 @@ reviewer emits a finding whose derived `id` already exists in the ledger:
 finding hashes stably. Getting this normalization wrong breaks oscillation from
 below; it is the one place in the skeleton worth a test of its own.
 
+**`source` / `altitude` — "set by: reviewer," satisfied at the port boundary
+(ratified 2026-07-01).** For real LLM reviewers, the runner stamps both fields
+from the invoked reviewer's identity, ignoring any value in the model's emitted
+text — hardcode over trust; a hat cannot mislabel its own altitude, accidentally
+or otherwise. See `runner-real-hats.contract.md` §7.
+
 ## Admission gate (mechanical — scope enforcement)
 
 Before a finding enters the ledger it must pass a **structural** check:

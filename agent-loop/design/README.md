@@ -72,5 +72,4 @@ is opened. Intended actions are logged. Run one is not autonomous.
 - **Severity vocabulary — RATIFIED 2026-07-01.** The house `code-review` ladder
   (`BLOCKING / MATERIAL / COSMETIC / POSITIVE`) is the single vocabulary across all
   Haffey tools/agents/systems; the counted-for-convergence set is
-  `{BLOCKING, MATERIAL}`. See `ledger-schema.md` §Severity. The skeleton code carries
-  a pending rebind off the old `{critical, blocking, major}` set.
+  `{BLOCKING, MATERIAL}`. See `ledger-schema.md` §Severity.
