@@ -1,0 +1,7 @@
+{
+  "finding_id": "ed1fa7d2f889e377",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "ADR-002 §2.5 frames knowledge-service as an access boundary concentrating enforcement, and §2.6 scopes write authority to reasoning/authoring components; neither authority resolves whether a gateway may itself be the authoring component of an authoritative KG write, and DDR-001 acknowledges §2.6 'neither closes against nor extends to' the feedback loop's writes — an explicit silence.",
+  "confidence": "high"
+}

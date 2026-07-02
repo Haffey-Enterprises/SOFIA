@@ -1,0 +1,7 @@
+{
+  "finding_id": "cb282dff6c814649",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The template guides ADR shape but does not dictate whether component identities (ASA, AOE) named inside a system-of-record ADR must be surfaced as declared dependencies, nor how to reconcile that — remedy could be relocating the assignment, declaring the dependency, or leaving it; no authority disambiguates among these conforming options.",
+  "confidence": "medium"
+}

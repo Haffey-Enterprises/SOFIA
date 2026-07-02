@@ -1,0 +1,7 @@
+{
+  "finding_id": "241c43f4a156bee6",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding shows ADR-002 §2.6 is silent on feedback-loop write authority — the DDR itself admits the ADR 'neither closes against nor extends to' those writes — so homing a third component-scoped author class and gateway-materialized KG writes fills a gap no ratified authority determines. Which way to resolve (extend the principle, or defer to a new decision) is an unratified choice.",
+  "confidence": "high"
+}

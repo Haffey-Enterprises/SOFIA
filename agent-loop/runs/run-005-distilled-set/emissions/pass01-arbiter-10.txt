@@ -1,0 +1,7 @@
+{
+  "finding_id": "7c25420a1facf1eb",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §2.4 — 'Actor/Role are governance-participating identities, not an IAM mirror'",
+  "rationale": "The finding itself states the two documents are reconcilable and names the exact disambiguating text in DDR-002 §2.4; the fix is a determined cross-reference/clarification dictated by that already-ratified locus, introducing no new choice.",
+  "confidence": "high"
+}

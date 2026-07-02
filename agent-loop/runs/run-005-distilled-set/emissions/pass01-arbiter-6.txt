@@ -1,0 +1,7 @@
+{
+  "finding_id": "855eff980962f7db",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record-SKILL, 'State decisions testably' discipline + ddr-template §Decision ('expand the ruling's components as numbered subsections') ",
+  "rationale": "The DDR template and the authoring skill's 'state decisions testably' discipline both require load-bearing rulings to be surfaced as testable Decision-line components; the fix is to promote the §5/§6 rulings into numbered Decision subsections, which is determined by existing template authority and introduces no new design choice.",
+  "confidence": "medium"
+}

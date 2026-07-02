@@ -1,0 +1,7 @@
+{
+  "finding_id": "40aef0f8888c9702",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding exposes a gap: ADR-001 §2.5 is cited as speaking to promotion/consolidation only, and no ratified authority locus governs the retraction/un-promotion path. Whether the RETRACTS-edge shape stays within ADR-001's 'never self-modifies' invariant is asserted, not determined by any nameable authority — so resolving it requires a decision not yet made.",
+  "confidence": "high"
+}

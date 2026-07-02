@@ -1,0 +1,7 @@
+{
+  "finding_id": "61f33a96e1872c42",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The precede-gateway sequencing commitment binds not-yet-authored downstream SDD/conformance-mechanization work order, and no ratified authority establishes that the CI harness can exist before the gateway it guards; whether to make (or how to justify) that sequencing commitment is an unratified choice with a feasibility gap.",
+  "confidence": "high"
+}

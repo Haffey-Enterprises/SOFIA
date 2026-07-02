@@ -1,0 +1,7 @@
+{
+  "finding_id": "498012b846a51b39",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The deliberation gate forbids claiming empirical grounding the cited home does not hold, but the fix requires an unratified choice: either reconstruct/recapture the missing blocker, re-characterize the justification as deliberation-grounded, or downgrade the empirical claim — no authority disambiguates which, and the substrate that would supply the blocker is silent.",
+  "confidence": "high"
+}

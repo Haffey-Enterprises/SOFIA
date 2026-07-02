@@ -1,0 +1,7 @@
+{
+  "finding_id": "22b3ac4ae815e543",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record-SKILL 'Status and version' — version numbering scheme (0.X.0 / 1.0.0 / 1.X.0); adr-template §8 Change Log note ('1.0.0 at first ACCEPTED; 1.X.0 material post-acceptance amendments')",
+  "rationale": "The authority defines a determinate version scheme: 1.0.0 is first ACCEPTED, material post-acceptance amendments bump to 1.X.0, and typo/format fixes within a drafting session don't bump — so whether the 2026-07-01 distillation pass is a material amendment (→1.1.0) or a non-bumping fix is dictated by that named rule rather than an unmade choice.",
+  "confidence": "medium"
+}

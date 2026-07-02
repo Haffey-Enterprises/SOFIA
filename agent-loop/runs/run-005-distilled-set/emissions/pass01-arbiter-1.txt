@@ -1,0 +1,7 @@
+{
+  "finding_id": "bfa59e826010cd98",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding exposes that a committed mechanism's governance is delegated to DDR-003, an artifact absent from the document set with no ratified authority establishing its status, existence, or an alternate governance home; resolving this requires a choice (author DDR-003, mark the delegation forthcoming/conditional, or relocate governance) that no cited authority disambiguates.",
+  "confidence": "high"
+}

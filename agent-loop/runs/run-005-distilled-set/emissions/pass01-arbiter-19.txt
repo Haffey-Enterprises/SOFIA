@@ -1,0 +1,7 @@
+{
+  "finding_id": "da89dc214ea9ae85",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §4 canonical RG type set (four types incl. ReasoningSession); ADR-001 §2.2 explicitly defers canonical RG labels to DDR-002",
+  "rationale": "ADR-001 §2.2 itself defers canonical labels to DDR-002, and DDR-002 §4 already ratifies the four-type set including ReasoningSession; conforming the illustrative list to the deferred-to canonical authority is determined, introducing no new choice.",
+  "confidence": "high"
+}

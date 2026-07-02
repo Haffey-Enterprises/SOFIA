@@ -1,0 +1,7 @@
+{
+  "finding_id": "64e28d99e42ca732",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding exposes a silence: neither DDR-002 §2.4/§7 nor ADR-001 §6 states what source_record_ref.{source_system_class, record_id} resolves to when SOFIA's own internal three-hat review produces a gate decision — origin_mechanism:ingested presupposes an external system of record, but the platform's own gate is SOFIA-internal, and no authority disambiguates whether such a decision is 'ingested' at all or requires a different origin_mechanism.",
+  "confidence": "high"
+}

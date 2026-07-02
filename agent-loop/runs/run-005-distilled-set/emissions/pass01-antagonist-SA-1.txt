@@ -1,0 +1,58 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["DDR-002"],
+"locus": "§2.4 GateDecision — origin_mechanism live property vs. §7 check #17",
+"claim": "GateDecision is stated to carry origin_mechanism 'ingested' as the only currently-grounded case, with source_record_ref required per §1's 'required on ingested' rule and §7 check #17 ('ingested ⇒ source_record_ref'). But GateDecision also carries all_hard_constraints_passed, rejection_reason, and a DECIDED_ON edge, and §2.4 says 'the external entity is the system of record and the node is a captured reference.' The schema does not state what source_record_ref's {source_system_class, record_id} resolves to for an SDLC gate decision that SOFIA's own three-hat review produces — ADR-001 §6 names three-hat (LAA/SA/EA) review as the operational gate, which is internal to SOFIA, not an external SoR. This is an internal contradiction between 'gate decisions are externally-sourced captured references (ingested)' and the platform's own gate being SOFIA-internal.",
+"cited_authority": {"kind": "coherence", "ref": "DDR-002 §2.4 GateDecision origin_mechanism:ingested + §7 #17 vs. ADR-001 §6 three-hat review as the internal gate"}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-001"],
+"locus": "Feedback-Loop Architecture — at-promotion provenance snapshot write authority",
+"claim": "DDR-001 assigns the at-promotion provenance snapshot write to 'the gateway' as a structural side-effect, and the materialized KG node + PROMOTES_TO_KNOWLEDGE edge to 'the gateway on EA approval.' ADR-002 §2.5 names knowledge-service as the sole graph-access gateway and §2.6 fixes reasoning-state write authority as component-scoped (ASA authors ReasoningProgress, AOE owns ReasoningSession). ADR-002 §2.6 explicitly states its enumerated assignment; DDR-001 acknowledges ADR-002 §2.6 'neither closes against nor extends to the feedback loop's own writes' and homes them under the same principle. However, DDR-001 assigns an authoritative KG ground-truth write (the materialized node) to the gateway itself acting as author-on-approval — the gateway is the access boundary in ADR-002 §2.5, not a reasoning/authoring component. Whether a gateway can be the authoring component of an authoritative KG write, versus merely executing a write authored elsewhere, is left unresolved against ADR-002 §2.5's framing of knowledge-service as an access boundary concentrating enforcement, not an authoring authority.",
+"cited_authority": {"kind": "canonical", "ref": "ADR-002 §2.5 (gateway as access boundary) / §2.6 (component-scoped write authority) vs. DDR-001 Feedback-Loop Architecture (gateway as authoring component of KG materialization)"}
+},
+{
+"severity": "COSMETIC",
+"target": ["DDR-001"],
+"locus": "Two-Graph Model — Governance plane source-class 'IAM + SOFIA workflow events'",
+"claim": "The Governance plane's source-class is listed as 'IAM + SOFIA workflow events' with cadence 'event-driven,' and §2.4 of DDR-002 states Actor/Role are 'governance-participating identities, not an IAM mirror.' DDR-001's source-class naming ('IAM') and DDR-002's 'not an IAM mirror' are reconcilable but the term IAM appears as a source-class in DDR-001 without the disambiguation DDR-002 later supplies, so a reader consulting DDR-001 alone could read the Governance plane as an IAM mirror the schema explicitly disclaims.",
+"cited_authority": {"kind": "coherence", "ref": "DDR-001 Governance-plane source-class 'IAM' vs. DDR-002 §2.4 'Actor/Role are not an IAM mirror'"}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-002"],
+"locus": "§2.3 Operational archived-write vs. ADR-001 SOFIA-never-self-modifies",
+"claim": "DDR-002 §2.3 states the archived-status write is 'a non-EA-gated derived Operational-plane write per the derive/promote authority seam (Operational is the staging tier; the EA gate sits between it and authoritative knowledge — so this distillation write does not breach ADR-001's SOFIA-never-self-modifies invariant).' ADR-001 §2.5 commits 'SOFIA does not self-modify its encoded reasoning without EA approval' — the invariant is scoped to encoded reasoning, and ADR-002 §2.1 makes the graph (including the KG, of which Operational is a plane per DDR-001 Decision.2) the authoritative system of record for architecture and reasoning state. The claim that Operational is a 'staging tier' below the EA gate is asserted in DDR-002 but is not established in ADR-002 §2.4 (which lists Neo4j as system of record for the KG without a within-KG staging distinction) nor in DDR-001 (which treats Operational as one of five KG planes, not a pre-authoritative staging layer). The 'derive/promote authority seam' placing an entire KG plane below the authoritative line is a substantiation gap against the upstream authorities it cites for cover.",
+"cited_authority": {"kind": "canonical", "ref": "ADR-001 §2.5 (SOFIA-never-self-modifies, EA-gated) + ADR-002 §2.1/§2.4 (graph/KG as authoritative SoR) vs. DDR-002 §2.3 'Operational is the staging tier below the EA gate'"}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-002"],
+"locus": "§4 ProvenanceSummary / §5 provenance-survival guarantee — frozen Evidence set completeness",
+"claim": "The provenance-survival guarantee relies on ProvenanceSummary.frozen_fact_summaries capturing 'the set of originating Evidence the promotion's provenance chain spans, frozen at materialization.' §7 #20 enforces that a ProvenanceSummary is written at promotion time. But nothing in the schema specifies how the materialization step enumerates the complete Evidence set to freeze: the provenance chain (§5) is PROMOTES_TO_KNOWLEDGE → CandidatePromotion → PROPOSED_FROM → ReasoningProgress/Evidence/RejectedAlternative → SOURCED_FROM. A CandidatePromotion may be PROPOSED_FROM a ReasoningProgress whose supporting Evidence is reached via SUPPORTED_BY, and RejectedAlternative reaches KG via WOULD_HAVE_USED (not SOURCED_FROM Evidence). The guarantee that the frozen set is complete — that no originating Evidence is missed at freeze time — is asserted but the traversal that must be complete for the guarantee to hold is not specified as an invariant; §7 #20 checks existence of a ProvenanceSummary, not completeness of its frozen set. The design claims post-expiry audit survival but is silent on the completeness edge case its own claim depends on.",
+"cited_authority": {"kind": "soundness", "ref": "DDR-002 §5 provenance-survival guarantee (frozen Evidence-set completeness) vs. §7 #20 (existence-only materialization check)"}
+},
+{
+"severity": "COSMETIC",
+"target": ["ADR-001"],
+"locus": "§2.2 illustrative artifact kinds vs. §6 compliance check 2",
+"claim": "§2.2 states the artifact kinds (ReasoningProgress, Evidence, RejectedAlternative) are 'illustrative' and their canonical labels are owned by DDR-002, while §6 compliance check 2 mandates 'a captured RG artifact (illustrative kinds per §2.2 — ReasoningProgress / Evidence / RejectedAlternative) with source attribution and authoritative flag.' A compliance check that is mandatory-and-verifiable while its named artifact kinds are declared illustrative-not-canonical creates a minor tension: the check cannot be mechanically verified against illustrative names, which §6's own 'Compliance is aspirational until mechanized' framing partially covers but does not fully resolve for the SA-conformance reading.",
+"cited_authority": {"kind": "coherence", "ref": "ADR-001 §2.2 (illustrative kinds, DDR-002-owned) vs. §6 check 2 (mandatory check citing those kinds)"}
+},
+{
+"severity": "POSITIVE",
+"target": ["DDR-002", "ADR-002"],
+"locus": "§7 #15 promoted-origin → governing approving decision + §2.4 append-only PromotionDecision",
+"claim": "Attacked the promoted-node accountability chain for a stale-approval defect: a node materialized on an approval that was later reversed. The design keys #15 off the 'governing' DECIDED_ON edge (latest decided_at), not any approving edge, and pairs it with the retraction shape (#21) as the un-promotion remedy — so a node whose governing verdict has flipped to rejected is detected despite a stale earlier approved edge. The append-only PromotionDecision model (§2.4) plus latest-decided_at governing-edge selection holds against the re-decision race I tried to construct. Checked against ADR-001 §2.5 EA-gated-mutation and DDR-001 conformance check 4 (SOFIA never self-modifies).",
+"cited_authority": {"kind": "canonical", "ref": "DDR-002 §7 #15/#21 + §2.4 vs. ADR-001 §2.5 (EA-gated consolidation) / DDR-001 check 4"}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-002", "DDR-001"],
+"locus": "§2.2 substitution contract + §4.1 Community rejection resting on DDR-001 spike-findings",
+"claim": "Attacked the substantiation of the Community→Enterprise rejection: ADR-002 §2.2/§4.1 claim the Community trial is 'empirically established and ratified' while admitting the trial predates the corpus and its outcome is carried as institutional memory. The rejection could have been an unsubstantiated assertion. But ADR-002 routes the substantiation to a named durable home (DDR-001 spike-findings), DDR-001's Spike Findings section explicitly records the recovery-boundary (the specific edition-feature blocker is 'not reconstructed here') and deliberately avoids attributing the rejection to Community's single-DB limit to prevent contradicting ADR-002 §2.3's logical-not-physical realization. The cross-reference resolves and the honesty about the recovery boundary makes the claim defensible without over-claiming a reconstructed blocker. The substitution contract (§2.2) routes its capability bar to DDR-001, which supplies it (5-point bar). Cross-references resolve and the substantiation chain is intact.",
+"cited_authority": {"kind": "canonical", "ref": "ADR-002 §2.2/§4.1 substitution + Community-rejection substantiation vs. DDR-001 Spike Findings + Substitution-Contract Capability Bar"}
+}
+]

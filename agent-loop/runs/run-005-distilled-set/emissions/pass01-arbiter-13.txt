@@ -1,0 +1,7 @@
+{
+  "finding_id": "4271a56bd318927c",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The tension is between ADR-001 §2.2 declaring the artifact kinds illustrative/DDR-002-owned and §6 check 2 mandating verification against those same named kinds; no cited authority (ADR-001 itself, DDR-002, or the templates) disambiguates whether the compliance check should reference canonical DDR-002 labels, be reworded as illustrative, or remain as-is — resolving it requires a choice not yet ratified.",
+  "confidence": "medium"
+}

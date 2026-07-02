@@ -1,0 +1,7 @@
+{
+  "finding_id": "dae718691e3b5da0",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "Multiple ACCEPTED records route load-bearing decisions (retraction remedy-boundary, archival policy, retention windows, batch-promotion eligibility, etc.) to DDR-003, which does not yet exist; the governing decisions themselves are unmade, and no ratified authority determines them. This is a gap/silence in authority, not a conformance fix.",
+  "confidence": "high"
+}

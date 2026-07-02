@@ -1,0 +1,42 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["DDR-002"],
+"locus": "§4 conclusion_type ↔ correction-surface mapping / §5 Generalized correction mechanism",
+"claim": "The §4 mapping asserts the six conclusion_type values map onto 'seven correction-surfaces of §5 (technology, pattern, capability, integration, risk, compliance, cost)' — but §5's Generalized correction mechanism enumerates exactly those same seven as surfaces while §4 states integration and cost 'surface as TechnologySelection/GapConclusion variants rather than distinct conclusion types.' The enum has six values (PatternMatch/TechnologySelection/GapConclusion/OverrideFlag/RiskSignal/ComplianceEvaluation); the seven-surface mapping leaves capability without a clean distinct conclusion_type home (no CapabilityConclusion value exists), so the six→seven claim is not fully realizable against the enum as fixed.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "DDR-002 §4 conclusion_type enum (six values) vs DDR-002 §4/§5 seven correction-surfaces mapping claim"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["ADR-001"],
+"locus": "§2.2 / §6 check 2 — illustrative artifact kinds",
+"claim": "§2.2 names the illustrative RG artifact kinds as 'ReasoningProgress, Evidence, RejectedAlternative' and defers canonical labels to DDR-002; §6 check 2 repeats 'ReasoningProgress / Evidence / RejectedAlternative'. DDR-002 §4 fixes four RG types (adds ReasoningSession) and DDR-001 names ReasoningSession as an ASA/AOE-split first-class role. The ADR's illustrative list omits ReasoningSession, which the downstream canonical vocabulary treats as a load-bearing RG node with its own write authority; the illustrative set drifts from the canonical set it defers to.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-001 §2.2 illustrative RG kinds vs DDR-002 §4 canonical RG type set (ReasoningSession added)"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-002", "DDR-001", "DDR-002"],
+"locus": "reasoning-state write authority (ADR-002 §2.6 / DDR-001 Reasoning Graph / DDR-002 §4 + §7 check 7)",
+"claim": "Checked the ASA-authors-ReasoningProgress / AOE-owns-ReasoningSession-lifecycle write-authority assignment for consistency across all three levels: ADR-002 §2.6 fixes the two-writer principle, DDR-001 bridges it to the four RG structural roles naming the same two authorities, and DDR-002 §4 restates it plus §7 check 7 mechanizes it — including DDR-001's careful extension of the same component-scoped principle to the three feedback-loop writes (scheduled job / gateway) without contradicting ADR-002 §2.6's narrower synthesis-capture assignment. The chain holds; the downstream feedback-loop writes are homed under, not against, the upstream principle.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-002 §2.6 + DDR-001 §Reasoning Graph/§Feedback-Loop + DDR-002 §4/§7 check 7 — write-authority chain"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-002", "DDR-001", "DDR-002"],
+"locus": "Community-trial rejection / spike-findings home",
+"claim": "Attacked the Community-edition rejection's authority home for circularity: ADR-002 §2.2/§4.1 carry the rejection as ratified institutional memory and route its durable home to DDR-001's spike-findings section; DDR-001's Spike Findings records the outcome and explicitly declines to reconstruct the specific edition-feature blocker, noting that attributing it to Community's single-database limit would contradict ADR-002 §2.3's logical-not-physical realization. The cross-reference resolves — DDR-001 actually supplies the spike-findings section ADR-002 delegates to, and the deliberate non-reconstruction avoids the one contradiction it could have introduced against §2.3.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-002 §2.2/§4.1 spike-home delegation vs DDR-001 §Spike Findings content and its §2.3 non-contradiction guard"
+}
+}
+]

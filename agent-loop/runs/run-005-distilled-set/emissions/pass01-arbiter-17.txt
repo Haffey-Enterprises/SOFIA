@@ -1,0 +1,7 @@
+{
+  "finding_id": "1c827a4402b93500",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record-SKILL — 'Number allocation' / ratified DDR set membership (DDR-001 = Data Architecture, DDR-002 = Graph Schema, DDR-003 = Feedback Loop Governance)",
+  "rationale": "The ratified DDR numbering is fixed and unambiguous, so the cross-reference numbers in ADR-001 §7/§2.2 are simply corrected to match the canonical set-membership; no unmade choice is involved. §2.2's DDR-002=Graph Schema reference is already consistent, and the fix is dictated by the established numbering.",
+  "confidence": "high"
+}

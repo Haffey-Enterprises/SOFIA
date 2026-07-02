@@ -1,0 +1,7 @@
+{
+  "finding_id": "aea9a913cb13ac73",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The provenance-survival guarantee depends on a complete Evidence-set traversal at freeze time (spanning SUPPORTED_BY, WOULD_HAVE_USED, SOURCED_FROM), but no ratified authority specifies that traversal or elevates it to an enforced invariant; §7 #20 checks existence only, leaving the completeness rule an unmade choice.",
+  "confidence": "high"
+}

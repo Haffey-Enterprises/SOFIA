@@ -1,0 +1,7 @@
+{
+  "finding_id": "7f610b6ca4870b04",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding exposes a substantiation gap: DDR-002 asserts Operational is a pre-authoritative 'staging tier' below the EA gate, but neither ADR-002 §2.4 (KG as authoritative SoR, no within-KG staging distinction) nor DDR-001 (Operational as one of five KG planes) establishes this within-KG authority boundary. Whether Operational sits below or at the authoritative line — and thus whether the archived-write breaches ADR-001's self-modify invariant — is an unratified choice no cited authority disambiguates.",
+  "confidence": "high"
+}

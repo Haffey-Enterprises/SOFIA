@@ -1,0 +1,84 @@
+{"kind": "llm_call", "site": "antagonist-LAA", "model": "claude-opus-4-8", "max_tokens": 8192, "system_sha256": "c8b5ea7fe3b3b7b006f1bca391b46e5de0c0fc1b944f18dba749e770303ddf42", "input_tokens": 63759, "output_tokens": 2637, "latency_ms": 37841.130750020966, "request_id": "req_011CcdaBwWemps5WQkA4TrZh", "emission_path": "/Users/thaffey/Documents/GitHub/SOFIA/agent-loop/runs/run-005-distilled-set/emissions/pass01-antagonist-LAA-1.txt"}
+{"kind": "llm_call", "site": "antagonist-SA", "model": "claude-opus-4-8", "max_tokens": 8192, "system_sha256": "4305ca6d27f7ca0316d2397e63755b719fd71c55fe209a72701b1e1223e2b87d", "input_tokens": 63779, "output_tokens": 3946, "latency_ms": 52421.03795899311, "request_id": "req_011CcdaEiD2qjM5kFCvcHvsn", "emission_path": "/Users/thaffey/Documents/GitHub/SOFIA/agent-loop/runs/run-005-distilled-set/emissions/pass01-antagonist-SA-1.txt"}
+{"kind": "llm_call", "site": "antagonist-EA", "model": "claude-opus-4-8", "max_tokens": 8192, "system_sha256": "ac505c1625ffa5ead1d2e80ad94192e56e94b9d45231c6d61deccf77664a703b", "input_tokens": 63719, "output_tokens": 2172, "latency_ms": 29804.40391600132, "request_id": "req_011CcdaJa9iTdr53344aapD4", "emission_path": "/Users/thaffey/Documents/GitHub/SOFIA/agent-loop/runs/run-005-distilled-set/emissions/pass01-antagonist-EA-1.txt"}
+{"kind": "llm_call", "site": "coherence", "model": "claude-opus-4-8", "max_tokens": 8192, "system_sha256": "852c61c77679dcee735a0dd8b1ee8c037af89e4362cee74bbd0cec24845a0a8c", "input_tokens": 63691, "output_tokens": 1617, "latency_ms": 20776.866582978982, "request_id": "req_011CcdaLmtTY6nsrVAKUAJgD", "emission_path": "/Users/thaffey/Documents/GitHub/SOFIA/agent-loop/runs/run-005-distilled-set/emissions/pass01-coherence-1.txt"}
+{"kind": "admitted", "finding_id": "bfa59e826010cd98", "severity": "MATERIAL"}
+{"kind": "admitted", "finding_id": "22b3ac4ae815e543", "severity": "COSMETIC"}
+{"kind": "admitted", "finding_id": "498012b846a51b39", "severity": "MATERIAL"}
+{"kind": "admitted", "finding_id": "cb282dff6c814649", "severity": "COSMETIC"}
+{"kind": "admitted", "finding_id": "241c43f4a156bee6", "severity": "MATERIAL"}
+{"kind": "admitted", "finding_id": "855eff980962f7db", "severity": "MATERIAL"}
+{"kind": "admitted", "finding_id": "40aef0f8888c9702", "severity": "COSMETIC"}
+{"kind": "admitted", "finding_id": "058ba59f72cea48c", "severity": "POSITIVE"}
+{"kind": "admitted", "finding_id": "a652d043fafd24ac", "severity": "POSITIVE"}
+{"kind": "admitted", "finding_id": "64e28d99e42ca732", "severity": "MATERIAL"}
+{"kind": "admitted", "finding_id": "ed1fa7d2f889e377", "severity": "MATERIAL"}
+{"kind": "admitted", "finding_id": "7c25420a1facf1eb", "severity": "COSMETIC"}
+{"kind": "admitted", "finding_id": "7f610b6ca4870b04", "severity": "MATERIAL"}
+{"kind": "admitted", "finding_id": "aea9a913cb13ac73", "severity": "MATERIAL"}
+{"kind": "admitted", "finding_id": "4271a56bd318927c", "severity": "COSMETIC"}
+{"kind": "admitted", "finding_id": "1bcdd2f2c1c3e419", "severity": "POSITIVE"}
+{"kind": "admitted", "finding_id": "20f73ce07d1f6c84", "severity": "POSITIVE"}
+{"kind": "admitted", "finding_id": "1999e61ff7bcc942", "severity": "POSITIVE"}
+{"kind": "admitted", "finding_id": "627555136c320997", "severity": "POSITIVE"}
+{"kind": "admitted", "finding_id": "dae718691e3b5da0", "severity": "MATERIAL"}
+{"kind": "admitted", "finding_id": "61f33a96e1872c42", "severity": "MATERIAL"}
+{"kind": "admitted", "finding_id": "036560d7d3f12da8", "severity": "MATERIAL"}
+{"kind": "admitted", "finding_id": "1c827a4402b93500", "severity": "COSMETIC"}
+{"kind": "admitted", "finding_id": "e01ddee2447a8894", "severity": "MATERIAL"}
+{"kind": "admitted", "finding_id": "da89dc214ea9ae85", "severity": "COSMETIC"}
+{"kind": "admitted", "finding_id": "1a87c1a9f20ac531", "severity": "POSITIVE"}
+{"kind": "admitted", "finding_id": "a124742589030378", "severity": "POSITIVE"}
+{"kind": "llm_call", "site": "arbiter", "model": "claude-opus-4-8", "max_tokens": 8192, "system_sha256": "2768d4a9e6d487ae3afd3c7991d1397f47a8bbdd4d980230bc3c7464167e1dcb", "input_tokens": 7914, "output_tokens": 184, "latency_ms": 4091.4361670147628, "request_id": "req_011CcdaNJQ32A9wP3KnyiVuS", "emission_path": "/Users/thaffey/Documents/GitHub/SOFIA/agent-loop/runs/run-005-distilled-set/emissions/pass01-arbiter-1.txt"}
+{"kind": "classified", "finding_id": "bfa59e826010cd98", "classification": "decision-bearing", "confidence": "high"}
+{"kind": "llm_call", "site": "arbiter", "model": "claude-opus-4-8", "max_tokens": 8192, "system_sha256": "2768d4a9e6d487ae3afd3c7991d1397f47a8bbdd4d980230bc3c7464167e1dcb", "input_tokens": 7868, "output_tokens": 295, "latency_ms": 4916.530874994351, "request_id": "req_011CcdaNbtW8Eud4kt8hqGFM", "emission_path": "/Users/thaffey/Documents/GitHub/SOFIA/agent-loop/runs/run-005-distilled-set/emissions/pass01-arbiter-2.txt"}
+{"kind": "classified", "finding_id": "22b3ac4ae815e543", "classification": "resolvable", "confidence": "medium"}
+{"kind": "llm_call", "site": "arbiter", "model": "claude-opus-4-8", "max_tokens": 8192, "system_sha256": "2768d4a9e6d487ae3afd3c7991d1397f47a8bbdd4d980230bc3c7464167e1dcb", "input_tokens": 7946, "output_tokens": 182, "latency_ms": 4299.132250016555, "request_id": "req_011CcdaNy2jk2iL9ogqJWJPS", "emission_path": "/Users/thaffey/Documents/GitHub/SOFIA/agent-loop/runs/run-005-distilled-set/emissions/pass01-arbiter-3.txt"}
+{"kind": "classified", "finding_id": "498012b846a51b39", "classification": "decision-bearing", "confidence": "high"}
+{"kind": "llm_call", "site": "arbiter", "model": "claude-opus-4-8", "max_tokens": 8192, "system_sha256": "2768d4a9e6d487ae3afd3c7991d1397f47a8bbdd4d980230bc3c7464167e1dcb", "input_tokens": 7907, "output_tokens": 176, "latency_ms": 4091.9520419847686, "request_id": "req_011CcdaPHLot5MFxqXKEpm9g", "emission_path": "/Users/thaffey/Documents/GitHub/SOFIA/agent-loop/runs/run-005-distilled-set/emissions/pass01-arbiter-4.txt"}
+{"kind": "classified", "finding_id": "cb282dff6c814649", "classification": "decision-bearing", "confidence": "medium"}
+{"kind": "llm_call", "site": "arbiter", "model": "claude-opus-4-8", "max_tokens": 8192, "system_sha256": "2768d4a9e6d487ae3afd3c7991d1397f47a8bbdd4d980230bc3c7464167e1dcb", "input_tokens": 7943, "output_tokens": 197, "latency_ms": 4715.094666986261, "request_id": "req_011CcdaPb6eb17K8UuSG68ep", "emission_path": "/Users/thaffey/Documents/GitHub/SOFIA/agent-loop/runs/run-005-distilled-set/emissions/pass01-arbiter-5.txt"}
+{"kind": "classified", "finding_id": "241c43f4a156bee6", "classification": "decision-bearing", "confidence": "high"}
+{"kind": "llm_call", "site": "arbiter", "model": "claude-opus-4-8", "max_tokens": 8192, "system_sha256": "2768d4a9e6d487ae3afd3c7991d1397f47a8bbdd4d980230bc3c7464167e1dcb", "input_tokens": 7973, "output_tokens": 218, "latency_ms": 4501.728582981741, "request_id": "req_011CcdaPw2Ddy9tWq5qbRz5i", "emission_path": "/Users/thaffey/Documents/GitHub/SOFIA/agent-loop/runs/run-005-distilled-set/emissions/pass01-arbiter-6.txt"}
+{"kind": "classified", "finding_id": "855eff980962f7db", "classification": "resolvable", "confidence": "medium"}
+{"kind": "llm_call", "site": "arbiter", "model": "claude-opus-4-8", "max_tokens": 8192, "system_sha256": "2768d4a9e6d487ae3afd3c7991d1397f47a8bbdd4d980230bc3c7464167e1dcb", "input_tokens": 7987, "output_tokens": 198, "latency_ms": 4297.629875014536, "request_id": "req_011CcdaQGu3ut4zMsEzBKdVf", "emission_path": "/Users/thaffey/Documents/GitHub/SOFIA/agent-loop/runs/run-005-distilled-set/emissions/pass01-arbiter-7.txt"}
+{"kind": "classified", "finding_id": "40aef0f8888c9702", "classification": "decision-bearing", "confidence": "high"}
+{"kind": "llm_call", "site": "arbiter", "model": "claude-opus-4-8", "max_tokens": 8192, "system_sha256": "2768d4a9e6d487ae3afd3c7991d1397f47a8bbdd4d980230bc3c7464167e1dcb", "input_tokens": 8106, "output_tokens": 229, "latency_ms": 5327.257958007976, "request_id": "req_011CcdaQadA9RNJkUAwYJQyd", "emission_path": "/Users/thaffey/Documents/GitHub/SOFIA/agent-loop/runs/run-005-distilled-set/emissions/pass01-arbiter-8.txt"}
+{"kind": "classified", "finding_id": "64e28d99e42ca732", "classification": "decision-bearing", "confidence": "high"}
+{"kind": "llm_call", "site": "arbiter", "model": "claude-opus-4-8", "max_tokens": 8192, "system_sha256": "2768d4a9e6d487ae3afd3c7991d1397f47a8bbdd4d980230bc3c7464167e1dcb", "input_tokens": 8226, "output_tokens": 206, "latency_ms": 4101.177167001879, "request_id": "req_011CcdaQyLePFXU3kLikcQpA", "emission_path": "/Users/thaffey/Documents/GitHub/SOFIA/agent-loop/runs/run-005-distilled-set/emissions/pass01-arbiter-9.txt"}
+{"kind": "classified", "finding_id": "ed1fa7d2f889e377", "classification": "decision-bearing", "confidence": "high"}
+{"kind": "llm_call", "site": "arbiter", "model": "claude-opus-4-8", "max_tokens": 8192, "system_sha256": "2768d4a9e6d487ae3afd3c7991d1397f47a8bbdd4d980230bc3c7464167e1dcb", "input_tokens": 7975, "output_tokens": 182, "latency_ms": 3677.816458977759, "request_id": "req_011CcdaRHCC46GkauYypR8FP", "emission_path": "/Users/thaffey/Documents/GitHub/SOFIA/agent-loop/runs/run-005-distilled-set/emissions/pass01-arbiter-10.txt"}
+{"kind": "classified", "finding_id": "7c25420a1facf1eb", "classification": "resolvable", "confidence": "high"}
+{"kind": "llm_call", "site": "arbiter", "model": "claude-opus-4-8", "max_tokens": 8192, "system_sha256": "2768d4a9e6d487ae3afd3c7991d1397f47a8bbdd4d980230bc3c7464167e1dcb", "input_tokens": 8243, "output_tokens": 254, "latency_ms": 5122.09166699904, "request_id": "req_011CcdaRYddLJQqWZhMLDPyV", "emission_path": "/Users/thaffey/Documents/GitHub/SOFIA/agent-loop/runs/run-005-distilled-set/emissions/pass01-arbiter-11.txt"}
+{"kind": "classified", "finding_id": "7f610b6ca4870b04", "classification": "decision-bearing", "confidence": "high"}
+{"kind": "llm_call", "site": "arbiter", "model": "claude-opus-4-8", "max_tokens": 8192, "system_sha256": "2768d4a9e6d487ae3afd3c7991d1397f47a8bbdd4d980230bc3c7464167e1dcb", "input_tokens": 8258, "output_tokens": 195, "latency_ms": 4416.540625010384, "request_id": "req_011CcdaRvXFjWEJfSty8oq1y", "emission_path": "/Users/thaffey/Documents/GitHub/SOFIA/agent-loop/runs/run-005-distilled-set/emissions/pass01-arbiter-12.txt"}
+{"kind": "classified", "finding_id": "aea9a913cb13ac73", "classification": "decision-bearing", "confidence": "high"}
+{"kind": "llm_call", "site": "arbiter", "model": "claude-opus-4-8", "max_tokens": 8192, "system_sha256": "2768d4a9e6d487ae3afd3c7991d1397f47a8bbdd4d980230bc3c7464167e1dcb", "input_tokens": 8032, "output_tokens": 215, "latency_ms": 4386.324249993777, "request_id": "req_011CcdaSFU3AgUYcf6pN49dV", "emission_path": "/Users/thaffey/Documents/GitHub/SOFIA/agent-loop/runs/run-005-distilled-set/emissions/pass01-arbiter-13.txt"}
+{"kind": "classified", "finding_id": "4271a56bd318927c", "classification": "decision-bearing", "confidence": "medium"}
+{"kind": "llm_call", "site": "arbiter", "model": "claude-opus-4-8", "max_tokens": 8192, "system_sha256": "2768d4a9e6d487ae3afd3c7991d1397f47a8bbdd4d980230bc3c7464167e1dcb", "input_tokens": 8047, "output_tokens": 187, "latency_ms": 4292.221457988489, "request_id": "req_011CcdaSaBfr1GqmGeUVvBAb", "emission_path": "/Users/thaffey/Documents/GitHub/SOFIA/agent-loop/runs/run-005-distilled-set/emissions/pass01-arbiter-14.txt"}
+{"kind": "classified", "finding_id": "dae718691e3b5da0", "classification": "decision-bearing", "confidence": "high"}
+{"kind": "llm_call", "site": "arbiter", "model": "claude-opus-4-8", "max_tokens": 8192, "system_sha256": "2768d4a9e6d487ae3afd3c7991d1397f47a8bbdd4d980230bc3c7464167e1dcb", "input_tokens": 7992, "output_tokens": 173, "latency_ms": 4203.315958002349, "request_id": "req_011CcdaStguUieNKFzRkg6Uy", "emission_path": "/Users/thaffey/Documents/GitHub/SOFIA/agent-loop/runs/run-005-distilled-set/emissions/pass01-arbiter-15.txt"}
+{"kind": "classified", "finding_id": "61f33a96e1872c42", "classification": "decision-bearing", "confidence": "high"}
+{"kind": "llm_call", "site": "arbiter", "model": "claude-opus-4-8", "max_tokens": 8192, "system_sha256": "2768d4a9e6d487ae3afd3c7991d1397f47a8bbdd4d980230bc3c7464167e1dcb", "input_tokens": 8004, "output_tokens": 194, "latency_ms": 4056.863332982175, "request_id": "req_011CcdaTCWTw55SRs9XJmwiv", "emission_path": "/Users/thaffey/Documents/GitHub/SOFIA/agent-loop/runs/run-005-distilled-set/emissions/pass01-arbiter-16.txt"}
+{"kind": "classified", "finding_id": "036560d7d3f12da8", "classification": "decision-bearing", "confidence": "high"}
+{"kind": "llm_call", "site": "arbiter", "model": "claude-opus-4-8", "max_tokens": 8192, "system_sha256": "2768d4a9e6d487ae3afd3c7991d1397f47a8bbdd4d980230bc3c7464167e1dcb", "input_tokens": 7971, "output_tokens": 256, "latency_ms": 4848.422375012888, "request_id": "req_011CcdaTVtyfPPi72iGZ3oam", "emission_path": "/Users/thaffey/Documents/GitHub/SOFIA/agent-loop/runs/run-005-distilled-set/emissions/pass01-arbiter-17.txt"}
+{"kind": "classified", "finding_id": "1c827a4402b93500", "classification": "resolvable", "confidence": "high"}
+{"kind": "llm_call", "site": "arbiter", "model": "claude-opus-4-8", "max_tokens": 8192, "system_sha256": "2768d4a9e6d487ae3afd3c7991d1397f47a8bbdd4d980230bc3c7464167e1dcb", "input_tokens": 8050, "output_tokens": 180, "latency_ms": 3682.5111660000402, "request_id": "req_011CcdaTrcQszTJ8DP6cAtsm", "emission_path": "/Users/thaffey/Documents/GitHub/SOFIA/agent-loop/runs/run-005-distilled-set/emissions/pass01-arbiter-18.txt"}
+{"kind": "classified", "finding_id": "e01ddee2447a8894", "classification": "decision-bearing", "confidence": "high"}
+{"kind": "llm_call", "site": "arbiter", "model": "claude-opus-4-8", "max_tokens": 8192, "system_sha256": "2768d4a9e6d487ae3afd3c7991d1397f47a8bbdd4d980230bc3c7464167e1dcb", "input_tokens": 7996, "output_tokens": 217, "latency_ms": 4184.1402919963, "request_id": "req_011CcdaU8MxX8vqZjsYmRBTk", "emission_path": "/Users/thaffey/Documents/GitHub/SOFIA/agent-loop/runs/run-005-distilled-set/emissions/pass01-arbiter-19.txt"}
+{"kind": "classified", "finding_id": "da89dc214ea9ae85", "classification": "resolvable", "confidence": "high"}
+{"kind": "halt", "reason": "decision-bearing", "pass_number": 1, "payload": ["bfa59e826010cd98", "498012b846a51b39", "cb282dff6c814649", "241c43f4a156bee6", "40aef0f8888c9702", "64e28d99e42ca732", "ed1fa7d2f889e377", "7f610b6ca4870b04", "aea9a913cb13ac73", "4271a56bd318927c", "dae718691e3b5da0", "61f33a96e1872c42", "036560d7d3f12da8", "e01ddee2447a8894"]}
+{"kind": "proposed_escalation", "finding_id": "bfa59e826010cd98", "reason": "decision-bearing", "ticket": "RBT in t-bone-haff-sofia \u2014 proposed, not opened"}
+{"kind": "proposed_escalation", "finding_id": "498012b846a51b39", "reason": "decision-bearing", "ticket": "RBT in t-bone-haff-sofia \u2014 proposed, not opened"}
+{"kind": "proposed_escalation", "finding_id": "cb282dff6c814649", "reason": "decision-bearing", "ticket": "RBT in t-bone-haff-sofia \u2014 proposed, not opened"}
+{"kind": "proposed_escalation", "finding_id": "241c43f4a156bee6", "reason": "decision-bearing", "ticket": "RBT in t-bone-haff-sofia \u2014 proposed, not opened"}
+{"kind": "proposed_escalation", "finding_id": "40aef0f8888c9702", "reason": "decision-bearing", "ticket": "RBT in t-bone-haff-sofia \u2014 proposed, not opened"}
+{"kind": "proposed_escalation", "finding_id": "64e28d99e42ca732", "reason": "decision-bearing", "ticket": "RBT in t-bone-haff-sofia \u2014 proposed, not opened"}
+{"kind": "proposed_escalation", "finding_id": "ed1fa7d2f889e377", "reason": "decision-bearing", "ticket": "RBT in t-bone-haff-sofia \u2014 proposed, not opened"}
+{"kind": "proposed_escalation", "finding_id": "7f610b6ca4870b04", "reason": "decision-bearing", "ticket": "RBT in t-bone-haff-sofia \u2014 proposed, not opened"}
+{"kind": "proposed_escalation", "finding_id": "aea9a913cb13ac73", "reason": "decision-bearing", "ticket": "RBT in t-bone-haff-sofia \u2014 proposed, not opened"}
+{"kind": "proposed_escalation", "finding_id": "4271a56bd318927c", "reason": "decision-bearing", "ticket": "RBT in t-bone-haff-sofia \u2014 proposed, not opened"}
+{"kind": "proposed_escalation", "finding_id": "dae718691e3b5da0", "reason": "decision-bearing", "ticket": "RBT in t-bone-haff-sofia \u2014 proposed, not opened"}
+{"kind": "proposed_escalation", "finding_id": "61f33a96e1872c42", "reason": "decision-bearing", "ticket": "RBT in t-bone-haff-sofia \u2014 proposed, not opened"}
+{"kind": "proposed_escalation", "finding_id": "036560d7d3f12da8", "reason": "decision-bearing", "ticket": "RBT in t-bone-haff-sofia \u2014 proposed, not opened"}
+{"kind": "proposed_escalation", "finding_id": "e01ddee2447a8894", "reason": "decision-bearing", "ticket": "RBT in t-bone-haff-sofia \u2014 proposed, not opened"}

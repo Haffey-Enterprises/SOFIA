@@ -1,0 +1,52 @@
+{
+  "files": [
+    {
+      "logical_id": "adr-template",
+      "category": "authorities",
+      "origin": {
+        "source": "bedrock",
+        "path": "plugins/bedrock/skills/author-decision-record/templates/adr-template.md",
+        "bedrock_head_sha": "322591f1f5ba229e6ab3352e992346623a4902eb"
+      },
+      "retrieved": "2026-07-02",
+      "sha256": "1540825bc9fe86c9c07b647e37b44446d8f5997966110d046c6182ae3d5cb607"
+    },
+    {
+      "logical_id": "ddr-template",
+      "category": "authorities",
+      "origin": {
+        "source": "bedrock",
+        "path": "plugins/bedrock/skills/author-decision-record/templates/ddr-template.md",
+        "bedrock_head_sha": "322591f1f5ba229e6ab3352e992346623a4902eb"
+      },
+      "retrieved": "2026-07-02",
+      "sha256": "59068b3a2741f497e92bff240da238d4f8b6b57471c8ff7a76ab8c09ba9668f9"
+    },
+    {
+      "logical_id": "author-decision-record-SKILL",
+      "category": "authorities",
+      "origin": {
+        "source": "bedrock",
+        "path": "plugins/bedrock/skills/author-decision-record/SKILL.md",
+        "bedrock_head_sha": "322591f1f5ba229e6ab3352e992346623a4902eb"
+      },
+      "retrieved": "2026-07-02",
+      "sha256": "f0ef38dab80b3aa4ae7e079938648b1ec1797f6c9ad0b55e633ae4b8904ff398"
+    },
+    {
+      "logical_id": "sofia-vision",
+      "category": "design-intent",
+      "origin": {
+        "source": "notion",
+        "page_title": "SOFIA",
+        "page_id": "370caeea-1325-8069-893f-c829d0f01551",
+        "url": "https://app.notion.com/p/370caeea13258069893fc829d0f01551",
+        "content_as_of": "2026-07-01T03:15:21Z",
+        "retrieved_via": "claude.ai Notion connector",
+        "scope": "vision block only (above the Roadmap divider)"
+      },
+      "retrieved": "2026-07-02",
+      "sha256": "0cd7fd843e93741c1b351d04aa8c2de35ed43350f6a6d87762f818c5cdf82c2e"
+    }
+  ]
+}

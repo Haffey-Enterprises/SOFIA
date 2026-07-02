@@ -1,0 +1,7 @@
+{
+  "finding_id": "e01ddee2447a8894",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding exposes an internal inconsistency in DDR-002 between a six-value enum and a seven-surface mapping where 'capability' has no distinct conclusion_type home; no ratified authority disambiguates whether to add a CapabilityConclusion value, fold capability into an existing variant, or revise the surface count, so a new choice is required.",
+  "confidence": "high"
+}

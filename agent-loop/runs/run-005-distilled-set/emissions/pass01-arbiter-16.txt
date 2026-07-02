@@ -1,0 +1,7 @@
+{
+  "finding_id": "036560d7d3f12da8",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "ADR-001 §2.1 declares Position 4 a possibly-never-reached north-star, not a committed arrival; whether a DDR may pre-shape authoritative-decider schema affordances for that uncommitted trajectory is a choice no cited authority disambiguates — leaving it silent on whether schema forward-compatibility for an uncommitted position is permitted or prohibited.",
+  "confidence": "high"
+}
