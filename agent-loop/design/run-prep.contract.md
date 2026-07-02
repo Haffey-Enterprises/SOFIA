@@ -130,9 +130,14 @@ behind `build_api_emitter`:
 - **Model:** one fixed model for all call sites in a run; run one:
   `claude-opus-4-8`. The model string lives in run configuration and is
   recorded in the manifest — never hardcoded in module code.
-- **Parameters:** temperature 0; `max_tokens` 8192 (generous for a findings
+- **Parameters:** `max_tokens` 8192 only (generous for a findings
   array; raise by config if truncation is ever observed — truncated JSON
-  surfaces as a parse_drop, §10e).
+  surfaces as a parse_drop, §10e). No sampling parameters are sent:
+  `temperature`, `top_p`, and `top_k` are deprecated on Claude Opus 4.7+
+  and 400 on non-default values (amended 2026-07-02 after run-002's
+  launch abort). Cross-pass comparability rests on frozen prompts, frozen
+  substrate, and per-pass-identical assembly — no sampling knob exists on
+  this model family, and determinism was never guaranteed.
 - **Sequencing:** calls are sequential in admission order (LAA, SA, EA,
   coherence) — the existing gather loop already is; no parallelism.
 - **Transport-level failure** (rate limit, 5xx, timeout, connection):
@@ -184,11 +189,18 @@ stream is a named supervision watch. A real `Arbiter` adapter:
   supervision protocol (item 5) reads this stream. Additive change to
   `log.py` (an optional sink); the in-memory log and all existing
   consumers are unchanged.
+- **Terminal abort event:** when a run aborts (transport failure after
+  retry, arbiter content failure after retry, or any raise on the run
+  path), a `run_aborted` event carrying the reason is emitted to the log
+  stream before the exception propagates — the live tail must be able to
+  distinguish an aborted run from one sitting in backoff (amended
+  2026-07-02).
 
 ## §8 — Run assembly and prep gates
 
 A run entry module (`agent_loop.run_real`) owning assembly and prep
-validation. Prep gates, all fail-loud before any LLM call:
+validation. Prep gates, all fail-loud before any reviewer or arbiter call
+(gate 7's one-token probe is the only prep-time API contact):
 
 1. `runs/<run-id>/` is not a used run: refuse if `ledger.json` is present
    (a used run-id is immutable evidence; retries take a new run-id, per
@@ -201,6 +213,14 @@ validation. Prep gates, all fail-loud before any LLM call:
 4. `substrate/` is populated and its manifest validates (§3).
 5. All five prompt files exist and yield a non-empty `## System`.
 6. `ANTHROPIC_API_KEY` is present in the environment.
+7. **Probe call:** prep sends one minimal message (`max_tokens: 1`)
+   through the same emitter configuration (model, parameters, key) the run
+   will use; any failure is a prep failure. Added 2026-07-02 after two
+   consecutive first-call launch aborts (auth, then parameter shape) — the
+   probe converts transport-class misconfiguration into a prep failure at
+   the cost of one token. Gate 6 (key presence) remains the fast fail
+   ahead of it; in gates-only validation without a key, gates 6 and 7
+   report pending.
 
 Assembly: `LedgerStore` at `runs/<run-id>/ledger.json`; §2 document fetcher;
 §3 substrate fetcher; four reviewers via the existing `build_real_reviewer`

@@ -28,6 +28,7 @@ EventKind = Literal[
     "proposed_escalation",  # router proposed a ticket (dry — nothing opened)
     "llm_call",  # a real LLM call completed (provenance/cost — run-prep §7)
     "llm_retry",  # a real LLM call was retried (transport or content — run-prep §6)
+    "run_aborted",  # a run aborted on the run path; reason logged before the raise (§7)
     "converged",
     "continue",
     "halt",
