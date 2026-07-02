@@ -1,23 +1,39 @@
 # Module: agent_loop.runner
-# Purpose: The pass loop — build step 5's driver. Each pass it fetches the
-#          ledger fresh, runs the reviewer stubs through the admission gate,
-#          runs the arbiter on open/unclassified findings, snapshots the pass
-#          record at routing time, and routes. On CONTINUE the author stub acts;
-#          on CONVERGED/HALT the run returns. Dry mode throughout: resolutions
-#          and escalations are proposed and logged, never applied/opened.
-# Scope:   Orchestration only. All judgment about "done" is in gates.route (no
-#          LLM). The only LLM judgment (the arbiter) is injected as a port.
+# Purpose: The pass loop. Per pass it fetches the ledger fresh, takes an
+#          immutable prior-pass snapshot (contract §2), runs the scheduled
+#          reviewers against that snapshot and gathers their emissions, then
+#          admits them through the admission gate in a fixed deterministic order
+#          (§3) — no admission interleaves with any review. It then runs the
+#          arbiter on open/unclassified findings, snapshots the pass record at
+#          routing time, and routes; on CONTINUE the author stub acts. Dry mode
+#          throughout: resolutions and escalations are proposed and logged.
+# Scope:   Orchestration only. Judgment about "done" is in gates.route (no LLM).
+#          The only LLM judgment (the arbiter) is injected as a port; reviewers
+#          are injected via a Plan. Author, arbiter position, gates, router, the
+#          schema enums, and mode are untouched by the real-hats contract (§8).
 
 from __future__ import annotations
 
+import copy
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import Callable
 
 from agent_loop.admission import admit
+from agent_loop.arbiter import Arbiter
 from agent_loop.gates import RouterExit, open_cbm, route
-from agent_loop.ledger import Ledger, LedgerStore, PassRecord
+from agent_loop.ledger import Ledger, LedgerHeader, LedgerStore, PassRecord
 from agent_loop.log import ActionLog
+from agent_loop.reviewers import (
+    DocumentFetcher,
+    DocumentSet,
+    Plan,
+    Substrate,
+    SubstrateFetcher,
+    default_document_fetcher,
+    default_substrate_fetcher,
+    stub_plan,
+)
 from agent_loop.scenarios import Scenario
 from agent_loop.stubs import author_pass
 
@@ -25,7 +41,7 @@ from agent_loop.stubs import author_pass
 class LoopBoundExceeded(RuntimeError):
     """Raised when a run exceeds max_passes.
 
-    A safety backstop, not a spec exit: a scenario that routes CONTINUE forever
+    A safety backstop, not a spec exit: a loop that routes CONTINUE forever
     would otherwise spin. It fails loudly so it can never be mistaken for a real
     CONVERGED/HALT exit.
     """
@@ -33,14 +49,15 @@ class LoopBoundExceeded(RuntimeError):
 
 @dataclass
 class RunResult:
-    """The outcome of a scenario run.
+    """The outcome of a run.
 
     Attributes:
         exit: The router exit that ended the run.
         passes_run: How many passes executed.
         ledger: The final ledger state.
-        log: The structured action log (drops, classifications, proposed
-            resolutions/escalations — the dry-mode evidence base).
+        log: The structured action log (drops, parse-drops, coherence skips,
+            classifications, proposed resolutions/escalations — the dry-mode
+            evidence base).
     """
 
     exit: RouterExit
@@ -54,18 +71,89 @@ def _default_clock() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
-def run_scenario(
-    scenario: Scenario,
+def _gather_then_admit(
+    ledger: Ledger,
+    snapshot_state: Ledger,
+    plan: Plan,
+    pass_number: int,
+    records: DocumentSet,
+    substrate: Substrate,
+    log: ActionLog,
+) -> list[str]:
+    """Run all scheduled reviewers against the snapshot, then admit in order.
+
+    Implements contract §3 (gather-then-admit) over §2's amended snapshot
+    semantics (ratified 2026-07-02): the plan and every reviewer receive the
+    same snapshot *state* but each as its **own** frozen deep copy — never the
+    shared base object, never another consumer's copy, never the `ledger`
+    instance admission mutates. Isolation is therefore structural: a reviewer
+    that mutates its own copy cannot leak to any later reviewer, to the plan, or
+    to the admitted ledger (§9h).
+
+    Every reviewer runs to completion before any admission; admission then
+    proceeds in fixed rank order (LAA, SA, EA, coherence) with each reviewer's
+    emission order preserved. No admission interleaves with any review.
+
+    Returns:
+        The `agents_run` labels, in admission order.
+    """
+    # The plan's scheduling view is its own isolated copy of the state.
+    scheduled = plan(pass_number, copy.deepcopy(snapshot_state), log)
+
+    # Gather — no admission yet. Each reviewer gets its own frozen copy.
+    gathered = []
+    for scheduled_reviewer in scheduled:
+        reviewer_snapshot = copy.deepcopy(snapshot_state)
+        findings = scheduled_reviewer.run(
+            pass_number, reviewer_snapshot, records, substrate, log
+        )
+        gathered.append((scheduled_reviewer.identity, findings))
+
+    # Admit in fixed deterministic order (stable sort preserves schedule order
+    # on ties); emission order within a reviewer is preserved.
+    gathered.sort(key=lambda pair: pair[0].admission_rank)
+    agents_run: list[str] = []
+    for identity, findings in gathered:
+        agents_run.append(identity.label)
+        for finding in findings:
+            admit(ledger, finding, pass_number, log)
+    return agents_run
+
+
+def run_loop(
+    header: LedgerHeader,
+    plan: Plan,
+    arbiter: Arbiter,
     store: LedgerStore,
+    *,
+    fix_changes: dict[str, str] | None = None,
+    authorities: object = None,
+    design_intent: object = None,
+    fetch_documents: DocumentFetcher = default_document_fetcher,
+    fetch_substrate: SubstrateFetcher = default_substrate_fetcher,
+    label: str = "review loop",
     max_passes: int = 50,
     clock: Callable[[], str] = _default_clock,
 ) -> RunResult:
-    """Drive one dummy scenario to its router exit.
+    """Drive the design-review loop to its router exit.
+
+    The single runner for both the canned stub path and the real-hat path — the
+    difference is the injected `plan`. Each pass: fetch fresh, freeze a
+    prior-pass snapshot (§2), assemble fresh inputs (§5), gather-then-admit (§3),
+    classify open findings (arbiter), snapshot the pass record at routing time,
+    and route; CONTINUE runs the author.
 
     Args:
-        scenario: The planted scenario (header, reviewer stubs, arbiter port,
-            fix-change map).
+        header: The ledger header/parameters.
+        plan: The pass plan selecting which reviewers run (and logging skips).
+        arbiter: The arbiter port (the only LLM judgment).
         store: The file-backed ledger store (fresh-fetched each pass).
+        fix_changes: Author fix→doc-change map (stub path); empty by default.
+        authorities: Substrate passed to the arbiter (unchanged position, §8).
+        design_intent: Design intent passed to the arbiter (§8).
+        fetch_documents: Fresh document-set fetch (§5); placeholder by default.
+        fetch_substrate: Fresh substrate fetch (§5); empty by default.
+        label: Name used in the loop-bound error message.
         max_passes: Loud safety bound against a non-terminating loop.
         clock: Injectable timestamp source.
 
@@ -76,42 +164,42 @@ def run_scenario(
         LoopBoundExceeded: If the loop does not terminate within max_passes.
     """
     log = ActionLog()
-    store.save(Ledger(header=scenario.header))
+    store.save(Ledger(header=header))
+    effective_fix_changes = fix_changes or {}
 
     pass_number = 0
     while True:
         pass_number += 1
         if pass_number > max_passes:
             raise LoopBoundExceeded(
-                f"scenario {scenario.id!r} did not terminate within "
-                f"{max_passes} passes"
+                f"{label} did not terminate within {max_passes} passes"
             )
 
         # Fresh fetch — no agent inherits another's context.
         ledger = store.load()
-        agents_run: list[str] = []
 
-        # Reviewers (canned). Both run every pass; the coherence stub reads the
-        # doc-change state the author recorded in the prior pass. The canned
-        # stubs do not read current-pass findings, so there is no cross-anchoring
-        # to guard here. When the REAL hats are wired, each must judge against
-        # the prior-pass ledger snapshot (fetched fresh, not this mutating
-        # in-pass reference) — the no-cross-anchoring property is architectural.
-        for name, reviewer in (
-            ("antagonist-stub", scenario.antagonist),
-            ("coherence-stub", scenario.coherence),
-        ):
-            agents_run.append(name)
-            for emitted in reviewer(pass_number, ledger):
-                admit(ledger, emitted, pass_number, log)
+        # §2: the frozen prior-pass snapshot state, taken before any current-pass
+        # admission. This base is never handed to a consumer — _gather_then_admit
+        # hands the plan and each reviewer its own deep copy of it (amended
+        # 2026-07-02), so admission's mutations to `ledger` are never visible
+        # through any consumer's snapshot, and no consumer shares an object.
+        snapshot_state = copy.deepcopy(ledger)
+
+        # §5: the runner is the fetch point — reviewers do not fetch for
+        # themselves. Assembled fresh per pass from the header's document set.
+        records = fetch_documents(list(header.set))
+        substrate = fetch_substrate(list(header.set))
+
+        # §3: gather all emissions, then admit in fixed order.
+        agents_run = _gather_then_admit(
+            ledger, snapshot_state, plan, pass_number, records, substrate, log
+        )
 
         # Arbiter — the only LLM judgment — classifies open/unclassified findings.
         classified_any = False
         for finding in ledger.findings:
             if finding.status == "open" and finding.classification == "unclassified":
-                result = scenario.arbiter.classify(
-                    finding, scenario.authorities, scenario.design_intent
-                )
+                result = arbiter.classify(finding, authorities, design_intent)
                 finding.classification = result.classification
                 finding.authority_locus = result.authority_locus
                 classified_any = True
@@ -164,5 +252,41 @@ def run_scenario(
 
         # CONTINUE → back to the author.
         log.emit("continue", pass_number=pass_number, open_cbm=cbm)
-        author_pass(ledger, pass_number, scenario.fix_changes, log)
+        author_pass(ledger, pass_number, effective_fix_changes, log)
         store.save(ledger)
+
+
+def run_scenario(
+    scenario: Scenario,
+    store: LedgerStore,
+    max_passes: int = 50,
+    clock: Callable[[], str] = _default_clock,
+) -> RunResult:
+    """Drive one canned dummy scenario to its router exit (the stub path).
+
+    A thin wrapper over `run_loop` with a stub plan (antagonist + coherence
+    every pass — §6). Behaviour is unchanged from the skeleton; the four dummy
+    scenarios remain the regression harness (§9g).
+
+    Args:
+        scenario: The planted scenario (header, reviewer stubs, arbiter port,
+            fix-change map).
+        store: The file-backed ledger store.
+        max_passes: Loud safety bound.
+        clock: Injectable timestamp source.
+
+    Returns:
+        The RunResult.
+    """
+    return run_loop(
+        header=scenario.header,
+        plan=stub_plan(scenario.antagonist, scenario.coherence),
+        arbiter=scenario.arbiter,
+        store=store,
+        fix_changes=scenario.fix_changes,
+        authorities=scenario.authorities,
+        design_intent=scenario.design_intent,
+        label=scenario.id,
+        max_passes=max_passes,
+        clock=clock,
+    )

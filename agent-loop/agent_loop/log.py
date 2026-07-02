@@ -20,6 +20,8 @@ EventKind = Literal[
     "reopened",  # a closed id was re-admitted open (recurrence signal)
     "dedup_open",  # emitted id already open — no new record
     "dropped",  # admission gate rejected an out-of-scope finding
+    "parse_dropped",  # emission-parsing seam rejected a malformed emission (§7)
+    "coherence_skip",  # runner did not schedule the coherence sweep this pass (§6)
     "classified",  # arbiter set a finding's classification
     "proposed_resolution",  # author proposed a fix (dry — nothing applied)
     "proposed_escalation",  # router proposed a ticket (dry — nothing opened)
