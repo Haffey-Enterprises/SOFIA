@@ -1,5 +1,5 @@
 # File: docs/adr/ADR-002-graph-system-of-record.md
-# Author: Thaddeus Haffey — Executive Architect, Haffey Enterprises
+# Author: Thaddeus Haffey — Executive Architect, Haffey Enterprises LLC
 # Created: 2026-06-15
 # Description: ADR-002 — Graph as System of Record. Establishes the Neo4j Enterprise graph as the authoritative store for all SOFIA architecture and reasoning state, with the KG and RG realized as logical subgraphs in a single instance and state-class authority divided across a three-store persistence backbone.
 
@@ -10,11 +10,9 @@
 | **Document ID** | ADR-002 |
 | **Status** | ACCEPTED |
 | **Version** | 1.0.0 |
-| **Date** | 2026-06-15 |
-| **Authors** | Thaddeus Haffey (LAA / SA / EA) |
-| **Reviewers** | Three-hat (LAA/SA/EA) review of record: converged at Cycle 2 / Pass 2 (PASS), 2026-06-16. See §7. |
+| **Date** | 2026-07-01 |
+| **Authors** | Thaddeus Haffey (Executive Architect) |
 | **Supersedes** | None — establishes new platform principle. |
-| **Amendment Process** | Changes require LAA + SA + EA approval. Material changes increment minor version; breaking changes increment major version. |
 
 ---
 
@@ -42,9 +40,9 @@ This is the structural commitment that makes ADR-001's reasoning-capture invaria
 
 The system of record is a native graph database, realized by **Neo4j Enterprise**.
 
-Enterprise is the committed edition because the five-plane KG — the planes plus the multiple edge types their traversals require — is a graph Community edition could not support: **Community was trialed for it and failed** (R3). The rejection is empirically established and ratified, not a preference. The trial itself predates the Reboot's formal capture, so its outcome is carried forward as ratified institutional memory; its durable home as a spike finding is **DDR-001's spike-findings section** — which records the outcome (and the specific Enterprise capability the plane model depends on) so the rejection stands without re-running the trial. A specific Neo4j minor-version pin is deferred to the data and operational designs (consistent with the topology deferral, §5.2); the edition (Enterprise) is the commitment fixed here.
+Enterprise is the committed edition because the five-plane KG — the planes plus the multiple edge types their traversals require — is a graph Community edition could not support: **Community was trialed for it and failed.** The rejection is empirically established and ratified, not a preference. The trial itself predates this corpus's formal capture, so its outcome is carried forward as ratified institutional memory; its durable home as a spike finding is **DDR-001's spike-findings section** — which records the outcome (and the specific Enterprise capability the plane model depends on) so the rejection stands without re-running the trial. A specific Neo4j minor-version pin is deferred to the data and operational designs (consistent with the topology deferral, §5.2); the edition (Enterprise) is the commitment fixed here.
 
-**Deployment runtime.** The graph runs **self-managed on GKE** (R20) — the orchestrated-container exception to the platform's Cloud Run default, per the platform's stateful-workload deployment criterion: a stateful, clustered graph database cannot run on serverless-container Cloud Run, and there is no managed Neo4j option on GCP, so SOFIA accepts operational responsibility for self-managed Neo4j Enterprise on GKE. This ADR is the home for that runtime exception. Runtime placement (GKE) and production topology (cluster count / HA, deferred per §5.2) are distinct axes — only the latter is deferred.
+**Deployment runtime.** The graph runs **self-managed on GKE** — the orchestrated-container exception to the platform's Cloud Run default, per the platform's stateful-workload deployment criterion: a stateful, clustered graph database cannot run on serverless-container Cloud Run, and there is no managed Neo4j option on GCP, so SOFIA accepts operational responsibility for self-managed Neo4j Enterprise on GKE. This ADR is the home for that runtime exception. Runtime placement (GKE) and production topology (cluster count / HA, deferred per §5.2) are distinct axes — only the latter is deferred.
 
 **Substitution contract.** A replacement for Neo4j Enterprise must satisfy the plane-model graph at the complexity §2.3 commits (five planes plus Extension and the RG, with first-class cross-plane and cross-graph traversal); the precise capability bar is the one DDR-001 establishes. Substituting a graph platform that cannot meet it — or moving the runtime off self-managed GKE — is an amendment to this ADR, not an implementation detail.
 
@@ -98,7 +96,7 @@ Fixing the store and its realization is also what makes the data and service arc
 
 *Description:* The same single-instance graph realization on the Community edition, avoiding Enterprise licensing.
 
-*Rejection rationale:* Community was trialed for the five-plane KG — the planes plus the multiple edge types their traversals require — and could not support it; Enterprise is the empirically-established requirement (R3), not a preference. The plane model is not negotiable down to fit the edition; it is the structure the KG commits to. The spike result is carried as ratified institutional memory; its durable home — the outcome and the specific Enterprise capability the plane model depends on — is DDR-001's spike-findings section, so the rejection stands without re-running the trial each cycle.
+*Rejection rationale:* Community was trialed for the five-plane KG — the planes plus the multiple edge types their traversals require — and could not support it; Enterprise is the empirically-established requirement, not a preference. The plane model is not negotiable down to fit the edition; it is the structure the KG commits to. The spike result is carried as ratified institutional memory; its durable home — the outcome and the specific Enterprise capability the plane model depends on — is DDR-001's spike-findings section, so the rejection stands without re-running the trial each cycle.
 
 ### 4.2 Alternative B — Separate physical databases per plane / graph
 
@@ -147,7 +145,7 @@ Fixing the store and its realization is also what makes the data and service arc
 
 - Services may not hold authoritative architecture or reasoning state locally — all such state flows through the graph; local stores are operational/cache/staging only.
 - The platform is committed to Neo4j Enterprise's licensing and operational footprint for the system of record; a graph platform that cannot meet the plane-model complexity §2.2/§2.3 commit is not a drop-in substitute (§2.2 substitution contract).
-- SOFIA accepts operational responsibility for the self-managed Neo4j Enterprise cluster on GKE (§2.2) — backup/restore, upgrade lifecycle, and cluster-health monitoring are platform burdens carried by the operational design, the accepted cost of the §25.1 self-managed exception over a managed runtime.
+- SOFIA accepts operational responsibility for the self-managed Neo4j Enterprise cluster on GKE (§2.2) — backup/restore, upgrade lifecycle, and cluster-health monitoring are platform burdens carried by the operational design, the accepted cost of the §2.2 self-managed exception over a managed runtime.
 - No service other than knowledge-service may hold a direct Neo4j driver; all graph access routes through knowledge-service's gateway (§2.5).
 - **Production topology is intentionally unspecified.** Cluster count and HA configuration are not committed by this ADR; they are determined after dev implement-and-test, sized to real workload rather than asserted as a premature minimum. Locking a specific cluster topology now (e.g., a three-node causal cluster) is rejected as a premature production commitment. Topology is independent of the CMEK posture (§2.7) and does not gate this ADR's acceptance.
 - No vector store is available as a retrieval substrate; designs needing semantic retrieval use graph-native traversal, and a genuine vector need is a new ADR, not a local addition.
@@ -157,7 +155,7 @@ Fixing the store and its realization is also what makes the data and service arc
 
 - **PHI leaks in despite the by-design constraint.** If classification at intake/ingestion fails and PHI enters the graph, the no-CMEK posture (§2.7) is no longer sound. *Mitigation:* classification is an enforced constraint with compensating controls as backstop; a PHI scope-change triggers a new ADR that re-evaluates CMEK. The enforcement mechanism is a downstream design and compliance concern (see §6).
 - **Single-instance scale or availability pressure.** Logical subgraphs in one instance concentrate the KG and RG in a single graph store; at scale or under availability requirements this could strain the single-instance realization. *Mitigation:* topology is deliberately deferred (§5.2) precisely so it is sized to real workload; the logical-plane commitment is about traversal locality, not a bar on Enterprise clustering, which the deferred topology decision can adopt.
-- **Graph-native retrieval underperforms a vector index for some semantic workload.** Rejecting the vector store (§2.4) bets that graph-native retrieval suffices. *Mitigation:* a demonstrated retrieval need that graph traversal cannot meet is an explicit ADR trigger (§4.3), not a silent re-introduction; the bet is reversible by amendment with evidence.
+- **Graph-native retrieval underperforms a vector index for some semantic workload.** Rejecting the vector store (§2.4) bets that graph-native retrieval suffices. *Mitigation:* a demonstrated retrieval need that graph traversal cannot meet is an explicit ADR trigger (§4.3), not a silent re-introduction. This is reversal by deliberate, evidence-backed amendment, not a cheap toggle: by the time underperformance surfaces, the no-vector invariant is baked into the downstream schema and services, so reintroducing vectors re-opens the three-store backbone (§2.4) and the no-vector conformance invariant — a store-set change with real blast radius, not a routine trigger.
 - **The graph-access gateway is a chokepoint.** knowledge-service sits on the path of every graph read and write (§2.5); its availability gates all graph access. *Mitigation:* the gateway is an access layer over the graph, which holds the authoritative state, so it scales horizontally independent of the single-instance graph; gateway capacity and the graph's deferred topology (§5.2) are sized together at dev implement-and-test.
 
 ---
@@ -173,35 +171,15 @@ Conformance with this ADR is verified at architecture review. The following are 
 5. **Write-authority check.** Designs that write reasoning state honor the §2.6 assignment (ASA authors ReasoningProgress, routed via knowledge-service; AOE owns ReasoningSession lifecycle only).
 6. **Data-protection check.** Designs handling ingested data enforce the no-PHI-by-design classification (§2.7); any design that would bring PHI into scope is flagged as an ADR trigger, not absorbed.
 
-**Enforcement.** These checks are enforced at three-hat (LAA/SA/EA) review — the gate every SDD and DDR passes through — at design time. Mechanized enforcement (CI / schema validators for the store-authority and write-authority checks, which are more mechanizable than judgment-based review) is not built yet. Compliance is currently aspirational; enforcement-mechanization is tracked at RBT-33. Until that lands, conformance is reviewed at SDD/DDR-authoring time and at three-hat architectural reviews.
+**Enforcement.** These checks are enforced at three-hat (LAA/SA/EA) review — the gate every SDD and DDR passes through — at design time. Mechanized enforcement (CI / schema validators for the store-authority and write-authority checks, which are more mechanizable than judgment-based review) is not built yet. Compliance is currently aspirational; until mechanized enforcement lands, conformance is reviewed at SDD/DDR-authoring time and at three-hat architectural reviews.
 
 ---
 
-## 7. Review and Approval
+## 7. Cross-References
 
-### Review Cycle 1
-
-| Reviewer Role | Name | Date | Outcome | Findings |
-|---|---|---|---|---|
-| LAA | Thaddeus Haffey | 2026-06-15 | FINDINGS RAISED | M-2 — RBT-8 ledger-citation incomplete (R7/R12 absent). |
-| SA | Thaddeus Haffey | 2026-06-15 | FINDINGS RAISED | B-1 (BLOCKING) — §6 unfilled enforcement-tracking placeholder; M-1 (shared) — GKE runtime unhomed; M-3 — Community-rejection capability unspecified. |
-| EA | Thaddeus Haffey | 2026-06-15 | FINDINGS RAISED | M-1 (shared) — §25.1 GKE-runtime decision unhomed in this ADR. |
-
-Cycle 1 → 1 BLOCKING + 3 MATERIAL + 2 COSMETIC (no-action), against a large set of POSITIVE no-drift confirmations. Review of record: `docs/reviews/2026-06-15-adr-002-three-hat-review.md`. SA at `pause` (B-1); gate not satisfied this cycle.
-
-### Review Cycle 2
-
-| Reviewer Role | Name | Date | Outcome | Findings |
-|---|---|---|---|---|
-| LAA | Thaddeus Haffey | 2026-06-16 | APPROVED | M-2 resolved (RBT-8 citation completed); no open findings. |
-| SA | Thaddeus Haffey | 2026-06-16 | APPROVED | B-1 resolved (RBT-33); M-1 resolved (R20, §2.2 runtime); M-3 resolved (R3 clarification + DDR-001 routing); no open findings. |
-| EA | Thaddeus Haffey | 2026-06-16 | APPROVED | M-1 resolved; new material (runtime, Alternative F, operational constraint) sound; no open findings. |
-
-Cycle 2 → PASS (converged); all three hats `proceed`. Review of record: `docs/reviews/2026-06-16-adr-002-three-hat-review-cycle-2.md`. Forward dependency D-1 → RBT-12 (DDR-001 spike-findings must record the Community-trial outcome + named Enterprise capability).
-
-### Final Approval
-
-The three-hat LAA → SA → EA cycle converged at Cycle 2 / Pass 2 with all BLOCKING and MATERIAL findings resolved — anchored by Decision Ledger R3 (Community-rejection clarification), R7, R12, and R20; B-1 → RBT-33; M-2 → RBT-8 citation. ACCEPTED 2026-06-16.
+- **ADR-001 (Reasoning Architecture)** — commits the reasoning-capture invariant this ADR gives a durable system-of-record home; §2.1 and §2.4 build on ADR-001 §2.2 and §2.3.
+- **DDR-001 (Data Architecture)** — owns the plane enumeration and KG/RG structure (§2.3), the graph-gateway pattern and persistence patterns (§2.4/§2.5), and the spike-findings section that records the Community-trial outcome and the named Enterprise capability the plane model depends on (§2.2/§4.1); DDR-001 is authored against this ADR.
+- Downstream SDDs realize the service-level write paths (§2.6) and are checked against this ADR at three-hat review per §6.
 
 ---
 
@@ -209,8 +187,5 @@ The three-hat LAA → SA → EA cycle converged at Cycle 2 / Pass 2 with all BLO
 
 | Version | Date | Ticket | Change |
 |---|---|---|---|
-| 1.0.0 | 2026-06-15 | RBT-8 | Original authoring. |
-
----
-
-*End of ADR-002.*
+| 1.0.0 | 2026-07-01 | — | Distilled to standalone contract form; ledger coupling and review-diary scaffolding removed; stale cross-reference in §5.2 corrected to §2.2; documentation-purity pass folded in (no-vector reversibility framing sharpened, undefined epoch reference removed, Date/organization normalized); no decision change. |
+| 1.0.0 | 2026-06-15 | RBT-8 | Original authoring; ACCEPTED. |

@@ -1,5 +1,5 @@
 # File: docs/adr/ADR-001-reasoning-architecture.md
-# Author: Thaddeus Haffey — Executive Architect, Haffey Enterprises
+# Author: Thaddeus Haffey — Executive Architect, Haffey Enterprises LLC
 # Created: 2026-06-03
 # Description: ADR-001 — Reasoning Architecture (SOFIA as Reasoner). Establishes SOFIA's reasoning-capture invariant and its Position 5 operating regime on a committed trajectory toward Position 4, binding the discipline across the enterprise SDLC.
 
@@ -10,11 +10,9 @@
 | **Document ID** | ADR-001 |
 | **Status** | ACCEPTED |
 | **Version** | 1.0.0 |
-| **Date** | 2026-06-03 |
-| **Authors** | Thaddeus Haffey (LAA / SA / EA) |
-| **Reviewers** | Three-hat (LAA/SA/EA) review of record: three independent fresh-eyes passes, converged at Pass 3 (PASS), 2026-06-03. See §7. |
+| **Date** | 2026-07-01 |
+| **Authors** | Thaddeus Haffey (Executive Architect) |
 | **Supersedes** | None — establishes new platform principle |
-| **Amendment Process** | Changes require LAA + SA + EA approval. Material changes increment minor version; breaking changes increment major version. |
 
 ---
 
@@ -24,7 +22,7 @@
 
 SOFIA is at initial design: no service is yet deployed and no per-phase design is yet accepted. This decision must be stated before the platform's data and service architecture are committed, because every one of those decisions depends on whether SOFIA reasons over the enterprise graph or merely wraps a model. That dependency is the forcing function. Absent an explicit reasoning-architecture commitment, the architecture drifts by default toward an LLM-wrapping pattern — prompt plus graph context plus standards, with the model doing the choosing (Position 1; see §4). In that pattern the reasoning is opaque, living transiently in model weights; the enterprise context is bounded by the prompt's token budget rather than by enterprise scale; reasoning quality varies with model version; and "why these choices were made in this enterprise's context" is lost because the model is choosing. That pattern is fast to build, and it is the specific regression this platform exists to prevent: any architect with model access reproduces it, and SOFIA's existence as a platform would be unjustified.
 
-This ADR ends that default. It states the reasoning-architecture commitment on which the platform's data and service architecture depend.
+This Architecture Decision Record (ADR) ends that default. It states the reasoning-architecture commitment on which the platform's data and service architecture depend.
 
 ---
 
@@ -45,14 +43,14 @@ SOFIA commits to a **trajectory away from the Position-1 default toward Position
 
 Whoever does the reasoning, SOFIA captures it:
 
-- **Encoded SOFIA logic decides** → recorded as Finding / DirectiveCheck / Inference artifacts with evidence linkage to the KG nodes consulted; source category *encoded reasoning*, authoritative.
-- **A specialized agent decides** → recorded as Inference artifacts with evidence linkage to the KG nodes the agent consulted; source category *specialized agent* (attributed to the specific agent), authoritative.
+- **Encoded SOFIA logic decides** → recorded as ReasoningProgress artifacts with evidence linkage to the KG nodes consulted; source category *encoded reasoning*, authoritative.
+- **A specialized agent decides** → recorded as ReasoningProgress artifacts with evidence linkage to the KG nodes the agent consulted; source category *specialized agent* (attributed to the specific agent), authoritative.
 - **An LLM generates probabilistic content** → recorded on the relevant SOFIA-authored artifact as content properties; source category *LLM advisory*, non-authoritative.
 - **A human reviewer overrides** → recorded as approval-authored artifacts with override linkage to the artifact superseded; source category *human override*, authoritative.
 
-The capture discipline is invariant across all reasoners. What varies is the **locus of reasoning** (encoded SOFIA logic, specialized agent, LLM, human) and the **authoritative flag**. Rejected alternatives are first-class: where a reasoner weighed and discarded an option, the discarded option is captured as a Hypothesis artifact, not silently dropped.
+The capture discipline is invariant across all reasoners. What varies is the **locus of reasoning** (encoded SOFIA logic, specialized agent, LLM, human) and the **authoritative flag**. Rejected alternatives are first-class: where a reasoner weighed and discarded an option, the discarded option is captured as a RejectedAlternative artifact, not silently dropped.
 
-This ADR commits the *conceptual capture contract* — that each reasoner's output is recorded with evidence linkage, source attribution by category, and an authoritative flag, and that rejected alternatives are retained. The artifact kinds named above (Finding, DirectiveCheck, Inference, Hypothesis) are **illustrative** of the categories of captured reasoning; their canonical labels, property names, the source-attribution vocabulary, relationship types, and constraints are owned by the Graph Schema document, not fixed here.
+This ADR commits the *conceptual capture contract* — that each reasoner's output is recorded with evidence linkage, source attribution by category, and an authoritative flag, and that rejected alternatives are retained. The artifact kinds named above (ReasoningProgress, Evidence, RejectedAlternative) are **illustrative** of the categories of captured reasoning; their canonical labels, property names, the source-attribution vocabulary, relationship types, and constraints are owned by the Graph Schema document (DDR-002), not fixed here.
 
 ### 2.3 Deterministic / probabilistic output framing
 
@@ -68,7 +66,7 @@ This ADR is honest about design maturity. No service is yet deployed and no per-
 
 ### 2.5 Encoding-density growth mechanism
 
-The trajectory toward Position 4 is made real by a promotion mechanism: recurring reasoning patterns consolidate, over time, from LLM-rendered narrative or human override into encoded SOFIA logic. Every promotion into encoded knowledge passes a human (EA) approval gate — **SOFIA does not self-modify its encoded reasoning without EA approval.** This mechanism is what distinguishes the committed trajectory from a static Position 5: without it, recurring reasoning never consolidates and the platform is Position 5 today and Position 5 forever. The governance of the promotion mechanism is designed in the forthcoming Feedback Loop Governance design (tracked at RBT-14); this ADR commits the principle that the mechanism exists, is EA-gated, and is the engine of the Position 4 trajectory.
+The trajectory toward Position 4 is made real by a promotion mechanism: recurring reasoning patterns consolidate, over time, from LLM-rendered narrative or human override into encoded SOFIA logic. Every promotion into encoded knowledge passes a human (EA) approval gate — **SOFIA does not self-modify its encoded reasoning without EA approval.** This mechanism is what distinguishes the committed trajectory from a static Position 5: without it, recurring reasoning never consolidates and the platform is Position 5 today and Position 5 forever. The governance of the promotion mechanism is designed in the forthcoming Feedback Loop Governance design (DDR-003); this ADR commits the principle that the mechanism exists, is EA-gated, and is the engine of the Position 4 trajectory.
 
 ---
 
@@ -135,7 +133,7 @@ The alternatives are the five positions of the reasoning taxonomy. They are not 
 
 ### 5.3 Risks
 
-- **Encoding density never grows.** If the promotion mechanism (§2.5) is never built or exercised, the platform stalls at Position 5 with no compounding and the trajectory becomes rhetorical. *Mitigation:* the EA-gated promotion mechanism and its governance are designed in the forthcoming Feedback Loop Governance work (RBT-14); promotion-cycle exercise is a signal to monitor once the loop exists.
+- **Encoding density never grows.** If the promotion mechanism (§2.5) is never built or exercised, the platform stalls at Position 5 with no compounding and the trajectory becomes rhetorical. *Mitigation:* the EA-gated promotion mechanism and its governance are designed in the forthcoming Feedback Loop Governance work (DDR-003); promotion-cycle exercise is a signal to monitor once the loop exists.
 - **Position-1 reassertion under build pressure.** Implementation pressure can favor a quick model call that quietly assumes Position 1. *Mitigation:* the §6 compliance checks are enforced at three-hat architecture review, which surfaces Position-1 drift before a design lands; the burden of proof on probabilistic output (§2.3) makes the regression explicit rather than silent.
 - **Provisional later-stage capture hardens without design.** The later lifecycle stages carry provisional reasoning-capture shapes (§2.4); the risk is that a provisional shape is treated as settled. *Mitigation:* each stage's detail design re-confirms its capture mechanics; the provisional shapes are flagged as not pre-encoded by this ADR.
 
@@ -143,46 +141,33 @@ The alternatives are the five positions of the reasoning taxonomy. They are not 
 
 ## 6. Compliance
 
-Conformance with this ADR is verified at architecture review. The following checks are mandatory for every new SDD, DDR, and design pass:
+Conformance with this ADR is verified at architecture review. The following checks are mandatory for every new SDD (Service Design Document), DDR (Design Decision Record), and design pass:
 
 1. **Position commitment statement.** The design states how it honors the Position 5 operating regime and contributes to the Position 4 trajectory. Designs that quietly assume Position 1 without the §2.3 burden of proof are flagged.
-2. **Reasoning-capture invariant.** Every architectural decision the design produces has a captured RG artifact (illustrative kinds per §2.2 — Inference / Finding / DirectiveCheck) with source attribution and authoritative flag, evidence linkage to the KG nodes consulted, and a Hypothesis artifact for each option weighed and discarded.
+2. **Reasoning-capture invariant.** Every architectural decision the design produces has a captured RG artifact (illustrative kinds per §2.2 — ReasoningProgress / Evidence / RejectedAlternative) with source attribution and authoritative flag, evidence linkage to the KG nodes consulted, and a RejectedAlternative artifact for each option weighed and discarded.
 3. **Deterministic / probabilistic classification.** Every output the design produces is classified as deterministic (SOFIA-encoded) or probabilistic (LLM-rendered); probabilistic outputs are recorded as non-authoritative.
 4. **Burden of proof on probabilistic output.** Each probabilistic output justifies why deterministic encoding is not feasible and what would be required to shift it to deterministic over time (its Position 4 trajectory contribution).
 5. **LLM-as-renderer language.** Design documents describing model use employ language consistent with §2.3 — the LLM renders SOFIA-decided components and does not select, decide, evaluate, or detect. Position-1-leaning verbs (the model "synthesizes," "selects," "decides," "reasons over") are flagged and reframed.
-6. **Specialized-agent integration check.** Designs introducing a specialized agent specify how the agent honors the invariant: Inference artifacts attributed to the specific agent (source category *specialized agent*), evidence linkage to KG nodes consulted, Hypothesis artifacts for rejected alternatives.
+6. **Specialized-agent integration check.** Designs introducing a specialized agent specify how the agent honors the invariant: ReasoningProgress artifacts attributed to the specific agent (source category *specialized agent*), evidence linkage to KG nodes consulted, RejectedAlternative artifacts for rejected alternatives.
 7. **Lifecycle-stage scope statement.** Designs touching a lifecycle stage state which decisions are SOFIA-encoded, which are delegated to specialized agents with reasoning captured, which are LLM-rendered probabilistic content, and which are human-reasoned over SOFIA-prepared context.
 
-**Enforcement.** These checks are enforced at three-hat (LAA/SA/EA) review — the operational gate every SDD and DDR passes through — at design time.
+**Enforcement.** These checks are enforced at three-hat (LAA / SA / EA — Lead Application Architect / Solution Architect / Enterprise Architect) review — the operational gate every SDD and DDR passes through — at design time.
 
-**Propagation.** Propagation of this commitment across reasoning-architecture design work is carried by the compliance checks above and the repo-root `CLAUDE.md` cross-reference to this ADR as the binding record; no dedicated directive is required for that propagation. This is distinct from the runtime Directives-Context-Envelope Bridge under re-evaluation in A5 (RBT-11), which §6 neither requires nor pre-empts.
+**Propagation.** Propagation of this commitment across reasoning-architecture design work is carried by the compliance checks above, enforced at three-hat review; no dedicated propagation directive is required. This is distinct from the runtime Directives-Context-Envelope Bridge, which §6 neither requires nor pre-empts.
 
 ---
 
-## 7. Review and Approval
+## 7. Cross-References
 
-### Review Cycle 1
-
-| Reviewer Role | Name | Date | Outcome | Findings |
-|---|---|---|---|---|
-| LAA | Thaddeus Haffey | 2026-06-03 | APPROVED | Scope-fit; principle-level; no open findings at Pass 3. |
-| SA | Thaddeus Haffey | 2026-06-03 | APPROVED | Conformance verified against house conventions + R18; no open findings at Pass 3. |
-| EA | Thaddeus Haffey | 2026-06-03 | APPROVED | Converged; no open BLOCKING/MATERIAL; two forward observations out of scope (O-1, O-2). |
-
-Review of record: three independent fresh-eyes three-hat passes — `docs/reviews/2026-06-03-adr-001-reasoning-architecture-three-hat-review{,-pass-2,-pass-3}.md` — converged at Pass 3 (PASS). Forward observations dispositioned in-session: O-1 (CI structural gate is real and self-clears at PR; §6 reasoning-architecture checks are review-only by design); O-2 → RBT-30 (reboot-specific template adaptation).
-
-### Final Approval
-
-The three-hat LAA → SA → EA cycle converged at Pass 3 with all BLOCKING and MATERIAL findings resolved (anchored by Decision Ledger R18 and R19). ACCEPTED 2026-06-03.
+- **Graph Schema document (DDR-002)** — owns the canonical artifact vocabulary (labels, property names, source-attribution categories, relationship types, constraints) that §2.2 defers to.
+- **Feedback Loop Governance design** (DDR-003, forthcoming) — designs the EA-gated encoding-density promotion mechanism whose existence §2.5 commits.
+- Downstream DDRs and SDDs implement this ADR and are checked against it at three-hat review per §6.
 
 ---
 
 ## 8. Change Log
 
-| Version | Date | Author | Change |
+| Version | Date | Ticket | Change |
 |---|---|---|---|
-| 1.0.0 | 2026-06-03 | Thaddeus Haffey | Original authoring. |
-
----
-
-*End of ADR-001.*
+| 1.0.0 | 2026-07-01 | — | Distilled to standalone contract form; ledger coupling and review-diary scaffolding removed; documentation-purity pass folded in (acronym expansions, downstream doc-IDs back-filled, illustrative RG-vocabulary refreshed to the canonical DDR-002 set, Date/organization normalized); no decision change. |
+| 1.0.0 | 2026-06-03 | — | Original authoring; ACCEPTED. |
