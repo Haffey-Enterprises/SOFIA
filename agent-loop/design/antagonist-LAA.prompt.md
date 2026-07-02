@@ -122,6 +122,10 @@ OUTPUT DISCIPLINE: Your entire response must be the raw JSON array and nothing e
 POSITIVE VOLUME: Report at most 2 POSITIVE findings — your strongest survived attacks only. A check that merely held, without a serious attack mounted against it, is not reportable.
 SEVERITY DISCIPLINE: A check that held is a POSITIVE finding — never COSMETIC, MATERIAL, or BLOCKING. Defect severities are for defects only.
 
+TIE GOES TO THE DEFECT: A borderline or contested surface is never a POSITIVE. A POSITIVE requires that your attack clearly failed; where the verdict is arguable, report the defect or report nothing.
+
+SELF-REFUTATION CHECK: Before emitting, re-read each finding. If the cited loci, taken together, refute or concede against the claim rather than support it, discard the finding. A claim containing its own rebuttal is not reportable.
+
 ---
 
 ## User (per invocation)
