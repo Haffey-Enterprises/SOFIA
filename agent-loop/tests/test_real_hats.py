@@ -543,3 +543,86 @@ def test_build_real_hat_plan_wires_four_reviewers_from_prompt_dir() -> None:
         "antagonist-EA",
         "coherence",
     ]
+
+
+# --- calibration 1: POSITIVE findings bypass the arbiter (2026-07-02) --------
+
+
+class _SpyArbiter:
+    """Records which finding ids it is asked to classify."""
+
+    def __init__(self, classification="decision-bearing", authority_locus=None):  # noqa: ANN001
+        self.classified_ids: list[str] = []
+        self._classification = classification
+        self._authority_locus = authority_locus
+
+    def classify(self, finding, authorities, design_intent):  # noqa: ANN001
+        self.classified_ids.append(finding.id)
+        return ArbiterResult(finding.id, self._classification, self._authority_locus, "r", "high")
+
+
+def _sev(claim: str, severity: str) -> Finding:
+    return Finding(
+        source="antagonist-stub",  # type: ignore[arg-type]
+        altitude="LAA",
+        severity=severity,  # type: ignore[arg-type]
+        target=["DOC-A"],
+        locus=claim,  # distinct locus per finding → distinct id
+        claim=claim,
+        cited_authority=CitedAuthority(kind="canonical", ref="AUTH-1 §2"),
+    )
+
+
+def _single_reviewer_plan(findings: list[Finding]):
+    def plan(pass_number, snapshot, log):  # noqa: ANN001
+        return [_emitting_reviewer(IDENTITY_LAA, findings)]
+
+    return plan
+
+
+def test_positive_finding_bypasses_the_arbiter(tmp_path) -> None:
+    positive = _sev("survived a real attack", "POSITIVE")
+    spy = _SpyArbiter()
+    result = run_loop(
+        header=_header(),
+        plan=_single_reviewer_plan([positive]),
+        arbiter=spy,
+        store=LedgerStore(tmp_path / "pos.json"),
+    )
+    assert spy.classified_ids == []  # POSITIVE is never sent to the arbiter
+    pos = result.ledger.findings[0]
+    assert pos.severity == "POSITIVE"
+    assert pos.classification == "unclassified" and pos.status == "open"
+    assert result.exit.kind == "CONVERGED"  # POSITIVE neither counts nor blocks
+
+
+def test_mixed_pass_classifies_only_non_positives(tmp_path) -> None:
+    material = _sev("a real defect", "MATERIAL")
+    positive = _sev("survived a real attack", "POSITIVE")
+    spy = _SpyArbiter(classification="decision-bearing")
+    result = run_loop(
+        header=_header(),
+        plan=_single_reviewer_plan([material, positive]),
+        arbiter=spy,
+        store=LedgerStore(tmp_path / "mix.json"),
+    )
+    assert len(spy.classified_ids) == 1  # only the MATERIAL was classified
+    mat = next(f for f in result.ledger.findings if f.severity == "MATERIAL")
+    pos = next(f for f in result.ledger.findings if f.severity == "POSITIVE")
+    assert mat.classification == "decision-bearing"
+    assert pos.classification == "unclassified"
+
+
+def test_halt_payload_never_contains_a_positive(tmp_path) -> None:
+    material = _sev("a real defect", "MATERIAL")
+    positive = _sev("survived a real attack", "POSITIVE")
+    result = run_loop(
+        header=_header(),
+        plan=_single_reviewer_plan([material, positive]),
+        arbiter=_SpyArbiter(classification="decision-bearing"),
+        store=LedgerStore(tmp_path / "halt.json"),
+    )
+    assert result.exit.kind == "HALT_DECISION"
+    assert result.exit.reason == "decision-bearing"
+    assert [f.severity for f in result.exit.payload] == ["MATERIAL"]
+    assert all(f.severity != "POSITIVE" for f in result.exit.payload)

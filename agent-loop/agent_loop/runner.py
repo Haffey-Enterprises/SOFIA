@@ -253,10 +253,19 @@ def run_loop(
                 "compromised, refusing to route (would risk a false CONVERGED)"
             )
 
-        # Arbiter — the only LLM judgment — classifies open/unclassified findings.
+        # Arbiter — the only LLM judgment — classifies open/unclassified findings
+        # of a defect severity only. POSITIVE findings (survived-attack credits)
+        # are never classified (a decision-bearing POSITIVE is incoherent): they
+        # stay open/unclassified, are never sent to the arbiter, and so can never
+        # reach a decision-bearing halt payload (README §arbiter, amended
+        # 2026-07-02).
         classified_any = False
         for finding in ledger.findings:
-            if finding.status == "open" and finding.classification == "unclassified":
+            if (
+                finding.status == "open"
+                and finding.classification == "unclassified"
+                and finding.severity != "POSITIVE"
+            ):
                 result = arbiter.classify(finding, authorities, design_intent)
                 finding.classification = result.classification
                 finding.authority_locus = result.authority_locus
