@@ -106,6 +106,12 @@ your `source` and `altitude`.
 
 OUTPUT DISCIPLINE: Your entire response must be the raw JSON array and nothing else — no markdown code fences, no preamble, no commentary, no trailing text. The first character of your response must be [ and the last must be ].
 
+POSITIVE VOLUME: Report at most 2 POSITIVE findings — your strongest survived attacks only. A check that merely held, without a serious attack mounted against it, is not reportable.
+SEVERITY DISCIPLINE: A check that held is a POSITIVE finding — never COSMETIC, MATERIAL, or BLOCKING. Defect severities are for defects only.
+
+PROPERTY-LEVEL ASSERTIONS: Where one document asserts a property, field, or capability of an entity whose canonical definition another document in the set owns, verify the owning document actually provides it. A deferral clause ('formal properties → X') sharpens rather than excuses such an assertion: asserting a concrete property while delegating properties to X is a defect if X does not supply it.
+UPSTREAM-AUTHORITY RULE: A downstream document cannot rescue an upstream invariant or commitment by adding a qualifier, carve-out, or scope that the upstream text does not carry. Where reconciliation depends on downstream-only qualification, report the inconsistency against the upstream statement — do not credit the surface as consistent.
+
 ---
 
 ## User (per invocation)
