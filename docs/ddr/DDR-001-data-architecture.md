@@ -8,12 +8,12 @@
 | Field | Value |
 |---|---|
 | **Document ID** | DDR-001 |
-| **Version** | 1.2.0 |
+| **Version** | 1.3.0 |
 | **Status** | ACCEPTED |
-| **Date** | 2026-07-01 |
+| **Date** | 2026-07-03 |
 | **Authors** | Thaddeus Haffey (Executive Architect) |
 | **Supersedes** | None |
-| **References** | ADR-001 v1.0.0; ADR-002 v1.0.0 |
+| **References** | ADR-001 v1.1.0; ADR-002 v1.1.0 |
 
 ---
 
@@ -25,14 +25,15 @@ The Knowledge Graph (KG) and Reasoning Graph (RG) are realized as co-resident lo
 - **Decision.2** — The KG is partitioned into **five typed planes** (Catalog, Environment, Operational, Governance, Standards) **plus an Extension layer**.
 - **Decision.3** — Persistence is a **three-store backbone** — Neo4j (system of record), PostgreSQL (workflow/audit/staging), Firestore (immutable snapshots) — **with no vector store**.
 - **Decision.4** — All graph access flows through a **single sole-owner gateway** (knowledge-service), the only holder of the Neo4j driver.
-- **Decision.5** — A **scheduled, EA-gated feedback loop** promotes recurring RG findings into the KG; **SOFIA never self-modifies** the KG.
+- **Decision.5** — A **scheduled, EA-gated feedback loop** promotes recurring RG findings into the KG; **SOFIA does not self-modify its EA-gated encoded knowledge** (scoped to ADR-001 §2.5's object — SOFIA's own reasoning entering encoded knowledge). The broader human-accountable checkpoint governing *all* KG entry is routed to the forthcoming **KG-entry-governance ADR**, not asserted here.
 - **Decision.6** — This DDR owns **plane definitions and data-architecture patterns** (the architecture half of the architecture-vs-schema split); the node/relationship/constraint contract is **DDR-002's**.
+- **Decision.7** — Write authority for the three feedback-loop graph writes is **component-scoped and gateway-routed** under **ADR-002 §2.6's general write-authority principle** (as amended): the `CandidatePromotion` proposal is authored by the scheduled feedback-loop job; the at-promotion provenance snapshot and the EA-gated KG materialization execute via the gateway, the materialization's authoring authority resting with the approving `PromotionDecision`.
 
 ---
 
 ## Rationale
 
-This ruling is both empirical-grounded (the Community-edition rejection — see Spike Findings) **and** deliberation-grounded (the scoping session whose design substrate this DDR realizes). Together they over-satisfy the DDR-route substrate gate (deliberation grounding before authoring).
+This ruling is **deliberation-grounded** — the output of the scoping session whose design substrate this DDR realizes — and additionally rests on a present, vendor-verifiable dependency: the schema's DB-enforced property-existence constraints require Neo4j Enterprise (ADR-002 §2.2/§4.1; the Substitution-Contract Capability Bar, below). This satisfies the DDR-route substrate gate (deliberation grounding before authoring).
 
 ---
 
@@ -53,7 +54,7 @@ Enterprise ground truth ("what do we know?"). Consumers query the graph, never a
 
 ¹ *Operational holds durable distilled `ObservedPattern`s — derived weakness / strength trends — not raw telemetry. The observability / AIOps telemetry is an external system of record (TTL-bounded there) from which `ObservedPattern`s are distilled; it is not itself a KG plane. Distillation mechanics → DDR-002; retention / archival policy → DDR-003.*
 
-² *Disambiguated at first use: the Governance **plane** (actor/decision ground truth) is distinct from feedback-loop **governance** (DDR-003) and three-hat **governance**.*
+² *Disambiguated at first use: the Governance **plane** (actor/decision ground truth) is distinct from feedback-loop **governance** (DDR-003) and three-hat **governance**. The plane holds **governance-participating identities only, not an IAM mirror**; per-action disposition events are excluded (transient → orchestration/observability SoR).*
 
 **Cross-cutting KG invariants (label-free):** provenance on every node; **deterministic, not LLM-judged** (gap = required capability with no resolving technology; override = unsanctioned preference — graph facts, not model opinions); Operational holds **durable distilled `ObservedPattern`s** (no in-graph TTL; raw telemetry TTL-bounded in its external SoR); environment edges carry **confidence**; Extension is **bounded, not dynamic** (`PlaneDefinition` registration + schema-on-write; zero migration, zero impact on existing traversals).
 
@@ -61,7 +62,7 @@ Enterprise ground truth ("what do we know?"). Consumers query the graph, never a
 
 SOFIA's persistent reasoning record ("how did we decide?"). **Two write authorities per ADR-002 §2.6: ASA authors reasoning *content* (`ReasoningProgress`); AOE owns the `ReasoningSession` lifecycle.** Four roles:
 
-- **Session root — corresponds to `ReasoningSession`** — one per synthesis run; the traversable root aggregating a run's reasoning; carries aggregate confidence. **Lifecycle owned by AOE.**
+- **Session root — corresponds to `ReasoningSession`** — one per synthesis run; the traversable root aggregating a run's reasoning. Confidence is **per-conclusion** (the `ReasoningProgress` rollup, DDR-002 §4); any session-level aggregate is a **read-time traversal affordance** (`CONTAINS` → `ReasoningProgress`), consuming-SDD-owned, **never a stored property** on the session root. **Lifecycle owned by AOE.**
 - **Typed conclusion** — a single reasoning conclusion of a known kind (illustratively: pattern selection, technology resolution, gap, override, risk, compliance evaluation). The `ReasoningProgress` node (**ASA-authored**).
 - **Evidence** — a KG-linked supporting fact, confidence **inherited from its source plane**; the traversable link from reasoning to ground truth. Linked to `ReasoningProgress` (**ASA-authored**).
 - **Rejected alternative** — a considered-and-discarded conclusion and why; the primary feedback-loop input. Linked to `ReasoningProgress` (**ASA-authored**).
@@ -101,7 +102,7 @@ Three stores, authority by state class (ADR-002 §2.4):
 
 - **Neo4j** — KG + RG (system of record) + in-graph per-plane version history.
 - **PostgreSQL** — workflow / audit / staging.
-- **Firestore** — ADR-002 §2.4's **immutable workflow snapshots**, **concretized here as immutable per-version snapshots of produced solutions (ASD bodies)** for revert/audit; append-only, point-in-time.
+- **Firestore** — immutable per-version snapshots of produced solutions (ASD bodies) for revert/audit; append-only, point-in-time (ADR-002 §2.4).
 - **No vector store** — semantic retrieval is graph-traversal-native.
 
 **Two distinct temporal mechanisms, never conflated:** in-graph version retention (Neo4j, cited ground truth) vs. immutable produced-solution snapshots (Firestore, solution bodies).
@@ -134,21 +135,17 @@ Three stores, authority by state class (ADR-002 §2.4):
 
 **Out-of-band by design** — a scheduled job over accumulated RG, not inline with synthesis. **Path:** detect (cross-graph traversal over RG + KG + Operational) → propose (`CandidatePromotion`) → **mandatory, non-bypassable EA gate** (the loop proposes, a human materializes) → materialize (real KG node + `PROMOTES_TO_KNOWLEDGE` edge, provenance-stamped). **Proposal-visibility invariant:** a `CandidatePromotion` is a distinct proposal class **excluded from synthesis ground-truth traversal**, materialized only on EA approval. **Signal/action classes (illustrative):** override-recurrence, gap-recurrence, evidence-quality; at least one action class — knowledge *promotion* (EA-gated) and *source-quality feedback* (feeds ingestion scoring, no promotion).
 
-**Write authority — the three feedback-loop writes (ADR-002 §2.6 principle; ADR-002 §2.5 gateway-routed; graph-home-agnostic).** ADR-002 §2.6 fixes reasoning-state write authority as **component-scoped, not diffuse**, exercised through the sole-owner gateway (ADR-002 §2.5); its *enumerated* assignment is synthesis-capture-scoped — ASA authors `ReasoningProgress`, AOE owns the `ReasoningSession` lifecycle (the two write authorities named for the Reasoning Graph above). ADR-002 §2.6 neither closes against nor extends to the feedback loop's own writes; this DDR homes them under the same component-scoped principle, each to a **named, gateway-routed (driver-less) component**, so none is diffuse:
+**Write authority — the three feedback-loop writes (ADR-002 §2.6 general principle; ADR-002 §2.5 gateway-routed; graph-home-agnostic).** ADR-002 §2.6 (as amended) states the general rule: every authoritative graph write has a **named, component-scoped author**; the sole-owner gateway (ADR-002 §2.5) is the **sole executor** and never the author; for an EA-gated materialization the **authoring authority is the approving decision**. Its synthesis-time *instance* assigns ASA as author of `ReasoningProgress` and AOE as owner of the `ReasoningSession` lifecycle (the two write authorities named for the Reasoning Graph above). The feedback loop's three writes are the instance of the same general rule at the promotion boundary:
 
-- **`CandidatePromotion` proposal** — authored by the **scheduled feedback-loop job** (the detection-promotion mechanism), pre-approval. A *third component-scoped author class* beyond ADR-002 §2.6's synthesis-time ASA/AOE — consistent with ADR-002 §2.6's principle, distinct from its synthesis-capture assignment.
-- **At-promotion provenance snapshot** — materialized by the **gateway** as a structural side-effect of the promotion act, ahead of the cited `Evidence`'s retention (§Versioning & Temporal Model's summary-on-evidence-expiry). Its node/edge *schema* is DDR-002's; the *write-authority* assignment is here.
-- **Materialized KG node + `PROMOTES_TO_KNOWLEDGE` edge** — materialized by the **gateway on EA approval**: a KG ground-truth write gated by the human EA decision — an authoritative write, not an ADR-002 §2.6 reasoning-state write. The loop proposes, the EA authorizes, the gateway materializes — **SOFIA never self-modifies** (Decision.5).
+- **`CandidatePromotion` proposal** — **authored** by the **scheduled feedback-loop job** (the detection-promotion mechanism), pre-approval; gateway-executed. A component-scoped author beyond the synthesis-time ASA/AOE instance, under the same general principle.
+- **At-promotion provenance snapshot** — **executed** by the **gateway** in the same materialization transaction as the KG write (below), preserving lineage ahead of the cited `Evidence`'s retention (§Versioning & Temporal Model's summary-on-evidence-expiry). Its node/edge *schema* is DDR-002's; its authoring authority is the approving `PromotionDecision`, as for the materialization it accompanies.
+- **Materialized KG node + `PROMOTES_TO_KNOWLEDGE` edge** — the **authoring authority is the approving `PromotionDecision`** (the human EA's gate); the **gateway executes** it, as it executes all graph writes. This is an authoritative KG ground-truth write. The loop proposes, the EA (via the `PromotionDecision`) authorizes, the gateway executes — **SOFIA does not self-modify its EA-gated encoded knowledge** (Decision.5).
 
-This assigns write **authority** only and is **graph-home-agnostic** — where `CandidatePromotion` resides is deferred; nothing here depends on it. The ADR-002 §2.6 two-writer assignment for `ReasoningProgress` / `ReasoningSession` is unchanged.
+This assigns write **authority** only and is **graph-home-agnostic** — where `CandidatePromotion` resides is deferred; nothing here depends on it. The ADR-002 §2.6 synthesis-time assignment for `ReasoningProgress` / `ReasoningSession` is unchanged.
+
+**Artifact write authority (ADR-002 §2.6 general principle).** The **ASA authors `(:Artifact:Solution)` artifacts** on creation — the producing-component pattern — gateway-routed and driver-less, as with its `ReasoningProgress` authorship. Authority over **Solution lifecycle transitions** (the FSM advancement `proposed → architected → gated → approved → operational`, DDR-002 §5) is **routed to the relevant SDDs** under the same ADR-002 §2.6 principle — each transition's authoring authority named there — not fixed here.
 
 **Boundary:** thresholds, signal definitions, EA criteria, cadence, and retention → DDR-003; `CandidatePromotion` schema → DDR-002; the scheduled job + EA-review portal → SDD.
-
----
-
-## Spike Findings — Community → Enterprise
-
-Recorded as ratified institutional memory (closed / not re-derived). **Tested:** Neo4j Community against the five-plane / multi-edge model. **Result:** could not support it — Enterprise is the established requirement (empirical, not preference). **Learned:** the plane-model complexity ADR-002 §2.3 commits exceeds Community. **Capability requirement (structural, as the authority states it):** the five typed planes + Extension + RG as co-resident logical subgraphs in one instance, with the multiple edge types and the cross-plane / cross-graph traversal complexity their realization requires. **Recovery-boundary note:** the specific edition-feature blocker from the original trial is not in the captured record and is **not reconstructed here**. *(Deliberately avoids attributing the rejection to Community's single-database limit, which would contradict ADR-002 §2.3's logical-not-physical realization.)*
 
 ---
 
@@ -160,7 +157,8 @@ A replacement graph platform — or moving the runtime off self-managed GKE — 
 2. the multiple relationship/edge types the plane traversals require;
 3. first-class cross-plane and cross-graph (KG↔RG) traversal as single-store operations;
 4. in-graph version retention + point-in-time (as-of) resolution per the temporal model;
-5. gateway-enforceable provenance, schema-on-write validation, and classification at the write boundary.
+5. gateway-enforceable provenance, schema-on-write validation, and classification at the write boundary;
+6. **DB-enforced property-existence-constraint capability at the schema layer** — the present, vendor-verifiable dependency the Neo4j Enterprise edition commitment rests on (Enterprise-only per the current Cypher Manual; the DDR-002 §7 provenance-group existence constraints depend on it; ADR-002 §2.2/§4.1).
 
 ---
 
@@ -171,10 +169,10 @@ Downstream SDDs verify against:
 1. All graph access routes through the sole-owner gateway; no other component holds a Neo4j driver.
 2. No authoritative KG/RG state in local stores (local = cache/operational/staging only).
 3. RG content is authored only by ASA (`ReasoningProgress`); `ReasoningSession` lifecycle only by AOE; both gateway-mediated.
-4. `CandidatePromotion` proposals are excluded from synthesis ground-truth traversal until EA-approved; SOFIA never self-modifies the KG.
+4. `CandidatePromotion` proposals are excluded from synthesis ground-truth traversal until EA-approved; SOFIA does not self-modify its EA-gated encoded knowledge (ADR-001 §2.5). The broader entry-checkpoint principle governing all KG entry → forthcoming KG-entry-governance ADR.
 5. RG Evidence resolves to its pinned KG version (point-in-time explainability).
 6. Every KG node carries provenance; promoted knowledge is distinguishable from ingested.
-7. Feedback-loop graph writes are component-scoped and gateway-routed: the `CandidatePromotion` proposal authored by the scheduled feedback-loop job; the at-promotion provenance snapshot and the materialized KG node by the gateway. The KG materialization occurs **only on EA approval** — SOFIA never self-modifies (cf. check 4).
+7. Feedback-loop graph writes honor ADR-002 §2.6's author/executor/authorizer separation: the `CandidatePromotion` proposal is authored by the scheduled feedback-loop job; the at-promotion provenance snapshot and the materialized KG node are executed by the gateway, their authoring authority resting with the approving `PromotionDecision`. The KG materialization occurs **only on EA approval** — SOFIA does not self-modify its EA-gated encoded knowledge (cf. check 4).
 
 *Aspirational checkpoints — mechanized enforcement is deferred, not CI-enforced at authoring.*
 
@@ -188,8 +186,8 @@ Downstream SDDs verify against:
 
 ## Cross-References
 
-- **Upstream implemented:** ADR-001 v1.0.0 (spine), ADR-002 v1.0.0 (system of record).
-- **Sibling (forward):** DDR-003 — feedback-loop governance; the architecture/governance split is settled (this DDR owns the data-path, DDR-003 owns governance).
+- **Upstream implemented:** ADR-001 v1.1.0 (spine), ADR-002 v1.1.0 (system of record).
+- **Sibling (forward):** DDR-003 — feedback-loop governance (**forthcoming, unauthored**); the architecture/governance split is settled (this DDR owns the data-path, DDR-003 owns governance).
 - **Downstream consumers:** DDR-002 — graph schema; SDDs — knowledge-service, snapshot-service. *(One-way dependency: DDR-002 depends on this DDR; DDR-001 routes schema concerns forward to DDR-002 but does not depend on it.)*
 - **Standards:** house conventions — self-managed-GKE exception (ADR-002 §2.2); data-classification tiers.
 
@@ -211,6 +209,9 @@ DDR-001 is substrate for DDR-002 (schema), DDR-003's scope boundary, and the SDD
 
 | Version | Date | Ticket | Change |
 |---|---|---|---|
+| 1.3.0 | 2026-07-03 | — | Triage-001 amendment batch (record: `agent-loop/triage/triage-001-distilled-set/record.md`). **Aggregate-confidence re-homed (T-01):** the session-root bullet drops "carries aggregate confidence"; confidence is per-conclusion (`ReasoningProgress` rollup, DDR-002 §4), any session-level aggregate a read-time traversal affordance, never a stored property — the per-Solution comparison intent moves to DDR-002's Named Gaps. **KG-entry checkpoint scoped (T-02):** Decision.5 second clause and conformance check 4 scoped to ADR-001 §2.5's object (SOFIA's own reasoning entering encoded knowledge); the broader all-KG-entry checkpoint routed by name to the forthcoming KG-entry-governance ADR. **Feedback-loop write authority recast (T-09):** the three-writes treatment and check 7 rewritten in author/executor/authorizer terms citing amended ADR-002 §2.6; Artifact write authority homed here (ASA authors `Solution` on creation; lifecycle-transition authority routed to SDDs). Decision.7 added. |
+| 1.3.0 | 2026-07-03 | — | **Enterprise-edition requirement re-grounded (T-04):** the Spike Findings section is retired entirely (trial specifics never captured; recollection unreliable; single-database non-contradiction guard removed with the narrative); its durable content re-homes as Substitution-Contract Capability Bar item 6 — DB-enforced property-existence-constraint capability, the vendor-verifiable dependency the edition rests on (verified 2026-07-02). Rationale re-grounded on that present dependency. |
+| 1.3.0 | 2026-07-03 | — | **Record-completeness / honesty (no decision change):** Decision list gains the feedback-loop write-authority component (Decision.7) citing amended ADR-002 (T-07); footnote ² adds the governance-participating-identities-only / no-IAM-mirror clause and per-action disposition-event exclusion (T-12); Firestore row's "concretized here as" preamble simplifies to a plain ADR-002 §2.4 citation (T-25); DDR-003 Cross-References entry gains the forthcoming/unauthored status marker (T-05 Leg 2); upstream references bumped to ADR-001 v1.1.0 / ADR-002 v1.1.0. |
 | 1.2.0 | 2026-07-01 | — | Distilled to standalone contract form; ledger coupling, prior-corpus intent-source lineage, and revision-diary residue removed; cross-references qualified to source doc; documentation-purity pass folded in (session cardinality tightened, RG roles aligned to the DDR-002 edge model, one-way reference corrected to dependency, footnotes reordered, ASD expanded, Date normalized); no decision change. |
 | 1.2.0 | 2026-06-23 | RBT-45 | Additive MINOR amendment. Homes write authority for the three feedback-loop writes to named, gateway-routed components (`CandidatePromotion` proposal → scheduled feedback-loop job, pre-approval; at-promotion provenance snapshot + materialized KG node → gateway, the latter on EA approval), reconciled against ADR-002 §2.6's component-scoped principle; adds conformance check 7. Write-authority only; `CandidatePromotion` graph-home deferred. |
 | 1.1.0 | 2026-06-21 | RBT-39 | Operational plane redefined to durable distilled `ObservedPattern`s (no in-graph TTL); raw telemetry is an external system of record. |
@@ -222,7 +223,7 @@ DDR-001 is substrate for DDR-002 (schema), DDR-003's scope boundary, and the SDD
 
 | Concern | Owner |
 |---|---|
-| Plane definitions, RG roles, gateway pattern, persistence patterns, feedback data-path, temporal posture, spike finding, substitution bar, conformance checks | **DDR-001** (this) |
+| Plane definitions, RG roles, gateway pattern, persistence patterns, feedback data-path, temporal posture, substitution bar, conformance checks | **DDR-001** (this) |
 | Node/relationship/constraint contract; version/supersession/pinned-reference schema; `CandidatePromotion` schema | **DDR-002** |
 | Feedback signal policies, thresholds, EA criteria, cadence, RG retention policy, promotion audit policy | **DDR-003** |
 | Gateway API method contract; ingestion-adapter decomposition; snapshot triggers/types; revision-loop workflow; async realization; conformance-check mechanization | **SDDs** |

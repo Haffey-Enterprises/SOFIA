@@ -9,8 +9,8 @@
 |---|---|
 | **Document ID** | ADR-002 |
 | **Status** | ACCEPTED |
-| **Version** | 1.0.0 |
-| **Date** | 2026-07-01 |
+| **Version** | 1.1.0 |
+| **Date** | 2026-07-03 |
 | **Authors** | Thaddeus Haffey (Executive Architect) |
 | **Supersedes** | None — establishes new platform principle. |
 
@@ -28,7 +28,7 @@ This ADR ends that ambiguity. It commits the graph as the system of record for a
 
 ## 2. Decision
 
-The Neo4j Enterprise graph is the system of record for all SOFIA architecture and reasoning state — the Knowledge Graph and Reasoning Graph realized as logical subgraphs in a single instance — with state-class authority divided across a three-store persistence backbone (Neo4j, PostgreSQL, Firestore).
+The Neo4j Enterprise graph is the system of record for all SOFIA architecture and reasoning state — the Knowledge Graph and Reasoning Graph realized as logical subgraphs in a single instance — with state-class authority divided across a three-store persistence backbone (Neo4j, PostgreSQL, Firestore). As a sub-decision of this ruling, the graph runs **self-managed on GKE** — the orchestrated-container exception to the platform's Cloud Run default, detailed at §2.2.
 
 ### 2.1 Graph as system of record
 
@@ -40,11 +40,11 @@ This is the structural commitment that makes ADR-001's reasoning-capture invaria
 
 The system of record is a native graph database, realized by **Neo4j Enterprise**.
 
-Enterprise is the committed edition because the five-plane KG — the planes plus the multiple edge types their traversals require — is a graph Community edition could not support: **Community was trialed for it and failed.** The rejection is empirically established and ratified, not a preference. The trial itself predates this corpus's formal capture, so its outcome is carried forward as ratified institutional memory; its durable home as a spike finding is **DDR-001's spike-findings section** — which records the outcome (and the specific Enterprise capability the plane model depends on) so the rejection stands without re-running the trial. A specific Neo4j minor-version pin is deferred to the data and operational designs (consistent with the topology deferral, §5.2); the edition (Enterprise) is the commitment fixed here.
+Enterprise is the committed edition because the ratified schema's **DB-enforced property-existence constraints** (DDR-002 §7) are available only on Neo4j Enterprise per the vendor's current Cypher Manual (verified 2026-07-02) — uniqueness constraints are available on both editions, but property-existence constraints are Enterprise-only — and that constraint set is in active use in the schema. This is the present, testable dependency the edition commitment rests on. A secondary option-value consideration: the deferred production topology (§5.2) may adopt Enterprise clustering, which Community does not offer. A specific Neo4j minor-version pin is deferred to the data and operational designs (consistent with the topology deferral, §5.2); the edition (Enterprise) is the commitment fixed here.
 
 **Deployment runtime.** The graph runs **self-managed on GKE** — the orchestrated-container exception to the platform's Cloud Run default, per the platform's stateful-workload deployment criterion: a stateful, clustered graph database cannot run on serverless-container Cloud Run, and there is no managed Neo4j option on GCP, so SOFIA accepts operational responsibility for self-managed Neo4j Enterprise on GKE. This ADR is the home for that runtime exception. Runtime placement (GKE) and production topology (cluster count / HA, deferred per §5.2) are distinct axes — only the latter is deferred.
 
-**Substitution contract.** A replacement for Neo4j Enterprise must satisfy the plane-model graph at the complexity §2.3 commits (five planes plus Extension and the RG, with first-class cross-plane and cross-graph traversal); the precise capability bar is the one DDR-001 establishes. Substituting a graph platform that cannot meet it — or moving the runtime off self-managed GKE — is an amendment to this ADR, not an implementation detail.
+**Substitution contract.** A replacement for Neo4j Enterprise must satisfy the plane-model graph at the complexity §2.3 commits (five planes plus Extension and the RG, with first-class cross-plane and cross-graph traversal); the precise capability bar is the **Substitution-Contract Capability Bar (DDR-001)**. Substituting a graph platform that cannot meet it — or moving the runtime off self-managed GKE — is an amendment to this ADR, not an implementation detail.
 
 ### 2.3 Logical plane realization
 
@@ -58,7 +58,7 @@ SOFIA's persistence backbone is **three stores**, with authority divided by stat
 
 - **Neo4j** — system of record for the KG and RG (architecture and reasoning state), per §2.1.
 - **PostgreSQL** — workflow, audit, and staging state.
-- **Firestore** — immutable workflow snapshots.
+- **Firestore** — immutable produced-solution snapshots (per-version; dual-home model → DDR-001).
 
 There is **no vector store**. Semantic retrieval — of precedents, patterns, directives, and standards — is graph-traversal-native, not delegated to a separate vector index. This both follows from the graph-as-system-of-record commitment and fits the deterministic Position 4–5 ethos (ADR-001 §2.3): graph-native retrieval over the enterprise context is deterministic and auditable where probabilistic vector similarity is neither.
 
@@ -70,9 +70,11 @@ The graph system of record is accessed through a single sole-owner gateway. **kn
 
 This ADR commits the access-authority *principle*. The gateway's API shape — its operations, contracts, and the read/write paths through it — is the Data Architecture design's graph-gateway pattern (DDR-001), not this ADR's.
 
-### 2.6 Reasoning-state write authority
+### 2.6 Write authority — general principle and its synthesis-time instance
 
-Write authority for reasoning state into the RG is component-scoped, not diffuse, and is exercised through the sole-owner gateway (§2.5). The **Architecture Solutioning Agent (ASA) is the authorized author of ReasoningProgress** — the reasoning-producing component authors its own progress into the Reasoning Graph — and the write **executes via knowledge-service's graph-write API**; ASA holds no direct Neo4j driver. The **Agent Orchestration Engine (AOE) owns the ReasoningSession lifecycle only** and does not author ReasoningProgress.
+**General principle (author / executor / authorizer).** Every authoritative graph write has a **named, component-scoped author** — authorship of authoritative state is never diffuse. The sole-owner gateway (§2.5) is the **sole executor** and enforcement boundary of all graph writes; it is never itself the authoring authority. For EA-gated materializations, the **authoring authority is the approving decision** (the human EA's gate), which the gateway then executes. This author / executor / authorizer separation is the general rule; the assignment below, and those in the downstream data and service designs, are its instances.
+
+**Synthesis-time instance.** Write authority for reasoning state into the RG is component-scoped, not diffuse, and is exercised through the sole-owner gateway (§2.5). The **Architecture Solutioning Agent (ASA)** — SOFIA's reasoning-producing component — **is the authorized author of ReasoningProgress**: the reasoning-producing component authors its own progress into the Reasoning Graph, and the write **executes via knowledge-service's graph-write API**; ASA holds no direct Neo4j driver. The **Agent Orchestration Engine (AOE)** — the component that drives synthesis runs — **owns the ReasoningSession lifecycle only** and does not author ReasoningProgress.
 
 This is the system-of-record consequence of ADR-001's capture invariant: because the graph is authoritative for reasoning state (§2.1) and accessed through a single sole-owner gateway (§2.5), *which component is authorized to author that state* is a system-of-record decision, fixed here. The service-level realization — the ReasoningProgress artifact's fields and the write path through the gateway — is the relevant service design's (SDD), not this ADR's; this section fixes the authorship assignment and its routing through the gateway.
 
@@ -96,7 +98,7 @@ Fixing the store and its realization is also what makes the data and service arc
 
 *Description:* The same single-instance graph realization on the Community edition, avoiding Enterprise licensing.
 
-*Rejection rationale:* Community was trialed for the five-plane KG — the planes plus the multiple edge types their traversals require — and could not support it; Enterprise is the empirically-established requirement, not a preference. The plane model is not negotiable down to fit the edition; it is the structure the KG commits to. The spike result is carried as ratified institutional memory; its durable home — the outcome and the specific Enterprise capability the plane model depends on — is DDR-001's spike-findings section, so the rejection stands without re-running the trial each cycle.
+*Rejection rationale:* Community cannot enforce the schema's DB-enforced **property-existence constraints** (DDR-002 §7) — those constraints are Enterprise-only per the vendor's current Cypher Manual (verified 2026-07-02), whereas uniqueness is available on both editions. The ratified schema depends on that existence-constraint capability at the DB layer (the Substitution-Contract Capability Bar, DDR-001), so Community cannot realize the plane model as committed. The plane model is not negotiable down to fit the edition; it is the structure the KG commits to. Enterprise clustering for the deferred production topology (§5.2) is a secondary option-value consideration, not the present requirement.
 
 ### 4.2 Alternative B — Separate physical databases per plane / graph
 
@@ -170,15 +172,16 @@ Conformance with this ADR is verified at architecture review. The following are 
 4. **Traversal-locality check.** Designs touching KG/RG or cross-plane access use first-class graph traversal, not application-layer joins across stores.
 5. **Write-authority check.** Designs that write reasoning state honor the §2.6 assignment (ASA authors ReasoningProgress, routed via knowledge-service; AOE owns ReasoningSession lifecycle only).
 6. **Data-protection check.** Designs handling ingested data enforce the no-PHI-by-design classification (§2.7); any design that would bring PHI into scope is flagged as an ADR trigger, not absorbed.
+7. **Write-authorship check.** Any design introducing an authoritative graph write names its component-scoped author per the §2.6 general principle; the gateway (§2.5) is the sole executor and is never named as the authoring authority.
 
-**Enforcement.** These checks are enforced at three-hat (LAA/SA/EA) review — the gate every SDD and DDR passes through — at design time. Mechanized enforcement (CI / schema validators for the store-authority and write-authority checks, which are more mechanizable than judgment-based review) is not built yet. Compliance is currently aspirational; until mechanized enforcement lands, conformance is reviewed at SDD/DDR-authoring time and at three-hat architectural reviews.
+**Enforcement.** These checks are enforced at three-hat (LAA/SA/EA) review — the gate every SDD and DDR passes through — at design time. The mechanizable store-authority and write-authority checks (more mechanizable than judgment-based review) are carried at the schema layer by the graph conformance harness (`conformance/`, RBT-33 Increment 1), which mechanizes the DDR-002 §7 invariant set those checks map onto; the catch-up increment (**RBT-48**, sequenced after this batch merges) extends that coverage. Until mechanization is complete, the review-judgment checks here remain aspirational — conformance reviewed at SDD/DDR-authoring time and at three-hat architectural reviews.
 
 ---
 
 ## 7. Cross-References
 
 - **ADR-001 (Reasoning Architecture)** — commits the reasoning-capture invariant this ADR gives a durable system-of-record home; §2.1 and §2.4 build on ADR-001 §2.2 and §2.3.
-- **DDR-001 (Data Architecture)** — owns the plane enumeration and KG/RG structure (§2.3), the graph-gateway pattern and persistence patterns (§2.4/§2.5), and the spike-findings section that records the Community-trial outcome and the named Enterprise capability the plane model depends on (§2.2/§4.1); DDR-001 is authored against this ADR.
+- **DDR-001 (Data Architecture)** — owns the plane enumeration and KG/RG structure (§2.3), the graph-gateway pattern and persistence patterns (§2.4/§2.5), and the **Substitution-Contract Capability Bar** that records the DB-enforced property-existence-constraint dependency the edition commitment rests on (§2.2/§4.1); DDR-001 is authored against this ADR.
 - Downstream SDDs realize the service-level write paths (§2.6) and are checked against this ADR at three-hat review per §6.
 
 ---
@@ -187,5 +190,8 @@ Conformance with this ADR is verified at architecture review. The following are 
 
 | Version | Date | Ticket | Change |
 |---|---|---|---|
+| 1.1.0 | 2026-07-03 | — | Triage-001 amendment batch (record: `agent-loop/triage/triage-001-distilled-set/record.md`). **General write-authority principle added (T-09):** every authoritative graph write has a named, component-scoped author; the sole-owner gateway (§2.5) is the sole executor / enforcement boundary and never the authoring authority; for EA-gated materializations authority rests with the approving decision. §2.6 restructured to state this general principle, with the synthesis-time ASA/AOE assignment (unchanged) as its instance; §6 gains the companion write-authorship check. Decision addition. |
+| 1.1.0 | 2026-07-03 | — | **Enterprise-edition requirement re-grounded (T-04):** the Community-trial narrative and the "empirically established and ratified" phrasing are removed from §2.2 and §4.1 — trial specifics were never captured and recollection is unreliable; the requirement is re-grounded on the vendor-verifiable dependency (property-existence constraints are Neo4j-Enterprise-only per the current Cypher Manual, verified 2026-07-02, and in active schema use per DDR-002 §7). §4.1 Alternative A rewritten on that testable deficiency; §2.2 substitution sentence and the §7 DDR-001 cross-reference now cite the Substitution-Contract Capability Bar (DDR-001) by name (T-23). |
+| 1.1.0 | 2026-07-03 | — | **Record-completeness / honesty (no decision change):** §2 Decision surfaces the self-managed-GKE runtime exception as an explicit sub-decision and §2.6 introduces ASA/AOE at first use (T-07); §2.4 Firestore row relabeled *immutable produced-solution snapshots (per-version; dual-home model → DDR-001)* (T-25); §6 aspirational-compliance line gains its tracking reference to the graph conformance harness (`conformance/`, RBT-33 Increment 1) and the catch-up increment RBT-48. |
 | 1.0.0 | 2026-07-01 | — | Distilled to standalone contract form; ledger coupling and review-diary scaffolding removed; stale cross-reference in §5.2 corrected to §2.2; documentation-purity pass folded in (no-vector reversibility framing sharpened, undefined epoch reference removed, Date/organization normalized); no decision change. |
 | 1.0.0 | 2026-06-15 | RBT-8 | Original authoring; ACCEPTED. |
