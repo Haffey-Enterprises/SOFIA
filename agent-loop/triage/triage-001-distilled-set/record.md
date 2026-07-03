@@ -6,7 +6,7 @@
 | **Corpus** | ADR-001 v1.0.0 · ADR-002 v1.0.0 · DDR-001 v1.2.0 · DDR-002 v1.1.0 at repo HEAD `b857a0e` |
 | **Inputs** | run-004/005/007 ledgers + ratified audits (authoritative for validity/stance/dup/false-pos); run-006 emissions (unadmitted, four named triage-eligible finds); Notion SOFIA page (fetched — **no frontier section exists**); `~/Downloads/DDR-002-graph-schema-v1.1.0-staging.md`; retired-ledger rulings R30 and R3 (supplied by Tad in-session) |
 | **Rulings** | All dispositions ratified per-item by Tad; this record is the durable carrier — Notion/Linear/kickoffs point here |
-| **Status** | **COMPLETE.** T-01–T-29 ratified (T-03 dissolved) · Item 4 executed (Notion) · Item 5 executed: `code-prompt.md` RATIFIED; Linear **RBT-48** (harness catch-up, after PR merge) + **HEB-49** (skill lines, HEB-48 sibling). Remaining outside this record: Tad runs Code with the prompt → reviews/merges PR → SDD-001 gate clears; R23 paste owed for Appendix E. |
+| **Status** | **COMPLETE.** T-01–T-29 ratified (T-03 dissolved) · Item 4 executed (Notion) · Item 5 executed: `code-prompt.md` RATIFIED; Linear **RBT-48** (harness catch-up, after PR merge) + **HEB-49** (skill lines, HEB-48 sibling). Remaining outside this record: Tad runs Code with the prompt → reviews/merges PR → SDD-001 gate clears; R23 paste owed for Appendix E. **Update 2026-07-03:** doc-fix PR #8 merged (`c935c68`); SDD-001 gate cleared; RBT-48 unblocked. R23 paste still owed for Appendix E. |
 
 **Excluded false positives:** d677da64, 20f73ce0, 1c827a44 (per run audits) + **cae82b89** (ruled FALSE-POS this session, §Item-2). Cumulative loop precision 88/92.
 
@@ -364,3 +364,13 @@ Home: own record or the cost-estimation SDD's pre-authoring deliberation gate (a
 ---
 
 *Extended per ratification. Next: T-06 ruling → remaining items → Item 4 (Notion reconciliation, creates the frontier section) → Item 5 (output routing: Code prompt for doc fixes, Linear tickets, charters).*
+
+---
+
+## Addendum — PR #8 review ratifications (2026-07-03)
+
+PR #8 (`triage-001-doc-fix`, squash-merged to main as `c935c68`) executed the batch. Four execution judgment calls ratified at review: (1) ADR-001 **minor bump stands** (changed normative check phrasing; the corpus has no patch-release species); (2) T-19 fencing clause **homed at ADR-001 §6** — point of definition; DDR-002 §2.4 carries the complementary enterprise-gate gloss; (3) T-28 reconciliation — the two `promotion_type: retraction` references moved onto `proposal_kind: retraction`; `promotion_type` restored to the pure subject/kind axis (no locked value-set churned; the declined rename stays declined); (4) `proposal_kind` field-add placed at **§5** (`CandidatePromotion`'s defining home — the spec's "§2.3" was a section-cite slip, as was T-04's "§5.3" for ADR-002's §5.2); the → KG-entry-governance routing-map entry and the ADR-002 spike-findings→Capability-Bar re-point stand as cross-reference-integrity edits under the same ratification.
+
+**Correction logged (capture-fidelity pattern, fourth instance):** T-28's premise "direction discoverable only by edge traversal" was inaccurate at HEAD — direction was already property-encoded as a `promotion_type: retraction` overload (§5, §7 #21). The ruled remedy stands and is strengthened by the reconciliation: the overload retired rather than left as a competing direction encoding.
+
+**RBT-48 rider:** the `schema_constants.py` refresh includes `proposal_kind {promotion, retraction}` and carries **no** `promotion_type: retraction` constant.
