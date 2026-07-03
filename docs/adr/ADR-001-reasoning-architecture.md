@@ -9,8 +9,8 @@
 |---|---|
 | **Document ID** | ADR-001 |
 | **Status** | ACCEPTED |
-| **Version** | 1.0.0 |
-| **Date** | 2026-07-01 |
+| **Version** | 1.1.0 |
+| **Date** | 2026-07-03 |
 | **Authors** | Thaddeus Haffey (Executive Architect) |
 | **Supersedes** | None — establishes new platform principle |
 
@@ -50,7 +50,7 @@ Whoever does the reasoning, SOFIA captures it:
 
 The capture discipline is invariant across all reasoners. What varies is the **locus of reasoning** (encoded SOFIA logic, specialized agent, LLM, human) and the **authoritative flag**. Rejected alternatives are first-class: where a reasoner weighed and discarded an option, the discarded option is captured as a RejectedAlternative artifact, not silently dropped.
 
-This ADR commits the *conceptual capture contract* — that each reasoner's output is recorded with evidence linkage, source attribution by category, and an authoritative flag, and that rejected alternatives are retained. The artifact kinds named above (ReasoningProgress, Evidence, RejectedAlternative) are **illustrative** of the categories of captured reasoning; their canonical labels, property names, the source-attribution vocabulary, relationship types, and constraints are owned by the Graph Schema document (DDR-002), not fixed here.
+This ADR commits the *conceptual capture contract* — that each reasoner's output is recorded with evidence linkage, source attribution by category, and an authoritative flag, and that rejected alternatives are retained. It commits the **categories** of captured reasoning — conclusion, evidence, and rejected alternative (named above as ReasoningProgress, Evidence, RejectedAlternative); their canonical labels, property names, the source-attribution vocabulary, relationship types, and constraints are owned by and ratified in the Graph Schema document (DDR-002 §4), cited here rather than fixed. Structural containers (ReasoningSession), retention-mechanism nodes (ProvenanceSummary), and the produced-deliverable Artifact family are not part of this capture contract's category set — they take their authority from the data architecture (DDR-001) and its schema realization (DDR-002 §4–§5), not from this contract.
 
 ### 2.3 Deterministic / probabilistic output framing
 
@@ -144,14 +144,14 @@ The alternatives are the five positions of the reasoning taxonomy. They are not 
 Conformance with this ADR is verified at architecture review. The following checks are mandatory for every new SDD (Service Design Document), DDR (Design Decision Record), and design pass:
 
 1. **Position commitment statement.** The design states how it honors the Position 5 operating regime and contributes to the Position 4 trajectory. Designs that quietly assume Position 1 without the §2.3 burden of proof are flagged.
-2. **Reasoning-capture invariant.** Every architectural decision the design produces has a captured RG artifact (illustrative kinds per §2.2 — ReasoningProgress / Evidence / RejectedAlternative) with source attribution and authoritative flag, evidence linkage to the KG nodes consulted, and a RejectedAlternative artifact for each option weighed and discarded.
+2. **Reasoning-capture invariant.** Every architectural decision the design produces has a captured RG artifact in the conclusion category (§2.2; verified against the canonical vocabulary per DDR-002 §4 — currently `ReasoningProgress`) with source attribution by category and an authoritative flag, evidence linkage to the KG nodes consulted, and a rejected-alternative artifact (currently `RejectedAlternative`) for each option weighed and discarded.
 3. **Deterministic / probabilistic classification.** Every output the design produces is classified as deterministic (SOFIA-encoded) or probabilistic (LLM-rendered); probabilistic outputs are recorded as non-authoritative.
 4. **Burden of proof on probabilistic output.** Each probabilistic output justifies why deterministic encoding is not feasible and what would be required to shift it to deterministic over time (its Position 4 trajectory contribution).
 5. **LLM-as-renderer language.** Design documents describing model use employ language consistent with §2.3 — the LLM renders SOFIA-decided components and does not select, decide, evaluate, or detect. Position-1-leaning verbs (the model "synthesizes," "selects," "decides," "reasons over") are flagged and reframed.
-6. **Specialized-agent integration check.** Designs introducing a specialized agent specify how the agent honors the invariant: ReasoningProgress artifacts attributed to the specific agent (source category *specialized agent*), evidence linkage to KG nodes consulted, RejectedAlternative artifacts for rejected alternatives.
+6. **Specialized-agent integration check.** Designs introducing a specialized agent specify how the agent honors the invariant: conclusion-category artifacts (canonical vocabulary per DDR-002 §4 — currently `ReasoningProgress`) attributed to the specific agent (source category *specialized agent*), evidence linkage to KG nodes consulted, rejected-alternative artifacts for rejected alternatives.
 7. **Lifecycle-stage scope statement.** Designs touching a lifecycle stage state which decisions are SOFIA-encoded, which are delegated to specialized agents with reasoning captured, which are LLM-rendered probabilistic content, and which are human-reasoned over SOFIA-prepared context.
 
-**Enforcement.** These checks are enforced at three-hat (LAA / SA / EA — Lead Application Architect / Solution Architect / Enterprise Architect) review — the operational gate every SDD and DDR passes through — at design time.
+**Enforcement.** These checks are enforced at three-hat (LAA / SA / EA — Lead Application Architect / Solution Architect / Enterprise Architect) review — the operational gate every SDD and DDR passes through — at design time. This three-hat design review is **platform-development governance** — a gate on SOFIA's own design work — **not a graph-captured gate** on produced Solutions; the latter is the enterprise SDLC gate mirrored as a `GateDecision` (DDR-002 §2.4), a separate mechanism this review neither is nor pre-empts.
 
 **Propagation.** Propagation of this commitment across reasoning-architecture design work is carried by the compliance checks above, enforced at three-hat review; no dedicated propagation directive is required. This is distinct from the runtime Directives-Context-Envelope Bridge, which §6 neither requires nor pre-empts.
 
@@ -161,6 +161,7 @@ Conformance with this ADR is verified at architecture review. The following chec
 
 - **Graph Schema document (DDR-002)** — owns the canonical artifact vocabulary (labels, property names, source-attribution categories, relationship types, constraints) that §2.2 defers to.
 - **Feedback Loop Governance design** (DDR-003, forthcoming) — designs the EA-gated encoding-density promotion mechanism whose existence §2.5 commits.
+- **Directives-Context-Envelope Bridge** — runtime directive-propagation mechanism (forthcoming, unauthored); §6 neither requires nor pre-empts it.
 - Downstream DDRs and SDDs implement this ADR and are checked against it at three-hat review per §6.
 
 ---
@@ -169,5 +170,6 @@ Conformance with this ADR is verified at architecture review. The following chec
 
 | Version | Date | Ticket | Change |
 |---|---|---|---|
+| 1.1.0 | 2026-07-03 | — | Triage-001 amendment batch (record: `agent-loop/triage/triage-001-distilled-set/record.md`). §2.2 retires the "illustrative" hedge — commits the reasoning-capture *categories* (conclusion / evidence / rejected alternative) and cites DDR-002 §4's now-ratified canonical vocabulary rather than deferring it (T-11); §2.2 altitude parenthetical signposts that structural containers, retention-mechanism nodes, and the Artifact family route their authority through DDR-001/DDR-002 §4–§5, not this capture contract (T-24); §6 checks 2 and 6 bind category-first, rename-safe against DDR-002 §4 (T-11); §7 Cross-References gains the Directives-Context-Envelope Bridge status marker (forthcoming, unauthored) (T-14); §6 Enforcement adds the three-hat-review fencing clause — platform-development governance, not a graph-captured gate (T-19). Clarification / reconciliation — no decision change. |
 | 1.0.0 | 2026-07-01 | — | Distilled to standalone contract form; ledger coupling and review-diary scaffolding removed; documentation-purity pass folded in (acronym expansions, downstream doc-IDs back-filled, illustrative RG-vocabulary refreshed to the canonical DDR-002 set, Date/organization normalized); no decision change. |
 | 1.0.0 | 2026-06-03 | — | Original authoring; ACCEPTED. |
