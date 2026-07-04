@@ -1,0 +1,108 @@
+{
+  "files": [
+    {
+      "logical_id": "ADR-001",
+      "category": "authorities",
+      "origin": {
+        "source": "sofia-repo",
+        "path": "docs/adr/ADR-001-reasoning-architecture.md",
+        "sofia_head_sha": "f279b1e81eb9a63600ff64cc01965e4f11a6ddbc"
+      },
+      "retrieved": "2026-07-03",
+      "sha256": "ecbea69ce4396ce7edc5f5196c794790edb3ead32b2c999ec5506616aca102dd"
+    },
+    {
+      "logical_id": "ADR-002",
+      "category": "authorities",
+      "origin": {
+        "source": "sofia-repo",
+        "path": "docs/adr/ADR-002-graph-system-of-record.md",
+        "sofia_head_sha": "f279b1e81eb9a63600ff64cc01965e4f11a6ddbc"
+      },
+      "retrieved": "2026-07-03",
+      "sha256": "6ffdc714ea606feaed8d1553f978274dc19bb48b867fa1c4368c377a5c35e463"
+    },
+    {
+      "logical_id": "DDR-001",
+      "category": "authorities",
+      "origin": {
+        "source": "sofia-repo",
+        "path": "docs/ddr/DDR-001-data-architecture.md",
+        "sofia_head_sha": "f279b1e81eb9a63600ff64cc01965e4f11a6ddbc"
+      },
+      "retrieved": "2026-07-03",
+      "sha256": "0fa0945e082bdb7441947907ee3619ae851137923cc4ce28b477189bf9484c15"
+    },
+    {
+      "logical_id": "DDR-002",
+      "category": "authorities",
+      "origin": {
+        "source": "sofia-repo",
+        "path": "docs/ddr/DDR-002-graph-schema.md",
+        "sofia_head_sha": "f279b1e81eb9a63600ff64cc01965e4f11a6ddbc"
+      },
+      "retrieved": "2026-07-03",
+      "sha256": "4a373f2e9484848eca81cb79ccefe44c8f2660cb8ccd9ea93d583c9ccfc0a0bf"
+    },
+    {
+      "logical_id": "sdd-template",
+      "category": "authorities",
+      "origin": {
+        "source": "bedrock",
+        "path": "plugins/bedrock/skills/author-decision-record/templates/sdd-template.md",
+        "bedrock_head_sha": "322591f1f5ba229e6ab3352e992346623a4902eb"
+      },
+      "retrieved": "2026-07-03",
+      "sha256": "ba21f228601afa6872ab42ed00935a1cd4db20099f41a7fd9163a7a75b84894b"
+    },
+    {
+      "logical_id": "author-decision-record-SKILL",
+      "category": "authorities",
+      "origin": {
+        "source": "bedrock",
+        "path": "plugins/bedrock/skills/author-decision-record/SKILL.md",
+        "bedrock_head_sha": "322591f1f5ba229e6ab3352e992346623a4902eb"
+      },
+      "retrieved": "2026-07-03",
+      "sha256": "f0ef38dab80b3aa4ae7e079938648b1ec1797f6c9ad0b55e633ae4b8904ff398"
+    },
+    {
+      "logical_id": "deliberation-record-sdd-001",
+      "category": "design-intent",
+      "origin": {
+        "source": "claude.ai-authoring-session",
+        "note": "SDD-001 pre-authoring deliberation record, produced alongside the SDD (2026-07-03)",
+        "original_path": "~/Downloads/deliberation-record-sdd-001.md"
+      },
+      "retrieved": "2026-07-03",
+      "sha256": "1c3a39b0745fa61cbfdb3709ad968527c30c7c663c978cb2dc0e1d69da4c2a18"
+    },
+    {
+      "logical_id": "sofia-vision",
+      "category": "design-intent",
+      "origin": {
+        "source": "notion",
+        "page_title": "SOFIA",
+        "page_id": "370caeea-1325-8069-893f-c829d0f01551",
+        "url": "https://app.notion.com/p/370caeea13258069893fc829d0f01551",
+        "content_as_of": "2026-07-03T21:32:38Z",
+        "retrieved_via": "claude.ai Notion connector",
+        "scope": "vision block only (above the Roadmap divider)"
+      },
+      "retrieved": "2026-07-03",
+      "sha256": "b499614d51fc30aba7d6f7d264b49dfe612c0ee67df82f2bcea87c08b5bf05bc"
+    },
+    {
+      "logical_id": "sdd-001-charter-notes",
+      "category": "design-intent",
+      "origin": {
+        "source": "triage-001-record",
+        "path": "agent-loop/triage/triage-001-distilled-set/record.md",
+        "sofia_head_sha": "f279b1e81eb9a63600ff64cc01965e4f11a6ddbc",
+        "note": "charter extraction authored for this run at claude.ai prep (2026-07-03)"
+      },
+      "retrieved": "2026-07-03",
+      "sha256": "fb4591aef16a4eeb7fe3fa4e64861c9398b8f14f9434680247cae7015ac09db0"
+    }
+  ]
+}
