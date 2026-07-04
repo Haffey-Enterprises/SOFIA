@@ -289,14 +289,60 @@ def _parse_arbiter_output(raw_text: str, finding_id: str) -> ArbiterResult | Non
         return None
 
 
+# The three required keys the parser subscripts (authority_locus is optional via
+# .get); a corrective retry names any of these that are absent.
+_ARBITER_REQUIRED_KEYS = ("classification", "rationale", "confidence")
+
+
+def _diagnose_arbiter_defect(raw_text: str) -> str:
+    """Name why arbiter output failed to parse, for a corrective retry message.
+
+    Read-only diagnosis that mirrors `_parse_arbiter_output`'s checks WITHOUT
+    changing the parser's strictness — it does not construct an ArbiterResult or
+    alter what parses. It reports the actual defect minimally: a JSON parse
+    failure (bad JSON or a non-object), missing required key(s) by name after
+    fence-stripping, or (keys present but rejected) an invalid vocabulary value.
+    """
+    try:
+        data = json.loads(strip_code_fences(raw_text))
+    except json.JSONDecodeError:
+        return "the previous output was not valid JSON"
+    if not isinstance(data, dict):
+        return "the previous output was not a JSON object"
+    missing = [key for key in _ARBITER_REQUIRED_KEYS if key not in data]
+    if missing:
+        return "the previous output was missing required key(s): " + ", ".join(missing)
+    return (
+        "the previous output used an invalid vocabulary value (classification "
+        "must be 'resolvable' or 'decision-bearing'; confidence must be 'high', "
+        "'medium', or 'low'; a 'resolvable' needs an authority_locus and cannot "
+        "be low confidence)"
+    )
+
+
+def _arbiter_repair_suffix(defect: str) -> str:
+    """The corrective instruction appended to the user block on the content retry.
+
+    Names the diagnosed defect, then restates the Output-section contract so the
+    second attempt is corrected rather than blindly re-prompted with the same
+    input. Appended to the base user block; the block itself is unchanged.
+    """
+    return (
+        f"\n\nYOUR PREVIOUS RESPONSE COULD NOT BE PARSED: {defect}. "
+        "Emit the complete raw JSON object per the Output section — all five "
+        "fields, no fences, first character {."
+    )
+
+
 class ApiArbiter:
     """Real arbiter over the API — the sole LLM on the exit path.
 
     Loads `arbiter-classifier.prompt.md`'s `## System` as data, assembles its
     user block from the finding plus the substrate handed to `run_loop`, and
     applies the §5 transport with the §6 call policy. Malformed output gets ONE
-    content retry (logged) then aborts — the conservative decision-bearing bias
-    lives in the prompt, never fabricated by fallback code.
+    corrective content retry — the second attempt's user block names the actual
+    defect (logged) — then aborts. The conservative decision-bearing bias lives
+    in the prompt, never fabricated by fallback code.
     """
 
     def __init__(
@@ -326,8 +372,15 @@ class ApiArbiter:
     def classify(
         self, finding: Finding, authorities: object, design_intent: object
     ) -> ArbiterResult:
-        """Classify one finding, with one content retry then a loud abort."""
-        user = _assemble_arbiter_user(finding, authorities, design_intent)
+        """Classify one finding, with one corrective content retry then abort.
+
+        On a first malformed output, the second attempt appends a repair
+        instruction that names the actual defect (the transport retry count,
+        abort behavior, and parser strictness are unchanged — only the retry's
+        user block is made corrective).
+        """
+        base_user = _assemble_arbiter_user(finding, authorities, design_intent)
+        user = base_user
         for attempt in (1, 2):
             response = _call_with_transport_retry(
                 self._transport,
@@ -346,12 +399,15 @@ class ApiArbiter:
             if parsed is not None:
                 return parsed
             if attempt == 1:
+                defect = _diagnose_arbiter_defect(response.text)
                 self._log.emit(
                     "llm_retry",
                     site="arbiter",
                     retry_kind="content",
                     reason="malformed classification output",
+                    defect=defect,
                 )
+                user = base_user + _arbiter_repair_suffix(defect)
         raise ArbiterParseError(
             f"arbiter output for finding {finding.id!r} malformed after one "
             "content retry — aborting rather than fabricating a classification"

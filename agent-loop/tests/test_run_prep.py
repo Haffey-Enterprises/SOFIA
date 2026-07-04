@@ -608,6 +608,90 @@ def test_arbiter_formats_non_dict_substrate() -> None:
     assert "AUTHORITY TEXT" in transport.calls[0]["user"]
 
 
+# --- §10f: corrective content retry (names the defect on attempt 2) ----------
+
+
+def test_arbiter_fenced_valid_json_parses_without_corrective_retry() -> None:
+    # Fenced-valid JSON parses on attempt 1 — no retry, one call, no corrective.
+    log = ActionLog()
+    fenced = "```json\n" + _VALID_CLASSIFICATION_JSON + "\n```"
+    transport = ScriptedTransport([fenced])
+    result = _api_arbiter(log, transport).classify(_finding("f"), {}, {})
+    assert result.classification == "decision-bearing"
+    assert log.of_kind("llm_retry") == []
+    assert len(transport.calls) == 1
+
+
+def test_arbiter_content_retry_is_corrective_names_missing_field() -> None:
+    # attempt 1 omits a required key → attempt 2's user block names the field and
+    # restates the Output-section instruction; the repaired output returns.
+    log = ActionLog()
+    missing_confidence = json.dumps(
+        {
+            "finding_id": "x",
+            "classification": "decision-bearing",
+            "authority_locus": None,
+            "rationale": "r",
+        }
+    )
+    transport = ScriptedTransport([missing_confidence, _VALID_CLASSIFICATION_JSON])
+    result = _api_arbiter(log, transport).classify(_finding("f"), {"a": "A"}, {"v": "V"})
+    assert result.classification == "decision-bearing"  # repair success returns the result
+    first_user, second_user = transport.calls[0]["user"], transport.calls[1]["user"]
+    assert "COULD NOT BE PARSED" not in first_user  # no corrective on the first attempt
+    assert "missing required key(s): confidence" in second_user  # names the actual defect
+    assert "all five fields, no fences, first character {" in second_user  # restated
+    assert "FINDING:" in second_user  # appended to the base block, not a replacement
+    # The corrective is recorded on the content-retry event.
+    assert log.of_kind("llm_retry")[0].detail["retry_kind"] == "content"
+    assert log.of_kind("llm_retry")[0].detail["defect"] == (
+        "the previous output was missing required key(s): confidence"
+    )
+
+
+def test_arbiter_content_retry_names_json_parse_failure() -> None:
+    log = ActionLog()
+    transport = ScriptedTransport(["not json at all", _VALID_CLASSIFICATION_JSON])
+    result = _api_arbiter(log, transport).classify(_finding("f"), {}, {})
+    assert result.classification == "decision-bearing"
+    assert "was not valid JSON" in transport.calls[1]["user"]
+
+
+def test_arbiter_content_retry_names_non_object() -> None:
+    log = ActionLog()
+    transport = ScriptedTransport(["[1, 2, 3]", _VALID_CLASSIFICATION_JSON])
+    result = _api_arbiter(log, transport).classify(_finding("f"), {}, {})
+    assert result.classification == "decision-bearing"
+    assert "was not a JSON object" in transport.calls[1]["user"]
+
+
+def test_arbiter_content_retry_names_invalid_vocabulary() -> None:
+    log = ActionLog()
+    bad_vocab = json.dumps(
+        {
+            "finding_id": "x",
+            "classification": "not-a-real-class",
+            "authority_locus": None,
+            "rationale": "r",
+            "confidence": "high",
+        }
+    )
+    transport = ScriptedTransport([bad_vocab, _VALID_CLASSIFICATION_JSON])
+    result = _api_arbiter(log, transport).classify(_finding("f"), {}, {})
+    assert result.classification == "decision-bearing"
+    assert "invalid vocabulary value" in transport.calls[1]["user"]
+
+
+def test_arbiter_corrective_retry_failure_still_raises() -> None:
+    # A corrective second attempt still malformed aborts (never fabricates); the
+    # corrective was in fact sent on the retry.
+    log = ActionLog()
+    transport = ScriptedTransport(["not json", "still not json"])
+    with pytest.raises(ArbiterParseError):
+        _api_arbiter(log, transport).classify(_finding("f"), {}, {})
+    assert "COULD NOT BE PARSED" in transport.calls[1]["user"]
+
+
 # --- Anthropic transport (fake client — no SDK/network) ----------------------
 
 
