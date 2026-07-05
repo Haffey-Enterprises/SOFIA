@@ -61,6 +61,12 @@ launch line. Design on claude.ai, ticket to Reboot, Code implements.
 **Note:** RBT-49 covers the runner-side items (caching, re-draw) — the prep
 tool itself still has NO ticket; RBT-50 (validator restore) will land a
 `scripts/`-or-CI convention that bears on the tool-home design point.
+**Prep-gate lesson #3 (2026-07-04):** substrate assembly COPIES, never moves —
+canonical paths are sources, not staging. The run-008 prep relocated the
+canonical deliberation record into substrate (empty source dir left behind;
+restored + byte-verified 2026-07-04). The generalized tool must copy-and-verify,
+and its prep-gate check should assert every substrate source still exists at
+its canonical path after assembly.
 
 ### T2 — Arbiter cost (prompt caching) — CLOSED → **RBT-49** (High, 2026-07-04)
 Superseded by the ticket, which carries the ratified spec and fuller sizing
