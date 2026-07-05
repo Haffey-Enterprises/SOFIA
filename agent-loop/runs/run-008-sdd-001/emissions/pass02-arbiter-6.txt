@@ -1,0 +1,8 @@
+```json
+{
+  "finding_id": "eba07f8fff0c48c9",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §7 check #19 (conditional-consumption read-discipline, fail-closed) + Item 2d-iii/2d-v of the ratified SDD-001 deliberation record (fail-closed backstop; empty-window-by-construction)",
+  "rationale": "The stated design intent already ratifies the exact posture the finding questions: the #19 fail-closed control admits nothing unevaluable regardless of DDR-003 grammar, and the timing exposure is closed by the ratified observation that conditional promotions arise only from the feedback loop DDR-003 itself gates, leaving the pre-grammar window empty by construction — the SDD's grammar dependency is an already-authorized TODO-with-pointer, not a new choice."
+}
+```

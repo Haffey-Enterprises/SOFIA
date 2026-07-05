@@ -1,0 +1,52 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["SDD-001"],
+"locus": "§3.4.3 capture-evidence / §7.1 DDR-001 check 5",
+"claim": "The design claims capture-evidence resolves the cited node's version pin at write (\"resolves the cited node's version pin\"; §7.1 check 5 cites §3.4.3 as satisfying evidence pin resolution). But DDR-002 §4 fixes Evidence.source_node_version as a version pin referencing a specific retained version node, and DDR-002 §5 defines SOURCED_FROM as rebind:pinned. Nothing in §3.4.3 states which version the pin resolves to when the caller cites a business key rather than a specific version node, nor how the write behaves if the cited node is not yet superseded vs. already superseded — the resolution rule is asserted as executed but its input-to-pin mapping is unspecified where the SDD claims coverage.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "DDR-002 §4 (Evidence.source_node_version version-pin) + §5 (SOURCED_FROM rebind:pinned)"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["SDD-001"],
+"locus": "§3.5.4 materialize-retraction coordination note",
+"claim": "The design records that under materialization-time RETRACTS writing, DDR-002 §7 #25's biconditional (proposal_kind:retraction ⟺ RETRACTS edge) is unsatisfied during a retraction proposal's pre-decision window, and defers resolution to 'the harness catch-up work, flagged here, not resolved here.' #25 is a ratified DDR-002 §7 conformance invariant. The SDD's own chosen RETRACTS timing (§3.5.1: no RETRACTS at proposal) creates a standing window in which a proposal_kind:retraction CandidatePromotion exists with no RETRACTS edge — a state the invariant as written prohibits. The SDD leaves a known conformance conflict with a ratified invariant unresolved and routes it to work outside this document, rather than substantiating that the invariant is in fact satisfied by this design.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "DDR-002 §7 #25 (proposal_kind ↔ RETRACTS-edge consistency)"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["SDD-001"],
+"locus": "§2.2 / §9 Cross-References — cost-estimation SDD",
+"claim": "§2.2 and the enforcement mapping (§7.1, harness/routed row) reference '#3, #5 (attach to future cost-write operations — routed)', and §9 names a cost-estimation SDD as the consumer that lands cost operations. No cost-write operation is defined in this SDD (correctly — §2.6 of DDR-002 routes cost as an Extension registration), but the SDD asserts #3 and #5 'attach to future cost-write operations' without a defined operation or a resolvable named artifact for that attachment beyond the forthcoming, unauthored cost-estimation SDD. The attachment claim's target does not yet exist; the cross-reference resolves only to an unauthored artifact.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "SDD-001 §7.1 (harness/routed row: #3/#5) vs §9 (cost-estimation SDD, unauthored)"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["SDD-001"],
+"locus": "§3.2 two-species write authority / §7.1 checks ADR-002 §6.7, DDR-001 check 3",
+"claim": "Attacked the write-authorship boundary for the gateway-authors-nothing invariant (ADR-002 §2.6 / §6.7: gateway is sole executor, never authoring authority). Tried to find an operation whose authorship defaults to the gateway: Species-2 operations carry decision_id with no author field (authorship-by-gateway structurally unexpressible); Species-1 operations validate a first-class author identity against upstream-fixed assignments; unassigned authorities (advance-artifact-lifecycle transitions) are rejected rather than defaulted. The supersession re-point and closure computation are correctly framed as execution mechanics of authority held elsewhere. The design holds — no operation's authorship reaches the gateway.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "ADR-002 §2.6 / §6.7 write-authorship general principle; DDR-001 conformance check 3"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["SDD-001"],
+"locus": "§4.4 read-discipline / §3.5.3 materialize-promotion / DDR-001 check 4",
+"claim": "Attacked the proposal-visibility and no-self-modification control (DDR-001 check 4 / DDR-002 §7 #9). Tried to find a ground-truth read path that could surface an un-approved CandidatePromotion or a materialization that executes without a verified governing approving decision: §4.4 applies structural label-skip plus status guard on every ground-truth read; §3.5.3 executes materialization only after in-transaction governing-verdict verification keyed to the latest decided_at approving edge (§3.2 Species-2); §4.5 prohibits ground-truth result caching precisely so no cached admission survives a verdict change. No bypassing read path is exposed. The control holds.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "DDR-001 conformance check 4; DDR-002 §7 #9 proposal-visibility read-discipline"
+}
+}
+]

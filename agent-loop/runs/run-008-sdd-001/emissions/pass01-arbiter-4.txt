@@ -1,0 +1,7 @@
+{
+  "finding_id": "5f7c11965b093003",
+  "classification": "resolvable",
+  "authority_locus": "sdd-001-charter-notes item 3 + RBT-15 charter binding (per deliberation-record Item 2b); DDR-002 §7 Current state / ADR-002 §6 Enforcement",
+  "rationale": "The charter explicitly and deliberately binds the 1b required-flip to the harness's set 'as it stands at build time' (set-generic, not frozen) — the SDD §7.2 language conforms to a ratified design intent that intentionally chose the moving-set posture; the finding's cited design-intent (item 3's enumerated example set) is illustrative within that same charter, not a competing ratification, and the charter's own set-generic rule governs.",
+  "confidence": "high"
+}

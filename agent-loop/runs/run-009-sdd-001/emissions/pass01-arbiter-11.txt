@@ -1,0 +1,7 @@
+{
+  "finding_id": "fe2b5642db6bcf77",
+  "classification": "resolvable",
+  "authority_locus": "Finding self-reports no drift; SDD-001 References field + §9 cite 'ADR-002 v1.1.0', matching the ratified ADR-002 metadata (Version 1.1.0) and its §2.5/§2.6/§6 loci as verified against substrate.",
+  "rationale": "The finding is an explicitly recorded no-drift verification check — the citation set is confirmed internally consistent and correct against the ratified ADR-002 v1.1.0 substrate, so conformance to existing authority fully determines the (null) fix with no new choice introduced.",
+  "confidence": "high"
+}

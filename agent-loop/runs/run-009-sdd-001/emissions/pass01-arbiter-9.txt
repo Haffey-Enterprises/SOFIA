@@ -1,0 +1,7 @@
+{
+  "finding_id": "4ed4046d197e2726",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §4 RG provenance posture + §1 'Provenance scope' — 'Evidence is the sole surrogate-only RG type,' whose provenance is structural (SOURCED_FROM + version-pin), not a carried author field; ADR-001 §2.2 evidence category; and the deliberation-record Item-1 two-species convention distinguishing authorship of a component-authored write from the structural attribution the Evidence capture-unit carries.",
+  "rationale": "The owning schema (DDR-002 §4/§1) already fixes that Evidence carries no authored-provenance group and that its authorship is structural, so the conforming fix — SDD-001 must not attribute an authored-provenance/component-author property to the Evidence capture-unit — is determined by ratified authority; whether SDD-001's §3.2 phrasing ('ASA → the Evidence capture-unit') asserts authored-provenance or merely names the write-issuing component is a copy-conformance correction against a named locus, not a new choice.",
+  "confidence": "high"
+}

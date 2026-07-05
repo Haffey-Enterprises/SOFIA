@@ -1,0 +1,9 @@
+```json
+{
+  "finding_id": "24b85a37eb2ba789",
+  "classification": "resolvable",
+  "authority_locus": "DDR-001 §Feedback-Loop Architecture, 'Artifact write authority' clause + DDR-002 §4 ReasoningSession bridge edge: 'ASA authors (:Artifact:Solution) artifacts on creation ... gateway-routed and driver-less'; DDR-002 §4 fixes (ReasoningSession)-[:PRODUCED]->(Solution) as an RG-internal bridge edge under the same ASA-authored producing-component pattern.",
+  "rationale": "DDR-001 explicitly assigns ASA authorship of (:Artifact:Solution) on creation under ADR-002 §2.6's producing-component principle, and DDR-002 §4/§5 place the PRODUCED edge as an ASA-authored bridge edge from the session ASA produces into — not an AOE lifecycle write; AOE owns only ReasoningSession lifecycle state, not the session→solution structural edge, so the edge-authorship the finding claims is undeclared is in fact fixed by the same producing-component authority.",
+  "confidence": "high"
+}
+```

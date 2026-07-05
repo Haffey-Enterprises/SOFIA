@@ -1,0 +1,52 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["SDD-001"],
+    "locus": "§3.4.3 capture-evidence — 'the caller supplies fact_summary and weight'",
+    "claim": "The SDD asserts a `weight` field on the `Evidence` capture-unit and has the caller supply it. DDR-002 §4 defines `(:Reasoning:Evidence)` with `weight` (T2), so the field exists — but the SDD also states `ReasoningProgress.confidence` rollup uses `weight` per DDR-002 §4, where DDR-002 §4 states 'weight affects aggregation only below the ceiling.' The SDD's claim that capture-evidence 'computes inherited confidence per DDR-002 §4's authority-class rule (fixed derivation, executed not authored)' is consistent, but the caller-supplied `weight` is not derived — it is authored input. DDR-002 §4 does not designate `weight` as a caller-authored value versus a derived one; asserting the caller authors it while the confidence is 'executed not authored' is an authorship split the owning schema does not supply.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "SDD-001 §3.4.3 caller-supplied `weight` vs DDR-002 §4 Evidence `weight` (T2) definition — owning schema does not fix authorship of `weight`"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["SDD-001"],
+    "locus": "§3.5.3 materialize-promotion — 'ProvenanceSummary (per-Evidence entries keyed by evidence_id, each carrying fact_summary + version pin + source-node reference)'",
+    "claim": "The SDD asserts the `ProvenanceSummary` node is structured as per-Evidence entries keyed by `evidence_id`, each carrying fact_summary + version pin + source-node reference. DDR-002 §4 defines `(:Reasoning:ProvenanceSummary)` with exactly two content properties: `frozen_fact_summaries` (T2) and `frozen_source_version_pins` (T2), and explicitly states 'The exact internal structuring of the multi-Evidence snapshot ... remain a named gap.' The SDD supplies a concrete keyed-by-`evidence_id` structure and a per-entry source-node reference that the owning schema does not define and expressly defers as a named gap.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "SDD-001 §3.5.3 keyed-by-evidence_id ProvenanceSummary structure vs DDR-002 §4 ProvenanceSummary (frozen_fact_summaries / frozen_source_version_pins; internal structuring named as a gap)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["SDD-001"],
+    "locus": "§3.5.1 propose-candidate / §3.3.8 provenance-of — PROPOSED_FROM vs MATERIALIZES_PROVENANCE_OF traversal",
+    "claim": "§3.3.8 describes provenance-of traversal as 'PROMOTES_TO_KNOWLEDGE ← CandidatePromotion ← MATERIALIZES_PROVENANCE_OF / DECIDED_ON', but DDR-002 §5 grammar directs `MATERIALIZES_PROVENANCE_OF` as `(ProvenanceSummary)-[:MATERIALIZES_PROVENANCE_OF]->(CandidatePromotion)` and `DECIDED_ON` as `(PromotionDecision)-[:DECIDED_ON]->(CandidatePromotion)` — both point INTO CandidatePromotion, so the '←' reverse-arrow notation conflates two edges with the same head into a single traversal chain fragment. The traversal is reachable, but the notation as written ('← CandidatePromotion ← MATERIALIZES_PROVENANCE_OF / DECIDED_ON') reads as sequential when the edges are parallel inbound.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "SDD-001 §3.3.8 provenance-of traversal notation vs DDR-002 §5 edge directions (MATERIALIZES_PROVENANCE_OF and DECIDED_ON both →CandidatePromotion)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["SDD-001"],
+    "locus": "§3.2 Two-species write authority / §3.5.3–§3.5.4 Species-2 operations",
+    "claim": "Checked the Species-2 (decision-authorized) write-authority design against ADR-002 §2.6's binding rule that the gateway is sole executor and never the authoring authority, and against DDR-002 §7 #15's governing-approving-edge keying. The SDD's construction — Species-2 request schemas carry `decision_id` and no author field ('authorship-by-gateway is unexpressible'), with in-transaction verification of the governing DECIDED_ON edge (latest decided_at, approving outcome) — holds: it makes the gateway-as-author violation structurally unexpressible rather than merely policed, and correctly keys off the governing (latest decided_at) edge per #15 rather than any approving edge. The attack (find a path by which the gateway authors a materialization, or a stale approving edge authorizes) fails against the stated contract.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-002 §2.6 (gateway sole executor, never authoring authority) + DDR-002 §7 #15 (governing approving DECIDED_ON edge, latest decided_at)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["SDD-001"],
+    "locus": "§3.5.3 / §3.5.4 / §4.5 caching posture — retracted and re-scoped read-discipline immediacy",
+    "claim": "Checked the no-ground-truth-caching posture (§4.5) against the read-discipline invariants it must not undermine: DDR-002 §7 #19 (conditional consumption), #21 (retracted-node exclusion), #22 (conditional-scope carry-forward). The SDD's claim that #19/#21/#22 are read-time controls and that a cached admitted result 'could serve retracted or re-scoped knowledge after the graph says otherwise' correctly identifies that these are keyed on live graph state (EA-approved RETRACTS edge; governing decision's HAS_CONDITION) and cannot be satisfied by a cached admission. The attack (find a caching optimization the design permits that would serve stale-admitted retracted/conditional knowledge) fails; the design forecloses it and permits only metadata caching whose write-through invalidation is complete-by-construction under the sole-writer property.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §7 #19 / #21 / #22 (read-discipline controls keyed on live graph state) + SDD-001 §4.5"
+    }
+  }
+]

@@ -1,0 +1,7 @@
+{
+  "finding_id": "41298a931a4d1694",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §2.4/§7 check #19 (fail-closed conditional read-discipline, safety-critical) + Item 2d(iii)/(v) of the ratified deliberation-record-sdd-001",
+  "rationale": "The design's fix is already determined by ratified authority: DDR-002 fixes the predicate *shape* while explicitly routing the concrete condition vocabulary to DDR-003, and #19's fail-closed backstop (unevaluable ⇒ not admitted) is a safety-critical control that holds independent of DDR-003's authoring; the deliberation record already ratified the TODO-with-pointer disposition and the empty-window-by-construction argument, so the timing exposure is resolved by conforming to the SDD's own ratified design-against-shape + fail-closed posture, introducing no new choice.",
+  "confidence": "medium"
+}

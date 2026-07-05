@@ -1,0 +1,6 @@
+{
+  "finding_id": "38ed4fc0b01a3df9",
+  "classification": "resolvable",
+  "authority_locus": "SDD-001 body §3.2 + §3.3.7–§3.3.8 (audit-reachability of retracted/excluded nodes) governing over §1 Purpose / summary; internally-scoped claim reconciled to decided content",
+  "rationale": "The finding is a coherence defect between an absolute summary phrasing ('no read exists that bypasses it') and the document's own decided content (§3.2, §3.3.7–§3.3.8 explicitly carve audit-reachability for excluded/retracted nodes); the fix is determined by conforming the overreaching Purpose sentence to the body the same document already decides, introducing no new choice — the read-discipline scope (ground-truth synthesis traversals) versus explainability/audit operations is already fixed by the corpus (DDR-002 §5 read-discipline invariants + §3.3.7–§3.3.8)."
+}

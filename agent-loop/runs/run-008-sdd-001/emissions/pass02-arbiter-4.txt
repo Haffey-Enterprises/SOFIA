@@ -1,0 +1,7 @@
+{
+  "finding_id": "9e8ad38984e550d6",
+  "classification": "resolvable",
+  "authority_locus": "sdd-001-charter-notes item 3 + RBT-15 charter binding ('the harness's 1b set at build time') as ratified in deliberation-record Item 2b; DDR-002 §7 Current state / ADR-002 §6 Enforcement",
+  "rationale": "The 'set-generic at build time, not a frozen enumeration' posture is not an open choice the SDD manufactures — it is the ratified charter binding (RBT-15, carried verbatim into Item 2b), and the substrate itself names the concrete membership (charter item 3 enumerates #7/#9/#13/#14/#19 plus #22/#23/#25/#15 companions), with RBT-48 explicitly named as the sanctioned catch-up extension mechanism. Binding to the set 'as it stands at build time' is precisely what the already-ratified authority dictates; conforming to it introduces no new decision.",
+  "confidence": "high"
+}

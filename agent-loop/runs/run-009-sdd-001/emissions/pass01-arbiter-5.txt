@@ -1,0 +1,7 @@
+{
+  "finding_id": "be9b148e96e124c3",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §4 Confidence — canonical definition / Inheritance-rollup rule ('Evidence.confidence inherits from the SOURCED_FROM KG node's authority class at snapshot time') read against ADR-001 §2.3 (deterministic-vs-probabilistic framing: mechanically computed structural facts are deterministic outputs, not authored conclusions)",
+  "rationale": "The finding attacks the SDD's characterization ('fixed derivation, executed not authored'), but the cited authority already fixes exactly what an SDD-level derivation may claim: DDR-002 §4 fixes Evidence.confidence's inheritance rule and explicitly routes the concrete function to the SDD ('the rollup function itself → SDD'), while ADR-001 §2.3 fixes that mechanical computation over graph facts is deterministic/executed, not authored reasoning. The fix — align the SDD's wording to state the derivation is SDD-specified per DDR-002 §4's inheritance rule and executes deterministically per ADR-001 §2.3 — is determined by named authority; no new choice about the derivation is introduced.",
+  "confidence": "medium"
+}

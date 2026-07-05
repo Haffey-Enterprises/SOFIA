@@ -1,0 +1,7 @@
+{
+  "finding_id": "7272d2b551864790",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §7 #15 (safety-critical CI-only classification) + §7 'Named exposure window' safety-critical tier + §5 provenance-chain/approving-decision invariant; SDD-001 deliberation Item 2b enforcement-mode column definition",
+  "rationale": "The finding is a labeling coherence error: DDR-002 authoritatively classifies #15 as a CI-only conformance invariant in the safety-critical tier (Neo4j cannot express it), so the SDD's placement of #15 in the 'By construction' enforcement column contradicts ratified authority — the correct column is fixed by DDR-002, no new choice is introduced. Note that SDD Item 2b's own enforcement-mode taxonomy is a distinct axis from DDR-002's harness-mechanization bucketing, but the target §7.1/§4.3 by-construction placement is nonetheless dictated against DDR-002's explicit CI-only classification.",
+  "confidence": "medium"
+}

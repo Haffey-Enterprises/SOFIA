@@ -1,0 +1,360 @@
+{
+  "header": {
+    "set": [
+      "SDD-001"
+    ],
+    "counted_severities": [
+      "BLOCKING",
+      "MATERIAL"
+    ],
+    "plateau_N": 3,
+    "mode": "dry"
+  },
+  "findings": [
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "SDD-001"
+      ],
+      "locus": "\u00a73.4.3 capture-evidence / \u00a77.1 DDR-001 check 5",
+      "claim": "The design claims capture-evidence resolves the cited node's version pin at write (\"resolves the cited node's version pin\"; \u00a77.1 check 5 cites \u00a73.4.3 as satisfying evidence pin resolution). But DDR-002 \u00a74 fixes Evidence.source_node_version as a version pin referencing a specific retained version node, and DDR-002 \u00a75 defines SOURCED_FROM as rebind:pinned. Nothing in \u00a73.4.3 states which version the pin resolves to when the caller cites a business key rather than a specific version node, nor how the write behaves if the cited node is not yet superseded vs. already superseded \u2014 the resolution rule is asserted as executed but its input-to-pin mapping is unspecified where the SDD claims coverage.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "DDR-002 \u00a74 (Evidence.source_node_version version-pin) + \u00a75 (SOURCED_FROM rebind:pinned)"
+      },
+      "id": "dea78865bd663104",
+      "classification": "resolvable",
+      "authority_locus": "DDR-002 \u00a76 Version-pinning + \u00a74 Evidence.source_node_version + \u00a77 check #14 atomic capture-unit + the deliberation-record Item 2a(i) tightening (capture-evidence requires SUPPORTED_BY / SOURCED_FROM in the #14 transaction); DDR-002 \u00a76 Supersession \u2014 Option A (retained version nodes, pinned edges untouched)",
+      "status": "closed",
+      "pass_raised": 1,
+      "pass_closed": 1,
+      "recurrence_count": 0,
+      "resolution_note": "proposed (dry): conform to DDR-002 \u00a76 Version-pinning + \u00a74 Evidence.source_node_version + \u00a77 check #14 atomic capture-unit + the deliberation-record Item 2a(i) tightening (capture-evidence requires SUPPORTED_BY / SOURCED_FROM in the #14 transaction); DDR-002 \u00a76 Supersession \u2014 Option A (retained version nodes, pinned edges untouched)"
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "SDD-001"
+      ],
+      "locus": "\u00a73.5.4 materialize-retraction coordination note",
+      "claim": "The design records that under materialization-time RETRACTS writing, DDR-002 \u00a77 #25's biconditional (proposal_kind:retraction \u27fa RETRACTS edge) is unsatisfied during a retraction proposal's pre-decision window, and defers resolution to 'the harness catch-up work, flagged here, not resolved here.' #25 is a ratified DDR-002 \u00a77 conformance invariant. The SDD's own chosen RETRACTS timing (\u00a73.5.1: no RETRACTS at proposal) creates a standing window in which a proposal_kind:retraction CandidatePromotion exists with no RETRACTS edge \u2014 a state the invariant as written prohibits. The SDD leaves a known conformance conflict with a ratified invariant unresolved and routes it to work outside this document, rather than substantiating that the invariant is in fact satisfied by this design.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "DDR-002 \u00a77 #25 (proposal_kind \u2194 RETRACTS-edge consistency)"
+      },
+      "id": "49b7f966907fc430",
+      "classification": "resolvable",
+      "authority_locus": "DDR-002 \u00a77 #25 tier assignment + \u00a77 'Named exposure window + sequencing' (follow tier) and \u00a75 CandidatePromotion retraction gloss ('terminal status: promoted denotes ... the RETRACTS edge written and the target read-excluded')",
+      "status": "closed",
+      "pass_raised": 1,
+      "pass_closed": 1,
+      "recurrence_count": 0,
+      "resolution_note": "proposed (dry): conform to DDR-002 \u00a77 #25 tier assignment + \u00a77 'Named exposure window + sequencing' (follow tier) and \u00a75 CandidatePromotion retraction gloss ('terminal status: promoted denotes ... the RETRACTS edge written and the target read-excluded')"
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "COSMETIC",
+      "target": [
+        "SDD-001"
+      ],
+      "locus": "\u00a72.2 / \u00a79 Cross-References \u2014 cost-estimation SDD",
+      "claim": "\u00a72.2 and the enforcement mapping (\u00a77.1, harness/routed row) reference '#3, #5 (attach to future cost-write operations \u2014 routed)', and \u00a79 names a cost-estimation SDD as the consumer that lands cost operations. No cost-write operation is defined in this SDD (correctly \u2014 \u00a72.6 of DDR-002 routes cost as an Extension registration), but the SDD asserts #3 and #5 'attach to future cost-write operations' without a defined operation or a resolvable named artifact for that attachment beyond the forthcoming, unauthored cost-estimation SDD. The attachment claim's target does not yet exist; the cross-reference resolves only to an unauthored artifact.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "SDD-001 \u00a77.1 (harness/routed row: #3/#5) vs \u00a79 (cost-estimation SDD, unauthored)"
+      },
+      "id": "da1f99902c4570ab",
+      "classification": "resolvable",
+      "authority_locus": "DDR-002 \u00a72.6 (cost plane as first Extension registration) + \u00a7Cross-References '\u2192 cost-estimation SDD' routing entry (compute-on-read cost ops) + Item 2b/(routed) mapping in deliberation-record-sdd-001",
+      "status": "closed",
+      "pass_raised": 1,
+      "pass_closed": 1,
+      "recurrence_count": 0,
+      "resolution_note": "proposed (dry): conform to DDR-002 \u00a72.6 (cost plane as first Extension registration) + \u00a7Cross-References '\u2192 cost-estimation SDD' routing entry (compute-on-read cost ops) + Item 2b/(routed) mapping in deliberation-record-sdd-001"
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "POSITIVE",
+      "target": [
+        "SDD-001"
+      ],
+      "locus": "\u00a73.2 two-species write authority / \u00a77.1 checks ADR-002 \u00a76.7, DDR-001 check 3",
+      "claim": "Attacked the write-authorship boundary for the gateway-authors-nothing invariant (ADR-002 \u00a72.6 / \u00a76.7: gateway is sole executor, never authoring authority). Tried to find an operation whose authorship defaults to the gateway: Species-2 operations carry decision_id with no author field (authorship-by-gateway structurally unexpressible); Species-1 operations validate a first-class author identity against upstream-fixed assignments; unassigned authorities (advance-artifact-lifecycle transitions) are rejected rather than defaulted. The supersession re-point and closure computation are correctly framed as execution mechanics of authority held elsewhere. The design holds \u2014 no operation's authorship reaches the gateway.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "ADR-002 \u00a72.6 / \u00a76.7 write-authorship general principle; DDR-001 conformance check 3"
+      },
+      "id": "e83e5c5d2a3a119b",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "POSITIVE",
+      "target": [
+        "SDD-001"
+      ],
+      "locus": "\u00a74.4 read-discipline / \u00a73.5.3 materialize-promotion / DDR-001 check 4",
+      "claim": "Attacked the proposal-visibility and no-self-modification control (DDR-001 check 4 / DDR-002 \u00a77 #9). Tried to find a ground-truth read path that could surface an un-approved CandidatePromotion or a materialization that executes without a verified governing approving decision: \u00a74.4 applies structural label-skip plus status guard on every ground-truth read; \u00a73.5.3 executes materialization only after in-transaction governing-verdict verification keyed to the latest decided_at approving edge (\u00a73.2 Species-2); \u00a74.5 prohibits ground-truth result caching precisely so no cached admission survives a verdict change. No bypassing read path is exposed. The control holds.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "DDR-001 conformance check 4; DDR-002 \u00a77 #9 proposal-visibility read-discipline"
+      },
+      "id": "0c8b53d64d0b53a3",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "SDD-001"
+      ],
+      "locus": "\u00a77.2 1b required-flip obligation / \u00a79 Conformance",
+      "claim": "The SDD binds the knowledge-service build to flip the conformance harness's '1b gateway-behavioral contract set as it stands at build time \u2014 deliberately not a frozen enumeration' to required. This makes the build's completion gate depend on an unsettled, moving set defined outside any ratified record: the substrate (ADR-002 \u00a76 Enforcement, DDR-002 \u00a77 Current state) fixes only that 1b contracts are 'specified, required-flip reserved to the gateway build' and names RBT-48 as an in-flight catch-up increment still extending the set. Committing the build to whatever the set happens to be at an unspecified future build time is a posture that depends on something not yet settled.",
+      "cited_authority": {
+        "kind": "design-intent",
+        "ref": "sdd-001-charter-notes item 3: 'Gateway-behavioral conformance contracts flip to required at this service's build (the harness's own rule; flip reserved to RBT-15): the built 1b set (#7, #9, #13, #14, #19) plus the triage additions' \u2014 an enumerated set, against SDD \u00a77.2's 'deliberately not a frozen enumeration'"
+      },
+      "id": "5f7c11965b093003",
+      "classification": "resolvable",
+      "authority_locus": "sdd-001-charter-notes item 3 + RBT-15 charter binding (per deliberation-record Item 2b); DDR-002 \u00a77 Current state / ADR-002 \u00a76 Enforcement",
+      "status": "closed",
+      "pass_raised": 1,
+      "pass_closed": 1,
+      "recurrence_count": 0,
+      "resolution_note": "proposed (dry): conform to sdd-001-charter-notes item 3 + RBT-15 charter binding (per deliberation-record Item 2b); DDR-002 \u00a77 Current state / ADR-002 \u00a76 Enforcement"
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "SDD-001"
+      ],
+      "locus": "\u00a74.2 PredicateEvaluationPort / \u00a73.5 Conditional-scope carry-forward / DDR-003 dependency",
+      "claim": "The design commits the conditional-admission control (#19 safety-critical, fail-closed) to a concrete predicate grammar that is DDR-003's condition vocabulary, which is forthcoming and unauthored. The SDD's own 'not blocking by construction' argument rests on the claim that conditional promotions arise only from the feedback loop whose governance DDR-003 gates \u2014 but the same DDR-003 that would gate the feedback loop is the one that has not been authored, so the platform posture the argument leans on is itself unsettled. Committing a safety-critical read-control's evaluable semantics ahead of the record that defines them is a timing exposure at EA altitude, whether or not the fail-closed backstop holds.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "SDD-001 \u00a74.2 'TODO: the concrete predicate grammar is DDR-003's condition vocabulary (forthcoming)' against SDD-001 \u00a72.2 / \u00a79 routing DDR-003 as 'forthcoming, unauthored'"
+      },
+      "id": "41298a931a4d1694",
+      "classification": "resolvable",
+      "authority_locus": "DDR-002 \u00a72.4/\u00a77 check #19 (fail-closed conditional read-discipline, safety-critical) + Item 2d(iii)/(v) of the ratified deliberation-record-sdd-001",
+      "status": "closed",
+      "pass_raised": 1,
+      "pass_closed": 1,
+      "recurrence_count": 0,
+      "resolution_note": "proposed (dry): conform to DDR-002 \u00a72.4/\u00a77 check #19 (fail-closed conditional read-discipline, safety-critical) + Item 2d(iii)/(v) of the ratified deliberation-record-sdd-001"
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "SDD-001"
+      ],
+      "locus": "\u00a72.2 KG-entry checkpoint / \u00a73.5 cross-origin block / KG-entry-governance ADR dependency",
+      "claim": "The cross-origin SCOPE_CONFLICT block (\u00a73.5 ingestion path) and the distillation-write checkpoint posture (\u00a72.2) both route their governing question to a forthcoming KG-entry-governance ADR that does not yet exist. The gateway's block-and-surface disposition is presented as the safe interim, but it commits a hard-to-reverse enforcement stance (ingested reality is structurally blocked from superseding an EA-set conditional scope) to a position whose owning decision record \u2014 mutation of enterprise ground truth generally, entry and un-promotion \u2014 has not been ratified. Taking a firm enforcement posture ahead of the record that owns the question is a premature commitment at EA altitude; if the KG-entry-governance ADR later rules differently, the gateway's block behavior is a committed surface to unwind.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "SDD-001 \u00a73.5 cross-origin block ('Any richer cross-origin disposition is KG-entry-governance ADR / DDR-003 territory') against DDR-002 \u00a72.4/\u00a75 routing un-promotion upstream authority to 'the forthcoming KG-entry-governance ADR (forthcoming, unauthored)'"
+      },
+      "id": "89daf7f12fff1dba",
+      "classification": "resolvable",
+      "authority_locus": "DDR-002 \u00a72.4 / \u00a75 (retraction: un-promotion upstream authority) and \u00a72.3 (distillation-write checkpoint posture), both explicitly routed by name to the forthcoming KG-entry-governance ADR; DDR-002 Named Gaps 'safe interim posture is surface-to-EA as a scope-conflict, never silent auto-composition'; SDD-001 deliberation Item 2e(ii) block-and-surface disposition.",
+      "status": "closed",
+      "pass_raised": 1,
+      "pass_closed": 1,
+      "recurrence_count": 0,
+      "resolution_note": "proposed (dry): conform to DDR-002 \u00a72.4 / \u00a75 (retraction: un-promotion upstream authority) and \u00a72.3 (distillation-write checkpoint posture), both explicitly routed by name to the forthcoming KG-entry-governance ADR; DDR-002 Named Gaps 'safe interim posture is surface-to-EA as a scope-conflict, never silent auto-composition'; SDD-001 deliberation Item 2e(ii) block-and-surface disposition."
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "POSITIVE",
+      "target": [
+        "SDD-001"
+      ],
+      "locus": "\u00a72.1 Owned / \u00a73.5 / \u00a74.7 / \u00a77.1 rows ADR-002 \u00a76.7, \u00a76.2, \u00a76.3",
+      "claim": "Attacked the design for stance leakage against ADR-002 \u00a72.6's author/executor/authorizer separation \u2014 specifically whether any operation lets the gateway become an authoring authority, or whether the single-store scope quietly widens ADR-002 \u00a72.4's authority lines. The design holds: Species-2 request schemas structurally omit an author field (authorship-by-gateway unexpressible), the gateway's own operational events are explicitly excluded from graph citizenship (\u00a74.7), and #12's hash-verification half is routed to snapshot-service with no Firestore client held. Every write names a Species-1 component author or a Species-2 governing decision; unassigned authorities are rejected, not defaulted. The posture integrates cleanly with the ratified write-authority principle.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "ADR-002 \u00a72.6 write-authority general principle (gateway is sole executor, never authoring authority) + \u00a72.4 store-authority division"
+      },
+      "id": "06205e779eba465b",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "POSITIVE",
+      "target": [
+        "SDD-001"
+      ],
+      "locus": "\u00a73.5 promotion/retraction ports / \u00a77.1 DDR-002 \u00a77 enforcement mapping",
+      "claim": "Attacked the reversibility posture of the promotion/retraction/supersession commitments \u2014 whether the design over-commits hard-to-reverse enforcement shapes ahead of empirical warrant. The design consistently states the empirical floor (zero promotion and zero ingestion runs have occurred) and justifies the block-and-surface / fail-closed dispositions as forfeiting nothing under that floor while remaining fully disclosed and remediable through the promotion boundary. The reversibility is proportionate: no promotion data exists to be stranded, and the escalation paths (DDR-002 amendment vs new-ADR) are named distinctly. The posture is defensible against the premature-commitment charge for the shapes the corpus already ratifies (#20, #21, #22 tiers).",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "DDR-002 \u00a77 safety-critical tier (#21 retraction-gated, #22 carry-forward) + Named exposure window sequencing; empirical-warrant discipline per DDR-002 Rationale"
+      },
+      "id": "98aa313455c4c16e",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "MATERIAL",
+      "target": [
+        "SDD-001"
+      ],
+      "locus": "\u00a73.4.3 capture-evidence \u2014 'the caller supplies fact_summary and weight'",
+      "claim": "The SDD asserts a `weight` field on the `Evidence` capture-unit and has the caller supply it. DDR-002 \u00a74 defines `(:Reasoning:Evidence)` with `weight` (T2), so the field exists \u2014 but the SDD also states `ReasoningProgress.confidence` rollup uses `weight` per DDR-002 \u00a74, where DDR-002 \u00a74 states 'weight affects aggregation only below the ceiling.' The SDD's claim that capture-evidence 'computes inherited confidence per DDR-002 \u00a74's authority-class rule (fixed derivation, executed not authored)' is consistent, but the caller-supplied `weight` is not derived \u2014 it is authored input. DDR-002 \u00a74 does not designate `weight` as a caller-authored value versus a derived one; asserting the caller authors it while the confidence is 'executed not authored' is an authorship split the owning schema does not supply.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "SDD-001 \u00a73.4.3 caller-supplied `weight` vs DDR-002 \u00a74 Evidence `weight` (T2) definition \u2014 owning schema does not fix authorship of `weight`"
+      },
+      "id": "e84829586f86acc2",
+      "classification": "resolvable",
+      "authority_locus": "DDR-002 \u00a74 Confidence-canonical-definition + inheritance/rollup rule: `Evidence.weight` (T2) and `Evidence.confidence` (T2, inherited) are distinct fields; the finding conflates them, but DDR-002 \u00a74 fixes exactly this split.",
+      "status": "closed",
+      "pass_raised": 1,
+      "pass_closed": 1,
+      "recurrence_count": 0,
+      "resolution_note": "proposed (dry): conform to DDR-002 \u00a74 Confidence-canonical-definition + inheritance/rollup rule: `Evidence.weight` (T2) and `Evidence.confidence` (T2, inherited) are distinct fields; the finding conflates them, but DDR-002 \u00a74 fixes exactly this split."
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "MATERIAL",
+      "target": [
+        "SDD-001"
+      ],
+      "locus": "\u00a73.5.3 materialize-promotion \u2014 'ProvenanceSummary (per-Evidence entries keyed by evidence_id, each carrying fact_summary + version pin + source-node reference)'",
+      "claim": "The SDD asserts the `ProvenanceSummary` node is structured as per-Evidence entries keyed by `evidence_id`, each carrying fact_summary + version pin + source-node reference. DDR-002 \u00a74 defines `(:Reasoning:ProvenanceSummary)` with exactly two content properties: `frozen_fact_summaries` (T2) and `frozen_source_version_pins` (T2), and explicitly states 'The exact internal structuring of the multi-Evidence snapshot ... remain a named gap.' The SDD supplies a concrete keyed-by-`evidence_id` structure and a per-entry source-node reference that the owning schema does not define and expressly defers as a named gap.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "SDD-001 \u00a73.5.3 keyed-by-evidence_id ProvenanceSummary structure vs DDR-002 \u00a74 ProvenanceSummary (frozen_fact_summaries / frozen_source_version_pins; internal structuring named as a gap)"
+      },
+      "id": "31cf1fc8e2b1d131",
+      "classification": "resolvable",
+      "authority_locus": "DDR-002 \u00a74 (:Reasoning:ProvenanceSummary \u2014 internal structuring named a gap) + Item 2g(iii) of the ratified deliberation-record-sdd-001",
+      "status": "closed",
+      "pass_raised": 1,
+      "pass_closed": 1,
+      "recurrence_count": 0,
+      "resolution_note": "proposed (dry): conform to DDR-002 \u00a74 (:Reasoning:ProvenanceSummary \u2014 internal structuring named a gap) + Item 2g(iii) of the ratified deliberation-record-sdd-001"
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "COSMETIC",
+      "target": [
+        "SDD-001"
+      ],
+      "locus": "\u00a73.5.1 propose-candidate / \u00a73.3.8 provenance-of \u2014 PROPOSED_FROM vs MATERIALIZES_PROVENANCE_OF traversal",
+      "claim": "\u00a73.3.8 describes provenance-of traversal as 'PROMOTES_TO_KNOWLEDGE \u2190 CandidatePromotion \u2190 MATERIALIZES_PROVENANCE_OF / DECIDED_ON', but DDR-002 \u00a75 grammar directs `MATERIALIZES_PROVENANCE_OF` as `(ProvenanceSummary)-[:MATERIALIZES_PROVENANCE_OF]->(CandidatePromotion)` and `DECIDED_ON` as `(PromotionDecision)-[:DECIDED_ON]->(CandidatePromotion)` \u2014 both point INTO CandidatePromotion, so the '\u2190' reverse-arrow notation conflates two edges with the same head into a single traversal chain fragment. The traversal is reachable, but the notation as written ('\u2190 CandidatePromotion \u2190 MATERIALIZES_PROVENANCE_OF / DECIDED_ON') reads as sequential when the edges are parallel inbound.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "SDD-001 \u00a73.3.8 provenance-of traversal notation vs DDR-002 \u00a75 edge directions (MATERIALIZES_PROVENANCE_OF and DECIDED_ON both \u2192CandidatePromotion)"
+      },
+      "id": "dd5fe59c98152e70",
+      "classification": "resolvable",
+      "authority_locus": "DDR-002 \u00a75 promotion-edge grammar \u2014 MATERIALIZES_PROVENANCE_OF direction ((:ProvenanceSummary)-[:MATERIALIZES_PROVENANCE_OF]->(CandidatePromotion)) and \u00a72.4/\u00a75 DECIDED_ON direction ((PromotionDecision)-[:DECIDED_ON]->(CandidatePromotion))",
+      "status": "closed",
+      "pass_raised": 1,
+      "pass_closed": 1,
+      "recurrence_count": 0,
+      "resolution_note": "proposed (dry): conform to DDR-002 \u00a75 promotion-edge grammar \u2014 MATERIALIZES_PROVENANCE_OF direction ((:ProvenanceSummary)-[:MATERIALIZES_PROVENANCE_OF]->(CandidatePromotion)) and \u00a72.4/\u00a75 DECIDED_ON direction ((PromotionDecision)-[:DECIDED_ON]->(CandidatePromotion))"
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "POSITIVE",
+      "target": [
+        "SDD-001"
+      ],
+      "locus": "\u00a73.2 Two-species write authority / \u00a73.5.3\u2013\u00a73.5.4 Species-2 operations",
+      "claim": "Checked the Species-2 (decision-authorized) write-authority design against ADR-002 \u00a72.6's binding rule that the gateway is sole executor and never the authoring authority, and against DDR-002 \u00a77 #15's governing-approving-edge keying. The SDD's construction \u2014 Species-2 request schemas carry `decision_id` and no author field ('authorship-by-gateway is unexpressible'), with in-transaction verification of the governing DECIDED_ON edge (latest decided_at, approving outcome) \u2014 holds: it makes the gateway-as-author violation structurally unexpressible rather than merely policed, and correctly keys off the governing (latest decided_at) edge per #15 rather than any approving edge. The attack (find a path by which the gateway authors a materialization, or a stale approving edge authorizes) fails against the stated contract.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "ADR-002 \u00a72.6 (gateway sole executor, never authoring authority) + DDR-002 \u00a77 #15 (governing approving DECIDED_ON edge, latest decided_at)"
+      },
+      "id": "b27046390eeded59",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "POSITIVE",
+      "target": [
+        "SDD-001"
+      ],
+      "locus": "\u00a73.5.3 / \u00a73.5.4 / \u00a74.5 caching posture \u2014 retracted and re-scoped read-discipline immediacy",
+      "claim": "Checked the no-ground-truth-caching posture (\u00a74.5) against the read-discipline invariants it must not undermine: DDR-002 \u00a77 #19 (conditional consumption), #21 (retracted-node exclusion), #22 (conditional-scope carry-forward). The SDD's claim that #19/#21/#22 are read-time controls and that a cached admitted result 'could serve retracted or re-scoped knowledge after the graph says otherwise' correctly identifies that these are keyed on live graph state (EA-approved RETRACTS edge; governing decision's HAS_CONDITION) and cannot be satisfied by a cached admission. The attack (find a caching optimization the design permits that would serve stale-admitted retracted/conditional knowledge) fails; the design forecloses it and permits only metadata caching whose write-through invalidation is complete-by-construction under the sole-writer property.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "DDR-002 \u00a77 #19 / #21 / #22 (read-discipline controls keyed on live graph state) + SDD-001 \u00a74.5"
+      },
+      "id": "8b9543e79bcc2ea3",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    }
+  ],
+  "passes": [
+    {
+      "pass_number": 1,
+      "open_cbm_count": 7,
+      "agents_run": [
+        "antagonist-LAA",
+        "antagonist-SA",
+        "antagonist-EA",
+        "coherence",
+        "arbiter"
+      ],
+      "timestamp": "2026-07-04T03:28:20.395971+00:00"
+    }
+  ],
+  "doc_changes": []
+}

@@ -1,0 +1,7 @@
+{
+  "finding_id": "e84829586f86acc2",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §4 Confidence-canonical-definition + inheritance/rollup rule: `Evidence.weight` (T2) and `Evidence.confidence` (T2, inherited) are distinct fields; the finding conflates them, but DDR-002 §4 fixes exactly this split.",
+  "rationale": "DDR-002 §4 explicitly separates `Evidence.confidence` (inherited from the SOURCED_FROM KG node's authority class at snapshot time — the 'executed not authored' derived value) from `Evidence.weight` (a distinct T2 field affecting aggregation only below the ceiling); the schema does designate weight as a separate, caller-supplied field distinct from the derived confidence, so no authorship split is left unspecified and the SDD's claim conforms.",
+  "confidence": "medium"
+}

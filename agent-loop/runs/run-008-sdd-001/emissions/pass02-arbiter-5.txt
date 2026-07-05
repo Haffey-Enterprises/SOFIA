@@ -1,0 +1,8 @@
+```json
+{
+  "finding_id": "eba07f8fff0c48c9",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §7 check #19 (conditional-consumption read-discipline, fail-closed safety control) + Item 2d-iii/2d-v of the ratified deliberation-record-sdd-001",
+  "rationale": "The design intent already ratifies fail-closed as the backstop that holds regardless of DDR-003's grammar (\u00a72d-iii: unevaluable ⇒ not admitted, always), and explicitly rules the grammar dependency a TODO-with-pointer that is non-blocking by construction (\u00a72d-v); the finding's own concern (whether the backstop holds) is answered by the already-decided fail-closed disposition, so conforming to it introduces no new choice — the concrete-grammar TODO-with-pointer is the already-authorized treatment for the forthcoming DDR-003."
+}
+```

@@ -1,0 +1,7 @@
+{
+  "finding_id": "38ed4fc0b01a3df9",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §5 (retracted-node read-discipline; conditional read-discipline) + §3.3.7–§3.3.8 explainability operations + ADR-001 §3 (audit/explainability as structural traversal); the deliberation-record Item 2c(i)/2d 'read-discipline trio' scoping",
+  "rationale": "The ratified authority already distinguishes ground-truth synthesis reads (governed by read-discipline: conditional-consumption, retracted-node, proposal-visibility exclusions) from explainability/audit reads that deliberately reach excluded/retracted nodes — the 'no read exists that bypasses it' claim conforms if scoped to the read-discipline boundary rather than to universal reachability, a scoping already fixed in DDR-002 §5 and the SDD's own §3.3.7–§3.3.8; the fix is a wording alignment determined by that existing scope, introducing no new choice.",
+  "confidence": "medium"
+}

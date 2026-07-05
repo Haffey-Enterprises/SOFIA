@@ -1,0 +1,7 @@
+{
+  "finding_id": "8c4f855eb283f037",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §4 `ReasoningSession.lifecycle_state` ('AOE-owned; value-set deferred to the AOE SDD, with a named placeholder; DDR-001 likewise leaves it unspecified') + DDR-002 Cross-References '→ AOE SDD: ReasoningSession.lifecycle_state value-set' + deliberation-record Authoring notes TODO-with-pointer set",
+  "rationale": "The cross-reference target being a forthcoming/unauthored artifact is itself the ratified disposition: DDR-002 §4 explicitly defers the lifecycle_state value-set to the AOE SDD as a named placeholder, and the SDD-001 deliberation record lists this exact deferral as a non-blocking TODO-with-pointer — the finding is resolved by conforming to that already-ratified routing, no new choice required.",
+  "confidence": "high"
+}
