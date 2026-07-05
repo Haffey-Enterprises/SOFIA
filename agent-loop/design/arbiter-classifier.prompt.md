@@ -81,14 +81,14 @@ OUTPUT DISCIPLINE: Your entire response must be the raw JSON object and nothing 
 ## User (per invocation)
 
 ```
-FINDING:
-<the single finding record, verbatim from the ledger>
-
 RATIFIED AUTHORITIES (fetched fresh):
 <canonical artifacts + loci in scope for this set>
 
 STATED DESIGN INTENT (fetched fresh):
 <the design-intent statements governing this set>
+
+FINDING:
+<the single finding record, verbatim from the ledger>
 ```
 
 ---

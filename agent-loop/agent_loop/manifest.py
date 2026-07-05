@@ -19,15 +19,36 @@ from agent_loop.log import ActionLog
 def per_site_token_totals(log: ActionLog) -> dict[str, dict[str, int]]:
     """Aggregate `llm_call` events into per-site token totals.
 
+    The cache-creation / cache-read sums (RBT-49 Item 1 §4) make the run-level
+    caching effect summable per site; `input_tokens` is the uncached input. The
+    cache fields default to 0 for events emitted without them (older events, or
+    a transport that reported no cache usage), so this stays additive.
+
     Returns:
-        Map of call-site label → {input_tokens, output_tokens, calls}.
+        Map of call-site label → {input_tokens, output_tokens,
+        cache_creation_input_tokens, cache_read_input_tokens, calls}.
     """
     totals: dict[str, dict[str, int]] = {}
     for event in log.of_kind("llm_call"):
         site = str(event.detail["site"])
-        bucket = totals.setdefault(site, {"input_tokens": 0, "output_tokens": 0, "calls": 0})
+        bucket = totals.setdefault(
+            site,
+            {
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_creation_input_tokens": 0,
+                "cache_read_input_tokens": 0,
+                "calls": 0,
+            },
+        )
         bucket["input_tokens"] += int(event.detail["input_tokens"])  # type: ignore[arg-type]
         bucket["output_tokens"] += int(event.detail["output_tokens"])  # type: ignore[arg-type]
+        bucket["cache_creation_input_tokens"] += int(
+            event.detail.get("cache_creation_input_tokens", 0)  # type: ignore[arg-type]
+        )
+        bucket["cache_read_input_tokens"] += int(
+            event.detail.get("cache_read_input_tokens", 0)  # type: ignore[arg-type]
+        )
         bucket["calls"] += 1
     return totals
 
@@ -43,6 +64,7 @@ def write_prep_manifest(
     substrate_manifest_ref: str,
     model: str,
     parameters: dict[str, object],
+    calibration: dict[str, object] | None = None,
 ) -> None:
     """Write the prep half of the run manifest.
 
@@ -56,6 +78,10 @@ def write_prep_manifest(
         substrate_manifest_ref: Path/reference to the substrate manifest.
         model: The fixed run model.
         parameters: The request-payload parameters recorded (max_tokens).
+        calibration: The prompt-set calibration generation for this run and its
+            rationale (e.g. `{"generation": 3, "rationale": ...}`), recorded
+            alongside the re-pinned `prompt_sha256` when a ratified calibration
+            event changed a pinned prompt (RBT-49/Ra-2). None omits the key.
     """
     manifest = {
         "run_id": run_id,
@@ -68,6 +94,8 @@ def write_prep_manifest(
         "parameters": parameters,
         "finalized": False,
     }
+    if calibration is not None:
+        manifest["calibration"] = calibration
     Path(manifest_path).write_text(
         json.dumps(manifest, indent=2, sort_keys=False), encoding="utf-8"
     )

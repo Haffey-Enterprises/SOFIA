@@ -51,15 +51,24 @@ class LlmResponse:
 
     Attributes:
         text: The model's raw text output.
-        input_tokens: Prompt tokens, from the API usage block.
+        input_tokens: Uncached prompt tokens, from the API usage block. When
+            prompt caching is active this is the *uncached* input only — the
+            cached portion is reported separately below (RBT-49 Item 1 §4).
         output_tokens: Completion tokens, from the API usage block.
         request_id: The API request id (from the SDK response), or None.
+        cache_creation_input_tokens: Tokens written to the prompt cache on this
+            call (full price; the first call over a fresh prefix). 0 when no
+            cache write occurred or the response carries no cache usage.
+        cache_read_input_tokens: Tokens read from the prompt cache on this call
+            (a small fraction of base input; repeated prefixes). 0 otherwise.
     """
 
     text: str
     input_tokens: int
     output_tokens: int
     request_id: str | None = None
+    cache_creation_input_tokens: int = 0
+    cache_read_input_tokens: int = 0
 
 
 class Transport(Protocol):
@@ -68,10 +77,21 @@ class Transport(Protocol):
     No sampling parameters are part of the signature: `temperature`, `top_p`,
     and `top_k` are deprecated on Claude Opus 4.7+ and 400 on non-default values
     (run-prep §6, amended 2026-07-02). Only `max_tokens` is sent.
+
+    `cache_prefix` (RBT-49 Item 1) is request metadata, not prompt content: when
+    supplied it is the leading, byte-identical-across-calls portion of `user`
+    (its length locates the cache breakpoint; the sent user content is always
+    exactly `user`). None means no user-level caching for this call — the system
+    block is still marked cacheable.
     """
 
     def __call__(
-        self, system: str, user: str, model: str, max_tokens: int
+        self,
+        system: str,
+        user: str,
+        model: str,
+        max_tokens: int,
+        cache_prefix: str | None = None,
     ) -> LlmResponse:
         """Make one Messages API call and return the response, or raise."""
         ...
@@ -94,19 +114,37 @@ class AnthropicTransport:
         self._client = client
 
     def __call__(
-        self, system: str, user: str, model: str, max_tokens: int
+        self,
+        system: str,
+        user: str,
+        model: str,
+        max_tokens: int,
+        cache_prefix: str | None = None,
     ) -> LlmResponse:
         """Call the API and normalize the response, wrapping failures.
 
         Sends `max_tokens` only — no `temperature`/`top_p`/`top_k` (deprecated
         on Opus 4.7+; omitted entirely, not sent as null).
+
+        Prompt caching (RBT-49 Item 1): the system block is always marked
+        `cache_control` ephemeral, so a repeated system prefix (the arbiter's
+        identical system across N findings; a hat's system across passes) reads
+        from cache. When `cache_prefix` is supplied, `user` is additionally split
+        at `len(cache_prefix)` into a cached head block and an uncached tail
+        block — the head is sliced from `user` itself, so the content the model
+        receives is byte-identical to the uncached path regardless of what
+        `cache_prefix` is. A sub-minimum prefix is simply not cached by the API
+        (no error), so marking is always safe.
         """
+        ephemeral = {"type": "ephemeral"}
+        system_blocks = [{"type": "text", "text": system, "cache_control": ephemeral}]
+        content = _user_content_blocks(user, cache_prefix, ephemeral)
         try:
             message = self._client.messages.create(  # type: ignore[attr-defined]
                 model=model,
                 max_tokens=max_tokens,
-                system=system,
-                messages=[{"role": "user", "content": user}],
+                system=system_blocks,
+                messages=[{"role": "user", "content": content}],
             )
         except Exception as exc:  # noqa: BLE001 — any SDK failure is transport-level
             raise LlmTransportError(f"anthropic transport failed: {exc}") from exc
@@ -119,7 +157,33 @@ class AnthropicTransport:
             input_tokens=usage.input_tokens,
             output_tokens=usage.output_tokens,
             request_id=getattr(message, "_request_id", None),
+            cache_creation_input_tokens=getattr(usage, "cache_creation_input_tokens", 0) or 0,
+            cache_read_input_tokens=getattr(usage, "cache_read_input_tokens", 0) or 0,
         )
+
+
+def _user_content_blocks(
+    user: str, cache_prefix: str | None, ephemeral: dict[str, str]
+) -> list[dict[str, object]]:
+    """Build the user message content blocks, placing the cache breakpoint.
+
+    Without a `cache_prefix`, one uncached text block. With one, the leading
+    `len(cache_prefix)` characters of `user` become a `cache_control` block (the
+    cache breakpoint — it also caches everything before it in the request, i.e.
+    the system block) and the remainder an uncached tail. An empty tail is
+    dropped so no empty text block is sent.
+    """
+    if not cache_prefix:
+        return [{"type": "text", "text": user}]
+    split = len(cache_prefix)
+    head = user[:split]
+    tail = user[split:]
+    blocks: list[dict[str, object]] = [
+        {"type": "text", "text": head, "cache_control": ephemeral}
+    ]
+    if tail:
+        blocks.append({"type": "text", "text": tail})
+    return blocks
 
 
 # --- call policy: one transport retry, per-call provenance -------------------
@@ -135,16 +199,19 @@ def _timed_call(
     log: ActionLog,
     now: Callable[[], float],
     capture: object | None,
+    cache_prefix: str | None,
 ) -> LlmResponse:
     """Make one transport call; capture the raw body, then log the `llm_call`.
 
     The raw response body is written to the emissions folder BEFORE any parsing
     (run-prep §7); the `llm_call` carries the API request_id and the emission
     file path. When `capture` is None (unit tests without a run folder), no file
-    is written and `emission_path` is None.
+    is written and `emission_path` is None. The event carries the split of input
+    tokens into cache-creation / cache-read / uncached (RBT-49 Item 1 §4) so the
+    cached vs uncached cost is distinguishable per call and summable per run.
     """
     start = now()
-    response = transport(system, user, model, max_tokens)
+    response = transport(system, user, model, max_tokens, cache_prefix)
     latency_ms = (now() - start) * 1000.0
     emission_path = capture.write(site_label, response.text) if capture is not None else None  # type: ignore[attr-defined]
     log.emit(
@@ -155,6 +222,8 @@ def _timed_call(
         system_sha256=sha256_text(system),
         input_tokens=response.input_tokens,
         output_tokens=response.output_tokens,
+        cache_creation_input_tokens=response.cache_creation_input_tokens,
+        cache_read_input_tokens=response.cache_read_input_tokens,
         latency_ms=latency_ms,
         request_id=response.request_id,
         emission_path=emission_path,
@@ -174,6 +243,7 @@ def _call_with_transport_retry(
     backoff_seconds: float,
     now: Callable[[], float],
     capture: object | None,
+    cache_prefix: str | None = None,
 ) -> LlmResponse:
     """One transport call with a single bounded-backoff retry, then abort.
 
@@ -183,7 +253,7 @@ def _call_with_transport_retry(
     """
     try:
         return _timed_call(
-            transport, system, user, site_label, model, max_tokens, log, now, capture
+            transport, system, user, site_label, model, max_tokens, log, now, capture, cache_prefix
         )
     except LlmTransportError as first_error:
         log.emit(
@@ -195,7 +265,7 @@ def _call_with_transport_retry(
         )
         sleeper(backoff_seconds)
         return _timed_call(
-            transport, system, user, site_label, model, max_tokens, log, now, capture
+            transport, system, user, site_label, model, max_tokens, log, now, capture, cache_prefix
         )
 
 
@@ -219,6 +289,11 @@ def build_api_emitter(
     returned as-is for the parse seam, never retried here. Only `max_tokens` is
     sent — no sampling parameters (run-prep §6). When `capture` is supplied, the
     raw body is written before parsing and its path lands on the `llm_call`.
+
+    Caching (RBT-49 Item 1): no user-level `cache_prefix` is passed — each hat's
+    system prompt differs, so cross-hat prefix sharing is not chased (the arbiter
+    carries the cost target alone). The transport still marks the system block
+    cacheable, so a hat's repeated system across passes reads from cache.
     """
 
     def emit(system: str, user: str) -> str:
@@ -252,18 +327,31 @@ def _format_substrate(obj: object) -> str:
     return str(obj)
 
 
-def _assemble_arbiter_user(
-    finding: Finding, authorities: object, design_intent: object
-) -> str:
-    """Assemble the arbiter's user block (per arbiter-classifier.prompt.md)."""
+def _assemble_arbiter_substrate(authorities: object, design_intent: object) -> str:
+    """Assemble the arbiter's static substrate block (the cacheable prefix).
+
+    Authorities + design intent are identical across every finding in a run, so
+    this block fronts a byte-identical cache prefix (RBT-49 Item 1). Per the Ra-2
+    reorder it precedes the finding; the trailing blank line separates it from
+    the finding tail so the concatenation renders as the reordered `## User`
+    template (authorities → design intent → finding).
+    """
     return (
-        "FINDING:\n"
-        f"{json.dumps(asdict(finding), indent=2)}\n\n"
         "RATIFIED AUTHORITIES (fetched fresh):\n"
         f"{_format_substrate(authorities)}\n\n"
         "STATED DESIGN INTENT (fetched fresh):\n"
-        f"{_format_substrate(design_intent)}"
+        f"{_format_substrate(design_intent)}\n\n"
     )
+
+
+def _assemble_arbiter_finding(finding: Finding) -> str:
+    """Assemble the arbiter's per-finding tail (the variable, uncached part).
+
+    Concatenated after the substrate this renders the reordered `## User`
+    template (authorities → design intent → finding); `ApiArbiter.classify` keeps
+    the two apart so the substrate can be marked as the cache prefix.
+    """
+    return "FINDING:\n" f"{json.dumps(asdict(finding), indent=2)}"
 
 
 def _parse_arbiter_output(raw_text: str, finding_id: str) -> ArbiterResult | None:
@@ -379,7 +467,12 @@ class ApiArbiter:
         abort behavior, and parser strictness are unchanged — only the retry's
         user block is made corrective).
         """
-        base_user = _assemble_arbiter_user(finding, authorities, design_intent)
+        # The substrate is byte-identical across every finding this run and
+        # fronts base_user (and the corrective retry), so it is the cache prefix
+        # (RBT-49 Item 1): one full-price write on the first finding, cheap reads
+        # thereafter; the finding tail is uncached.
+        substrate = _assemble_arbiter_substrate(authorities, design_intent)
+        base_user = substrate + _assemble_arbiter_finding(finding)
         user = base_user
         for attempt in (1, 2):
             response = _call_with_transport_retry(
@@ -394,6 +487,7 @@ class ApiArbiter:
                 self._backoff,
                 self._now,
                 self._capture,
+                substrate,
             )
             parsed = _parse_arbiter_output(response.text, finding.id)
             if parsed is not None:

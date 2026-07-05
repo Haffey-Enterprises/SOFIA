@@ -93,9 +93,15 @@ class ScriptedTransport:
         self.calls: list[dict] = []
         self._script = list(script)
 
-    def __call__(self, system, user, model, max_tokens):  # noqa: ANN001
+    def __call__(self, system, user, model, max_tokens, cache_prefix=None):  # noqa: ANN001
         self.calls.append(
-            {"system": system, "user": user, "model": model, "max_tokens": max_tokens}
+            {
+                "system": system,
+                "user": user,
+                "model": model,
+                "max_tokens": max_tokens,
+                "cache_prefix": cache_prefix,
+            }
         )
         item = self._script.pop(0)
         if isinstance(item, Exception):
@@ -113,8 +119,10 @@ class RoutingTransport:
         self._reviewer_text = reviewer_text
         self._arbiter_text = arbiter_text
 
-    def __call__(self, system, user, model, max_tokens):  # noqa: ANN001
-        self.calls.append({"system": system, "model": model, "max_tokens": max_tokens})
+    def __call__(self, system, user, model, max_tokens, cache_prefix=None):  # noqa: ANN001
+        self.calls.append(
+            {"system": system, "model": model, "max_tokens": max_tokens, "cache_prefix": cache_prefix}
+        )
         rid = f"req-{len(self.calls)}"
         if system == "probe":
             return LlmResponse(text="ok", input_tokens=1, output_tokens=1, request_id=rid)
@@ -140,8 +148,10 @@ class DispatchTransport:
         self._reviewer = reviewer
         self._arbiter = arbiter
 
-    def __call__(self, system, user, model, max_tokens):  # noqa: ANN001
-        self.calls.append({"system": system, "model": model, "max_tokens": max_tokens})
+    def __call__(self, system, user, model, max_tokens, cache_prefix=None):  # noqa: ANN001
+        self.calls.append(
+            {"system": system, "model": model, "max_tokens": max_tokens, "cache_prefix": cache_prefix}
+        )
         if system == "probe":
             item = self._probe
         elif "Arbiter-Classifier" in system:
@@ -519,7 +529,11 @@ def test_truncated_json_surfaces_as_parse_drop(tmp_path) -> None:
         now=_counter_now(),
         sleeper=lambda s: None,
     )
-    reviewer = build_real_reviewer(IDENTITY_LAA, DESIGN_DIR / "antagonist-LAA.prompt.md", emit)
+    # redraw=False isolates the parse seam: this asserts one truncated emission
+    # surfaces as one parse_drop, without the below-floor re-draw (RBT-49 Item 2).
+    reviewer = build_real_reviewer(
+        IDENTITY_LAA, DESIGN_DIR / "antagonist-LAA.prompt.md", emit, redraw=False
+    )
     snapshot = Ledger(header=LedgerHeader(set=[], counted_severities=["MATERIAL"]))
     findings = reviewer.run(
         1, snapshot, DocumentSet(documents={}), Substrate(authorities={}, design_intent={}), log
@@ -733,7 +747,13 @@ def test_per_site_token_totals_aggregates() -> None:
     log.emit("llm_call", site="antagonist-LAA", input_tokens=50, output_tokens=5)
     log.emit("llm_call", site="arbiter", input_tokens=20, output_tokens=2)
     totals = per_site_token_totals(log)
-    assert totals["antagonist-LAA"] == {"input_tokens": 150, "output_tokens": 15, "calls": 2}
+    assert totals["antagonist-LAA"] == {
+        "input_tokens": 150,
+        "output_tokens": 15,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 2,
+    }
     assert totals["arbiter"]["calls"] == 1
 
 
@@ -1165,3 +1185,244 @@ def test_item_e_empty_emission_proceeds_to_converged(tmp_path) -> None:
     result = _dispatch_run(tmp_path, env, transport)
     assert result.exit.kind == "CONVERGED"
     assert result.log.of_kind("parse_dropped") == []
+
+
+# --- RBT-49 Item 1: prompt caching — request structuring + accounting --------
+
+
+def test_anthropic_transport_marks_system_and_cache_prefix_and_reads_cache_usage() -> None:
+    # With a cache_prefix, the system block is marked cacheable and the user is
+    # split into a cached head (the breakpoint) + an uncached tail; the API's
+    # cache usage fields surface on the response (RBT-49 Item 1 §4).
+    message = SimpleNamespace(
+        content=[SimpleNamespace(text="ok")],
+        usage=SimpleNamespace(
+            input_tokens=50,
+            output_tokens=2,
+            cache_creation_input_tokens=0,
+            cache_read_input_tokens=900,
+        ),
+    )
+    seen: dict = {}
+
+    def create(**kw):
+        seen.update(kw)
+        return message
+
+    client = SimpleNamespace(messages=SimpleNamespace(create=create))
+    response = AnthropicTransport(client)("SYS", "PREFIXtail", "m", 10, cache_prefix="PREFIX")
+
+    # System is a cache-marked content block.
+    assert seen["system"] == [
+        {"type": "text", "text": "SYS", "cache_control": {"type": "ephemeral"}}
+    ]
+    # User splits at the prefix: cached head block + plain tail block.
+    content = seen["messages"][0]["content"]
+    assert content[0] == {"type": "text", "text": "PREFIX", "cache_control": {"type": "ephemeral"}}
+    assert content[1] == {"type": "text", "text": "tail"}
+    # The sent user content reconstructs the input byte-for-byte.
+    assert content[0]["text"] + content[1]["text"] == "PREFIXtail"
+    # Cache usage surfaced from the API.
+    assert response.input_tokens == 50
+    assert response.cache_creation_input_tokens == 0
+    assert response.cache_read_input_tokens == 900
+
+
+def test_anthropic_transport_without_cache_prefix_sends_one_user_block() -> None:
+    # No cache_prefix (the reviewer path): a single uncached user block, but the
+    # system is still cacheable; absent cache-usage fields default to 0.
+    message = SimpleNamespace(
+        content=[SimpleNamespace(text="ok")],
+        usage=SimpleNamespace(input_tokens=7, output_tokens=1),  # no cache fields
+    )
+    seen: dict = {}
+
+    def create(**kw):
+        seen.update(kw)
+        return message
+
+    client = SimpleNamespace(messages=SimpleNamespace(create=create))
+    response = AnthropicTransport(client)("SYS", "USER", "m", 10)  # cache_prefix defaults None
+
+    assert seen["messages"][0]["content"] == [{"type": "text", "text": "USER"}]
+    assert seen["system"][0]["cache_control"] == {"type": "ephemeral"}
+    assert response.cache_creation_input_tokens == 0
+    assert response.cache_read_input_tokens == 0
+
+
+def test_anthropic_transport_cache_prefix_covering_whole_user_drops_empty_tail() -> None:
+    # When the cache_prefix spans the entire user content there is no tail — a
+    # single cached block is sent (no empty text block, which the API rejects).
+    message = SimpleNamespace(
+        content=[SimpleNamespace(text="ok")],
+        usage=SimpleNamespace(input_tokens=1, output_tokens=1),
+    )
+    seen: dict = {}
+
+    def create(**kw):
+        seen.update(kw)
+        return message
+
+    client = SimpleNamespace(messages=SimpleNamespace(create=create))
+    AnthropicTransport(client)("SYS", "WHOLE", "m", 10, cache_prefix="WHOLE")
+    assert seen["messages"][0]["content"] == [
+        {"type": "text", "text": "WHOLE", "cache_control": {"type": "ephemeral"}}
+    ]
+
+
+def test_llm_call_events_distinguish_cached_from_uncached_and_sum_per_site() -> None:
+    # A mocked uncached (cache-write) call and a mocked cached (cache-read) call
+    # are distinguishable per event and summable per site (RBT-49 Item 1 §4).
+    log = ActionLog()
+    write = LlmResponse(
+        text="[]", input_tokens=900, output_tokens=4, cache_creation_input_tokens=900
+    )
+    read = LlmResponse(
+        text="[]", input_tokens=40, output_tokens=4, cache_read_input_tokens=900
+    )
+    transport = ScriptedTransport([write, read])
+    emit = build_api_emitter(
+        site_label="arbiter",
+        model="m",
+        max_tokens=10,
+        log=log,
+        transport=transport,
+        now=_counter_now(),
+        sleeper=lambda s: None,
+    )
+    emit("s", "u")
+    emit("s", "u")
+
+    first, second = (e.detail for e in log.of_kind("llm_call"))
+    # First call wrote the cache; second read it — distinguishable per call.
+    assert first["cache_creation_input_tokens"] == 900 and first["cache_read_input_tokens"] == 0
+    assert second["cache_read_input_tokens"] == 900 and second["cache_creation_input_tokens"] == 0
+    assert first["input_tokens"] == 900 and second["input_tokens"] == 40  # uncached input
+
+    totals = per_site_token_totals(log)["arbiter"]
+    assert totals["cache_creation_input_tokens"] == 900
+    assert totals["cache_read_input_tokens"] == 900
+    assert totals["input_tokens"] == 940  # summed uncached input
+    assert totals["calls"] == 2
+
+
+def test_arbiter_reorders_substrate_ahead_of_finding_and_marks_it_cached() -> None:
+    # Ra-2 reorder: the static substrate precedes the finding in the user block,
+    # and that substrate is passed as the cache_prefix — a byte-exact prefix of
+    # the user content, with the finding as the uncached tail.
+    log = ActionLog()
+    transport = ScriptedTransport([_VALID_CLASSIFICATION_JSON])
+    _api_arbiter(log, transport).classify(
+        _finding("f"), {"AUTH-1": "authority body"}, {"DI-1": "intent body"}
+    )
+    call = transport.calls[0]
+    user, cache_prefix = call["user"], call["cache_prefix"]
+    # Reordered: substrate blocks come before the finding.
+    assert user.index("RATIFIED AUTHORITIES") < user.index("FINDING:")
+    assert user.index("STATED DESIGN INTENT") < user.index("FINDING:")
+    # The cache_prefix is the substrate and a byte-exact leading slice of user.
+    assert cache_prefix is not None and user.startswith(cache_prefix)
+    assert "RATIFIED AUTHORITIES" in cache_prefix and "STATED DESIGN INTENT" in cache_prefix
+    assert "FINDING:" not in cache_prefix  # the finding is the uncached tail
+
+
+def test_arbiter_content_retry_reuses_the_same_cache_prefix() -> None:
+    # The substrate prefix is byte-identical across the corrective retry, so the
+    # retry also reads the substrate from cache.
+    log = ActionLog()
+    transport = ScriptedTransport(["not json", _VALID_CLASSIFICATION_JSON])
+    _api_arbiter(log, transport).classify(_finding("f"), {"a": "A"}, {"v": "V"})
+    assert transport.calls[0]["cache_prefix"] is not None
+    assert transport.calls[0]["cache_prefix"] == transport.calls[1]["cache_prefix"]
+
+
+# --- RBT-49 Item 2: reviewer empty-emission re-draw --------------------------
+
+
+def _single_reviewer_run(tmp_path, transport, *, arbiter, name):
+    from agent_loop.real_hats import build_real_reviewer
+
+    log = ActionLog()
+    emit = build_api_emitter(
+        site_label=IDENTITY_LAA.label,
+        model="m",
+        max_tokens=10,
+        log=log,
+        transport=transport,
+        now=_counter_now(),
+        sleeper=lambda s: None,
+    )
+    reviewer = build_real_reviewer(IDENTITY_LAA, DESIGN_DIR / "antagonist-LAA.prompt.md", emit)
+    result = run_loop(
+        header=LedgerHeader(set=["ADR-001"], counted_severities=["BLOCKING", "MATERIAL"]),
+        plan=lambda pn, snap, lg: [reviewer],
+        arbiter=arbiter,
+        store=LedgerStore(tmp_path / f"{name}.json"),
+        log=log,
+    )
+    return result, log
+
+
+def test_reviewer_below_floor_empty_redraw_records_hat_null_and_run_continues(tmp_path) -> None:
+    # Synthetic empty emission → exactly one re-draw → second empty → hat_null
+    # recorded → the run continues to completion (not aborted).
+    transport = ScriptedTransport(["[]", "[]"])  # first empty, re-draw empty
+    result, log = _single_reviewer_run(tmp_path, transport, arbiter=CannedArbiter(), name="hn")
+
+    # Exactly one re-draw: two emits; a third would IndexError the script.
+    assert len(transport.calls) == 2
+    redraws = [
+        e for e in log.of_kind("llm_retry") if e.detail.get("retry_kind") == "reviewer_redraw"
+    ]
+    assert len(redraws) == 1 and redraws[0].detail["positive_count"] == 0
+
+    hat_nulls = log.of_kind("hat_null")
+    assert len(hat_nulls) == 1 and hat_nulls[0].detail["reviewer"] == IDENTITY_LAA.label
+    # Run reached a real terminal exit, not an abort.
+    assert result.exit.kind == "CONVERGED"
+    assert log.of_kind("run_aborted") == []
+
+
+def test_reviewer_below_floor_nonempty_redraw_is_admitted_no_hat_null(tmp_path) -> None:
+    # Rb: first below floor → re-draw non-empty but still below floor (real
+    # content, no POSITIVEs) → admit the emission, no hat_null (reserved for the
+    # empty case), the below-floor episode visible via the re-draw event.
+    transport = ScriptedTransport([_VALID_FINDING_JSON, _VALID_FINDING_JSON])
+    arbiter = CannedArbiter(
+        default=ArbiterResult("_", "decision-bearing", None, "authority silent", "high")
+    )
+    result, log = _single_reviewer_run(tmp_path, transport, arbiter=arbiter, name="rb")
+
+    assert len(transport.calls) == 2  # exactly one re-draw
+    assert log.of_kind("hat_null") == []  # Rb is not the empty case
+    assert any(
+        e.detail.get("retry_kind") == "reviewer_redraw" for e in log.of_kind("llm_retry")
+    )
+    # The re-draw's (below-floor) finding was admitted and drove a real exit.
+    assert len(result.ledger.findings) == 1
+    assert result.exit.kind == "HALT_DECISION"
+
+
+def test_reviewer_meeting_floor_does_not_redraw(tmp_path) -> None:
+    # A first emission at the 2-POSITIVE floor is compliant → no re-draw, one
+    # emit, no reviewer_redraw event, no hat_null.
+    two_positives = json.dumps(
+        [
+            {
+                "severity": "POSITIVE",
+                "target": ["ADR-001"],
+                "locus": f"s{i}",
+                "claim": "a load-bearing surface held under attack",
+                "cited_authority": {"kind": "canonical", "ref": "AUTH-1 §2"},
+            }
+            for i in (1, 2)
+        ]
+    )
+    transport = ScriptedTransport([two_positives])  # a second emit would IndexError
+    result, log = _single_reviewer_run(tmp_path, transport, arbiter=CannedArbiter(), name="floor")
+
+    assert len(transport.calls) == 1  # no re-draw
+    assert [e for e in log.of_kind("llm_retry") if e.detail.get("retry_kind") == "reviewer_redraw"] == []
+    assert log.of_kind("hat_null") == []
+    # POSITIVEs bypass the arbiter and neither count nor block → CONVERGED.
+    assert result.exit.kind == "CONVERGED"
