@@ -12,6 +12,18 @@
 > empty-emission re-draw). Threads below marked CLOSED→pointer where those
 > products supersede; the EA-empty framing in T4 is corrected (the original
 > hat-altitude reading did not survive the evidence).
+>
+> **Currency pass 2026-07-05 (RBT-50 close):** `develop` exists (byte-identical
+> from main tip `55b1adb`; PRs now target develop — kickoff prompts should
+> assume it). Doc-structure gate live: `scripts/validate-docs-structure.sh` +
+> workflow, checks A–F, green `--all` 73 files at `e704d1f`; agent-loop
+> placement now mechanically gated (`audit.md` / `record.md` locations). Spine
+> ruling-rationale ledger relocated to `docs/ruling-rationale/` (sole occupant;
+> placement rule deferred). **T1 tool-home input landed:** RBT-50 sets the
+> tooling convention — fresh-authored scripts in `scripts/`, self-contained
+> plain-language rationale, single-ticket provenance (no legacy citations),
+> CI-wired primary invocation with the local path identical and free; new
+> mechanical checks home into the existing validator, not standalone scripts.
 
 ## Where the loop stands
 
@@ -62,8 +74,8 @@ sdd-template + author-decision-record SKILL + deliberation record + vision block
 vs `scripts/`), recipe-per-doc-type declaration, whether the tool also emits the
 launch line. Design on claude.ai, ticket to Reboot, Code implements.
 **Note:** RBT-49 covers the runner-side items (caching, re-draw) — the prep
-tool itself still has NO ticket; RBT-50 (validator restore) will land a
-`scripts/`-or-CI convention that bears on the tool-home design point.
+tool itself still has NO ticket; RBT-50 **landed** the tooling convention
+(see 2026-07-05 currency pass) — tool-home input in hand for the T1 design.
 **Prep-gate lesson #3 (2026-07-04):** substrate assembly COPIES, never moves —
 canonical paths are sources, not staging. The run-008 prep relocated the
 canonical deliberation record into substrate (empty source dir left behind;
