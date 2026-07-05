@@ -1,0 +1,7 @@
+{
+  "finding_id": "2814cfe0a28e97b7",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "DDR-002 §4 fixes only the qualitative inheritance rule (authority-class × freshness at snapshot time) and explicitly delegates the rollup/derivation function to the SDD without supplying constants; no ratified authority determines the specific base values, τ, or decay form, so choosing them is an unratified selection among conforming numeric functions.",
+  "confidence": "high"
+}

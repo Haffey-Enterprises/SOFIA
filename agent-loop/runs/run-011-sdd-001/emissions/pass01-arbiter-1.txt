@@ -1,0 +1,7 @@
+{
+  "finding_id": "9c4173b7e466ee2c",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "DDR-002 §4 fixes that the inheritance/rollup rule exists and routes the concrete function to the SDD, but does not dictate the specific constants (Environment base 0.9, τ=90 days, class bases, Extension-plane default) — those are a free choice among conforming functions that no cited authority determines. The finding turns on whether fixing these constants is legitimately SDD-level realization or an under-authorized decision; either way, the specific numeric derivation is a choice authority leaves open, so resolving it requires a decision not yet made.",
+  "confidence": "high"
+}

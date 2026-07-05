@@ -1,0 +1,7 @@
+{
+  "finding_id": "96d5114704a06626",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "DDR-002 §4 fixes only that Evidence.confidence inherits from the SOURCED_FROM node's authority class at snapshot time; it supplies no base×freshness formula, no τ value, and no Extension-class branching rule. Choosing a concrete decay function (0.9×exp(−Δt/τ), τ=90d) and an Extension treatment is an unratified selection among conforming options that no cited authority disambiguates — the SDD cannot claim it merely 'realizes' §4 when §4 carries no such content.",
+  "confidence": "high"
+}

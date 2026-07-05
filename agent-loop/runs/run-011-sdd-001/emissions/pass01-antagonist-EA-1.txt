@@ -1,0 +1,42 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["SDD-001"],
+    "locus": "§3.4.3 — capture-evidence inherited-confidence derivation (Environment base 0.9 × exp(−Δt/τ); class-base table; Extension-class treatment)",
+    "claim": "The SDD fixes a concrete inherited-confidence derivation function — specific class base values (Catalog/Standards/Governance 1.0; Environment 0.9), an exp-decay form with τ=90d, and an Extension-plane branch rule — declaring it 'an SDD-level determination realizing DDR-002 §4's inheritance rule (which fixes the rule and the qualitative canon, not a concrete function).' DDR-002 §4 routes the rollup function to the owning component's SDD and states DDR-002 fixes only that the rule exists and its qualitative canon. Committing a concrete cross-plane confidence-weighting function — a load-bearing reasoning-weight primitive consumed platform-wide — inside the gateway SDD commits the project to a position (how confidence inherits across all planes) that the substrate routes as an open function-level determination; whether the gateway is the correct home for that determination, versus a decision deserving its own record, is a posture question the SDD asserts rather than settles.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "deliberation-record-sdd-001 Item 2b(ii) / Item 1 corollary: 'unfixed assignments … are routed by name, never invented — assigning them here would be the §2.6 violation dressed as thoroughness'; DDR-002 §4 'the rollup function itself → SDD' and 'DDR-002 fixes that the rollup exists … not a concrete function'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["SDD-001"],
+    "locus": "§7.2 — 1b required-flip obligation (set-generic, 'as derived from DDR-002 §7's ratified invariant set … at build time')",
+    "claim": "The SDD binds its BUILD-leg completion to a deliberately un-frozen, build-time-derived 1b contract set — 'not a frozen enumeration, but bounded by the ratified invariant universe.' This ties an irreversible acceptance gate (build complete only when the full derived set runs green) to a moving upstream target: the invariant universe expands by ratified additive DDR-002 amendments, and the SDD itself names two proposed DDR-002 amendments (§3.5.3 ProvenanceSummary structuring, §3.5.4 #25 scoping) as forthcoming. A completion criterion whose scope is resolved only at build time against an amendable substrate makes the acceptance posture depend on something unsettled at authoring time; the timing dependency is asserted as a feature ('set-generic by design') rather than justified against the reversibility cost of a build-gate that cannot be enumerated when the SDD is ratified.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "SDD-001 §7.2 (build-complete criterion bound to build-time-derived set) vs SDD-001 §9 / §3.5.3 / §3.5.4 (two named DDR-002 additive amendments still unopened, which by §7.2's own wording would expand the required 1b set once ratified)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["SDD-001"],
+    "locus": "§2.2 / §3.4.6 / §3.5.2 — write-authorship routing under ADR-002 §2.6",
+    "claim": "Attacked the design for a stance-leaking authority commitment: whether any operation lets the gateway become an authoring authority, or whether any unassigned authority is silently defaulted rather than routed. The surface held — every write is bound to Species-1 (component author, upstream-fixed) or Species-2 (governing PromotionDecision, no author field expressible), unassigned lifecycle-transition authorities are rejected as unexecutable (§3.4.6) rather than defaulted, and PromotionDecision transport / Attestation-Actor-Role authorship are routed by name to forthcoming SDDs. This integrates cleanly with ADR-002 §2.6's author/executor/authorizer separation and DDR-001 Decision.7 without pulling against them.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-002 §2.6 (sole executor is never the authoring authority; unassigned authorities named, not defaulted) + DDR-001 Decision.7 / check 7"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["SDD-001"],
+    "locus": "§3.5.3–§3.5.4 / §9 — proposed DDR-002 amendment content held as proposed, not exercised",
+    "claim": "Attacked for premature commitment: whether the SDD executes against schema shapes that are still open DDR-002 named gaps (ProvenanceSummary internal structuring; #25 executed-proposal scoping) ahead of their ratification. The surface held — both are explicitly recorded as 'proposed additive DDR-002 amendment content, not exercised ahead of the gap's closure,' with the harness implementing from ratified text before and after amendment. The SDD does not commit the project to an unratified schema position; it names the amendment and proceeds on the ratified substrate, integrating with DDR-002's empirical-warrant / named-gap discipline rather than pre-empting it.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 Named Gaps + §Layer of Abstraction & Substrate Stability ('re-instating one is an additive amendment, not a breaking change'); SDD-001 §3.5.3/§3.5.4 routing notes"
+    }
+  }
+]

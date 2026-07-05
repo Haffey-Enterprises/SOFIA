@@ -1,0 +1,7 @@
+{
+  "finding_id": "708bcb75d2f14976",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding exposes that ratified DDR-002 §7 #25 is written as an unconditional biconditional that the SDD's ratified materialization-time RETRACTS timing (Item 2a-ii) violates during the pre-decision window; the SDD itself flags this as harness-implementation nuance to be resolved by a not-yet-ratified DDR-002 amendment (scope-to-executed-proposals or status-guard). No existing authority disambiguates whether #25's biconditional holds unconditionally or is scoped to executed proposals, so resolving the conflict requires a choice (amend #25's text vs. change the timing) that no higher authority has made.",
+  "confidence": "high"
+}

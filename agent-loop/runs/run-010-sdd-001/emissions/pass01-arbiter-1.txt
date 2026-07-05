@@ -1,0 +1,7 @@
+{
+  "finding_id": "4dfe13afed022202",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §7 'Authority split (re-drawn)' + charter-notes commitment 2/3 (RBT-15) — the 1b required-flip binding to this service's build is a ratified upstream conformance requirement, not a new decision the SDD originates.",
+  "rationale": "The obligation that gateway-behavioral (1b) conformance contracts flip to required at knowledge-service's build is fixed upstream: DDR-002 §7 states the gateway must not operate against an unenforced safety-critical tier and routes realization sequencing to build planning, and the SDD-001 charter notes (RBT-15) explicitly assign that required-flip to this service's build. The SDD is merely restating an inherited conformance obligation, so any framing fix is determined by conforming to that authority — no new scope choice is introduced.",
+  "confidence": "high"
+}

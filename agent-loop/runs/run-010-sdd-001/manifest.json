@@ -1,0 +1,65 @@
+{
+  "run_id": "run-010-sdd-001",
+  "created": "2026-07-05T17:29:16.436551+00:00",
+  "document_set": {
+    "SDD-001": "/Users/thaffey/Documents/GitHub/SOFIA/docs/sdd/SDD-001-knowledge-service.md"
+  },
+  "head_sha": "9b960e52ac93a0e6d65fb02a1eb4d21107c3ecce",
+  "prompt_sha256": {
+    "antagonist-LAA.prompt.md": "1e2c2972ad3c2ef7469ffbbc3c49b1b592a2715bb350ff33fe7c1850464ce2c3",
+    "antagonist-SA.prompt.md": "55a9059bdd249400d9eae8132a8a862fd5943046e7e804b82d09d96ac711c464",
+    "antagonist-EA.prompt.md": "b5c5b3bfbe9420afbdbe5830588f6d42fa3de6000006d87adfe7c384830e28ad",
+    "coherence-sweep.prompt.md": "b3d7f85f52ccdd72882ee8de3ed99fcba4ca661412206d1e8240b4536fe16b4b",
+    "arbiter-classifier.prompt.md": "756b50256427a6b4cea4bdab9c809085ff83b3e43906133658127ad20bd94335"
+  },
+  "substrate_manifest": "substrate/manifest.json",
+  "model": "claude-opus-4-8",
+  "parameters": {
+    "max_tokens": 8192
+  },
+  "finalized": true,
+  "calibration": {
+    "generation": 3,
+    "rationale": "transport-motivated, semantics-preserving reorder for prompt caching (RBT-49/Ra-2)"
+  },
+  "router_exit": "HALT_DECISION:decision-bearing",
+  "passes_run": 1,
+  "per_site_tokens": {
+    "antagonist-LAA": {
+      "input_tokens": 99885,
+      "output_tokens": 2167,
+      "cache_creation_input_tokens": 2246,
+      "cache_read_input_tokens": 0,
+      "calls": 1
+    },
+    "antagonist-SA": {
+      "input_tokens": 99885,
+      "output_tokens": 4090,
+      "cache_creation_input_tokens": 2266,
+      "cache_read_input_tokens": 0,
+      "calls": 1
+    },
+    "antagonist-EA": {
+      "input_tokens": 99885,
+      "output_tokens": 701,
+      "cache_creation_input_tokens": 2206,
+      "cache_read_input_tokens": 0,
+      "calls": 1
+    },
+    "coherence": {
+      "input_tokens": 99885,
+      "output_tokens": 1951,
+      "cache_creation_input_tokens": 2246,
+      "cache_read_input_tokens": 0,
+      "calls": 1
+    },
+    "arbiter": {
+      "input_tokens": 7652,
+      "output_tokens": 2977,
+      "cache_creation_input_tokens": 81376,
+      "cache_read_input_tokens": 813760,
+      "calls": 11
+    }
+  },
+  "wall_clock_seconds": 193.11386487499112
+}

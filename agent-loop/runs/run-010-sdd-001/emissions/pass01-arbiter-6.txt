@@ -1,0 +1,7 @@
+{
+  "finding_id": "4e4f33d44917006f",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §7 #20 (at-promotion ProvenanceSummary materialization + completeness; Follow tier, gateway-behavioral, enforced with the gateway) + deliberation-record Item 2g-iv (determination: no CI invariant; #20 already guarantees reachability)",
+  "rationale": "The finding is a coherence nit asking the SDD to reconcile #20's Follow-tier/gateway-behavioral classification with its use as an already-holding read-time guarantee; the reconciliation is fully determined by the already-ratified authorities — #20 flips required at this same gateway build (charter-notes item 3; Item 2b bindings), so at any point the read affordance runs, #20 is enforced, and the by-construction/harness-verified dual placement is exactly the ratified 'transaction shape makes it hold; harness verifies' pattern (Item 2b). No unmade choice is introduced.",
+  "confidence": "high"
+}

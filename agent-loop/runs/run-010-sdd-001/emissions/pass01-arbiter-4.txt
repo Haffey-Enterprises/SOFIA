@@ -1,0 +1,7 @@
+{
+  "finding_id": "9a21625edd4f3015",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "DDR-002 §4 fixes the inheritance rule ('source authority × freshness') and qualitative canon but not a concrete functional form; the SDD's specific exponential-decay function with a hard (and separately-flagged-contested) τ is one of multiple conforming realizations that no ratified authority disambiguates — the choice of decay form and default τ is an unmade determination, and the Environment 'edge-only' node-confidence fact leaves the freshness base underspecified rather than dictating a particular substitute.",
+  "confidence": "high"
+}

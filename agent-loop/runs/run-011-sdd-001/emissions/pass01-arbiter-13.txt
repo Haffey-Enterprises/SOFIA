@@ -1,0 +1,7 @@
+{
+  "finding_id": "55ba066a1ee04ae5",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The SDD's materialization-time RETRACTS design creates a pre-decision window where a retraction CandidatePromotion exists without a RETRACTS edge, which the ratified DDR-002 §7 #25 biconditional forbids as written; resolving this requires either amending the upstream invariant to carry a scoping qualifier (a DDR-002 amendment not yet ratified) or changing the SDD's RETRACTS-timing design — and no authority disambiguates which, since DDR-002 does not itself scope #25 to executed proposals.",
+  "confidence": "high"
+}

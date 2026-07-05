@@ -1,0 +1,7 @@
+{
+  "finding_id": "8d9f62da901879a9",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "DDR-002 §7 #25 states the biconditional as a flat invariant with no temporal qualifier, and the deliberation record (Item 2a-ii) explicitly flags this as unresolved 'harness implementation nuance' with two conforming options — scope to executed proposals, or add a status-guard — routed to catch-up work and 'not resolved here'; no ratified authority disambiguates between the timing options or between amending #25 vs. changing the RETRACTS-write timing.",
+  "confidence": "high"
+}

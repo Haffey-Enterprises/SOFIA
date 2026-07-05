@@ -1,0 +1,7 @@
+{
+  "finding_id": "9cab8be94a4aa9ee",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "DDR-002 §4 fixes only that Evidence.confidence 'inherits from the SOURCED_FROM KG node's authority class at snapshot time' (authority × freshness, decayed by observed_at) and that ReasoningProgress.confidence is a rollup — but it explicitly leaves the concrete rollup function to the SDD and does not fix any concrete freshness-decay function (τ, multiplicative form, per-class bases) for Evidence. Choosing whether that concrete derivation function is gateway-authored here or routed away (as the parallel rollup function is) is an unratified choice no cited authority disambiguates, and it interacts with the sole-executor-never-author principle the finding surfaces as a live tension.",
+  "confidence": "high"
+}

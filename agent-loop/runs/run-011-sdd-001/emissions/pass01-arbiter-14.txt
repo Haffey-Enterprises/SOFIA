@@ -1,0 +1,7 @@
+{
+  "finding_id": "4b3e626e4ac2ca14",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "DDR-002 §5 names the two applicability surfaces and explicitly disclaims a unification mechanism ('names the two surfaces, not a unification mechanism'), routing composition to the consuming SDDs; the finding exposes that the SDD's 'one payload serves both surfaces' claim asserts a shared field-derivation the substrate does not fix, and no authority states how the consuming-context payload must be structured to serve both the manifest-derived Condition surface and the Technology-node eligibility surface. Resolving the tension requires a design choice about payload structure that authority leaves open.",
+  "confidence": "medium"
+}

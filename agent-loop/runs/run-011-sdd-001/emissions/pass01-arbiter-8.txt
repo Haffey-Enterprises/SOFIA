@@ -1,0 +1,7 @@
+{
+  "finding_id": "4c38060388cae578",
+  "classification": "resolvable",
+  "authority_locus": "Deliberation Record SDD-001 Item 2d(iii) and (v) — fail-closed with disclosure + empty-window-by-construction ruling; DDR-002 §7 check #19 as the blocking safety control",
+  "rationale": "The already-ratified deliberation intent (Item 2d-iii/v) determines the fix: fail-closed is the ratified behavior, the ratified-grammar-less window is empty by construction (conditional promotions arise only from the feedback loop DDR-003 itself gates, and zero promotions have run), so the finding is resolved by conforming the SDD's disclosure text to what Item 2d already ratified — the admit-half being inoperative-until-DDR-003 is the intended, ratified state, requiring only accurate disclosure, not a new choice.",
+  "confidence": "high"
+}
