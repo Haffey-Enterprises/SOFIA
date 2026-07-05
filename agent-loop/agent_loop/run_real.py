@@ -66,6 +66,20 @@ RUN_ONE_MODEL = "claude-opus-4-8"
 RUN_ONE_MAX_TOKENS = 8192
 RUN_ONE_MAX_PASSES = 10
 
+# Prompt-set calibration generation recorded in the manifest alongside the
+# re-pinned prompt hashes. The arbiter `## User` block was reordered (static
+# substrate before the finding) so the substrate can front a byte-identical
+# prompt-cache prefix; the reorder is semantics-preserving but touches a pinned
+# prompt, so it is a ratified gen-3 calibration event (RBT-49/Ra-2), not a prep
+# tweak. No other prompt text changed.
+CALIBRATION = {
+    "generation": 3,
+    "rationale": (
+        "transport-motivated, semantics-preserving reorder for prompt caching "
+        "(RBT-49/Ra-2)"
+    ),
+}
+
 
 # --- gate reporting ----------------------------------------------------------
 
@@ -378,7 +392,7 @@ def run_real(
             capture=capture,
         )
         reviewers[identity] = build_real_reviewer(
-            identity, prompt_dir / prompt_name, emitter, capture
+            identity, prompt_dir / prompt_name, emitter, capture, redraw=True
         )
     plan = real_hat_plan(
         reviewers[IDENTITY_LAA],
@@ -421,6 +435,7 @@ def run_real(
         substrate_manifest_ref="substrate/manifest.json",
         model=model,
         parameters={"max_tokens": max_tokens},
+        calibration=CALIBRATION,
     )
 
     wall_start = now()

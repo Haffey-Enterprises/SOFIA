@@ -27,7 +27,8 @@ EventKind = Literal[
     "proposed_resolution",  # author proposed a fix (dry — nothing applied)
     "proposed_escalation",  # router proposed a ticket (dry — nothing opened)
     "llm_call",  # a real LLM call completed (provenance/cost — run-prep §7)
-    "llm_retry",  # a real LLM call was retried (transport or content — run-prep §6)
+    "llm_retry",  # a real LLM call was retried (transport, content, or reviewer re-draw)
+    "hat_null",  # a reviewer re-draw was empty a second time — recorded, run continues (RBT-49 Item 2)
     "run_aborted",  # a run aborted on the run path; reason logged before the raise (§7)
     "converged",
     "continue",

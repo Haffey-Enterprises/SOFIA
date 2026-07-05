@@ -262,12 +262,25 @@ def _emission_defect(item: object) -> str | None:
 
 # --- §4/§5: build a real reviewer (LLM call + parse seam) --------------------
 
+# The ratified POSITIVE floor: a compliant emission owes its strongest survived
+# attacks, so fewer than this many POSITIVEs is malformed-by-calibration — a
+# legitimate empty result is structurally impossible under it (RBT-49 Item 2,
+# run-009 audit §5b). Below the floor triggers exactly one reviewer re-draw.
+_POSITIVE_FLOOR = 2
+
+
+def _positive_count(findings: list[Finding]) -> int:
+    """Count POSITIVE (survived-attack) findings in an emission."""
+    return sum(1 for finding in findings if finding.severity == "POSITIVE")
+
 
 def build_real_reviewer(
     identity: ReviewerIdentity,
     prompt_path: str | Path,
     emitter: LlmEmitter,
     capture: object | None = None,
+    *,
+    redraw: bool = True,
 ) -> ScheduledReviewer:
     """Compose a real reviewer: load prompt, assemble User, emit, parse+stamp.
 
@@ -282,16 +295,31 @@ def build_real_reviewer(
     pass, and the arbiter — running later this pass — inherits it) and references
     the captured file path on any parse drop.
 
+    Empty-emission re-draw (RBT-49 Item 2): when `redraw` is set, an emission
+    below the 2-POSITIVE floor triggers exactly one re-draw of this hat — the
+    reviewer-side analog of the arbiter's content retry. This is on by default
+    (the real-run behavior, per run_real); the deterministic parse-seam and
+    machinery tests pass `redraw=False` to exercise a single emission in
+    isolation.
+
     Args:
         identity: The reviewer's canonical identity.
         prompt_path: Path to its `.prompt.md`.
         emitter: The LLM emitter (injected; a fake in tests).
         capture: Optional EmissionCapture (raw-emission provenance).
+        redraw: Whether a below-floor emission triggers one re-draw.
 
     Returns:
         A ScheduledReviewer ready for the runner's plan.
     """
     system_prompt = load_system_prompt(prompt_path)
+
+    def _emit_and_parse(user_prompt: str, log: ActionLog) -> list[Finding]:
+        raw_text = emitter(system_prompt, user_prompt)
+        emission_path = (
+            capture.last_path.get(identity.label) if capture is not None else None  # type: ignore[attr-defined]
+        )
+        return parse_emissions(identity, raw_text, log, emission_path=emission_path)
 
     def run(
         pass_number: int,
@@ -303,11 +331,47 @@ def build_real_reviewer(
         if capture is not None:
             capture.current_pass = pass_number  # type: ignore[attr-defined]
         user_prompt = assemble_user_prompt(records, substrate, snapshot)
-        raw_text = emitter(system_prompt, user_prompt)
-        emission_path = (
-            capture.last_path.get(identity.label) if capture is not None else None  # type: ignore[attr-defined]
+        drops_at_start = len(log.of_kind("parse_dropped"))
+        findings = _emit_and_parse(user_prompt, log)
+        if not redraw or _positive_count(findings) >= _POSITIVE_FLOOR:
+            return findings
+
+        # Below the floor: malformed-by-calibration, not a legitimate result.
+        # Exactly one re-draw of this hat, logged as a retry-species event with
+        # the detection reason (the reviewer-side analog of the arbiter's content
+        # retry). The re-draw uses the same inputs — variance-to-zero is a
+        # draw-level degeneracy, not a fixable prompt defect, so a fresh
+        # identical draw is the recovery.
+        log.emit(
+            "llm_retry",
+            site=identity.label,
+            retry_kind="reviewer_redraw",
+            reason="emission below the 2-POSITIVE floor",
+            positive_count=_positive_count(findings),
+            finding_count=len(findings),
         )
-        return parse_emissions(identity, raw_text, log, emission_path=emission_path)
+        redraw_findings = _emit_and_parse(user_prompt, log)
+        total_drops = len(log.of_kind("parse_dropped")) - drops_at_start
+        if not redraw_findings and total_drops == 0:
+            # Second consecutive clean-empty draw (the observed variance-to-zero
+            # mode): record hat_null and continue the run — a reviewer null
+            # degrades recall, recoverable via union-over-runs; an arbiter null
+            # corrupts the ledger and is correctly fatal (ApiArbiter aborts). The
+            # asymmetry justifies the different terminal behavior. A malformed
+            # draw (total_drops > 0) is not a clean null: no hat_null, and the
+            # instrument-compromised guard fails loud on the parse storm as
+            # before.
+            log.emit(
+                "hat_null",
+                reviewer=identity.label,
+                pass_number=pass_number,
+                reason="re-draw emitted no findings after a below-floor emission",
+            )
+        # Otherwise admit the re-draw's emission: meets floor → admit normally;
+        # non-empty but still below floor (Rb) → real content, degraded recall,
+        # admitted with the below-floor fact visible via the re-draw event above
+        # (hat_null is reserved for the empty case; no new event species).
+        return redraw_findings
 
     return ScheduledReviewer(identity, run)
 
