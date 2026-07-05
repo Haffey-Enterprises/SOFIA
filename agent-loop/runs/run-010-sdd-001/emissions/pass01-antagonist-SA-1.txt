@@ -1,0 +1,72 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["SDD-001"],
+    "locus": "§3.4.3 capture-evidence — inherited-confidence derivation, branch (ii) τ default",
+    "claim": "The §3.4.3 derivation declares the Environment-class inheritance as 'base 0.9 × exp(−Δt/τ) with Δt from the cited node's observed_at.' DDR-002 §4 fixes Evidence.confidence as inherited from the SOURCED_FROM KG node's authority class at snapshot time, and DDR-002 §2.2 fixes Environment node confidence as edge-only ('Environment = edge-only'). But an Environment KG node carries no node confidence for the freshness computation's base; §3.4.3 substitutes an SDD-asserted base × freshness function whose Δt reads observed_at. This is a concrete inheritance function; DDR-002 §4 states the rule 'fixes the rule and the qualitative canon, not a concrete function' — the SDD asserting a specific exponential-decay function with a hard τ is a determination the SDD claims DDR-002 §4 licenses ('SDD-level determination realizing DDR-002 §4's inheritance rule'), yet DDR-002 §4's inheritance rule for Evidence is 'source authority × freshness' with no decay-form specified. Whether an exponential decay with a since-flagged-contested τ conforms to 'source authority × freshness' as ratified is unsubstantiated in the record — the qualitative canon fixes staleness-by-decay for Environment, but the specific functional form and its being defaulted-in are asserted, not shown to fall within the canon.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §4 (Confidence — inheritance/rollup rule: 'Evidence.confidence inherits from the SOURCED_FROM KG node's authority class at snapshot time'; DDR-002 §4 fixes the rule and qualitative canon, not a concrete function) + DDR-002 §2.2 (Environment = edge-only node confidence)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["SDD-001"],
+    "locus": "§3.4.3 capture-evidence — inherited-confidence for Catalog/Standards/Governance base 1.0",
+    "claim": "§3.4.3 branch (ii) assigns Catalog/Standards/Governance an inherited confidence base of 1.0 ('versioned or append-only authoritative ground truth'). DDR-002 §4's canonical confidence definition places node confidence only on derived/reasoned surfaces (ObservedPattern, CapabilityCostEstimate, ReasoningProgress, Evidence) and states 'KG structural edges are authoritative by default (no confidence)'; Catalog/Standards/Governance nodes carry no node confidence field in their §2.1/§2.4/§2.5 schemas. The SDD derives an inherited Evidence.confidence of exactly 1.0 from source nodes that carry no confidence to inherit — the inheritance-from-authority-class is being realized as a fixed constant assignment, not an inheritance of a carried value. DDR-002 §4 says Evidence inherits 'from the SOURCED_FROM KG node's authority class'; whether 'authority class ⇒ 1.0' is the ratified realization or an SDD-asserted value is not substantiated against DDR-002's text, which fixes the qualitative canon (authoritative Catalog above aging Environment) but not the numeric anchor.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §4 (Confidence — canonical definition: node confidence enumerated on ObservedPattern/CapabilityCostEstimate/ReasoningProgress/Evidence; 'Evidence.confidence inherits from the SOURCED_FROM KG node's authority class at snapshot time')"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["SDD-001"],
+    "locus": "§3.3.8 provenance-of / §7.1 harness-verified row for #20",
+    "claim": "§3.3.8 records the determination that the provenance-survival retrieval affordance 'warrants no CI invariant of its own — reachability of the frozen layer is exactly what §7 #20 already guarantees.' But DDR-002 §7 #20 is classified 'Follow tier — enforced with the gateway, not ahead of it,' and DDR-002 §7.1's own harness-verified/routed row places #20 with '(at-promotion ProvenanceSummary materialization + completeness — gateway-behavioral, enforced with the gateway).' The SDD's §7.1 by-construction column claims '#20 (in-transaction closure + at-promotion binding)' as by-construction while simultaneously the harness-verified row lists #20 as gateway-behavioral. #20 appears in both the by-construction bucket (§7.1 first row) and is described as the guarantee the read-affordance leans on; the two placements are not contradictory on their face (transaction shape makes it hold; harness verifies), but the record does not reconcile that #20 is Follow-tier (not safety-critical, not precede-gateway) with the SDD's reliance on it as an already-holding guarantee at read time — leaving the substantiation that reachability is 'exactly guaranteed' resting on an invariant whose enforcement flips required only at this same build.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "SDD-001 §3.3.8 (determination: no CI invariant, reachability guaranteed by #20) vs SDD-001 §7.1 by-construction row (#20) and DDR-002 §7 Named exposure window (#20 Follow tier, enforced with the gateway)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["SDD-001"],
+    "locus": "§3.5.4 materialize-retraction — #25 satisfaction claim",
+    "claim": "§3.5.4 states 'under materialization-time RETRACTS writing … #25's biconditional as ratified is unsatisfied during a retraction proposal's pre-decision window,' and that the scoping clause is only 'proposed additive DDR-002 amendment content' while 'the harness implements from ratified text, before and after amendment.' DDR-002 §7 #25 as ratified is a biconditional: 'a CandidatePromotion with proposal_kind: retraction has a RETRACTS edge, and a RETRACTS edge originates only from a proposal_kind: retraction node.' The SDD concedes this ratified invariant is violated during the pre-decision window of every retraction proposal (proposal_kind: retraction exists at propose-candidate, but no RETRACTS edge is written until materialize-retraction). The SDD asserts 'this SDD's timing stands' while acknowledging the ratified #25 harness would fail against its own specified behavior. This is a specified behavior that would not conform to the cited ratified invariant if implemented exactly as written — a conformance defect the SDD discloses but does not resolve within scope, routing the fix to a DDR-002 amendment not yet ratified.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §7 #25 (proposal_kind ↔ RETRACTS-edge consistency, ratified biconditional: 'a CandidatePromotion with proposal_kind: retraction has a RETRACTS edge')"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["SDD-001"],
+    "locus": "§3.6.1 ingest — provenance stamping citation (#11 vs #17)",
+    "claim": "§3.6.1 ingest cites 'provenance stamping (origin_mechanism, recorded_at; source_record_ref required on ingested and distilled per #17).' §7.1's DDR-001 check-6 row cites '(#11/#17)' for stamping and the DDR-002 §7 enforcement-mapping write-time-rejected row cites '#11's stamping half.' DDR-002 §7 has no invariant numbered #11 that governs stamping — #11 in DDR-002 §7 is 'provenance distinguishability (DDR-001 check #6): promoted distinguishable from ingested via origin_mechanism,' a distinguishability check, not a stamping-existence obligation. The stamping-existence obligation is carried by the DB-enforced existence constraints (§7 DB-enforced group), not a numbered CI invariant #11-as-stamping. The SDD's repeated '#11's stamping half' reference conflates the distinguishability invariant with a stamping obligation; the cited locus does not resolve to a stamping invariant.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §7 #11 (provenance distinguishability — promoted vs ingested via origin_mechanism; not a stamping-existence invariant) vs SDD-001 §7.1 'write-time rejected' row citing '#11's stamping half'"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["SDD-001"],
+    "locus": "§3.2 / §4.4 read-discipline and §3.5.4 retraction-exclusion",
+    "claim": "Attacked the read-discipline trio for a bypass seam: whether any ground-truth read path could admit an un-approved CandidatePromotion, a conditional node out of scope, or a retracted node. The design holds — §4.4 orders the three exclusions (proposal label-skip + status guard #9; EA-approved RETRACTS exclusion; fail-closed #19 conditional admission), §3.2 confirms un-approved proposals and retracted nodes are excluded without disclosure on ground-truth reads while remaining reachable only via the explicitly-disclosed audit operations §3.3.7–§3.3.8, and §4.5 forbids ground-truth result caching precisely so #19/#21/#22 read-time controls cannot be served stale. The audit exception is disclosed (§1, §3.2) rather than left as a silent hole. Checked against DDR-002 §7 #9/#19/#21 and DDR-001 check 4; no bypassing read path is expressible as specified.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §7 #9 (proposal-visibility read-discipline), #19 (conditional-consumption read-discipline, fail-closed), #21 (retraction-gated read-discipline); DDR-001 conformance check 4"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["SDD-001"],
+    "locus": "§3.2 two-species write authority / §2.1 / §3.5.3 / §4.7",
+    "claim": "Attacked the write-authorship boundary for a seam where the gateway could become the authoring authority of a graph write — the exact ADR-002 §2.6 / §6.7 violation. The design holds: Species-2 request schemas carry decision_id and structurally have no author field ('authorship-by-gateway is unexpressible'); Species-1 validates a first-class author identity against the upstream-fixed assignments; §3.4.6 rejects unassigned lifecycle-transition authorities rather than defaulting them ('unassigned authority is unexecutable, not defaulted'); §4.7 forbids the gateway from journaling its own operational events into the graph as nodes (which would be authoring state with no assigned author). Checked against ADR-002 §2.6 (gateway is sole executor, never authoring authority) and §6.7 (write-authorship general principle); no operation's authorship can default to the gateway as specified.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-002 §2.6 (author/executor/authorizer separation; gateway sole executor never authoring authority) + ADR-002 §6.7 (write-authorship check)"
+    }
+  }
+]

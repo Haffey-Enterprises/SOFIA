@@ -1,0 +1,7 @@
+{
+  "finding_id": "6c1aff2223563339",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record SKILL — 'Keep the record's body to the contract' / authoring discipline; DDR-002 §Named gaps — the designated additive-amendment surface for ProvenanceSummary structuring (Item 2g) and #25 timing; deliberation-record Item 2g(iii)/2a(ii)",
+  "rationale": "The finding is a surfacing/placement complaint: proposed upstream-amendment content appears in routing notes and the change log rather than being declared as a decision-scope commitment. Where such content belongs is already determined by the skill's authoring discipline and by DDR-002's own routing (the ProvenanceSummary structuring and #25 timing are already the designated additive-amendment surface); no new choice about what to decide is introduced — only where to state it.",
+  "confidence": "medium"
+}

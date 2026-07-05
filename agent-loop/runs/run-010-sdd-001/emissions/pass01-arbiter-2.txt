@@ -1,0 +1,7 @@
+{
+  "finding_id": "4c79e2ac806f55c5",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "DDR-002 §4 fixes only that the inheritance rule exists and its qualitative canon (Evidence.confidence inherits from the SOURCED_FROM node's authority class at snapshot time, ceiling = max supporting Evidence.confidence), routing the concrete function to the SDD; it does not itself dictate the specific base values, decay form, τ, or Extension-class treatment. Whether the gateway may fix that function or must route it away (given the SDD's own not-owned disclaimer) is an unratified boundary question with two conforming readings — Evidence inheritance is a snapshot mechanic vs. ReasoningProgress rollup is authored composition — that no cited authority disambiguates.",
+  "confidence": "medium"
+}

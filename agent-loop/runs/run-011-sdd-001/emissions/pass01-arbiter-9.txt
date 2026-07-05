@@ -1,0 +1,7 @@
+{
+  "finding_id": "5f977db3e088c992",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding observes SUBTYPE_VIOLATION is unreachable-by-construction but does not determine the fix; removing the error, retaining it as defense-in-depth, or reclassifying #16's enforcement mode are conforming options no cited authority disambiguates, and the antagonist itself flags it 'worth recording, not holding' without naming a determining locus.",
+  "confidence": "medium"
+}

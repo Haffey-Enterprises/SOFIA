@@ -1,0 +1,448 @@
+{
+  "header": {
+    "set": [
+      "SDD-001"
+    ],
+    "counted_severities": [
+      "BLOCKING",
+      "MATERIAL"
+    ],
+    "plateau_N": 3,
+    "mode": "dry"
+  },
+  "findings": [
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "MATERIAL",
+      "target": [
+        "SDD-001"
+      ],
+      "locus": "\u00a79 Cross-References / Metadata References vs body citations",
+      "claim": "The metadata References field and \u00a79 declare the SDD is built against ADR-001 v1.1.0, ADR-002 v1.1.0, DDR-001 v1.3.0, DDR-002 v1.2.0, yet the document's descriptive header (File/Description line) and title metadata claim the record decides the full gateway design while the \u00a77.2 1b required-flip obligation is declared as this build's act \u2014 a build-completion decision. The SDD's Status is PROPOSED and Supersedes None, but \u00a77.2 commits a BUILD-leg gating act ('the knowledge-service build is complete only when...') that is a build/CI sequencing decision, not a design decision the SDD's own scope claims to hold. This commitment rides along in a design record whose stated purpose is service design, never surfaced as a decision the record is authorized to make.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "SDD-001 \u00a77.2 (1b required-flip obligation binding the BUILD leg) vs \u00a71 Purpose + metadata Status PROPOSED \u2014 a build-gating commitment carried in a design-scope record"
+      },
+      "id": "4dfe13afed022202",
+      "classification": "resolvable",
+      "authority_locus": "DDR-002 \u00a77 'Authority split (re-drawn)' + charter-notes commitment 2/3 (RBT-15) \u2014 the 1b required-flip binding to this service's build is a ratified upstream conformance requirement, not a new decision the SDD originates.",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "MATERIAL",
+      "target": [
+        "SDD-001"
+      ],
+      "locus": "\u00a73.4.3 capture-evidence inherited-confidence derivation",
+      "claim": "The \u00a73.4.3 inherited-confidence derivation asserts a concrete authority-class function \u2014 Environment base 0.9 \u00d7 exp(\u2212\u0394t/\u03c4), \u03c4=90 days, class bases 1.0, Extension-class treatment \u2014 as 'an SDD-level determination realizing DDR-002 \u00a74's inheritance rule.' DDR-002 \u00a74 fixes that the rollup/inheritance exists and its qualitative canon, and routes the concrete function to the SDD of the component that authors conclusion confidence. But DDR-002 \u00a72.2 and \u00a74 route ReasoningProgress.confidence rollup to the solutioning-agent SDD (sole executor, never author), and this SDD itself routes that rollup away (\u00a72.2, \u00a73.3.3). The SDD decides a concrete confidence-derivation function while simultaneously disclaiming authorship of confidence composition \u2014 the record decides more than its own not-owned boundary permits.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "SDD-001 \u00a73.4.3 (declares inherited-confidence derivation function) vs \u00a72.2 / \u00a73.3.3 (routes confidence composition/rollup to solutioning-agent SDD, 'composing here would author a reasoning weight this gateway holds no authority to fix')"
+      },
+      "id": "4c79e2ac806f55c5",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "COSMETIC",
+      "target": [
+        "SDD-001"
+      ],
+      "locus": "\u00a79 Cross-References \u2014 Proposed DDR-002 additive amendments",
+      "claim": "\u00a73.5.3 and \u00a73.5.4 declare specific amendment content ('per-Evidence entries keyed by evidence_id, each carrying fact summary + version pin + source-node reference' for ProvenanceSummary structuring; the #25 executed-proposal scoping clause) as 'recorded as proposed amendment content.' The change log states these 'supersede deliberation Items 2g(iii)/2a(ii) on those two points.' A design record proposing concrete amendment content to an upstream ratified authority (DDR-002) is a commitment surfaced only in routing notes and the change log, not declared as a decision the SDD makes; its consequence \u2014 that the SDD now carries proposed edits to a document it depends on \u2014 is under-surfaced against the record's stated design scope.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "SDD-001 \u00a73.5.3 / \u00a73.5.4 routing notes + \u00a79 'Proposed DDR-002 additive amendments' + \u00a710 change log \u2014 proposed upstream-amendment content carried as a side effect of a design record"
+      },
+      "id": "6c1aff2223563339",
+      "classification": "resolvable",
+      "authority_locus": "author-decision-record SKILL \u2014 'Keep the record's body to the contract' / authoring discipline; DDR-002 \u00a7Named gaps \u2014 the designated additive-amendment surface for ProvenanceSummary structuring (Item 2g) and #25 timing; deliberation-record Item 2g(iii)/2a(ii)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "POSITIVE",
+      "target": [
+        "SDD-001"
+      ],
+      "locus": "\u00a72.1 / \u00a72.2 owned-vs-not-owned boundary and \u00a71 not-owned list",
+      "claim": "Attacked the record's core claim-fidelity: does the SDD decide only what a gateway design decides, without smuggling authorship it disclaims? The sole-executor-never-author line is held consistently \u2014 every write operation names a Species-1 component author or a Species-2 authorizing decision; unassigned authorities (Attestation/Actor/Role, Solution lifecycle transitions, PromotionDecision transport) are routed by name and explicitly declared unexecutable-not-defaulted (\u00a73.4.6), never invented. The retrieves-never-recommends boundary (\u00a73.3.3 track-record uncomposed, \u00a72.2) holds against the temptation to compose confidence at the gateway. The boundary claim survived the attack.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "SDD-001 \u00a71 not-owned list + \u00a72.2 + \u00a73.4.6 against ADR-002 \u00a72.6 (gateway sole executor, never authoring authority; unassigned authorities unexecutable not defaulted)"
+      },
+      "id": "71db9dd2452eacf1",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "POSITIVE",
+      "target": [
+        "SDD-001"
+      ],
+      "locus": "\u00a77.1 / \u00a77.2 Upstream Compliance Checklist \u2014 declared dependencies and consequences",
+      "claim": "Attacked whether the record declares the artifacts and consequences each decision depends on. Every \u00a77 check names its upstream locus (ADR-001 \u00a76.x, ADR-002 \u00a76.x, DDR-001 checks 1\u20137, DDR-002 \u00a77 #1\u2013#25) and states the gateway's runtime relationship without overclaiming \u2014 #15's enforcement split (precondition by-construction, invariant CI-detected), #12's presence/verification split (verification routed to snapshot-service, no Firestore client held), and #24's harness-only posture with the honest transient-window consequence disclosed. The dependency declarations and side-effect disclosures held; no undeclared consequence surfaced under attack.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "SDD-001 \u00a77.1 enforcement mapping + \u00a77.2 against DDR-002 \u00a77 tiering and DDR-001 conformance checks \u2014 declared dependencies and stated consequences of each enforcement decision"
+      },
+      "id": "cedbd59a99c4f3e2",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "SDD-001"
+      ],
+      "locus": "\u00a73.4.3 capture-evidence \u2014 inherited-confidence derivation, branch (ii) \u03c4 default",
+      "claim": "The \u00a73.4.3 derivation declares the Environment-class inheritance as 'base 0.9 \u00d7 exp(\u2212\u0394t/\u03c4) with \u0394t from the cited node's observed_at.' DDR-002 \u00a74 fixes Evidence.confidence as inherited from the SOURCED_FROM KG node's authority class at snapshot time, and DDR-002 \u00a72.2 fixes Environment node confidence as edge-only ('Environment = edge-only'). But an Environment KG node carries no node confidence for the freshness computation's base; \u00a73.4.3 substitutes an SDD-asserted base \u00d7 freshness function whose \u0394t reads observed_at. This is a concrete inheritance function; DDR-002 \u00a74 states the rule 'fixes the rule and the qualitative canon, not a concrete function' \u2014 the SDD asserting a specific exponential-decay function with a hard \u03c4 is a determination the SDD claims DDR-002 \u00a74 licenses ('SDD-level determination realizing DDR-002 \u00a74's inheritance rule'), yet DDR-002 \u00a74's inheritance rule for Evidence is 'source authority \u00d7 freshness' with no decay-form specified. Whether an exponential decay with a since-flagged-contested \u03c4 conforms to 'source authority \u00d7 freshness' as ratified is unsubstantiated in the record \u2014 the qualitative canon fixes staleness-by-decay for Environment, but the specific functional form and its being defaulted-in are asserted, not shown to fall within the canon.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "DDR-002 \u00a74 (Confidence \u2014 inheritance/rollup rule: 'Evidence.confidence inherits from the SOURCED_FROM KG node's authority class at snapshot time'; DDR-002 \u00a74 fixes the rule and qualitative canon, not a concrete function) + DDR-002 \u00a72.2 (Environment = edge-only node confidence)"
+      },
+      "id": "9a21625edd4f3015",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "SDD-001"
+      ],
+      "locus": "\u00a73.4.3 capture-evidence \u2014 inherited-confidence for Catalog/Standards/Governance base 1.0",
+      "claim": "\u00a73.4.3 branch (ii) assigns Catalog/Standards/Governance an inherited confidence base of 1.0 ('versioned or append-only authoritative ground truth'). DDR-002 \u00a74's canonical confidence definition places node confidence only on derived/reasoned surfaces (ObservedPattern, CapabilityCostEstimate, ReasoningProgress, Evidence) and states 'KG structural edges are authoritative by default (no confidence)'; Catalog/Standards/Governance nodes carry no node confidence field in their \u00a72.1/\u00a72.4/\u00a72.5 schemas. The SDD derives an inherited Evidence.confidence of exactly 1.0 from source nodes that carry no confidence to inherit \u2014 the inheritance-from-authority-class is being realized as a fixed constant assignment, not an inheritance of a carried value. DDR-002 \u00a74 says Evidence inherits 'from the SOURCED_FROM KG node's authority class'; whether 'authority class \u21d2 1.0' is the ratified realization or an SDD-asserted value is not substantiated against DDR-002's text, which fixes the qualitative canon (authoritative Catalog above aging Environment) but not the numeric anchor.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "DDR-002 \u00a74 (Confidence \u2014 canonical definition: node confidence enumerated on ObservedPattern/CapabilityCostEstimate/ReasoningProgress/Evidence; 'Evidence.confidence inherits from the SOURCED_FROM KG node's authority class at snapshot time')"
+      },
+      "id": "6e21f037c1864e14",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "COSMETIC",
+      "target": [
+        "SDD-001"
+      ],
+      "locus": "\u00a73.3.8 provenance-of / \u00a77.1 harness-verified row for #20",
+      "claim": "\u00a73.3.8 records the determination that the provenance-survival retrieval affordance 'warrants no CI invariant of its own \u2014 reachability of the frozen layer is exactly what \u00a77 #20 already guarantees.' But DDR-002 \u00a77 #20 is classified 'Follow tier \u2014 enforced with the gateway, not ahead of it,' and DDR-002 \u00a77.1's own harness-verified/routed row places #20 with '(at-promotion ProvenanceSummary materialization + completeness \u2014 gateway-behavioral, enforced with the gateway).' The SDD's \u00a77.1 by-construction column claims '#20 (in-transaction closure + at-promotion binding)' as by-construction while simultaneously the harness-verified row lists #20 as gateway-behavioral. #20 appears in both the by-construction bucket (\u00a77.1 first row) and is described as the guarantee the read-affordance leans on; the two placements are not contradictory on their face (transaction shape makes it hold; harness verifies), but the record does not reconcile that #20 is Follow-tier (not safety-critical, not precede-gateway) with the SDD's reliance on it as an already-holding guarantee at read time \u2014 leaving the substantiation that reachability is 'exactly guaranteed' resting on an invariant whose enforcement flips required only at this same build.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "SDD-001 \u00a73.3.8 (determination: no CI invariant, reachability guaranteed by #20) vs SDD-001 \u00a77.1 by-construction row (#20) and DDR-002 \u00a77 Named exposure window (#20 Follow tier, enforced with the gateway)"
+      },
+      "id": "4e4f33d44917006f",
+      "classification": "resolvable",
+      "authority_locus": "DDR-002 \u00a77 #20 (at-promotion ProvenanceSummary materialization + completeness; Follow tier, gateway-behavioral, enforced with the gateway) + deliberation-record Item 2g-iv (determination: no CI invariant; #20 already guarantees reachability)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "SDD-001"
+      ],
+      "locus": "\u00a73.5.4 materialize-retraction \u2014 #25 satisfaction claim",
+      "claim": "\u00a73.5.4 states 'under materialization-time RETRACTS writing \u2026 #25's biconditional as ratified is unsatisfied during a retraction proposal's pre-decision window,' and that the scoping clause is only 'proposed additive DDR-002 amendment content' while 'the harness implements from ratified text, before and after amendment.' DDR-002 \u00a77 #25 as ratified is a biconditional: 'a CandidatePromotion with proposal_kind: retraction has a RETRACTS edge, and a RETRACTS edge originates only from a proposal_kind: retraction node.' The SDD concedes this ratified invariant is violated during the pre-decision window of every retraction proposal (proposal_kind: retraction exists at propose-candidate, but no RETRACTS edge is written until materialize-retraction). The SDD asserts 'this SDD's timing stands' while acknowledging the ratified #25 harness would fail against its own specified behavior. This is a specified behavior that would not conform to the cited ratified invariant if implemented exactly as written \u2014 a conformance defect the SDD discloses but does not resolve within scope, routing the fix to a DDR-002 amendment not yet ratified.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "DDR-002 \u00a77 #25 (proposal_kind \u2194 RETRACTS-edge consistency, ratified biconditional: 'a CandidatePromotion with proposal_kind: retraction has a RETRACTS edge')"
+      },
+      "id": "708bcb75d2f14976",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "COSMETIC",
+      "target": [
+        "SDD-001"
+      ],
+      "locus": "\u00a73.6.1 ingest \u2014 provenance stamping citation (#11 vs #17)",
+      "claim": "\u00a73.6.1 ingest cites 'provenance stamping (origin_mechanism, recorded_at; source_record_ref required on ingested and distilled per #17).' \u00a77.1's DDR-001 check-6 row cites '(#11/#17)' for stamping and the DDR-002 \u00a77 enforcement-mapping write-time-rejected row cites '#11's stamping half.' DDR-002 \u00a77 has no invariant numbered #11 that governs stamping \u2014 #11 in DDR-002 \u00a77 is 'provenance distinguishability (DDR-001 check #6): promoted distinguishable from ingested via origin_mechanism,' a distinguishability check, not a stamping-existence obligation. The stamping-existence obligation is carried by the DB-enforced existence constraints (\u00a77 DB-enforced group), not a numbered CI invariant #11-as-stamping. The SDD's repeated '#11's stamping half' reference conflates the distinguishability invariant with a stamping obligation; the cited locus does not resolve to a stamping invariant.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "DDR-002 \u00a77 #11 (provenance distinguishability \u2014 promoted vs ingested via origin_mechanism; not a stamping-existence invariant) vs SDD-001 \u00a77.1 'write-time rejected' row citing '#11's stamping half'"
+      },
+      "id": "badeaf00443cb118",
+      "classification": "resolvable",
+      "authority_locus": "DDR-002 \u00a77 \u2014 #11 ('provenance distinguishability (DDR-001 check #6): promoted distinguishable from ingested via origin_mechanism') and the DB-enforced existence-constraints group (provenance-group existence on ingested nodes)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "POSITIVE",
+      "target": [
+        "SDD-001"
+      ],
+      "locus": "\u00a73.2 / \u00a74.4 read-discipline and \u00a73.5.4 retraction-exclusion",
+      "claim": "Attacked the read-discipline trio for a bypass seam: whether any ground-truth read path could admit an un-approved CandidatePromotion, a conditional node out of scope, or a retracted node. The design holds \u2014 \u00a74.4 orders the three exclusions (proposal label-skip + status guard #9; EA-approved RETRACTS exclusion; fail-closed #19 conditional admission), \u00a73.2 confirms un-approved proposals and retracted nodes are excluded without disclosure on ground-truth reads while remaining reachable only via the explicitly-disclosed audit operations \u00a73.3.7\u2013\u00a73.3.8, and \u00a74.5 forbids ground-truth result caching precisely so #19/#21/#22 read-time controls cannot be served stale. The audit exception is disclosed (\u00a71, \u00a73.2) rather than left as a silent hole. Checked against DDR-002 \u00a77 #9/#19/#21 and DDR-001 check 4; no bypassing read path is expressible as specified.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "DDR-002 \u00a77 #9 (proposal-visibility read-discipline), #19 (conditional-consumption read-discipline, fail-closed), #21 (retraction-gated read-discipline); DDR-001 conformance check 4"
+      },
+      "id": "042a60652f06d741",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "POSITIVE",
+      "target": [
+        "SDD-001"
+      ],
+      "locus": "\u00a73.2 two-species write authority / \u00a72.1 / \u00a73.5.3 / \u00a74.7",
+      "claim": "Attacked the write-authorship boundary for a seam where the gateway could become the authoring authority of a graph write \u2014 the exact ADR-002 \u00a72.6 / \u00a76.7 violation. The design holds: Species-2 request schemas carry decision_id and structurally have no author field ('authorship-by-gateway is unexpressible'); Species-1 validates a first-class author identity against the upstream-fixed assignments; \u00a73.4.6 rejects unassigned lifecycle-transition authorities rather than defaulting them ('unassigned authority is unexecutable, not defaulted'); \u00a74.7 forbids the gateway from journaling its own operational events into the graph as nodes (which would be authoring state with no assigned author). Checked against ADR-002 \u00a72.6 (gateway is sole executor, never authoring authority) and \u00a76.7 (write-authorship general principle); no operation's authorship can default to the gateway as specified.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "ADR-002 \u00a72.6 (author/executor/authorizer separation; gateway sole executor never authoring authority) + ADR-002 \u00a76.7 (write-authorship check)"
+      },
+      "id": "943c58ff5ac97619",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "POSITIVE",
+      "target": [
+        "SDD-001"
+      ],
+      "locus": "\u00a72.2 / \u00a73.2 / \u00a77.1 \u2014 gateway authors nothing (Species 1/2 split)",
+      "claim": "I attacked the design's central posture \u2014 that the gateway executes every write and authors none \u2014 for a place where it silently defaults authorship to itself. The two-species convention holds: Species-2 request schemas carry no author field (authorship-by-gateway unexpressible), unassigned Solution-lifecycle transitions are rejected rather than defaulted (\u00a73.4.6), and operational events are kept out of the graph (\u00a74.7). This integrates with ADR-002 \u00a72.6's author/executor/authorizer separation without pulling against it.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "ADR-002 \u00a72.6 (write-authorship general principle; gateway is sole executor, never authoring authority)"
+      },
+      "id": "4f99272d2d0ec7d7",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "POSITIVE",
+      "target": [
+        "SDD-001"
+      ],
+      "locus": "\u00a72.2 / \u00a73.5 / \u00a79 \u2014 forthcoming-upstream dependencies routed, not pre-empted",
+      "claim": "I probed whether this SDD commits the project to positions that deserve their own decision record first \u2014 promotion governance, condition vocabulary, un-promotion authority, cross-origin disposition. Each is routed by name to DDR-003 or the KG-entry-governance ADR and answered by neither; the design's fail-closed and block-and-surface postures hold on ratified text alone, so no unratified downstream is load-bearing. The timing dependency on DDR-003 is neutralized by construction (conditional promotions arise only through the EA gate DDR-003 itself gates). No premature commitment survived.",
+      "cited_authority": {
+        "kind": "design-intent",
+        "ref": "deliberation-record-sdd-001 Item 2d(v) / Item 2e(ii) \u2014 'routed by name, never invented'; DDR-003 grammar-less window empty by construction"
+      },
+      "id": "6355ae75b44b5dc6",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "MATERIAL",
+      "target": [
+        "SDD-001"
+      ],
+      "locus": "\u00a73.4.3 capture-evidence \u2014 inherited-confidence derivation (branch i)",
+      "claim": "The SDD asserts that where a cited node itself carries a node `confidence`, the inherited Evidence value 'is that node confidence' \u2014 for the Operational `ObservedPattern` case specifically. But DDR-002 \u00a72.3/\u00a73/\u00a74 fix that `ObservedPattern` carries TWO distinct confidences: the node's lesson-reliability `confidence` AND the per-target `OBSERVED_IN` edge confidence, 'composed at rollup.' Taking the node confidence alone as the inherited value discards the edge (per-target certainty) surface that DDR-002 explicitly says composes with it. The owning schema does not supply the single-node-confidence inheritance the SDD asserts for this dual-surface type.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "SDD-001 \u00a73.4.3 branch (i) vs DDR-002 \u00a74 'Environment = edge-only; Operational = node (lesson reliability) + edge (per-target certainty), the two composed at rollup' + \u00a73 confidence grammar"
+      },
+      "id": "4ab8d42c7e445980",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "MATERIAL",
+      "target": [
+        "SDD-001"
+      ],
+      "locus": "\u00a73.4.3 capture-evidence \u2014 inherited-confidence derivation as an SDD-level determination",
+      "claim": "The SDD declares a concrete inherited-confidence function (class base \u00d7 freshness, base values 1.0/0.9, \u03c4=90d, exp decay) as 'an SDD-level determination realizing DDR-002 \u00a74's inheritance rule.' DDR-002 \u00a74 fixes only that `Evidence.confidence` inherits 'from the SOURCED_FROM KG node's authority class at snapshot time' \u2014 it supplies an authority-class-and-freshness qualitative canon, not a numeric function. The SDD is asserting concrete derivation constants against an inheritance rule the owning schema delegates without supplying the function; per the deferral-sharpens rule, asserting the concrete function while the canon it cites supplies only the qualitative shape is a property the owning document does not supply. (Flagged (contested) mitigates but does not remove the assertion \u2014 the values are defaults, executed identically at write.)",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "SDD-001 \u00a73.4.3 numeric derivation vs DDR-002 \u00a74 'Evidence.confidence inherits from the SOURCED_FROM KG node's authority class at snapshot time' (rule fixed, function not supplied)"
+      },
+      "id": "2814cfe0a28e97b7",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "COSMETIC",
+      "target": [
+        "SDD-001"
+      ],
+      "locus": "\u00a79 Cross-References \u2014 upstream version pins vs References table",
+      "claim": "The metadata References field and \u00a79 cite 'ADR-002 v1.1.0' while the substrate ADR-002 is at v1.1.0 \u2014 consistent \u2014 but the \u00a71 and multiple body citations reference 'ADR-002 \u00a72.5', '\u00a72.6', '\u00a75.2' which are present in ADR-002 v1.1.0; no drift found on spot-check. Recording only that the document header lists ADR-001 v1.1.0/ADR-002 v1.1.0/DDR-001 v1.3.0/DDR-002 v1.2.0, all matching the fetched substrate versions exactly.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "SDD-001 References table + \u00a79 vs substrate document versions (ADR-001 1.1.0, ADR-002 1.1.0, DDR-001 1.3.0, DDR-002 1.2.0)"
+      },
+      "id": "f4a5ba9da9b0b4c5",
+      "classification": "resolvable",
+      "authority_locus": "The finding's own verification against fetched substrate versions (ADR-001 v1.1.0, ADR-002 v1.1.0, DDR-001 v1.3.0, DDR-002 v1.2.0) \u2014 all citations match; no drift.",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "POSITIVE",
+      "target": [
+        "SDD-001"
+      ],
+      "locus": "\u00a77.1 / \u00a72.2 \u2014 gateway-authors-nothing invariant vs Species-2 materialization",
+      "claim": "Attacked the claim that the gateway 'authors nothing' against the Species-2 materialization operations, which compute the \u00a75 provenance-closure and construct the ProvenanceSummary \u2014 content the gateway generates. The SDD holds: it consistently frames closure computation and ProvenanceSummary construction as execution mechanics under the approving PromotionDecision's authority (ADR-002 \u00a72.6 'sole executor, never author'), with the ProvenanceSummary carrying origin_mechanism: derived (not authored) per DDR-002 \u00a74, and the Species-2 request schema carrying no author field. The author/executor separation survives the materialization case.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "SDD-001 \u00a72.2/\u00a73.5.3/\u00a77.1 vs ADR-002 \u00a72.6 author/executor/authorizer + DDR-002 \u00a74 ProvenanceSummary origin_mechanism: derived"
+      },
+      "id": "e305762b56cb983b",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "POSITIVE",
+      "target": [
+        "SDD-001"
+      ],
+      "locus": "\u00a73.5.4 / \u00a77.1 \u2014 #25 biconditional pre-decision-window handling",
+      "claim": "Attacked the materialization-time RETRACTS writing against DDR-002 #25's ratified biconditional (proposal_kind: retraction \u27fa RETRACTS edge). The SDD does not paper over the seam: it explicitly concedes #25's biconditional as ratified is unsatisfied during a retraction proposal's pre-decision window, names the scoping clause as PROPOSED additive DDR-002 amendment content (not ratified fact), and states the harness implements from ratified text before and after amendment. The inconsistency with upstream is disclosed against the upstream text rather than rescued by downstream-only qualifier \u2014 the honest disclosure holds.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "SDD-001 \u00a73.5.4 routing note vs DDR-002 \u00a77 #25 ratified biconditional (SDD discloses the gap rather than asserting reconciliation)"
+      },
+      "id": "7b9a0f8be901971b",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    }
+  ],
+  "passes": [
+    {
+      "pass_number": 1,
+      "open_cbm_count": 7,
+      "agents_run": [
+        "antagonist-LAA",
+        "antagonist-SA",
+        "antagonist-EA",
+        "coherence",
+        "arbiter"
+      ],
+      "timestamp": "2026-07-05T17:32:29.570635+00:00"
+    }
+  ],
+  "doc_changes": []
+}
