@@ -1,0 +1,9 @@
+```json
+{
+  "finding_id": "f7e4db330284cc55",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §6 (Version-pinning) + §4 (:Reasoning:Evidence.source_node_version) — Evidence pins the specific retained version node via source_node_version; DDR-002 §6 'Uniqueness under versioning' + §7 checks #4/#8 fix that exactly one active version exists per (business_key, version) and supersession is atomic",
+  "rationale": "The input-to-pin mapping the finding calls 'unstated' is already fixed by DDR-002: capture-evidence resolves a citation to the specific retained version node it pins (Evidence.source_node_version, rebind:pinned, §6 Version-pinning), and where a business key is cited the current active version is well-defined by the one-active-version-per-business_key invariant (§6/§7 #4). The §3.4.3/§7.1 conformance-table gap is a coherence restatement covered by ratified schema authority; no new choice is introduced.",
+  "confidence": "medium"
+}
+```

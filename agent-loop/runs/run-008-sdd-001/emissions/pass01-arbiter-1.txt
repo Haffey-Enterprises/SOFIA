@@ -1,0 +1,7 @@
+{
+  "finding_id": "dea78865bd663104",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §6 Version-pinning + §4 Evidence.source_node_version + §7 check #14 atomic capture-unit + the deliberation-record Item 2a(i) tightening (capture-evidence requires SUPPORTED_BY / SOURCED_FROM in the #14 transaction); DDR-002 §6 Supersession — Option A (retained version nodes, pinned edges untouched)",
+  "rationale": "The finding claims the input-to-pin mapping is unspecified, but DDR-002 §6 fixes that Evidence.source_node_version references a specific retained version node via rebind:pinned, and Option A supersession guarantees the specific version node is retained and its pinned edges never re-point — so the pin resolves to the version node cited at write regardless of subsequent supersession, and the SOURCED_FROM atomic capture-unit (#14) is the write's mandatory KG-node target. The version the pin resolves to is the specific KG version node the SOURCED_FROM edge is written against in that single gateway transaction; nothing new is chosen.",
+  "confidence": "high"
+}

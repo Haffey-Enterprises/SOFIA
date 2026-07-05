@@ -1,0 +1,7 @@
+{
+  "finding_id": "dd5fe59c98152e70",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §5 promotion-edge grammar — MATERIALIZES_PROVENANCE_OF direction ((:ProvenanceSummary)-[:MATERIALIZES_PROVENANCE_OF]->(CandidatePromotion)) and §2.4/§5 DECIDED_ON direction ((PromotionDecision)-[:DECIDED_ON]->(CandidatePromotion))",
+  "rationale": "The finding is a notation clarity defect in SDD-001 §3.3.8 whose correct rendering is fully dictated by the already-ratified DDR-002 §5 edge directions; conforming the traversal notation to those fixed directions introduces no new choice, and the ratified schema is the higher authority the SDD must mirror.",
+  "confidence": "high"
+}

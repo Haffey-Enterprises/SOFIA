@@ -1,0 +1,42 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["SDD-001"],
+"locus": "§1 Purpose / metadata Description vs §2.2 Not owned",
+"claim": "The title and Description assert the record decides the gateway that 'authors nothing' and is 'sole executor of all graph writes.' But §2.1 Owned includes 'In-process Condition-predicate evaluation' and 'Version-pin resolution and inherited-confidence computation' — computations whose semantics the SDD itself declares are owned elsewhere (predicate semantics single-sourced from the constraint-validator SDD, §4.2; confidence derivation fixed in DDR-002 §4). The record decides to host and execute these, which is within claim, but the summary's framing as pure 'gateway executes everything and authors nothing' does not surface that hosting a shared predicate component is a distinct commitment the body makes — a decision riding along in §4.2 ('hosted in-process here') that the title's execute/author dichotomy does not disclose.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "SDD-001 metadata Description ('the gateway executes everything and authors nothing') vs §2.1 Owned 'In-process Condition-predicate evaluation' + §4.2 'hosts ... in-process'"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["SDD-001"],
+"locus": "§3.3 KG retrieval port operation set — 'initial contract, provisional by declared design'",
+"claim": "The record's §3 API Contract claims to decide the gateway's API shape (Item 1 ratified: operation-shaped API). But the KG retrieval operation set is declared 'the initial contract, provisional by declared design ... derived from the corpus's named consumers ahead of any synthesis run, and it evolves additively as consuming SDDs land.' A design record's status is PROPOSED and its decision content is the contract it fixes; declaring the central read-surface operation set provisional-and-evolving means the record does not decide what it claims to decide at this locus — the retrieval contract is deferred to future consuming SDDs rather than fixed here, yet §3.3 is presented as the API contract.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "SDD-001 §3.3 ('the initial contract, provisional by declared design ... evolves additively as consuming SDDs land') vs §3 API Contract heading claiming the decided contract"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["SDD-001"],
+"locus": "§7.1 conformance table — DDR-001 check 5 / §3.4.3 capture-evidence",
+"claim": "§7.1 check-5 row claims 'capture-evidence resolves pins at write (§3.4.3).' §3.4.3 states the gateway 'resolves the cited node's version pin' but does not name the input-to-pin mapping (which retained version node the pin resolves to when a business key rather than a specific version is cited). The consequence of this operation — which version a citation binds to — is a declared side effect of the write that the record asserts as covered without stating the resolution rule, leaving the decision's effect under-declared at the locus the conformance table cites as satisfying the check.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "SDD-001 §7.1 (DDR-001 check 5 cites §3.4.3 as satisfying evidence-pin resolution) vs §3.4.3 (asserts resolution executed, does not declare the input-to-pin mapping)"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["SDD-001"],
+"locus": "§2.2 Not owned / §3.4.6 advance-artifact-lifecycle / §9 routed-unauthored list",
+"claim": "Attacked the record for scope creep — smuggled decisions on authorities the substrate routes elsewhere. Checked whether any not-yet-assigned authority (Solution lifecycle-transition authors, Attestation/Actor/Role writes, PromotionDecision transport, condition vocabulary) is quietly decided in the body rather than routed. The design holds: each is named in §2.2 as routed to a specific forthcoming SDD/DDR, unassigned transitions are rejected rather than defaulted (§3.4.6), and §9 lists every routed-unauthored dependency explicitly. No commitment on a routed question rides along undisclosed.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "SDD-001 §2.2 Not owned + §3.4.6 (unassigned authority rejected, not defaulted) + §9 routed-unauthored list vs DDR-002 §2.4/§5 and deliberation-record Item 1 (routed by name, never invented)"
+}
+}
+]

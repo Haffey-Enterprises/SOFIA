@@ -1,0 +1,52 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["SDD-001"],
+    "locus": "§3.2 Contract conventions — Species-1 assignments / §2.1 Owned (create-artifact)",
+    "claim": "SDD-001 §3.2 lists Species-1 component-author assignments as 'ASA → reasoning content (`ReasoningProgress`, the `Evidence` capture-unit, `RejectedAlternative`)'. But DDR-002 §4 and its §7 provenance-scope establish that `Evidence` is the sole surrogate-only RG type that carries NO provenance group and NO authored-provenance stamp — its authorship is structural (SOURCED_FROM + version-pin), not a carried author field. Asserting ASA as the component-author of the `Evidence` capture-unit as a Species-1 authored write attributes an authorship property to `Evidence` that the owning schema (DDR-002 §4) does not supply to that node type.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "SDD-001 §3.2/§2.1 (ASA-authors-Evidence) vs DDR-002 §4 'Evidence is the sole surrogate-only RG type' + §7 provenance-scope exclusion of Evidence"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["SDD-001"],
+    "locus": "§3.5.2 record-promotion-decision / §7.1 by-construction row #15",
+    "claim": "SDD-001 §7.1 places #15 (promoted-origin → governing approving decision) in the 'By construction' column and §4.3 lists it among by-construction rows. DDR-002 §7 explicitly classifies #15 as a CI-only conformance invariant ('promoted-origin → governing approving decision ... CI-only, §7 #15') that Neo4j cannot express and that is mechanized ahead of the gateway. The gateway's record-promotion-decision enforces per-candidate monotonicity (the well-definedness precondition), but the #15 traceability invariant itself — that every promoted node traces to the governing approving edge — is not made unexpressible by any single transactional shape, since a promoted node whose governing verdict later flips to rejected is exactly the case #15 is designed to detect after the fact. Classifying #15 as by-construction overclaims against the upstream CI-only classification.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "SDD-001 §7.1 by-construction row (#15) vs DDR-002 §7 CI-only invariant set #15 + safety-critical-tier (ahead-of-gateway) classification"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["SDD-001"],
+    "locus": "§9 Cross-References / metadata References field",
+    "claim": "SDD-001's References field and §9 cite 'ADR-002 v1.1.0' consistently, but the §1 Purpose and §2.1 opening reference 'ADR-002 §2.5' and '§2.6' loci that are correct for v1.1.0 — no drift found here; however the metadata table header lists 'ADR-002 v1.1.0' while the document body's compliance table (§7.1) cites ADR-002 §6.1–§6.7 as the compliance-check locus, which is the correct v1.1.0 §6 numbering. The citation set is internally consistent; flagged only to record the check.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-002 v1.1.0 §2.5/§2.6/§6 — cited loci verified against substrate"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["SDD-001"],
+    "locus": "§2.2 Not owned / §3.4.5 create-artifact / §7.1 DDR-001 check 3",
+    "claim": "Checked SDD-001's Species-1 authorship assignments against DDR-002 §Feedback-Loop 'Artifact write authority' and DDR-001 RG-authorship rulings: ASA authoring `(:Artifact:Solution)` on creation, AOE owning ReasoningSession lifecycle only, and the feedback-loop job authoring CandidatePromotion. Attempted to fault the assignment against ADR-002 §2.6 (gateway never authors) and the DDR-001/DDR-002 upstream author fixings — every SDD assignment matches the upstream-fixed author, and unassigned authorities (Solution lifecycle transitions, Attestation/Actor/Role) are routed-not-invented with explicit AUTHOR_VIOLATION rejection for unassigned transitions. The authorship split held.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "SDD-001 §3.2/§3.4/§3.5 author assignments vs ADR-002 §2.6 + DDR-001 Feedback-Loop write-authority + RG-invariants"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["SDD-001"],
+    "locus": "§3.5.4 materialize-retraction / §4.4 read-discipline / §7.1 read-discipline row",
+    "claim": "Attacked the retraction read-exclusion path for a coherence gap: SDD-001 keys retracted-node ground-truth exclusion on an EA-approved inbound RETRACTS edge, writes RETRACTS at materialization (not proposal), and self-flags the #25 biconditional pre-decision window as a harness timing nuance rather than papering over it. Checked against DDR-002 §5 retracted-node read-discipline (gateway-enforced, keyed on EA-approved RETRACTS edge, no denormalized status marker) and §7 #21/#25 — the SDD's timing choice is consistent with #21 holding by construction, and the honestly-named #25 residue matches the upstream's own biconditional scope. The read-discipline coherence held.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "SDD-001 §3.5.4/§4.4 vs DDR-002 §5 retracted-node read-discipline + §7 #21/#25"
+    }
+  }
+]

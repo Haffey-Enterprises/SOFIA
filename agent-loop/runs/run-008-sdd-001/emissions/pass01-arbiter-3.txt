@@ -1,0 +1,7 @@
+{
+  "finding_id": "da1f99902c4570ab",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §2.6 (cost plane as first Extension registration) + §Cross-References '→ cost-estimation SDD' routing entry (compute-on-read cost ops) + Item 2b/(routed) mapping in deliberation-record-sdd-001",
+  "rationale": "The design intent already treats cost operations as legitimately-forthcoming and explicitly routes #3/#5 attachment to the future cost-estimation SDD; a forward routing pointer to an unauthored-but-named consumer is the ratified convention throughout the corpus (DDR-003, KG-entry-governance ADR, cost-estimation SDD all cited this way), so conforming to that existing routing convention determines the fix without a new choice.",
+  "confidence": "high"
+}

@@ -1,0 +1,7 @@
+{
+  "finding_id": "79063465d4079ed1",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record-SKILL — 'Authoring discipline' / 'Status and version' (Change Log records substantive revisions; a PROPOSED initial draft is honestly labeled) and the sdd-template §12 Change Log convention",
+  "rationale": "The finding is a cosmetic under-declaration of decision content in the Change Log summary; the SKILL's authoring-discipline and Change Log conventions already dictate that a record honestly reflect the dispositions it carries, and the deliberation record enumerates every determination (§3.3.8, §3.4.3, §3.5.4) that the log entry can conform to. No unmade choice is required — the fix is a faithful restatement.",
+  "confidence": "medium"
+}

@@ -1,0 +1,9 @@
+```json
+{
+  "finding_id": "2171dea89bce1637",
+  "classification": "decision-bearing",
+  "authority_locus": "DDR-002 §4 confidence rollup / §4 RG provenance posture — both explicitly leave the zero-evidence conclusion case to the SDD",
+  "rationale": "DDR-002 §4 states verbatim that 'the zero-evidence case (a conclusion with no SUPPORTED_BY Evidence) is left to the SDD that defines the rollup function,' and no ratified authority disambiguates whether an evidence-less ReasoningProgress is permitted, blocked, or constrained at the capture gateway — a named silence in authority requiring a choice not yet made.",
+  "confidence": "high"
+}
+```

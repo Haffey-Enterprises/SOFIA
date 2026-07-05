@@ -1,0 +1,9 @@
+```json
+{
+  "finding_id": "01feb7834720e768",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §4 'Confidence — canonical definition' / Inheritance-rollup rule (the composition ceiling for ObservedPattern node confidence + OBSERVED_IN edge confidence), read with §3 edge-catalog OBSERVED_IN note ('composed at rollup')",
+  "rationale": "The finding's premise is that DDR-002 §4 fixes no composition semantics for the ObservedPattern/OBSERVED_IN pair, but DDR-002 §4 does fix them: it defines node confidence as lesson reliability and OBSERVED_IN edge confidence as per-target observation certainty, states both are 'composed at rollup,' and pins the rollup ceiling (= max of supporting Evidence.confidence, weight below-ceiling only, zero-evidence case routed to SDD). The SDD's citation is mis-addressed to DDR-002 §4 (not DDR-002 §4's rollup canon) — a citation-locus correction dictated by existing ratified authority, introducing no new choice.",
+  "confidence": "medium"
+}
+```

@@ -1,0 +1,62 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["SDD-001"],
+"locus": "§3.4.3 capture-evidence — inherited-confidence claim vs §4 rollup",
+"claim": "The SDD states capture-evidence 'computes inherited confidence per DDR-002 §4's authority-class rule (fixed derivation, executed not authored).' DDR-002 §4 fixes only that Evidence.confidence inherits from the SOURCED_FROM KG node's authority class at snapshot time and gives the qualitative canon (source authority × freshness, decayed by observed_at); it does not fix a concrete derivation function. The SDD calls this a 'fixed derivation' the gateway executes, but the authority under which the concrete numeric derivation is specified is not cited or located, so the claim that it is an executed-not-authored fixed derivation is unsubstantiated against the cited authority.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "DDR-002 §4 Confidence — canonical definition / Inheritance-rollup rule"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["SDD-001"],
+"locus": "§3.3.3 track-record-lookup / §3.2 Result envelope — edge-confidence composition",
+"claim": "track-record-lookup is stated to compose ObservedPattern node confidence with OBSERVED_IN edge confidence 'per DDR-002 §4's composition semantics.' DDR-002 §4 states the two are 'composed at rollup' but explicitly defers the rollup function to the SDD ('The rollup function itself → SDD'); it fixes no composition semantics for the ObservedPattern/OBSERVED_IN pair. The SDD cites DDR-002 §4 as if it supplied composition semantics it does not, so the operation's composition behavior rests on an authority that does not specify it.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "DDR-002 §4 (Confidence composition; rollup function routed to SDD)"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["SDD-001"],
+"locus": "§2.1 / §7.1 ADR-001 §6.2 — zero-evidence conclusion silence",
+"claim": "capture-conclusion (§3.4.2) and capture-evidence (§3.4.3) are individually atomic with no cross-operation gating (non-blocking capture), so a ReasoningProgress can be written and never receive SUPPORTED_BY evidence. DDR-002 §4 explicitly names the zero-evidence conclusion case as unresolved ('the zero-evidence case … is left to the SDD that defines the rollup function'), and ADR-001 §6.2 requires every captured conclusion carry evidence linkage to the KG nodes consulted. The design is silent on whether/how an evidence-less ReasoningProgress is permitted or constrained at this gateway, an edge case in a path it claims to enforce (§7.1 DDR-001 check 3 / ADR-001 §6.2).",
+"cited_authority": {
+"kind": "canonical",
+"ref": "DDR-002 §4 (zero-evidence case, SDD-owned) / ADR-001 §6.2 reasoning-capture invariant"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["SDD-001"],
+"locus": "§3.4.1 open-session/advance-session — lifecycle_state TODO cross-reference",
+"claim": "The operation defers lifecycle_state value-set enforcement to 'the AOE SDD by DDR-002's own routing.' DDR-002 §4 ReasoningSession routes the value-set to the AOE SDD, but the AOE SDD is named in §9 as 'routed-to, unauthored' — the cited target artifact does not yet exist. The cross-reference resolves only to a forthcoming artifact; the term the enforcement depends on (the value-set) is used before it is defined anywhere in scope.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "SDD-001 §3.4.1 + §9 (AOE SDD unauthored) — cited term (lifecycle_state value-set) undefined in scope"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["SDD-001"],
+"locus": "§3.5 promotion boundary + §7.1 DDR-002 §7 enforcement mapping (#15/#20/#21/#22)",
+"claim": "Attacked the Species-2 decision-authorized write path for a route by which the gateway could author a materialization without a governing approving decision, or a promotion could materialize on a stale/superseded approving edge. The design closes both: Species-2 request schemas structurally lack an author field (authorship-by-gateway unexpressible), governing-verdict verification is in-transaction against the latest decided_at edge per DDR-002 §2.4/#15, and the per-candidate strict monotonicity making 'governing edge' total is enforced at record-promotion-decision. The path held against DDR-002 §7 #15/#20/#21 and ADR-002 §2.6 executor-never-author.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "DDR-002 §7 #15/#20/#21 + ADR-002 §2.6 (author/executor/authorizer separation)"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["SDD-001"],
+"locus": "§3.5.4 / §4.4 / §7.1 read-discipline row — #22 cross-origin block",
+"claim": "Attacked the ingestion supersession path for silent admission of an ingested successor over an EA-set conditional scope (the #22 failure #19 cannot catch, since a successor no longer marked conditional escapes retrieval-time detection). The design blocks structurally: the cross-origin case is rejected as SCOPE_CONFLICT inside the atomic supersession transaction, predecessor-keyed per DDR-002 #22, never silently admitted, with governance-significant disclosure. The block held against DDR-002 §7 #22 (safety-critical, supersession-mirror of #19).",
+"cited_authority": {
+"kind": "canonical",
+"ref": "DDR-002 §7 #22 conditional-scope carry-forward on supersession (predecessor-keyed, safety-critical)"
+}
+}
+]

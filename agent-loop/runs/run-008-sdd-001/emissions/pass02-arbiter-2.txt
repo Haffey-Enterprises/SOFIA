@@ -1,0 +1,7 @@
+{
+  "finding_id": "114ba295be157b1f",
+  "classification": "resolvable",
+  "authority_locus": "Item 2c(ii) of the SDD-001 deliberation record (RATIFIED) — 'Operation set derived from named upstream consumers, declared provisional ... additive evolution + DDR-002's provisional-index revisit ride along'; reinforced by DDR-002's empirical-warrant discipline (Named Gaps preamble) and DDR-001's additive-Extension posture.",
+  "rationale": "The stated design intent explicitly and already ratifies that the KG retrieval operation set is provisional-by-design and evolves additively — the very locus the finding challenges is the disposition the operator ratified in Item 2c(ii), grounded in the zero-synthesis-runs empirical floor and the corpus's additive-evolution posture; conforming means presenting §3.3 as 'the ratified initial contract, additively evolvable,' a fix determined by existing authority with no new choice introduced.",
+  "confidence": "high"
+}

@@ -1,0 +1,9 @@
+```json
+{
+  "finding_id": "586bfe0c75613024",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record SKILL, SDD template §1 Purpose ('what the service does ... what it explicitly does not do — load-bearing for future boundary enforcement') + 'What makes its design distinctive' header line; and the SDD's own §3 Owned/Not-owned discipline. The finding asks that the summary Description surface the in-process hosting of a shared predicate component (§2.1 Owned / §4.2) as a distinct commitment.",
+  "rationale": "The finding is a disclosure/coherence gap: the metadata Description's execute/author dichotomy fails to surface a commitment the body already ratifies (hosting the shared Condition-predicate evaluation in-process, single-sourced from constraint-validator SDD §4.2). The SDD template already dictates that the Purpose/Description must state what makes the design distinctive and that boundary commitments are load-bearing — conforming the summary to disclose the already-decided hosting choice introduces no new choice; the hosting decision itself is already made (Item 2d-i, ratified).",
+  "confidence": "medium"
+}
+```

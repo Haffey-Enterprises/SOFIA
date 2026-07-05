@@ -1,0 +1,7 @@
+{
+  "finding_id": "31cf1fc8e2b1d131",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §4 (:Reasoning:ProvenanceSummary — internal structuring named a gap) + Item 2g(iii) of the ratified deliberation-record-sdd-001",
+  "rationale": "The SDD's owning schema (DDR-002 §4) expressly defers the internal structuring of the multi-Evidence snapshot as a named gap, and the ratified pre-authoring deliberation (Item 2g(iii)) already made the ratified choice — per-Evidence entries keyed by evidence_id (fact_summary + version pin + source ref) as the SDD-owned snapshot shape — so the SDD conforms to a decision already made in stated design intent rather than manufacturing one.",
+  "confidence": "high"
+}

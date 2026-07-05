@@ -1,0 +1,7 @@
+{
+  "finding_id": "89daf7f12fff1dba",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §2.4 / §5 (retraction: un-promotion upstream authority) and §2.3 (distillation-write checkpoint posture), both explicitly routed by name to the forthcoming KG-entry-governance ADR; DDR-002 Named Gaps 'safe interim posture is surface-to-EA as a scope-conflict, never silent auto-composition'; SDD-001 deliberation Item 2e(ii) block-and-surface disposition.",
+  "rationale": "The design intent and ratified schema already fix both the routing (the governing question belongs to the forthcoming KG-entry-governance ADR, un-authored) and the safe interim posture the gateway must take pending that ADR (block-and-surface / surface-to-EA, never silent auto-resolution); the finding's charge of 'premature commitment' is answered by the already-ratified rule that the interim block forfeits nothing, is fully disclosed, and is explicitly the reversible escalation path rather than a committed disposition of the routed question.",
+  "confidence": "medium"
+}

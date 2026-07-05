@@ -1,0 +1,52 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["SDD-001"],
+    "locus": "§7.2 1b required-flip obligation / §9 Conformance",
+    "claim": "The SDD binds the knowledge-service build to flip the conformance harness's '1b gateway-behavioral contract set as it stands at build time — deliberately not a frozen enumeration' to required. This makes the build's completion gate depend on an unsettled, moving set defined outside any ratified record: the substrate (ADR-002 §6 Enforcement, DDR-002 §7 Current state) fixes only that 1b contracts are 'specified, required-flip reserved to the gateway build' and names RBT-48 as an in-flight catch-up increment still extending the set. Committing the build to whatever the set happens to be at an unspecified future build time is a posture that depends on something not yet settled.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "sdd-001-charter-notes item 3: 'Gateway-behavioral conformance contracts flip to required at this service's build (the harness's own rule; flip reserved to RBT-15): the built 1b set (#7, #9, #13, #14, #19) plus the triage additions' — an enumerated set, against SDD §7.2's 'deliberately not a frozen enumeration'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["SDD-001"],
+    "locus": "§4.2 PredicateEvaluationPort / §3.5 Conditional-scope carry-forward / DDR-003 dependency",
+    "claim": "The design commits the conditional-admission control (#19 safety-critical, fail-closed) to a concrete predicate grammar that is DDR-003's condition vocabulary, which is forthcoming and unauthored. The SDD's own 'not blocking by construction' argument rests on the claim that conditional promotions arise only from the feedback loop whose governance DDR-003 gates — but the same DDR-003 that would gate the feedback loop is the one that has not been authored, so the platform posture the argument leans on is itself unsettled. Committing a safety-critical read-control's evaluable semantics ahead of the record that defines them is a timing exposure at EA altitude, whether or not the fail-closed backstop holds.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "SDD-001 §4.2 'TODO: the concrete predicate grammar is DDR-003's condition vocabulary (forthcoming)' against SDD-001 §2.2 / §9 routing DDR-003 as 'forthcoming, unauthored'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["SDD-001"],
+    "locus": "§2.2 KG-entry checkpoint / §3.5 cross-origin block / KG-entry-governance ADR dependency",
+    "claim": "The cross-origin SCOPE_CONFLICT block (§3.5 ingestion path) and the distillation-write checkpoint posture (§2.2) both route their governing question to a forthcoming KG-entry-governance ADR that does not yet exist. The gateway's block-and-surface disposition is presented as the safe interim, but it commits a hard-to-reverse enforcement stance (ingested reality is structurally blocked from superseding an EA-set conditional scope) to a position whose owning decision record — mutation of enterprise ground truth generally, entry and un-promotion — has not been ratified. Taking a firm enforcement posture ahead of the record that owns the question is a premature commitment at EA altitude; if the KG-entry-governance ADR later rules differently, the gateway's block behavior is a committed surface to unwind.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "SDD-001 §3.5 cross-origin block ('Any richer cross-origin disposition is KG-entry-governance ADR / DDR-003 territory') against DDR-002 §2.4/§5 routing un-promotion upstream authority to 'the forthcoming KG-entry-governance ADR (forthcoming, unauthored)'"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["SDD-001"],
+    "locus": "§2.1 Owned / §3.5 / §4.7 / §7.1 rows ADR-002 §6.7, §6.2, §6.3",
+    "claim": "Attacked the design for stance leakage against ADR-002 §2.6's author/executor/authorizer separation — specifically whether any operation lets the gateway become an authoring authority, or whether the single-store scope quietly widens ADR-002 §2.4's authority lines. The design holds: Species-2 request schemas structurally omit an author field (authorship-by-gateway unexpressible), the gateway's own operational events are explicitly excluded from graph citizenship (§4.7), and #12's hash-verification half is routed to snapshot-service with no Firestore client held. Every write names a Species-1 component author or a Species-2 governing decision; unassigned authorities are rejected, not defaulted. The posture integrates cleanly with the ratified write-authority principle.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-002 §2.6 write-authority general principle (gateway is sole executor, never authoring authority) + §2.4 store-authority division"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["SDD-001"],
+    "locus": "§3.5 promotion/retraction ports / §7.1 DDR-002 §7 enforcement mapping",
+    "claim": "Attacked the reversibility posture of the promotion/retraction/supersession commitments — whether the design over-commits hard-to-reverse enforcement shapes ahead of empirical warrant. The design consistently states the empirical floor (zero promotion and zero ingestion runs have occurred) and justifies the block-and-surface / fail-closed dispositions as forfeiting nothing under that floor while remaining fully disclosed and remediable through the promotion boundary. The reversibility is proportionate: no promotion data exists to be stranded, and the escalation paths (DDR-002 amendment vs new-ADR) are named distinctly. The posture is defensible against the premature-commitment charge for the shapes the corpus already ratifies (#20, #21, #22 tiers).",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §7 safety-critical tier (#21 retraction-gated, #22 carry-forward) + Named exposure window sequencing; empirical-warrant discipline per DDR-002 Rationale"
+    }
+  }
+]

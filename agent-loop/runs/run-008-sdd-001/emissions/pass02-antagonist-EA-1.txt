@@ -1,0 +1,42 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["SDD-001"],
+    "locus": "§7.2 1b required-flip obligation / §9 Conformance",
+    "claim": "The SDD binds the knowledge-service build's completion gate to flip the conformance harness's '1b gateway-behavioral contract set as it stands at build time — deliberately not a frozen enumeration' to required. This commits the build to a set whose membership is unsettled and still being extended: the substrate (DDR-002 §7 Current state; ADR-002 §6 Enforcement) fixes only that 1b contracts are specified with required-flip reserved to the gateway build, and names RBT-48 as an in-flight catch-up increment still adding checks (#22, #23, #20-completeness, #24, #25). Binding this build's acceptance to a moving target defined outside any ratified enumeration is a posture that depends on something not yet settled at build time.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "sdd-001-charter-notes item 3 enumerates the flip set (#7, #9, #13, #14, #19 plus the triage additions #22/#23/#25 and #15 monotonicity companions), against SDD §7.2's 'deliberately not a frozen enumeration'; DDR-002 §7 Current state names RBT-48 catch-up still extending the harness"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["SDD-001"],
+    "locus": "§4.2 PredicateEvaluationPort / §4.4 fail-closed read-discipline — DDR-003 dependency",
+    "claim": "The design commits the concrete semantics of a safety-critical read control (#19 conditional admission, fail-closed) to DDR-003's condition vocabulary, which the SDD itself lists as forthcoming and unauthored (§2.2, §9). The 'not blocking by construction' argument rests on the platform posture that conditional promotions arise only from the feedback loop whose governance DDR-003 gates — but that same DDR-003 is the record not yet authored, so the load-bearing timing argument leans on an unsettled decision. A safety-critical control's evaluable grammar is committed ahead of the record that owns it; whether the fail-closed backstop holds, the timing exposure stands at EA altitude.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "SDD-001 §4.2 'TODO: the concrete predicate grammar is DDR-003's condition vocabulary (forthcoming)' against SDD-001 §2.2 / §9 routing DDR-003 as 'forthcoming, unauthored'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["SDD-001"],
+    "locus": "§3.5 cross-origin SCOPE_CONFLICT block / §2.2 KG-entry checkpoint — KG-entry-governance ADR dependency",
+    "claim": "The cross-origin block-and-surface disposition (§3.5 ingestion path: an ingested successor to a conditional promoted predecessor is structurally blocked) commits a firm enforcement posture whose governing question is routed to a forthcoming, unauthored KG-entry-governance ADR — the record that owns mutation of enterprise ground truth generally, entry and un-promotion. Taking a committed enforcement stance (ingested reality never silently supersedes an EA-set conditional scope) ahead of the decision record that owns the question is a premature commitment at EA altitude: if the KG-entry-governance ADR later rules a different cross-origin disposition, the gateway's block behavior is a shipped surface to unwind.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "SDD-001 §3.5 cross-origin block ('Any richer cross-origin disposition is KG-entry-governance ADR / DDR-003 territory') against DDR-002 §2.4/§5 routing un-promotion upstream authority to 'the forthcoming KG-entry-governance ADR (forthcoming, unauthored)'"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["SDD-001"],
+    "locus": "§2.1 Owned / §3.5 / §4.7 / §7.1 rows ADR-002 §6.7, §6.2, §6.3",
+    "claim": "Attacked the design at EA altitude for whether any operation lets the gateway become an authoring authority against ADR-002 §2.6's author/executor/authorizer separation, and whether the single-store scope quietly widens ADR-002 §2.4's authority lines. The design integrates with the ratified posture: Species-2 request schemas structurally omit an author field (authorship-by-gateway unexpressible, not merely policed), the gateway's own operational events are excluded from graph citizenship (§4.7, routed to observability), #12's hash-verification half is routed to snapshot-service with no Firestore client held, and unassigned authorities (advance-artifact-lifecycle transitions) are rejected rather than defaulted. No operation's authorship reaches the gateway and no store-authority line is widened. Held.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-002 §2.6 write-authority general principle (gateway sole executor, never authoring authority) + §2.4 store-authority division"
+    }
+  }
+]

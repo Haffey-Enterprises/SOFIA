@@ -1,0 +1,52 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["SDD-001"],
+    "locus": "§3.4.5 create-artifact — author: ASA (Solution creation)",
+    "claim": "The operation asserts ASA authors `(:Artifact:Solution)` on creation citing 'DDR-001's Artifact write-authority ruling'. DDR-001's Feedback-Loop Architecture section assigns ASA authorship of `(:Artifact:Solution)` on creation, but §3.4.5 also claims the full transaction includes `PRODUCED` from its session — where the session was written by AOE (`open-session`, §3.4.1). Whether ASA is authorized to write the `PRODUCED` edge (a session→solution structural edge) versus AOE is not surfaced as a declared decision; the record decides the node's authorship but rides an edge-authorship commitment that no cited authority names.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "SDD-001 §3.4.5 (ASA authors Solution + PRODUCED) vs DDR-001 §Reasoning Graph (AOE owns ReasoningSession lifecycle) — edge-authorship undeclared"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["SDD-001"],
+    "locus": "§1 Purpose / summary — 'sole read boundary enforcing the platform's read-discipline controls — no read exists that bypasses it'",
+    "claim": "The Purpose claims read-discipline enforcement is built into 'every ground-truth retrieval path — no read exists that bypasses it.' But §3.3.7 citation-lookup and §3.3.8 provenance-of are explainability/audit operations that by design surface un-approved proposals and retracted nodes ('they remain reachable to audit via the explainability operations, §3.3.7–§3.3.8', §3.2). The absolute 'no read exists that bypasses it' claim in the summary and §1 is not supported by the decision content, which carves an explicit audit-reachability exception; the scope of the sole-read-boundary claim overreaches what the body decides.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "SDD-001 §1 / Description ('no read exists that bypasses it') vs §3.2 + §3.3.7–§3.3.8 (audit reads reach excluded nodes)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["SDD-001"],
+    "locus": "§2.1 Owned — 'Version-pin resolution and inherited-confidence computation'",
+    "claim": "The Change Log (§10) records only 'Initial draft ... greenfield ... PROPOSED' with no enumeration of the design's own dispositions or TODO surfaces, yet the body carries multiple decision-bearing determinations (e.g., the §3.3.8 'no CI invariant' determination, the capture-unit tightening in §3.4.3, the RETRACTS-at-materialization ruling). The record's status/summary claim of a plain initial draft under-declares the decision content the body actually carries.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "SDD-001 §10 Change Log vs §3.3.8/§3.4.3/§3.5.4 decision-bearing determinations"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["SDD-001"],
+    "locus": "§2.2 Not owned + §7.1/§7.2 — scope boundary against smuggled decisions",
+    "claim": "Attacked the record for scope creep — commitments riding along as decisions the gateway is not authorized to make. Each candidate (Attestation/Actor/Role authorship, Solution lifecycle-transition authors, PromotionDecision transport, condition-predicate grammar, cross-origin disposition) is explicitly routed by name to a forthcoming SDD/DDR/ADR and answered nowhere in the body; §3.4.6 rejects unassigned transitions rather than defaulting them. The record decides what it claims and routes the rest without smuggling. Held against the §2.6 write-authorship principle.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "SDD-001 §2.2 routed-not-assigned list + §3.4.6 (unassigned transitions rejected) checked against ADR-002 §2.6 write-authorship principle"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["SDD-001"],
+    "locus": "§2.1 / §7.1 ADR-001 rows — retrieves-never-recommends claim",
+    "claim": "Attacked the claim that the gateway 'authors nothing' against the retrieval operations, which could smuggle a selection decision. §3.3.2 resolve-technology ('no recommended pick is returned'), §3.3.1 select-patterns (candidate sets + applicability blocks only), §3.3.5 find-precedents ('no similarity scoring'), and §4.4 (catalog-eligibility annotation, never exclusion) consistently withhold the selection judgment and attribute it to ASA — the not-owned claim in §1/§2.2 holds against the operation contracts. Checked against ADR-001 §2.2/§2.3.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "SDD-001 §3.3.1–§3.3.5 + §4.4 (annotation-not-exclusion) checked against §1/§2.2 not-owned claim and ADR-001 §2.2/§2.3"
+    }
+  }
+]

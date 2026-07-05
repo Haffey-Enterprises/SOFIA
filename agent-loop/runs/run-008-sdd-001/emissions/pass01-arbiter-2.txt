@@ -1,0 +1,7 @@
+{
+  "finding_id": "49b7f966907fc430",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §7 #25 tier assignment + §7 'Named exposure window + sequencing' (follow tier) and §5 CandidatePromotion retraction gloss ('terminal status: promoted denotes ... the RETRACTS edge written and the target read-excluded')",
+  "rationale": "DDR-002 itself ratifies that #25 is a follow-tier CI-only invariant explicitly routed to the harness catch-up increment (RBT-48), and §5 establishes RETRACTS is written at materialization; the SDD's deferral of the pre-decision-window residue to that already-ratified harness catch-up work conforms to the existing tier/sequencing authority rather than introducing any new choice.",
+  "confidence": "high"
+}
