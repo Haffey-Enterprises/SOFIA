@@ -41,8 +41,11 @@ calls / 10 classifications — one corrective retry fired and succeeded.
 (gate 1 fail-loud on existing `ledger.json`; there is NO resume); substrate files
 resolve as `<category>/<logical_id>.md`; the validator hashes text
 (`read_text().encode()`), not bytes; prompts are hash-pinned per run manifest and
-**calibration is fenced at gen 2** — any prompt change is a ratified gen-3
-calibration event, never a prep tweak; dry mode only (the author applies
+**calibration is fenced at gen 3** (gen-3 = the Ra-2 reorder, 2026-07-04:
+arbiter `## User` block reordered substrate→finding for prompt caching —
+semantics-preserving, zero wording changes, behavioral neutrality unverified
+at n=0; RBT-49/Ra-2; hashes re-pin at next run prep) — any prompt change
+remains a ratified calibration event, never a prep tweak; dry mode only (the author applies
 nothing; live mode does not exist yet); model `claude-opus-4-8`, max_tokens 8192,
 `ANTHROPIC_API_KEY` in the launching shell.
 
@@ -77,6 +80,10 @@ ruled: reviewer empty-emission re-draw — below-POSITIVE-floor emission trigger
 one re-draw; second empty → `hat_null` + continue (reviewer nulls degrade
 recall, recoverable via union; arbiter nulls corrupt the ledger, correctly
 fatal). Sequencing intent: RBT-49 lands before the SDD-001 v0.2.0 review run.
+**Implemented 2026-07-04** (Code, feature branch): caching + per-call cache
+accounting + the Item-2 re-draw landed, full suite green; handoff rulings
+Ra/Rb/Rc + Ra-2 (gen-3 reorder) recorded on RBT-49; the cost demonstration
+rides the SDD-001 v0.2.0 review run per Rc.
 
 ### T3 — The EDIT half: dry→live promotion path (gated on audit evidence)
 The loop is review-only. Live mode (author applies resolvable fixes per
