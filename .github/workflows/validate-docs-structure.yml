@@ -13,7 +13,7 @@ jobs:
   validate-docs-structure:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5 # Node 24 (checkout@v4 rode Node 20, now deprecated)
         with:
           fetch-depth: 0 # full history so the PR base SHA resolves for diff-scoped validation
       - name: Validate documentation structure
