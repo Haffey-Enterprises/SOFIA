@@ -1,10 +1,12 @@
 # Module: agent_loop.fetchers
 # Purpose: Real DocumentFetcher and SubstrateFetcher for supervised runs
-#          (run-prep.contract.md §2, §3). Documents are per-pass fresh from the
-#          repo working tree; substrate is per-run frozen, read fresh each pass
-#          from the run folder. Both fetchers only READ — they never assemble,
-#          edit, truncate, or annotate. Substrate assembly and its manifest are
-#          produced at prep (by hand or prep tooling), validated here.
+#          (run-prep.contract.md §2, §3). Documents are read per-pass from the
+#          run's FROZEN document snapshot (`runs/<run-id>/documents/`, amended
+#          2026-07-06 / RBT-51 Item 3 — never the working tree); substrate is
+#          per-run frozen, read fresh each pass from the run folder. Both
+#          fetchers only READ — they never assemble, edit, truncate, or annotate.
+#          Snapshot and substrate (and their manifests) are produced at prep by
+#          the prep tool (RBT-52) and verified/validated here.
 # Scope:   Filesystem reads + a substrate-manifest validator. No LLM, no network,
 #          no git. Fetchers fill the existing DocumentFetcher/SubstrateFetcher
 #          ports (signatures unchanged, run-prep §9).
@@ -40,18 +42,21 @@ class DocumentSnapshotError(RuntimeError):
 
 
 class RepoDocumentFetcher:
-    """Resolve doc-ids to files in the local repo `docs/` tree, verbatim.
+    """Resolve doc-ids to files in the run's frozen document snapshot, verbatim.
 
-    Resolution is a prefix glob `<docs_root>/**/<doc-id>-*.md`; zero or more than
-    one match raises immediately, naming the doc-id and the matches (no fallback,
-    no fuzzy matching). Content is returned verbatim. Invoked per pass by the
-    runner; in dry mode the tree never changes mid-run, but the per-pass read is
-    kept because live mode's author will change it.
+    Resolution is a prefix glob `<snapshot_root>/**/<doc-id>-*.md`; zero or more
+    than one match raises immediately, naming the doc-id and the matches (no
+    fallback, no fuzzy matching). Content is returned verbatim. Invoked per pass
+    by the runner, reading `runs/<run-id>/documents/` each time (amended
+    2026-07-06 / RBT-51 Item 3): entry provenance is immutable and, in dry mode,
+    the snapshot never changes mid-run; the per-pass read is kept because in live
+    mode the author's changes land in the run's own document home. Working-tree
+    resolution now lives in the prep tool (RBT-52), never here.
     """
 
-    def __init__(self, docs_root: str | Path) -> None:
-        """Bind the fetcher to an explicit docs root (no hardcoded paths)."""
-        self._docs_root = Path(docs_root)
+    def __init__(self, snapshot_root: str | Path) -> None:
+        """Bind the fetcher to the run's document snapshot root (no hardcoded paths)."""
+        self._docs_root = Path(snapshot_root)
 
     def resolve(self, doc_id: str) -> Path:
         """Return the single file matching `doc_id`, or raise on 0/>1 matches."""

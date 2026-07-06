@@ -36,6 +36,7 @@ from agent_loop.manifest import (
     per_site_token_totals,
     write_prep_manifest,
 )
+from agent_loop.prep import snapshot_documents
 from agent_loop.reviewers import (
     IDENTITY_LAA,
     IDENTITY_SA,
@@ -763,7 +764,7 @@ def test_manifest_prep_then_finalize(tmp_path) -> None:
         manifest_path,
         run_id="run-001",
         created="2026-07-02T00:00:00Z",
-        document_set={"ADR-001": "/docs/ADR-001.md"},
+        document_set={"ADR-001": {"snapshot_path": "documents/ADR-001-x.md", "sha256": "abc"}},
         head_sha="48e031a",
         prompt_hashes={"a.prompt.md": "hash"},
         substrate_manifest_ref="substrate/manifest.json",
@@ -840,6 +841,13 @@ def _prep_env(tmp_path: Path, doc_ids: list[str]):
         substrate_root,
         {"authorities": {"adr-template": "A"}, "design-intent": {"vision": "V"}},
     )
+    # RBT-51 Item 3: the runner consumes a frozen document snapshot, so a prepared
+    # folder carries one (produced here by the prep tool — the producer/consumer
+    # pair exercised together). gate 3 resolves within it and gate 8 verifies it.
+    snapshot_documents(
+        doc_ids, docs_root=docs, sofia_root=sofia_root, run_dir=runs_root / run_id,
+        run_id=run_id, sofia_head_sha="HEAD-SNAPSHOT", retrieved="2026-07-02",
+    )
     return {
         "run_id": run_id,
         "doc_ids": doc_ids,
@@ -864,10 +872,14 @@ def test_gates_only_with_key_passes_1_6_and_reports_probe_pending(tmp_path) -> N
         git_status=env["git_status"],
         env=env["env"],
     )
-    assert [r.number for r in report.results] == [1, 2, 3, 4, 5, 6, 7]
+    assert [r.number for r in report.results] == [1, 2, 3, 4, 5, 6, 7, 8]
     assert all(r.passed for r in report.results if r.number <= 6)
     gate7 = next(r for r in report.results if r.number == 7)
     assert gate7.pending and not gate7.passed
+    # Gate 8 (document snapshot) is a free local check that passes on a prepared
+    # folder, independent of the probe.
+    gate8 = next(r for r in report.results if r.number == 8)
+    assert gate8.passed and not gate8.pending
     assert not report.ok  # a pending probe means the run cannot launch yet
 
 
@@ -1005,6 +1017,11 @@ def test_run_real_integration_writes_finalized_manifest_and_log(tmp_path) -> Non
     assert manifest["passes_run"] == result.passes_run
     # Manifest parameters reflect the actual request payload: max_tokens only.
     assert manifest["parameters"] == {"max_tokens": 8192}
+    # §7/T6: document_set records the frozen snapshot provenance (path + sha256),
+    # not a working-tree path.
+    doc_entry = manifest["document_set"]["ADR-001"]
+    assert doc_entry["snapshot_path"] == "documents/ADR-001-distilled.md"
+    assert doc_entry["sha256"] == sha256_text("content of ADR-001")
     # The gate-7 probe made prep-time contact (system == "probe").
     assert any(c["system"] == "probe" for c in transport.calls)
 
@@ -1426,3 +1443,53 @@ def test_reviewer_meeting_floor_does_not_redraw(tmp_path) -> None:
     assert log.of_kind("hat_null") == []
     # POSITIVEs bypass the arbiter and neither count nor block → CONVERGED.
     assert result.exit.kind == "CONVERGED"
+
+
+# --- §10k: document-snapshot verification (RBT-51 Item 3) ---------------------
+
+
+def test_gate8_matching_snapshot_proceeds(tmp_path) -> None:
+    # A snapshot whose hashes match its provenance record lets the run proceed to
+    # a legitimate router exit; the reviewed content is read from the snapshot.
+    env = _prep_env(tmp_path, ["ADR-001", "ADR-002", "DDR-001", "DDR-002"])
+    transport = RoutingTransport(_VALID_FINDING_JSON, _VALID_CLASSIFICATION_JSON)
+    result = run_real(
+        env["run_id"], env["doc_ids"], sofia_root=env["sofia_root"],
+        runs_root=env["runs_root"], prompt_dir=env["prompt_dir"], transport=transport,
+        git_status=env["git_status"], head_sha="H", now=_counter_now(),
+        sleeper=lambda s: None, env=env["env"],
+    )
+    assert result.exit.kind == "HALT_DECISION"
+
+
+def test_gate8_missing_snapshot_aborts_and_never_falls_back_to_working_tree(tmp_path) -> None:
+    import shutil
+
+    env = _prep_env(tmp_path, ["ADR-001", "ADR-002", "DDR-001", "DDR-002"])
+    shutil.rmtree(env["runs_root"] / env["run_id"] / "documents")  # snapshot gone
+    # The working-tree docs still exist — the runner must NOT fall back to them.
+    assert (env["sofia_root"] / "docs" / "ADR-001-distilled.md").is_file()
+    transport = DispatchTransport()
+    with pytest.raises(PrepGateError):
+        run_real(
+            env["run_id"], env["doc_ids"], sofia_root=env["sofia_root"],
+            runs_root=env["runs_root"], prompt_dir=env["prompt_dir"], transport=transport,
+            git_status=env["git_status"], head_sha="H", now=_counter_now(),
+            sleeper=lambda s: None, env=dict(env["env"]),
+        )
+    assert transport.non_probe_calls() == []  # aborted before any reviewer/arbiter call
+
+
+def test_gate8_hash_mismatch_aborts_before_any_emitter_call(tmp_path) -> None:
+    env = _prep_env(tmp_path, ["ADR-001", "ADR-002", "DDR-001", "DDR-002"])
+    snap = env["runs_root"] / env["run_id"] / "documents" / "ADR-001-distilled.md"
+    snap.write_text("MUTATED AFTER PREP", encoding="utf-8")  # breaks the recorded pin
+    transport = DispatchTransport()
+    with pytest.raises(PrepGateError):
+        run_real(
+            env["run_id"], env["doc_ids"], sofia_root=env["sofia_root"],
+            runs_root=env["runs_root"], prompt_dir=env["prompt_dir"], transport=transport,
+            git_status=env["git_status"], head_sha="H", now=_counter_now(),
+            sleeper=lambda s: None, env=dict(env["env"]),
+        )
+    assert transport.non_probe_calls() == []
