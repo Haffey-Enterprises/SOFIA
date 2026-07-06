@@ -24,3 +24,11 @@ show_missing = true
 # No omit list: every module here carries testable logic. The LlmArbiter adapter
 # is the one real-infrastructure seam and is covered by a construction/guard test,
 # not omitted.
+
+[tool.setuptools]
+# Explicit package list: agent-loop/ holds non-package sibling directories
+# (runs/, design/, triage/, deliberation/) that setuptools flat-layout
+# auto-discovery refuses to disambiguate. Latent since those siblings first
+# existed — surfaced by the first agent-loop-tests CI run (PR #15): the
+# editable install had never been exercised; local pytest imports via rootdir.
+packages = ["agent_loop"]
