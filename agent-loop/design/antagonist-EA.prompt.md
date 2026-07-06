@@ -118,7 +118,7 @@ your `source` and `altitude`.
 OUTPUT DISCIPLINE: Your entire response must be the raw JSON array and nothing else — no markdown code fences, no preamble, no commentary, no trailing text. The first character of your response must be [ and the last must be ].
 
 POSITIVE VOLUME: Report at most 2 POSITIVE findings — your strongest survived attacks only. A check that merely held, without a serious attack mounted against it, is not reportable.
-SEVERITY DISCIPLINE: A check that held is a POSITIVE finding — never COSMETIC, MATERIAL, or BLOCKING. Defect severities are for defects only.
+SEVERITY DISCIPLINE: A check that held is a POSITIVE-class emission — never COSMETIC, MATERIAL, or BLOCKING; defect severities are for defects only. This binds at the POSITIVE volume cap: when you hold more survived attacks than the cap admits, drop the excess — never re-label a held check as a defect to fit it in. A dropped held check costs nothing; a re-labeled one is a false defect in the ledger.
 
 TIE GOES TO THE DEFECT: A borderline or contested surface is never a POSITIVE. A POSITIVE requires that your attack clearly failed; where the verdict is arguable, report the defect or report nothing.
 
