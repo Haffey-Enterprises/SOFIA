@@ -79,3 +79,42 @@ No runs executed; no corpus amendments; four Linear tickets created.
   NOT ratified, NOT ticketed; rhyme-not-merger with RBT-53 ruled.
 - Filesystem MCP: verified live this session (get_file_info round-trip);
   silent-timeout recovery protocol stands.
+
+## Addendum — 2026-07-08 (post-implementation close)
+
+RBT-51 + RBT-52 landed. PR #15, true merge `d73cb23` to develop
+(2026-07-08) — commit structure preserved as designed: A `846d102`
+(gen-4/gen-5), B `8a44dd0` (RBT-52 prep tool), C `b2b5f18` (RBT-51 Item 3
+runner change, atomic with the run-prep contract amendment). Build fixup
+`908cebc` (latent pyproject flat-layout defect, surfaced by the new CI
+gate's first run) rode as a fourth commit before merge.
+
+**Mid-implementation finding, ruled same-day (2026-07-06):** RBT-51 Item 3
+conflicted with ratified `run-prep.contract.md` §2 (working-tree source
+clause) and §7 (manifest document_set shape). Eight-touch amendment
+(§§1,2,7,8,10) ratified and landed in Commit C — design and code moved
+atomically. Contract now reads correctly against the implemented runner.
+
+**Prompt hashes, verified at develop tip (generation-5 re-pin candidates
+for next run prep manifest):**
+  antagonist-LAA.prompt.md     b964d2f9f0e7cdaf1159d56ce22724b8d61a88c108231789ff1a56e2fe9b7ef1
+  antagonist-SA.prompt.md      e77ffbc743b86391ed1b1231c8bc6c1d4ddddfc5cb02089f07db2c6ba9bf3859
+  antagonist-EA.prompt.md      d440b7c2b19d7f6f69a42247413c124577d039eb5524bd9593e57fde428b53b0
+  coherence-sweep.prompt.md    3a0ca3a14024a1c4b9b17f395c0c2510450df183adc663cfb04e53f310382299
+  arbiter-classifier.prompt.md e852036bd37b01a4db1f8116cfddac739577203843a262f30ae0aa06dc786043
+
+**Zero-recurrence baselines ARMED:** severity/cap class → 0 (gen-4);
+locus inflation → 0 (gen-5, gating T3). First post-corrective read is the
+SDD-001 v0.3.0 verification draw.
+
+**RBT-51 latitude:** none — implemented per ratified scope.
+**RBT-52 latitude, ruled (Tad, 2026-07-08):** (1) home split —
+`agent_loop/prep.py` engine + thin `scripts/prep_run.py` CLI — ACCEPTED.
+(2) N-draw manifest reading — one prepared folder per run-id, provenance
+differing only in run_id — ACCEPTED WITH PROBE: **the v0.3.0 draw's prep
+session must explicitly confirm two run folders emit correctly before
+launch** — carried here so the probe isn't lost between now and then.
+
+Both tickets → Done. Successor queue position 1 (Code handoff for
+RBT-51/52) is CLOSED. Queue advances to position 2: SDD-001 v0.3.0
+amendment authoring.
