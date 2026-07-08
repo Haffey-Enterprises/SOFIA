@@ -1,0 +1,29 @@
+# Agent-loop test gate (RBT-52). Runs the agent-loop pytest suite — the same
+# `pytest` invocation used locally (identical path), and free: every test uses
+# fakes/injected transports, so NO real API call is made and no key is needed.
+# This gate covers the prep tool (RBT-52) alongside the rest of the harness.
+name: agent-loop-tests
+
+on:
+  pull_request:
+    branches: [main, develop]
+    paths: ["agent-loop/**", ".github/workflows/agent-loop-tests.yml"]
+  push:
+    branches: [main, develop]
+    paths: ["agent-loop/**", ".github/workflows/agent-loop-tests.yml"]
+
+jobs:
+  agent-loop-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: agent-loop
+    steps:
+      - uses: actions/checkout@v5 # Node 24 (checkout@v4 rode Node 20, now deprecated)
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install (dev extras)
+        run: pip install -e ".[dev]"
+      - name: Run the suite (100% line+branch gate, no API)
+        run: pytest

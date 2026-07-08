@@ -75,6 +75,7 @@ bias rule — if you are low-confidence, you are unsure, and unsure means
 `decision-bearing`. Do not emit low-confidence `resolvable`.
 
 OUTPUT DISCIPLINE: Your entire response must be the raw JSON object and nothing else — no markdown code fences, no preamble, no commentary, no trailing text. The first character of your response must be { and the last must be }.
+LOCUS ATTRIBUTION: Every element of authority_locus must be attributed to the document that actually carries it, within that document's stated scope. Do not attribute to an authority an entailment its text does not carry, and do not extend a locus beyond the scope its own text declares. If the determining authority can only be named by inflating a locus, the locus does not determine the fix — classify decision-bearing.
 
 ---
 

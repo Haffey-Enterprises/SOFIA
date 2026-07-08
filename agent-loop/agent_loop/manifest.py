@@ -58,7 +58,7 @@ def write_prep_manifest(
     *,
     run_id: str,
     created: str,
-    document_set: dict[str, str],
+    document_set: dict[str, dict[str, str]],
     head_sha: str,
     prompt_hashes: dict[str, str],
     substrate_manifest_ref: str,
@@ -72,7 +72,9 @@ def write_prep_manifest(
         manifest_path: Where to write `manifest.json`.
         run_id: The run id.
         created: ISO-8601 creation timestamp.
-        document_set: Map of doc-id → resolved file path.
+        document_set: Map of doc-id → the frozen snapshot provenance
+            ({run-folder-relative `snapshot_path`, content `sha256`}), recording
+            what was actually reviewed (amended 2026-07-06 / RBT-51 Item 3 / T6).
         head_sha: `git rev-parse HEAD` of the SOFIA repo.
         prompt_hashes: Map of prompt-file name → SHA-256 (all five prompts).
         substrate_manifest_ref: Path/reference to the substrate manifest.

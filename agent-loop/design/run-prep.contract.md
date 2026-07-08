@@ -34,6 +34,10 @@ Every run owns a folder: `agent-loop/runs/<run-id>/`.
     as today; no new store machinery.
   - `manifest.json` — the run manifest (§7).
   - `substrate/` — the frozen per-run substrate snapshot (§3).
+  - `documents/` — the frozen per-run document snapshot, assembled at prep
+    (§2 as amended 2026-07-06; RBT-52).
+  - `emissions/` — verbatim raw LLM response bodies (§7; list entry added
+    2026-07-06 correcting an omission from the 2026-07-02 §7 amendment).
   - `action-log.jsonl` — the live-streamed action log (§7).
 - **Git posture:** the folder churns in the working tree during the run;
   Tad commits it once at run end as the run artifact. The runner never
@@ -44,19 +48,30 @@ Every run owns a folder: `agent-loop/runs/<run-id>/`.
 A real `DocumentFetcher` (`Callable[[list[str]], DocumentSet]`) replacing
 `default_document_fetcher` for real runs:
 
-- **Source:** the local repo working tree, `$SOFIA_ROOT/docs/`, and nowhere
-  else. Never Downloads, never Notion, never a network source.
-- **Resolution:** doc-id → file by prefix glob `docs/**/<doc-id>-*.md`.
+- **Source (amended 2026-07-06, RBT-51 Item 3 / RBT-52 snapshot-at-prep):**
+  the run's own document snapshot, `runs/<run-id>/documents/`, assembled at
+  prep, and nowhere else. Never the working tree at run time, never
+  Downloads, never Notion, never a network source. Prep snapshots the
+  reviewed document set from the working tree into the run folder (RBT-52);
+  the runner verifies snapshot hashes against the provenance record at
+  launch and fails loud on absence or mismatch (§8 gate 8). Reviewed bytes
+  are reproducible from run folder + manifest alone.
+- **Resolution (amended 2026-07-06, RBT-51 Item 3):** doc-id → file by
+  prefix glob `runs/<run-id>/documents/<doc-id>-*.md` within the snapshot.
   Zero matches or more than one match raises immediately with the doc-id
-  and the match list — no fallback, no fuzzy matching.
-- **Freshness:** invoked by the runner per pass (existing §5 semantics of
-  the runner contract), reading the working tree each time. In dry mode the
-  tree never changes mid-run; the discipline is kept because live mode's
-  author will change it.
+  and the match list — no fallback, no fuzzy matching. Working-tree
+  resolution (`docs/**/<doc-id>-*.md`) is the prep tool's act at snapshot
+  time (RBT-52, act (a)), not the runner's.
+- **Freshness (amended 2026-07-06, RBT-51 Item 3 / RBT-52):** invoked by
+  the runner per pass (existing §5 semantics of the runner contract),
+  reading `runs/<run-id>/documents/` each time. Entry provenance is
+  immutable; intra-run evolution reads the run's own document home —
+  unchanging in dry mode; where the author's changes land in live mode.
+  The per-pass discipline is kept for exactly that reason.
 - **Content:** file text verbatim. The fetcher never edits, truncates, or
   annotates document content.
-- Construction takes the docs root as an explicit argument (no hardcoded
-  absolute paths; tests point it at a tmp tree).
+- Construction takes the snapshot root as an explicit argument (amended
+  2026-07-06; no hardcoded absolute paths; tests point it at a tmp tree).
 
 ## §3 — Substrate snapshot and fetcher (ratified 3b)
 
@@ -184,9 +199,11 @@ stream is a named supervision watch. A real `Arbiter` adapter:
   ms. Token counts come from the API response usage block.
 - **Run manifest** (`manifest.json`), written at prep and finalized at run
   end:
-  - prep: run-id, created timestamp, document set (doc-ids + resolved
-    paths), `git rev-parse HEAD` of $SOFIA_ROOT, prompt-file SHA-256 for
-    all five prompt files, substrate manifest reference, model + parameters.
+  - prep: run-id, created timestamp, document set (doc-ids +
+    run-folder-relative snapshot paths + content SHA-256, recording what
+    was actually reviewed, alongside `git rev-parse HEAD` of $SOFIA_ROOT)
+    (amended 2026-07-06, RBT-51 Item 3), prompt-file SHA-256 for all five
+    prompt files, substrate manifest reference, model + parameters.
   - run end: router exit, passes run, per-call-site token totals, run
     wall-clock. Per-hat cost is a first-class output — the held roster
     question is independence **per cost**, and run one must measure both
@@ -229,6 +246,12 @@ validation. Prep gates, all fail-loud before any reviewer or arbiter call
    the cost of one token. Gate 6 (key presence) remains the fast fail
    ahead of it; in gates-only validation without a key, gates 6 and 7
    report pending.
+8. **Snapshot verification at launch (added 2026-07-06, RBT-51 Item 3):**
+   `runs/<run-id>/documents/` is present, non-empty, and every file's
+   SHA-256 matches the provenance record in the manifest; absence or any
+   mismatch aborts before the first reviewer call. (Gate 2 retains its
+   prep-time role: the snapshot is taken from a clean docs tree so the
+   HEAD SHA stamp is meaningful for the snapshotted bytes.)
 
 Assembly: `LedgerStore` at `runs/<run-id>/ledger.json`; §2 document fetcher;
 §3 substrate fetcher; four reviewers via the existing `build_real_reviewer`
@@ -276,3 +299,7 @@ h. **Live sink:** events appear in `action-log.jsonl` incrementally during
 i. **Prep gates:** each §8 gate failure aborts before any emitter call.
 j. **Regression:** the stub path and S1–S4/S2b/S3b scenarios are untouched
    and green; coverage bar holds (100% line+branch on agent_loop).
+k. **Snapshot verification (added 2026-07-06, RBT-51 Item 3):** snapshot
+   present with matching hashes → run proceeds; missing folder or any
+   hash mismatch → abort before any emitter call; the runner never falls
+   back to the working tree.

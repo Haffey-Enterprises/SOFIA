@@ -1,10 +1,12 @@
 # Module: agent_loop.fetchers
 # Purpose: Real DocumentFetcher and SubstrateFetcher for supervised runs
-#          (run-prep.contract.md §2, §3). Documents are per-pass fresh from the
-#          repo working tree; substrate is per-run frozen, read fresh each pass
-#          from the run folder. Both fetchers only READ — they never assemble,
-#          edit, truncate, or annotate. Substrate assembly and its manifest are
-#          produced at prep (by hand or prep tooling), validated here.
+#          (run-prep.contract.md §2, §3). Documents are read per-pass from the
+#          run's FROZEN document snapshot (`runs/<run-id>/documents/`, amended
+#          2026-07-06 / RBT-51 Item 3 — never the working tree); substrate is
+#          per-run frozen, read fresh each pass from the run folder. Both
+#          fetchers only READ — they never assemble, edit, truncate, or annotate.
+#          Snapshot and substrate (and their manifests) are produced at prep by
+#          the prep tool (RBT-52) and verified/validated here.
 # Scope:   Filesystem reads + a substrate-manifest validator. No LLM, no network,
 #          no git. Fetchers fill the existing DocumentFetcher/SubstrateFetcher
 #          ports (signatures unchanged, run-prep §9).
@@ -26,22 +28,35 @@ class SubstrateError(RuntimeError):
     """The run substrate is missing, empty, or its manifest fails validation."""
 
 
+class DocumentSnapshotError(RuntimeError):
+    """The per-run document snapshot is missing, empty, or fails hash verification.
+
+    Raised by the snapshot verifier (run-prep.contract.md §8 gate 8, amended
+    2026-07-06 / RBT-51 Item 3): the runner consumes `runs/<run-id>/documents/`
+    and must fail loud on absence or any mismatch against the prep-written
+    provenance record, never falling back to the working tree.
+    """
+
+
 # --- §2: document fetcher ----------------------------------------------------
 
 
 class RepoDocumentFetcher:
-    """Resolve doc-ids to files in the local repo `docs/` tree, verbatim.
+    """Resolve doc-ids to files in the run's frozen document snapshot, verbatim.
 
-    Resolution is a prefix glob `<docs_root>/**/<doc-id>-*.md`; zero or more than
-    one match raises immediately, naming the doc-id and the matches (no fallback,
-    no fuzzy matching). Content is returned verbatim. Invoked per pass by the
-    runner; in dry mode the tree never changes mid-run, but the per-pass read is
-    kept because live mode's author will change it.
+    Resolution is a prefix glob `<snapshot_root>/**/<doc-id>-*.md`; zero or more
+    than one match raises immediately, naming the doc-id and the matches (no
+    fallback, no fuzzy matching). Content is returned verbatim. Invoked per pass
+    by the runner, reading `runs/<run-id>/documents/` each time (amended
+    2026-07-06 / RBT-51 Item 3): entry provenance is immutable and, in dry mode,
+    the snapshot never changes mid-run; the per-pass read is kept because in live
+    mode the author's changes land in the run's own document home. Working-tree
+    resolution now lives in the prep tool (RBT-52), never here.
     """
 
-    def __init__(self, docs_root: str | Path) -> None:
-        """Bind the fetcher to an explicit docs root (no hardcoded paths)."""
-        self._docs_root = Path(docs_root)
+    def __init__(self, snapshot_root: str | Path) -> None:
+        """Bind the fetcher to the run's document snapshot root (no hardcoded paths)."""
+        self._docs_root = Path(snapshot_root)
 
     def resolve(self, doc_id: str) -> Path:
         """Return the single file matching `doc_id`, or raise on 0/>1 matches."""
@@ -178,4 +193,78 @@ def validate_substrate_manifest(substrate_root: str | Path) -> None:
     if unlisted:
         raise SubstrateError(
             f"substrate files not covered by manifest: {sorted(str(p) for p in unlisted)}"
+        )
+
+
+# --- §8 gate 8 / T7: document-snapshot verification --------------------------
+
+_DOCUMENT_ENTRY_FIELDS = ("doc_id", "snapshot_path", "origin", "retrieved", "sha256")
+
+
+def verify_document_snapshot(run_dir: str | Path) -> None:
+    """Verify a run's frozen document snapshot against its provenance record.
+
+    The runner's launch-time check (run-prep.contract.md §8 gate 8, amended
+    2026-07-06 / RBT-51 Item 3): `runs/<run-id>/documents/` is present and
+    non-empty, its `documents/manifest.json` provenance record lists every
+    snapshot file, and every listed file's SHA-256 (validator-method — text via
+    `read_text().encode()`) matches the recorded pin. Any absence or mismatch
+    raises — the runner never falls back to the working tree.
+
+    Args:
+        run_dir: The run folder (`runs/<run-id>/`).
+
+    Raises:
+        DocumentSnapshotError: On a missing/empty snapshot, a missing or
+            malformed provenance record, a listed-but-absent file, a hash
+            mismatch, or an on-disk file not covered by the record.
+    """
+    documents_root = Path(run_dir) / "documents"
+    if not documents_root.is_dir():
+        raise DocumentSnapshotError(f"document snapshot folder missing: {documents_root}")
+
+    manifest_path = documents_root / "manifest.json"
+    if not manifest_path.is_file():
+        raise DocumentSnapshotError(f"document snapshot manifest missing: {manifest_path}")
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise DocumentSnapshotError(
+            f"document snapshot manifest is not valid JSON: {exc}"
+        ) from exc
+    if not isinstance(manifest, dict) or not isinstance(manifest.get("files"), list):
+        raise DocumentSnapshotError(
+            "document snapshot manifest must be an object with a 'files' list"
+        )
+    if not manifest["files"]:
+        raise DocumentSnapshotError(
+            f"document snapshot is empty (no files recorded): {manifest_path}"
+        )
+
+    listed_paths: set[Path] = set()
+    for entry in manifest["files"]:
+        for field_name in _DOCUMENT_ENTRY_FIELDS:
+            if field_name not in entry:
+                raise DocumentSnapshotError(
+                    f"document snapshot entry missing '{field_name}': {entry}"
+                )
+        file_path = Path(run_dir) / entry["snapshot_path"]
+        if not file_path.is_file():
+            raise DocumentSnapshotError(
+                f"document snapshot manifest lists a missing file: {file_path}"
+            )
+        actual = sha256_text(file_path.read_text(encoding="utf-8"))
+        if actual != entry["sha256"]:
+            raise DocumentSnapshotError(
+                f"document snapshot sha256 mismatch for {file_path}: "
+                f"recorded {entry['sha256']}, actual {actual}"
+            )
+        listed_paths.add(file_path.resolve())
+
+    on_disk = {path.resolve() for path in documents_root.glob("*.md")}
+    unlisted = on_disk - listed_paths
+    if unlisted:
+        raise DocumentSnapshotError(
+            f"document snapshot files not covered by manifest: "
+            f"{sorted(str(p) for p in unlisted)}"
         )

@@ -12,6 +12,7 @@
 
 from __future__ import annotations
 
+import json
 import os
 import subprocess
 import time
@@ -22,11 +23,13 @@ from typing import Callable, Mapping
 
 from agent_loop.fetchers import (
     DocumentResolutionError,
+    DocumentSnapshotError,
     RepoDocumentFetcher,
     RunSubstrateFetcher,
     SubstrateError,
     sha256_text,
     validate_substrate_manifest,
+    verify_document_snapshot,
 )
 from agent_loop.emissions import EmissionCapture
 from agent_loop.ledger import DEFAULT_COUNTED_SEVERITIES, LedgerHeader, LedgerStore
@@ -162,13 +165,12 @@ def run_prep_gates(
     sofia_root: str | Path,
     runs_root: str | Path,
     prompt_dir: str | Path,
-    docs_root: str | Path | None = None,
     create_missing_dir: bool = False,
     git_status: Callable[[Path], str] = _default_git_docs_status,
     env: Mapping[str, str] | None = None,
     probe: Callable[[], None] | None = None,
 ) -> GateReport:
-    """Run the seven prep gates (run-prep §8), collecting every result.
+    """Run the eight prep gates (run-prep §8), collecting every result.
 
     Makes no reviewer or arbiter call. Gate 7's one-token probe is the only
     prep-time API contact, and only when a `probe` is supplied AND gates 1-6 all
@@ -190,8 +192,8 @@ def run_prep_gates(
     """
     resolved_env = env if env is not None else os.environ
     sofia_root = Path(sofia_root)
-    docs_root = Path(docs_root) if docs_root is not None else sofia_root / "docs"
     run_dir = Path(runs_root) / run_id
+    documents_root = run_dir / "documents"
     prompt_dir = Path(prompt_dir)
     results: list[GateResult] = []
 
@@ -213,8 +215,10 @@ def run_prep_gates(
         GateResult(2, "docs-clean", clean, "clean" if clean else f"dirty docs tree: {status!r}")
     )
 
-    # Gate 3 — every doc-id resolves to exactly one file.
-    fetcher = RepoDocumentFetcher(docs_root)
+    # Gate 3 — every doc-id resolves to exactly one file WITHIN THE SNAPSHOT
+    # (amended §2 / RBT-51 Item 3): resolution is the prep tool's act; the runner
+    # resolves against `documents/`, never the working tree.
+    fetcher = RepoDocumentFetcher(documents_root)
     unresolved: list[str] = []
     for doc_id in doc_ids:
         try:
@@ -278,6 +282,19 @@ def run_prep_gates(
         except Exception as exc:  # noqa: BLE001 — any probe failure is a prep failure
             results.append(GateResult(7, "probe", False, f"probe failed: {exc}"))
 
+    # Gate 8 — the frozen document snapshot verifies against its provenance
+    # record (amended §8 gate 8 / RBT-51 Item 3): `documents/` is present,
+    # non-empty, and every file's SHA-256 matches the prep-written manifest.
+    # Absence or any mismatch aborts before the first reviewer call; the runner
+    # never falls back to the working tree. Gate 2 keeps its prep-time role: the
+    # snapshot was taken from a clean docs tree, so the HEAD SHA stamp is
+    # meaningful for the snapshotted bytes.
+    try:
+        verify_document_snapshot(run_dir)
+        results.append(GateResult(8, "doc-snapshot", True, "snapshot verified"))
+    except DocumentSnapshotError as exc:
+        results.append(GateResult(8, "doc-snapshot", False, str(exc)))
+
     return GateReport(results=results)
 
 
@@ -288,7 +305,6 @@ def validate_prep(
     sofia_root: str | Path,
     runs_root: str | Path,
     prompt_dir: str | Path,
-    docs_root: str | Path | None = None,
     git_status: Callable[[Path], str] = _default_git_docs_status,
     env: Mapping[str, str] | None = None,
 ) -> GateReport:
@@ -303,7 +319,6 @@ def validate_prep(
         sofia_root=sofia_root,
         runs_root=runs_root,
         prompt_dir=prompt_dir,
-        docs_root=docs_root,
         create_missing_dir=False,
         git_status=git_status,
         env=env,
@@ -366,11 +381,13 @@ def run_real(
     sofia_root = Path(sofia_root)
     prompt_dir = Path(prompt_dir)
     run_dir = Path(runs_root) / run_id
-    docs_root = sofia_root / "docs"
+    documents_root = run_dir / "documents"
     substrate_root = run_dir / "substrate"
 
     store = LedgerStore(run_dir / "ledger.json")
-    doc_fetcher = RepoDocumentFetcher(docs_root)
+    # §2 as amended: the fetcher reads the run's frozen document snapshot each
+    # pass — never the working tree (live-read removed, not gated).
+    doc_fetcher = RepoDocumentFetcher(documents_root)
     substrate_fetcher = RunSubstrateFetcher(substrate_root)
     substrate = substrate_fetcher(doc_ids)  # arbiter's authorities/design-intent
 
@@ -419,7 +436,17 @@ def run_real(
         mode="dry",
     )
 
-    resolved_docs = {doc_id: str(doc_fetcher.resolve(doc_id)) for doc_id in doc_ids}
+    # §7/T6 as amended: the manifest records the frozen snapshot provenance —
+    # doc-id → run-folder-relative snapshot path + content SHA-256 (what was
+    # actually reviewed) — read from the prep-written provenance record, alongside
+    # the top-level HEAD SHA.
+    snapshot_provenance = json.loads(
+        (documents_root / "manifest.json").read_text(encoding="utf-8")
+    )
+    resolved_docs = {
+        entry["doc_id"]: {"snapshot_path": entry["snapshot_path"], "sha256": entry["sha256"]}
+        for entry in snapshot_provenance["files"]
+    }
     prompt_hashes = {
         name: sha256_text((prompt_dir / name).read_text(encoding="utf-8"))
         for name in ALL_PROMPT_FILES
