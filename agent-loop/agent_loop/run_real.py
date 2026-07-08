@@ -70,16 +70,22 @@ RUN_ONE_MAX_TOKENS = 8192
 RUN_ONE_MAX_PASSES = 10
 
 # Prompt-set calibration generation recorded in the manifest alongside the
-# re-pinned prompt hashes. The arbiter `## User` block was reordered (static
-# substrate before the finding) so the substrate can front a byte-identical
-# prompt-cache prefix; the reorder is semantics-preserving but touches a pinned
-# prompt, so it is a ratified gen-3 calibration event (RBT-49/Ra-2), not a prep
-# tweak. No other prompt text changed.
+# re-pinned prompt hashes. Two ratified calibration events since gen-3's
+# semantics-preserving arbiter reorder: gen-4 restated the severity/cap
+# discipline in-place in all four reviewer prompts (a held check is
+# POSITIVE-class, never re-labeled a defect to fit the volume cap); gen-5
+# appended the arbiter locus-attribution line (no locus extended beyond its
+# document's stated scope; an underivable locus classifies decision-bearing).
+# The rationale cites by meaning: operational artifacts never carry ticket
+# numbers — ticket linkage lives in tickets, carriers, and audits.
 CALIBRATION = {
-    "generation": 3,
+    "generation": 5,
     "rationale": (
-        "transport-motivated, semantics-preserving reorder for prompt caching "
-        "(RBT-49/Ra-2)"
+        "gen-4: severity/cap discipline restated in-place in all four reviewer "
+        "prompts — a held check is POSITIVE-class, never re-labeled a defect to "
+        "fit the volume cap; gen-5: arbiter locus-attribution line appended — "
+        "no locus extended beyond its document's stated scope, underivable "
+        "locus classifies decision-bearing"
     ),
 }
 
