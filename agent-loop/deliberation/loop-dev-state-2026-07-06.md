@@ -118,3 +118,90 @@ launch** — carried here so the probe isn't lost between now and then.
 Both tickets → Done. Successor queue position 1 (Code handoff for
 RBT-51/52) is CLOSED. Queue advances to position 2: SDD-001 v0.3.0
 amendment authoring.
+
+## Addendum — 2026-07-09 (verification-draw cycle close)
+
+The RBT-15 review loop is CLOSED. Successor-queue positions 2, 3, and 4
+(v0.3.0 authoring · verification draw · criterion-1 close-out) all closed
+this date. **SDD-001 → ACCEPTED v1.0.0** — the corpus's first ACCEPTED
+service SDD — merged to develop at `b4c3755` (PR #17, true merge; document +
+run-012 artifacts + cold audit in one unit, PR #10/#14 pattern). RBT-15 and
+RBT-55 both Done.
+
+**Probe + draw.** The RBT-52 N-draw probe PASSED (two folders, provenance
+identical modulo run_id); run-013 (prepared-never-launched sibling) deleted
+before commit per ratified disposition — the committed artifact set carries
+one launched run. Run-012: gen-5 prompts (all five hashes == the re-pin
+values above), dry, HALT_DECISION @ pass 1. Cold audit by the designated
+successor session, rulings ratified per item — carrier:
+`agent-loop/runs/run-012-sdd-001/audit.md`. Validity 7/10; **cumulative
+ledger 157/170 → 164/180.** D1 dissolved by the election-routing; Item-2
+resolvables closed; D2 stands. Two audit-side finds routed to the
+derivation record's question set (Δt anchor explicitness; per-class branch
+totality — `DeploymentEnvironment` carries no `observed_at`).
+
+**Armed baselines, first read.** Gen-4 severity/cap: **HOLDS** (0
+instances; non-vacuous for LAA/SA, vacuous for coherence — decisive test is
+the next coherence emission at cap). Gen-5 locus: **FIRES** (0→1, the
+run's one resolvable locus; skill-gloss entailment its cited sections don't
+carry) — **T3 promotion stays gated**; gen-5 behavioral effect not
+demonstrated at n=1.
+
+**Attribution (ruled three-way).** EA/coherence hat_null decomposed:
+defect-side silence = the amendment working (their reproducible 010/011
+content was entirely D1/D2, exactly the dissolved loci) — SUSTAINED; gen-4
+over-correction — NOT SUSTAINED (LAA/SA hit floors exactly on identical
+bytes); the empty-emission mechanics = the pre-existing run-correlated
+pathology, **n=3** (first-draw empties 0/4 → 3/4 → 3/4), new datum:
+re-draw non-recovery (3/3 → 1/3) — T4 watch, no corrective.
+
+**Arbiter stream — the run's instrument headline.** 1/5 DB genuine, 4
+misses on one mechanism: DB classifications carry no authority_locus, so
+the de-facto validity screen never runs — the structural asymmetry the
+run-011 audit §5 predicted, now load-bearing (the amendment moved the
+defect surface onto document-internal-apparatus terrain). Exhibit: the
+same defect classified DB (via LAA's framing) and resolvable (via SA's) —
+resolving-authority frame instability; all six calls high-confidence.
+**Named candidate at threshold strength, awaiting election: a DB-side
+locus/validity screen (instrument design question, own deliberation).**
+No corrective fired this cycle.
+
+**Validator ride-along (PR #17 third commit, `e44a40d`).** First contact
+between the RBT-50 docs-structure validator and the RBT-55 `documents/`
+snapshot population: doctype-placement fired on the frozen SDD snapshot.
+Root-cause fix ridden per 908cebc precedent — frozen-snapshot exemption
+widened to both populations (`substrate/` + `documents/`), predicate
+renamed, filename hygiene preserved on snapshots, tightness
+fixture-verified (a misplaced SDD elsewhere in a run dir still fires).
+**Watch/ride-along candidate:** the validator has no test harness, so the
+exemption's tightness property is unpinned against future edits — rides
+with the next validator-touching ticket (parked alongside the Node.js CI
+warning).
+
+**Operating-model learnings, 2026-07-09 (both sessions).**
+
+- **Route A hybrid ratified:** the design surface may implement via
+  context-quarantined subagent with pre-push review + per-transaction
+  approval; the write path to GitHub is bundle-handoff (the claude.ai
+  GitHub connector is READ-ONLY by design — org grants cannot change it;
+  the write-capable Claude Code GitHub App is a future direct route via
+  repo-bound code.claude.com environments).
+- **Bridge envelope:** file transfer + ref-only git transport safe;
+  index/worktree git ops strand locks (mount forbids unlink); the prep
+  tool is bridge-safe (create-only, no network, no LLM). New this leg:
+  read-only verification (`--no-optional-locks`) and tracked-file
+  overwrites via the bridge's guarded write path both exercised clean.
+- **Ticket numbers never in run artifacts or LLM-consumed files** (ruled;
+  enforced in RBT-55; develop prompt files swept clean). Tickets,
+  carriers, and audits are the provenance homes.
+- **Handoffs embed constraints in artifacts, not prose:** base-pinned
+  compare URLs; the no-merge gate written into the PR body itself; PR
+  shape validated on the design surface before merge (base, head SHA,
+  commit count, file count — held twice this cycle, catching nothing and
+  costing minutes: the gate earns its keep on the day it catches).
+
+**Queue state.** RBT-53 / RBT-54 design sessions: queue-free ordering,
+RBT-54's BUILD-gate the only hard constraint; RBT-53's opening substrate
+now carries the run-012 question-set additions. **Gen-6 ticketing is
+eligible** (gen-4/5 landed) — not yet ticketed. T3 promotion remains
+gated on gen-5 zero-recurrence (reset by this run's instance).
