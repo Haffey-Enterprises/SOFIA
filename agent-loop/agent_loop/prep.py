@@ -164,15 +164,6 @@ def _assert_sources_survive(sources: list[Path]) -> None:
 # --- document snapshot (acts a, b, c) + provenance sub-schema -----------------
 
 
-def _prior_document_pins(from_run_dir: Path) -> dict[str, str]:
-    """Map doc-id -> recorded sha256 from a prior draw's document manifest."""
-    manifest_path = from_run_dir / "documents" / "manifest.json"
-    if not manifest_path.is_file():
-        raise PrepError(f"--from-run draw has no document manifest: {manifest_path}")
-    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    return {entry["doc_id"]: entry["sha256"] for entry in manifest["files"]}
-
-
 def snapshot_documents(
     doc_ids: list[str],
     *,
@@ -182,19 +173,19 @@ def snapshot_documents(
     run_id: str,
     sofia_head_sha: str,
     retrieved: str,
-    from_run_dir: Path | None = None,
 ) -> None:
     """Snapshot the reviewed document set into `run_dir/documents/` (acts a-c).
 
     Resolves each doc-id (act a), copies it verbatim — never moves (act b) —
     hashes it validator-method (act c, lesson #2), and records the provenance
-    sub-schema in `documents/manifest.json` alongside the SOFIA HEAD SHA. Under
-    `--from-run` each hash is asserted against the prior draw's pin (act c).
+    sub-schema in `documents/manifest.json` alongside the SOFIA HEAD SHA. The
+    snapshot is always taken fresh from the working tree with self-contained
+    provenance — `--from-run` is substrate-only and never constrains it;
+    cross-version comparison is the audit's act (manifests side by side).
     """
     documents_out = run_dir / "documents"
     documents_out.mkdir(parents=True, exist_ok=True)
     sofia_root = Path(sofia_root)
-    prior_pins = _prior_document_pins(from_run_dir) if from_run_dir is not None else {}
 
     files: list[dict] = []
     for doc_id in doc_ids:
@@ -203,20 +194,6 @@ def snapshot_documents(
         digest = sha256_text(content)  # act (c), lesson #2
         dest = documents_out / source.name
         dest.write_text(content, encoding="utf-8")  # act (b): copy, never move
-
-        carry_forward = None
-        if from_run_dir is not None:
-            prior = prior_pins.get(doc_id)
-            if prior is None:
-                raise PrepError(
-                    f"--from-run draw {from_run_dir.name} has no prior snapshot for {doc_id}"
-                )
-            if prior != digest:
-                raise PrepError(
-                    f"document {doc_id} sha256 differs from prior pin: "
-                    f"prior {prior}, now {digest}"
-                )
-            carry_forward = {"from_run": from_run_dir.name, "prior_sha256": prior}
 
         files.append(
             {
@@ -228,14 +205,12 @@ def snapshot_documents(
                 },
                 "retrieved": retrieved,
                 "sha256": digest,
-                "carry_forward": carry_forward,
             }
         )
 
     manifest = {
         "run_id": run_id,
         "sofia_head_sha": sofia_head_sha,
-        "from_run": from_run_dir.name if from_run_dir is not None else None,
         "files": files,
     }
     (documents_out / "manifest.json").write_text(
@@ -381,7 +356,6 @@ def prep_run(
         run_id=run_id,
         sofia_head_sha=sofia_head_sha,
         retrieved=retrieved,
-        from_run_dir=from_run_dir,
     )
     verify_document_snapshot(run_dir)  # what §8 gate 8 verifies, proven at prep
     return run_dir

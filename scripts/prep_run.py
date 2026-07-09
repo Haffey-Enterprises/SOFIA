@@ -55,7 +55,12 @@ def _git_head(sofia_root: Path) -> str:
 
 def main(argv: list[str] | None = None) -> None:  # pragma: no cover
     """CLI entry: stamp HEAD SHA + retrieval date, then prepare the run folder(s)."""
-    parser = argparse.ArgumentParser(description="Prepare a supervised-run folder (RBT-52).")
+    parser = argparse.ArgumentParser(
+        description=(
+            "Prepare a supervised-run folder: freeze the reviewed documents and "
+            "substrate, with hashed provenance manifests."
+        )
+    )
     parser.add_argument("run_id")
     parser.add_argument("doc_ids", nargs="+", help="e.g. SDD-001")
     parser.add_argument("--from-run", default=None, help="prior draw to carry substrate forward from")

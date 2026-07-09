@@ -85,10 +85,13 @@ def _build_prior_draw(
     run_id: str,
     *,
     substrate: dict[str, dict[str, str]],
-    documents: dict[str, tuple[str, str]],
+    documents: dict[str, tuple[str, str]] | None = None,
 ) -> Path:
-    """Hand-build a prior draw's substrate + document manifests (the very first
-    substrate was assembled by hand; later draws carry it forward)."""
+    """Hand-build a prior draw's substrate manifest (the very first substrate
+    was assembled by hand; later draws carry it forward). The default — no
+    `documents` — mirrors the real layout of every pre-tool run folder:
+    substrate/ + substrate/manifest.json present, NO documents/ folder. Pass
+    `documents` to also lay down a document snapshot + manifest."""
     run_dir = runs_root / run_id
     sub = run_dir / "substrate"
     entries = []
@@ -107,25 +110,25 @@ def _build_prior_draw(
             )
     (sub / "manifest.json").write_text(json.dumps({"files": entries}), encoding="utf-8")
 
-    docs_out = run_dir / "documents"
-    docs_out.mkdir(parents=True, exist_ok=True)
-    doc_files = []
-    for doc_id, (name, content) in documents.items():
-        (docs_out / name).write_text(content, encoding="utf-8")
-        doc_files.append(
-            {
-                "doc_id": doc_id,
-                "snapshot_path": f"documents/{name}",
-                "origin": {"source": "sofia-repo", "canonical_path": f"docs/{name}"},
-                "retrieved": "2026-07-05",
-                "sha256": sha256_text(content),
-                "carry_forward": None,
-            }
+    if documents is not None:
+        docs_out = run_dir / "documents"
+        docs_out.mkdir(parents=True, exist_ok=True)
+        doc_files = []
+        for doc_id, (name, content) in documents.items():
+            (docs_out / name).write_text(content, encoding="utf-8")
+            doc_files.append(
+                {
+                    "doc_id": doc_id,
+                    "snapshot_path": f"documents/{name}",
+                    "origin": {"source": "sofia-repo", "canonical_path": f"docs/{name}"},
+                    "retrieved": "2026-07-05",
+                    "sha256": sha256_text(content),
+                }
+            )
+        (docs_out / "manifest.json").write_text(
+            json.dumps({"run_id": run_id, "sofia_head_sha": "PRIOR", "files": doc_files}),
+            encoding="utf-8",
         )
-    (docs_out / "manifest.json").write_text(
-        json.dumps({"run_id": run_id, "sofia_head_sha": "PRIOR", "from_run": None, "files": doc_files}),
-        encoding="utf-8",
-    )
     return run_dir
 
 
@@ -192,72 +195,49 @@ def test_snapshot_documents_copies_hashes_and_records(tmp_path) -> None:
     assert entry["snapshot_path"] == "documents/SDD-001-distilled.md"
     assert entry["sha256"] == sha256_text("content of SDD-001")  # validator-method
     assert entry["origin"]["canonical_path"] == "docs/SDD-001-distilled.md"
-    assert entry["carry_forward"] is None
-    assert manifest["sofia_head_sha"] == "HEAD123" and manifest["from_run"] is None
+    # Standalone provenance only — no prior-draw reference anywhere.
+    assert set(entry) == {"doc_id", "snapshot_path", "origin", "retrieved", "sha256"}
+    assert manifest["sofia_head_sha"] == "HEAD123"
+    assert set(manifest) == {"run_id", "sofia_head_sha", "files"}
 
 
-def test_snapshot_documents_from_run_records_carry_forward_when_pin_matches(tmp_path) -> None:
+def test_prep_from_run_prior_draw_without_document_manifest_succeeds(tmp_path) -> None:
+    # The real shape of every pre-tool run folder: substrate/ + its manifest,
+    # no documents/ folder at all. It serves as substrate donor; the document
+    # snapshot is taken fresh from the working tree regardless.
     sofia_root = _sofia_tree(tmp_path, ["SDD-001"])
     runs_root = tmp_path / "runs"
     prior = _build_prior_draw(
         runs_root, "run-099-sdd",
-        substrate={"authorities": {"a": "A"}, "design-intent": {"d": "D"}},
-        documents={"SDD-001": ("SDD-001-distilled.md", "content of SDD-001")},
+        substrate={"authorities": {"adr-template": "AUTHORITY BODY"},
+                   "design-intent": {"vision": "V-BODY"}},
     )
-    run_dir = runs_root / "run-100-sdd"
-    snapshot_documents(
-        ["SDD-001"], docs_root=sofia_root / "docs", sofia_root=sofia_root,
-        run_dir=run_dir, run_id="run-100-sdd", sofia_head_sha="H", retrieved="2026-07-06",
-        from_run_dir=prior,
+    assert not (prior / "documents").exists()
+    run_dir = prep_run(
+        "run-100-sdd", ["SDD-001"], sofia_root=sofia_root, runs_root=runs_root,
+        sofia_head_sha="HEAD2", retrieved="2026-07-06", from_run="run-099-sdd", recipe=_cf_recipe,
+    )
+    verify_document_snapshot(run_dir)  # fresh snapshot, standalone provenance
+
+
+def test_prep_from_run_prior_document_bytes_differ_is_irrelevant(tmp_path) -> None:
+    # An amendment draw: the reviewed document's working-tree bytes match
+    # nothing in the prior draw. Irrelevant to prep — the snapshot is fresh
+    # and records the working-tree hash, not any prior pin.
+    sofia_root = _sofia_tree(tmp_path, ["SDD-001"])
+    runs_root = tmp_path / "runs"
+    _build_prior_draw(
+        runs_root, "run-099-sdd",
+        substrate={"authorities": {"adr-template": "AUTHORITY BODY"},
+                   "design-intent": {"vision": "V-BODY"}},
+        documents={"SDD-001": ("SDD-001-distilled.md", "DIFFERENT bytes")},
+    )
+    run_dir = prep_run(
+        "run-100-sdd", ["SDD-001"], sofia_root=sofia_root, runs_root=runs_root,
+        sofia_head_sha="HEAD2", retrieved="2026-07-06", from_run="run-099-sdd", recipe=_cf_recipe,
     )
     entry = json.loads((run_dir / "documents" / "manifest.json").read_text())["files"][0]
-    assert entry["carry_forward"] == {
-        "from_run": "run-099-sdd", "prior_sha256": sha256_text("content of SDD-001")
-    }
-
-
-def test_snapshot_documents_from_run_missing_prior_doc_raises(tmp_path) -> None:
-    sofia_root = _sofia_tree(tmp_path, ["SDD-001"])
-    runs_root = tmp_path / "runs"
-    prior = _build_prior_draw(
-        runs_root, "run-099-sdd",
-        substrate={"authorities": {"a": "A"}, "design-intent": {"d": "D"}},
-        documents={"SDD-002": ("SDD-002-x.md", "other")},  # no SDD-001
-    )
-    with pytest.raises(PrepError):
-        snapshot_documents(
-            ["SDD-001"], docs_root=sofia_root / "docs", sofia_root=sofia_root,
-            run_dir=runs_root / "run-100-sdd", run_id="run-100-sdd",
-            sofia_head_sha="H", retrieved="t", from_run_dir=prior,
-        )
-
-
-def test_snapshot_documents_from_run_pin_mismatch_raises(tmp_path) -> None:
-    sofia_root = _sofia_tree(tmp_path, ["SDD-001"])
-    runs_root = tmp_path / "runs"
-    prior = _build_prior_draw(
-        runs_root, "run-099-sdd",
-        substrate={"authorities": {"a": "A"}, "design-intent": {"d": "D"}},
-        documents={"SDD-001": ("SDD-001-distilled.md", "DIFFERENT bytes")},  # pin differs
-    )
-    with pytest.raises(PrepError):
-        snapshot_documents(
-            ["SDD-001"], docs_root=sofia_root / "docs", sofia_root=sofia_root,
-            run_dir=runs_root / "run-100-sdd", run_id="run-100-sdd",
-            sofia_head_sha="H", retrieved="t", from_run_dir=prior,
-        )
-
-
-def test_snapshot_documents_from_run_without_document_manifest_raises(tmp_path) -> None:
-    sofia_root = _sofia_tree(tmp_path, ["SDD-001"])
-    runs_root = tmp_path / "runs"
-    (runs_root / "run-099-sdd").mkdir(parents=True)  # a from_run dir with no documents/manifest
-    with pytest.raises(PrepError):
-        snapshot_documents(
-            ["SDD-001"], docs_root=sofia_root / "docs", sofia_root=sofia_root,
-            run_dir=runs_root / "run-100-sdd", run_id="run-100-sdd",
-            sofia_head_sha="H", retrieved="t", from_run_dir=runs_root / "run-099-sdd",
-        )
+    assert entry["sha256"] == sha256_text("content of SDD-001")  # fresh working-tree hash
 
 
 # --- substrate assembly (acts a-d) + lessons ---------------------------------
@@ -301,7 +281,6 @@ def test_assemble_substrate_carry_forward_copies_and_reuses_origin(tmp_path) -> 
     prior = _build_prior_draw(
         runs_root, "run-099",
         substrate={"authorities": {"adr-template": "AUTHORITY BODY"}, "design-intent": {"vision": "V-BODY"}},
-        documents={"SDD-001": ("SDD-001-x.md", "d")},
     )
     run_dir = runs_root / "run-100"
     assemble_substrate(
@@ -341,7 +320,6 @@ def test_assemble_substrate_pin_mismatch_raises(tmp_path) -> None:
     prior = _build_prior_draw(
         runs_root, "run-099",
         substrate={"authorities": {"adr-template": "OLD BYTES"}, "design-intent": {"vision": "V"}},
-        documents={"SDD-001": ("SDD-001-x.md", "d")},
     )
     with pytest.raises(PrepError):
         assemble_substrate(
@@ -416,15 +394,20 @@ def test_prep_run_from_run_carries_forward_end_to_end(tmp_path) -> None:
     prior = _build_prior_draw(
         runs_root, "run-099-sdd",
         substrate={"authorities": {"adr-template": "AUTHORITY BODY"}, "design-intent": {"vision": "V-BODY"}},
-        documents={"SDD-001": ("SDD-001-distilled.md", "content of SDD-001")},
     )
     assert prior.is_dir()
     run_dir = prep_run(
         "run-100-sdd", ["SDD-001"], sofia_root=sofia_root, runs_root=runs_root,
         sofia_head_sha="HEAD2", retrieved="2026-07-06", from_run="run-099-sdd", recipe=_cf_recipe,
     )
-    doc_entry = json.loads((run_dir / "documents" / "manifest.json").read_text())["files"][0]
-    assert doc_entry["carry_forward"]["from_run"] == "run-099-sdd"
+    # Substrate carriage: the carry-forward file arrived with its prior bytes.
+    assert (run_dir / "substrate" / "design-intent" / "vision.md").read_text() == "V-BODY"
+    # Document independence: standalone provenance, no prior-draw reference.
+    manifest = json.loads((run_dir / "documents" / "manifest.json").read_text())
+    assert set(manifest) == {"run_id", "sofia_head_sha", "files"}
+    doc_entry = manifest["files"][0]
+    assert doc_entry["sha256"] == sha256_text("content of SDD-001")
+    assert "carry_forward" not in doc_entry
 
 
 def test_prep_draws_differ_only_in_run_id(tmp_path) -> None:
@@ -473,10 +456,10 @@ def _good_snapshot(tmp_path: Path) -> Path:
     docs.mkdir(parents=True)
     (docs / "SDD-001-x.md").write_text("body", encoding="utf-8")
     (docs / "manifest.json").write_text(
-        json.dumps({"run_id": "run-100", "sofia_head_sha": "H", "from_run": None, "files": [
+        json.dumps({"run_id": "run-100", "sofia_head_sha": "H", "files": [
             {"doc_id": "SDD-001", "snapshot_path": "documents/SDD-001-x.md",
              "origin": {"source": "sofia-repo", "canonical_path": "docs/SDD-001-x.md"},
-             "retrieved": "t", "sha256": sha256_text("body"), "carry_forward": None},
+             "retrieved": "t", "sha256": sha256_text("body")},
         ]}), encoding="utf-8",
     )
     return run_dir
