@@ -1,0 +1,7 @@
+{
+  "finding_id": "e0aaafd71bb43794",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record-SKILL — 'Placement, naming, metadata' / 'Status and version' (Change Log is the authoritative carrier of revision history); the finding is a same-document internal-coherence defect between §9 and §10's enumeration of the same v0.3.0 revision carriers",
+  "rationale": "The two carrier lists in one document describe the identical version and must name the same set; reconciling them to one enumeration is determined by the document's own recorded facts, introducing no new choice.",
+  "confidence": "high"
+}

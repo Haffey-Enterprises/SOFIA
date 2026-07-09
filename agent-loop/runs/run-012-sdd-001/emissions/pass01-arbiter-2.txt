@@ -1,0 +1,7 @@
+{
+  "finding_id": "9c06cd5777174ef0",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The two enumerations disagree on whether disposition.md is a ratifying carrier of v0.3.0; no cited authority states which enumeration is correct, so resolving the mismatch requires deciding which set of carriers is the true one — a choice authority does not determine.",
+  "confidence": "high"
+}
