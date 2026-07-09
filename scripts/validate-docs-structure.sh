@@ -90,14 +90,20 @@ metadata_value() {
     printf '%s' "$1" | awk -F'|' '{ v=$3; gsub(/^[[:space:]]+/,"",v); gsub(/[[:space:]]+$/,"",v); print v }'
 }
 
-# --- Exemption: frozen run substrate -------------------------------------------
-# agent-loop/runs/*/substrate/** holds pinned, frozen input snapshots captured for a
-# run by design — they are not project-authored artifacts and must never be edited to
-# satisfy a check. They are exempt from every check EXCEPT filename hygiene (a frozen
-# snapshot with a space or odd character in its name is still a real portability bug).
-is_substrate() {
+# --- Exemption: frozen run snapshots -------------------------------------------
+# A run pins its inputs as byte-exact snapshots captured at prep time. Two populations
+# carry them: substrate/** (authorities + design intent) and documents/** (the document
+# under review). Both are frozen by design — they are not project-authored artifacts and
+# must never be edited to satisfy a check; editing one breaks the sha256 recorded in the
+# run's manifest and the byte-equality claims its audit rests on. They are exempt from
+# every check EXCEPT filename hygiene (a frozen snapshot with a space or odd character in
+# its name is still a real portability bug). Note that a documents/ snapshot is a verbatim
+# copy of a decision record and so carries an ADR-/DDR-/SDD- basename outside docs/ —
+# without this exemption it would false-RED the doctype-placement check by construction.
+is_frozen_snapshot() {
     case "$1" in
         agent-loop/runs/*/substrate/*) return 0 ;;
+        agent-loop/runs/*/documents/*) return 0 ;;
     esac
     return 1
 }
@@ -125,7 +131,7 @@ check_header() {
     command grep -q '^# Description:' "$f" || note_violation "[A authorship-header] $f: missing '# Description:' line"
 }
 
-# --- Check B: filename hygiene (scope: every collected *.md, incl. substrate) ---
+# --- Check B: filename hygiene (scope: every collected *.md, incl. frozen snapshots) ---
 check_filename_hygiene() {
     local f="$1" base
     base="$(basename "$f")"
@@ -138,8 +144,8 @@ check_filename_hygiene() {
 }
 
 # --- Check C: decision-record placement + naming -------------------------------
-# Scope: any collected file whose basename starts ADR-/DDR-/SDD- (substrate already
-# excluded by the caller). Required home + filename shape come from the
+# Scope: any collected file whose basename starts ADR-/DDR-/SDD- (frozen snapshots
+# already excluded by the caller). Required home + filename shape come from the
 # author-decision-record skill: PREFIX-NNN-slug.md, 3+ digit zero-padded number,
 # lowercase-kebab slug, living in docs/adr|ddr|sdd/.
 check_doctype_placement() {
@@ -224,7 +230,7 @@ check_metadata_changelog() {
 }
 
 # --- Check F: agent-loop record placement (minimal) ----------------------------
-# Scope: collected *.md under agent-loop/ (substrate already excluded by the caller).
+# Scope: collected *.md under agent-loop/ (frozen snapshots already excluded by the caller).
 # audit.md must be a direct child of a run dir; record.md must be a direct child of a
 # triage/ or deliberation/ subdir. Every other agent-loop markdown file is a working
 # note and passes here (ungated beyond hygiene, by design).
@@ -337,11 +343,11 @@ while IFS= read -r -d '' f; do
     case "$f" in *.md) ;; *) continue ;; esac
     SCANNED=$(( SCANNED + 1 ))
 
-    # Filename hygiene applies to everything collected, including frozen substrate.
+    # Filename hygiene applies to everything collected, including frozen snapshots.
     check_filename_hygiene "$f"
 
-    # Substrate is exempt from every other check.
-    if is_substrate "$f"; then
+    # Frozen run snapshots are exempt from every other check.
+    if is_frozen_snapshot "$f"; then
         continue
     fi
 
