@@ -1,0 +1,52 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["SDD-001"],
+    "locus": "§3.4.3 capture-evidence — inherited-confidence derivation",
+    "claim": "The record's Status line and title claim a graph-gateway design, yet §3.4.3 fixes a concrete confidence-derivation function — Environment base 0.9 × exp(−Δt/τ), τ = 90 days, Catalog/Standards/Governance base 1.0 — as 'the implemented behavior, executed identically on every capture.' The body simultaneously declares this derivation's authority routed to the forthcoming inherited-confidence-derivation decision record. A concrete function form and constants committed as executed behavior is a decision the record makes; routing its authority elsewhere while shipping it as implemented is a claim-fidelity strain — the record decides more than its stated scope (execution mechanics) by fixing a derivation the substrate (DDR-002 §4) explicitly does not fix a concrete function for.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "SDD-001 §3.4.3 (derivation fixed as implemented behavior) vs SDD-001 §2.2 / §9 (derivation authority routed to forthcoming decision record); DDR-002 §4 'DDR-002 fixes that the rollup exists ... not a concrete function'"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["SDD-001"],
+    "locus": "§10 Change Log — v0.3.0 row",
+    "claim": "The v0.3.0 change-log row lists revision carriers 'run-010-sdd-001/audit.md + run-011-sdd-001/audit.md' but the §9 Cross-References deliberation-artifact entry for v0.3.0 additionally names 'run-011-sdd-001/disposition.md' as a ratifying carrier. The two enumerations of what the v0.3.0 amendment rests on do not match; a reader cannot tell whether the disposition record is a ratifying source of the amendment or not.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "SDD-001 §10 v0.3.0 row (two carriers) vs SDD-001 §9 Cross-References v0.3.0 revision carriers (three carriers incl. disposition.md)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["SDD-001"],
+    "locus": "§3.5.4 materialize-retraction — #25 timing note",
+    "claim": "The record states its retraction timing 'stands' and that #25's ratified biconditional 'is unsatisfied during a retraction proposal's pre-decision window,' then declares the scoping clause that would satisfy it to be 'proposed additive DDR-002 amendment content' with 'the harness implements from ratified text, before and after amendment.' The record thus decides to ship a design it concedes is non-conformant with the ratified invariant #25 as currently worded, resting the reconciliation on an amendment that does not yet exist. Whether this is an accepted consequence declared as such, or a smuggled retraction of #25 conformance, is the claim-fidelity question: the consequence (a live window where a ratified biconditional fails) is surfaced, but the record's own summary voice ('This SDD's timing stands') asserts resolution the cited substrate does not support.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "SDD-001 §3.5.4 ('#25's biconditional as ratified is unsatisfied during a retraction proposal's pre-decision window' + 'This SDD's timing stands') vs DDR-002 §7 #25 (ratified biconditional, no pre-decision scoping clause)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["SDD-001"],
+    "locus": "§2.2 Not owned + §7.1 Harness-verified/routed row",
+    "claim": "Attacked the scope boundary for smuggled decisions: whether the record quietly assigns authorship the substrate leaves unassigned. Checked §3.4.6 (advance-artifact-lifecycle), §2.2 (Attestation/Actor/Role, PromotionDecision transport, rollup function, zero-evidence posture), and #3/#5/#12-verification against ADR-002 §2.6's author/executor/authorizer principle. Each unassigned authority is routed by name with rejection-until-assigned semantics ('unassigned authority is unexecutable, not defaulted'), and no operation defaults its author to the gateway. The record decides only execution mechanics for these, holding the authorship decisions to their owning records. The boundary held.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-002 §2.6 (author/executor/authorizer separation; gateway never the authoring authority); DDR-002 §5 (Solution lifecycle-transition authority routed to SDDs)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["SDD-001"],
+    "locus": "§3.3.8 provenance-of — Determination (no CI invariant)",
+    "claim": "Attacked the §3.3.8 determination for a smuggled schema decision: the record declares 'no CI invariant of its own' for the provenance-survival retrieval affordance, which could be the gateway SDD deciding a matter reserved to DDR-002. Checked against the substrate — DDR-002 §5/§7 #20 already guarantees frozen-layer reachability, existence, completeness, and at-promotion binding, and DDR-002's Named Gaps explicitly reserve 'whether the affordance warrants its own CI invariant' as an open question routed to the knowledge-service SDD. The record answers exactly the question routed to it and explicitly defers the Named-Gap text pruning to a DDR-002 amendment ('not performed here'). The record decides what it is authorized to decide, no more. The boundary held.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §7 #20 + Named Gaps 'Provenance-survival retrieval index/affordance ... whether it warrants its own CI invariant ... → knowledge-service SDD'"
+    }
+  }
+]

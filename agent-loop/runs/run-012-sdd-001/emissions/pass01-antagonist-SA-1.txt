@@ -1,0 +1,52 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["SDD-001"],
+    "locus": "§3.4.3 capture-evidence — inherited-confidence derivation, branch (ii) Environment class",
+    "claim": "The Environment-class inheritance formula `0.9 × exp(−Δt/τ)` computes Δt from the cited node's `observed_at`, but the design does not specify the reference time against which Δt is measured (capture time? request time? a fixed epoch?). DDR-002 §4's canonical confidence definition specifies 'source authority × freshness ... decayed by `observed_at`' without fixing the anchor either, so this SDD introduces an operative constant (Δt) with no defined second operand — the derivation as written cannot be executed deterministically as claimed ('executed identically on every capture').",
+    "cited_authority": {
+      "kind": "soundness",
+      "ref": "SDD-001 §3.4.3 — Δt defined only from observed_at, reference-time operand unspecified; contradicts the same section's 'executed identically on every capture' determinism claim"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["SDD-001"],
+    "locus": "§3.2 Error semantics vs §3.4.3 — CONFIDENCE_UNDERIVABLE reachability",
+    "claim": "§3.2 lists `CONFIDENCE_UNDERIVABLE` as an enforced-invariant error type and §3.4.3 states the only reachable underivable case is an Extension node carrying neither node `confidence` nor `observed_at`. But branch (ii)'s non-Extension totality rests on class base × freshness for every non-node-confidence plane; a Catalog/Standards/Governance node cited without a resolvable freshness input is not addressed — the claim that the derivation is 'total by construction' is asserted, not substantiated for the base-1.0 branches, where no freshness operand is consumed at all yet the branch still claims a derived value. Whether these branches are total is not demonstrated in the record.",
+    "cited_authority": {
+      "kind": "soundness",
+      "ref": "SDD-001 §3.4.3 — 'derivation is total by construction' claimed but the base-1.0 (Catalog/Standards/Governance) branch's totality is unsubstantiated against the single named underivable case"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["SDD-001"],
+    "locus": "§9 Cross-References — Change Log v0.3.0 revision-carrier list",
+    "claim": "§9's v0.3.0 revision carriers list `run-010`, `run-011`, and `run-011-.../disposition.md`, while the §10 Change Log v0.3.0 row cites only `run-010` + `run-011` audits and the union disposition. The §9 deliberation-artifact list adds a `disposition.md` carrier not named in the Change Log's own carrier parenthetical; the two carrier enumerations do not resolve to the same set.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "SDD-001 §9 vs §10 v0.3.0 row — divergent revision-carrier enumerations for the same version"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["SDD-001"],
+    "locus": "§3.2 / §3.4.6 — Species-2 authorship-unexpressibility and unassigned-transition rejection",
+    "claim": "Attacked the write-authority surface for a path by which the gateway could become an authoring authority in violation of ADR-002 §2.6 (gateway is sole executor, never author). Species-2 request schemas carry no author field (authorship-by-gateway unexpressible), and §3.4.6 rejects any Solution lifecycle transition whose author is unassigned (`AUTHOR_VIOLATION`) rather than defaulting it to the gateway. Every mediated write traces to a Species-1 component author or a Species-2 governing decision; no default-to-gateway path was found. The surface held against ADR-002 §2.6 and §6 check 7.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-002 §2.6 / §6 check 7 — gateway sole executor, never authoring authority; no operation's author defaults to the gateway"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["SDD-001"],
+    "locus": "§3.5.4 materialize-retraction — #25 biconditional pre-decision-window residue",
+    "claim": "Attacked the retraction timing for a conformance gap: DDR-002 #25's ratified biconditional (proposal_kind:retraction ⇔ RETRACTS edge) would be unsatisfied during a retraction proposal's pre-decision window if the RETRACTS edge is written at proposal. The SDD writes RETRACTS at materialization (grounded in DDR-002 §5's terminal-status execution gloss), and explicitly names that the ratified biconditional as-written is unsatisfied in the pre-decision window, implements the harness from ratified text before/after the proposed scoping-clause amendment, and does not silently rely on unratified text. The conformance seam is disclosed, not concealed, and the timing coheres with DDR-002 §5.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §5 / §7 #25 — RETRACTS written at terminal-status materialization; biconditional residue disclosed and harness-bound to ratified text"
+    }
+  }
+]

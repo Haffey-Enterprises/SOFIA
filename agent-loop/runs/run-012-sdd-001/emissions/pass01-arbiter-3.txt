@@ -1,0 +1,7 @@
+{
+  "finding_id": "d92ba71d260eb541",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "DDR-002 §7 #25 states a biconditional (proposal_kind:retraction ⇔ RETRACTS edge) with no pre-decision scoping clause; the SDD's chosen at-materialization RETRACTS timing leaves a pre-decision window where #25 fails, and the record itself concedes the reconciling scoping clause is 'proposed additive DDR-002 amendment content' that does not yet exist. Resolving whether to ship against the invariant as ratified, or to guard/re-time the operation, or to hold for the amendment, requires a choice no ratified authority determines — an unratified amendment cannot be cited as the fix, and #25 as worded does not authorize the window.",
+  "confidence": "high"
+}
