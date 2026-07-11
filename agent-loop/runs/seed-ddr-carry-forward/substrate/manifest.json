@@ -1,0 +1,44 @@
+{
+  "files": [
+    {
+      "logical_id": "ddr-template",
+      "category": "authorities",
+      "origin": {
+        "source": "bedrock",
+        "path": "plugins/bedrock/skills/author-decision-record/templates/ddr-template.md",
+        "bedrock_head_sha": "322591f1f5ba229e6ab3352e992346623a4902eb",
+        "note": "Byte-currency re-verified 2026-07-11 against bedrock marketplace HEAD dd5ea191de23c68cbccf2ceef5c4745855ba841f and cache 1.0.0; sha256 identical (unchanged since run-004). Carried into this DDR carry-forward seed."
+      },
+      "retrieved": "2026-07-11",
+      "sha256": "59068b3a2741f497e92bff240da238d4f8b6b57471c8ff7a76ab8c09ba9668f9"
+    },
+    {
+      "logical_id": "author-decision-record-SKILL",
+      "category": "authorities",
+      "origin": {
+        "source": "bedrock",
+        "path": "plugins/bedrock/skills/author-decision-record/SKILL.md",
+        "bedrock_head_sha": "322591f1f5ba229e6ab3352e992346623a4902eb",
+        "note": "Byte-currency re-verified 2026-07-11 against bedrock marketplace; sha256 identical to run-012 substrate (unchanged runs 004-012)."
+      },
+      "retrieved": "2026-07-11",
+      "sha256": "f0ef38dab80b3aa4ae7e079938648b1ec1797f6c9ad0b55e633ae4b8904ff398"
+    },
+    {
+      "logical_id": "sofia-vision",
+      "category": "design-intent",
+      "origin": {
+        "source": "notion",
+        "page_title": "SOFIA",
+        "page_id": "370caeea-1325-8069-893f-c829d0f01551",
+        "url": "https://app.notion.com/p/370caeea13258069893fc829d0f01551",
+        "content_as_of": "2026-07-03T21:32:38Z",
+        "scope": "vision block only (above the Roadmap divider)",
+        "snapshotted_from": "agent-loop/runs/run-012-sdd-001/substrate/design-intent/sofia-vision.md",
+        "note": "Current ratified vision (b499614d\u2026, runs 008-012). Runs 004-007 carried a superseded copy (0cd7fd84\u2026) \u2014 excluded to avoid drift."
+      },
+      "retrieved": "2026-07-11",
+      "sha256": "b499614d51fc30aba7d6f7d264b49dfe612c0ee67df82f2bcea87c08b5bf05bc"
+    }
+  ]
+}
