@@ -11,6 +11,10 @@
 # changed. Nothing here calls an LLM, the network, or git that would cost money
 # or mutate state — it copies files and writes manifests, and that is all.
 #
+# Which substrate recipe is used is selected by the reviewed doctype, read off
+# the document id (SDD-001 -> the SDD recipe; DDR-004 -> the DDR recipe) — no
+# flag to get wrong (RBT-57). An unknown doctype fails loud.
+#
 # Why the run folder and not the working tree: a review has to be reproducible
 # from the run folder plus its manifests alone. If the runner re-read the working
 # tree each pass, an edit mid-run would silently change what was reviewed. Prep
@@ -62,7 +66,7 @@ def main(argv: list[str] | None = None) -> None:  # pragma: no cover
         )
     )
     parser.add_argument("run_id")
-    parser.add_argument("doc_ids", nargs="+", help="e.g. SDD-001")
+    parser.add_argument("doc_ids", nargs="+", help="e.g. SDD-001 or DDR-004")
     parser.add_argument("--from-run", default=None, help="prior draw to carry substrate forward from")
     parser.add_argument("--draws", nargs="+", default=None, help="run-ids for N draws (differ only in run_id)")
     parser.add_argument("--sofia-root", default=str(Path(__file__).resolve().parents[1]))

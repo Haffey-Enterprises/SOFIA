@@ -6,6 +6,8 @@
 #          a prepared folder passes run_real's gates 1-7 unmodified and provides
 #          everything §8 gate 8 verifies. No LLM, no network, no git — the engine
 #          is driven with injected HEAD SHA + retrieval date against a tmp tree.
+#          RBT-57 adds the recipe registry (doctype selector, DDR recipe, SDD
+#          byte-regression, fail-loud on a missing deliberation record).
 # Scope:   Over agent_loop.prep and the agent_loop.fetchers document-snapshot
 #          verifier (verify_document_snapshot / DocumentSnapshotError).
 
@@ -13,24 +15,31 @@ import json
 from pathlib import Path
 
 import pytest
-
 from agent_loop.fetchers import (
     DocumentSnapshotError,
-    SubstrateError,
     sha256_text,
     verify_document_snapshot,
 )
 from agent_loop.prep import (
+    RECIPES,
     PrepError,
     SubstrateSpec,
     assemble_substrate,
+    ddr_substrate_specs,
+    infer_doctype,
     prep_draws,
     prep_run,
+    resolve_deliberation_record,
     resolve_document,
     sdd_substrate_specs,
+    select_recipe,
     snapshot_documents,
 )
 from agent_loop.run_real import validate_prep
+
+# Repo root (agent-loop/tests/ -> agent-loop/ -> repo). Used by the SDD
+# byte-regression, which re-preps against the real develop tree + run-011.
+REPO_ROOT = Path(__file__).resolve().parents[2]
 
 DESIGN_DIR = Path(__file__).resolve().parents[1] / "design"
 
@@ -540,3 +549,315 @@ def test_verify_snapshot_unlisted_on_disk_file_raises(tmp_path) -> None:
     (run_dir / "documents" / "SDD-002-extra.md").write_text("x", encoding="utf-8")
     with pytest.raises(DocumentSnapshotError):
         verify_document_snapshot(run_dir)
+
+
+# =============================================================================
+# RBT-57 — recipe registry generalization (doctype selector + DDR recipe)
+# =============================================================================
+
+# The SDD-specific substrate the DDR recipe must NOT leak (RBT-57 ruling).
+_SDD_ONLY_SUBSTRATE = {
+    "sdd-template",
+    "sdd-001-charter-notes",
+    "deliberation-record-sdd-001",
+}
+
+
+def _ddr_sofia_tree(tmp_path: Path, *, ddr_id: str, ddr_slug: str) -> Path:
+    """A synthetic $SOFIA_ROOT wired for a DDR review: the canonical authority
+    paths the DDR recipe hardcodes (ADR/DDR canon + SDD-001 consuming context),
+    the reviewed DDR document, and the DDR's deliberation record by convention.
+    Carry-forward substrate (ddr-template, the SKILL, sofia-vision) is NOT here —
+    it arrives from a prior draw, exactly as in production."""
+    sofia_root = tmp_path / "sofia"
+    docs = sofia_root / "docs"
+    for sub in ("adr", "ddr", "sdd"):
+        (docs / sub).mkdir(parents=True)
+    canon = {
+        "adr/ADR-001-reasoning-architecture.md": "ADR-001 BODY",
+        "adr/ADR-002-graph-system-of-record.md": "ADR-002 BODY",
+        "ddr/DDR-001-data-architecture.md": "DDR-001 BODY",
+        "ddr/DDR-002-graph-schema.md": "DDR-002 BODY",
+        "sdd/SDD-001-knowledge-service.md": "SDD-001 BODY",
+        # The reviewed document: the DDR itself.
+        f"ddr/{ddr_id}-{ddr_slug}.md": f"{ddr_id} REVIEWED BODY",
+    }
+    for rel, body in canon.items():
+        (docs / rel).write_text(body, encoding="utf-8")
+    # Design-intent lineage: the DDR's deliberation record, by convention.
+    record_dir = sofia_root / "agent-loop" / "deliberation" / f"{ddr_id.lower()}-{ddr_slug}"
+    record_dir.mkdir(parents=True)
+    (record_dir / "record.md").write_text(f"{ddr_id} DELIBERATION RECORD", encoding="utf-8")
+    return sofia_root
+
+
+def _ddr_prior_draw(runs_root: Path, run_id: str) -> Path:
+    """A prior draw carrying the DDR recipe's carry-forward substrate (the
+    bedrock ddr-template + author-decision-record SKILL, and the Notion
+    sofia-vision block) — the sources prep cannot re-fetch."""
+    return _build_prior_draw(
+        runs_root, run_id,
+        substrate={
+            "authorities": {
+                "ddr-template": "DDR-TEMPLATE BODY",
+                "author-decision-record-SKILL": "SKILL BODY",
+            },
+            "design-intent": {"sofia-vision": "VISION BODY"},
+        },
+    )
+
+
+# --- doctype selector (inference from the review-target doc-id) --------------
+
+
+def test_infer_doctype_from_sdd_docid() -> None:
+    assert infer_doctype(["SDD-001"]) == "sdd"
+
+
+def test_infer_doctype_from_ddr_docid() -> None:
+    assert infer_doctype(["DDR-004"]) == "ddr"
+
+
+def test_infer_doctype_empty_raises() -> None:
+    with pytest.raises(PrepError):
+        infer_doctype([])
+
+
+def test_infer_doctype_mixed_doctypes_raises() -> None:
+    with pytest.raises(PrepError):
+        infer_doctype(["SDD-001", "DDR-004"])
+
+
+def test_registry_holds_sdd_and_ddr() -> None:
+    # Structured as a registry so adr slots in later without another rewrite.
+    assert {"sdd", "ddr"} <= set(RECIPES)
+
+
+def test_select_recipe_sdd_returns_sdd_specs(tmp_path) -> None:
+    recipe = select_recipe(["SDD-001"], sofia_root=tmp_path)
+    ids = {s.logical_id for s in recipe(from_run="run-011-sdd-001")}
+    assert "sdd-template" in ids and "deliberation-record-sdd-001" in ids
+
+
+def test_select_recipe_unknown_doctype_raises(tmp_path) -> None:
+    with pytest.raises(PrepError):
+        select_recipe(["XYZ-001"], sofia_root=tmp_path)
+
+
+def test_select_recipe_ddr_resolves_record_and_builds(tmp_path) -> None:
+    sofia_root = _ddr_sofia_tree(tmp_path, ddr_id="DDR-004", ddr_slug="inherited-confidence")
+    recipe = select_recipe(["DDR-004"], sofia_root=sofia_root)
+    ids = {s.logical_id for s in recipe(from_run="run-013-ddr")}
+    assert "ddr-template" in ids
+    assert "deliberation-record-ddr-004" in ids
+    assert not (_SDD_ONLY_SUBSTRATE & ids)
+
+
+def test_select_recipe_ddr_requires_single_target(tmp_path) -> None:
+    sofia_root = _ddr_sofia_tree(tmp_path, ddr_id="DDR-004", ddr_slug="ic")
+    with pytest.raises(PrepError):
+        select_recipe(["DDR-004", "DDR-005"], sofia_root=sofia_root)
+
+
+# --- deliberation-record resolution (design-intent lineage, by convention) ---
+
+
+def test_resolve_deliberation_record_one_match(tmp_path) -> None:
+    sofia_root = _ddr_sofia_tree(tmp_path, ddr_id="DDR-004", ddr_slug="inherited-confidence")
+    record = resolve_deliberation_record(sofia_root, "DDR-004")
+    assert record.read_text() == "DDR-004 DELIBERATION RECORD"
+    assert record.parent.name == "ddr-004-inherited-confidence"
+
+
+def test_resolve_deliberation_record_zero_matches_raises(tmp_path) -> None:
+    sofia_root = _ddr_sofia_tree(tmp_path, ddr_id="DDR-004", ddr_slug="ic")
+    with pytest.raises(PrepError):
+        resolve_deliberation_record(sofia_root, "DDR-999")
+
+
+def test_resolve_deliberation_record_multiple_matches_raises(tmp_path) -> None:
+    sofia_root = _ddr_sofia_tree(tmp_path, ddr_id="DDR-004", ddr_slug="ic")
+    delib = sofia_root / "agent-loop" / "deliberation"
+    (delib / "ddr-004-duplicate").mkdir()
+    (delib / "ddr-004-duplicate" / "record.md").write_text("dup", encoding="utf-8")
+    with pytest.raises(PrepError) as exc:
+        resolve_deliberation_record(sofia_root, "DDR-004")
+    assert "ddr-004" in str(exc.value)
+
+
+# --- the DDR recipe: the ruled substrate set (present + excluded) ------------
+
+
+def test_ddr_recipe_present_and_excluded_substrate() -> None:
+    specs = ddr_substrate_specs(
+        "DDR-004",
+        "agent-loop/deliberation/ddr-004-inherited-confidence/record.md",
+        from_run="run-013-ddr",
+    )
+    ids = {s.logical_id for s in specs}
+    # Present: shared canon + SDD-001 consuming context + doctype authoring
+    # authority + the design-intent lineage + doctype-agnostic vision.
+    assert ids == {
+        "ADR-001", "ADR-002", "DDR-001", "DDR-002",
+        "SDD-001",
+        "ddr-template", "author-decision-record-SKILL",
+        "deliberation-record-ddr-004",
+        "sofia-vision",
+    }
+    # Explicitly excluded: no SDD-specific artifact leaks in.
+    assert not (_SDD_ONLY_SUBSTRATE & ids)
+    # Both categories populated (gate 4 requires each non-empty).
+    assert {s.category for s in specs} == {"authorities", "design-intent"}
+    # bedrock/Notion items carry forward; repo-canonical items do not.
+    carried = {s.logical_id for s in specs if s.carry_forward}
+    assert carried == {"ddr-template", "author-decision-record-SKILL", "sofia-vision"}
+
+
+def test_ddr_recipe_deliberation_logical_id_is_generic() -> None:
+    # Proves the design-intent lineage is derived from the target, not hardcoded
+    # to ddr-004 — a different DDR yields its own record logical_id.
+    specs = ddr_substrate_specs(
+        "DDR-007", "agent-loop/deliberation/ddr-007-x/record.md", from_run="prior"
+    )
+    ids = {s.logical_id for s in specs}
+    assert "deliberation-record-ddr-007" in ids
+    assert "deliberation-record-ddr-004" not in ids
+
+
+def test_ddr_recipe_requires_from_run_for_carry_forward() -> None:
+    with pytest.raises(PrepError):
+        ddr_substrate_specs(
+            "DDR-004", "agent-loop/deliberation/ddr-004-x/record.md", from_run=None
+        )
+
+
+# --- end-to-end DDR prep: emits the DDR substrate, no SDD leakage (byte) -----
+
+
+def test_prep_run_ddr_emits_substrate_without_sdd_leakage(tmp_path) -> None:
+    sofia_root = _ddr_sofia_tree(tmp_path, ddr_id="DDR-004", ddr_slug="inherited-confidence")
+    runs_root = tmp_path / "runs"
+    _ddr_prior_draw(runs_root, "run-013-ddr")
+    run_dir = prep_run(
+        "run-014-ddr", ["DDR-004"], sofia_root=sofia_root, runs_root=runs_root,
+        sofia_head_sha="HEADDDR", retrieved="2026-07-11", from_run="run-013-ddr",
+    )
+    substrate = run_dir / "substrate"
+    auth = substrate / "authorities"
+    intent = substrate / "design-intent"
+    # Present, landed by stem (lesson #1).
+    for stem in ("ADR-001", "ADR-002", "DDR-001", "DDR-002", "SDD-001",
+                 "ddr-template", "author-decision-record-SKILL"):
+        assert (auth / f"{stem}.md").is_file()
+    assert (intent / "deliberation-record-ddr-004.md").is_file()
+    assert (intent / "sofia-vision.md").is_file()
+    # No SDD-specific artifact leaked (byte-level: no such file anywhere in substrate).
+    leaked = [p.name for p in substrate.rglob("*.md") if p.stem in _SDD_ONLY_SUBSTRATE]
+    assert leaked == []
+    # Content is the real bytes: consuming context + design-intent lineage.
+    assert (auth / "SDD-001.md").read_text() == "SDD-001 BODY"
+    assert (intent / "deliberation-record-ddr-004.md").read_text() == "DDR-004 DELIBERATION RECORD"
+    assert (auth / "ddr-template.md").read_text() == "DDR-TEMPLATE BODY"  # carried forward
+    # The reviewed document snapshot is the DDR itself.
+    assert (run_dir / "documents" / "DDR-004-inherited-confidence.md").is_file()
+    verify_document_snapshot(run_dir)
+
+
+def test_prep_run_ddr_selects_recipe_by_default(tmp_path) -> None:
+    # No recipe injected: the doctype selector picks the DDR recipe from the
+    # review target (the recipe=None production path).
+    sofia_root = _ddr_sofia_tree(tmp_path, ddr_id="DDR-004", ddr_slug="ic")
+    runs_root = tmp_path / "runs"
+    _ddr_prior_draw(runs_root, "run-013-ddr")
+    run_dir = prep_run(
+        "run-014-ddr", ["DDR-004"], sofia_root=sofia_root, runs_root=runs_root,
+        sofia_head_sha="H", retrieved="2026-07-11", from_run="run-013-ddr",
+    )
+    assert (run_dir / "substrate" / "authorities" / "ddr-template.md").is_file()
+
+
+# --- fail-loud: a DDR target whose deliberation record is absent -------------
+
+
+def test_prep_run_ddr_missing_deliberation_record_fails_loud_and_emits_no_folder(tmp_path) -> None:
+    sofia_root = _ddr_sofia_tree(tmp_path, ddr_id="DDR-004", ddr_slug="ic")
+    # Remove the deliberation record — the design-intent lineage is now absent.
+    import shutil
+    shutil.rmtree(sofia_root / "agent-loop" / "deliberation" / "ddr-004-ic")
+    runs_root = tmp_path / "runs"
+    _ddr_prior_draw(runs_root, "run-013-ddr")
+    with pytest.raises(PrepError):
+        prep_run(
+            "run-014-ddr", ["DDR-004"], sofia_root=sofia_root, runs_root=runs_root,
+            sofia_head_sha="H", retrieved="2026-07-11", from_run="run-013-ddr",
+        )
+    # Fail at prep, not a silently-incomplete folder: nothing was emitted.
+    assert not (runs_root / "run-014-ddr").exists()
+
+
+# --- SDD recipe regression: unchanged, byte-for-byte -------------------------
+
+
+def test_sdd_recipe_spec_pin() -> None:
+    # Pins the SDD recipe definition exactly — any change to logical_id,
+    # category, carry_forward, repo_relpath, or origin trips this.
+    specs = sdd_substrate_specs(from_run="run-011-sdd-001")
+    pinned = [
+        (s.logical_id, s.category, s.carry_forward, s.repo_relpath, s.origin)
+        for s in specs
+    ]
+    assert pinned == [
+        ("ADR-001", "authorities", False, "docs/adr/ADR-001-reasoning-architecture.md",
+         {"source": "sofia-repo", "path": "docs/adr/ADR-001-reasoning-architecture.md"}),
+        ("ADR-002", "authorities", False, "docs/adr/ADR-002-graph-system-of-record.md",
+         {"source": "sofia-repo", "path": "docs/adr/ADR-002-graph-system-of-record.md"}),
+        ("DDR-001", "authorities", False, "docs/ddr/DDR-001-data-architecture.md",
+         {"source": "sofia-repo", "path": "docs/ddr/DDR-001-data-architecture.md"}),
+        ("DDR-002", "authorities", False, "docs/ddr/DDR-002-graph-schema.md",
+         {"source": "sofia-repo", "path": "docs/ddr/DDR-002-graph-schema.md"}),
+        ("sdd-template", "authorities", True, None, {}),
+        ("author-decision-record-SKILL", "authorities", True, None, {}),
+        ("deliberation-record-sdd-001", "design-intent", False,
+         "agent-loop/deliberation/sdd-001-knowledge-service/record.md",
+         {"source": "sofia-repo",
+          "path": "agent-loop/deliberation/sdd-001-knowledge-service/record.md"}),
+        ("sofia-vision", "design-intent", True, None, {}),
+        ("sdd-001-charter-notes", "design-intent", True, None, {}),
+    ]
+
+
+def test_sdd_recipe_byte_regression_reproduces_run_011(tmp_path) -> None:
+    # Re-prep an SDD run against the real develop tree + run-011 as the
+    # carry-forward donor; the produced substrate reproduces run-011's
+    # substrate byte-for-byte (RBT-57 acceptance: SDD recipe regression-clean).
+    real_run_011 = REPO_ROOT / "agent-loop" / "runs" / "run-011-sdd-001"
+    assert real_run_011.is_dir(), "run-011 must exist as the known SDD baseline"
+
+    import shutil
+    runs_root = tmp_path / "runs"
+    prior = runs_root / "run-011-sdd-001"
+    prior.mkdir(parents=True)
+    shutil.copytree(real_run_011 / "substrate", prior / "substrate")
+
+    run_dir = prep_run(
+        "run-regress-sdd", ["SDD-001"], sofia_root=REPO_ROOT, runs_root=runs_root,
+        sofia_head_sha="HEADX", retrieved="2026-07-11", from_run="run-011-sdd-001",
+    )
+
+    # Every produced substrate file matches run-011's committed bytes exactly.
+    produced = sorted(
+        p for p in (run_dir / "substrate").rglob("*.md")
+    )
+    assert produced, "expected substrate files"
+    for path in produced:
+        rel = path.relative_to(run_dir / "substrate")
+        baseline = real_run_011 / "substrate" / rel
+        assert baseline.is_file(), f"unexpected substrate file {rel}"
+        assert path.read_bytes() == baseline.read_bytes(), f"byte drift in {rel}"
+    # And the set of files matches (no missing / extra substrate).
+    baseline_set = {
+        p.relative_to(real_run_011 / "substrate")
+        for p in (real_run_011 / "substrate").rglob("*.md")
+    }
+    produced_set = {p.relative_to(run_dir / "substrate") for p in produced}
+    assert produced_set == baseline_set
