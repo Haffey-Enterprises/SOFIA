@@ -35,6 +35,7 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -52,7 +53,19 @@ class PrepError(RuntimeError):
     tool exists to prevent."""
 
 
-# --- substrate recipe (the SDD recipe is the ONLY recipe; there is no registry)
+# --- substrate recipes: a registry keyed by reviewed doctype (RBT-57) ---------
+#
+# The recipe is selected by the doctype of the document under review, inferred
+# from its doc-id (SDD-001 -> sdd, DDR-004 -> ddr). Inference from the target —
+# not an operator-supplied flag — is deliberate: the failure this tool exists to
+# prevent is a recipe/target mismatch (the SDD recipe run against a DDR emits
+# SDD-specific substrate and omits the DDR's authority). A flag reintroduces that
+# mismatch as human error; a doctype read off the target structurally forbids it.
+# The registry (RECIPES) is keyed by doctype so `adr` slots in later by adding
+# one entry — no rewrite. The SDD recipe below is unchanged from RBT-52 and is
+# regression-pinned byte-for-byte; the DDR recipe duplicates the shared canon
+# rather than share a helper, to keep the SDD recipe's source demonstrably
+# untouched.
 
 
 @dataclass(frozen=True)
@@ -124,6 +137,219 @@ def sdd_substrate_specs(*, from_run: str | None) -> list[SubstrateSpec]:
             "--from-run; no prior draw was given"
         )
     return specs
+
+
+def ddr_substrate_specs(
+    target: str, record_relpath: str, *, from_run: str | None
+) -> list[SubstrateSpec]:
+    """The DDR review recipe (RBT-57 substrate ruling, ratified 2026-07-10).
+
+    What a DDR review reads against:
+      - Shared canon (same as the SDD recipe): ADR-001/002, DDR-001/002.
+      - Consuming context: SDD-001 — a DDR's Reconciliation/Cross-References make
+        verifiable claims about the SDDs that implement it, so reviewers need it.
+        Hardcoded while a single SDD exists; when a second SDD lands, "which SDDs
+        implement this DDR" becomes a resolver (flagged in RBT-57 — n=1 today).
+      - Doctype authoring authority: the ddr-template and the
+        author-decision-record SKILL (carried forward, like the SDD recipe's
+        sdd-template — bedrock archived, not re-fetchable at prep).
+      - Design-intent lineage: the target DDR's deliberation record, resolved by
+        convention (`agent-loop/deliberation/<ddr-slug>/record.md`) and passed in
+        as `record_relpath`; its logical_id is derived from `target`, never
+        hardcoded to a specific DDR.
+      - General context: sofia-vision (doctype-agnostic, carried forward as the
+        SDD recipe carries it).
+
+    Explicitly EXCLUDED (SDD-specific): sdd-template, sdd-001-charter-notes,
+    deliberation-record-sdd-001 — none appear below, so a DDR prep cannot leak
+    them.
+
+    Args:
+        target: The reviewed DDR's doc-id (e.g. "DDR-004"); names the
+            deliberation-record logical_id.
+        record_relpath: Repo-relative path to the DDR's deliberation record,
+            pre-resolved by convention (see `resolve_deliberation_record`).
+        from_run: Prior draw to carry bedrock/Notion substrate forward from;
+            required whenever the recipe emits a carry-forward spec.
+
+    Returns:
+        The DDR substrate spec list.
+
+    Raises:
+        PrepError: If carry-forward substrate is emitted without a `from_run`.
+    """
+    specs = [
+        # Shared canon — duplicated (not shared) to keep sdd_substrate_specs
+        # pristine and byte-for-byte regression-clean (RBT-57).
+        SubstrateSpec(
+            "ADR-001", "authorities",
+            {"source": "sofia-repo", "path": "docs/adr/ADR-001-reasoning-architecture.md"},
+            repo_relpath="docs/adr/ADR-001-reasoning-architecture.md",
+        ),
+        SubstrateSpec(
+            "ADR-002", "authorities",
+            {"source": "sofia-repo", "path": "docs/adr/ADR-002-graph-system-of-record.md"},
+            repo_relpath="docs/adr/ADR-002-graph-system-of-record.md",
+        ),
+        SubstrateSpec(
+            "DDR-001", "authorities",
+            {"source": "sofia-repo", "path": "docs/ddr/DDR-001-data-architecture.md"},
+            repo_relpath="docs/ddr/DDR-001-data-architecture.md",
+        ),
+        SubstrateSpec(
+            "DDR-002", "authorities",
+            {"source": "sofia-repo", "path": "docs/ddr/DDR-002-graph-schema.md"},
+            repo_relpath="docs/ddr/DDR-002-graph-schema.md",
+        ),
+        # Consuming context (n=1 SDD hardcode; see docstring).
+        SubstrateSpec(
+            "SDD-001", "authorities",
+            {"source": "sofia-repo", "path": "docs/sdd/SDD-001-knowledge-service.md"},
+            repo_relpath="docs/sdd/SDD-001-knowledge-service.md",
+        ),
+        # Doctype authoring authority (carry-forward: bedrock, not re-fetchable).
+        SubstrateSpec("ddr-template", "authorities", carry_forward=True),
+        SubstrateSpec("author-decision-record-SKILL", "authorities", carry_forward=True),
+        # Design-intent lineage: the target DDR's deliberation record, by convention.
+        SubstrateSpec(
+            f"deliberation-record-{target.lower()}", "design-intent",
+            {"source": "sofia-repo", "path": record_relpath},
+            repo_relpath=record_relpath,
+        ),
+        # General context (doctype-agnostic; carried forward as the SDD recipe does).
+        SubstrateSpec("sofia-vision", "design-intent", carry_forward=True),
+    ]
+    if from_run is None and any(spec.carry_forward for spec in specs):
+        raise PrepError(
+            "the DDR recipe carries bedrock/Notion substrate forward and requires "
+            "--from-run; no prior draw was given"
+        )
+    return specs
+
+
+def resolve_deliberation_record(sofia_root: str | Path, target: str) -> Path:
+    """Resolve a DDR's deliberation record by convention, or raise on 0/>1.
+
+    Prefix glob `<sofia_root>/agent-loop/deliberation/<target-lower>-*/record.md`
+    (e.g. DDR-004 -> `agent-loop/deliberation/ddr-004-*/record.md`). This is the
+    design-intent lineage the DDR recipe reads against; it resolves at PREP time,
+    so a target whose record is absent fails loud here — before any run folder is
+    created — rather than emitting a silently-incomplete run. Zero or multiple
+    matches raise with the target and the match list; no fallback, no fuzzy match.
+
+    Args:
+        sofia_root: The $SOFIA_ROOT working tree.
+        target: The reviewed DDR's doc-id (e.g. "DDR-004").
+
+    Returns:
+        The single `record.md` path.
+
+    Raises:
+        PrepError: If the record resolves to zero or more than one file.
+    """
+    delib_root = Path(sofia_root) / "agent-loop" / "deliberation"
+    matches = sorted(delib_root.glob(f"{target.lower()}-*/record.md"))
+    if len(matches) != 1:
+        raise PrepError(
+            f"deliberation record for {target!r} resolved to {len(matches)} files "
+            f"under {delib_root} (expected exactly 1): {[str(m) for m in matches]}"
+        )
+    return matches[0]
+
+
+# --- recipe selection: doctype off the review target -> registry --------------
+
+
+def infer_doctype(doc_ids: list[str]) -> str:
+    """Infer the reviewed doctype from the document set's doc-id prefixes.
+
+    "SDD-001" -> "sdd", "DDR-004" -> "ddr". A review targets one doctype; a set
+    spanning doctypes (or an empty set) has no single recipe and raises.
+
+    Args:
+        doc_ids: The reviewed document ids.
+
+    Returns:
+        The lowercase doctype prefix.
+
+    Raises:
+        PrepError: On an empty set or one spanning multiple doctypes.
+    """
+    if not doc_ids:
+        raise PrepError("no doc-ids given; cannot infer a review doctype")
+    doctypes = {doc_id.split("-", 1)[0].lower() for doc_id in doc_ids}
+    if len(doctypes) != 1:
+        raise PrepError(
+            f"doc-ids span multiple doctypes {sorted(doctypes)}; a review targets "
+            f"one doctype: {doc_ids}"
+        )
+    return doctypes.pop()
+
+
+def _sdd_recipe_for(
+    doc_ids: list[str], sofia_root: str | Path
+) -> Callable[..., list[SubstrateSpec]]:
+    """Registry builder for the SDD recipe — target context is not needed."""
+    return sdd_substrate_specs
+
+
+def _ddr_recipe_for(
+    doc_ids: list[str], sofia_root: str | Path
+) -> Callable[..., list[SubstrateSpec]]:
+    """Registry builder for the DDR recipe.
+
+    A DDR review targets exactly one DDR; its deliberation record is resolved by
+    convention here (fail-loud on absence) and bound into a `(*, from_run)`
+    recipe, so selection matches the calling convention every recipe shares.
+    """
+    if len(doc_ids) != 1:
+        raise PrepError(f"a DDR review targets exactly one DDR; got {doc_ids}")
+    target = doc_ids[0]
+    record = resolve_deliberation_record(sofia_root, target)
+    record_relpath = str(record.relative_to(Path(sofia_root)))
+
+    def recipe(*, from_run: str | None) -> list[SubstrateSpec]:
+        return ddr_substrate_specs(target, record_relpath, from_run=from_run)
+
+    return recipe
+
+
+# Keyed by reviewed doctype. Add `adr` here to extend — no other change needed.
+RECIPES = {
+    "sdd": _sdd_recipe_for,
+    "ddr": _ddr_recipe_for,
+}
+
+
+def select_recipe(
+    doc_ids: list[str], *, sofia_root: str | Path
+) -> Callable[..., list[SubstrateSpec]]:
+    """Select the substrate recipe for the reviewed doctype.
+
+    Infers the doctype from the review target (`infer_doctype`) and returns the
+    registry recipe as a `(*, from_run) -> list[SubstrateSpec]` callable — the
+    same shape an explicitly-injected recipe has. An unknown doctype fails loud.
+
+    Args:
+        doc_ids: The reviewed document ids.
+        sofia_root: The $SOFIA_ROOT working tree (needed to resolve doctype
+            context such as a DDR's deliberation record).
+
+    Returns:
+        A `(*, from_run)` recipe callable.
+
+    Raises:
+        PrepError: On an unresolvable doctype or an unknown doctype.
+    """
+    doctype = infer_doctype(doc_ids)
+    try:
+        builder = RECIPES[doctype]
+    except KeyError:
+        raise PrepError(
+            f"no substrate recipe for doctype {doctype!r} (doc-ids {doc_ids}); "
+            f"known doctypes: {sorted(RECIPES)}"
+        ) from None
+    return builder(doc_ids, sofia_root)
 
 
 # --- act (a): resolution — homed here now (amended contract §2 / T3) ----------
@@ -319,7 +545,7 @@ def prep_run(
     sofia_head_sha: str,
     retrieved: str,
     from_run: str | None = None,
-    recipe=sdd_substrate_specs,
+    recipe: Callable[..., list[SubstrateSpec]] | None = None,
 ) -> Path:
     """Prepare one run folder (documents snapshot + substrate) and return it.
 
@@ -327,7 +553,16 @@ def prep_run(
     used one is immutable evidence (mirrors §8 gate 1). Assembles substrate and
     the document snapshot, then verifies the snapshot the way §8 gate 8 will, so
     a folder this tool returns is one the runner can consume.
+
+    When `recipe` is None (the production path) the substrate recipe is selected
+    by the reviewed doctype (`select_recipe`); an explicit `recipe` overrides
+    selection (tests inject minimal recipes). Recipe selection runs BEFORE any
+    folder is created, so a fail-loud selection failure — e.g. a DDR whose
+    deliberation record is absent — emits no run folder.
     """
+    sofia_root = Path(sofia_root)
+    if recipe is None:
+        recipe = select_recipe(doc_ids, sofia_root=sofia_root)
     runs_root = Path(runs_root)
     run_dir = runs_root / run_id
     if run_dir.exists():
@@ -338,7 +573,6 @@ def prep_run(
     if from_run_dir is not None and not from_run_dir.is_dir():
         raise PrepError(f"--from-run draw not found: {from_run_dir}")
 
-    sofia_root = Path(sofia_root)
     docs_root = sofia_root / "docs"
 
     assemble_substrate(
@@ -370,13 +604,15 @@ def prep_draws(
     sofia_head_sha: str,
     retrieved: str,
     from_run: str | None = None,
-    recipe=sdd_substrate_specs,
+    recipe: Callable[..., list[SubstrateSpec]] | None = None,
 ) -> list[Path]:
     """Prepare N draws (act e) — one prepared folder per run-id.
 
     Every draw snapshots the same working-tree bytes at the same HEAD, so the
     draws differ only in run_id (the two-draw verification standard rests on
-    exactly that). Returns the run folders in order.
+    exactly that). Returns the run folders in order. `recipe` follows `prep_run`:
+    None selects by doctype; an explicit recipe overrides (every draw shares the
+    same doc set, so every draw resolves the same recipe).
     """
     return [
         prep_run(
