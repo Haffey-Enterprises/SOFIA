@@ -1,0 +1,7 @@
+{
+  "finding_id": "551d512f6e8e4a5c",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record SKILL — DDR status/version discipline ('Stay in PROPOSED until review clears blocking findings') + ddr-template Pre-Acceptance/Migration Conditions section (conditions enumerated with tracking pointers); DDR-004 is authored PROPOSED with the declared-basis carriers routed to RBT-54 Touch 3 as an explicit forward-dependency amendment",
+  "rationale": "The apparent tension the finding names — a PROPOSED record that fixes a disposition while its schema carrier is a forthcoming DDR-002 amendment — is exactly the ratified authoring pattern for a DDR under the skill: a decision record fixes a ruling at PROPOSED status and enumerates the downstream schema mechanization as a tracked forward-dependency (here RBT-54 Touch 3), rather than requiring the carrier field to pre-exist. The fix (make the fix-vs-propose relationship explicit and confine the disposition to a ruling backed by an enumerated forward amendment) is determined by the skill's status discipline and the template's Pre-Acceptance Conditions convention; no unratified choice is introduced.",
+  "confidence": "medium"
+}

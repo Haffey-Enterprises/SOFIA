@@ -1,0 +1,72 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-004"],
+    "locus": "§4 Per-class declared-basis totality — DeploymentEnvironment disposition; and Pre-Acceptance Condition 1",
+    "claim": "The record decides that DeploymentEnvironment is basis 2 with the Environment base 0.9 (contested per §2, decay term dropped), and asserts its absence of observed_at is 'ratified correct-by-design' as a DDR-002 amendment. But DDR-002 v1.2.0 §2.2 defines DeploymentEnvironment without observed_at and lists no basis mechanism at all; the record simultaneously fixes a concrete class disposition (a decision) AND routes that same disposition to DDR-002 as a not-yet-existing amendment (RBT-54 Touch 3). The record thus decides a schema fact it does not yet have carrier authority for — the declared-basis field it assigns values into is entailed here but does not exist in the cited substrate. Whether this record 'fixes' the disposition or merely 'proposes' it to DDR-002 is not disambiguated in the decision content.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-004 §4 (DeploymentEnvironment = basis 2, observed_at-absence ratified correct-by-design) vs DDR-002 v1.2.0 §2.2 (DeploymentEnvironment node schema carries no declared-basis field) + DDR-004 Pre-Acceptance Condition 1 (declared-basis carriers are a forthcoming DDR-002 amendment)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-004"],
+    "locus": "Decision preamble — 'This record fixes the function, its constant treatment, its totality contract, its composition boundary, and its calibration governance.'",
+    "claim": "The title and summary claim DDR-004 fixes six testable components including 'totality contract' and 'calibration governance,' but the body retracts the fixity of two of them: §6 states 'This section defines the process, not a result' for calibration, and the constants (Item 2 of the six) are held explicitly non-fixed as contested tunables. The summary's verb 'fixes ... its calibration governance' claims a determination that §6's own prose scopes down to a process definition with n=0 evidence. The decision content is narrower than the summary claims for at least the constant-treatment and calibration components.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-004 Decision preamble ('This record fixes ... its calibration governance') vs §6 ('This section defines the process, not a result') and §2 (base/τ held as contested, unvalidated tunables)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-004"],
+    "locus": "§6 Reconstructibility / Pre-Acceptance Condition 2 — Evidence.observed_at semantic",
+    "claim": "The record depends on a fact it declares unconfirmed: it states the capture instant is durably recoverable because 'Evidence.observed_at IS the capture instant,' then immediately concedes 'Evidence.observed_at's intended meaning must be confirmed against DDR-002 before adoption; if DDR-002 intends the pinned-source-freshness reading instead, a dedicated derived-at field is added.' A core reconstructibility property (§3 states Δt endpoints are 'durably recoverable') is asserted as holding while the mechanism that makes it hold is unconfirmed against the substrate. DDR-002 v1.2.0 §4 defines Evidence.observed_at without stating it is the capture instant. The consequence — that reconstructibility depends on an unresolved DDR-002 semantic — is surfaced but the §3 'Reconstructible' property is stated as already-true, not as conditional on Condition 2.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-004 §3 ('Reconstructible. Both Δt endpoints are durably recoverable') vs §6 + Pre-Acceptance Condition 2 (Evidence.observed_at meaning unconfirmed; may require a new field) + DDR-002 v1.2.0 §4 (Evidence.observed_at listed without capture-instant semantic)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-004"],
+    "locus": "Reconciliation with the SDD-001 interim — 'the SDD needs no content change ... the pointer resolution is a change-log-carried amendment on the SDD side'",
+    "claim": "The record decides on SDD-001's behalf that SDD-001 needs no content change and that pointer resolution is a change-log-carried amendment on the SDD side. This is a commitment about a different document's amendment obligations riding along inside DDR-004's reconciliation prose. SDD-001 v1.0.0 §9 routes the derivation authority to 'the forthcoming inherited-confidence-derivation decision record' by subject-name and §3.4.3 carries the derivation as interim behavior; whether that route is satisfied without SDD content change (given DDR-004 supersedes the SDD's single-named CONFIDENCE_UNDERIVABLE case with a four-basis model and adds a rejection typing the SDD did not enumerate) is a determination about SDD-001's conformance that this record asserts rather than surfaces as its own scoped decision.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-004 Reconciliation ('the SDD needs no content change') vs SDD-001 v1.0.0 §3.4.3 (interim single CONFIDENCE_UNDERIVABLE case) which DDR-004 §4 states it supersedes with per-class declared-basis totality"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["DDR-004"],
+    "locus": "Rationale / Pre-Acceptance / Reconciliation — instantiated run/ticket identifiers in normative body",
+    "claim": "The Rationale, Pre-Acceptance, and Reconciliation sections carry instantiated run and ticket identifiers (run-009 R6, runs 010/011/012, RBT-53, RBT-54 Touch 3, union disposition Item 1) threaded through normative prose rather than confined to Change Log / Cross-References. The record's own deliberation-record notes flag this as a docs-structure contract-purity miss. This affects claim-fidelity at the margin: process lineage in the body blurs what the record decides versus how it came to be decided.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-004 Rationale/Pre-Acceptance/Reconciliation (instantiated run/ticket IDs in normative body) vs the record's Change Log + Cross-References being the designated home for lineage"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-004"],
+    "locus": "§2 Constant treatment — the invariant/contested split (1.0 as invariant-ground)",
+    "claim": "I attacked the 1.0-as-invariant claim for scope overreach: does the record claim a determination DDR-002 §4 does not support? It holds. §2 explicitly declares 1.0 'a determination this record makes on canonical warrant, not a value DDR-002 carries,' and correctly states DDR-002 §4 fixes inheritance by authority class and the ordering (authoritative Catalog above aging Environment) but not the literal 1.0. Checked against DDR-002 v1.2.0 §4, which indeed fixes the inheritance rule and ordering without fixing the constant — the record's claim of what it decides versus what it inherits is accurately drawn.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-004 §2 (1.0 as determination-on-canonical-warrant, not DDR-002-carried) vs DDR-002 v1.2.0 §4 (inheritance by authority class + ordering fixed; literal 1.0 not fixed)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-004"],
+    "locus": "§5 Composition boundary — branch (i) inherits node authority only; per-target edge certainty routed to ReasoningProgress rollup",
+    "claim": "I attacked §5 for an undeclared dependency and an undeclared consequence: it hands per-target OBSERVED_IN edge certainty to a rollup it does not own. It holds. The record names the dependency (the ReasoningProgress rollup, routed to the solutioning-agent SDD, SDD-001 §2.2), names the canonical bound it composes under (DDR-002 §4's #24 ceiling), and declares the consequence explicitly ('the only residue is indirection'). Checked against DDR-002 v1.2.0 §4 (#24 ceiling = max of supporting Evidence.confidence, weight below the ceiling) and §3 (OBSERVED_IN per-target certainty distinct from node lesson-reliability) — the boundary and its downstream owner are correctly declared, not smuggled.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-004 §5 (branch (i) node-authority-only; edge certainty routed to rollup under #24 ceiling) vs DDR-002 v1.2.0 §4 (#24 ceiling semantics) + §3 (OBSERVED_IN per-target vs ObservedPattern node confidence)"
+    }
+  }
+]

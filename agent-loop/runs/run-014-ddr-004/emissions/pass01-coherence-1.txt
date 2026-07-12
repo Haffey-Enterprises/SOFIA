@@ -1,0 +1,52 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-004"],
+    "locus": "§6 Reconstructibility / Pre-Acceptance Condition 2 — Evidence.observed_at semantic",
+    "claim": "§6 asserts as the preferred mechanism that 'Evidence.observed_at *is* the capture instant (the Δt \"to\" point; the cited node's observed_at — the \"from\" point — recovered via the version pin)', but DDR-002 §4's Evidence schema defines Evidence.observed_at alongside source_node_version as the point-in-time-fidelity pins that make the audit trail 'immune to later KG drift' — i.e. reading as pinned-source-freshness, the reading DDR-004 itself flags as the alternative requiring a dedicated derived-at field. The owning schema does not supply the capture-instant meaning DDR-004's preferred mechanism asserts.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-004 §6 (Evidence.observed_at = capture instant, preferred) vs DDR-002 §4 Evidence node schema (observed_at + source_node_version as point-in-time source-freshness pins)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-004"],
+    "locus": "§3 Frozen / §6 Historical treatment — freeze vs re-tune reconstructibility",
+    "claim": "§3 fixes that Evidence.confidence is 'computed once at capture and frozen' and 'never recomputed at read,' and §6 grandfather says frozen values are never recomputed on re-tune; yet §6 Reconstructibility requires the capture instant be durably recoverable specifically because calibration needs to reconstruct each capture's Δt. Δt reconstruction requires a persisted capture instant that DDR-002 §4's Evidence type (the sole surrogate-only RG type, carrying no created_at, per DDR-002 §4 RG provenance posture) does not supply — the record concedes this dependency is unresolved (Pre-Acceptance Condition 2) while §3 states freezing as already holding.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-004 §3 (frozen, reconstructible) + §6 (Δt reconstruction requires durable capture instant) vs DDR-002 §4 (Evidence sole surrogate-only RG type, no created_at field)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["DDR-004"],
+    "locus": "Rationale / Pre-Acceptance / Reconciliation — instantiated identifiers in normative body",
+    "claim": "The record carries instantiated run/ticket identifiers (run-009 R6, runs 010/011/012, RBT-53, RBT-54 Touch 3, union disposition Item 1) in normative body sections (Rationale, Pre-Acceptance Conditions, Reconciliation) rather than confined to Change Log and Cross-References. The author-decision-record skill's authoring discipline states process narrative, ticket IDs, and review history 'belong in the Change Log, Cross-References, or your tracker — not threaded through the body,' and the deliberation record's own authoring notes flag this same finding as held for the review cycle.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "author-decision-record skill, Authoring discipline: 'Process narrative, ticket IDs, and review history belong in the Change Log, Cross-References, or your tracker — not threaded through the body.'"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-004"],
+    "locus": "§5 Composition boundary — branch (i) × #24 ceiling",
+    "claim": "Checked DDR-004 §5's claim that per-target OBSERVED_IN edge certainty is not inherited into Evidence.confidence and composes downstream in the ReasoningProgress rollup against DDR-002 §3/§4 (confidence lives on the surface whose certainty it describes; OBSERVED_IN per-target certainty is edge confidence, distinct from ObservedPattern node lesson-reliability; the two composed at rollup) and the #24 ceiling (ReasoningProgress.confidence ≤ max supporting Evidence.confidence). The boundary is consistent: branch (i) inheriting node authority only, edge certainty routed to the rollup, and the weakest-link ceiling all hold together against the owning schema. Attack on an upward-composition foreclosure failed — the ceiling forecloses only the upward direction, which DDR-002 §4 already fixes.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-004 §5 vs DDR-002 §3 (edge vs node confidence surfaces, OBSERVED_IN per-target certainty) + §4 (#24 ceiling = max supporting Evidence.confidence; rollup routed to SDD)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-004"],
+    "locus": "§4 Per-class declared-basis totality — Cost RateCard/CostFactor disposition",
+    "claim": "Checked DDR-004 §4's basis-4 (non-citable) disposition for Cost RateCard/CostFactor and basis-1 for CapabilityCostEstimate against DDR-002 §2.6, which defines CapabilityCostEstimate as the confidence-bearing as-of-decision cost-evidence record and RateCard/CostFactor as aggregation/reference inputs (RateCard: 'Reference input'; CostFactor: 'Reference input'). The property-level attack — does the owning §2.6 schema supply confidence on RateCard/CostFactor to support their being Evidence sources — confirmed it does not (neither carries a confidence property), so declaring them non-citable is consistent with the owning definition rather than contradicting it.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-004 §4 (RateCard/CostFactor basis-4; CapabilityCostEstimate basis-1) vs DDR-002 §2.6 (CapabilityCostEstimate confidence-bearing; RateCard/CostFactor reference inputs, no confidence property)"
+    }
+  }
+]

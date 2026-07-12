@@ -1,0 +1,7 @@
+{
+  "finding_id": "01369e21a2d98cb1",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record SKILL (ddr-template — 'Pre-Acceptance / Migration Conditions' section: conditions enumerated as discrete buildable prerequisites with tracking pointers; Status lifecycle 'ACCEPTED-WITH-CONDITIONS when the design is sound but blocked on prerequisites') + DDR-004 §Pre-Acceptance condition 1 (RBT-54 Touch 3 carrier)",
+  "rationale": "The finding is that a claimed 'total by construction' property depends on an unbuilt enforcement carrier (RBT-54 Touch 3). The doctype's own template already dictates the fix: unbuilt prerequisites are recorded as enumerated Pre-Acceptance Conditions with tracking pointers, keeping the record in PROPOSED/ACCEPTED-WITH-CONDITIONS until discharged — which DDR-004 already does. Conforming the totality claim's phrasing to its own declared condition-1 dependency introduces no new choice; the convention determines it.",
+  "confidence": "medium"
+}

@@ -1,0 +1,7 @@
+{
+  "finding_id": "b27f42d79a59c72b",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "DDR-002 v1.2.0 §4 defines Evidence.observed_at but does not state whether it carries the capture-instant meaning DDR-004's reconstructibility guarantee requires; the record itself forks on this unsettled upstream (capture-instant reading vs. a new derived-at field), and no ratified authority disambiguates which mechanism holds — the semantic must be confirmed or a schema choice made, neither of which is already decided.",
+  "confidence": "high"
+}

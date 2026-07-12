@@ -1,0 +1,7 @@
+{
+  "finding_id": "40bdc898369938fd",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "DDR-002 §4's Evidence schema defines observed_at as a point-in-time source-freshness pin, not the capture instant; DDR-004 §6's preferred mechanism reads capture-instant meaning into that same field, and the deliberation record itself flags a verify-intent gate 'against DDR-002's meaning' plus a derived-at-field fallback. Which reading governs (repurpose observed_at as capture instant vs. add a dedicated field) is an unratified fork the cited authorities do not disambiguate — DDR-002 §4 does not supply the capture-instant meaning, and the routed RBT-54 mechanization has not yet ruled.",
+  "confidence": "high"
+}

@@ -1,0 +1,580 @@
+{
+  "header": {
+    "set": [
+      "DDR-004"
+    ],
+    "counted_severities": [
+      "BLOCKING",
+      "MATERIAL"
+    ],
+    "plateau_N": 3,
+    "mode": "dry"
+  },
+  "findings": [
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-004"
+      ],
+      "locus": "Decision \u2014 'This record fixes the function, its constant treatment, its totality contract, its composition boundary, and its calibration governance.'",
+      "claim": "The title, summary (file Description), and status frame DDR-004 as fixing the inherited-confidence derivation, but \u00a74 and \u00a76 commit determinations that are DDR-002 schema amendments \u2014 per-node-label declared-basis carriers on PlaneDefinition (\u00a72.6), core-plane basis annotations (\u00a72.2\u20132.5), the DeploymentEnvironment basis-2 annotation, and the Evidence.observed_at semantic \u2014 which the record itself states are 'DDR-002 amendments (Pre-Acceptance Conditions)' tracked on RBT-54. These are decisions the record depends on and partly pre-decides (e.g. 'DeploymentEnvironment = basis 2, observed_at-absence ratified correct-by-design') while the title claims only a derivation-function ruling; whether the record decides the DDR-002 amendment content or merely entails it is not cleanly separated in the claim surface.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-004 \u00a74 (per-class dispositions + 'These are DDR-002 amendments (Pre-Acceptance Conditions)') and \u00a76 (Evidence.observed_at semantic) vs. DDR-004 Decision/title claim scope"
+      },
+      "id": "a975e568dfb8780e",
+      "classification": "resolvable",
+      "authority_locus": "deliberation-record-ddr-004, Authoring notes ('DDR-002 mechanization not authored here') + Item 4/6 rulings, and author-decision-record SKILL, DDR routing ('Keep the record's body to the contract'; DDR shape \u2014 Pre-Acceptance/Migration Conditions with tracking pointers)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-004"
+      ],
+      "locus": "Reconciliation with the SDD-001 interim \u2014 'the SDD needs no content change \u2014 the pointer resolution is a change-log-carried amendment on the SDD side'",
+      "claim": "DDR-004 asserts SDD-001 needs no content change because \u00a73.4.3/\u00a79 route by subject-name. But SDD-001 \u00a73.4.3 as fetched states 'Extension-plane nodes take branch (i) where they carry a node confidence, else \u2014 where they carry observed_at \u2014 Environment-class treatment (contested)' and rejects only the confidence-less, timestamp-less Extension citation via CONFIDENCE_UNDERIVABLE. DDR-004 \u00a74 now reclassifies totality as a per-class declared-basis property (four bases, CONFIDENCE_UNDERIVABLE demoted to defense-in-depth unreachable for well-formed planes). The interim SDD text describes CONFIDENCE_UNDERIVABLE as the primary reachable control for a known Extension case; DDR-004 makes it a backstop only. This is a substantive change in what the SDD's implemented behavior describes, not merely a pointer resolution \u2014 the claim that no content change is needed is not supported by the cited SDD substrate.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-004 \u00a74 + Reconciliation section vs. SDD-001 v1.0.0 \u00a73.4.3 (Extension-branch totality / CONFIDENCE_UNDERIVABLE as primary reachable case)"
+      },
+      "id": "6f5aaa1accd068a4",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-004"
+      ],
+      "locus": "\u00a74 Per-class declared-basis totality \u2014 'A citation that reaches no branch is rejected, typed CONFIDENCE_UNDERIVABLE, fail-closed' vs. \u00a71 Totality",
+      "claim": "The record claims totality is 'total by construction' because 'every citable node-class carries a declared basis (\u00a74),' and simultaneously that CONFIDENCE_UNDERIVABLE is 'unreachable for any well-formed plane.' But the deliberation-grounded honest floor stated in \u00a74 ('whether reasoners cite DeploymentEnvironment, RateCard, or CostFactor is unverified') and the n=0 traffic floor mean the totality property is asserted for the current declared planes only. The record does not declare a consequence/side-effect: a newly-registered Extension plane that declares a citable node with no basis is said to 'fail registration' (\u00a74), but the enforcement of that fail-registration is routed to a DDR-002 amendment not yet made (RBT-54 Touch 3). Until that carrier exists, 'total by construction' is a claimed property whose enforcing mechanism is a declared dependency that does not yet exist \u2014 the record asserts the totality guarantee while its enforcement artifact is unbuilt.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-004 \u00a71 ('total by construction') + \u00a74 ('fails registration' / 'These are DDR-002 amendments (Pre-Acceptance Conditions)') vs. \u00a7Pre-Acceptance condition 1 (carriers tracked RBT-54 Touch 3, not yet authored)"
+      },
+      "id": "01369e21a2d98cb1",
+      "classification": "resolvable",
+      "authority_locus": "author-decision-record SKILL (ddr-template \u2014 'Pre-Acceptance / Migration Conditions' section: conditions enumerated as discrete buildable prerequisites with tracking pointers; Status lifecycle 'ACCEPTED-WITH-CONDITIONS when the design is sound but blocked on prerequisites') + DDR-004 \u00a7Pre-Acceptance condition 1 (RBT-54 Touch 3 carrier)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "COSMETIC",
+      "target": [
+        "DDR-004"
+      ],
+      "locus": "Rationale + Pre-Acceptance / Reconciliation \u2014 instantiated run/ticket identifiers in normative body",
+      "claim": "The record's Rationale, Pre-Acceptance Conditions, and Reconciliation sections carry instantiated process identifiers (run-009 R6, runs 010/011/012, RBT-53, RBT-54 Touch 3, union disposition Item 1) threaded through normative prose rather than confined to Change Log / Cross-References. The record's own deliberation-record notes flag this as a docs-structure contract-purity miss to be cleared before push; from claim-fidelity altitude the concern is that process narrative in the body dilutes what the record decides versus how it came to be decided.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "author-decision-record SKILL, Authoring discipline \u2014 'Keep the record's body to the contract. Process narrative, ticket IDs, and review history belong in the Change Log, Cross-References, or your tracker \u2014 not threaded through the body.'"
+      },
+      "id": "1fb9a276310573ec",
+      "classification": "resolvable",
+      "authority_locus": "author-decision-record SKILL, Authoring discipline \u2014 'Keep the record's body to the contract. Process narrative, ticket IDs, and review history belong in the Change Log, Cross-References, or your tracker \u2014 not threaded through the body.'",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "POSITIVE",
+      "target": [
+        "DDR-004"
+      ],
+      "locus": "\u00a72 Constant treatment \u2014 the 1.0 invariant-ground vs. contested-tunable split",
+      "claim": "I attacked the claim that fixing 1.0 as invariant-ground (not a \u00a74.6 tunable) over-decides beyond what this record's stated scope permits \u2014 testing whether it smuggles a determination DDR-002 \u00a74 already owns or contradicts. The record cleanly declares 1.0 as 'a determination this record makes on canonical warrant, not a value DDR-002 carries,' and names the canonical support (DDR-002 \u00a74 fixes inheritance by authority class and the ordering, not the literal 1.0). The decision content matches the claimed scope: it decides the constant treatment it says it decides, and the dependency on DDR-002 \u00a74 is named. The claim-fidelity attack failed \u2014 the scope boundary and its cited authority hold.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "DDR-004 \u00a72 vs. DDR-002 v1.2.0 \u00a74 (canonical confidence definition \u2014 inheritance by authority class, ordering, #24 ceiling)"
+      },
+      "id": "d298a9d6d89602ec",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "POSITIVE",
+      "target": [
+        "DDR-004"
+      ],
+      "locus": "\u00a75 Composition boundary \u2014 branch (i) inherits node authority only; per-target edge certainty routed to the ReasoningProgress rollup",
+      "claim": "I attacked \u00a75 as a potential quiet retraction \u2014 that declaring the OBSERVED_IN per-target certainty 'not this derivation's' responsibility might silently drop a consequence DDR-002 \u00a74/\u00a73 requires the derivation to carry. The record declares the side effect explicitly ('The only residue is indirection'), names the downstream owner (the ReasoningProgress rollup, routed to the solutioning-agent SDD per SDD-001 \u00a72.2), and states the boundary is 'documented, not amended.' The consequence is surfaced rather than smuggled, and the composition-owner dependency is named. The attack \u2014 that a boundary was drawn to shed a declared obligation without declaring it \u2014 did not land.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-004 \u00a75 vs. DDR-002 v1.2.0 \u00a74 (#24 ceiling / rollup routing) + \u00a73 (edge vs. node confidence surfaces) + SDD-001 \u00a72.2 (rollup routed to solutioning-agent SDD)"
+      },
+      "id": "9e55dd999c5106e6",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-004"
+      ],
+      "locus": "\u00a76 Reconciliation \u2014 \u0394t reconstructibility / Evidence.observed_at semantic",
+      "claim": "The record's calibration reconstructibility rests on the claim that Evidence.observed_at 'is' the capture instant, but DDR-002 \u00a74 defines Evidence.observed_at within the Evidence node schema without stating it is the capture instant, and \u00a73 of this record independently defines \u0394t's 'from' point as the cited node's observed_at (source freshness), not Evidence's own observed_at. The record itself flags this as unconfirmed ('Evidence.observed_at's intended meaning must be confirmed against DDR-002 before adoption'), so the durable-recoverability property the calibration path (\u00a76) depends on is asserted against an authority the record concedes it has not verified.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "DDR-002 v1.2.0 \u00a74 (:Reasoning:Evidence schema \u2014 observed_at property, no capture-instant definition)"
+      },
+      "id": "7190c023eae1c51f",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-004"
+      ],
+      "locus": "\u00a74 Per-class declared-basis totality \u2014 DeploymentEnvironment basis-2 assignment",
+      "claim": "\u00a74 assigns Environment DeploymentEnvironment basis 2 with 'the Environment base 0.9, contested per \u00a72, decay term dropped.' But \u00a72 defines base=0.9 as the Environment aging constant paired with \u03c4, calibrated 'to the baseline reliability of fresh Environment facts' decayed over time (\u00a76). Reusing 0.9 as a flat, non-decaying base for a structurally-stable node applies a constant whose entire calibration rationale (\u00a76: base fit to fresh-fact reliability against outcomes, \u03c4 fit to staleness timescale) presupposes the decay term the assignment drops \u2014 the value's substantiation in \u00a72/\u00a76 does not cover a non-aging use, leaving the DeploymentEnvironment base uncalibrated by any stated basis.",
+      "cited_authority": {
+        "kind": "soundness",
+        "ref": "internal inconsistency between \u00a74 DeploymentEnvironment basis-2 use of 0.9 and \u00a72/\u00a76 calibration rationale for base=0.9 (aging-only)"
+      },
+      "id": "185c6d81b860bae9",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-004"
+      ],
+      "locus": "Cross-References / normative body \u2014 instantiated identifiers in contract sections",
+      "claim": "Normative body sections (Rationale, Reconciliation with the SDD-001 interim, Pre-Acceptance/Migration Conditions) carry instantiated run/ticket identifiers (run-009 R6, runs 010/011/012, RBT-53, RBT-54 Touch 3, union disposition Item 1) rather than confining them to Change Log / Cross-References, deviating from the authoring-discipline convention that process narrative, ticket IDs, and review history belong in the Change Log, Cross-References, or tracker \u2014 not threaded through the body.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "author-decision-record-SKILL \u2014 Authoring discipline: 'Keep the record's body to the contract. Process narrative, ticket IDs, and review history belong in the Change Log, Cross-References, or your tracker \u2014 not threaded through the body.'"
+      },
+      "id": "9bddf9499185c1c1",
+      "classification": "resolvable",
+      "authority_locus": "author-decision-record-SKILL \u2014 Authoring discipline: 'Keep the record's body to the contract. Process narrative, ticket IDs, and review history belong in the Change Log, Cross-References, or your tracker \u2014 not threaded through the body.'",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-004"
+      ],
+      "locus": "\u00a74 / Pre-Acceptance Conditions \u2014 DDR-002 amendments as pre-mechanization dependency",
+      "claim": "The record fixes per-class declared-basis totality (\u00a74) and states the declared basis 'is carried in the schema \u2026 These are DDR-002 amendments (Pre-Acceptance Conditions),' yet the totality property the derivation's soundness rests on ('For every citable node-class exactly one branch yields a value, because every citable class carries a declared basis (\u00a74)', \u00a71) is unenforceable until those DDR-002 amendments land. The record claims totality is 'total by construction' and 'established at each citable node-class's definition boundary,' but the carriers that would make it so are un-ratified forward dependencies on RBT-54 \u2014 the claimed by-construction guarantee is not substantiated in the ratified schema as it stands.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-004 \u00a71 'total by construction' + \u00a74 'established at each citable node-class's definition boundary' vs. DDR-004 Pre-Acceptance Condition 1 (declared-basis carriers are un-ratified DDR-002 amendments on RBT-54 Touch 3)"
+      },
+      "id": "480db100ef4e4d6f",
+      "classification": "resolvable",
+      "authority_locus": "author-decision-record SKILL (ddr-template \u00a7Pre-Acceptance/Migration Conditions + Status-and-Version lifecycle) + DDR-004 deliberation record Item 4 / Authoring notes (RBT-54 Touch 3 routing) + ddr-template \u00a7Status (ACCEPTED-WITH-CONDITIONS for designs blocked on prerequisites)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "COSMETIC",
+      "target": [
+        "DDR-004"
+      ],
+      "locus": "References header \u2014 DDR-002 \u00a72.2/\u00a72.6 vs \u00a72.2\u20132.5 citation",
+      "claim": "The References field and Cross-References cite 'DDR-002 \u00a72.2/\u00a72.6 plane schemas' and '\u00a72.2 / \u00a72.6 (Environment and Extension plane schemas),' but \u00a74's declared-basis carriers span \u00a72.2\u2013\u00a72.5 (core planes) per Pre-Acceptance Condition 1 ('core-plane bases are annotated in \u00a72.2\u20132.5'). The header citation understates the loci the record actually amends, so a reader resolving cross-references from the header alone will not find the Catalog/Standards/Governance/Operational plane sections the ruling touches.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-004 References/Cross-References (\u00a72.2/\u00a72.6) vs. DDR-004 Pre-Acceptance Condition 1 (\u00a72.2\u20132.5 core-plane annotations)"
+      },
+      "id": "0b94cfaec7b58624",
+      "classification": "resolvable",
+      "authority_locus": "DDR-004 Pre-Acceptance Condition 1 ('core-plane bases are annotated in \u00a72.2\u2013\u00a72.5') \u2014 the record's own internally-ratified statement of the loci \u00a74's declared-basis carriers span",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "POSITIVE",
+      "target": [
+        "DDR-004"
+      ],
+      "locus": "\u00a75 Composition boundary \u2014 branch (i) \u00d7 #24 ceiling",
+      "claim": "Checked the branch-(i)-inherits-node-authority-only boundary against DDR-002 \u00a74's #24 ceiling (conclusion bounded at max of supporting Evidence.confidence, weight below the ceiling only). Attacked it as a silent loss of the OBSERVED_IN per-target edge certainty: the record correctly locates that certainty on the edge (DDR-002 \u00a73, node vs edge confidence split), routes its composition to the ReasoningProgress rollup (SDD-001 \u00a72.2/\u00a73.3.3 returns the two uncomposed), and the weakest-link ceiling direction (foreclose upward, permit downward via weight) is consistent with DDR-002 \u00a74's stated bound. The boundary holds without deviation from the cited canon.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "DDR-002 v1.2.0 \u00a74 (#24 ceiling = max supporting Evidence.confidence; weight below ceiling) + \u00a73 (node/edge confidence split)"
+      },
+      "id": "1811dcec6d743873",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "POSITIVE",
+      "target": [
+        "DDR-004"
+      ],
+      "locus": "\u00a71 / \u00a74 Totality \u2014 derive-or-reject fail-closed against CONFIDENCE_UNDERIVABLE",
+      "claim": "Checked the total-by-construction / derive-or-reject invariant against SDD-001 \u00a73.4.3 (the implemented derivation) and \u00a73.2 (CONFIDENCE_UNDERIVABLE typed, fail-closed). Attacked it for a defaulting gap \u2014 a citation reaching no branch. The record's four-basis enumeration plus the fail-closed CONFIDENCE_UNDERIVABLE backstop matches SDD-001's implemented behavior exactly (branch (i) native, branch (ii) class base \u00d7 freshness, reject typed otherwise), and the demotion of CONFIDENCE_UNDERIVABLE to defense-in-depth is consistent with the per-class basis declaration closing the reachable cases named in SDD-001 \u00a73.4.3. No default-a-value path exists in the specified behavior.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "SDD-001 v1.0.0 \u00a73.4.3 (capture-evidence derivation, total by construction) + \u00a73.2 (CONFIDENCE_UNDERIVABLE typed fail-closed)"
+      },
+      "id": "07dc8e9d3832f3aa",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-004"
+      ],
+      "locus": "\u00a74 Per-class declared-basis totality + Pre-Acceptance Condition 1",
+      "claim": "The ruling's totality-by-construction property is load-bearing (branch (ii) totality, the CONFIDENCE_UNDERIVABLE demotion to defense-in-depth) yet depends entirely on DDR-002 amendments that do not yet exist \u2014 the PlaneDefinition per-node-label basis declaration and the core-plane basis annotations are routed to RBT-54 Touch 3, downstream and unauthored. The record commits a total-by-construction contract against a schema that cannot yet carry the declared basis. This is a timing posture: the ruling's central invariant is stated as achieved when its enforcement carrier is a forthcoming, unratified amendment on another ticket.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-004 \u00a74 'These are DDR-002 amendments (Pre-Acceptance Conditions)' + Pre-Acceptance Condition 1 (RBT-54 Touch 3) vs. DDR-002 v1.2.0 \u00a72.6 PlaneDefinition schema (no derivation-basis declaration field exists)"
+      },
+      "id": "a80870ab8e52393d",
+      "classification": "resolvable",
+      "authority_locus": "author-decision-record SKILL (DDR route) \u2014 Pre-Acceptance / Migration Conditions section: 'If the ruling is conditional \u2014 sound design, blocked on prerequisites \u2014 enumerate each condition as a discrete, buildable prerequisite with a tracking pointer,' plus the Status lifecycle 'ACCEPTED-WITH-CONDITIONS when the design is sound but blocked on prerequisites'; ddr-template Pre-Acceptance/Migration Conditions",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-004"
+      ],
+      "locus": "\u00a76 Reconciliation / \u00a73 Reconstructibility + Pre-Acceptance Condition 2",
+      "claim": "The calibration path and the \u0394t-reconstructibility property both rest on an unresolved dependency: Evidence.observed_at's intended meaning is not yet confirmed against DDR-002, and the record itself states the derivation may need 'a dedicated derived-at field added to Evidence' if DDR-002 intends the pinned-source-freshness reading instead. A ruling whose reconstructibility guarantee (\u00a73, load-bearing for \u00a76 calibration) forks on an unsettled upstream semantic is premature against that upstream \u2014 it commits to 'either way the capture instant is durably recoverable' before the branch that decides which mechanism is even known.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-004 \u00a76 'Evidence.observed_at's intended meaning must be confirmed against DDR-002 before adoption' + \u00a73 Reconstructibility vs. DDR-002 v1.2.0 \u00a74 (:Reasoning:Evidence) observed_at field (meaning unstated for the capture-instant reading)"
+      },
+      "id": "b27f42d79a59c72b",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-004"
+      ],
+      "locus": "Pre-Acceptance Condition 3 + Standing condition",
+      "claim": "The record asserts 'The ruling is sound as authored' while carrying three pre-acceptance conditions, two of which (Conditions 1 and 2) are DDR-002 amendments not yet authored on another ticket, plus a standing condition that its own load-bearing constants are empirically unvalidated at n=0 traffic. A DDR whose full mechanization depends on forthcoming amendments to its own ratified substrate is a candidate for ACCEPTED-WITH-CONDITIONS posture, not a ruling that 'stands as authored' \u2014 the reversibility question (does this shape deserve to stand now, before the DDR-002 carriers are settled) is not squarely posed by the record.",
+      "cited_authority": {
+        "kind": "design-intent",
+        "ref": "author-decision-record SKILL: 'DDRs frequently land at ACCEPTED-WITH-CONDITIONS when prerequisite work must precede migration' + 'Conditions without tracking are wishes' \u2014 the record's conditions are tracked but the 'sound as authored' framing understates that acceptance is gated on unauthored upstream amendments"
+      },
+      "id": "9e710b13223b6172",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "POSITIVE",
+      "target": [
+        "DDR-004"
+      ],
+      "locus": "\u00a72 Constant treatment (1.0 invariant) vs. ADR-001 \u00a72.3 / DDR-002 \u00a74",
+      "claim": "Attacked the 1.0-as-invariant ruling as a hidden fitness discrimination that would pull against the gateway's 'executes everything, authors nothing' posture \u2014 i.e., that fixing co-valid ground-truth options at equal 1.0 could be a place where the derivation silently makes a selection judgment. It held: the record explicitly separates epistemic confidence (is this fact true/current) from decision fitness (is this the better choice) and routes selection to the ASA's ReasoningProgress/RejectedAlternative/weight surfaces, consistent with ADR-001 \u00a72.2's reasoning-capture locus and DDR-002 \u00a74's inheritance-by-authority-class. The invariant reinforces the layering posture rather than pulling against it.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "ADR-001 v1.1.0 \u00a72.2/\u00a72.3 (locus of reasoning; gateway authors nothing) + DDR-002 v1.2.0 \u00a74 (inheritance by authority class, not fitness)"
+      },
+      "id": "f9c7d06beee809bc",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "POSITIVE",
+      "target": [
+        "DDR-004"
+      ],
+      "locus": "\u00a75 Composition boundary (branch (i) \u00d7 #24 ceiling) vs. DDR-002 \u00a74",
+      "claim": "Attacked the branch-(i)-inherits-node-authority-only boundary as a decision-bearing commitment that forecloses the routed ReasoningProgress rollup's access to per-target edge certainty \u2014 a position that could deserve its own record rather than a documented boundary. It held: the foreclosure is directional (upward only, under the #24 weakest-link ceiling max(Evidence.confidence)), the downward direction remains available below the ceiling via weight/aggregation, and the composition is routed to the already-designated solutioning-agent SDD per DDR-002 \u00a74's rollup routing. The boundary is documented, not amended, and integrates with the ratified ceiling rather than committing a new undecided position.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "DDR-002 v1.2.0 \u00a74 (#24 ceiling = max of supporting Evidence.confidence; rollup function routed to SDD) + \u00a73 (OBSERVED_IN per-target edge confidence composed at rollup)"
+      },
+      "id": "866260985d0dc7b5",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-004"
+      ],
+      "locus": "\u00a74 Per-class dispositions \u2014 Environment DeploymentEnvironment (basis 2, base 0.9)",
+      "claim": "DDR-004 assigns Environment `DeploymentEnvironment` a non-aging flat base equal to the Environment base 0.9, and \u00a72 fixes 0.9 as the contested Environment `base` tunable governed by \u00a76 calibration. But \u00a76 states `base` is 'fit to the baseline reliability of *fresh* Environment facts against outcomes' via re-observation of aging facts \u2014 a calibration procedure defined over the aging branch (ii). A non-aging `DeploymentEnvironment` produces no \u0394t and no re-observation staleness signal, so a re-tune of `base` driven by aging-fact calibration would silently move `DeploymentEnvironment`'s flat confidence, which the \u00a76 calibration evidence never measured. The record couples `DeploymentEnvironment`'s flat base to a constant whose stated calibration basis does not include it.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-004 \u00a74 (DeploymentEnvironment basis-2 flat base = Environment base 0.9) in conflict with DDR-004 \u00a76 ('base is fit to the baseline reliability of fresh Environment facts against outcomes' \u2014 aging-branch re-observation calibration)"
+      },
+      "id": "da6eccd69eaf1836",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-004"
+      ],
+      "locus": "\u00a74 basis table / \u00a75 composition boundary \u2014 Operational ObservedPattern basis 1 vs. edge certainty",
+      "claim": "\u00a74 assigns Operational `ObservedPattern` basis 1 (inherit the node's own `confidence`), and \u00a71 branch (i) names it 'lesson reliability.' \u00a75 states the `OBSERVED_IN` per-target edge certainty is 'not inherited into Evidence.confidence' and composes downstream. DDR-002 \u00a72.3/\u00a73 fix `ObservedPattern` as carrying BOTH a node `confidence` (lesson reliability) AND an `OBSERVED_IN` edge `confidence` (per-target observation certainty). Basis 1 as authored \u2014 'inherit the node's own confidence' \u2014 is exactly what \u00a75 confirms; the two sections are consistent on inheritance, but \u00a74's basis table entry 'as encoded in the node's confidence' under Staleness makes no statement about the edge-certainty surface DDR-002 requires exist, and the record nowhere asserts that a citation of an ObservedPattern reaches only the node surface at capture. Whether branch (i) reads node-only is asserted in \u00a75 prose but the \u00a74 totality table (the load-bearing per-class contract) does not encode the node-vs-edge scope, leaving the totality claim underspecified against the DDR-002 dual-surface definition.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-004 \u00a74 basis-1 table entry (ObservedPattern) against DDR-002 \u00a72.3/\u00a73 (ObservedPattern node confidence + OBSERVED_IN edge confidence, dual surface) and DDR-004 \u00a75 (edge certainty not inherited)"
+      },
+      "id": "8a01ef39a50f2021",
+      "classification": "resolvable",
+      "authority_locus": "DDR-004 \u00a75 composition boundary (Item 7 ruling) + DDR-002 \u00a74 confidence-surface canon + DDR-002 \u00a72.3/\u00a73 (ObservedPattern node confidence = lesson reliability; OBSERVED_IN edge confidence = per-target certainty)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-004"
+      ],
+      "locus": "\u00a76 Reconstructibility / Pre-Acceptance Condition 2 \u2014 Evidence.observed_at semantic",
+      "claim": "DDR-004 \u00a76 asserts the preferred mechanism 'fixes that `Evidence.observed_at` *is* the capture instant (the \u0394t \"to\" point; the cited node's `observed_at` \u2014 the \"from\" point \u2014 recovered via the version pin).' DDR-002 \u00a74 defines `(:Reasoning:Evidence)` with `observed_at` (T2) but does not state its meaning as the capture instant; \u00a73 (this record) defines `\u0394t = capture_instant \u2212 cited_node.observed_at`, using the CITED NODE's `observed_at` as the 'from' point. The record simultaneously (a) uses `cited_node.observed_at` as the freshness-source timestamp and (b) proposes `Evidence.observed_at` means the capture instant \u2014 two distinct semantics for the same-named `observed_at` field across the Evidence node and the cited node, with the Evidence.observed_at meaning explicitly flagged as unconfirmed against DDR-002 (Pre-Acceptance Condition 2). The owning definition (DDR-002 \u00a74) supplies no capture-instant meaning for Evidence.observed_at; the record asserts a concrete property while deferring its confirmation.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-004 \u00a76 + Pre-Acceptance Condition 2 ('Evidence.observed_at is the capture instant', flagged unconfirmed) against DDR-002 \u00a74 (Evidence.observed_at (T2) \u2014 no capture-instant meaning supplied by the owning schema)"
+      },
+      "id": "354e92daf5d7f435",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-004"
+      ],
+      "locus": "\u00a74 basis-carrier claim \u2014 'These are DDR-002 amendments (Pre-Acceptance Conditions)' + \u00a72 last paragraph",
+      "claim": "\u00a74 states the declared basis 'is carried in the schema \u2014 for core planes in DDR-002 \u00a72.2\u20132.5, for Extension planes in the `PlaneDefinition` registration contract (\u00a72.6)' as DDR-002 amendments. DDR-002 \u00a72.6 `PlaneDefinition` is defined with `plane_id`, `plane_name`, `version`, `status`, `attaches_to`, `property_schema`, provenance \u2014 it carries no per-node-label derivation-basis declaration field. \u00a72.2\u2013\u00a72.5 core-plane node schemas carry no derivation-basis annotation. The record asserts a concrete schema-carried basis declaration as if delegating to DDR-002's registration contract, but DDR-002 as it currently stands does not supply that field; the record correctly labels these as amendments the record entails, yet \u00a74's totality proof ('a plane declaring a citable node with no basis fails registration') depends on a registration-contract capability DDR-002 does not yet carry, making the totality-by-construction claim contingent on an unratified amendment rather than the current substrate.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-004 \u00a74 ('declared basis is carried in the schema ... PlaneDefinition registration contract \u00a72.6'; 'fails registration') against DDR-002 \u00a72.6 PlaneDefinition schema (no derivation-basis field) and \u00a72.2\u2013\u00a72.5 (no basis annotation)"
+      },
+      "id": "df2dc4209e556a8d",
+      "classification": "resolvable",
+      "authority_locus": "DDR template (ddr-template.md) \u2014 'Pre-Acceptance / Migration Conditions' section + author-decision-record SKILL ('enumerate each condition as a discrete, buildable prerequisite with a tracking pointer'); DDR-004 deliberation record Authoring notes ('DDR-002 mechanization not authored here ... routed to RBT-54 Touch 3')",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-004"
+      ],
+      "locus": "Reconciliation with the SDD-001 interim \u2014 'Confirmed unchanged: ... the fail-closed CONFIDENCE_UNDERIVABLE interim' vs \u00a74 demotion",
+      "claim": "The Reconciliation section lists the fail-closed `CONFIDENCE_UNDERIVABLE` interim under 'Confirmed unchanged' AND lists 'the per-class declared-basis totality (superseding the interim's single named CONFIDENCE_UNDERIVABLE case)' under 'Fixed / extended by this record.' \u00a74 demotes `CONFIDENCE_UNDERIVABLE` from 'primary control' to 'defense-in-depth backstop ... unreachable for any well-formed plane.' SDD-001 \u00a73.4.3 treats `CONFIDENCE_UNDERIVABLE` as the reachable rejection for the confidence-less/timestamp-less Extension citation ('the known reachable case'). The record both confirms the interim unchanged and supersedes its primary-control role \u2014 the CONFIDENCE_UNDERIVABLE case is simultaneously described as an unchanged confirmed behavior and as a superseded/demoted one; the reachability status also flips from SDD-001's 'known reachable case' to DDR-004's 'unreachable for any well-formed plane.'",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-004 Reconciliation section ('Confirmed unchanged: fail-closed CONFIDENCE_UNDERIVABLE interim' vs 'Fixed/extended: per-class totality superseding the interim's single CONFIDENCE_UNDERIVABLE case') and \u00a74 ('unreachable for any well-formed plane') against SDD-001 \u00a73.4.3 ('the known reachable case')"
+      },
+      "id": "61f87db66e664384",
+      "classification": "resolvable",
+      "authority_locus": "DDR-004 \u00a74 as ratified in the deliberation-record-ddr-004, Item 4 ruling: 'CONFIDENCE_UNDERIVABLE is demoted from primary control to defense-in-depth \u2014 unreachable for any well-formed plane'",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "POSITIVE",
+      "target": [
+        "DDR-004"
+      ],
+      "locus": "\u00a75 Composition boundary \u2014 branch (i) \u00d7 #24 ceiling",
+      "claim": "Checked the \u00a75 claim that branch (i) inherits node authority only and that per-target edge certainty composes downstream under the #24 ceiling, against DDR-002 \u00a74's ceiling definition (ReasoningProgress.confidence \u2264 max(SUPPORTED_BY Evidence.confidence)) and \u00a73's confidence-surface split (node = lesson reliability; edge = per-target certainty). The claim holds: DDR-004's 'weakest-link, upward-foreclosed, downward-available-below-ceiling' reading is consistent with DDR-002 \u00a74 (weight affects aggregation only below the ceiling) and routes composition to the solutioning-agent SDD, which SDD-001 \u00a73.3.3 confirms returns the two surfaces uncomposed and routes the rollup. No contradiction surfaced across DDR-004 \u00a75, DDR-002 \u00a74/\u00a73, and SDD-001 \u00a73.3.3/\u00a72.2.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-004 \u00a75 against DDR-002 \u00a74 (#24 ceiling = max supporting Evidence.confidence; weight below ceiling) + \u00a73 (node/edge confidence split) + SDD-001 \u00a73.3.3 (track-record confidences returned uncomposed) / \u00a72.2 (rollup routed)"
+      },
+      "id": "029a9a926b81a312",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "POSITIVE",
+      "target": [
+        "DDR-004"
+      ],
+      "locus": "\u00a72 / \u00a76 \u2014 1.0 as invariant-ground vs contested base/\u03c4",
+      "claim": "Attacked the \u00a72 claim that the 1.0 class base is invariant-ground (not a \u00a74.6 tunable) while base/\u03c4 are contested tunables, checking for internal inconsistency with \u00a76's calibration scope and DDR-002 \u00a74's 'inheritance by authority class' canon. The split holds: \u00a76 explicitly scopes calibration to Environment base/\u03c4 only and states 1.0 is invariant, the form is fixed, and native bases inherit; DDR-002 \u00a74 fixes inheritance by authority class and the ordering (authoritative Catalog above aging Environment) but not the literal 1.0 \u2014 so DDR-004's characterization of 1.0 as a determination-on-canonical-warrant rather than a value DDR-002 carries is consistent with the upstream. No self-contradiction between \u00a72's invariant claim and \u00a76's calibration exclusion.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-004 \u00a72 (1.0 invariant-ground, not \u00a74.6 tunable) against DDR-004 \u00a76 (calibration scoped to Environment base/\u03c4; 1.0 invariant) and DDR-002 \u00a74 (inheritance by authority class + ordering, not literal 1.0)"
+      },
+      "id": "7ffac1ab9478ed1d",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    }
+  ],
+  "passes": [
+    {
+      "pass_number": 1,
+      "open_cbm_count": 15,
+      "agents_run": [
+        "antagonist-LAA",
+        "antagonist-SA",
+        "antagonist-EA",
+        "coherence",
+        "arbiter"
+      ],
+      "timestamp": "2026-07-11T19:47:35.712774+00:00"
+    }
+  ],
+  "doc_changes": []
+}

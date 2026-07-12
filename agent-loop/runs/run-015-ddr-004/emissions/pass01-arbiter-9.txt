@@ -1,0 +1,7 @@
+{
+  "finding_id": "0b94cfaec7b58624",
+  "classification": "resolvable",
+  "authority_locus": "DDR-004 Pre-Acceptance Condition 1 ('core-plane bases are annotated in §2.2–§2.5') — the record's own internally-ratified statement of the loci §4's declared-basis carriers span",
+  "rationale": "The fix is a determined internal-consistency correction: the header/Cross-References citation must be brought into line with the record's own Pre-Acceptance Condition 1, which already fixes the amended loci as §2.2–§2.5; no choice among conforming options is introduced and no silent authority is silent where a choice is needed.",
+  "confidence": "high"
+}

@@ -1,0 +1,52 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-004"],
+    "locus": "§4 Per-class declared-basis totality + Pre-Acceptance Condition 1",
+    "claim": "The ruling's totality-by-construction property is load-bearing (branch (ii) totality, the CONFIDENCE_UNDERIVABLE demotion to defense-in-depth) yet depends entirely on DDR-002 amendments that do not yet exist — the PlaneDefinition per-node-label basis declaration and the core-plane basis annotations are routed to RBT-54 Touch 3, downstream and unauthored. The record commits a total-by-construction contract against a schema that cannot yet carry the declared basis. This is a timing posture: the ruling's central invariant is stated as achieved when its enforcement carrier is a forthcoming, unratified amendment on another ticket.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-004 §4 'These are DDR-002 amendments (Pre-Acceptance Conditions)' + Pre-Acceptance Condition 1 (RBT-54 Touch 3) vs. DDR-002 v1.2.0 §2.6 PlaneDefinition schema (no derivation-basis declaration field exists)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-004"],
+    "locus": "§6 Reconciliation / §3 Reconstructibility + Pre-Acceptance Condition 2",
+    "claim": "The calibration path and the Δt-reconstructibility property both rest on an unresolved dependency: Evidence.observed_at's intended meaning is not yet confirmed against DDR-002, and the record itself states the derivation may need 'a dedicated derived-at field added to Evidence' if DDR-002 intends the pinned-source-freshness reading instead. A ruling whose reconstructibility guarantee (§3, load-bearing for §6 calibration) forks on an unsettled upstream semantic is premature against that upstream — it commits to 'either way the capture instant is durably recoverable' before the branch that decides which mechanism is even known.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-004 §6 'Evidence.observed_at's intended meaning must be confirmed against DDR-002 before adoption' + §3 Reconstructibility vs. DDR-002 v1.2.0 §4 (:Reasoning:Evidence) observed_at field (meaning unstated for the capture-instant reading)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-004"],
+    "locus": "Pre-Acceptance Condition 3 + Standing condition",
+    "claim": "The record asserts 'The ruling is sound as authored' while carrying three pre-acceptance conditions, two of which (Conditions 1 and 2) are DDR-002 amendments not yet authored on another ticket, plus a standing condition that its own load-bearing constants are empirically unvalidated at n=0 traffic. A DDR whose full mechanization depends on forthcoming amendments to its own ratified substrate is a candidate for ACCEPTED-WITH-CONDITIONS posture, not a ruling that 'stands as authored' — the reversibility question (does this shape deserve to stand now, before the DDR-002 carriers are settled) is not squarely posed by the record.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "author-decision-record SKILL: 'DDRs frequently land at ACCEPTED-WITH-CONDITIONS when prerequisite work must precede migration' + 'Conditions without tracking are wishes' — the record's conditions are tracked but the 'sound as authored' framing understates that acceptance is gated on unauthored upstream amendments"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-004"],
+    "locus": "§2 Constant treatment (1.0 invariant) vs. ADR-001 §2.3 / DDR-002 §4",
+    "claim": "Attacked the 1.0-as-invariant ruling as a hidden fitness discrimination that would pull against the gateway's 'executes everything, authors nothing' posture — i.e., that fixing co-valid ground-truth options at equal 1.0 could be a place where the derivation silently makes a selection judgment. It held: the record explicitly separates epistemic confidence (is this fact true/current) from decision fitness (is this the better choice) and routes selection to the ASA's ReasoningProgress/RejectedAlternative/weight surfaces, consistent with ADR-001 §2.2's reasoning-capture locus and DDR-002 §4's inheritance-by-authority-class. The invariant reinforces the layering posture rather than pulling against it.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-001 v1.1.0 §2.2/§2.3 (locus of reasoning; gateway authors nothing) + DDR-002 v1.2.0 §4 (inheritance by authority class, not fitness)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-004"],
+    "locus": "§5 Composition boundary (branch (i) × #24 ceiling) vs. DDR-002 §4",
+    "claim": "Attacked the branch-(i)-inherits-node-authority-only boundary as a decision-bearing commitment that forecloses the routed ReasoningProgress rollup's access to per-target edge certainty — a position that could deserve its own record rather than a documented boundary. It held: the foreclosure is directional (upward only, under the #24 weakest-link ceiling max(Evidence.confidence)), the downward direction remains available below the ceiling via weight/aggregation, and the composition is routed to the already-designated solutioning-agent SDD per DDR-002 §4's rollup routing. The boundary is documented, not amended, and integrates with the ratified ceiling rather than committing a new undecided position.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 v1.2.0 §4 (#24 ceiling = max of supporting Evidence.confidence; rollup function routed to SDD) + §3 (OBSERVED_IN per-target edge confidence composed at rollup)"
+    }
+  }
+]

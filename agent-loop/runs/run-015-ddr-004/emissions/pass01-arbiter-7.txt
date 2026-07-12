@@ -1,0 +1,7 @@
+{
+  "finding_id": "9bddf9499185c1c1",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record-SKILL — Authoring discipline: 'Keep the record's body to the contract. Process narrative, ticket IDs, and review history belong in the Change Log, Cross-References, or your tracker — not threaded through the body.'",
+  "rationale": "The cited skill dictates the fix directly and univocally: instantiated ticket/run identifiers must be moved out of the normative body into the Change Log or Cross-References; no new choice among conforming options is introduced, and the deliberation record itself already anticipates this exact correction.",
+  "confidence": "high"
+}

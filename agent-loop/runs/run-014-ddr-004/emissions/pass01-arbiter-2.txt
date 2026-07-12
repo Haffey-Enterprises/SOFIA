@@ -1,0 +1,7 @@
+{
+  "finding_id": "b479937f2539db51",
+  "classification": "resolvable",
+  "authority_locus": "DDR-004 deliberation record Items 1 and 8 (ratified design intent) — 'fix the form, hold the constants as contested tunables'; calibration = 'defines the process, not a result'; two-tier governance where tuning is reversible and re-ratification is the amendment act",
+  "rationale": "The ratified deliberation intent already draws the exact distinctions the finding says the summary blurs: form/governance are fixed while constants and calibration-results are held open; the fix is to make the preamble's verbs conform to that already-decided scope (e.g., 'fixes the calibration governance' not the calibration result), introducing no new choice.",
+  "confidence": "high"
+}

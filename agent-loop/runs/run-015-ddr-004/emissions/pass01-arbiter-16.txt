@@ -1,0 +1,7 @@
+{
+  "finding_id": "df2dc4209e556a8d",
+  "classification": "resolvable",
+  "authority_locus": "DDR template (ddr-template.md) — 'Pre-Acceptance / Migration Conditions' section + author-decision-record SKILL ('enumerate each condition as a discrete, buildable prerequisite with a tracking pointer'); DDR-004 deliberation record Authoring notes ('DDR-002 mechanization not authored here ... routed to RBT-54 Touch 3')",
+  "rationale": "The finding is that a totality-by-construction claim rests on a PlaneDefinition basis-declaration field DDR-002 does not yet carry; the DDR template's Pre-Acceptance/Migration Conditions section is the ratified locus for exactly this — a design ruling whose 'fails registration' guarantee is contingent on an enumerated, tracked amendment (RBT-54 Touch 3), which the deliberation record already identifies. The fix is to state the contingency honestly as a pre-acceptance condition, not to make a new choice; the record already ruled the amendments entailed and routed them.",
+  "confidence": "high"
+}

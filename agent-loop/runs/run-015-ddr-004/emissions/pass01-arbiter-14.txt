@@ -1,0 +1,7 @@
+{
+  "finding_id": "8a01ef39a50f2021",
+  "classification": "resolvable",
+  "authority_locus": "DDR-004 §5 composition boundary (Item 7 ruling) + DDR-002 §4 confidence-surface canon + DDR-002 §2.3/§3 (ObservedPattern node confidence = lesson reliability; OBSERVED_IN edge confidence = per-target certainty)",
+  "rationale": "The node-vs-edge scope of basis 1 is already ratified: Item 7's ruling fixes that branch (i) inherits node authority only and the OBSERVED_IN edge certainty composes downstream in the rollup, grounded in DDR-002 §4's per-surface confidence definitions. The fix is to make §4's totality table state what §5 and Item 7 already determine — a wording conformance, introducing no new choice.",
+  "confidence": "high"
+}
