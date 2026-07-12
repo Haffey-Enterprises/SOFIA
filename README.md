@@ -6,7 +6,7 @@ SOFIA's durable value is the **Knowledge Graph** (enterprise ground-truth contex
 
 ## Engineering conventions
 
-This project follows the **bedrock** engineering skills (`application-code`, `testing`, `code-review`, `author-decision-record`, `debug`), installed in Claude (account + Claude Code plugin) and triggered automatically. The conventions are ambient, not vendored into this repo. See `CLAUDE.md` for project orientation.
+This project follows the **bedrock** engineering skills, installed in Claude (account + Claude Code plugin) and triggered automatically; the plugin owns the current skill list. The conventions are ambient, not vendored into this repo. See `CLAUDE.md` for project orientation.
 
 ## Layout
 

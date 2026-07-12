@@ -1,6 +1,6 @@
 # CLAUDE.md — SOFIA
 
-Repo-root orientation for Claude (auto-loaded by Claude Code). This file is **context, not conventions** — what SOFIA is, its stack, and where things live. The engineering conventions are not here: they live in the `bedrock:` skills (`application-code`, `testing`, `code-review`, `author-decision-record`, `debug`), which trigger on their own. Keep this file lean; prune as it grows.
+Repo-root orientation for Claude (auto-loaded by Claude Code). This file is **context, not conventions** — what SOFIA is, its stack, and where things live. The engineering conventions are not here: they live in the installed `bedrock` plugin's skills, which trigger on their own; the plugin owns the current skill list — this file does not mirror it. Keep this file lean; prune as it grows.
 
 ## What this is
 
@@ -27,7 +27,7 @@ A materially different choice on any axis is a **rebind**, not a substitution �
 
 ## Branch model
 
-`feature/*` → `develop` → `main`, via PRs; never commit directly to `develop` or `main`. Confirm the current branch before any git operation.
+`feature/*` → `develop` → `main`, via PRs; never commit directly to `main`. One exemption on `develop`, by artifact class: deliberation-state commits (`agent-loop/deliberation/`, run audits under `agent-loop/runs/`) may land directly — they are the session's own working record, not product. Everything else stays PR-gated. Confirm the current branch before any git operation.
 
 ## Services
 
