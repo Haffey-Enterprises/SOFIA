@@ -1,0 +1,7 @@
+{
+  "finding_id": "88caf2ebb5d232f7",
+  "classification": "resolvable",
+  "authority_locus": "DDR-004 Pre-Acceptance Condition 1 + §4 (routing the PlaneDefinition per-node-label basis declaration to RBT-54 Touch 3 as a forthcoming DDR-002 amendment); the deliberation-record authoring note ('DDR-002 mechanization not authored here … routed to RBT-54 Touch 3')",
+  "rationale": "The finding is a self-consistency/tense defect: §4 speaks of the PlaneDefinition basis carrier as a present locus while Pre-Acceptance Condition 1 already concedes it is a forthcoming amendment. The ratified stated intent already fixes that the carrier does not yet exist and is routed downstream, so the fix is determined — align §4's language to the routing the same document and its deliberation record already establish; no new choice is introduced.",
+  "confidence": "high"
+}

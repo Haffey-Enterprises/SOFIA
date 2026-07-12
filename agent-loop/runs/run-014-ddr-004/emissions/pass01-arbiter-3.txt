@@ -1,0 +1,7 @@
+{
+  "finding_id": "0f93e4582e1b8536",
+  "classification": "resolvable",
+  "authority_locus": "DDR-004 §3 vs §6/Pre-Acceptance Condition 2 (as grounded in deliberation-record-ddr-004 Item 8) — internal coherence fix scoped by the record's own already-ratified conditional treatment",
+  "rationale": "The finding is a coherence defect: §3 states 'Reconstructible' as already-true while §6 and Condition 2 correctly frame Evidence.observed_at's capture-instant meaning as unconfirmed against DDR-002. The record's ratified Item-8 disposition already fixes reconstructibility as conditional (verify-intent gate against DDR-002's meaning; derived-at field fallback), so the fix is determined — restate §3's property as conditioned on Condition 2 — introducing no new choice.",
+  "confidence": "high"
+}

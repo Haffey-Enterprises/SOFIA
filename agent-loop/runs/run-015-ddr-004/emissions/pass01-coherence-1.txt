@@ -1,0 +1,72 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-004"],
+    "locus": "§4 Per-class dispositions — Environment DeploymentEnvironment (basis 2, base 0.9)",
+    "claim": "DDR-004 assigns Environment `DeploymentEnvironment` a non-aging flat base equal to the Environment base 0.9, and §2 fixes 0.9 as the contested Environment `base` tunable governed by §6 calibration. But §6 states `base` is 'fit to the baseline reliability of *fresh* Environment facts against outcomes' via re-observation of aging facts — a calibration procedure defined over the aging branch (ii). A non-aging `DeploymentEnvironment` produces no Δt and no re-observation staleness signal, so a re-tune of `base` driven by aging-fact calibration would silently move `DeploymentEnvironment`'s flat confidence, which the §6 calibration evidence never measured. The record couples `DeploymentEnvironment`'s flat base to a constant whose stated calibration basis does not include it.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-004 §4 (DeploymentEnvironment basis-2 flat base = Environment base 0.9) in conflict with DDR-004 §6 ('base is fit to the baseline reliability of fresh Environment facts against outcomes' — aging-branch re-observation calibration)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-004"],
+    "locus": "§4 basis table / §5 composition boundary — Operational ObservedPattern basis 1 vs. edge certainty",
+    "claim": "§4 assigns Operational `ObservedPattern` basis 1 (inherit the node's own `confidence`), and §1 branch (i) names it 'lesson reliability.' §5 states the `OBSERVED_IN` per-target edge certainty is 'not inherited into Evidence.confidence' and composes downstream. DDR-002 §2.3/§3 fix `ObservedPattern` as carrying BOTH a node `confidence` (lesson reliability) AND an `OBSERVED_IN` edge `confidence` (per-target observation certainty). Basis 1 as authored — 'inherit the node's own confidence' — is exactly what §5 confirms; the two sections are consistent on inheritance, but §4's basis table entry 'as encoded in the node's confidence' under Staleness makes no statement about the edge-certainty surface DDR-002 requires exist, and the record nowhere asserts that a citation of an ObservedPattern reaches only the node surface at capture. Whether branch (i) reads node-only is asserted in §5 prose but the §4 totality table (the load-bearing per-class contract) does not encode the node-vs-edge scope, leaving the totality claim underspecified against the DDR-002 dual-surface definition.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-004 §4 basis-1 table entry (ObservedPattern) against DDR-002 §2.3/§3 (ObservedPattern node confidence + OBSERVED_IN edge confidence, dual surface) and DDR-004 §5 (edge certainty not inherited)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-004"],
+    "locus": "§6 Reconstructibility / Pre-Acceptance Condition 2 — Evidence.observed_at semantic",
+    "claim": "DDR-004 §6 asserts the preferred mechanism 'fixes that `Evidence.observed_at` *is* the capture instant (the Δt \"to\" point; the cited node's `observed_at` — the \"from\" point — recovered via the version pin).' DDR-002 §4 defines `(:Reasoning:Evidence)` with `observed_at` (T2) but does not state its meaning as the capture instant; §3 (this record) defines `Δt = capture_instant − cited_node.observed_at`, using the CITED NODE's `observed_at` as the 'from' point. The record simultaneously (a) uses `cited_node.observed_at` as the freshness-source timestamp and (b) proposes `Evidence.observed_at` means the capture instant — two distinct semantics for the same-named `observed_at` field across the Evidence node and the cited node, with the Evidence.observed_at meaning explicitly flagged as unconfirmed against DDR-002 (Pre-Acceptance Condition 2). The owning definition (DDR-002 §4) supplies no capture-instant meaning for Evidence.observed_at; the record asserts a concrete property while deferring its confirmation.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-004 §6 + Pre-Acceptance Condition 2 ('Evidence.observed_at is the capture instant', flagged unconfirmed) against DDR-002 §4 (Evidence.observed_at (T2) — no capture-instant meaning supplied by the owning schema)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-004"],
+    "locus": "§4 basis-carrier claim — 'These are DDR-002 amendments (Pre-Acceptance Conditions)' + §2 last paragraph",
+    "claim": "§4 states the declared basis 'is carried in the schema — for core planes in DDR-002 §2.2–2.5, for Extension planes in the `PlaneDefinition` registration contract (§2.6)' as DDR-002 amendments. DDR-002 §2.6 `PlaneDefinition` is defined with `plane_id`, `plane_name`, `version`, `status`, `attaches_to`, `property_schema`, provenance — it carries no per-node-label derivation-basis declaration field. §2.2–§2.5 core-plane node schemas carry no derivation-basis annotation. The record asserts a concrete schema-carried basis declaration as if delegating to DDR-002's registration contract, but DDR-002 as it currently stands does not supply that field; the record correctly labels these as amendments the record entails, yet §4's totality proof ('a plane declaring a citable node with no basis fails registration') depends on a registration-contract capability DDR-002 does not yet carry, making the totality-by-construction claim contingent on an unratified amendment rather than the current substrate.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-004 §4 ('declared basis is carried in the schema ... PlaneDefinition registration contract §2.6'; 'fails registration') against DDR-002 §2.6 PlaneDefinition schema (no derivation-basis field) and §2.2–§2.5 (no basis annotation)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-004"],
+    "locus": "Reconciliation with the SDD-001 interim — 'Confirmed unchanged: ... the fail-closed CONFIDENCE_UNDERIVABLE interim' vs §4 demotion",
+    "claim": "The Reconciliation section lists the fail-closed `CONFIDENCE_UNDERIVABLE` interim under 'Confirmed unchanged' AND lists 'the per-class declared-basis totality (superseding the interim's single named CONFIDENCE_UNDERIVABLE case)' under 'Fixed / extended by this record.' §4 demotes `CONFIDENCE_UNDERIVABLE` from 'primary control' to 'defense-in-depth backstop ... unreachable for any well-formed plane.' SDD-001 §3.4.3 treats `CONFIDENCE_UNDERIVABLE` as the reachable rejection for the confidence-less/timestamp-less Extension citation ('the known reachable case'). The record both confirms the interim unchanged and supersedes its primary-control role — the CONFIDENCE_UNDERIVABLE case is simultaneously described as an unchanged confirmed behavior and as a superseded/demoted one; the reachability status also flips from SDD-001's 'known reachable case' to DDR-004's 'unreachable for any well-formed plane.'",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-004 Reconciliation section ('Confirmed unchanged: fail-closed CONFIDENCE_UNDERIVABLE interim' vs 'Fixed/extended: per-class totality superseding the interim's single CONFIDENCE_UNDERIVABLE case') and §4 ('unreachable for any well-formed plane') against SDD-001 §3.4.3 ('the known reachable case')"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-004"],
+    "locus": "§5 Composition boundary — branch (i) × #24 ceiling",
+    "claim": "Checked the §5 claim that branch (i) inherits node authority only and that per-target edge certainty composes downstream under the #24 ceiling, against DDR-002 §4's ceiling definition (ReasoningProgress.confidence ≤ max(SUPPORTED_BY Evidence.confidence)) and §3's confidence-surface split (node = lesson reliability; edge = per-target certainty). The claim holds: DDR-004's 'weakest-link, upward-foreclosed, downward-available-below-ceiling' reading is consistent with DDR-002 §4 (weight affects aggregation only below the ceiling) and routes composition to the solutioning-agent SDD, which SDD-001 §3.3.3 confirms returns the two surfaces uncomposed and routes the rollup. No contradiction surfaced across DDR-004 §5, DDR-002 §4/§3, and SDD-001 §3.3.3/§2.2.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-004 §5 against DDR-002 §4 (#24 ceiling = max supporting Evidence.confidence; weight below ceiling) + §3 (node/edge confidence split) + SDD-001 §3.3.3 (track-record confidences returned uncomposed) / §2.2 (rollup routed)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-004"],
+    "locus": "§2 / §6 — 1.0 as invariant-ground vs contested base/τ",
+    "claim": "Attacked the §2 claim that the 1.0 class base is invariant-ground (not a §4.6 tunable) while base/τ are contested tunables, checking for internal inconsistency with §6's calibration scope and DDR-002 §4's 'inheritance by authority class' canon. The split holds: §6 explicitly scopes calibration to Environment base/τ only and states 1.0 is invariant, the form is fixed, and native bases inherit; DDR-002 §4 fixes inheritance by authority class and the ordering (authoritative Catalog above aging Environment) but not the literal 1.0 — so DDR-004's characterization of 1.0 as a determination-on-canonical-warrant rather than a value DDR-002 carries is consistent with the upstream. No self-contradiction between §2's invariant claim and §6's calibration exclusion.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-004 §2 (1.0 invariant-ground, not §4.6 tunable) against DDR-004 §6 (calibration scoped to Environment base/τ; 1.0 invariant) and DDR-002 §4 (inheritance by authority class + ordering, not literal 1.0)"
+    }
+  }
+]

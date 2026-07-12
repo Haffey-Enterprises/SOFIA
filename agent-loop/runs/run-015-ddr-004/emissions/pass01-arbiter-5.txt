@@ -1,0 +1,7 @@
+{
+  "finding_id": "7190c023eae1c51f",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "DDR-002 §4 defines Evidence.observed_at within the node schema but does not state it is the capture instant, and no ratified authority disambiguates whether it means the capture instant (enabling no-new-field Δt reconstruction) or something else requiring a derived-at field fallback. The deliberation record itself flags this as unconfirmed and routes it to a verify-intent gate, so resolving it requires a choice authority has not yet made — the very verification the record concedes is outstanding.",
+  "confidence": "high"
+}

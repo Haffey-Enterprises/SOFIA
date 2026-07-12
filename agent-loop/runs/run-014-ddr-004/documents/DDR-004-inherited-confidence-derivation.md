@@ -8,12 +8,12 @@
 | Field | Value |
 |---|---|
 | **Document ID** | DDR-004 |
-| **Version** | 1.0.0 |
-| **Status** | ACCEPTED-WITH-CONDITIONS |
-| **Date** | 2026-07-12 |
+| **Version** | 0.1.0 |
+| **Status** | PROPOSED |
+| **Date** | 2026-07-10 |
 | **Authors** | Thaddeus Haffey (Executive Architect) |
 | **Supersedes** | None — new ruling |
-| **References** | DDR-002 v1.2.0 (§4 canonical confidence definition + inheritance rule + #24 ceiling, §1 contested-T2 convention, §2.1–2.5 + §2.6 plane schemas); DDR-001 v1.3.0; ADR-001 v1.1.0 (§2.2 source-attribution intent, §5.2 read discipline); ADR-002 v1.1.0; SDD-001 v1.1.0 (§3.4.3 interim derivation as implemented behavior, §4.6 config surface, §9 cross-reference) |
+| **References** | DDR-002 v1.2.0 (§4 canonical confidence definition + inheritance rule + #24 ceiling, §1 contested-T2 convention, §2.2/§2.6 plane schemas); DDR-001 v1.3.0; ADR-001 v1.1.0 (§2.2 source-attribution intent, §5.2 read discipline); ADR-002 v1.1.0; SDD-001 v1.0.0 (§3.4.3 interim derivation as implemented behavior, §4.6 config surface, §9 routed authority) |
 
 ---
 
@@ -24,7 +24,7 @@
 The ruling has six testable components:
 
 1. **Function form** — a two-branch derivation; Environment freshness is exponential decay. (§1)
-2. **Constant treatment** — the `1.0` class base is invariant-ground; the Environment `base` and `τ`, and the `DeploymentEnvironment` flat base, are contested tunables. (§2)
+2. **Constant treatment** — the `1.0` class base is invariant-ground; the Environment `base` and `τ` are contested tunables. (§2)
 3. **Δt reference anchor** — the capture instant, gateway-clocked, frozen. (§3)
 4. **Per-class declared-basis totality** — every citable node-class declares one of four bases at its definition boundary; `CONFIDENCE_UNDERIVABLE` is defense-in-depth. (§4)
 5. **Composition boundary** — branch (i) inherits node authority only; per-target edge certainty composes downstream in the `ReasoningProgress` rollup, under the #24 ceiling. (§5)
@@ -32,9 +32,9 @@ The ruling has six testable components:
 
 ## Rationale
 
-This derivation was the last Declared determination in SDD-001 with no deliberation lineage. It entered the corpus through the first SDD-001 review cycle as an explicitly-unruled inclination ("a v0.2.0 question, not ruled here") and was carried as interim executable behavior; the SDD-001 deliberation record contains no derivation item. Across two independent cold-audit draws it surfaced as a ten-member family spanning all four review hats and eight strata — every member ruled valid and decision-bearing, zero survivals of the underlying question, the signature of a real open decision rather than review noise. It was elected for its own record by ratified union disposition; the subsequent verification draw confirmed the election dissolved the family (zero valid members) and left only question-set refinements. The rulings in §§1–6 are the product of the charter design session, ratified per item. (The election substrate and design-session pointers live in Cross-References.)
+This derivation was the last Declared determination in SDD-001 with no deliberation lineage. It entered the corpus through run-009's R6 as an explicitly-unruled inclination ("a v0.2.0 question, not ruled here") and was carried as interim executable behavior; the SDD-001 deliberation record contains no derivation item. Across two independent cold-audit draws (runs 010/011) it surfaced as a ten-member family spanning all four review hats and eight strata — every member ruled valid and decision-bearing, zero survivals of the underlying question, the signature of a real open decision rather than review noise. It was elected for its own record (union disposition Item 1); run-012's verification draw confirmed the election dissolved the family (zero valid members) and left only question-set refinements. The rulings in §§1–6 are the product of the RBT-53 design session, ratified per item.
 
-Two commitments shape every ruling. **Form is design; constants are empirical.** The derivation's *shape* — two branches, exponential freshness decay, total-by-construction — is fixed here on design and canonical grounds and is testable independent of traffic. The derivation's *constants* (`base`, `τ`, and the `DeploymentEnvironment` flat base, §2) are POC-asserted and, with **zero capture traffic to date**, empirically unvalidated; the record fixes the form and holds the constants as contested, config-surfaced tunables rather than claiming a calibration it cannot yet perform. **Derive or reject, never default.** The gateway has no authority to invent a confidence it cannot derive; totality is achieved by giving every citable node-class a declared derivation basis at its definition boundary, not by defaulting a value at capture.
+Two commitments shape every ruling. **Form is design; constants are empirical.** The derivation's *shape* — two branches, exponential freshness decay, total-by-construction — is fixed here on design and canonical grounds and is testable independent of traffic. The derivation's *constants* (`base`, `τ`) are POC-asserted and, with **zero capture traffic to date**, empirically unvalidated; the record fixes the form and holds the constants as contested, config-surfaced tunables rather than claiming a calibration it cannot yet perform. **Derive or reject, never default.** The gateway has no authority to invent a confidence it cannot derive; totality is achieved by giving every citable node-class a declared derivation basis at its definition boundary, not by defaulting a value at capture.
 
 ## 1. The derivation function
 
@@ -57,7 +57,7 @@ On `capture-evidence`, the gateway derives `Evidence.confidence ∈ [0.0, 1.0]` 
 
 **The `1.0` is intentionally non-discriminating across co-valid options.** Where several ground-truth options satisfy a need — two catalog technologies that each meet a requirement — each citation inherits `1.0`, and equally so. Confidence is an epistemic measure (is this fact true and current), not a fitness measure (is this the better choice). Equal authority is not equal fitness; selection among co-valid options is *authored judgment* — the ASA's `ReasoningProgress` conclusion, the `RejectedAlternative` and its `score_delta`, and `weight` — never a discrimination the derived confidence is asked to make. Fixing `1.0` as invariant keeps epistemic reliability and decision fitness on separate axes, consistent with the gateway's "executes everything, authors nothing" boundary.
 
-**The Environment `base` (`0.9`) and `τ` (`90 days`) are `*(contested)*` tunables** under DDR-002 §1's convention — POC-asserted defaults pending calibration on real capture traffic, config-surfaced per SDD-001 §4.6 with the documented values as defaults. **The `DeploymentEnvironment` flat base is its own `*(contested)*` tunable** — initialized `0.9`, equal to but decoupled from the aging `base`: §6's calibration evidence is aging-fact evidence (re-observation; fresh-fact variance), which never measures the non-aging use, and a shared tunable would let a re-tune silently move a class its calibration never covered. **Empirical floor: zero capture traffic to date; these values are unvalidated.** Their governance is §6.
+**The Environment `base` (`0.9`) and `τ` (`90 days`) are `*(contested)*` tunables** under DDR-002 §1's convention — POC-asserted defaults pending calibration on real capture traffic, config-surfaced per SDD-001 §4.6 with the documented values as defaults. **Empirical floor: zero capture traffic to date; these values are unvalidated.** Their governance is §6.
 
 ## 3. The Δt reference anchor
 
@@ -67,7 +67,7 @@ The **reference "now" is the capture instant** — the `capture-evidence` transa
 
 - **Gateway-clocked.** The reference instant is the gateway's own transaction time, never a caller-supplied timestamp — the anchor must not be caller-influenceable, or confidence becomes replayable.
 - **Frozen.** Confidence is computed once at capture and frozen onto `Evidence.confidence`; it is never recomputed at read. This is the point-in-time fidelity that also governs `source_node_version` pinning — `Evidence.confidence` records staleness-as-of-capture, immune to later KG drift.
-- **Reconstructible — conditioned on Pre-Acceptance Condition 2's discharge.** Both Δt endpoints are durably recoverable: the cited node's `observed_at` via the `SOURCED_FROM` + `source_node_version` pin, and the capture instant persisted by whichever §6 mechanism Condition 2 confirms — the `Evidence.observed_at` clarification or the derived-at field fallback; either resolution persists it (required for calibration).
+- **Reconstructible.** Both Δt endpoints are durably recoverable: the cited node's `observed_at` via the `SOURCED_FROM` + `source_node_version` pin, and the capture instant persisted per §6 (required for calibration).
 
 ## 4. Per-class declared-basis totality
 
@@ -88,14 +88,14 @@ A class declaring no basis is non-citable by construction. `CONFIDENCE_UNDERIVAB
 
 - **Catalog / Standards / Governance** — basis 2, flat base `1.0` (§2, invariant).
 - **Environment `DeployedService`, `ConfigurationItem`** — basis 3 (aging; freshness operand `observed_at`).
-- **Environment `DeploymentEnvironment`** — **basis 2** (non-aging flat base: its own contested tunable per §2, initialized `0.9`, no decay term). `DeploymentEnvironment` is the plane's structurally-stable member — a realized environment identity that does not age — so its **absence of `observed_at` is correct by design, not a schema gap**; no freshness field is added. The discriminator: **the authority class sets the base; the staleness mode sets only the decay term** (DDR-002 §4's canon ordering — authoritative Catalog above aging Environment). Dropping the decay term therefore does not promote the class to the authoritative planes' `1.0`; the base stays Environment-class.
+- **Environment `DeploymentEnvironment`** — **basis 2** (non-aging flat base: the Environment base `0.9`, contested per §2, decay term dropped). `DeploymentEnvironment` is the plane's structurally-stable member — a realized environment identity that does not age — so its **absence of `observed_at` is correct by design, not a schema gap**; no freshness field is added.
 - **Operational `ObservedPattern`** — basis 1 (native lesson-reliability confidence).
 - **Cost `CapabilityCostEstimate`** — basis 1 (native estimate-reliability confidence).
 - **Cost `RateCard`, `CostFactor`** — **basis 4 (non-citable).** The cost-evidence surface is `CapabilityCostEstimate` (the confidence-bearing as-of-decision record); `RateCard`/`CostFactor` are aggregation inputs, not `Evidence` sources.
 
 **Honest floor:** whether reasoners cite `DeploymentEnvironment`, `RateCard`, or `CostFactor` is unverified. The fail-closed interim keeps behavior safe regardless; the dispositions above resolve the permanent rule per class.
 
-The declared basis is to be carried in the schema — for core planes in DDR-002 §2.1–2.5, for Extension planes in the `PlaneDefinition` registration contract (§2.6) — so that a plane declaring a citable node with no basis will fail registration once the carriers land. The carriers are forthcoming DDR-002 amendments (Pre-Acceptance Condition 1); until they land, the declarations above bind as this record's ruling, not yet as schema-carried enforcement.
+The declared basis is carried in the schema — for core planes in DDR-002 §2.2–2.5, for Extension planes in the `PlaneDefinition` registration contract (§2.6), so that a plane declaring a citable node with no basis fails registration. These are DDR-002 amendments (Pre-Acceptance Conditions).
 
 ## 5. Composition boundary — branch (i) × the #24 ceiling
 
@@ -105,7 +105,7 @@ This is intended, not a loss. DDR-002 §4's #24 ceiling bounds a conclusion at `
 
 ## 6. Calibration and constant governance
 
-**Scope.** The Environment aging `base` and `τ` are calibrated by the process below. The `DeploymentEnvironment` flat base (§2) is contested, but its **calibration basis is explicitly deferred**: this section's evidence streams measure aging facts and do not cover a non-aging identity class; a basis is named by amendment when a real evidence stream for it exists, and until then any config override of it is a live experiment under the same two-tier governance. `1.0` is invariant (§2); the form is fixed (§1); native-confidence bases inherit values. (SDD-001 §8's evidence-less-conclusion dwell is a separate §4.6 tunable, out of this record's scope.)
+**Scope.** Only the Environment `base` and `τ` are calibrated. `1.0` is invariant (§2); the form is fixed (§1); native-confidence bases inherit values. (SDD-001 §8's evidence-less-conclusion dwell is a separate §4.6 tunable, out of this record's scope.)
 
 **Evidence that feeds calibration.** `τ` is fit to the empirical staleness timescale of Environment facts, measured by **re-observation** (a fact re-checked later: still true → decay too fast; changed → decay apt). `base` is fit to the baseline reliability of *fresh* Environment facts against outcomes — the estimate-vs-actual-variance logic DDR-002 §2.6 already invokes for cost. **Empirical floor: n=0 capture traffic and n=0 re-observations; no calibration is possible until the platform runs.** This section defines the process, not a result.
 
@@ -113,16 +113,15 @@ This is intended, not a loss. DDR-002 §4's #24 ceiling bounds a conclusion at `
 
 **Historical treatment on re-tune — grandfather.** Frozen `Evidence.confidence` values are never recomputed; re-tuning is forward-only, consistent with the derived-at-creation freezing (§3).
 
-**Reconstructibility.** Because fitting `base`/`τ` requires reconstructing each capture's `Δt`, the **capture instant must be durably recoverable.** The preferred mechanism fixes that `Evidence.observed_at` *is* the capture instant (the Δt "to" point; the cited node's `observed_at` — the "from" point — recovered via the version pin), persisting it with no new field. `Evidence.observed_at`'s intended meaning must be confirmed against DDR-002 before adoption; if DDR-002 intends the pinned-source-freshness reading instead, a dedicated derived-at field is added to `Evidence`. Either way the capture instant is durably recoverable. (Pre-Acceptance Condition 2.)
+**Reconstructibility.** Because fitting `base`/`τ` requires reconstructing each capture's `Δt`, the **capture instant must be durably recoverable.** The preferred mechanism fixes that `Evidence.observed_at` *is* the capture instant (the Δt "to" point; the cited node's `observed_at` — the "from" point — recovered via the version pin), persisting it with no new field. `Evidence.observed_at`'s intended meaning must be confirmed against DDR-002 before adoption; if DDR-002 intends the pinned-source-freshness reading instead, a dedicated derived-at field is added to `Evidence`. Either way the capture instant is durably recoverable. (Pre-Acceptance Conditions.)
 
 ## Pre-Acceptance / Migration Conditions
 
-The ruling is sound as authored; its full mechanization depends on two DDR-002 amendments, tracked on the DDR-002 additive-amendment batch (Touch 3; see Cross-References). They are this record's acceptance conditions: the record stands ACCEPTED-WITH-CONDITIONS until they land, and the status change to ACCEPTED rides their landing (change-log-carried), not this record's acceptance.
+The ruling is sound as authored; its full mechanization depends on DDR-002 amendments, tracked on RBT-54 (Touch 3), and on three-hat review.
 
-1. **DDR-002 declared-basis carriers.** `PlaneDefinition` (§2.6) gains a per-node-label derivation-basis declaration; core-plane bases are annotated in §2.1–2.5 (including `DeploymentEnvironment` = basis 2, `observed_at`-absence ratified correct-by-design). Tracker: the DDR-002 additive-amendment batch, Touch 3 (Cross-References).
-2. **`Evidence.observed_at` semantic.** Confirm DDR-002's intended meaning; adopt the capture-instant clarification, or the derived-at field fallback (§6). Tracker: the DDR-002 additive-amendment batch, Touch 3 (Cross-References).
-
-**Discharged at acceptance — three-hat review.** The originally-enumerated review condition (three-hat review of this record) is discharged by the two-draw review union and cold audit whose ratified dispositions this revision applies (carriers in the Change Log); the acceptance act is its discharge.
+1. **DDR-002 declared-basis carriers.** `PlaneDefinition` (§2.6) gains a per-node-label derivation-basis declaration; core-plane bases are annotated in §2.2–2.5 (including `DeploymentEnvironment` = basis 2, `observed_at`-absence ratified correct-by-design). Tracker: RBT-54 Touch 3.
+2. **`Evidence.observed_at` semantic.** Confirm DDR-002's intended meaning; adopt the capture-instant clarification, or the derived-at field fallback (§6). Tracker: RBT-54 Touch 3.
+3. **Three-hat review** of this record → ACCEPTED (per RBT-53 acceptance).
 
 **Standing (non-blocking) condition — constants.** `base`/`τ` remain contested, unvalidated interim defaults until capture traffic and re-observation data exist (§6). Their contested status is honest at acceptance and is not a bar to it; calibration is ongoing governance, not a pre-acceptance prerequisite.
 
@@ -130,23 +129,20 @@ The ruling is sound as authored; its full mechanization depends on two DDR-002 a
 
 SDD-001 §3.4.3 carries this derivation as interim implemented behavior, with authority routed by name to this record (§3.4.3 body, §9). On acceptance:
 
-- **Confirmed unchanged:** the two-branch form, the Environment `base × exp(−Δt/τ)` shape, the `1.0` flat base, the total-by-construction property, and the fail-closed `CONFIDENCE_UNDERIVABLE` **rejection behavior** — a citation that reaches no branch still rejects, typed, fail-closed.
-- **Fixed / extended by this record:** the `1.0`-as-invariant treatment; the explicit Δt capture-instant anchor; the per-class declared-basis totality; the `CONFIDENCE_UNDERIVABLE` control's **role and enumeration** — its interim primary-control position and single-named-reachable-case enumeration are superseded (demoted to defense-in-depth, unreachable for well-formed planes, §4); the branch-(i)×#24 composition boundary; the calibration governance and capture-instant persistence.
-- **Routing resolves:** SDD-001's §3.4.3 / §9 subject-name pointers resolve to `DDR-004`. The routing was by subject-name, which this record now satisfies; the SDD needs no content change **for this record's acceptance** — the pointer resolution is a change-log-carried amendment on the SDD side (the ratified anchor-capture; see Cross-References). The §3.4.3 interim derivation *description* is superseded in substance by §4's declared-basis totality and refreshes with the declared-basis carriers' landing (Pre-Acceptance Condition 1), not with this acceptance.
+- **Confirmed unchanged:** the two-branch form, the Environment `base × exp(−Δt/τ)` shape, the `1.0` flat base, the total-by-construction property, the fail-closed `CONFIDENCE_UNDERIVABLE` interim.
+- **Fixed / extended by this record:** the `1.0`-as-invariant treatment; the explicit Δt capture-instant anchor; the per-class declared-basis totality (superseding the interim's single named `CONFIDENCE_UNDERIVABLE` case); the branch-(i)×#24 composition boundary; the calibration governance and capture-instant persistence.
+- **Routing resolves:** SDD-001's §3.4.3 / §9 subject-name pointers resolve to `DDR-004`. The routing was by subject-name, which this record now satisfies; the SDD needs no content change — the pointer resolution is a change-log-carried amendment on the SDD side (RBT-53 anchor-capture).
 
 ## Cross-References
 
-- **Implements:** DDR-002 v1.2.0 §4 (canonical confidence definition, inheritance rule, #24 ceiling), §1 (contested-T2 convention), §2.1–2.5 + §2.6 (core-plane and Extension plane schemas); ADR-001 v1.1.0 §2.2 (source-attribution intent).
-- **Implemented by:** SDD-001 v1.1.0 (`knowledge-service` — the gateway that computes the derivation) §3.4.3, §4.6, §9; the forthcoming solutioning-agent SDD (the `ReasoningProgress` rollup and per-target composition, §5).
-- **Coordinates with:** RBT-54 (Touch 3) — the DDR-002 additive amendments this record entails (declared-basis carriers; `Evidence.observed_at` semantic); the body's Pre-Acceptance tracker references resolve here.
-- **Review of record:** the run-014 ∪ run-015 two-draw review union and cold audit — `agent-loop/runs/run-014-ddr-004/audit.md` (primary) · `agent-loop/runs/run-015-ddr-004/audit.md` (companion + union) · `agent-loop/runs/run-015-ddr-004/disposition.md` (dispositions D1–D7 + close rulings R1–R6, ratified per item, 2026-07-11/12).
-- **Grounding:** the D1 election substrate — the run-009 audit's R6 inclination entry (the derivation's corpus entry point, explicitly unruled there), the run-010 / run-011 / run-012 audits, and the run-011 union disposition (Item 1); the RBT-53 design session (per-item ratifications, 2026-07-10).
+- **Implements:** DDR-002 v1.2.0 §4 (canonical confidence definition, inheritance rule, #24 ceiling), §1 (contested-T2 convention), §2.2 / §2.6 (Environment and Extension plane schemas); ADR-001 v1.1.0 §2.2 (source-attribution intent).
+- **Implemented by:** SDD-001 v1.0.0 (`knowledge-service` — the gateway that computes the derivation) §3.4.3, §4.6, §9; the forthcoming solutioning-agent SDD (the `ReasoningProgress` rollup and per-target composition, §5).
+- **Coordinates with:** RBT-54 — the DDR-002 additive amendments this record entails (declared-basis carriers; `Evidence.observed_at` semantic).
+- **Grounding:** the D1 election substrate — run-010 / run-011 / run-012 audits and the run-011 union disposition (Item 1); the RBT-53 design session (per-item ratifications, 2026-07-10).
 - **Rhyme, not merger:** the layering-invariant ADR (services-as-deterministic-tools / agency-as-caller-layer) — separate record, loose coupling; neither gates the other.
 
 ## Change Log
 
 | Version | Date | Ticket | Change |
 |---|---|---|---|
-| 1.0.0 | 2026-07-12 | RBT-53 | First ACCEPTED-WITH-CONDITIONS — two-draw review union (run-014 ∪ run-015, gen-5, cold audit; union validity 39/44; 44/44 rulings, disposition D1–D7, and close rulings R1–R6 ratified per item, 2026-07-11/12; acceptance carriers: `agent-loop/runs/run-014-ddr-004/audit.md` + `agent-loop/runs/run-015-ddr-004/audit.md` + `agent-loop/runs/run-015-ddr-004/disposition.md`). Conditions = the two DDR-002 amendment prerequisites (Pre-Acceptance Conditions 1–2, tracked on RBT-54 Touch 3); the constants standing condition stays non-blocking as authored; the three-hat-review condition is discharged by this review. Merge of this revision is the acceptance act; the ACCEPTED-WITH-CONDITIONS → ACCEPTED status change rides the RBT-54 Touch 3 landing. PROPOSED → ACCEPTED-WITH-CONDITIONS. |
-| 0.2.0 | 2026-07-12 | RBT-53 | Review-driven revision from the same union (revision carriers: both run audits + the ratified disposition, above; landed in the same commit as 1.0.0 — single landing per close ruling R1). Contract-purity sweep of the normative body: operational identifiers relocated to Cross-References / reduced to subject-name-only (D1). §3 Reconstructible conditioned on Pre-Acceptance Condition 2 (D2a). §4 declared-basis carrier restated forthcoming-amendment-conditional — resolves the carrier-tense family (D2b). §4 DeploymentEnvironment authority-class/staleness-mode discriminator stated (D2c). Reconciliation acceptance-scope qualification (D2d) and `CONFIDENCE_UNDERIVABLE` behavior-vs-role double-listing split (D2e). References + Cross-References DDR-002 citation widened to §2.2–2.5 + §2.6 (D2f). Decision rider: the `DeploymentEnvironment` flat base decoupled into its own contested tunable, initialized 0.9, calibration basis explicitly deferred (D3; §2/§4/§6). Verification-pass corrections (three-hat drafting check, ratified per item 2026-07-12): DDR-002 core-plane citation range corrected §2.2–2.5 → §2.1–2.5 at all four sites (Catalog is §2.1 — off-by-one present in the reviewed text); SDD-001 citation updated to the co-landing v1.1.0 with the §9 gloss reworded; §6 condition pointer made precise (Condition 2); Rationale contested-constants gloss widened to the D3 tunable set. |
 | 0.1.0 | 2026-07-10 | RBT-53 | Initial draft. The inherited-confidence derivation, elected for its own record from the run-010/011 cold-audit union (D1, disposition Item 1) and confirmed dissolved by run-012; authored from the RBT-53 design session's per-item ratifications (2026-07-10). Six-component ruling: function form · constant treatment · Δt anchor · per-class declared-basis totality · composition boundary · calibration governance. Entails DDR-002 additive amendments (RBT-54 Touch 3). PROPOSED. |

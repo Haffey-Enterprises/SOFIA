@@ -1,0 +1,5 @@
+{"finding_id": "480db100ef4e4d6f",
+"classification": "resolvable",
+"authority_locus": "author-decision-record SKILL (ddr-template §Pre-Acceptance/Migration Conditions + Status-and-Version lifecycle) + DDR-004 deliberation record Item 4 / Authoring notes (RBT-54 Touch 3 routing) + ddr-template §Status (ACCEPTED-WITH-CONDITIONS for designs blocked on prerequisites)",
+"rationale": "The DDR doctype's own template already dictates the fix for a sound ruling whose realization depends on un-landed prerequisites: enumerate them as tracked Pre-Acceptance Conditions and hold the record in PROPOSED/ACCEPTED-WITH-CONDITIONS rather than asserting an unconditioned by-construction guarantee — which the record already does (declared-basis carriers routed to RBT-54 Touch 3). The finding is a phrasing tension ('total by construction' vs. carriers un-ratified) whose reconciliation is fixed by the template's conditional-acceptance convention, introducing no new choice.",
+"confidence": "medium"}

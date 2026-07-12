@@ -1,0 +1,7 @@
+{
+  "finding_id": "a975e568dfb8780e",
+  "classification": "resolvable",
+  "authority_locus": "deliberation-record-ddr-004, Authoring notes ('DDR-002 mechanization not authored here') + Item 4/6 rulings, and author-decision-record SKILL, DDR routing ('Keep the record's body to the contract'; DDR shape — Pre-Acceptance/Migration Conditions with tracking pointers)",
+  "rationale": "The stated design intent already draws the entail-vs-author line cleanly: the ratified Authoring notes fix that DDR-004 decides the per-class dispositions (Items 4/5/6) while the four additive DDR-002 schema edits are 'routed to RBT-54 Touch 3, downstream of this record' — so the fix is to align the Decision/title claim surface to that ratified separation, a conformance move determined by the ratified deliberation record and the skill's contract-purity discipline, introducing no new choice.",
+  "confidence": "medium"
+}

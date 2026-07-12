@@ -1,0 +1,7 @@
+{
+  "finding_id": "185c6d81b860bae9",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding exposes that DDR-004 reuses the aging-calibrated Environment base 0.9 as a flat non-decaying base for the structurally-stable DeploymentEnvironment (basis 2) without a stated calibration for that non-aging use; no ratified authority determines what the flat basis-2 constant should be or how it is substantiated for a non-aging node, so resolving this requires a choice (retain 0.9, calibrate a distinct flat constant, or otherwise ground it) that neither DDR-002 §4 nor the deliberation record settles.",
+  "confidence": "high"
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-004"],
+    "locus": "Decision — 'This record fixes the function, its constant treatment, its totality contract, its composition boundary, and its calibration governance.'",
+    "claim": "The title, summary (file Description), and status frame DDR-004 as fixing the inherited-confidence derivation, but §4 and §6 commit determinations that are DDR-002 schema amendments — per-node-label declared-basis carriers on PlaneDefinition (§2.6), core-plane basis annotations (§2.2–2.5), the DeploymentEnvironment basis-2 annotation, and the Evidence.observed_at semantic — which the record itself states are 'DDR-002 amendments (Pre-Acceptance Conditions)' tracked on RBT-54. These are decisions the record depends on and partly pre-decides (e.g. 'DeploymentEnvironment = basis 2, observed_at-absence ratified correct-by-design') while the title claims only a derivation-function ruling; whether the record decides the DDR-002 amendment content or merely entails it is not cleanly separated in the claim surface.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-004 §4 (per-class dispositions + 'These are DDR-002 amendments (Pre-Acceptance Conditions)') and §6 (Evidence.observed_at semantic) vs. DDR-004 Decision/title claim scope"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-004"],
+    "locus": "Reconciliation with the SDD-001 interim — 'the SDD needs no content change — the pointer resolution is a change-log-carried amendment on the SDD side'",
+    "claim": "DDR-004 asserts SDD-001 needs no content change because §3.4.3/§9 route by subject-name. But SDD-001 §3.4.3 as fetched states 'Extension-plane nodes take branch (i) where they carry a node confidence, else — where they carry observed_at — Environment-class treatment (contested)' and rejects only the confidence-less, timestamp-less Extension citation via CONFIDENCE_UNDERIVABLE. DDR-004 §4 now reclassifies totality as a per-class declared-basis property (four bases, CONFIDENCE_UNDERIVABLE demoted to defense-in-depth unreachable for well-formed planes). The interim SDD text describes CONFIDENCE_UNDERIVABLE as the primary reachable control for a known Extension case; DDR-004 makes it a backstop only. This is a substantive change in what the SDD's implemented behavior describes, not merely a pointer resolution — the claim that no content change is needed is not supported by the cited SDD substrate.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-004 §4 + Reconciliation section vs. SDD-001 v1.0.0 §3.4.3 (Extension-branch totality / CONFIDENCE_UNDERIVABLE as primary reachable case)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-004"],
+    "locus": "§4 Per-class declared-basis totality — 'A citation that reaches no branch is rejected, typed CONFIDENCE_UNDERIVABLE, fail-closed' vs. §1 Totality",
+    "claim": "The record claims totality is 'total by construction' because 'every citable node-class carries a declared basis (§4),' and simultaneously that CONFIDENCE_UNDERIVABLE is 'unreachable for any well-formed plane.' But the deliberation-grounded honest floor stated in §4 ('whether reasoners cite DeploymentEnvironment, RateCard, or CostFactor is unverified') and the n=0 traffic floor mean the totality property is asserted for the current declared planes only. The record does not declare a consequence/side-effect: a newly-registered Extension plane that declares a citable node with no basis is said to 'fail registration' (§4), but the enforcement of that fail-registration is routed to a DDR-002 amendment not yet made (RBT-54 Touch 3). Until that carrier exists, 'total by construction' is a claimed property whose enforcing mechanism is a declared dependency that does not yet exist — the record asserts the totality guarantee while its enforcement artifact is unbuilt.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-004 §1 ('total by construction') + §4 ('fails registration' / 'These are DDR-002 amendments (Pre-Acceptance Conditions)') vs. §Pre-Acceptance condition 1 (carriers tracked RBT-54 Touch 3, not yet authored)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["DDR-004"],
+    "locus": "Rationale + Pre-Acceptance / Reconciliation — instantiated run/ticket identifiers in normative body",
+    "claim": "The record's Rationale, Pre-Acceptance Conditions, and Reconciliation sections carry instantiated process identifiers (run-009 R6, runs 010/011/012, RBT-53, RBT-54 Touch 3, union disposition Item 1) threaded through normative prose rather than confined to Change Log / Cross-References. The record's own deliberation-record notes flag this as a docs-structure contract-purity miss to be cleared before push; from claim-fidelity altitude the concern is that process narrative in the body dilutes what the record decides versus how it came to be decided.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "author-decision-record SKILL, Authoring discipline — 'Keep the record's body to the contract. Process narrative, ticket IDs, and review history belong in the Change Log, Cross-References, or your tracker — not threaded through the body.'"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-004"],
+    "locus": "§2 Constant treatment — the 1.0 invariant-ground vs. contested-tunable split",
+    "claim": "I attacked the claim that fixing 1.0 as invariant-ground (not a §4.6 tunable) over-decides beyond what this record's stated scope permits — testing whether it smuggles a determination DDR-002 §4 already owns or contradicts. The record cleanly declares 1.0 as 'a determination this record makes on canonical warrant, not a value DDR-002 carries,' and names the canonical support (DDR-002 §4 fixes inheritance by authority class and the ordering, not the literal 1.0). The decision content matches the claimed scope: it decides the constant treatment it says it decides, and the dependency on DDR-002 §4 is named. The claim-fidelity attack failed — the scope boundary and its cited authority hold.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-004 §2 vs. DDR-002 v1.2.0 §4 (canonical confidence definition — inheritance by authority class, ordering, #24 ceiling)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-004"],
+    "locus": "§5 Composition boundary — branch (i) inherits node authority only; per-target edge certainty routed to the ReasoningProgress rollup",
+    "claim": "I attacked §5 as a potential quiet retraction — that declaring the OBSERVED_IN per-target certainty 'not this derivation's' responsibility might silently drop a consequence DDR-002 §4/§3 requires the derivation to carry. The record declares the side effect explicitly ('The only residue is indirection'), names the downstream owner (the ReasoningProgress rollup, routed to the solutioning-agent SDD per SDD-001 §2.2), and states the boundary is 'documented, not amended.' The consequence is surfaced rather than smuggled, and the composition-owner dependency is named. The attack — that a boundary was drawn to shed a declared obligation without declaring it — did not land.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-004 §5 vs. DDR-002 v1.2.0 §4 (#24 ceiling / rollup routing) + §3 (edge vs. node confidence surfaces) + SDD-001 §2.2 (rollup routed to solutioning-agent SDD)"
+    }
+  }
+]

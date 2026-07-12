@@ -1,0 +1,7 @@
+{
+  "finding_id": "6f5aaa1accd068a4",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "Resolving whether SDD-001 §3.4.3 needs a content amendment (its Extension-branch text and CONFIDENCE_UNDERIVABLE-as-primary-reachable-control now conflict with DDR-004 §4's per-class declared-basis totality that demotes CONFIDENCE_UNDERIVABLE to defense-in-depth) requires a choice no ratified authority makes: the deliberation record asserts the by-name route needs no SDD content change, but the antagonist exposes that this conflicts with the fetched SDD substrate, and neither DDR-004 nor SDD-001 nor an upstream authority disambiguates whether the changed interim behavior constitutes a substantive amendment or a mere pointer resolution.",
+  "confidence": "high"
+}

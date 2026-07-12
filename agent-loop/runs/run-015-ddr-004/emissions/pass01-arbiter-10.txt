@@ -1,0 +1,7 @@
+{
+  "finding_id": "a80870ab8e52393d",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record SKILL (DDR route) — Pre-Acceptance / Migration Conditions section: 'If the ruling is conditional — sound design, blocked on prerequisites — enumerate each condition as a discrete, buildable prerequisite with a tracking pointer,' plus the Status lifecycle 'ACCEPTED-WITH-CONDITIONS when the design is sound but blocked on prerequisites'; ddr-template Pre-Acceptance/Migration Conditions",
+  "rationale": "The finding describes exactly the condition-tracking pattern the DDR doctype already prescribes: a sound ruling whose enforcement carrier is a forthcoming amendment is a buildable prerequisite recorded as a Pre-Acceptance Condition with a tracking pointer (RBT-54 Touch 3), which the record already carries. The determined fix — keeping the totality-by-construction property gated behind the enumerated Pre-Acceptance Condition and the PROPOSED/ACCEPTED-WITH-CONDITIONS status rather than asserting it as already achieved — is dictated by the skill's condition discipline; no new choice is introduced.",
+  "confidence": "high"
+}
