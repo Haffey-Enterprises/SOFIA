@@ -1,0 +1,7 @@
+{
+  "finding_id": "8aad4b5d35da7d5d",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding exposes a case the substrate did not fully settle: §2.4 explicitly routes the post-materialization re-decision of an executed retraction (the retraction-side analogue of #15's flip) to DDR-003 as remedy-boundary territory, and DDR-003 is forthcoming/unauthored. Reconciling the edge-keyed retracted-node read-discipline (§5) with a flipped governing verdict requires the un-retraction remedy, which no ratified authority provides — §2.4 states the schema records the re-decision append-only but explicitly declines to author the remedy here.",
+  "confidence": "high"
+}

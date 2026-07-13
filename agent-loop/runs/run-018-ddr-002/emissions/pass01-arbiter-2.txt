@@ -1,0 +1,7 @@
+{
+  "finding_id": "b0d05717a3f2c8af",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "No ratified authority dictates which body decisions must be surfaced as enumerated Decision components; the author-decision-record skill says to include only sections/sub-decisions the record actually constrains and to omit filler, but it fixes no completeness rule for the Decision enumeration, leaving a genuine choice of whether (and which of) the retraction read-exclusion, #23, #24, and two-surface binding get promoted to Decision components. Selecting among conforming options with no disambiguating authority is decision-bearing.",
+  "confidence": "high"
+}

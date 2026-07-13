@@ -1,0 +1,7 @@
+{
+  "finding_id": "1cdfb294c7c7c2b7",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record SKILL — Body integrity, 'No storytelling in the body' bullet (process narrative / review history / version-stamp events belong in the Change Log, not contract-adjacent prose); reinforced by deliberation-record-ddr-002 Addendum A-8 (version-stamp/credit narration stripped from contract prose; the Change Log owns those events)",
+  "rationale": "The fix is determined by an already-ratified authority: the body-integrity discipline routes change-event narration ('closed at v1.3.0') to the Change Log, and A-8 already ratified this exact remediation pattern at parallel loci — the correction is to strip the version-stamp fragment, no new choice introduced.",
+  "confidence": "high"
+}

@@ -1,0 +1,7 @@
+{
+  "finding_id": "ecadca351f686bdd",
+  "classification": "resolvable",
+  "authority_locus": "Deliberation record for DDR-002 Amendment Batch (RBT-54), Item C (Touch 2 — C1/C2/C3), ratified 2026-07-13 — which authorizes the economy-warranted exception to the Rationale's empirical-warrant discipline and fixes the ProvenanceSummary structuring shape",
+  "rationale": "The stated design intent explicitly ratifies Touch 2 as a deliberate, operator-ratified exception opened on economy (Item C, with the honest floor carried verbatim); the Rationale's empirical-warrant discipline is itself an authority the operator may rule an exception to, and did. Conforming the finding is a matter of the record accurately reflecting that already-made decision — the exception is derived from ratified deliberation, not asserted.",
+  "confidence": "high"
+}

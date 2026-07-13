@@ -1,0 +1,7 @@
+{
+  "finding_id": "5338c9d4d8b719a4",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §7 #26 (basis-declaration totality: confidence_basis's label set = property_schema's label set) + §2.6 declared-totality registration rule; the illustration convention is an authorial-presentation choice, not a design gap",
+  "rationale": "The determining rule is already ratified — #26 fixes that confidence_basis's key set equals property_schema's key set, so the elided property_schema's label set is entailed to be exactly {CapabilityCostEstimate, RateCard, CostFactor}; the fix (state the elided label set or drop the elision) is dictated by the already-authored key-set-equality invariant and introduces no choice.",
+  "confidence": "high"
+}
