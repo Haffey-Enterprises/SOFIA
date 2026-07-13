@@ -1,0 +1,7 @@
+{
+  "finding_id": "09ca64e5033cc937",
+  "classification": "resolvable",
+  "authority_locus": "Deliberation Record DDR-002 Addendum, adjudication A-14: 'DDR-002 References table stays upstream-only (convention recorded for the cold read)'",
+  "rationale": "The stated design intent explicitly ratifies that the References table stays upstream-only and DDR-004 is a downstream consumer, not an upstream authority — so the finding is dictated to be a non-defect (no table change) by a named, ratified adjudication, resolving whether the entry belongs there without a new choice.",
+  "confidence": "high"
+}

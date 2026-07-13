@@ -1,0 +1,7 @@
+{
+  "finding_id": "ee1a2a2a5922675f",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §2.6 declared-totality registration rule + §7 #26 ('every node-label a plane declares carries exactly one confidence-derivation basis ... the label set its property_schema declares') — the co-extension requirement between property_schema and confidence_basis label-sets is already ratified; the exemplar fix is to render the property_schema label-set the rule already dictates.",
+  "rationale": "The finding is a display omission in a worked exemplar; the governing rule (§2.6 declared-totality / §7 #26) already fixes that the basis label-set and property_schema label-set must be co-extensive, so completing the literal is dictated by existing authority and introduces no new choice.",
+  "confidence": "high"
+}

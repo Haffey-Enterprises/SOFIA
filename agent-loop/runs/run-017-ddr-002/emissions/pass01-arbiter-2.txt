@@ -1,0 +1,7 @@
+{
+  "finding_id": "ea4bd37a738852fa",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §2.6 — the cost plane's stated purpose as the Extension-mechanism worked validation exemplar ('tested by construction'), which the same section separates by name from the routed cost-as-platform-capability question",
+  "rationale": "DDR-002 §2.6 already states the governing distinction the finding treats as unresolved: the cost-plane schema is carried as the Extension-mechanism validation exemplar (exercising the registration path end-to-end), a purpose explicitly separated from the routed question of whether SOFIA models cost as a capability — so the schema's presence does not decide the capability question, and the apparent incoherence is dissolved by the section's own stated exemplar rationale.",
+  "confidence": "high"
+}

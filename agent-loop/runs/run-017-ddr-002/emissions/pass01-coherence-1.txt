@@ -1,0 +1,52 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-002"],
+    "locus": "§7 check #26 vs §2.6 confidence_basis declaration scope",
+    "claim": "Check #26 keys basis-declaration totality to 'the label set its property_schema declares' — but §2.6 defines property_schema as 'node-label → property → type/constraints' and confidence_basis as a separate declaration 'node-label → basis'. Nothing in §2.6 binds the two label sets to be identical. A PlaneDefinition could declare confidence_basis for label set A while property_schema declares label set B; #26 as written checks basis-declaration over property_schema's label set, so a label appearing in confidence_basis but not property_schema is unchecked, and a label in property_schema but absent from confidence_basis fails. The owning definition (§2.6) does not supply the invariant that the two declared label sets coincide, which #26's formulation silently assumes.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-002 §7 #26 ('the label set its property_schema declares') in conflict with §2.6 (property_schema and confidence_basis defined as two independent node-label-keyed declarations, with no stated coincidence constraint)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["DDR-002"],
+    "locus": "Change Log Touch 3 row — PlaneDefinition flat_base disposition",
+    "claim": "The Touch 3 Change Log row states 'PlaneDefinition itself declared flat_base (batch ruling, adjudication A-3 — a disposition DDR-004 §4's table does not yet carry; alignment noted for that record's next touch).' DDR-004 §4's per-class disposition table (fetched this pass) does not list PlaneDefinition among its dispositions, and DDR-004 carries no basis for PlaneDefinition. DDR-002 thus asserts a basis disposition (PlaneDefinition = flat_base, §2.6) that its declared authority for basis values (DDR-004, per the §2 preamble 'derivation semantics, base values ... are DDR-004's') does not carry — the two records disagree on whether PlaneDefinition's basis is settled canon.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-002 §2.6 (PlaneDefinition's own basis: flat_base) + Change Log Touch 3 in conflict with DDR-004 §4 per-class disposition table (no PlaneDefinition entry)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["DDR-002"],
+    "locus": "Change Log Touch 2 row — ProvenanceSummary frozen_source_node_refs attribution",
+    "claim": "The Touch 2 Change Log row credits both 'frozen_evidence_ids (correlation key) + frozen_source_node_refs added' as the touch's additions, but the deliberation record (Item C1, shape A) names the additions as 'frozen_evidence_ids (correlation key) + frozen_source_node_refs' while the §4 node schema now lists four frozen_* arrays (frozen_evidence_ids, frozen_fact_summaries, frozen_source_version_pins, frozen_source_node_refs). The Change Log row's enumeration of what Touch 2 added omits that frozen_fact_summaries and frozen_source_version_pins were pre-existing (v1.2.0/T-20 era), leaving a reader unable to reconstruct which of the four arrays this touch introduced versus re-declared as index-aligned.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-002 §4 (:Reasoning:ProvenanceSummary) four frozen_* arrays vs Change Log Touch 2 row's two-array addition enumeration"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-002", "DDR-004"],
+    "locus": "Seam 2 — §2/§2.6 basis annotations ↔ DDR-004 §4 per-class dispositions",
+    "claim": "Checked every per-class basis annotation in DDR-002 §2.1–§2.6 against DDR-004 §4's per-class disposition table for drift: Catalog/Standards/Governance = flat_base (basis 2); DeployedService/ConfigurationItem = aging (basis 3, operand observed_at); DeploymentEnvironment = flat_base (basis 2); ObservedPattern = native_confidence (basis 1); CapabilityCostEstimate = native_confidence (basis 1); RateCard/CostFactor = non_citable (basis 4). All six dispositions match verbatim across both records, and DDR-002 carries basis kinds/operands only (no values), consistent with its stated no-values rule and DDR-004 as value authority. The no-drift seam held.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-002 §2.1–§2.6 basis annotations vs DDR-004 §4 per-class disposition table + §2 preamble no-values delegation"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-002", "SDD-001"],
+    "locus": "Seam 1 — amended #25 ↔ SDD-001 §3.5.4 conformance note",
+    "claim": "Attacked the #25/#21 joint-satisfiability seam the Touch-1 amendment claims to resolve. DDR-002 §7 #25 scopes its forward direction to terminal status: promoted; #21 forbids the RETRACTS edge pre-approval. SDD-001 §3.5.4 materialize-retraction writes RETRACTS only in the post-verification transaction and advances to terminal status: promoted in that same transaction — so the edge exists exactly when #25's forward direction binds, and never in the pre-decision window #21 guards. Walked the rejected-retraction case (never reaches terminal promoted, so #25 forward never binds, no false positive) and the proposal window (no edge, #25 vacuous, #21 satisfied). The scoping clause and the SDD timing are mutually consistent; the previously-unsatisfiable window is closed.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-002 §7 #25 (scoped to executed proposals) + #21 (retraction-gated) vs SDD-001 §3.5.4 (materialize-retraction transaction timing)"
+    }
+  }
+]

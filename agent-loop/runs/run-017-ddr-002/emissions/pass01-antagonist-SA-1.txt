@@ -1,0 +1,72 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-002"],
+    "locus": "§7 check #25 (`proposal_kind` ↔ `RETRACTS`-edge consistency) vs §5 CandidatePromotion status semantics",
+    "claim": "Check #25's forward direction is scoped to terminal `status: promoted` for retraction candidates, keyed to §5's gloss that terminal `promoted` denotes the un-promotion was materialized. But §5 also states a retraction candidate can terminate at `status: rejected` (the EA declines the retraction). #25's reverse direction states a `RETRACTS` edge originates only from a `proposal_kind: retraction` node — silent on whether an *approved-and-materialized* retraction that is *later re-decided rejected* (permitted by §2.4 verdict-precedence: a candidate may carry multiple `DECIDED_ON` edges, governing verdict = latest `decided_at`) must retain or shed its `RETRACTS` edge. The interaction of append-only edge-writing (#21 writes the edge at the EA-gated act) with re-decision (§2.4 permits a later rejecting verdict) leaves the state of a materialized-then-rejected retraction's `RETRACTS` edge, and the retracted target's read-exclusion, unspecified.",
+    "cited_authority": {
+      "kind": "soundness",
+      "ref": "DDR-002 §2.4 verdict-precedence (re-decision permitted, governing = latest decided_at) contradicts the completeness of §7 #25 / §5 retracted-node read-discipline, which specify no behavior for a retraction whose governing verdict flips to rejected after materialization"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-002"],
+    "locus": "§4 Confidence rollup ceiling (#24) — zero-evidence case",
+    "claim": "§4 states the `ReasoningProgress.confidence` rollup 'is upper-bounded by its strongest supporting evidence path (ceiling = max of the supporting Evidence.confidence)' and that '#24 enforces the ceiling', but then defers the zero-evidence case ('a conclusion with no SUPPORTED_BY Evidence') to the SDD, and #24 is itself explicitly 'scoped to conclusions with supporting evidence.' A conclusion with no supporting Evidence has `max(∅)` undefined, so the ceiling invariant is silent on exactly the case the document elsewhere treats as legal (SDD-001 §2.2 records evidence-less ReasoningProgress as 'a legal capture state'). The schema claims a totality ('the rollup exists and is upper-bounded') that the invariant set does not deliver for the admitted-legal empty case, leaving a `ReasoningProgress.confidence` value that no invariant bounds.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-002 §4 confidence-rollup ceiling claim vs §7 #24 scope-exclusion ('scoped to conclusions with supporting evidence') — the bounding guarantee does not cover the legal zero-evidence conclusion the schema admits"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-002"],
+    "locus": "§2.4 Condition — `dependency_manifest` coverage by check #10",
+    "claim": "§2.4's `Condition` node carries a `predicate` (T2) described as 'pattern-aligned with rule_definition, carrying a declared dependency_manifest — covered by §7 check #10', and #10 is amended to read 'every Catalog entity-type in a PolicyRule's or Condition's declared dependency_manifest appears as a GOVERNED_BY/MANDATES target'. But `Condition` is a Governance-plane node whose applicability is evaluated at retrieval against a *consuming context* (§2.4, §7 #19), not by traversing `GOVERNED_BY`/`MANDATES` edges from Catalog entities. The `Condition` schema declares no `GOVERNED_BY`/`MANDATES` edges (those are Standards→Catalog governance edges per §3), so #10's 'appears as a GOVERNED_BY/MANDATES target' test is either inapplicable to `Condition` (in which case #10's extension to Condition is vacuous) or requires edges the Condition node is never specified to carry — the field claims conformance-check coverage that the cited check cannot mechanically apply to this node type.",
+    "cited_authority": {
+      "kind": "soundness",
+      "ref": "DDR-002 §2.4 Condition.predicate 'covered by §7 check #10' vs §7 #10 test structure (GOVERNED_BY/MANDATES edge-backing) and §3 edge catalog, which defines GOVERNED_BY/MANDATES only for Standards↔Catalog, never for Condition"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["DDR-002"],
+    "locus": "§2.6 cost-plane registration literal vs §2.6 declared-totality registration rule",
+    "claim": "The cost-plane first-registration literal `PlaneDefinition{plane_id: \"cost\", attaches_to: [Capability, Technology], confidence_basis: {CapabilityCostEstimate: native_confidence, RateCard: non_citable, CostFactor: non_citable}}` declares three node-labels in `confidence_basis`, but `property_schema` (the field the declared-totality registration rule §2.6 / #26 keys 'the label set its property_schema declares' against) is not shown in the literal. The registration rule requires the basis label-set and the property_schema label-set to be co-extensive ('every node-label a plane declares carries exactly one basis'); the worked exemplar cannot be verified against its own totality rule because the co-extension operand is elided from the exemplar.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-002 §2.6 cost-plane exemplar literal vs §7 #26 basis-declaration totality ('per declared node-label — the label set its property_schema declares') — the exemplar omits the property_schema label-set the check compares against"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["DDR-002"],
+    "locus": "§7 marker paragraphs + Cross-References conformance bullet — ticket IDs in normative/contract prose",
+    "claim": "The document's own governing authoring discipline (design-intent: author-decision-record body-integrity rule, reinforced by the deliberation record Item F-i) confines ticket identifiers to Change Log, conditions apparatus, and TODO gap-markers. §7 'Current state (marker-level)' carries RBT-33, RBT-48 in contract-adjacent normative prose, and the Cross-References conformance-mechanization bullet carries RBT-33/RBT-48 — occurrences the deliberation record itself flags (F-i) as pre-existing out-of-home ticket-ID placements requiring disposition. As landed text under review, these violate the stated body-integrity convention.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "author-decision-record SKILL body-integrity: 'Ticket identifiers have exactly three sanctioned homes: the Change Log, the conditions apparatus, and explicit TODO gap-markers. Contract prose never carries them.'"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-002"],
+    "locus": "§7 #15 well-definedness under §2.4 per-candidate strict decided_at monotonicity",
+    "claim": "Attacked the 'governing verdict = latest decided_at' rule for underdetermination: two DECIDED_ON edges on one candidate with equal decided_at would leave the governing edge ambiguous and #15 undefined. The schema forecloses this by gateway-enforced per-candidate strict decided_at monotonicity (§2.4), making 'latest decided_at' total and the governing edge uniquely defined for both single and batch decisions. The tie-exclusion is structural, not left to tie-break heuristics. Held.",
+    "cited_authority": {
+      "kind": "soundness",
+      "ref": "DDR-002 §2.4 per-candidate strict decided_at monotonicity + §7 #15 well-definedness clause — governing-edge totality checked against the tie case and structurally excluded"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-002"],
+    "locus": "§4 / §5 provenance-survival span — closure over PROPOSED_FROM targets",
+    "claim": "Attacked the provenance-survival guarantee for span-incompleteness: a promoted node whose PROPOSED_FROM reaches a ReasoningProgress (not Evidence directly) could lose the Evidence that ReasoningProgress rests on when Evidence expires. The schema closes this by defining the freeze span as the closure over PROPOSED_FROM targets to their Evidence-reaching edges (Evidence contributes itself; ReasoningProgress contributes its SUPPORTED_BY Evidence set; ObservedPattern/RejectedAlternative contribute nothing to freeze, with stated reasons), computed by the gateway in the materialization transaction, and #20 checks completeness as set-equality against that span keyed by evidence_id. The two Evidence-reaching paths are enumerated and the non-contributing target types justified. Held.",
+    "cited_authority": {
+      "kind": "soundness",
+      "ref": "DDR-002 §5 provenance-survival span (closure over PROPOSED_FROM, two Evidence-reaching paths enumerated) + §7 #20 completeness-as-set-equality + §4 index-aligned frozen_* arrays keyed by evidence_id"
+    }
+  }
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-002"],
+    "locus": "Change Log — v1.3.0 Touch 2 row",
+    "claim": "The Touch-2 Change Log row asserts the amendment was 'opened on economy' with 'no valid finding forced this touch,' i.e. it records a decision to fix the ProvenanceSummary internal structuring (adding frozen_evidence_ids, frozen_source_node_refs, index-alignment) where the row's own text concedes the change was not driven by any surfaced defect and 'zero materializations to date.' A decision-bearing schema amendment whose stated warrant is 'economy' rather than a claim the record decides is a scope question: the body now fixes structuring detail (§4 index-aligned frozen_* arrays) as binding contract on the strength of a change the record itself states nothing required.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "author-decision-record SKILL — 'Only include sections and sub-decisions the record actually constrains... Omit what doesn't apply' and 'don't reach for the nearest doctype... over-documenting a small decision is its own failure mode'; the row's own 'no valid finding forced this touch — opened on economy' text"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-002"],
+    "locus": "§2.6 cost-plane exemplar + Decision.2",
+    "claim": "The record commits the cost plane as the first Extension registration and carries its full node schema (RateCard/CostFactor/CapabilityCostEstimate) as binding contract, while §2.6 simultaneously states that 'the separate question of cost as a platform capability (whether and why SOFIA models cost at all) is routed to the forthcoming cost-capability decision record, not asserted in this schema.' The body decides the cost plane's schema shape and edges yet declares the prior question of whether cost is modeled at all to be undecided elsewhere — a schema is fixed for a capability whose existence the record disclaims deciding.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-002 §2.6 'cost as a platform capability... routed to the forthcoming cost-capability decision record, not asserted in this schema' vs. Decision.2 + §2.6 cost-plane registration + §3 Cost edge catalog committing the full cost schema"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-002"],
+    "locus": "Decision.11 + §2 preamble (confidence-derivation basis)",
+    "claim": "Decision.11 and the §2 preamble decide per-class confidence-derivation totality and enumerate the four bases, the resolution rule, and the citable-universe boundary, then declare 'Derivation semantics and values are DDR-004's.' But the record also carries substantive derivation-semantic commitments the summary claims not to decide — e.g. the §2 preamble's 'a declared basis governs the derivation when a node of that class is cited; it imposes no requirement that such citations exist — evidence completeness is never a derivation concern' is a semantic ruling about derivation, and DDR-004's own text (Decision, §1–§6) states DDR-004 fixes the function form, constant treatment, and composition boundary. The claim-fidelity defect: the record's stated scope boundary ('values and semantics are DDR-004's') under-describes decision content the body actually fixes about derivation behavior.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-002 §2 preamble citation-scoped clause + Decision.11 'Derivation semantics and values are DDR-004's' vs. the semantic derivation rulings carried in-body; DDR-004 Decision (six components) confirming derivation-semantic ownership"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["DDR-002"],
+    "locus": "Change Log — v1.3.0 Touch 3 row, PlaneDefinition flat_base note",
+    "claim": "The Touch-3 row states '`PlaneDefinition` itself declared `flat_base` (batch ruling, adjudication A-3 — a disposition DDR-004 §4's table does not yet carry; alignment noted for that record's next touch).' The record thus declares a basis for PlaneDefinition that it concedes its cited authority (DDR-004 §4) does not yet carry, and pushes reconciliation to a future DDR-004 touch. This surfaces an undeclared dependency/consequence: a committed schema fact (PlaneDefinition basis) stands ahead of the authority the record routes derivation-basis authority to, with the reconciliation named only in the Change Log, not as a tracked condition.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-002 §2.6 'PlaneDefinition's own basis: flat_base' + Touch-3 Change Log note 'a disposition DDR-004 §4's table does not yet carry' vs. DDR-004 §4 disposition table which does not list PlaneDefinition"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-002"],
+    "locus": "Decision block (Decision.1–11) vs. body ownership lines (§5, §6, Cross-References)",
+    "claim": "Attacked the Decision block for scope creep — testing whether the eleven decision components claim ownership the body then disclaims or the body smuggles decisions the summary omits. Each Decision component maps to a body section that carries the same ruling with a consistently drawn owns/cites/routes line (Decision.6 + §5 ownership line + the boundary routing map), and the retraction, provenance-survival, applicability-state, and supersession decisions (7–10) each surface as declared decisions with named dependencies routed to DDR-001/DDR-003/SDDs rather than silently absorbed. The claim-fidelity between title/summary and decision content held.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-002 Decision.1–11 cross-checked against §5 ownership line, §6 versioning, and the Cross-References boundary routing map (→ DDR-001 / DDR-003 / SDDs / DDR-004)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-002"],
+    "locus": "§7 #21/#25 retraction invariants + Change Log Touch-1 rationale",
+    "claim": "Attacked the Touch-1 #25 re-scoping for a smuggled or under-declared decision: whether narrowing #25 to executed proposals quietly retracts the safety guarantee #21 provides or introduces an undeclared gap in the pre-decision retraction window. The body declares the change as a discrete decision (Touch-1 row), states its consequence (dissolves the #21/#25 joint unsatisfiability and the false-positive on rejected retractions), leaves #21 explicitly untouched, and routes the post-materialization verdict-flip boundary to DDR-003 as a named consequence rather than absorbing it. Decision content, its consequence, and its routed dependency are all surfaced.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-002 §7 #21 + #25 (scoped) + §5 retraction paragraph + Change Log Touch-1 row consequence statement"
+    }
+  }
+]

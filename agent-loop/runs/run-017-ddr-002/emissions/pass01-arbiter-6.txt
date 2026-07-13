@@ -1,0 +1,7 @@
+{
+  "finding_id": "040bdb6db22dfd79",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The bounding of the zero-evidence ReasoningProgress.confidence is a gap in ratified authority: DDR-002 §4 and #24 both explicitly scope the ceiling to conclusions with supporting evidence and route the zero-evidence rollup posture to the SDD, and SDD-001 §2.2 in turn routes it further to the unauthored solutioning-agent SDD. No ratified authority determines what bounds the value in the admitted-legal empty case, and closing it requires a choice (e.g., a floor/default, a rejection rule, or a rollup-function convention) that no existing locus dictates.",
+  "confidence": "high"
+}
