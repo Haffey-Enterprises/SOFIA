@@ -844,9 +844,11 @@ def test_sdd_recipe_spec_pin() -> None:
 
 
 def test_sdd_recipe_byte_regression_reproduces_run_011(tmp_path) -> None:
-    # Re-prep an SDD run against the real develop tree + run-011 as the
-    # carry-forward donor; the produced substrate reproduces run-011's
-    # substrate byte-for-byte (RBT-57 acceptance: SDD recipe regression-clean).
+    # Property under test: the SDD prep PIPELINE reproduces a prior run's
+    # substrate byte-for-byte from that run's OWN inputs — pipeline determinism,
+    # NOT world-state equality with today's working tree, whose canon legitimately
+    # evolves (e.g. DDR-002 v1.3.0; RBT-54 adjudicated rider). So the re-prep is
+    # sourced hermetically from run-011's stored substrate, never live REPO_ROOT.
     real_run_011 = REPO_ROOT / "agent-loop" / "runs" / "run-011-sdd-001"
     assert real_run_011.is_dir(), "run-011 must exist as the known SDD baseline"
 
@@ -856,8 +858,24 @@ def test_sdd_recipe_byte_regression_reproduces_run_011(tmp_path) -> None:
     prior.mkdir(parents=True)
     shutil.copytree(real_run_011 / "substrate", prior / "substrate")
 
+    # Reconstruct a run-011-era $SOFIA_ROOT from run-011's own stored bytes: each
+    # repo-canonical spec lands at its recipe repo_relpath (carry-forward items
+    # arrive via --from-run). The reviewed SDD-001 doc is a placeholder — its
+    # bytes never enter the substrate this test pins.
+    sofia_root = tmp_path / "sofia-run011"
+    for spec in sdd_substrate_specs(from_run="run-011-sdd-001"):
+        if spec.repo_relpath is None:
+            continue
+        src = real_run_011 / "substrate" / spec.category / f"{spec.logical_id}.md"
+        dest = sofia_root / spec.repo_relpath
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(src, dest)
+    reviewed = sofia_root / "docs" / "sdd" / "SDD-001-knowledge-service.md"
+    reviewed.parent.mkdir(parents=True, exist_ok=True)
+    reviewed.write_text("SDD-001 reviewed doc (bytes irrelevant to substrate)", encoding="utf-8")
+
     run_dir = prep_run(
-        "run-regress-sdd", ["SDD-001"], sofia_root=REPO_ROOT, runs_root=runs_root,
+        "run-regress-sdd", ["SDD-001"], sofia_root=sofia_root, runs_root=runs_root,
         sofia_head_sha="HEADX", retrieved="2026-07-11", from_run="run-011-sdd-001",
     )
 
