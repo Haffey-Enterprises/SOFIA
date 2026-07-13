@@ -1,0 +1,7 @@
+{
+  "finding_id": "a9a90cb78e691608",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The record itself, at DDR-002 Named Gaps 'Gate-decision origin evolution', explicitly declares which GateDecision verdict governs a Solution carrying conflicting DECIDED_ON outcomes as 'unruled' and routes it to the forthcoming approval/governance-state-manager designs; the deliberation record confirms SDD-001 declines widening as an upstream question. Resolving the apparent contradiction requires either scoping §2.4's supertype-level precedence prose away from GateDecision or fixing the GateDecision precedence rule \u2014 a choice no ratified authority has made, since the governing-verdict rule is deliberately deferred.",
+  "confidence": "high"
+}

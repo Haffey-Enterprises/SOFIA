@@ -1,0 +1,7 @@
+{
+  "finding_id": "b0e37dbee15921a6",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding names a schema fact (PlaneDefinition's own flat_base basis) that stands ahead of its routed authority (DDR-004 §4's disposition table, which does not carry it), with reconciliation deferred to a future DDR-004 touch. Resolving the inter-document authority gap requires a choice not yet ratified — whether to add a tracked condition, amend DDR-004, or otherwise reconcile — and no cited authority disambiguates that; DDR-004 §4's silence on PlaneDefinition is exactly the gap, so it cannot determine the fix.",
+  "confidence": "medium"
+}

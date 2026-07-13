@@ -23,6 +23,14 @@
 #          The thin CLI entry that stamps HEAD/timestamp lives at
 #          scripts/prep_run.py.
 #
+# RBT-54 (F4) adds a third substrate source beside repo-canonical and
+# --from-run carry-forward: bedrock authorities are sourced from the INSTALLED
+# plugin cache (an injected cache root — the CLI discovers it; tests inject a
+# tmp cache, so determinism holds) and verified PIN-vs-INSTALLED against a
+# ratified expected_sha256. A drifted cache fails loud unless a sanctioned
+# --accept-stale-authority override is supplied; verified_against (and any
+# currency_override) are recorded entry-level on the substrate manifest.
+#
 # Three lessons carried from the run-009..011 substrate work, enforced here as
 # assertions with fail-loud coverage (RBT-52):
 #   #1 substrate files land as <category>/<logical_id>.md — resolution by stem,
@@ -76,9 +84,16 @@ class SubstrateSpec:
       - `repo_relpath` set: copy from `<sofia_root>/<repo_relpath>` (a
         repo-canonical source, tracked for lesson #3);
       - `carry_forward` True: copy from the prior draw's substrate under
-        `--from-run` (for sources the runner cannot re-fetch — bedrock's
-        archived templates/skills, Notion vision — carried forward with a pin
-        assertion), reusing the prior manifest's origin block.
+        `--from-run` (for sources the runner cannot re-fetch that are NOT
+        forward-verifiable — the Notion vision — carried forward with a pin
+        assertion), reusing the prior manifest's origin block;
+      - `bedrock_cache` True: source from the INSTALLED bedrock plugin cache
+        (RBT-54 F4). The bytes come from the injected cache root at the
+        cache-relative path derived from `origin.path`, and are verified
+        PIN-vs-INSTALLED against `expected_sha256` — the ratified content pin.
+        Bedrock authorities never ride `--from-run`, so staleness-by-carry is
+        unexpressible by construction; a drifted cache fails loud at prep unless
+        a sanctioned `--accept-stale-authority` override is supplied.
     """
 
     logical_id: str
@@ -86,6 +101,8 @@ class SubstrateSpec:
     origin: dict = field(default_factory=dict)
     repo_relpath: str | None = None
     carry_forward: bool = False
+    bedrock_cache: bool = False
+    expected_sha256: str | None = None  # ratified pin; required when bedrock_cache
 
 
 def sdd_substrate_specs(*, from_run: str | None) -> list[SubstrateSpec]:
@@ -151,8 +168,10 @@ def ddr_substrate_specs(
         Hardcoded while a single SDD exists; when a second SDD lands, "which SDDs
         implement this DDR" becomes a resolver (flagged in RBT-57 — n=1 today).
       - Doctype authoring authority: the ddr-template and the
-        author-decision-record SKILL (carried forward, like the SDD recipe's
-        sdd-template — bedrock archived, not re-fetchable at prep).
+        author-decision-record SKILL — sourced from the installed bedrock plugin
+        cache and verified pin-vs-installed (RBT-54 F4). Unlike the SDD recipe's
+        carried sdd-template, these do not ride --from-run; the ratified pin is
+        their authority and a drifted cache fails loud at prep.
       - Design-intent lineage: the target DDR's deliberation record, resolved by
         convention (`agent-loop/deliberation/<ddr-slug>/record.md`) and passed in
         as `record_relpath`; its logical_id is derived from `target`, never
@@ -207,9 +226,24 @@ def ddr_substrate_specs(
             {"source": "sofia-repo", "path": "docs/sdd/SDD-001-knowledge-service.md"},
             repo_relpath="docs/sdd/SDD-001-knowledge-service.md",
         ),
-        # Doctype authoring authority (carry-forward: bedrock, not re-fetchable).
-        SubstrateSpec("ddr-template", "authorities", carry_forward=True),
-        SubstrateSpec("author-decision-record-SKILL", "authorities", carry_forward=True),
+        # Doctype authoring authority — sourced from the installed bedrock
+        # plugin cache and verified pin-vs-installed (RBT-54 F4 / G1). The pins
+        # are the ratified 1.3.0 content hashes; they move only by explicit
+        # operator ratification (a bump here IS the ratification act).
+        SubstrateSpec(
+            "ddr-template", "authorities",
+            {"source": "bedrock",
+             "path": "plugins/bedrock/skills/author-decision-record/templates/ddr-template.md"},
+            bedrock_cache=True,
+            expected_sha256="59068b3a2741f497e92bff240da238d4f8b6b57471c8ff7a76ab8c09ba9668f9",
+        ),
+        SubstrateSpec(
+            "author-decision-record-SKILL", "authorities",
+            {"source": "bedrock",
+             "path": "plugins/bedrock/skills/author-decision-record/SKILL.md"},
+            bedrock_cache=True,
+            expected_sha256="28a7696576cc6c2d2f2a313f812e3696bdcf3468ebade9bcb485fca71c012afe",
+        ),
         # Design-intent lineage: the target DDR's deliberation record, by convention.
         SubstrateSpec(
             f"deliberation-record-{target.lower()}", "design-intent",
@@ -447,6 +481,100 @@ def snapshot_documents(
 # --- substrate assembly (acts a-d) --------------------------------------------
 
 
+# --- RBT-54 F4: bedrock forward currency check (pin-vs-installed) ------------
+
+_BEDROCK_ORIGIN_PREFIX = "plugins/bedrock/"
+
+
+def _bedrock_cache_relpath(origin_path: str) -> str:
+    """Map a bedrock `origin.path` to its path within the installed plugin cache.
+
+    origin.path is recorded plugin-rooted (`plugins/bedrock/skills/...`); the
+    installed cache lays the plugin out under its version dir WITHOUT that prefix
+    (`<cache_root>/skills/...`). Stripping the known prefix is the whole mapping;
+    an origin.path that does not carry it is a malformed bedrock spec and fails
+    loud rather than resolving to a wrong (or absent) cache file.
+    """
+    if not origin_path.startswith(_BEDROCK_ORIGIN_PREFIX):
+        raise PrepError(
+            f"bedrock origin path {origin_path!r} does not start with "
+            f"{_BEDROCK_ORIGIN_PREFIX!r}; cannot resolve it in the plugin cache"
+        )
+    return origin_path[len(_BEDROCK_ORIGIN_PREFIX):]
+
+
+def _verify_bedrock_currency(
+    spec: SubstrateSpec,
+    *,
+    bedrock_cache_root: str | Path | None,
+    accept_stale: dict[str, str] | None,
+    verified_at: str,
+) -> tuple[str, str, dict, dict | None]:
+    """Source a bedrock authority from the installed cache and verify its pin.
+
+    Returns `(content, installed_sha256, verified_against, currency_override)`.
+    The check is PIN-vs-INSTALLED: the spec's `expected_sha256` (ratified) is
+    compared against the hash of the installed-cache file. On a match,
+    `currency_override` is None. On a mismatch, prep FAILS LOUD — naming the
+    logical_id, the expected pin, and the installed hash — unless `accept_stale`
+    carries a non-blank reason for this logical_id, which is a sanctioned
+    override: the run records a `currency_override` block and proceeds on the
+    installed bytes. A blank/whitespace reason is rejected (reason is mandatory).
+
+    Raises:
+        PrepError: on a missing cache root, a spec without a pin, an absent
+            cache file, an unsanctioned mismatch, or a reason-less override.
+    """
+    if bedrock_cache_root is None:
+        raise PrepError(
+            f"substrate {spec.logical_id!r} is bedrock-cache but no bedrock cache "
+            "root was given (F4 currency check cannot run)"
+        )
+    if spec.expected_sha256 is None:
+        raise PrepError(
+            f"bedrock-cache substrate {spec.logical_id!r} carries no expected_sha256 "
+            "pin; the pin is its authority (F4)"
+        )
+    relpath = _bedrock_cache_relpath(spec.origin["path"])
+    source = Path(bedrock_cache_root) / relpath
+    if not source.is_file():
+        raise PrepError(
+            f"bedrock cache source missing for {spec.logical_id!r}: {source}"
+        )
+    content = source.read_text(encoding="utf-8")
+    installed = sha256_text(content)
+    verified_against = {
+        "path": spec.origin["path"],
+        "sha256": installed,
+        "source": "installed-cache",
+        "verified_at": verified_at,
+    }
+    if installed == spec.expected_sha256:
+        return content, installed, verified_against, None
+
+    reason = (accept_stale or {}).get(spec.logical_id)
+    if reason is None:
+        raise PrepError(
+            f"bedrock currency mismatch for {spec.logical_id!r} "
+            f"({spec.origin['path']}): expected pin {spec.expected_sha256}, "
+            f"installed {installed}. Re-pin (operator ratification) or override "
+            f"with --accept-stale-authority {spec.logical_id} --reason '...'."
+        )
+    if not reason.strip():
+        raise PrepError(
+            f"--accept-stale-authority {spec.logical_id!r} requires a non-blank "
+            "--reason; a reason-less override is rejected"
+        )
+    currency_override = {
+        "status": "accepted-stale",
+        "expected_sha256": spec.expected_sha256,
+        "installed_sha256": installed,
+        "reason": reason,
+        "timestamp": verified_at,
+    }
+    return content, installed, verified_against, currency_override
+
+
 def _prior_substrate_entries(from_run_dir: Path) -> dict[str, dict]:
     """Map logical_id -> prior manifest entry from a prior draw's substrate."""
     manifest_path = from_run_dir / "substrate" / "manifest.json"
@@ -463,19 +591,35 @@ def assemble_substrate(
     sofia_root: str | Path,
     retrieved: str,
     from_run_dir: Path | None = None,
+    bedrock_cache_root: str | Path | None = None,
+    accept_stale: dict[str, str] | None = None,
+    verified_at: str | None = None,
 ) -> None:
     """Assemble the frozen substrate into `run_dir/substrate/` (acts a-d).
 
-    Each spec's file lands at `<category>/<logical_id>.md` (lesson #1), copied
-    from its repo-canonical path or carried forward from `--from-run`, hashed
-    validator-method (lesson #2), and (under `--from-run`, where a prior pin
-    exists) asserted against that pin (act c). Emits the substrate manifest in
-    the existing §3 schema (act d) and self-validates it. Finally asserts every
-    repo-canonical source survived (lesson #3).
+    Each spec's file lands at `<category>/<logical_id>.md` (lesson #1), sourced
+    from its repo-canonical path, carried forward from `--from-run`, or (RBT-54
+    F4) from the installed bedrock plugin cache; hashed validator-method (lesson
+    #2); and, where a prior pin exists (`--from-run`), asserted against it (act
+    c). Bedrock-cache specs are verified pin-vs-installed against the injected
+    `bedrock_cache_root` and record entry-level `verified_against` (and, on a
+    sanctioned `accept_stale` override, `currency_override`) beside `origin`.
+    Emits the substrate manifest in the existing §3 schema (act d) and
+    self-validates it. Finally asserts every repo-canonical source survived
+    (lesson #3).
+
+    Args:
+        bedrock_cache_root: Installed bedrock plugin cache root; required when
+            any spec is `bedrock_cache` (fail-loud otherwise).
+        accept_stale: Map logical_id -> reason sanctioning a bedrock pin
+            mismatch; a reason-less entry is rejected.
+        verified_at: Timestamp recorded in `verified_against` / override;
+            defaults to `retrieved` when omitted.
     """
     substrate_out = run_dir / "substrate"
     sofia_root = Path(sofia_root)
     prior_entries = _prior_substrate_entries(from_run_dir) if from_run_dir is not None else {}
+    verified_at = verified_at if verified_at is not None else retrieved
 
     entries: list[dict] = []
     canonical_sources: list[Path] = []
@@ -483,6 +627,28 @@ def assemble_substrate(
         category_dir = substrate_out / spec.category
         category_dir.mkdir(parents=True, exist_ok=True)
         dest = category_dir / f"{spec.logical_id}.md"  # lesson #1
+
+        if spec.bedrock_cache:
+            # RBT-54 F4: source from the installed cache, verify pin-vs-installed.
+            content, digest, verified_against, currency_override = _verify_bedrock_currency(
+                spec,
+                bedrock_cache_root=bedrock_cache_root,
+                accept_stale=accept_stale,
+                verified_at=verified_at,
+            )
+            dest.write_text(content, encoding="utf-8")  # copy, never move
+            entry = {
+                "logical_id": spec.logical_id,
+                "category": spec.category,
+                "origin": dict(spec.origin),  # source + path; prose note retires
+                "retrieved": retrieved,
+                "sha256": digest,
+                "verified_against": verified_against,
+            }
+            if currency_override is not None:
+                entry["currency_override"] = currency_override
+            entries.append(entry)
+            continue
 
         if spec.carry_forward:
             if from_run_dir is None:
@@ -546,6 +712,10 @@ def prep_run(
     retrieved: str,
     from_run: str | None = None,
     recipe: Callable[..., list[SubstrateSpec]] | None = None,
+    bedrock_cache_root: str | Path | None = None,
+    accept_stale: dict[str, str] | None = None,
+    verified_at: str | None = None,
+    extra_specs: list[SubstrateSpec] | None = None,
 ) -> Path:
     """Prepare one run folder (documents snapshot + substrate) and return it.
 
@@ -559,10 +729,30 @@ def prep_run(
     selection (tests inject minimal recipes). Recipe selection runs BEFORE any
     folder is created, so a fail-loud selection failure — e.g. a DDR whose
     deliberation record is absent — emits no run folder.
+
+    `bedrock_cache_root` / `accept_stale` / `verified_at` thread the RBT-54 F4
+    currency check into substrate assembly (see `assemble_substrate`); they are
+    inert for recipes with no bedrock-cache specs.
+
+    `extra_specs` (RBT-54 S-2 / E2' landing-state completeness) folds additional
+    authorities into THIS run's substrate without widening the doctype recipe —
+    for a review that must read against coupled landing-state records the general
+    recipe does not carry (run-016 reviews amended DDR-002 and must see DDR-004).
+    An extra spec whose logical_id already appears in the recipe is rejected (no
+    silent duplicate), and the check runs before any folder is created.
     """
     sofia_root = Path(sofia_root)
     if recipe is None:
         recipe = select_recipe(doc_ids, sofia_root=sofia_root)
+    specs = list(recipe(from_run=from_run))
+    if extra_specs:
+        recipe_ids = {spec.logical_id for spec in specs}
+        clashes = sorted(s.logical_id for s in extra_specs if s.logical_id in recipe_ids)
+        if clashes:
+            raise PrepError(
+                f"extra_specs logical_id(s) already carried by the recipe: {clashes}"
+            )
+        specs = specs + list(extra_specs)
     runs_root = Path(runs_root)
     run_dir = runs_root / run_id
     if run_dir.exists():
@@ -576,11 +766,14 @@ def prep_run(
     docs_root = sofia_root / "docs"
 
     assemble_substrate(
-        recipe(from_run=from_run),
+        specs,
         run_dir=run_dir,
         sofia_root=sofia_root,
         retrieved=retrieved,
         from_run_dir=from_run_dir,
+        bedrock_cache_root=bedrock_cache_root,
+        accept_stale=accept_stale,
+        verified_at=verified_at,
     )
     snapshot_documents(
         doc_ids,
@@ -605,6 +798,10 @@ def prep_draws(
     retrieved: str,
     from_run: str | None = None,
     recipe: Callable[..., list[SubstrateSpec]] | None = None,
+    bedrock_cache_root: str | Path | None = None,
+    accept_stale: dict[str, str] | None = None,
+    verified_at: str | None = None,
+    extra_specs: list[SubstrateSpec] | None = None,
 ) -> list[Path]:
     """Prepare N draws (act e) — one prepared folder per run-id.
 
@@ -612,7 +809,8 @@ def prep_draws(
     draws differ only in run_id (the two-draw verification standard rests on
     exactly that). Returns the run folders in order. `recipe` follows `prep_run`:
     None selects by doctype; an explicit recipe overrides (every draw shares the
-    same doc set, so every draw resolves the same recipe).
+    same doc set, so every draw resolves the same recipe). The RBT-54 F4 currency
+    args and `extra_specs` (S-2) thread through identically to every draw.
     """
     return [
         prep_run(
@@ -624,6 +822,10 @@ def prep_draws(
             retrieved=retrieved,
             from_run=from_run,
             recipe=recipe,
+            bedrock_cache_root=bedrock_cache_root,
+            accept_stale=accept_stale,
+            verified_at=verified_at,
+            extra_specs=extra_specs,
         )
         for run_id in run_ids
     ]

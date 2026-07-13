@@ -1,0 +1,7 @@
+{
+  "finding_id": "1c10d155886bc39b",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §7 check #26 (confidence_basis label set = property_schema label set) governing the §2.6 cost-plane exemplar illustration; deliberation-record-ddr-002 Item E2′ / Addendum A-12 (illustration-gloss discipline)",
+  "rationale": "The fix is a purely presentational reconciliation of an illustrative exemplar against an already-ratified invariant: #26 fixes the required key-set-equality contract and the exemplar is explicitly an illustration with property_schema elided, so conforming the gloss to the ratified invariant (either surfacing the property_schema key set or restating the elision so the demonstrated set-equality reads coherently) introduces no new choice. No authority is silent and no options compete.",
+  "confidence": "high"
+}

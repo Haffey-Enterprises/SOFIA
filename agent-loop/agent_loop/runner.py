@@ -115,7 +115,8 @@ def _gather_then_admit(
     guard (mechanical-gates §3) can fire.
 
     Returns:
-        (agents_run labels in admission order, compromised-reviewer labels).
+        (agents_run labels in admission order, compromised-reviewer labels,
+        all_null — every scheduled reviewer produced a clean null this pass).
     """
     # The plan's scheduling view is its own isolated copy of the state.
     scheduled = plan(pass_number, copy.deepcopy(snapshot_state), log)
@@ -157,7 +158,21 @@ def _gather_then_admit(
         for identity, _, parse_drops in gathered
         if parse_drops >= 1 and reached_ledger[identity.label] == 0
     ]
-    return agents_run, compromised
+
+    # All-hats-null guard (RBT-54 R-C): a CLEAN null from one hat degrades recall
+    # and is recoverable (union-over-runs), so it continues; but if EVERY
+    # scheduled reviewer went variance-to-zero this pass, the whole draw is null
+    # and routing it would reach a false CONVERGED. Detected off the per-pass
+    # hat_null events (the clean-empty species), distinct from the parse-storm
+    # `compromised` set above (a parse-dropped hat never emits hat_null).
+    scheduled_labels = {reviewer.identity.label for reviewer in scheduled}
+    hat_nulled = {
+        event.detail.get("reviewer")
+        for event in log.of_kind("hat_null")
+        if event.detail.get("pass_number") == pass_number
+    }
+    all_null = bool(scheduled_labels) and scheduled_labels <= hat_nulled
+    return agents_run, compromised, all_null
 
 
 def run_loop(
@@ -236,7 +251,7 @@ def run_loop(
         substrate = fetch_substrate(list(header.set))
 
         # §3: gather all emissions, then admit in fixed order.
-        agents_run, compromised = _gather_then_admit(
+        agents_run, compromised, all_null = _gather_then_admit(
             ledger, snapshot_state, plan, pass_number, records, substrate, log
         )
 
@@ -250,6 +265,18 @@ def run_loop(
             raise InstrumentCompromisedError(
                 f"{label} pass {pass_number}: reviewer(s) {compromised} produced "
                 "parse-dropped emissions and admitted no findings — instrument "
+                "compromised, refusing to route (would risk a false CONVERGED)"
+            )
+
+        # All-hats-null guard (RBT-54 R-C): a whole-draw clean null is not a
+        # legitimate empty result (the POSITIVE floor makes that structurally
+        # impossible) — it is variance-to-zero across every hat, and routing it
+        # would reach a false CONVERGED. Fail loud, same posture as above.
+        if all_null:
+            store.save(ledger)
+            raise InstrumentCompromisedError(
+                f"{label} pass {pass_number}: every scheduled reviewer produced a "
+                "clean-null emission (variance-to-zero across all hats) — instrument "
                 "compromised, refusing to route (would risk a false CONVERGED)"
             )
 

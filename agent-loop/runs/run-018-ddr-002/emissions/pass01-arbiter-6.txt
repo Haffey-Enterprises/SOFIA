@@ -1,0 +1,7 @@
+{
+  "finding_id": "7e1eeb750d630350",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "Resolving this requires a choice authority does not make: whether Governance-plane nodes should be citable-as-Evidence (keep flat_base) or non-citable (declare basis 4). No ratified authority disambiguates — §2.4 assigns flat_base plane-level, §4 treats PromotionDecision as the accountability control not an evidence source, and DDR-004 §4's per-class dispositions do not enumerate a Governance citability disposition. The four-basis-per-class model requires exactly one basis per class, and which one Governance takes is precisely the unmade decision the finding exposes.",
+  "confidence": "medium"
+}

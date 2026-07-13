@@ -1,0 +1,7 @@
+{
+  "finding_id": "b5b4683f62e39490",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding exposes a genuine ambiguity/conflict in DDR-002's own text between §2.4 (Condition.predicate 'covered by §7 check #10') and §7 #10's edge-backing test structure (GOVERNED_BY/MANDATES targets defined in §3 only for Standards↔Catalog), and no higher authority disambiguates whether #10 truly extends to Condition, whether Condition is meant to carry such edges, or whether the coverage claim is simply mis-scoped; resolving it requires choosing among conforming corrections (drop the coverage claim, specify Condition edges, or redefine #10's test for Condition), a choice DDR-002 does not itself settle.",
+  "confidence": "medium"
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-004"],
+    "locus": "§6 Reconstructibility / Δt anchor / Pre-Acceptance Condition 2",
+    "claim": "The record states the capture instant 'must be durably recoverable' and asserts (§3 Reconstructible, §6 Reconstructibility) that both Δt endpoints ARE durably recoverable, yet Pre-Acceptance Condition 2 makes durable recoverability contingent on an unresolved DDR-002 confirmation: whether `Evidence.observed_at` means the capture instant or the pinned-source-freshness reading. Section 3 claims the property holds ('Both Δt endpoints are durably recoverable'); §6 and the Pre-Acceptance Condition concede it does not yet hold and depends on an unconfirmed DDR-002 semantic. The record simultaneously claims a property satisfied and lists its satisfaction as an open pre-acceptance condition.",
+    "cited_authority": {
+      "kind": "soundness",
+      "ref": "internal contradiction: DDR-004 §3 (Reconstructible: 'Both Δt endpoints are durably recoverable') vs. §6 Reconstructibility + Pre-Acceptance Condition 2 ('`Evidence.observed_at`'s intended meaning must be confirmed against DDR-002 before adoption')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-004"],
+    "locus": "§4 Per-class declared-basis totality — `DeploymentEnvironment` basis 2 with Environment base 0.9",
+    "claim": "`DeploymentEnvironment` is assigned basis 2 (non-aging flat base) using the Environment base `0.9`, but §2 defines the invariant/contested split such that basis-2 flat bases are the Catalog/Standards/Governance `1.0` invariant-ground, and the Environment `0.9` is defined there strictly as the aging-branch `base` in `base × exp(−Δt/τ)`. Applying `0.9` as a decay-free flat base means a non-aging node inherits a permanently sub-1.0 confidence whose value derives from a decay-model parameter with the decay term dropped. The record does not reconcile why a structurally-stable identity that does not age carries 0.9 rather than 1.0, nor what `0.9` denotes once severed from the `exp(−Δt/τ)` term it was calibrated as one parameter of.",
+    "cited_authority": {
+      "kind": "soundness",
+      "ref": "DDR-004 §4 (`DeploymentEnvironment` = basis 2, Environment base 0.9, decay term dropped) against §2 (the `0.9` defined only as the Environment aging-branch `base` in `base × exp(−Δt/τ)`; `1.0` defined as the non-aging flat base for definitionally-authoritative ground truth) — a non-aging flat base of 0.9 is undefined by the constant treatment the record itself fixes"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-004", "DDR-002"],
+    "locus": "§4 declared-basis carriers as DDR-002 amendments / totality claim",
+    "claim": "The Totality contract (§1, §4) — 'For every citable node-class exactly one branch yields a value, because every citable class carries a declared basis' — is stated as an established property of the derivation, but the mechanism that makes it true (the per-node-label declared-basis carrier in `PlaneDefinition` §2.6 and core-plane annotations in DDR-002 §2.2–2.5) does not yet exist in DDR-002 v1.2.0 and is listed as a Pre-Acceptance Condition (RBT-54 Touch 3). DDR-002 v1.2.0 §2.6 `PlaneDefinition` carries `attaches_to` and `property_schema` but no derivation-basis declaration; §7 has no conformance check that a citable class declares a basis. Totality is therefore claimed as by-construction while its constructing constraint is unratified — the property is asserted satisfied against an authority that does not yet contain it.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 v1.2.0 §2.6 (`PlaneDefinition` schema — no derivation-basis field) and §7 (invariant set — no declared-basis conformance check); DDR-004 §1/§4 asserts totality 'by construction' from carriers that are Pre-Acceptance Conditions, not ratified schema"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["DDR-004"],
+    "locus": "Reconciliation with the SDD-001 interim / Cross-References",
+    "claim": "The record states SDD-001's §3.4.3/§9 routing 'resolves to DDR-004' and 'the SDD needs no content change,' but SDD-001 v1.0.0 §3.4.3 routes derivation authority to 'the forthcoming inherited-confidence-derivation decision record' by subject-name only and §9 lists that record under 'Forthcoming upstream (routed, unauthored).' Once DDR-004 is authored the SDD's own §9 characterization ('unauthored') is stale; the claim that no SDD content change is needed is scoped to correctness but the record does not note the §9 status-marker will misstate DDR-004's existence until refreshed.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-004 Reconciliation section ('the SDD needs no content change') vs. SDD-001 v1.0.0 §9 ('Inherited-confidence-derivation decision record' listed under 'Forthcoming upstream (routed, unauthored)')"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-004", "DDR-002"],
+    "locus": "§5 Composition boundary — branch (i) × the #24 ceiling",
+    "claim": "Checked the branch-(i)-inherits-node-authority-only ruling against DDR-002 §4's #24 ceiling ('ceiling = max of the supporting Evidence.confidence; weight affects aggregation only below the ceiling, never the ceiling itself') and the §3 confidence-surface split (Operational = node lesson-reliability + OBSERVED_IN edge per-target certainty). Attacked it as a coverage gap — the derivation is silent on composing edge certainty. It held: the edge certainty is explicitly routed to the ReasoningProgress rollup (SDD-001 §2.2/§3.3.3, returned uncomposed), and inheriting node authority only is consistent with the ceiling being a weakest-link node-reliability bound. The boundary is documented and conforms to the ceiling's direction; no deviation from DDR-002 §4.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 v1.2.0 §4 (#24 ceiling: conclusion ≤ max supporting Evidence.confidence; weight below ceiling only) and §3 (confidence-surface split: Operational node lesson-reliability vs. OBSERVED_IN per-target edge certainty)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-004"],
+    "locus": "§2 / §4 — the 1.0 invariant vs. Environment 0.9 contested split",
+    "claim": "Attacked the constant treatment for a conformance deviation: DDR-002 §4 fixes inheritance 'by authority class' and the ordering (authoritative Catalog above aging Environment) but not the literal 1.0. Tested whether fixing 1.0 as invariant-ground over-claims authority DDR-002 did not delegate. It held: the record frames 1.0-as-invariant as 'a determination this record makes on canonical warrant, not a value DDR-002 carries,' correctly citing that DDR-002 §4 fixes class-ordering and the [0,1] scale without fixing the literal, and the 0.9/τ contested-tunable treatment conforms to DDR-002 §1's contested-T2 convention. The invariant/contested split is authority-grounded and does not deviate from DDR-002 §4's class-ordering.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 v1.2.0 §4 (inheritance by authority class + ordering, literal values not fixed) and §1 (contested-T2 convention); DDR-004 §2 grounds 1.0-as-invariant as a determination on canonical warrant"
+    }
+  }
+]

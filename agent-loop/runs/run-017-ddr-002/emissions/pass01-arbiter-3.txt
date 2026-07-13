@@ -1,0 +1,7 @@
+{
+  "finding_id": "e9271a9dcb1e0f1b",
+  "classification": "resolvable",
+  "authority_locus": "Deliberation record item D3 (RATIFIED) — the citation-scoped clause and the citable-universe boundary are ruled 'not a derivation concern'; drafting adjudication A-2; DDR-004 Decision §4 owning per-class declared-basis totality with §1/§2/§5 owning function form, constants, and composition",
+  "rationale": "The finding alleges a scope-boundary mischaracterization, but the ratified design intent already draws the line the finding disputes: D3 explicitly rules the citation-scoped clause and citable-universe boundary as totality/boundary rulings that are 'never a derivation concern,' while DDR-004's own Decision assigns function form, constants, and composition to itself — so 'semantics and values are DDR-004's' is the already-ratified division, not an under-description. Conforming the text to that ruled line is determined, not a new choice.",
+  "confidence": "high"
+}

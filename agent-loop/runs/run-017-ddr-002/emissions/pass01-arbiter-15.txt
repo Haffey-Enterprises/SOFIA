@@ -1,0 +1,7 @@
+{
+  "finding_id": "43fa2c0f862016cf",
+  "classification": "resolvable",
+  "authority_locus": "Deliberation record DDR-002 Addendum, adjudication A-3 (ratified 2026-07-13): 'PlaneDefinition itself declared flat_base (basis 2 — versioned registry ground truth; staleness supersession). A batch ruling on a disposition DDR-004 §4's table does not yet carry; alignment noted for that record's next touch.'",
+  "rationale": "The stated design intent explicitly ratifies PlaneDefinition = flat_base as a batch ruling made in DDR-002, deliberately naming that DDR-004's table does not yet carry it and routing the alignment to DDR-004's next touch. The DDR-002 text conforms to that ratified adjudication verbatim; the DDR-004-side reconciliation is a named, already-decided follow-up, not an open choice.",
+  "confidence": "high"
+}

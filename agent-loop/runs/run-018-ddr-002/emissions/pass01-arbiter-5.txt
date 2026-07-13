@@ -1,0 +1,7 @@
+{
+  "finding_id": "616f18e847f98cbf",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding exposes a genuine gap: check #26 is written as a PlaneDefinition-scoped totality invariant, yet the schema declares core-plane bases in §2.1–2.5 prose annotations and never defines core-plane PlaneDefinition nodes for confidence_basis to sit on. Resolving this requires a choice among conforming options (rewrite #26 to scope core-plane vs Extension-plane bases separately; introduce core-plane PlaneDefinition carriers; re-home the core annotations) that no ratified authority disambiguates — the deliberation record fixes the annotation form and the #26 iff clause but does not settle where the core-plane invariant subject lives.",
+  "confidence": "medium"
+}

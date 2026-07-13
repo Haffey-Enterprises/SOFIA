@@ -1,0 +1,7 @@
+{
+  "finding_id": "9a71c6dc22cd6298",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding exposes a gap: a promotion PROPOSED_FROM a RejectedAlternative yields an empty frozen span, so the provenance-survival guarantee is vacuous for that case. No ratified authority determines whether this is acceptable (RejectedAlternative provenance need not survive), whether the span definition should be extended to freeze WOULD_HAVE_USED targets, or whether such promotions should be disallowed \u2014 each is a distinct unratified choice, and DDR-003's retention policy plus the KG-entry-governance ADR that would bear on it are both forthcoming/unauthored.",
+  "confidence": "high"
+}

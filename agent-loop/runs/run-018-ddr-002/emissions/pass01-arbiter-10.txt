@@ -1,0 +1,7 @@
+{
+  "finding_id": "2716a247fce61aaf",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §2.6 declared-totality registration rule + §7 check #26 (confidence_basis label set = property_schema label set); adjudication A-12/§2.6 illustration convention in deliberation-record-ddr-002",
+  "rationale": "The exemplar's purpose and the exact relationship it must depict are already fixed: §2.6/#26 define key-set equality between confidence_basis and property_schema, and the ratified record already carries the '#26 keys the basis label set to its key set' gloss on this literal. Making the illustration demonstrate that equality (or annotating why it need not) conforms to already-ratified authority and introduces no new choice.",
+  "confidence": "medium"
+}

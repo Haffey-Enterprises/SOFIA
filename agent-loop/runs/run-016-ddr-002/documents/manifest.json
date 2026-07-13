@@ -1,0 +1,16 @@
+{
+  "run_id": "run-016-ddr-002",
+  "sofia_head_sha": "9f07b21234c19504808a429898d6a44bf78abeab",
+  "files": [
+    {
+      "doc_id": "DDR-002",
+      "snapshot_path": "documents/DDR-002-graph-schema.md",
+      "origin": {
+        "source": "sofia-repo",
+        "canonical_path": "docs/ddr/DDR-002-graph-schema.md"
+      },
+      "retrieved": "2026-07-13",
+      "sha256": "1816317c81050d60f36760d7bbb2ef901c9f7f875e62eeee16545c0266c053dc"
+    }
+  ]
+}

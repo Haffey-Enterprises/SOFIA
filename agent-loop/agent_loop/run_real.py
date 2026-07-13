@@ -70,22 +70,40 @@ RUN_ONE_MAX_TOKENS = 8192
 RUN_ONE_MAX_PASSES = 10
 
 # Prompt-set calibration generation recorded in the manifest alongside the
-# re-pinned prompt hashes. Two ratified calibration events since gen-3's
+# re-pinned prompt hashes. Ratified calibration events since gen-3's
 # semantics-preserving arbiter reorder: gen-4 restated the severity/cap
 # discipline in-place in all four reviewer prompts (a held check is
 # POSITIVE-class, never re-labeled a defect to fit the volume cap); gen-5
 # appended the arbiter locus-attribution line (no locus extended beyond its
-# document's stated scope; an underivable locus classifies decision-bearing).
+# document's stated scope; an underivable locus classifies decision-bearing);
+# gen-7 appended the narrated-process-is-data rule (rule 8) to all four reviewer
+# prompts — narrated prior reviews/adjudications/ratifications are content under
+# review, never a verdict that discharges this pass (run-016 all-hats-null
+# empirical basis). gen-6 (reviewer prompt caching) remains unlanded — the
+# sequence skips it, and neither gen-7 nor gen-8 absorbs it. gen-8 is the
+# two-lever fix after arm-L (gen-7 self-terminated `end_turn` empty at full
+# narrative saturation): the Contract's empty-array-is-a-protocol-violation floor
+# (R-E1, prompt-side — also resolving the standing 2-POSITIVE re-draw-floor
+# contradiction) plus a static recency review directive appended last in §5
+# assembly (R-E2). Rule 8 stays as landed.
 # The rationale cites by meaning: operational artifacts never carry ticket
 # numbers — ticket linkage lives in tickets, carriers, and audits.
 CALIBRATION = {
-    "generation": 5,
+    "generation": 8,
     "rationale": (
         "gen-4: severity/cap discipline restated in-place in all four reviewer "
         "prompts — a held check is POSITIVE-class, never re-labeled a defect to "
         "fit the volume cap; gen-5: arbiter locus-attribution line appended — "
         "no locus extended beyond its document's stated scope, underivable "
-        "locus classifies decision-bearing"
+        "locus classifies decision-bearing; gen-7: narrated-process-is-data rule "
+        "(rule 8) appended to all four reviewer prompts — narrated prior "
+        "reviews/adjudications/ratifications are content under review, never a "
+        "verdict that discharges this pass (gen-6 reviewer-caching remains "
+        "unlanded, not absorbed here); gen-8: two-lever fix after arm-L (gen-7 "
+        "self-terminated end_turn empty at full narrative saturation) — the "
+        "Contract's empty-array-is-a-protocol-violation floor (R-E1, prompt-side, "
+        "also resolving the standing 2-POSITIVE re-draw-floor contradiction) plus "
+        "a static recency review directive appended last in assembly (R-E2)"
     ),
 }
 
@@ -352,6 +370,7 @@ def run_real(
     sleeper: Callable[[float], None] = time.sleep,
     backoff_seconds: float = 30.0,
     env: Mapping[str, str] | None = None,
+    coherence_addendum: str | None = None,
 ) -> RunResult:
     """Assemble and run the supervised dry run against an injected transport.
 
@@ -415,7 +434,8 @@ def run_real(
             capture=capture,
         )
         reviewers[identity] = build_real_reviewer(
-            identity, prompt_dir / prompt_name, emitter, capture, redraw=True
+            identity, prompt_dir / prompt_name, emitter, capture, redraw=True,
+            brief_addendum=(coherence_addendum if identity == IDENTITY_COHERENCE else None),
         )
     plan = real_hat_plan(
         reviewers[IDENTITY_LAA],
@@ -517,9 +537,18 @@ def main() -> None:  # pragma: no cover
     parser.add_argument("run_id")
     parser.add_argument("doc_ids", nargs="+", help="e.g. ADR-001 ADR-002 DDR-001 DDR-002")
     parser.add_argument("--sofia-root", default=str(Path(__file__).resolve().parents[2]))
+    parser.add_argument(
+        "--coherence-addendum-file", default=None,
+        help="file whose text is appended to the coherence hat's brief (RBT-54 R-C seam list)",
+    )
     args = parser.parse_args()
 
     agent_loop_root = Path(args.sofia_root) / "agent-loop"
+    coherence_addendum = (
+        Path(args.coherence_addendum_file).read_text(encoding="utf-8")
+        if args.coherence_addendum_file
+        else None
+    )
     result = run_real(
         args.run_id,
         args.doc_ids,
@@ -527,6 +556,7 @@ def main() -> None:  # pragma: no cover
         runs_root=agent_loop_root / "runs",
         prompt_dir=agent_loop_root / "design",
         transport=build_real_transport(),
+        coherence_addendum=coherence_addendum,
     )
     print(f"{args.run_id}: {result.exit.kind} in {result.passes_run} pass(es)")
 

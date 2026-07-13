@@ -739,6 +739,45 @@ def test_anthropic_transport_wraps_sdk_errors() -> None:
         AnthropicTransport(client)("s", "u", "m", 10)
 
 
+# --- run-016 diagnosis rider: transport captures the API stop_reason ---------
+
+
+def test_anthropic_transport_captures_stop_reason() -> None:
+    message = SimpleNamespace(
+        content=[SimpleNamespace(text="ok")],
+        usage=SimpleNamespace(input_tokens=5, output_tokens=2),
+        stop_reason="end_turn",
+    )
+    client = SimpleNamespace(messages=SimpleNamespace(create=lambda **kw: message))
+    response = AnthropicTransport(client)("sys", "usr", "m", 10)
+    assert response.stop_reason == "end_turn"
+
+
+def test_anthropic_transport_stop_reason_absent_defaults_none() -> None:
+    message = SimpleNamespace(  # a response object with no stop_reason attribute
+        content=[SimpleNamespace(text="ok")],
+        usage=SimpleNamespace(input_tokens=5, output_tokens=2),
+    )
+    client = SimpleNamespace(messages=SimpleNamespace(create=lambda **kw: message))
+    response = AnthropicTransport(client)("sys", "usr", "m", 10)
+    assert response.stop_reason is None
+
+
+def test_llm_call_records_stop_reason() -> None:
+    log = ActionLog()
+
+    def transport(system, user, model, max_tokens, cache_prefix=None):  # noqa: ANN001
+        return LlmResponse(text="[]", input_tokens=10, output_tokens=2, stop_reason="end_turn")
+
+    emit = build_api_emitter(
+        site_label="antagonist-SA", model="m", max_tokens=10, log=log,
+        transport=transport, now=_counter_now(), sleeper=lambda s: None,
+    )
+    emit("sys", "user")
+    call = log.of_kind("llm_call")[0]
+    assert call.detail["stop_reason"] == "end_turn"
+
+
 # --- §10g: provenance + manifest ---------------------------------------------
 
 
@@ -1018,7 +1057,7 @@ def test_run_real_integration_writes_finalized_manifest_and_log(tmp_path) -> Non
     # Manifest parameters reflect the actual request payload: max_tokens only.
     assert manifest["parameters"] == {"max_tokens": 8192}
     # Calibration record: the manifest pins the live prompt set's generation.
-    assert manifest["calibration"]["generation"] == 5
+    assert manifest["calibration"]["generation"] == 8
     # §7/T6: document_set records the frozen snapshot provenance (path + sha256),
     # not a working-tree path.
     doc_entry = manifest["document_set"]["ADR-001"]
@@ -1198,12 +1237,25 @@ def test_item_e_partial_drop_proceeds(tmp_path) -> None:
     assert len(result.log.of_kind("parse_dropped")) >= 1
 
 
-def test_item_e_empty_emission_proceeds_to_converged(tmp_path) -> None:
+def test_item_e_all_hats_null_aborts_no_false_converged(tmp_path) -> None:
+    # SUPERSEDES the prior "empty emission proceeds to converged" ruling
+    # (RBT-54 R-C; empirical basis: the run-016-ddr-002 fired draw). That run
+    # showed an all-hats-null draw is a FALSE CONVERGED from a wholly null
+    # instrument — every hat returned "[]", re-drew, "[]" again, hat_null, and
+    # the router declared CONVERGED with zero findings. A legitimate empty result
+    # is structurally impossible under the 2-POSITIVE floor, so the all-hats-null
+    # guard now fails such a draw loud. Applied learning, not contradiction.
+    from agent_loop.runner import InstrumentCompromisedError
+
     env = _prep_env(tmp_path, ["ADR-001", "ADR-002", "DDR-001", "DDR-002"])
-    transport = DispatchTransport(reviewer="[]")  # zero findings, zero drops
-    result = _dispatch_run(tmp_path, env, transport)
-    assert result.exit.kind == "CONVERGED"
-    assert result.log.of_kind("parse_dropped") == []
+    transport = DispatchTransport(reviewer="[]")  # every hat clean-null → hat_null
+    with pytest.raises(InstrumentCompromisedError):
+        _dispatch_run(tmp_path, env, transport)
+    run_dir = env["runs_root"] / env["run_id"]
+    kinds = [json.loads(x)["kind"] for x in (run_dir / "action-log.jsonl").read_text().splitlines()]
+    assert "run_aborted" in kinds
+    assert kinds.count("hat_null") == 4  # every hat went variance-to-zero
+    assert "converged" not in kinds  # the false CONVERGED is no longer reachable
 
 
 # --- RBT-49 Item 1: prompt caching — request structuring + accounting --------
@@ -1382,22 +1434,61 @@ def _single_reviewer_run(tmp_path, transport, *, arbiter, name):
     return result, log
 
 
-def test_reviewer_below_floor_empty_redraw_records_hat_null_and_run_continues(tmp_path) -> None:
-    # Synthetic empty emission → exactly one re-draw → second empty → hat_null
-    # recorded → the run continues to completion (not aborted).
-    transport = ScriptedTransport(["[]", "[]"])  # first empty, re-draw empty
-    result, log = _single_reviewer_run(tmp_path, transport, arbiter=CannedArbiter(), name="hn")
+def _two_positives_json() -> str:
+    return json.dumps([
+        {
+            "severity": "POSITIVE",
+            "target": ["ADR-001"],
+            "locus": f"s{i}",
+            "claim": "a load-bearing surface held under attack",
+            "cited_authority": {"kind": "canonical", "ref": "AUTH-1 §2"},
+        }
+        for i in (1, 2)
+    ])
 
-    # Exactly one re-draw: two emits; a third would IndexError the script.
-    assert len(transport.calls) == 2
+
+def test_reviewer_below_floor_empty_redraw_records_hat_null_and_run_continues(tmp_path) -> None:
+    # RBT-49 Item 2 (ratified, content preserved): a single hat's below-floor
+    # empty re-draw records hat_null and the run CONTINUES — degraded recall is
+    # recoverable via union-over-runs. Moved to a MULTI-HAT harness (RBT-54 R-C):
+    # the "continues" contract holds precisely because the other hats carry the
+    # draw; an ALL-hats-null draw fails loud (its own test). Here LAA nulls while
+    # SA/EA/coherence meet the 2-POSITIVE floor.
+    from agent_loop.real_hats import build_real_reviewer, real_hat_plan
+    from agent_loop.reviewers import IDENTITY_COHERENCE, IDENTITY_EA, IDENTITY_SA
+
+    log = ActionLog()
+    laa_calls: list[int] = []
+
+    def laa_emit(system: str, user: str) -> str:  # empty both times → hat_null
+        laa_calls.append(1)
+        return "[]"
+
+    def floor_emit(system: str, user: str) -> str:  # meets floor → no re-draw
+        return _two_positives_json()
+
+    plan = real_hat_plan(
+        build_real_reviewer(IDENTITY_LAA, DESIGN_DIR / "antagonist-LAA.prompt.md", laa_emit),
+        build_real_reviewer(IDENTITY_SA, DESIGN_DIR / "antagonist-SA.prompt.md", floor_emit),
+        build_real_reviewer(IDENTITY_EA, DESIGN_DIR / "antagonist-EA.prompt.md", floor_emit),
+        build_real_reviewer(IDENTITY_COHERENCE, DESIGN_DIR / "coherence-sweep.prompt.md", floor_emit),
+    )
+    result = run_loop(
+        header=LedgerHeader(set=["ADR-001"], counted_severities=["BLOCKING", "MATERIAL"]),
+        plan=plan, arbiter=CannedArbiter(), store=LedgerStore(tmp_path / "hn.json"), log=log,
+    )
+
+    # LAA emitted exactly twice (one re-draw); its hat_null is the only one.
+    assert len(laa_calls) == 2
     redraws = [
         e for e in log.of_kind("llm_retry") if e.detail.get("retry_kind") == "reviewer_redraw"
     ]
-    assert len(redraws) == 1 and redraws[0].detail["positive_count"] == 0
+    assert [e.detail.get("site") for e in redraws] == [IDENTITY_LAA.label]
+    assert redraws[0].detail["positive_count"] == 0
 
     hat_nulls = log.of_kind("hat_null")
     assert len(hat_nulls) == 1 and hat_nulls[0].detail["reviewer"] == IDENTITY_LAA.label
-    # Run reached a real terminal exit, not an abort.
+    # The run CONTINUES to a real terminal exit — other hats carried the draw.
     assert result.exit.kind == "CONVERGED"
     assert log.of_kind("run_aborted") == []
 

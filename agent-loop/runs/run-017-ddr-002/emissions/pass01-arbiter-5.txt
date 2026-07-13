@@ -1,0 +1,7 @@
+{
+  "finding_id": "05ce312a7d0e5d30",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding exposes a genuine silence: no ratified authority specifies whether a materialized retraction whose governing verdict later flips to rejected must shed its RETRACTS edge and whether the retracted target's read-exclusion reverses. §2.4 permits re-decision and defines a governing verdict, and §15 handles the promotion mirror (its remedy is the retraction shape), but the symmetric case for retraction — un-un-promotion — has no defined remedy shape; §5's remedy-boundary is explicitly routed to DDR-003 (unauthored). Resolving this requires choosing among conforming options (retain-and-re-promote via a new forward candidate, shed the edge, or something else) that no higher authority disambiguates.",
+  "confidence": "high"
+}

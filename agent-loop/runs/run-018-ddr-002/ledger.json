@@ -1,0 +1,606 @@
+{
+  "header": {
+    "set": [
+      "DDR-002"
+    ],
+    "counted_severities": [
+      "BLOCKING",
+      "MATERIAL"
+    ],
+    "plateau_N": 3,
+    "mode": "dry"
+  },
+  "findings": [
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-002"
+      ],
+      "locus": "Change Log \u2014 Touch 2 (RBT-54) row / Rationale empirical-warrant discipline",
+      "claim": "The Touch-2 amendment is recorded as decision-bearing yet its own change-log row concedes 'no valid finding forced this touch \u2014 opened on economy' and 'zero materializations to date \u2014 form-fixing pre-traffic.' The Rationale states the empirical-warrant discipline: a mechanism with no empirical instance yet is named as a gap and re-instated by additive amendment 'when a real instance arises, rather than carried speculatively.' Touch 2 fixes the ProvenanceSummary internal structuring (frozen_evidence_ids, index-alignment, set-equality completeness) ahead of any real instance, self-described as a 'ruled exception' to that discipline. A decision that the record's own governing Rationale prohibits, admitted by exception, is a claim-fidelity strain: the Rationale as authored does not support the decision the body now carries.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-002 Rationale (empirical-warrant discipline: 'named as a gap ... rather than carried speculatively') in conflict with \u00a74 ProvenanceSummary internal structuring + Change Log Touch-2 row ('ruled exception to the Rationale's empirical-warrant discipline')"
+      },
+      "id": "385488aa235877f0",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-002"
+      ],
+      "locus": "Decision block \u2014 enumerated components vs. Decision.5 sub-clauses",
+      "claim": "The Decision block claims to be 'decomposed into testable ruling components' (Decision.1\u2013.11), but several load-bearing decisions the body commits are not surfaced as Decision components: the retracted-node read-discipline (\u00a75, a gateway-enforced ground-truth exclusion), the confidence-rollup ceiling (\u00a74 #24), the two-surface applicability binding (\u00a75), and the reasoner-attribution / LLM-advisory invariant (\u00a74, #23 safety-critical). Decision.9 surfaces the conditional-consumption model and Decision.11 the derivation totality, but the retraction *read-exclusion* \u2014 a safety-critical control materially affecting what enters synthesis reads \u2014 rides only in \u00a75 prose and \u00a77 #21, never as an enumerated decision. A decision the body treats as safety-critical that never appears in the record's own decision enumeration is a scope/claim-fidelity gap: the Decision block under-claims what the record decides.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-002 Decision block ('decomposed into testable ruling components') vs. \u00a75 Retracted-node read-discipline + \u00a77 #21/#23/#24 \u2014 safety-critical/behavioral decisions absent from the enumerated Decision components"
+      },
+      "id": "b0d05717a3f2c8af",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-002"
+      ],
+      "locus": "\u00a72.6 / \u00a77 #26 \u2014 cost-plane exemplar registration literal",
+      "claim": "Decision.2 and \u00a72.6 state cost 'registers as the first Extension registration' and the cost-plane PlaneDefinition literal declares confidence_basis for three labels {CapabilityCostEstimate, RateCard, CostFactor}. \u00a77 #26 (basis-declaration totality) requires confidence_basis's label set to equal property_schema's label set exactly. The illustrated literal explicitly elides property_schema ('property_schema elided in this illustration; ... #26 keys the basis label set to its key set'). As authored, the record decides a registration whose conformance to its own #26 cannot be read from the record \u2014 the property_schema label set is unstated, so the reader cannot confirm the exemplar satisfies the key-set equality the same section mandates. The worked-exemplar claim ('tested by construction') is asserted against a definition the document does not fully show.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-002 \u00a72.6 cost-plane registration literal (property_schema elided) vs. \u00a77 #26 (confidence_basis label set = property_schema label set) \u2014 the exemplar's own conformance is unverifiable from the authored text"
+      },
+      "id": "5338c9d4d8b719a4",
+      "classification": "resolvable",
+      "authority_locus": "DDR-002 \u00a77 #26 (basis-declaration totality: confidence_basis's label set = property_schema's label set) + \u00a72.6 declared-totality registration rule; the illustration convention is an authorial-presentation choice, not a design gap",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "COSMETIC",
+      "target": [
+        "DDR-002"
+      ],
+      "locus": "\u00a77 marker paragraph / Cross-References \u2014 ticket identifiers in contract prose",
+      "claim": "Ticket identifiers (RBT-33, RBT-48, RBT-54) appear in \u00a77's 'Current state (marker-level)' paragraph and the Cross-References conformance-mechanization bullet \u2014 normative-adjacent body text describing what the harness enforces and when checks flip to required. The Cold-read gate change-log row records that \u00a77 marker-paragraph ticket identifiers were 'relocated to Cross-References,' but RBT-33/RBT-48 still appear in the conformance-mechanization Cross-References bullet and RBT-54 threads the \u00a77 current-state prose. Whether Cross-References is a sanctioned home for ticket IDs is a live question the record itself does not settle; as authored these IDs sit in prose describing the enforcement contract, which strains the standalone-buildable claim the record makes for itself.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-002 \u00a77 'Current state' paragraph + Cross-References conformance-mechanization bullet (RBT-33/RBT-48/RBT-54 in enforcement-contract prose) vs. Layer-of-Abstraction section's standalone-buildable claim and the Change Log's own 'relocated to Cross-References' disposition"
+      },
+      "id": "e3ba81262dbeda38",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "POSITIVE",
+      "target": [
+        "DDR-002"
+      ],
+      "locus": "\u00a77 #25 scoping clause + Decision.7 + \u00a75 retraction paragraph + \u00a72.4",
+      "claim": "Attacked the Touch-1 claim that #25's executed-proposal scoping resolves the #21/#25 joint unsatisfiability without collateral. Traced the three-scenario lifecycle (happy path, rejected retraction, rogue edge) across every call-site: Decision.7, \u00a72.4 PromotionDecision retraction paragraph, \u00a75 CandidatePromotion 'shared status lifecycle' gloss, \u00a75 promotion-edges RETRACTS entry, and \u00a77 #21/#25 tier placements. The scoping is internally consistent \u2014 #25's forward direction binds only at terminal status:promoted (keyed to \u00a75's execution gloss), #21 remains the safety-critical pre-approval edge prohibition, and the pre-materialization window carries no RETRACTS edge under both checks without contradiction. The decision the record claims to make (dissolve the joint unsatisfiability) is the decision the body actually carries. Held.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-002 \u00a77 #25 (scoped to executed proposals) \u2194 \u00a77 #21 (retraction-gated) \u2194 \u00a75 retraction execution gloss \u2194 Decision.7 \u2014 claim-content fidelity of the Touch-1 defect fix"
+      },
+      "id": "9f471e17384d316e",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "POSITIVE",
+      "target": [
+        "DDR-002"
+      ],
+      "locus": "\u00a72 confidence-derivation basis preamble + \u00a72.1\u20132.6 annotations + Decision.11",
+      "claim": "Attacked Decision.11's claim that per-class confidence-derivation totality is established 'at the definition boundary' and covers 'the citable universe completely.' Checked the citable-universe boundary argument against DDR-002's own scope facts: SOURCED_FROM targets KG nodes only (\u00a75), and RG/Artifact nodes carry no KG plane label (\u00a71), so the \u00a72.1\u20132.6 declarations plus the PlaneDefinition registration contract do bound exactly the set a SOURCED_FROM edge can terminate at. The citation-scoped clause ('a basis governs derivation when a node is cited; imposes no requirement that citations exist') correctly separates derivation totality from evidence completeness. The claim that the record decides \u2014 totality by declaration, not by capture-time default \u2014 is faithfully carried by the annotations and #26/#27. No overclaim of derivation values (basis kinds/operands only; values routed to DDR-004). Held.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-002 \u00a72 preamble (citable-universe boundary) \u2194 \u00a75 (SOURCED_FROM targets KG nodes only) \u2194 \u00a71 (RG/Artifact carry no plane label) \u2194 Decision.11 \u2194 \u00a77 #26/#27 \u2014 scope-completeness fidelity of the totality claim"
+      },
+      "id": "969f600d618c0a18",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-002"
+      ],
+      "locus": "\u00a77 check #26 vs \u00a72.6 Declared-totality registration rule / DeploymentEnvironment override",
+      "claim": "Check #26 requires 'a declared freshness operand is present iff \u2014 and only iff \u2014 the label's basis is aging.' \u00a72.1\u20132.5 declare core-plane bases (e.g. Environment `aging` with operand `observed_at`) in prose annotations, not in `PlaneDefinition.confidence_basis`. But \u00a72.6 states core planes are 'fixed by DDR-001' and the `confidence_basis` declaration is described only as the Extension-plane carrier ('for Extension planes in the PlaneDefinition registration contract (\u00a72.6)'). Check #26 is written 'every PlaneDefinition declares ... per declared node-label' \u2014 for core planes no PlaneDefinition-carried confidence_basis is specified to exist, so the invariant as written either has no core-plane subject or presupposes core-plane PlaneDefinition nodes the schema never defines.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-002 \u00a77 #26 (PlaneDefinition-scoped totality) vs DDR-002 \u00a72 preamble + \u00a72.6 (core-plane bases declared in \u00a72.1\u20132.5 annotations, not in confidence_basis)"
+      },
+      "id": "616f18e847f98cbf",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-002"
+      ],
+      "locus": "\u00a77 #27 basis-admissibility vs \u00a72.4 Governance flat_base",
+      "claim": "Check #27 states 'a non_citable-class label carries no inbound SOURCED_FROM' and that every SOURCED_FROM terminates at a node declaring native_confidence/flat_base/aging. \u00a72.4 declares the Governance plane basis flat_base (basis 2) plane-level. But \u00a74 and \u00a72 preamble assert 'SOURCED_FROM targets KG nodes only' and the citable universe is 'exact.' Governance nodes (Decision, PromotionDecision, Actor, Role, Attestation, Condition) are KG plane nodes carrying flat_base \u2014 hence declared citable \u2014 yet no design text anywhere describes an Evidence citing a Governance node, and the accountability model (\u00a74) treats PromotionDecision as the accountable-consolidation control, not an evidence source. The schema declares the entire Governance plane citable by giving it flat_base, with no stated intent that decision/audit records be cited as evidence; this is an unexamined citability grant the confidence model does not substantiate.",
+      "cited_authority": {
+        "kind": "soundness",
+        "ref": "DDR-002 \u00a72.4 Governance flat_base declaration + \u00a77 #27 basis-admissibility \u2014 Governance nodes declared citable without design substantiation"
+      },
+      "id": "7e1eeb750d630350",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-002"
+      ],
+      "locus": "\u00a75 Provenance-survival span vs \u00a77 #20 completeness (RejectedAlternative contribution)",
+      "claim": "\u00a75 defines the span as the closure over PROPOSED_FROM targets, stating 'a RejectedAlternative target contributes no Evidence (WOULD_HAVE_USED is not Evidence-mediated).' PROPOSED_FROM legally targets RejectedAlternative (\u00a75 promotion edges). A promotion PROPOSED_FROM a RejectedAlternative therefore has no Evidence-reaching path and contributes nothing to the frozen span. But \u00a74 RejectedAlternative carries no source-version pin and its WOULD_HAVE_USED target is a live KG node with no snapshot. If such a promotion's provenance rests on a RejectedAlternative whose WOULD_HAVE_USED KG node later supersedes, the post-expiry audit trail preserves nothing about what that rejected alternative actually referenced \u2014 the ProvenanceSummary is empty for this case, yet #20 declares the guarantee 'complete against the \u00a75-defined span' and satisfied by construction. Completeness against an empty span is vacuous coverage presented as a survival guarantee.",
+      "cited_authority": {
+        "kind": "soundness",
+        "ref": "DDR-002 \u00a75 span definition (RejectedAlternative contributes no Evidence) vs \u00a77 #20 completeness guarantee \u2014 vacuous coverage for RejectedAlternative-sourced promotions"
+      },
+      "id": "9a71c6dc22cd6298",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-002"
+      ],
+      "locus": "\u00a72.4 PromotionDecision verdict precedence vs \u00a77 #15 governing-edge + Change Log Touch-1 retraction re-decision",
+      "claim": "\u00a72.4 rules the governing verdict is the DECIDED_ON edge whose PromotionDecision has the latest decided_at, enforced by per-candidate strict decided_at monotonicity. \u00a72.4 also names 'a post-materialization re-decision of an executed retraction ... routed to DDR-003' recording the re-decision append-only 'under \u00a72.4's verdict precedence.' For a retraction candidate, terminal status:promoted means the un-promotion was materialized (RETRACTS written). A later re-decision flipping the governing verdict to rejected leaves the RETRACTS edge in place (schema records append-only, un-retraction remedy deferred). But \u00a75 Retracted-node read-discipline keys exclusion on 'an EA-approved reversing CandidatePromotion' via the RETRACTS edge structurally \u2014 not on the governing DECIDED_ON verdict. So after a governing-verdict flip to rejected on a retraction, the node stays read-excluded (edge present) while the governing verdict says the retraction is rejected: the read-discipline and the verdict-precedence rule contradict for this case, and no invariant reconciles them.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-002 \u00a75 Retracted-node read-discipline (keyed on RETRACTS edge) vs \u00a72.4 verdict precedence (governing = latest decided_at) \u2014 retraction re-decision leaves edge-keyed exclusion contradicting the flipped governing verdict"
+      },
+      "id": "8aad4b5d35da7d5d",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-002"
+      ],
+      "locus": "Change Log Touch-2 row / Rationale empirical-warrant discipline",
+      "claim": "The Rationale states the governing discipline: a mechanism with 'no empirical instance yet' is 'named as a gap ... rather than carried speculatively.' The Touch-2 Change Log row concedes 'no valid finding forced this touch \u2014 opened on economy ... zero materializations to date \u2014 form-fixing pre-traffic' and calls it 'a ruled exception to the Rationale's empirical-warrant discipline.' A ruling that fixes internal schema structure (index-aligned frozen_* arrays keyed by evidence_id) with zero instances, self-described as an exception to the document's own stated discipline, is an internal contradiction between the Rationale's binding empirical-warrant rule and the amendment that overrides it \u2014 the exception is asserted, not derived from any authority the Rationale admits.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-002 Rationale (empirical-warrant discipline: no-empirical-instance \u2192 name as gap, not carry) vs Change Log Touch-2 row (form-fixing at zero instances, self-declared exception)"
+      },
+      "id": "ecadca351f686bdd",
+      "classification": "resolvable",
+      "authority_locus": "Deliberation record for DDR-002 Amendment Batch (RBT-54), Item C (Touch 2 \u2014 C1/C2/C3), ratified 2026-07-13 \u2014 which authorizes the economy-warranted exception to the Rationale's empirical-warrant discipline and fixes the ProvenanceSummary structuring shape",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "COSMETIC",
+      "target": [
+        "DDR-002"
+      ],
+      "locus": "\u00a72.6 cost-plane exemplar literal vs \u00a74 basis enumeration",
+      "claim": "The \u00a72.6 cost-plane registration literal `confidence_basis: {CapabilityCostEstimate: native_confidence, RateCard: non_citable, CostFactor: non_citable}` omits the `property_schema` key, glossed as 'elided in this illustration.' Check #26 requires confidence_basis's label set to equal property_schema's label set. The illustration cannot be checked against #26 as written because the keying operand is elided; a reader verifying the exemplar against the invariant has no way to confirm the label sets match. The gloss acknowledges the elision but the exemplar then cannot serve as the 'worked validation exemplar' \u00a72.6 claims it to be for the #26 key-set-equality property specifically.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-002 \u00a72.6 cost-plane exemplar (property_schema elided) vs \u00a77 #26 (confidence_basis label set = property_schema label set) \u2014 exemplar cannot demonstrate the key-set-equality it is offered as validating"
+      },
+      "id": "2716a247fce61aaf",
+      "classification": "resolvable",
+      "authority_locus": "DDR-002 \u00a72.6 declared-totality registration rule + \u00a77 check #26 (confidence_basis label set = property_schema label set); adjudication A-12/\u00a72.6 illustration convention in deliberation-record-ddr-002",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "POSITIVE",
+      "target": [
+        "DDR-002"
+      ],
+      "locus": "\u00a72.4 verdict precedence well-definedness + \u00a77 #15",
+      "claim": "Attacked the 'governing verdict = latest decided_at' rule for the tie/underdetermination hole: two DECIDED_ON edges on one candidate with equal decided_at would make the governing verdict ambiguous and #15 underdetermined. The design closes this by construction \u2014 \u00a72.4 enforces per-candidate strict decided_at monotonicity at the gateway (a new edge must carry decided_at strictly greater than any existing edge's on that candidate), so ties are structurally excluded and 'latest decided_at' is total. The well-definedness clause in #15 correctly cites this. The attack failed; the surface holds.",
+      "cited_authority": {
+        "kind": "soundness",
+        "ref": "DDR-002 \u00a72.4 strict decided_at monotonicity + \u00a77 #15 well-definedness clause \u2014 governing edge total, ties structurally excluded"
+      },
+      "id": "66e9ad690571c28e",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "POSITIVE",
+      "target": [
+        "DDR-002"
+      ],
+      "locus": "\u00a74 rollup ceiling + \u00a77 #24",
+      "claim": "Attacked the confidence rollup for an unbounded-inheritance hole: whether weight or aggregation could let a ReasoningProgress conclusion exceed the reliability of its strongest evidence. \u00a74 fixes the ceiling = max of supporting Evidence.confidence and explicitly confines weight to operate only below the ceiling, never raising it; #24 enforces the ceiling as a CI check scoped to conclusions with supporting evidence, and the zero-evidence case is honestly routed to the SDD rather than silently defaulted. The comparator is pinned to \u00a74's canon and declared to amend with the SDD's rollup function. The attack found no path to over-confidence; the bound holds as specified.",
+      "cited_authority": {
+        "kind": "soundness",
+        "ref": "DDR-002 \u00a74 rollup upper-bound (ceiling = max supporting Evidence.confidence; weight below ceiling only) + \u00a77 #24 \u2014 conclusion cannot exceed strongest evidence path"
+      },
+      "id": "d529a90d8f7e1833",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-002"
+      ],
+      "locus": "Change Log \u2014 Touch 2 (RBT-54); Rationale (empirical-warrant discipline)",
+      "claim": "Touch 2 (ProvenanceSummary internal structuring) is recorded as opened on economy with an honest floor of 'no valid finding forced this touch' and 'zero materializations to date' \u2014 it locks internal schema structure (index-aligned frozen_* arrays keyed by evidence_id) ahead of any empirical instance. This is a decision to lock a mechanism the DDR's own Rationale says should be named as a gap rather than carried, admitted as a 'ruled exception' to that discipline. Whether a reversibility-scoped schema layer should commit T2 internal structure ahead of the first real instance, on an economy warrant alone, is a posture question about what deserves to stand at this time.",
+      "cited_authority": {
+        "kind": "design-intent",
+        "ref": "DDR-002 Rationale: 'Where the design cycle surfaced a mechanism with no empirical instance yet \u2014 and locking it would over-specify \u2014 the capability is named as a gap ... rather than carried speculatively. This is the empirical-warrant discipline that governs what is locked versus named.'"
+      },
+      "id": "5f25f5c020c78790",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-002"
+      ],
+      "locus": "\u00a72.6 / \u00a77 #26 / #27 \u2014 confidence-derivation basis carriage (Touch 3)",
+      "claim": "DDR-002 v1.3.0 commits the confidence_basis declaration, the four-basis enumeration, the declared-totality registration rule, and checks #26/#27 as its own schema contract while DDR-004 (the authority that these carriers implement) is ACCEPTED only WITH-CONDITIONS whose discharge is asserted to ride this very DDR-002 landing. The two records are cross-conditioned: DDR-004's Pre-Acceptance Conditions 1\u20132 discharge on DDR-002 v1.3.0 landing, and DDR-002 carries basis machinery whose semantics/values are DDR-004's. A hard-to-reverse schema commitment (T2 declarations, two new CI checks, PlaneDefinition field) is being ratified against an upstream that was not itself unconditionally standing at author time \u2014 the reversibility of the basis-carriage commitment is not proportionate to the still-conditional status of its governing authority.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-002 References ('DDR-004 \u00a74's commissioned schema carriage (DDR-004 Pre-Acceptance Conditions 1\u20132 discharged at v1.3.0)') vs. DDR-004 metadata Status ACCEPTED with standing constants condition and conditions-discharge-rides-DDR-002-landing"
+      },
+      "id": "6e53e30420c8c092",
+      "classification": "resolvable",
+      "authority_locus": "DDR-004 v1.1.0 Pre-Acceptance/Migration Conditions \u00a71\u2013\u00a72 + Change Log v1.1.0 (conditions DISCHARGED at DDR-002 v1.3.0; status ACCEPTED) and the deliberation-record-ddr-002 Item E / Item H (merge is the atomic acceptance act; DDR-004 discharge rides the same landing per RBT-53 close ruling R1)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-002"
+      ],
+      "locus": "\u00a72.6 \u2014 cost-capability routing; Named Gaps / Cross-References (forthcoming KG-entry-governance ADR, DDR-003)",
+      "claim": "DDR-002 commits the cost plane as the first Extension registration and worked validation exemplar, while routing 'whether and why SOFIA models cost at all' to a forthcoming, unauthored cost-capability decision record. The schema thereby stands up a concrete, permanent-retention node family (CapabilityCostEstimate 'justifiably permanent') and its edges before the platform-capability decision that would justify modeling cost exists. This commits the project to a cost-modeling position \u2014 permanent as-of-decision records, a dedicated Cost label set \u2014 that arguably deserves its own ratified decision record first; the exemplar-vs-capability split names the tension but does not resolve whether standing up the exemplar pre-commits the capability.",
+      "cited_authority": {
+        "kind": "design-intent",
+        "ref": "DDR-002 \u00a72.6: 'the separate question of cost as a platform capability (whether and why SOFIA models cost at all) is routed to the forthcoming cost-capability decision record, not asserted in this schema.'"
+      },
+      "id": "b7bf345c804c61bd",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "COSMETIC",
+      "target": [
+        "DDR-002"
+      ],
+      "locus": "Cross-References \u2014 DDR-003 and KG-entry-governance ADR (both forthcoming, unauthored)",
+      "claim": "A material volume of DDR-002's own decisions are held together by routing to two forthcoming, unauthored records (DDR-003 governance and the KG-entry-governance ADR): remedy-boundary governance, archival policy, retention windows, distillation-checkpoint posture, un-promotion upstream authority, multi-condition semantics, condition-set lifecycle. The schema commits shapes (archived status value, RETRACTS shape, applicability_state, ProvenanceSummary) whose governing authority does not yet exist. This is a timing/dependency-density posture: the shape half is ratified now against a governance half that is entirely pending, concentrating integration risk on records that cannot yet be checked against.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-002 Cross-References: '\u2192 DDR-003 (forthcoming, unauthored)' and '\u2192 KG-entry-governance ADR (forthcoming, unauthored)' carrying remedy-boundary, retention, archival-policy, and un-promotion-authority obligations for shapes committed in \u00a72.3/\u00a72.4/\u00a75"
+      },
+      "id": "28ba7634fd7a3d05",
+      "classification": "resolvable",
+      "authority_locus": "DDR-002 Rationale (empirical-warrant / reversibility-scoped completeness posture) + author-decision-record SKILL 'Under an empirical floor, fix the form and hold the constants' + the architecture/schema/governance split ratified in DDR-001 Decision.6 and DDR-002 Decision.6",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "POSITIVE",
+      "target": [
+        "DDR-002"
+      ],
+      "locus": "\u00a72.2 / \u00a72.6 \u2014 DeploymentEnvironment observed_at absence and cost basis-4 dispositions vs. ADR-002 \u00a72.2 Enterprise-edition posture",
+      "claim": "Attacked the reversibility of the per-class basis commitments against the substrate's own stated empirical floor: DDR-002 states citation reachability for DeploymentEnvironment, RateCard, and CostFactor is unverified, yet commits per-class bases now. Checked whether this over-commits ahead of evidence. It holds: the bases are declared basis-kind-only (no values), fail-closed-safe regardless of reachability, and are re-instatable by additive amendment per the named-gaps discipline \u2014 the commitment is proportionate to its reversibility, and the honest floor is carried in-body rather than hidden.",
+      "cited_authority": {
+        "kind": "design-intent",
+        "ref": "DDR-002 \u00a72 preamble ('Declarations carry basis kind ... only \u2014 no values') + Layer/Substrate-Stability note ('re-instating one is an additive amendment, not a breaking change')"
+      },
+      "id": "3c88718329faf65a",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "POSITIVE",
+      "target": [
+        "DDR-002"
+      ],
+      "locus": "\u00a77 \u2014 safety-critical vs. follow tier sequencing and the precede-gateway conformance requirement",
+      "claim": "Attacked the tiering as a premature/mis-proportioned commitment \u2014 whether classifying invariants safety-critical vs. follow ahead of the gateway build over-commits a sequencing the build should decide. It holds: DDR-002 binds only the classification (which properties guard ground-truth integrity) as a stated conformance requirement ('the gateway must not operate against an unenforced safety-critical tier') and explicitly routes realization sequencing (CI-job mapping, within-tier ordering, required-flips) to build planning, subject to the non-downgrade binding. The reversibility split is proportionate: the integrity-critical classification is locked, the mechanization schedule stays deferred.",
+      "cited_authority": {
+        "kind": "design-intent",
+        "ref": "DDR-002 \u00a77 Authority split: 'DDR-002 binds the safety-critical classification ... realization sequencing ... is routed to build planning / conformance-mechanization, subject to that binding.'"
+      },
+      "id": "816d66ac117dc642",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-002"
+      ],
+      "locus": "\u00a77 check #26 vs \u00a72.6 Cost plane first-registration literal",
+      "claim": "Check #26 (basis-declaration totality) requires that a PlaneDefinition's `confidence_basis` declare the SAME label set as its `property_schema` \u2014 'no basis for an undeclared label, no label without a basis'. The \u00a72.6 cost-plane exemplar literal declares `confidence_basis: {CapabilityCostEstimate, RateCard, CostFactor}` but the accompanying gloss states `property_schema` is 'elided in this illustration'. Because #26 keys the basis label set to the property_schema key set, the exemplar as written cannot be checked for the very key-set-equality invariant it is meant to demonstrate: the reader is told the two sets must be equal and simultaneously shown only one of them, with the parenthetical '#26 keys the basis label set to its key set' asserting a match against an elided operand.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-002 \u00a77 #26 (confidence_basis label set = property_schema label set) in conflict with DDR-002 \u00a72.6 cost-plane registration literal (property_schema elided while confidence_basis enumerated)"
+      },
+      "id": "1c10d155886bc39b",
+      "classification": "resolvable",
+      "authority_locus": "DDR-002 \u00a77 check #26 (confidence_basis label set = property_schema label set) governing the \u00a72.6 cost-plane exemplar illustration; deliberation-record-ddr-002 Item E2\u2032 / Addendum A-12 (illustration-gloss discipline)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-002",
+        "DDR-004"
+      ],
+      "locus": "PlaneDefinition confidence-derivation basis disposition",
+      "claim": "DDR-002 \u00a72.6 declares `PlaneDefinition`'s own basis as `flat_base` (basis 2), and the Touch-3 Change Log row states this is 'a batch ruling, adjudication A-3 \u2014 a disposition DDR-004 \u00a74's table does not yet carry; alignment noted for that record's next touch.' DDR-004 \u00a74's per-class disposition table (the owning enumeration of confidence-derivation bases by node-class) does NOT list PlaneDefinition. DDR-002 asserts a concrete basis property for an entity while conceding the owning record's basis table does not supply it \u2014 the disposition is carried in the downstream document ahead of the authority that DDR-002 \u00a72 preamble names as the value/semantics owner ('Derivation semantics and values are DDR-004's').",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-002 \u00a72.6 (PlaneDefinition = flat_base) + Change Log Touch-3 row ('DDR-004 \u00a74's table does not yet carry') in conflict with DDR-004 \u00a74 per-class disposition table (PlaneDefinition absent)"
+      },
+      "id": "7ddc4487e14b386e",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "MATERIAL",
+      "target": [
+        "DDR-002"
+      ],
+      "locus": "Named gaps \u2014 'Gate-decision origin evolution' governing-verdict clause vs \u00a72.4 verdict-precedence scope",
+      "claim": "The Named Gap 'Gate-decision origin evolution' states (v1.3.0 cold-read addition) that 'which gate verdict governs a Solution carrying conflicting DECIDED_ON outcomes is unruled.' Yet \u00a72.4's verdict-precedence rule (latest `decided_at`, monotonicity-backed) is written on the `Decision` supertype's `DECIDED_ON {outcome}` edge and \u00a77 #15's well-definedness clause grounds 'latest decided_at' on per-candidate monotonicity enforced 'on DECIDED_ON writes' generally. \u00a73.6.3 (`mirror-gate-decision`, in SDD-001) explicitly excludes GateDecision DECIDED_ON edges from monotonicity ('decided_at monotonicity is not extended to this edge'). The gap-naming claims the GateDecision governing verdict is unruled, but \u00a72.4's precedence prose is not visibly scoped away from GateDecision \u2014 the supertype-level statement and the gap-level 'unruled' claim cannot both be read literally without contradiction.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-002 \u00a72.4 verdict-precedence (Decision-supertype DECIDED_ON, latest decided_at) in conflict with Named Gaps 'Gate-decision origin evolution' (GateDecision governing verdict unruled) and SDD-001 \u00a73.6.3 (monotonicity not extended to GateDecision edge)"
+      },
+      "id": "a9a90cb78e691608",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "COSMETIC",
+      "target": [
+        "DDR-002"
+      ],
+      "locus": "\u00a74 ProvenanceSummary vs Named Gaps 'Provenance-survival retrieval index/affordance'",
+      "claim": "\u00a74's ProvenanceSummary paragraph states the affordance 'warrants no CI invariant of its own' and that 'What remains deferred is the reverse-lookup index / query-pattern optimization.' The Named Gaps entry for the same subject repeats the no-CI-invariant determination and the narrowed residue. The two passages are consistent in substance but the \u00a74 text still carries the closed-clause narration ('the CI-invariant clauses closed at v1.3.0') via the knowledge-service SDD cross-reference bullet, which restates a change-event ('closed at v1.3.0') inside contract-adjacent prose \u2014 a residual storytelling fragment the body-integrity discipline routes to the Change Log.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-002 \u00a74 ProvenanceSummary + Named Gaps entry + Cross-References knowledge-service SDD bullet ('closed at v1.3.0') \u2014 version-stamp narration in contract prose"
+      },
+      "id": "1cdfb294c7c7c2b7",
+      "classification": "resolvable",
+      "authority_locus": "author-decision-record SKILL \u2014 Body integrity, 'No storytelling in the body' bullet (process narrative / review history / version-stamp events belong in the Change Log, not contract-adjacent prose); reinforced by deliberation-record-ddr-002 Addendum A-8 (version-stamp/credit narration stripped from contract prose; the Change Log owns those events)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "POSITIVE",
+      "target": [
+        "DDR-002",
+        "DDR-004",
+        "SDD-001"
+      ],
+      "locus": "Evidence.observed_at \u0394t-anchor semantic across the landing set",
+      "claim": "Checked seam 4: DDR-002 \u00a74 glosses Evidence.observed_at as 'the capture/snapshot instant ... the \u0394t reference to point \u2014 the cited node's own observed_at, the from point, is recovered via SOURCED_FROM + the version pin, never mirrored here; DDR-004 \u00a73'. DDR-004 \u00a73 defines \u0394t = capture_instant \u2212 cited_node.observed_at with the capture instant persisted as Evidence.observed_at, gateway-clocked and frozen. SDD-001 \u00a73.4.3 executes with '\u0394t = the capture instant \u2212 the cited node's declared freshness operand, the capture instant gateway-clocked and frozen as Evidence.observed_at (DDR-004 \u00a73; never caller-supplied).' The 'to'/'from' endpoint assignment, the gateway-clocked-and-frozen property, and the no-new-field discharge path are consistent across all three documents; the attack (that the two observed_at fields \u2014 Environment source's and Evidence's \u2014 might be conflated or that the anchor could be caller-influenceable) failed at every locus.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-002 \u00a74 Evidence.observed_at gloss \u2194 DDR-004 \u00a73 \u0394t endpoints \u2194 SDD-001 \u00a73.4.3 capture-instant execution \u2014 endpoint assignment and freezing property held consistent"
+      },
+      "id": "8f9a5e0b9538d533",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "POSITIVE",
+      "target": [
+        "DDR-002",
+        "SDD-001"
+      ],
+      "locus": "#25 executed-proposal scoping \u2194 retraction lifecycle \u2194 harness ordering",
+      "claim": "Checked seam 1: DDR-002 \u00a77 #25 as amended scopes the forward direction to executed proposals (terminal status: promoted), and \u00a75/\u00a72.4 confirm #21 (retraction-gated, safety-critical) writes the RETRACTS edge only at the EA-gated materialization act. SDD-001 \u00a73.5.4 (materialize-retraction) writes RETRACTS at materialization and advances to terminal status:promoted in one transaction, with a conformance note stating #25 'is scoped to executed proposals as of v1.3.0 ... so this operation's materialization-time RETRACTS writing satisfies #25 across the proposal's entire lifecycle; no pre-decision window remains, and the harness implements from the ratified text.' The prior #21/#25 joint-unsatisfiability in the pre-decision retraction window is dissolved: a proposed/rejected retraction carries no RETRACTS edge and violates neither check. The attack (that #25's biconditional still demands an edge on a rejected retraction, or that #21 forbids what #25 requires) failed \u2014 the scoping and the SDD timing agree.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "DDR-002 \u00a77 #25 (scoped to executed proposals) + #21 (retraction-gated) \u2194 \u00a75 retraction shape \u2194 SDD-001 \u00a73.5.4 materialize-retraction conformance note \u2014 joint-satisfiability held"
+      },
+      "id": "ce96ac262bfd54d5",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    }
+  ],
+  "passes": [
+    {
+      "pass_number": 1,
+      "open_cbm_count": 14,
+      "agents_run": [
+        "antagonist-LAA",
+        "antagonist-SA",
+        "antagonist-EA",
+        "coherence",
+        "arbiter"
+      ],
+      "timestamp": "2026-07-13T21:46:41.121588+00:00"
+    }
+  ],
+  "doc_changes": []
+}

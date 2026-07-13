@@ -1,0 +1,7 @@
+{
+  "finding_id": "d9cf31fbb4afda97",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding names a genuine tension between two things the operator has already ratified: Touch 2 (the ProvenanceSummary structuring, ratified as Item C1/C2/C3 on economy grounds with an explicit honest floor) and DDR-002's own empirical-warrant discipline (defer locking mechanisms with no empirical instance). Resolving it requires choosing whether to keep the ratified structuring against the document's stated discipline, revert to a named gap, or reconcile the principle — a choice the deliberation record made deliberately ('opened on economy') but which no higher authority disambiguates as the correct call versus the empirical-warrant rule; adjudicating that trade-off is an operator decision, not a determinate application of existing authority.",
+  "confidence": "high"
+}

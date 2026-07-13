@@ -1,0 +1,62 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["DDR-002"],
+"locus": "Cross-References → DDR-004 boundary-routing entry; Change Log Touch-3 row ('discharges its Pre-Acceptance Conditions 1–2')",
+"claim": "DDR-002 asserts its own amendment discharges DDR-004's Pre-Acceptance Conditions 1–2 and that 'DDR-004 §4's commissioned schema carriage (DDR-004 Pre-Acceptance Conditions 1–2 discharged at v1.3.0).' This is a hard cross-document coupling in which a schema-layer record claims to close another record's acceptance conditions. Whether that discharge stands depends on DDR-004 ratifying it on its side; the substrate DDR-004 v1.1.0 does record the reciprocal discharge, but DDR-002's posture commits the two records to a mutually-referential acceptance handshake landed in a single batch — a hard-to-reverse coupling whose justification (that both status changes 'ride the same landing') is asserted, not shown to be independently reversible if one side must later be unwound.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "DDR-002 Cross-References DDR-004 entry + Change Log Touch-3 row vs. DDR-004 v1.1.0 Pre-Acceptance/Migration Conditions (discharge claimed reciprocally across both records in one batch)"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-002"],
+"locus": "Change Log Touch-2 row + §4 ProvenanceSummary / Named Gaps",
+"claim": "Touch 2 is recorded as opened on economy with an explicit honest floor: 'no valid finding forced this touch — opened on economy … zero materializations to date.' An amendment to a locked T1/T2 schema contract (adding two T2 fields — frozen_evidence_ids, frozen_source_node_refs — and an index-alignment invariant) taken with no forcing defect and zero empirical instances runs against this document's own stated empirical-warrant discipline ('Where the design cycle surfaced a mechanism with no empirical instance yet — and locking it would over-specify — the capability is named as a gap … rather than carried speculatively'). Committing additional locked structure pre-traffic on economy grounds is a posture the record's own governing principle would defer.",
+"cited_authority": {
+"kind": "design-intent",
+"ref": "DDR-002 Rationale: 'Where the design cycle surfaced a mechanism with no empirical instance yet — and locking it would over-specify — the capability is named as a gap … rather than carried speculatively. This is the empirical-warrant discipline that governs what is locked versus named.'"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-002"],
+"locus": "§2.6 / §2 basis enumeration / §7 #26 #27 (Touch 3, confidence-derivation totality)",
+"claim": "DDR-002 now carries the four-basis confidence-derivation enumeration, the declared-totality registration rule, the NON_CITABLE_SOURCE typed rejection, and checks #26/#27 — all framed as 'DDR-004 §4's commissioned schema carriage.' This commits DDR-002's schema contract to a position (per-class confidence-derivation basis as a locked schema property) whose semantics, values, and calibration governance live in a record (DDR-004) that was still ACCEPTED-WITH-CONDITIONS at the time this carriage was authored, with the discharge riding the very same batch. A downstream schema locking to an upstream determination that is only accepted-conditional at authoring time is a reversibility-and-timing exposure: if DDR-004's still-standing constants condition forces a form change, the schema carriage moves with it.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "DDR-002 §2.6 + §7 #26/#27 + Decision.11 (schema carriage of DDR-004 §4) vs. DDR-004 v1.0.0 status ACCEPTED-WITH-CONDITIONS and DDR-004 §6 standing (non-blocking) constants condition"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["DDR-002"],
+"locus": "References table (top metadata) vs. Cross-References → DDR-004 entry",
+"claim": "The References metadata table lists only ADR-001, ADR-002, DDR-001 as References, while the body Cross-References section and the Change Log establish DDR-004 as a load-bearing upstream authority whose §4 this schema carries and whose conditions this batch discharges. A first-order upstream dependency of this weight being absent from the References table is a metadata/posture inconsistency for a record that gates downstream SDDs.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "DDR-002 References metadata table (ADR-001/ADR-002/DDR-001 only) vs. Cross-References DDR-004 entry ('commissioned schema carriage … Cited, never re-authored') + Change Log Touch-3"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["DDR-002"],
+"locus": "§7 Named exposure window + sequencing / Authority split / Current state",
+"claim": "Attacked the timing posture of the CI-only invariant set for premature commitment against an unbuilt gateway: whether locking a 27-member safety-tiered invariant contract before the gateway exists over-commits. It held — the record binds only the safety-critical classification and the precede-gateway conformance requirement, explicitly routes realization sequencing (CI-job mapping, required-flips) to build planning, and names the exposure window rather than asserting enforcement. Reversibility is proportionate: the classification is schema-contract metadata, the mechanization is deferred and non-binding. Posture stands.",
+"cited_authority": {
+"kind": "design-intent",
+"ref": "DDR-002 §7 'Authority split (re-drawn)': 'the gateway must not operate against an unenforced safety-critical tier … realization sequencing … routed to build planning / conformance-mechanization, subject to that binding'"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["DDR-002"],
+"locus": "§5 ownership line / Decision.6 / Cross-References DDR-003 + KG-entry-governance ADR routing",
+"claim": "Attacked for scope-creep against forthcoming-unauthored siblings: whether DDR-002 commits positions that deserve DDR-003's or the KG-entry-governance ADR's own decision record first (retraction remedy-boundary, distillation-write checkpoint, condition governance). It held — the record consistently separates schema shape (owned here) from governance/policy (routed by name, marked forthcoming/unauthored), and the retraction, archival, and checkpoint items each explicitly commit only the schema value while routing the triggering policy elsewhere. Integration with platform posture is maintained without pre-empting the unwritten records.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "DDR-002 §5 ownership line + Decision.6 + Cross-References DDR-003/KG-entry-governance-ADR entries vs. DDR-001 Decision.5/Appendix Boundary Routing Map (architecture/governance split)"
+}
+}
+]

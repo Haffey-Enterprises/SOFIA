@@ -1,0 +1,7 @@
+{
+  "finding_id": "5f25f5c020c78790",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding challenges whether Touch 2's economy warrant should override the DDR's own empirical-warrant discipline — a conflict between two authorities within the same document (the Rationale's 'name-as-gap-when-no-empirical-instance' rule versus the deliberation record's ratified 'ruled exception' opening Touch 2 on economy). No higher authority disambiguates whether the ruled exception legitimately stands or whether the structure should revert to a named gap; resolving it requires re-litigating a posture choice the operator already ratified, and either sustaining or reversing it is a decision not determined by conforming to existing authority.",
+  "confidence": "high"
+}

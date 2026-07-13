@@ -1,0 +1,7 @@
+{
+  "finding_id": "e64b168f7e2d42b7",
+  "classification": "resolvable",
+  "authority_locus": "DDR-004 §4 (declared-basis carriers as DDR-002 §4's commissioned schema carriage — 'basis kind and operand only, no values') + DDR-002 §2 preamble / Decision.11 (values and semantics are DDR-004's) + DDR-002 v1.3.0 change log discharging DDR-004 Pre-Acceptance Conditions 1–2 at the same landing",
+  "rationale": "The cited authorities already determine the fix: the carriage is deliberately values-free (basis kind + operand only), DDR-004 §2/§4 own all constants and calibration, and DDR-004 §6's standing constants condition is a tuning parameter that cannot force a schema-form change (a re-tuned base/τ is a config act, not a basis-declaration change). The batch discharges Conditions 1–2 at the same landing, so at merge DDR-004 is ACCEPTED, not conditional. No new choice is introduced.",
+  "confidence": "high"
+}

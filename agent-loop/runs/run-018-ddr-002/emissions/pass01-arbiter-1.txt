@@ -1,0 +1,7 @@
+{
+  "finding_id": "385488aa235877f0",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "Resolving this requires a choice authority does not dictate: whether to reverse Touch 2 (conform to the empirical-warrant discipline), formally amend the Rationale to carry the economy-warrant carve-out as a ratified exception, or retain both as-is. The deliberation record ratifies the Touch-2 economy warrant as a 'ruled exception,' but no higher authority disambiguates a Rationale-vs-body coherence conflict; the exception is precisely a new choice the empirical-warrant discipline did not anticipate.",
+  "confidence": "high"
+}
