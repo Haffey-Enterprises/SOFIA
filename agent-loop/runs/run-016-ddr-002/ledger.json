@@ -1,0 +1,28 @@
+{
+  "header": {
+    "set": [
+      "DDR-002"
+    ],
+    "counted_severities": [
+      "BLOCKING",
+      "MATERIAL"
+    ],
+    "plateau_N": 3,
+    "mode": "dry"
+  },
+  "findings": [],
+  "passes": [
+    {
+      "pass_number": 1,
+      "open_cbm_count": 0,
+      "agents_run": [
+        "antagonist-LAA",
+        "antagonist-SA",
+        "antagonist-EA",
+        "coherence"
+      ],
+      "timestamp": "2026-07-13T10:56:11.606639+00:00"
+    }
+  ],
+  "doc_changes": []
+}
