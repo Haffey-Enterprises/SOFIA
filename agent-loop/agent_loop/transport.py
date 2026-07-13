@@ -61,6 +61,10 @@ class LlmResponse:
             cache write occurred or the response carries no cache usage.
         cache_read_input_tokens: Tokens read from the prompt cache on this call
             (a small fraction of base input; repeated prefixes). 0 otherwise.
+        stop_reason: Why the model stopped (`end_turn`, `max_tokens`, …), from
+            the API response, or None when the response carries none (run-016
+            diagnosis rider — distinguishes a self-terminated empty emission from
+            a truncated one).
     """
 
     text: str
@@ -69,6 +73,7 @@ class LlmResponse:
     request_id: str | None = None
     cache_creation_input_tokens: int = 0
     cache_read_input_tokens: int = 0
+    stop_reason: str | None = None
 
 
 class Transport(Protocol):
@@ -159,6 +164,7 @@ class AnthropicTransport:
             request_id=getattr(message, "_request_id", None),
             cache_creation_input_tokens=getattr(usage, "cache_creation_input_tokens", 0) or 0,
             cache_read_input_tokens=getattr(usage, "cache_read_input_tokens", 0) or 0,
+            stop_reason=getattr(message, "stop_reason", None),
         )
 
 
@@ -226,6 +232,7 @@ def _timed_call(
         cache_read_input_tokens=response.cache_read_input_tokens,
         latency_ms=latency_ms,
         request_id=response.request_id,
+        stop_reason=response.stop_reason,
         emission_path=emission_path,
     )
     return response

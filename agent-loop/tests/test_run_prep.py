@@ -739,6 +739,45 @@ def test_anthropic_transport_wraps_sdk_errors() -> None:
         AnthropicTransport(client)("s", "u", "m", 10)
 
 
+# --- run-016 diagnosis rider: transport captures the API stop_reason ---------
+
+
+def test_anthropic_transport_captures_stop_reason() -> None:
+    message = SimpleNamespace(
+        content=[SimpleNamespace(text="ok")],
+        usage=SimpleNamespace(input_tokens=5, output_tokens=2),
+        stop_reason="end_turn",
+    )
+    client = SimpleNamespace(messages=SimpleNamespace(create=lambda **kw: message))
+    response = AnthropicTransport(client)("sys", "usr", "m", 10)
+    assert response.stop_reason == "end_turn"
+
+
+def test_anthropic_transport_stop_reason_absent_defaults_none() -> None:
+    message = SimpleNamespace(  # a response object with no stop_reason attribute
+        content=[SimpleNamespace(text="ok")],
+        usage=SimpleNamespace(input_tokens=5, output_tokens=2),
+    )
+    client = SimpleNamespace(messages=SimpleNamespace(create=lambda **kw: message))
+    response = AnthropicTransport(client)("sys", "usr", "m", 10)
+    assert response.stop_reason is None
+
+
+def test_llm_call_records_stop_reason() -> None:
+    log = ActionLog()
+
+    def transport(system, user, model, max_tokens, cache_prefix=None):  # noqa: ANN001
+        return LlmResponse(text="[]", input_tokens=10, output_tokens=2, stop_reason="end_turn")
+
+    emit = build_api_emitter(
+        site_label="antagonist-SA", model="m", max_tokens=10, log=log,
+        transport=transport, now=_counter_now(), sleeper=lambda s: None,
+    )
+    emit("sys", "user")
+    call = log.of_kind("llm_call")[0]
+    assert call.detail["stop_reason"] == "end_turn"
+
+
 # --- §10g: provenance + manifest ---------------------------------------------
 
 
