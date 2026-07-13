@@ -626,3 +626,113 @@ def test_halt_payload_never_contains_a_positive(tmp_path) -> None:
     assert result.exit.reason == "decision-bearing"
     assert [f.severity for f in result.exit.payload] == ["MATERIAL"]
     assert all(f.severity != "POSITIVE" for f in result.exit.payload)
+
+
+# =============================================================================
+# RBT-54 / R-C — all-hats-null fail-loud + coherence brief-addendum mechanism
+# =============================================================================
+
+
+def test_all_hats_null_fails_loud(tmp_path) -> None:
+    # Every hat variance-to-zero (clean-empty twice -> hat_null) makes the WHOLE
+    # draw null; routing it would risk a false CONVERGED, so the runner refuses
+    # (RBT-54 R-C). Distinct from the parse-storm guard — these are clean nulls,
+    # not parse-dropped.
+    from agent_loop.runner import InstrumentCompromisedError
+
+    plan = real_hat_plan(
+        build_real_reviewer(IDENTITY_LAA, DESIGN_DIR / "antagonist-LAA.prompt.md", _emitter_returning("[]")),
+        build_real_reviewer(IDENTITY_SA, DESIGN_DIR / "antagonist-SA.prompt.md", _emitter_returning("[]")),
+        build_real_reviewer(IDENTITY_EA, DESIGN_DIR / "antagonist-EA.prompt.md", _emitter_returning("[]")),
+        build_real_reviewer(IDENTITY_COHERENCE, DESIGN_DIR / "coherence-sweep.prompt.md", _emitter_returning("[]")),
+    )
+    with pytest.raises(InstrumentCompromisedError):
+        run_loop(
+            header=_header(), plan=plan, arbiter=_AllDecisionBearing(),
+            store=LedgerStore(tmp_path / "allnull.json"),
+        )
+
+
+def test_partial_null_does_not_fail_loud(tmp_path) -> None:
+    # One hat emits (>= the 2-POSITIVE floor, so no re-draw), the rest null. Not
+    # ALL-null, so the run proceeds — a single hat's null is recoverable
+    # (degraded recall), only a whole-draw null is fatal.
+    two_positives = _emitter_returning(json.dumps([
+        _json_finding("p1", severity="POSITIVE"),
+        _json_finding("p2", severity="POSITIVE"),
+    ]))
+    plan = real_hat_plan(
+        build_real_reviewer(IDENTITY_LAA, DESIGN_DIR / "antagonist-LAA.prompt.md", two_positives),
+        build_real_reviewer(IDENTITY_SA, DESIGN_DIR / "antagonist-SA.prompt.md", _emitter_returning("[]")),
+        build_real_reviewer(IDENTITY_EA, DESIGN_DIR / "antagonist-EA.prompt.md", _emitter_returning("[]")),
+        build_real_reviewer(IDENTITY_COHERENCE, DESIGN_DIR / "coherence-sweep.prompt.md", _emitter_returning("[]")),
+    )
+    result = run_loop(
+        header=_header(), plan=plan, arbiter=_AllDecisionBearing(),
+        store=LedgerStore(tmp_path / "partial.json"),
+    )
+    assert result.exit.kind == "CONVERGED"  # POSITIVEs neither count nor block
+
+
+def _run_one_reviewer(reviewer) -> str:  # noqa: ANN001
+    """Invoke a reviewer once against minimal inputs; return the emitter's user."""
+    reviewer.run(
+        1, Ledger(header=_header()),
+        DocumentSet(documents={"DOC-A": "x"}),
+        Substrate(authorities={}, design_intent={}),
+        ActionLog(),
+    )
+
+
+def test_build_real_reviewer_appends_brief_addendum() -> None:
+    captured: dict[str, str] = {}
+
+    def capturing(system: str, user: str) -> str:
+        captured["user"] = user
+        return "[]"
+
+    reviewer = build_real_reviewer(
+        IDENTITY_COHERENCE, DESIGN_DIR / "coherence-sweep.prompt.md", capturing,
+        redraw=False, brief_addendum="SEAM 2 ↔ DDR-004 §4 per-class dispositions",
+    )
+    _run_one_reviewer(reviewer)
+    assert "COHERENCE BRIEF ADDENDUM" in captured["user"]
+    assert "SEAM 2 ↔ DDR-004 §4 per-class dispositions" in captured["user"]
+
+
+def test_build_real_reviewer_no_addendum_by_default() -> None:
+    captured: dict[str, str] = {}
+
+    def capturing(system: str, user: str) -> str:
+        captured["user"] = user
+        return "[]"
+
+    reviewer = build_real_reviewer(
+        IDENTITY_COHERENCE, DESIGN_DIR / "coherence-sweep.prompt.md", capturing, redraw=False,
+    )
+    _run_one_reviewer(reviewer)
+    assert "COHERENCE BRIEF ADDENDUM" not in captured["user"]
+
+
+def test_build_real_hat_plan_addendum_reaches_only_coherence() -> None:
+    calls: list[tuple[str, str]] = []
+
+    def capturing(system: str, user: str) -> str:
+        calls.append((system, user))
+        # >= floor so no re-draw: exactly one call per hat.
+        return json.dumps([
+            _json_finding("p1", severity="POSITIVE"),
+            _json_finding("p2", severity="POSITIVE"),
+        ])
+
+    plan = build_real_hat_plan(
+        DESIGN_DIR, capturing, coherence_addendum="SEAM 4 ↔ DDR-004 §3 Δt endpoints",
+    )
+    for scheduled in plan(1, Ledger(header=_header()), ActionLog()):
+        _run_one_reviewer(scheduled)
+
+    bearing = [(sysp, u) for sysp, u in calls if "SEAM 4 ↔ DDR-004 §3 Δt endpoints" in u]
+    assert len(bearing) == 1  # exactly one hat received the addendum
+    # ...and it is the coherence hat (its system prompt).
+    coherence_system = load_system_prompt(DESIGN_DIR / "coherence-sweep.prompt.md")
+    assert bearing[0][0] == coherence_system
