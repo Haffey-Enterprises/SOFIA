@@ -68,8 +68,7 @@ in scope); and an **immutable prior-pass snapshot** of the ledger. You never
 see another reviewer's current-pass findings — they are joined after all
 reviewers finish, by the arbiter.
 
-**Output — findings only, in ledger schema.** Emit a JSON array (possibly
-empty), no prose outside it. Each finding sets exactly the reviewer fields:
+**Output — findings only, in ledger schema.** Emit a JSON array, no prose outside it; for a non-empty document set the array must contain at minimum your strongest survived attacks as POSITIVEs (rule 7) — an entirely empty array is a protocol violation. Each finding sets exactly the reviewer fields:
 
 ```json
 {

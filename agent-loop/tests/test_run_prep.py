@@ -1057,7 +1057,7 @@ def test_run_real_integration_writes_finalized_manifest_and_log(tmp_path) -> Non
     # Manifest parameters reflect the actual request payload: max_tokens only.
     assert manifest["parameters"] == {"max_tokens": 8192}
     # Calibration record: the manifest pins the live prompt set's generation.
-    assert manifest["calibration"]["generation"] == 7
+    assert manifest["calibration"]["generation"] == 8
     # §7/T6: document_set records the frozen snapshot provenance (path + sha256),
     # not a working-tree path.
     doc_entry = manifest["document_set"]["ADR-001"]

@@ -80,11 +80,16 @@ RUN_ONE_MAX_PASSES = 10
 # prompts — narrated prior reviews/adjudications/ratifications are content under
 # review, never a verdict that discharges this pass (run-016 all-hats-null
 # empirical basis). gen-6 (reviewer prompt caching) remains unlanded — the
-# sequence skips it and gen-7 does not absorb it.
+# sequence skips it, and neither gen-7 nor gen-8 absorbs it. gen-8 is the
+# two-lever fix after arm-L (gen-7 self-terminated `end_turn` empty at full
+# narrative saturation): the Contract's empty-array-is-a-protocol-violation floor
+# (R-E1, prompt-side — also resolving the standing 2-POSITIVE re-draw-floor
+# contradiction) plus a static recency review directive appended last in §5
+# assembly (R-E2). Rule 8 stays as landed.
 # The rationale cites by meaning: operational artifacts never carry ticket
 # numbers — ticket linkage lives in tickets, carriers, and audits.
 CALIBRATION = {
-    "generation": 7,
+    "generation": 8,
     "rationale": (
         "gen-4: severity/cap discipline restated in-place in all four reviewer "
         "prompts — a held check is POSITIVE-class, never re-labeled a defect to "
@@ -93,8 +98,12 @@ CALIBRATION = {
         "locus classifies decision-bearing; gen-7: narrated-process-is-data rule "
         "(rule 8) appended to all four reviewer prompts — narrated prior "
         "reviews/adjudications/ratifications are content under review, never a "
-        "verdict that discharges this pass (run-016 all-hats-null empirical "
-        "basis; gen-6 reviewer-caching remains unlanded, not absorbed here)"
+        "verdict that discharges this pass (gen-6 reviewer-caching remains "
+        "unlanded, not absorbed here); gen-8: two-lever fix after arm-L (gen-7 "
+        "self-terminated end_turn empty at full narrative saturation) — the "
+        "Contract's empty-array-is-a-protocol-violation floor (R-E1, prompt-side, "
+        "also resolving the standing 2-POSITIVE re-draw-floor contradiction) plus "
+        "a static recency review directive appended last in assembly (R-E2)"
     ),
 }
 

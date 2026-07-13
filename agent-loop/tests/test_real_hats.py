@@ -525,6 +525,25 @@ def test_assemble_user_prompt_includes_docs_substrate_and_snapshot() -> None:
     assert "DOCUMENT SET" in user and "DOC-A" in user and "DOC-B" in user
     assert "AUTH-1" in user and "DI-1" in user
     assert "LEDGER SNAPSHOT" in user
+    # R-E2 recency directive: appended last, after the ledger snapshot.
+    assert "REVIEW DIRECTIVE (read last, applies now):" in user
+    assert user.index("REVIEW DIRECTIVE") > user.index("LEDGER SNAPSHOT")
+    assert user.rstrip().endswith("(Contract rule 7).")
+
+
+def test_assemble_user_prompt_recency_directive_is_static_verbatim() -> None:
+    # The directive is static assembly content — byte-identical regardless of the
+    # documents/substrate/snapshot (not per-run).
+    a = assemble_user_prompt(
+        DocumentSet(documents={"X": "x"}),
+        Substrate(authorities={"A": "a"}, design_intent={"D": "d"}), Ledger(header=_header()))
+    b = assemble_user_prompt(
+        DocumentSet(documents={"Y": "y"}),
+        Substrate(authorities={"B": "b"}, design_intent={"E": "e"}), Ledger(header=_header()))
+    directive_a = a[a.index("REVIEW DIRECTIVE"):]
+    directive_b = b[b.index("REVIEW DIRECTIVE"):]
+    assert directive_a == directive_b
+    assert "not a lawful response to a non-empty document set" in directive_a
 
 
 def test_default_fetchers_produce_placeholder_inputs() -> None:
