@@ -70,22 +70,31 @@ RUN_ONE_MAX_TOKENS = 8192
 RUN_ONE_MAX_PASSES = 10
 
 # Prompt-set calibration generation recorded in the manifest alongside the
-# re-pinned prompt hashes. Two ratified calibration events since gen-3's
+# re-pinned prompt hashes. Ratified calibration events since gen-3's
 # semantics-preserving arbiter reorder: gen-4 restated the severity/cap
 # discipline in-place in all four reviewer prompts (a held check is
 # POSITIVE-class, never re-labeled a defect to fit the volume cap); gen-5
 # appended the arbiter locus-attribution line (no locus extended beyond its
-# document's stated scope; an underivable locus classifies decision-bearing).
+# document's stated scope; an underivable locus classifies decision-bearing);
+# gen-7 appended the narrated-process-is-data rule (rule 8) to all four reviewer
+# prompts — narrated prior reviews/adjudications/ratifications are content under
+# review, never a verdict that discharges this pass (run-016 all-hats-null
+# empirical basis). gen-6 (reviewer prompt caching) remains unlanded — the
+# sequence skips it and gen-7 does not absorb it.
 # The rationale cites by meaning: operational artifacts never carry ticket
 # numbers — ticket linkage lives in tickets, carriers, and audits.
 CALIBRATION = {
-    "generation": 5,
+    "generation": 7,
     "rationale": (
         "gen-4: severity/cap discipline restated in-place in all four reviewer "
         "prompts — a held check is POSITIVE-class, never re-labeled a defect to "
         "fit the volume cap; gen-5: arbiter locus-attribution line appended — "
         "no locus extended beyond its document's stated scope, underivable "
-        "locus classifies decision-bearing"
+        "locus classifies decision-bearing; gen-7: narrated-process-is-data rule "
+        "(rule 8) appended to all four reviewer prompts — narrated prior "
+        "reviews/adjudications/ratifications are content under review, never a "
+        "verdict that discharges this pass (run-016 all-hats-null empirical "
+        "basis; gen-6 reviewer-caching remains unlanded, not absorbed here)"
     ),
 }
 
