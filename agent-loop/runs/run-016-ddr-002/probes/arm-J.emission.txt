@@ -1,0 +1,44 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["DDR-002"],
+"locus": "§4 Evidence node schema vs §4 RG-provenance posture / §7 existence-constraint scope",
+"claim": "The `(:Reasoning:Evidence)` node schema in §4 lists no `provenance (T1)` group, consistent with Evidence being the sole surrogate-only type; however the §4 node listing omits the property line entirely while the §2.2 Governance and other RG nodes explicitly carry `provenance (T1)`. The Evidence node line as written terminates after `observed_at` with no trailing marker indicating the deliberate omission at the node-schema locus — the surrogate-only posture is stated only in prose two subsections later. A reader taking the §4 node schema as the contract cannot tell from the node line itself whether the omission is intentional; internal correctness of the schema-as-written depends on cross-reference to prose not co-located with the definition.",
+"cited_authority": {"kind": "coherence", "ref": "DDR-002 §4 Evidence node line vs DDR-002 §4 'RG provenance posture' / §7 existence-constraint scope"}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-002"],
+"locus": "§5 provenance-survival span vs §7 #20 completeness check",
+"claim": "The §5 span definition states an `ObservedPattern` PROPOSED_FROM target 'contributes nothing to freeze' because it is a durable live-traversable KG node. But §2.3 commits that a terminal-state `ObservedPattern` transitions to `archived` (retention-tier demotion) per DDR-003 policy. §7 #20 requires the ProvenanceSummary be 'complete against the §5-defined span.' If a promotion's provenance chain reaches an `ObservedPattern` that later archives, the span computed at-promotion froze nothing for it on the stated assumption of durable live-traversability, yet §2.3's archival is a retention-tier demotion whose post-archival traversability guarantee is DDR-003's, not asserted here. The completeness guarantee of #20 rests on an assumption (`ObservedPattern` stays live-traversable) that §2.3 does not unconditionally hold.",
+"cited_authority": {"kind": "soundness", "ref": "DDR-002 §5 span 'ObservedPattern target contributes nothing to freeze' vs §2.3 archived retention-tier demotion + §7 #20 completeness"}
+},
+{
+"severity": "COSMETIC",
+"target": ["DDR-002"],
+"locus": "Change Log v1.2.0 row (T-13/T-20/T-26/T-27/T-28) — §7 #25 tense",
+"claim": "The v1.2.0 Change Log row introduces §7 check #25 as `proposal_kind`↔`RETRACTS` (follow), and the v1.3.0 additions list '#25 as re-scoped.' §7 #25 as written is 'scoped to executed proposals.' The Change Log describes #25 twice (added at v1.2.0, re-scoped at v1.3.0) but the current §7 #25 text carries no marker of which scope is current versus superseded; a cold reader must reconstruct the re-scope from two Change Log rows to know the executed-proposals scope is the live one.",
+"cited_authority": {"kind": "coherence", "ref": "DDR-002 §7 #25 vs Change Log v1.2.0 and v1.3.0 rows"}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-002"],
+"locus": "§2.4 GateDecision origin_mechanism: ingested vs ADR-001 §6 check 2 / §2.2 capture invariant",
+"claim": "GateDecision is declared `origin_mechanism: ingested` — an external SDLC gate outcome mirrored into SOFIA. ADR-001 §2.2's reasoning-capture invariant and §6 check 2 require that every architectural decision the platform *produces* carries a captured RG conclusion artifact with source attribution. GateDecision is a captured *reference* to an external decision, not SOFIA-produced reasoning, and DDR-002 routes it as a Governance-plane KG node, not an RG conclusion. The record does not substantiate that mirroring an external gate outcome as an ingested KG node satisfies (or is exempt from) ADR-001 §2.2's capture invariant for the decision it mirrors — the conformance claim to ADR-001 for this node type is unstated at the locus that would need it.",
+"cited_authority": {"kind": "canonical", "ref": "ADR-001 §2.2 / §6 check 2 vs DDR-002 §2.4 GateDecision origin_mechanism: ingested"}
+},
+{
+"severity": "POSITIVE",
+"target": ["DDR-002"],
+"locus": "§2.4 / §5 / §7 #15 governing-edge well-definedness",
+"claim": "Attacked the promoted-origin approving-decision invariant (#15) for the failure mode where a candidate carries multiple DECIDED_ON edges with conflicting outcomes and 'latest decided_at' underdetermines the governing verdict. The design closes it: §2.4 commits gateway-enforced per-candidate strict decided_at monotonicity on DECIDED_ON writes, so ties are structurally excluded and 'latest decided_at' is total; #15 explicitly keys off the governing (not any) approving edge, catching a node whose governing verdict flipped to rejected despite a stale earlier approved. The attack failed — the well-definedness is load-bearing and stated. Checked against DDR-002 §7 #15 + §2.4 verdict-precedence.",
+"cited_authority": {"kind": "soundness", "ref": "DDR-002 §7 #15 governing-edge totality under per-candidate decided_at monotonicity (§2.4)"}
+},
+{
+"severity": "POSITIVE",
+"target": ["DDR-002"],
+"locus": "§5 applicability_state conditional-scope carry-forward on supersession (§7 #22)",
+"claim": "Attacked the conditional-consumption read-discipline (#19) for the silent-over-admission gap: a successor version of a `conditional` node that defaults to `unconditional` on supersession would escape #19 because the successor is no longer marked conditional. The design anticipates and closes exactly this: §5 and §7 #22 add a predecessor-keyed carry-forward check (safety-critical tier) that keys on the conditional predecessor rather than the successor, catching the default-to-unconditional #19 structurally cannot. The attack failed — the seam is named and mechanized. Checked against DDR-002 §7 #19 + #22.",
+"cited_authority": {"kind": "soundness", "ref": "DDR-002 §7 #22 predecessor-keyed carry-forward closing the #19 successor blind spot"}
+}
+]
