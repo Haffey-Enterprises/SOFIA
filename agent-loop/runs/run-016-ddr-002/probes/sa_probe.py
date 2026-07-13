@@ -14,13 +14,21 @@
 #     E — authorities MINUS {DDR-002,SDD-001,DDR-004} + design-intent MINUS record;
 #         document untouched (run-015-equivalent length).
 #     F — E's trim + record restored (held; fired on D-silent AND E-wakes).
-#   ROUND 3 (this invocation — full run-016 input as base for each):
+#   ROUND 3 (fired):
 #     G — author-decision-record-SKILL authority swapped to the installed 1.0.0
 #         cache bytes (sha256 f0ef38da…); document + rest intact.
 #     H — the three 1.3.0 Change Log rows stripped from the DOCUMENT SET copy
 #         (document otherwise byte-intact); authorities intact.
 #     I — DOCUMENT SET copy replaced with DDR-002 v1.2.0 (git blob 8dbabefa,
 #         content sha256 4a373f2e…); authorities intact (still v1.3.0).
+#   ROUND 4 (fired): J (zero-narrative context — woke), K (run-015 healthy baseline — woke).
+#   ROUND 5 (fired): L — full input against the gen-7 SA prompt (rule 8) — SILENT
+#         (gen-7 self-terminated end_turn empty at full narrative saturation).
+#   ROUND 6 (this invocation — the gen-8 remedy acceptance gate):
+#     M — full, UNMODIFIED run-016 input (pre-trailer base == baseline 563415c7…)
+#         against the gen-8 SA prompt: R-E1 empty-array floor (system) + R-E2
+#         recency directive (assembly). PASS iff M wakes; silence => structural
+#         redesign, no further prompt iteration without a ruling.
 #
 # Tad fires (real, paid API calls; needs ANTHROPIC_API_KEY in the shell):
 #     python agent-loop/runs/run-016-ddr-002/probes/sa_probe.py
@@ -45,6 +53,7 @@ from agent_loop.fetchers import RepoDocumentFetcher, RunSubstrateFetcher
 from agent_loop.ledger import DEFAULT_COUNTED_SEVERITIES, Ledger, LedgerHeader
 from agent_loop.log import ActionLog, JsonlFileSink
 from agent_loop.real_hats import (
+    _REVIEW_DIRECTIVE,
     assemble_user_prompt,
     load_system_prompt,
     parse_emissions,
@@ -224,6 +233,12 @@ def _run015_sa_call(system: str, transport) -> dict:
                     transport=transport, snapshot=snapshot)
 
 
+# gen-8 guards (fail loud before firing if the remedy isn't actually in force):
+_RE1_MARKER = "an entirely empty array is a protocol violation"   # R-E1 (SA system prompt)
+_RE2_MARKER = "REVIEW DIRECTIVE (read last, applies now):"         # R-E2 (assembled user)
+_BASELINE_PRE_TRAILER_SHA = "563415c7fdd266f201d109fd927d47ad35a95252de1483ccc2bc65899c639158"
+
+
 def main() -> None:
     if not os.environ.get("ANTHROPIC_API_KEY"):
         raise SystemExit(
@@ -231,41 +246,42 @@ def main() -> None:
             "key in your shell and re-run (Tad fires; key stays in his shell)."
         )
 
+    # ROUND 6 — Arm M, the gen-8 remedy acceptance gate. Full, UNMODIFIED run-016
+    # input (every narrative copy intact — the exact context that went silent
+    # under gen-5 and gen-7) against the gen-8 SA prompt: R-E1 empty-array floor
+    # (system) + R-E2 recency directive (assembly). PASS iff M wakes.
     records = RepoDocumentFetcher(RUN_DIR / "documents")(DOC_IDS)
     substrate = RunSubstrateFetcher(RUN_DIR / "substrate")(DOC_IDS)
     system = load_system_prompt(SA_PROMPT)
-    base_doc = records.documents["DDR-002"]
 
-    if _RECORD_KEY not in substrate.design_intent:
-        raise SystemExit(f"J: {_RECORD_KEY!r} not in design-intent")
-    if not _E_AUTH_TRIM <= set(substrate.authorities):
-        raise SystemExit(f"J: authorities missing one of {_E_AUTH_TRIM}")
-
-    # Arm J — E's substrate trim + H's document row-strip: a zero-narrative
-    # context. _run_arm grep-verifies the assembled prompt has no "ratified per
-    # item" / "A-1" (fails loud otherwise).
-    substrate_j = Substrate(
-        authorities={k: v for k, v in substrate.authorities.items() if k not in _E_AUTH_TRIM},
-        design_intent={k: v for k, v in substrate.design_intent.items() if k != _RECORD_KEY},
-    )
-    records_j = DocumentSet(documents={"DDR-002": _strip_130_changelog_rows(base_doc)})
+    # Guard R-E1: the empty-array floor is in the SA system prompt.
+    if _RE1_MARKER not in system:
+        raise SystemExit("M: SA system prompt lacks the R-E1 empty-array floor — not gen-8")
+    # Guard R-E2: the recency directive is the assembled prompt's trailer.
+    user = assemble_user_prompt(records, substrate, _pass_one_snapshot())
+    trailer = "\n\n" + _REVIEW_DIRECTIVE
+    if _RE2_MARKER not in user or not user.endswith(trailer):
+        raise SystemExit("M: assembled prompt lacks the R-E2 recency directive trailer — not gen-8")
+    # Guard: the pre-trailer base is byte-identical to the silent-under-gen-5/7 baseline.
+    base = user[: -len(trailer)]
+    base_sha = _sha256(base)
+    if base_sha != _BASELINE_PRE_TRAILER_SHA:
+        raise SystemExit(f"M: pre-trailer base sha {base_sha} != baseline {_BASELINE_PRE_TRAILER_SHA}")
 
     transport = build_real_transport()
-    results = [
-        _run_arm("J", records=records_j, substrate=substrate_j, system=system,
-                 transport=transport, assert_absent=_J_MUST_BE_ABSENT),
-        _run015_sa_call(system, transport),  # Arm K
-    ]
-    _merge_into_report(results, {
-        "arm_J": "Arm E substrate trim (authorities minus {DDR-002,SDD-001,DDR-004}, "
-                 "record out) + Arm H document row-strip — zero ratification narrative "
-                 "(assembled prompt verified free of 'ratified per item' and 'A-1')",
-        "arm_K": "run-015 SA call reconstructed byte-for-byte from its committed run "
-                 "folder (documents/DDR-004 + substrate/ + pass-1 snapshot on its ledger "
-                 "header) and re-fired as-is today — healthy-baseline control; SA prompt "
-                 "+ gen-5 verified identical; assembled-prompt sha256 in user_sha256",
+    result = _run_arm("M", records=records, substrate=substrate, system=system, transport=transport)
+    result["pre_trailer_base_sha256"] = base_sha
+    result["final_assembled_sha256"] = result["user_sha256"]
+
+    _merge_into_report([result], {
+        "arm_M": "gen-8 remedy acceptance gate — full, unmodified run-016 input "
+                 "(pre-trailer base == baseline 563415c7…, every narrative copy intact) "
+                 "against the gen-8 SA prompt: R-E1 empty-array floor (system) + R-E2 "
+                 "recency directive (assembly). PASS iff M wakes (findings >= 1, "
+                 "POSITIVEs per contract); silence => structural redesign, no further "
+                 "prompt iteration without a ruling.",
     })
-    print(json.dumps(results, indent=2))
+    print(json.dumps([result], indent=2))
 
 
 if __name__ == "__main__":

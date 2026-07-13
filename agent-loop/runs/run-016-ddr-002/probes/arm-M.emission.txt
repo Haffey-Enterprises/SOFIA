@@ -1,0 +1,82 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["DDR-002"],
+"locus": "§4 ProvenanceSummary — frozen_evidence_ids span vs. §5 span definition",
+"claim": "§4 states #20's completeness check is set-equality between `frozen_evidence_ids` and the §5-defined span, and §4 defines the frozen set as 'the evidence_ids of the set of originating Evidence the promotion's provenance chain spans.' But §5's span is the closure over PROPOSED_FROM targets, which explicitly includes RejectedAlternative targets that 'contribute no Evidence' and ObservedPattern targets that 'contribute nothing to freeze.' A promotion whose PROPOSED_FROM targets are entirely non-Evidence-contributing (e.g., only ObservedPattern and RejectedAlternative) yields an empty §5 span, so set-equality with an empty frozen_evidence_ids passes — yet the ProvenanceSummary node is still mandated to exist by #20 ('every durable terminal-promoted CandidatePromotion carries a ProvenanceSummary'). The record does not state whether a ProvenanceSummary with all-empty frozen arrays is well-formed or whether materialization is skipped in that case; #20's 'materialization + completeness' is silent on the empty-span case it structurally admits.",
+"cited_authority": {
+"kind": "soundness",
+"ref": "DDR-002 §5 provenance-survival guarantee span definition vs. §7 #20 mandatory materialization — empty-span edge case unaddressed"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-002"],
+"locus": "§2.3 Operational ObservedPattern basis vs. §5 provenance-survival span",
+"claim": "§2.3 declares ObservedPattern basis `native_confidence` (basis 1) — a citable class; §5 spans state an ObservedPattern PROPOSED_FROM target 'contributes nothing to freeze (a durable, live-traversable KG node).' But an ObservedPattern is `origin_mechanism: derived / derivation_class: distilled`, and its own provenance chain per §5 'Provenance chain' resolves through SOURCED_FROM to original facts via Evidence. If an ObservedPattern is itself distilled from Evidence that later expires, treating it as a self-sufficient live anchor that 'contributes nothing to freeze' means the promoted node's derivation-nature recovery (which §5 says is 'recovered by this same traversal to the source, not denormalized') can break when the ObservedPattern's own upstream Evidence expires. The span definition assumes ObservedPattern is a terminal durable node, but its distilled provenance is not addressed as expiry-surviving.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "DDR-002 §2.3 (ObservedPattern derived/distilled + source_record_ref to external telemetry) vs. §5 span ('ObservedPattern contributes nothing to freeze') + §5 provenance-chain expiry-survival claim"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-002"],
+"locus": "§7 #25 vs. Change Log Touch-1 description of the resolved defect",
+"claim": "The v1.3.0 Touch-1 Change Log row asserts the #25 scoping 'dissolves the #21/#25 joint unsatisfiability in the pre-decision retraction window' and 'the permanent false positive on legitimately rejected retractions.' But #25 as written scopes only the forward direction to terminal `status: promoted`; a `proposal_kind: retraction` candidate that is legitimately *rejected* terminates at `status: rejected`, not `promoted`, so the forward biconditional (keyed on `status: promoted`) never fires on it — the claim of resolution is consistent. However, the reverse direction ('a RETRACTS edge originates only from a proposal_kind: retraction node') remains unscoped and unconditional, and #21 permits a RETRACTS edge only from an approving PromotionDecision. A retraction candidate at `status: approved` but not yet `status: promoted` (approved, pre-materialization) is permitted by §5/§3.5.4 to carry no RETRACTS edge, and #25 forward no longer fires — but nothing in #25 or #21 states the edge MUST be absent pre-materialization as a checkable invariant; the deleted explanatory tail (noted in the deliberation A-9) was struck, leaving 'the edge's writing is the EA-gated act' as the sole normative anchor for the pre-materialization window, which is a motivational gloss, not a checkable direction.",
+"cited_authority": {
+"kind": "soundness",
+"ref": "DDR-002 §7 #25 (scoped forward direction; unscoped reverse) vs. §7 #21 + §5 materialize-retraction timing — pre-materialization edge-absence not stated as a checkable invariant"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-002", "DDR-004"],
+"locus": "§2.6 PlaneDefinition own basis vs. DDR-004 §4 disposition table",
+"claim": "DDR-002 §2.6 declares 'PlaneDefinition's own basis: flat_base (basis 2)' and the Change Log Touch-3 row records this as adjudication A-3, explicitly noting 'a disposition DDR-004 §4's table does not yet carry; alignment noted for that record's next touch.' DDR-004 §4's per-class disposition table (Catalog/Standards/Governance basis 2; Environment members; Operational; Cost) does not enumerate PlaneDefinition at all. DDR-002 §2.1–§2.6 claims the declarations 'cover the citable universe completely' (§2 preamble), and DDR-004 §4 claims to resolve 'the permanent rule per class' — but a class (PlaneDefinition) carries a DDR-002-side basis declaration with no corresponding DDR-004 ruling, so the schema carries a basis its cited derivation authority has not ratified. Per DDR-002 §2 preamble, 'derivation semantics, base values... are DDR-004's' — a basis DDR-004 does not carry is an unsubstantiated derivation claim at the schema layer.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "DDR-004 §4 per-class declared-basis disposition table (does not enumerate PlaneDefinition) vs. DDR-002 §2.6 PlaneDefinition flat_base declaration + §2 preamble 'derivation... are DDR-004's'"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["DDR-002"],
+"locus": "§2 preamble citable-universe sentence",
+"claim": "The §2 preamble asserts 'the declarations in §2.1–§2.6 cover the citable universe completely, and CONFIDENCE_UNDERIVABLE is unreachable for any well-formed class.' But §2.6's Extension-plane citable universe is open — any future registered plane declares its own basis via PlaneDefinition.confidence_basis, which is registration-time data, not a §2.1–§2.6 declaration. The sentence conflates the closed core-plane declarations (§2.1–§2.5 + the cost exemplar) with the open Extension surface; a future Extension plane's node-classes are citable and are NOT covered by any §2.1–§2.6 declaration — they are covered by the registration contract. The completeness claim is true only under the declared-totality registration rule holding at registration time, not by the §2.1–§2.6 text alone.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "DDR-002 §2 preamble ('§2.1–§2.6 cover the citable universe completely') vs. §2.6 open Extension registration surface (future planes citable via PlaneDefinition, not §2.1–§2.6 text)"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-002"],
+"locus": "§4 Evidence.observed_at capture-instant gloss vs. §1 recorded_at definition",
+"claim": "§4 defines Evidence.observed_at as 'the capture/snapshot instant: when this Evidence's observation of the cited node occurred, gateway-clocked' and DDR-004 §3 requires the capture instant be durably recoverable for calibration. But §1 defines recorded_at as 'the uniform system/record time (when the graph captured the node)' — which, for an Evidence node, is also gateway-clocked at capture. Evidence is the sole surrogate-only RG type and per §4/§Provenance-scope does NOT carry the provenance group, so it carries no recorded_at. The record therefore places the graph-capture time on observed_at for Evidence while every other node carries it on recorded_at — a deliberate overload of a domain-timestamp field name (observed_at, elsewhere the freshness operand of aging Environment nodes, §2.2) to mean 'system capture time' for Evidence. §1 states domain timestamps 'are node-type-specific and never conflated with' recorded_at, yet Evidence.observed_at IS the system capture time, conflating the two roles the record elsewhere separates.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "DDR-002 §1 (recorded_at = system capture time; domain timestamps never conflated with it) vs. §4 Evidence.observed_at (gateway-clocked capture instant on a node that omits recorded_at)"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["DDR-002"],
+"locus": "§7 #15 well-definedness under decided_at monotonicity",
+"claim": "Attacked the 'governing verdict' definition (#15, §2.4) for underdetermination: if two DECIDED_ON edges on one candidate could share a decided_at, 'latest decided_at' would be ambiguous and the promoted-origin invariant would be unenforceable. The record forecloses this — §2.4 and #15 both specify gateway-enforced per-candidate strict decided_at monotonicity on DECIDED_ON writes, so ties are structurally excluded and 'latest decided_at' is total. The batch-decision case (1:many per-candidate outcomes on distinct edges) and the verdict-flip detection case are both covered. The construction held against the attack.",
+"cited_authority": {
+"kind": "soundness",
+"ref": "DDR-002 §7 #15 well-definedness clause + §2.4 per-candidate strict decided_at monotonicity"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["DDR-002"],
+"locus": "§7 #22 conditional-scope carry-forward predecessor-keying",
+"claim": "Attacked the conditional-scope carry-forward for the silent-over-admission hole: a successor to a conditional node defaulting to unconditional would over-admit past an EA-set Condition, and #19 (which filters on applicability_state: conditional) cannot catch it because the successor is no longer marked conditional. The record anticipates exactly this — #22 is predecessor-keyed (keys on the conditional predecessor, not the successor), explicitly stated as catching what #19 structurally cannot, mechanized as the single atomic supersession transaction (§6), safety-critical tier. The attack's failure mode is the named design target of the check. Held.",
+"cited_authority": {
+"kind": "soundness",
+"ref": "DDR-002 §7 #22 (predecessor-keyed carry-forward) + §5 applicability_state supersession clause + §7 #19"
+}
+}
+]

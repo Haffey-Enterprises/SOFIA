@@ -85,3 +85,26 @@ review. **The documents are byte-unchanged** — the Change Logs were doing thei
 honest job (faithfully narrating what happened); the defect was in how the hat
 *read* them. Acceptance gate: probe Arm L (full run-016 input, gen-7 SA prompt)
 must wake.
+
+## Remedy trail (R-E, 2026-07-13)
+
+**gen-7 failed.** Arm L — the full run-016 input against the gen-7 SA prompt
+(rule 8, a front-positioned narrated-process countermand) — went **silent**: 0
+findings, `stop_reason: end_turn`. A semantic instruction alone, positioned in
+the system block ahead of a fully narrative-saturated context, did not overcome
+the deference; the model self-terminated an empty array as if lawful.
+
+**gen-8 passed.** The two-lever fix — **R-E1** (Contract: an entirely empty array
+is a protocol violation for a non-empty document set; also resolves the standing
+2-POSITIVE re-draw-floor contradiction) + **R-E2** (a static recency review
+directive appended *last* in assembly, read after the narrative) — was accepted
+at **Arm M**: **8 findings** (5 MATERIAL, 1 COSMETIC, 2 POSITIVE), `stop_reason:
+end_turn`, on the **byte-identical base** (`563415c7…`, the same input L and the
+fired draw saw). Only the two levers changed.
+
+**Reading.** The operative levers were **structural, not semantic**: closing the
+lawful empty-exit and positioning the countermand for recency did the work that
+the gen-7 semantic rule alone could not. Rule 8 stays as landed; gen-8 carries
+it plus the two structural levers. Both L and M self-terminated (`end_turn`) —
+the difference is that gen-8 made the empty array unlawful and put the directive
+where it is read last. The valid review draw is **run-017** on gen-8.
