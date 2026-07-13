@@ -1,5 +1,6 @@
 # Deliberation Record — DDR-002 Additive Amendment Batch (RBT-54)
 
+> Intended repo home: `agent-loop/deliberation/ddr-002-amendment-batch/record.md`
 
 | Field | Value |
 |---|---|
@@ -106,3 +107,19 @@ Per Item E2′, the three-hat drafting check + coherence pass ran over the stage
 - **A-14 (bundle):** Decision.11 glosses `CONFIDENCE_UNDERIVABLE` at first use; #27's "cost-plane hole" allusion dropped; Touch-1 row's "Items 3+4" stands (Item 5 was the no-action bucket); DDR-002 References table stays upstream-only (convention recorded for the cold read); "gateway-clocked" stays (cited).
 
 POSITIVEs of record: the no-values rule held across all four independent checks; the edit script verified mechanically against base blob `cc33cda3` (all spans exact and unique); the landing-set version-reference sweep came back fully consistent.
+
+## Addendum — review-and-verification arc (run-016 → run-017 → cold-read gate → run-018; rulings ratified per item, 2026-07-13)
+
+This addendum records the post-authoring review arc at pointer level; the run folders are the carriers (capture-where-decided).
+
+**Instrument arc.** run-016 (gen-5) produced a false-CONVERGED on an all-hats-null draw — root-caused via six probe rounds to **narrated-completion deference** (conjunctive form: a reviewer emits sanctioned-empty iff any completed-review/ratified narrative is present in context); run-016 preserved as pathology evidence (`run-016-ddr-002/invalid.md`). Remedies: R-C all-hats-null fail-loud guard; gen-7 (semantic countermand) **failed** Arm L; gen-8 (structural two-lever: empty-array-is-protocol-violation floor + recency-positioned review directive) **passed** Arm M and ran both live draws. Operative levers structural, not semantic. Code-relay decisions R-1/R-2 (byte-regression test reframed hermetic), R-A–R-E, R-D1–R-D6 ratified in-session; carriers: the run-016 folder + branch commits.
+
+**run-017 (first draw, gen-8) — 24 findings, 24/24 ruled** (audit + disposition in `run-017-ddr-002/`). Dispositions **P-1–P-8** ratified per item: #10 Condition-half scoped (P-2, latent v1.2.0 defect); §2.4 retraction re-decision named + routed (P-3); #26 key-set equality (P-4); exemplar gloss (P-5); Touch-2 ruled-exception clause (P-6); 7 OVERs (gen-8 cost profile: ruled-decision re-attack). Operator elected a verification draw over the revised text (P-8; run-012 pattern) — the E2′ family-grade trigger did not fire.
+
+**Cold-read gate — PASS with folds.** Adjudications **CR-1–CR-9** ratified per item (disposition record in `run-017-ddr-002/`): §-cite corrections (CR-1/CR-2), routing-pointer fix (CR-3), the re-decided-`GateDecision` governing-verdict gap named (CR-4), #26 only-if warrant (CR-5), §7 ticket-ID relocation — the F-i disposition (CR-6), first-use acronym expansions with corpus sweep → **RBT-60** (CR-7), SDD §4.4 attribution fix (CR-8), DDR-004 Edit 15 (CR-9).
+
+**run-018 (verification draw, gen-8, doc pin `9bb0f9b3`) — 26 findings, 26/26 ruled** (audit + disposition in `run-018-ddr-002/`). Dispositions **P18-1–P18-7** ratified per item. **All run-017 P-closures and cold-read CR-closures held**; CR-6 byte-verified landed. Folds: §2.6 exemplar gloss states the label-set identity (P18-2, resolves a three-hat family on the P-5 gloss); §2.4 clause names the deferred retraction-side **detection** analogue of #15 (P18-3, the CR-4 gap-naming pattern); `WOULD_HAVE_USED` `rebind:pinned` annotation (P18-6, auditor-adjacent). New verdict class recorded: 3 **FALSE-POS** (calibration ledger). No third draw (P18-7).
+
+**Final landing set:** DDR-002 v1.3.0 sha256 `8ec413985f0eba094c815fd58f581311afacc9c083f45ae47e8d0f31bbe1bf16` · SDD-001 v1.2.0 sha256 `a6a9ddaad6a50f76d35768959d18efb7cb15df50eb1185ce294514694c579950` · DDR-004 edit script (15 edits) sha256 `b976cf99d739bbbe78fea7fe08e6a6eeb6bbb7f99a4893e2018c965c4a8509cc`. Merge is the acceptance act (Tad's); DDR-004 discharge rides atomically.
+
+**Routed residues (to RBT-54 close / HEB-54 / next touches):** DDR-004 next touch — §4 table gains `PlaneDefinition` (A-3) + honest-floor sentence names Governance citation-reachability (P18-5); F-ii Cross-References ticket-ID home, batch-scoped with named expiry → HEB-54 seam; narrated-completion-deference finding + code-review-skill rule → HEB backlog ticket at close; F-iii conditional-clause promotion, shape informed by RBT-54 completion → HEB-54.
