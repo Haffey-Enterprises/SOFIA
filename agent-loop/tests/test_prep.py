@@ -1188,3 +1188,51 @@ def test_bedrock_cache_spec_without_pin_raises(tmp_path) -> None:
             run_dir=tmp_path / "runs" / "r1", sofia_root=sofia_root,
             retrieved="2026-07-13", bedrock_cache_root=cache, verified_at="2026-07-13",
         )
+
+
+# =============================================================================
+# RBT-54 / S-2 — per-run --extra-canon substrate extension (E2' completeness)
+# =============================================================================
+#
+# Landing-state substrate completeness (E2' warrant): a review must read against
+# the landing-state corpus, which may include coupled records the general recipe
+# does not carry (run-016 reviews amended DDR-002 and must see DDR-004 v1.1.0).
+# `extra_specs` folds such authorities into a single run WITHOUT widening the
+# doctype recipe; a logical_id already in the recipe is rejected (no silent dup).
+
+
+def test_prep_run_extra_canon_folds_in_authority(tmp_path) -> None:
+    sofia_root = _sofia_tree(tmp_path, ["SDD-001"])
+    (sofia_root / "docs" / "coupled.md").write_text("COUPLED CANON", encoding="utf-8")
+    extra = SubstrateSpec(
+        "DDR-COUPLED", "authorities",
+        {"source": "sofia-repo", "path": "docs/coupled.md"},
+        repo_relpath="docs/coupled.md",
+    )
+    run_dir = prep_run(
+        "run-x", ["SDD-001"], sofia_root=sofia_root, runs_root=tmp_path / "runs",
+        sofia_head_sha="H", retrieved="2026-07-13", recipe=_mini_recipe,
+        extra_specs=[extra],
+    )
+    landed = run_dir / "substrate" / "authorities" / "DDR-COUPLED.md"
+    assert landed.read_text(encoding="utf-8") == "COUPLED CANON"
+    manifest = json.loads((run_dir / "substrate" / "manifest.json").read_text(encoding="utf-8"))
+    assert any(e["logical_id"] == "DDR-COUPLED" for e in manifest["files"])
+
+
+def test_prep_run_extra_canon_duplicate_logical_id_raises_and_emits_no_folder(tmp_path) -> None:
+    sofia_root = _sofia_tree(tmp_path, ["SDD-001"])
+    dup = SubstrateSpec(
+        "adr-template", "authorities",  # already carried by _mini_recipe
+        {"source": "sofia-repo", "path": "docs/adr-template.md"},
+        repo_relpath="docs/adr-template.md",
+    )
+    runs_root = tmp_path / "runs"
+    with pytest.raises(PrepError):
+        prep_run(
+            "run-x", ["SDD-001"], sofia_root=sofia_root, runs_root=runs_root,
+            sofia_head_sha="H", retrieved="2026-07-13", recipe=_mini_recipe,
+            extra_specs=[dup],
+        )
+    # Fail before the folder is created (no silently-partial run).
+    assert not (runs_root / "run-x").exists()

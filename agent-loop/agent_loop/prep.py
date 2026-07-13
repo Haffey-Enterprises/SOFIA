@@ -715,6 +715,7 @@ def prep_run(
     bedrock_cache_root: str | Path | None = None,
     accept_stale: dict[str, str] | None = None,
     verified_at: str | None = None,
+    extra_specs: list[SubstrateSpec] | None = None,
 ) -> Path:
     """Prepare one run folder (documents snapshot + substrate) and return it.
 
@@ -732,10 +733,26 @@ def prep_run(
     `bedrock_cache_root` / `accept_stale` / `verified_at` thread the RBT-54 F4
     currency check into substrate assembly (see `assemble_substrate`); they are
     inert for recipes with no bedrock-cache specs.
+
+    `extra_specs` (RBT-54 S-2 / E2' landing-state completeness) folds additional
+    authorities into THIS run's substrate without widening the doctype recipe —
+    for a review that must read against coupled landing-state records the general
+    recipe does not carry (run-016 reviews amended DDR-002 and must see DDR-004).
+    An extra spec whose logical_id already appears in the recipe is rejected (no
+    silent duplicate), and the check runs before any folder is created.
     """
     sofia_root = Path(sofia_root)
     if recipe is None:
         recipe = select_recipe(doc_ids, sofia_root=sofia_root)
+    specs = list(recipe(from_run=from_run))
+    if extra_specs:
+        recipe_ids = {spec.logical_id for spec in specs}
+        clashes = sorted(s.logical_id for s in extra_specs if s.logical_id in recipe_ids)
+        if clashes:
+            raise PrepError(
+                f"extra_specs logical_id(s) already carried by the recipe: {clashes}"
+            )
+        specs = specs + list(extra_specs)
     runs_root = Path(runs_root)
     run_dir = runs_root / run_id
     if run_dir.exists():
@@ -749,7 +766,7 @@ def prep_run(
     docs_root = sofia_root / "docs"
 
     assemble_substrate(
-        recipe(from_run=from_run),
+        specs,
         run_dir=run_dir,
         sofia_root=sofia_root,
         retrieved=retrieved,
@@ -784,6 +801,7 @@ def prep_draws(
     bedrock_cache_root: str | Path | None = None,
     accept_stale: dict[str, str] | None = None,
     verified_at: str | None = None,
+    extra_specs: list[SubstrateSpec] | None = None,
 ) -> list[Path]:
     """Prepare N draws (act e) — one prepared folder per run-id.
 
@@ -792,7 +810,7 @@ def prep_draws(
     exactly that). Returns the run folders in order. `recipe` follows `prep_run`:
     None selects by doctype; an explicit recipe overrides (every draw shares the
     same doc set, so every draw resolves the same recipe). The RBT-54 F4 currency
-    args thread through identically to every draw.
+    args and `extra_specs` (S-2) thread through identically to every draw.
     """
     return [
         prep_run(
@@ -807,6 +825,7 @@ def prep_draws(
             bedrock_cache_root=bedrock_cache_root,
             accept_stale=accept_stale,
             verified_at=verified_at,
+            extra_specs=extra_specs,
         )
         for run_id in run_ids
     ]

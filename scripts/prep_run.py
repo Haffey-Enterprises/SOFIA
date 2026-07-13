@@ -25,6 +25,7 @@
 #                       [--draws <run-id> ...] [--sofia-root <path>]
 #                       [--bedrock-cache-root <path>]
 #                       [--accept-stale-authority <id> --reason <text>]...
+#                       [--extra-canon <doc-id>]...
 #
 # --from-run carries forward the substrate the runner cannot re-fetch and that
 # is not forward-verifiable (the Notion vision block), asserting each carried
@@ -51,7 +52,12 @@ from pathlib import Path
 _AGENT_LOOP = Path(__file__).resolve().parents[1] / "agent-loop"
 sys.path.insert(0, str(_AGENT_LOOP))
 
-from agent_loop.prep import prep_draws, prep_run  # noqa: E402
+from agent_loop.prep import (  # noqa: E402
+    SubstrateSpec,
+    prep_draws,
+    prep_run,
+    resolve_document,
+)
 
 
 def _git_head(sofia_root: Path) -> str:
@@ -110,6 +116,11 @@ def main(argv: list[str] | None = None) -> None:  # pragma: no cover
         "--reason", action="append", default=[],
         help="reason for the corresponding --accept-stale-authority (order-matched)",
     )
+    parser.add_argument(
+        "--extra-canon", action="append", default=[], metavar="DOC-ID",
+        help="fold an extra landing-state authority (by doc-id) into this run's "
+             "substrate without widening the recipe (RBT-54 S-2 / E2')",
+    )
     args = parser.parse_args(argv)
 
     sofia_root = Path(args.sofia_root)
@@ -117,6 +128,20 @@ def main(argv: list[str] | None = None) -> None:  # pragma: no cover
     head_sha = _git_head(sofia_root)
     retrieved = date.today().isoformat()
     verified_at = retrieved  # F4 currency check runs at this same prep instant
+
+    # S-2 (E2'): resolve each --extra-canon doc-id to a repo-canonical authority.
+    extra_specs = []
+    for doc_id in args.extra_canon:
+        path = resolve_document(sofia_root / "docs", doc_id)
+        relpath = str(path.relative_to(sofia_root))
+        extra_specs.append(
+            SubstrateSpec(
+                doc_id, "authorities",
+                {"source": "sofia-repo", "path": relpath},
+                repo_relpath=relpath,
+            )
+        )
+        print(f"extra-canon: {doc_id} -> {relpath}")
 
     # F4: bedrock authorities are verified pin-vs-installed against the cache.
     bedrock_cache_root = (
@@ -133,7 +158,7 @@ def main(argv: list[str] | None = None) -> None:  # pragma: no cover
             args.draws, args.doc_ids, sofia_root=sofia_root, runs_root=runs_root,
             sofia_head_sha=head_sha, retrieved=retrieved, from_run=args.from_run,
             bedrock_cache_root=bedrock_cache_root, accept_stale=accept_stale,
-            verified_at=verified_at,
+            verified_at=verified_at, extra_specs=extra_specs,
         )
     else:
         folders = [
@@ -141,7 +166,7 @@ def main(argv: list[str] | None = None) -> None:  # pragma: no cover
                 args.run_id, args.doc_ids, sofia_root=sofia_root, runs_root=runs_root,
                 sofia_head_sha=head_sha, retrieved=retrieved, from_run=args.from_run,
                 bedrock_cache_root=bedrock_cache_root, accept_stale=accept_stale,
-                verified_at=verified_at,
+                verified_at=verified_at, extra_specs=extra_specs,
             )
         ]
     for folder in folders:
