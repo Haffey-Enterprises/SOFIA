@@ -141,7 +141,7 @@ SDD-001 §3.4.3 carried this derivation as interim implemented behavior, with au
 - **Coordinates with:** RBT-54 (Touch 3) — the DDR-002 additive amendments this record entailed (declared-basis carriers; `Evidence.observed_at` semantic), landed at DDR-002 v1.3.0 and discharging Pre-Acceptance Conditions 1–2 (deliberation record: `agent-loop/deliberation/ddr-002-amendment-batch/record.md`).
 - **Review of record:** the run-014 ∪ run-015 two-draw review union and cold audit — `agent-loop/runs/run-014-ddr-004/audit.md` (primary) · `agent-loop/runs/run-015-ddr-004/audit.md` (companion + union) · `agent-loop/runs/run-015-ddr-004/disposition.md` (dispositions D1–D7 + close rulings R1–R6, ratified per item, 2026-07-11/12).
 - **Grounding:** the D1 election substrate — the run-009 audit's R6 inclination entry (the derivation's corpus entry point, explicitly unruled there), the run-010 / run-011 / run-012 audits, and the run-011 union disposition (Item 1); the RBT-53 design session (per-item ratifications, 2026-07-10).
-- **Rhyme, not merger:** the layering-invariant ADR (services-as-deterministic-tools / agency-as-caller-layer) — separate record, loose coupling; neither gates the other.
+- **Rhyme, not merger:** the layering-invariant ADR (forthcoming, unauthored — services-as-deterministic-tools / agency-as-caller-layer) — separate record, loose coupling; neither gates the other.
 
 ## Change Log
 
