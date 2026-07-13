@@ -1,0 +1,8 @@
+COHERENCE BRIEF ADDENDUM (ratified E2′ seam list) — sweep these seams across the landing set:
+1. Amended #25 ↔ SDD-001 §3.5.4 conformance note ↔ harness ordering (the catch-up implements from ratified text).
+2. DDR-002 §2/§2.6 basis annotations ↔ DDR-004 §4 per-class dispositions (no drift).
+3. #26/#27 ↔ §7's tier criterion ↔ SDD-001 §7.2's set-generic 1b derivation.
+4. `Evidence.observed_at` gloss (DDR-002 §4) ↔ DDR-004 §3 Δt endpoints ↔ SDD-001 §3.4.3.
+5. ProvenanceSummary keyed structure (DDR-002 §4/§5/Named Gaps) ↔ #20 ↔ SDD-001 §3.3.8/§3.5.3.
+6. Named-Gaps re-scope ↔ every other reference to that gap across the landing set.
+7. DDR-004 discharge tense ↔ its conditions apparatus ↔ DDR-002's Change Log discharge claims.
