@@ -592,16 +592,14 @@ def _ddr_sofia_tree(tmp_path: Path, *, ddr_id: str, ddr_slug: str) -> Path:
 
 
 def _ddr_prior_draw(runs_root: Path, run_id: str) -> Path:
-    """A prior draw carrying the DDR recipe's carry-forward substrate (the
-    bedrock ddr-template + author-decision-record SKILL, and the Notion
-    sofia-vision block) — the sources prep cannot re-fetch."""
+    """A prior draw carrying the DDR recipe's sole carry-forward substrate — the
+    Notion sofia-vision block, which prep cannot re-fetch. Since RBT-54 (F4) the
+    bedrock ddr-template + author-decision-record SKILL no longer ride
+    --from-run: they are sourced from the installed plugin cache and verified
+    pin-vs-installed (see the RBT-54 section), so they are absent here."""
     return _build_prior_draw(
         runs_root, run_id,
         substrate={
-            "authorities": {
-                "ddr-template": "DDR-TEMPLATE BODY",
-                "author-decision-record-SKILL": "SKILL BODY",
-            },
             "design-intent": {"sofia-vision": "VISION BODY"},
         },
     )
@@ -708,9 +706,12 @@ def test_ddr_recipe_present_and_excluded_substrate() -> None:
     assert not (_SDD_ONLY_SUBSTRATE & ids)
     # Both categories populated (gate 4 requires each non-empty).
     assert {s.category for s in specs} == {"authorities", "design-intent"}
-    # bedrock/Notion items carry forward; repo-canonical items do not.
+    # Notion vision carries forward; bedrock authorities are cache-sourced
+    # (RBT-54 F4), not --from-run; repo-canonical items are neither.
     carried = {s.logical_id for s in specs if s.carry_forward}
-    assert carried == {"ddr-template", "author-decision-record-SKILL", "sofia-vision"}
+    assert carried == {"sofia-vision"}
+    cache_sourced = {s.logical_id for s in specs if s.bedrock_cache}
+    assert cache_sourced == {"ddr-template", "author-decision-record-SKILL"}
 
 
 def test_ddr_recipe_deliberation_logical_id_is_generic() -> None:
@@ -738,9 +739,11 @@ def test_prep_run_ddr_emits_substrate_without_sdd_leakage(tmp_path) -> None:
     sofia_root = _ddr_sofia_tree(tmp_path, ddr_id="DDR-004", ddr_slug="inherited-confidence")
     runs_root = tmp_path / "runs"
     _ddr_prior_draw(runs_root, "run-013-ddr")
+    cache = _real_bedrock_1_3_0_cache(tmp_path)  # skips if the plugin is absent
     run_dir = prep_run(
         "run-014-ddr", ["DDR-004"], sofia_root=sofia_root, runs_root=runs_root,
         sofia_head_sha="HEADDDR", retrieved="2026-07-11", from_run="run-013-ddr",
+        bedrock_cache_root=cache, verified_at="2026-07-11",
     )
     substrate = run_dir / "substrate"
     auth = substrate / "authorities"
@@ -757,7 +760,19 @@ def test_prep_run_ddr_emits_substrate_without_sdd_leakage(tmp_path) -> None:
     # Content is the real bytes: consuming context + design-intent lineage.
     assert (auth / "SDD-001.md").read_text() == "SDD-001 BODY"
     assert (intent / "deliberation-record-ddr-004.md").read_text() == "DDR-004 DELIBERATION RECORD"
-    assert (auth / "ddr-template.md").read_text() == "DDR-TEMPLATE BODY"  # carried forward
+    # Bedrock authority is the installed-cache 1.3.0 bytes, with a structured
+    # verified_against record (pin-vs-installed matched) and no prose note.
+    manifest = json.loads((substrate / "manifest.json").read_text(encoding="utf-8"))
+    skill = next(e for e in manifest["files"] if e["logical_id"] == "author-decision-record-SKILL")
+    assert skill["sha256"] == "28a7696576cc6c2d2f2a313f812e3696bdcf3468ebade9bcb485fca71c012afe"
+    assert skill["verified_against"] == {
+        "path": "plugins/bedrock/skills/author-decision-record/SKILL.md",
+        "sha256": "28a7696576cc6c2d2f2a313f812e3696bdcf3468ebade9bcb485fca71c012afe",
+        "source": "installed-cache",
+        "verified_at": "2026-07-11",
+    }
+    assert "currency_override" not in skill
+    assert "note" not in skill["origin"]
     # The reviewed document snapshot is the DDR itself.
     assert (run_dir / "documents" / "DDR-004-inherited-confidence.md").is_file()
     verify_document_snapshot(run_dir)
@@ -769,9 +784,11 @@ def test_prep_run_ddr_selects_recipe_by_default(tmp_path) -> None:
     sofia_root = _ddr_sofia_tree(tmp_path, ddr_id="DDR-004", ddr_slug="ic")
     runs_root = tmp_path / "runs"
     _ddr_prior_draw(runs_root, "run-013-ddr")
+    cache = _real_bedrock_1_3_0_cache(tmp_path)  # skips if the plugin is absent
     run_dir = prep_run(
         "run-014-ddr", ["DDR-004"], sofia_root=sofia_root, runs_root=runs_root,
         sofia_head_sha="H", retrieved="2026-07-11", from_run="run-013-ddr",
+        bedrock_cache_root=cache, verified_at="2026-07-11",
     )
     assert (run_dir / "substrate" / "authorities" / "ddr-template.md").is_file()
 
@@ -861,3 +878,295 @@ def test_sdd_recipe_byte_regression_reproduces_run_011(tmp_path) -> None:
     }
     produced_set = {p.relative_to(run_dir / "substrate") for p in produced}
     assert produced_set == baseline_set
+
+
+# =============================================================================
+# RBT-54 / F4 — forward currency check for bedrock-origin substrate (G1 + G2)
+# =============================================================================
+#
+# Bedrock authorities are sourced from the INSTALLED plugin cache (injected as
+# bedrock_cache_root — hermetic in tests, discovered by the CLI in production)
+# and verified PIN-vs-INSTALLED: the spec carries the ratified expected_sha256;
+# the check hashes the cache file and compares. Staleness-by-carry is
+# unexpressible by construction — bedrock never rides --from-run. A match writes
+# an entry-level verified_against {path, sha256, source: installed-cache,
+# verified_at}; a mismatch fails loud unless a sanctioned
+# --accept-stale-authority <id> --reason override is supplied, which writes an
+# entry-level currency_override {status, expected_sha256, installed_sha256,
+# reason, timestamp}. origin.note retires for bedrock-origin entries.
+
+# The DDR recipe's ratified 1.3.0 pins (move only by explicit operator ratification).
+_DDR_TEMPLATE_PIN = "59068b3a2741f497e92bff240da238d4f8b6b57471c8ff7a76ab8c09ba9668f9"
+_ADR_SKILL_PIN = "28a7696576cc6c2d2f2a313f812e3696bdcf3468ebade9bcb485fca71c012afe"
+_SKILL_CACHE_RELPATH = "skills/author-decision-record/SKILL.md"
+_SKILL_ORIGIN_PATH = f"plugins/bedrock/{_SKILL_CACHE_RELPATH}"
+
+
+def _bedrock_cache_tree(tmp_path: Path, files: dict[str, str]) -> Path:
+    """A synthetic installed-bedrock plugin cache root: each key is a
+    cache-relative path (e.g. 'skills/author-decision-record/SKILL.md'), written
+    with the given bytes. Hermetic — the currency check reads this, never
+    ~/.claude."""
+    cache_root = tmp_path / "bedrock-cache"
+    for relpath, content in files.items():
+        dest = cache_root / relpath
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_text(content, encoding="utf-8")
+    return cache_root
+
+
+def _real_bedrock_1_3_0_cache(tmp_path: Path) -> Path:
+    """Copy the two DDR-recipe bedrock files from the real installed 1.3.0 cache
+    into a tmp cache root (keeps the run folder hermetic while sourcing bytes
+    that hash to the ratified pins). Skips if the plugin isn't installed — these
+    end-to-end tests exercise the real recipe, which carries real pins."""
+    import shutil
+
+    config = Path.home() / ".claude" / "plugins" / "installed_plugins.json"
+    if not config.is_file():
+        pytest.skip("bedrock plugin not installed (no installed_plugins.json)")
+    data = json.loads(config.read_text(encoding="utf-8"))
+    install_path = None
+    for entry in data.get("plugins", {}).get("bedrock@bedrock", []):
+        candidate = Path(entry.get("installPath", ""))
+        if candidate.is_dir():
+            install_path = candidate
+            break
+    if install_path is None:
+        pytest.skip("bedrock plugin cache not resolvable")
+    cache_root = tmp_path / "real-bedrock-cache"
+    for relpath in (
+        "skills/author-decision-record/templates/ddr-template.md",
+        _SKILL_CACHE_RELPATH,
+    ):
+        src = install_path / relpath
+        if not src.is_file():
+            pytest.skip(f"installed bedrock cache missing {relpath}")
+        dest = cache_root / relpath
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(src, dest)
+    return cache_root
+
+
+def _skill_spec(expected_sha256: str) -> SubstrateSpec:
+    """A bedrock-cache SubstrateSpec for the author-decision-record SKILL."""
+    return SubstrateSpec(
+        "author-decision-record-SKILL", "authorities",
+        {"source": "bedrock", "path": _SKILL_ORIGIN_PATH},
+        bedrock_cache=True,
+        expected_sha256=expected_sha256,
+    )
+
+
+def _repo_intent_spec() -> SubstrateSpec:
+    """A repo-canonical design-intent spec, so substrate has both categories."""
+    return SubstrateSpec(
+        "vision", "design-intent",
+        {"source": "sofia-repo", "path": "docs/vision.md"},
+        repo_relpath="docs/vision.md",
+    )
+
+
+def _sofia_with_vision(tmp_path: Path) -> Path:
+    sofia_root = tmp_path / "sofia"
+    (sofia_root / "docs").mkdir(parents=True)
+    (sofia_root / "docs" / "vision.md").write_text("VISION", encoding="utf-8")
+    return sofia_root
+
+
+def _skill_entry(run_dir: Path) -> dict:
+    manifest = json.loads((run_dir / "substrate" / "manifest.json").read_text(encoding="utf-8"))
+    return next(e for e in manifest["files"] if e["logical_id"] == "author-decision-record-SKILL")
+
+
+# --- currency match: verified_against recorded, no override, note retired ----
+
+
+def test_bedrock_cache_currency_match_records_verified_against(tmp_path) -> None:
+    content = "SKILL 1.3.0 BODY"
+    sha = sha256_text(content)
+    cache = _bedrock_cache_tree(tmp_path, {_SKILL_CACHE_RELPATH: content})
+    sofia_root = _sofia_with_vision(tmp_path)
+    run_dir = tmp_path / "runs" / "r1"
+    assemble_substrate(
+        [_skill_spec(sha), _repo_intent_spec()],
+        run_dir=run_dir, sofia_root=sofia_root, retrieved="2026-07-13",
+        bedrock_cache_root=cache, verified_at="2026-07-13",
+    )
+    entry = _skill_entry(run_dir)
+    assert entry["sha256"] == sha
+    assert entry["verified_against"] == {
+        "path": _SKILL_ORIGIN_PATH,
+        "sha256": sha,
+        "source": "installed-cache",
+        "verified_at": "2026-07-13",
+    }
+    assert "currency_override" not in entry
+    assert "note" not in entry["origin"]  # prose currency note retired for bedrock
+    # The snapshotted bytes are the cache bytes.
+    landed = run_dir / "substrate" / "authorities" / "author-decision-record-SKILL.md"
+    assert landed.read_text(encoding="utf-8") == content
+
+
+def test_bedrock_cache_verified_at_defaults_to_retrieved(tmp_path) -> None:
+    content = "SKILL BODY"
+    cache = _bedrock_cache_tree(tmp_path, {_SKILL_CACHE_RELPATH: content})
+    sofia_root = _sofia_with_vision(tmp_path)
+    run_dir = tmp_path / "runs" / "r1"
+    assemble_substrate(
+        [_skill_spec(sha256_text(content)), _repo_intent_spec()],
+        run_dir=run_dir, sofia_root=sofia_root, retrieved="2026-07-13",
+        bedrock_cache_root=cache,  # verified_at omitted
+    )
+    assert _skill_entry(run_dir)["verified_against"]["verified_at"] == "2026-07-13"
+
+
+# --- pin mismatch: fail loud, naming file + both hashes ----------------------
+
+
+def test_bedrock_cache_pin_mismatch_fails_loud(tmp_path) -> None:
+    installed = "DRIFTED BODY"
+    cache = _bedrock_cache_tree(tmp_path, {_SKILL_CACHE_RELPATH: installed})
+    sofia_root = _sofia_with_vision(tmp_path)
+    pinned_sha = sha256_text("PINNED BODY")
+    with pytest.raises(PrepError) as exc:
+        assemble_substrate(
+            [_skill_spec(pinned_sha), _repo_intent_spec()],
+            run_dir=tmp_path / "runs" / "r1", sofia_root=sofia_root,
+            retrieved="2026-07-13", bedrock_cache_root=cache, verified_at="2026-07-13",
+        )
+    msg = str(exc.value)
+    assert "author-decision-record-SKILL" in msg
+    assert pinned_sha in msg            # expected
+    assert sha256_text(installed) in msg  # installed
+
+
+# --- sanctioned override: accepts a mismatch, records currency_override -------
+
+
+def test_bedrock_cache_override_accepts_mismatch_and_records_currency_override(tmp_path) -> None:
+    installed = "DRIFTED 1.3.1 BODY"
+    installed_sha = sha256_text(installed)
+    pinned_sha = sha256_text("PINNED 1.3.0 BODY")
+    cache = _bedrock_cache_tree(tmp_path, {_SKILL_CACHE_RELPATH: installed})
+    sofia_root = _sofia_with_vision(tmp_path)
+    run_dir = tmp_path / "runs" / "r1"
+    reason = "operator-ratified 1.3.1 drift, RBT-99"
+    assemble_substrate(
+        [_skill_spec(pinned_sha), _repo_intent_spec()],
+        run_dir=run_dir, sofia_root=sofia_root, retrieved="2026-07-13",
+        bedrock_cache_root=cache,
+        accept_stale={"author-decision-record-SKILL": reason},
+        verified_at="2026-07-13",
+    )
+    entry = _skill_entry(run_dir)
+    assert entry["sha256"] == installed_sha  # snapshotted the actual installed bytes
+    assert entry["currency_override"] == {
+        "status": "accepted-stale",
+        "expected_sha256": pinned_sha,
+        "installed_sha256": installed_sha,
+        "reason": reason,
+        "timestamp": "2026-07-13",
+    }
+    assert entry["verified_against"]["sha256"] == installed_sha
+
+
+def test_bedrock_cache_override_without_reason_rejected(tmp_path) -> None:
+    cache = _bedrock_cache_tree(tmp_path, {_SKILL_CACHE_RELPATH: "DRIFTED BODY"})
+    sofia_root = _sofia_with_vision(tmp_path)
+    with pytest.raises(PrepError):
+        assemble_substrate(
+            [_skill_spec(sha256_text("PINNED BODY")), _repo_intent_spec()],
+            run_dir=tmp_path / "runs" / "r1", sofia_root=sofia_root,
+            retrieved="2026-07-13", bedrock_cache_root=cache,
+            accept_stale={"author-decision-record-SKILL": "   "},  # blank reason
+            verified_at="2026-07-13",
+        )
+
+
+# --- fail-loud on misconfiguration: no cache root, absent cache file ----------
+
+
+def test_bedrock_cache_missing_cache_root_raises(tmp_path) -> None:
+    sofia_root = _sofia_with_vision(tmp_path)
+    with pytest.raises(PrepError):
+        assemble_substrate(
+            [_skill_spec(_ADR_SKILL_PIN), _repo_intent_spec()],
+            run_dir=tmp_path / "runs" / "r1", sofia_root=sofia_root,
+            retrieved="2026-07-13", bedrock_cache_root=None, verified_at="2026-07-13",
+        )
+
+
+def test_bedrock_cache_missing_file_raises(tmp_path) -> None:
+    cache = _bedrock_cache_tree(tmp_path, {})  # empty cache — SKILL.md absent
+    sofia_root = _sofia_with_vision(tmp_path)
+    with pytest.raises(PrepError) as exc:
+        assemble_substrate(
+            [_skill_spec(_ADR_SKILL_PIN), _repo_intent_spec()],
+            run_dir=tmp_path / "runs" / "r1", sofia_root=sofia_root,
+            retrieved="2026-07-13", bedrock_cache_root=cache, verified_at="2026-07-13",
+        )
+    assert "SKILL.md" in str(exc.value)
+
+
+# --- cache-relpath derivation (origin.path -> cache-relative) ----------------
+
+
+def test_bedrock_cache_relpath_strips_plugin_prefix() -> None:
+    from agent_loop.prep import _bedrock_cache_relpath
+
+    assert (
+        _bedrock_cache_relpath(_SKILL_ORIGIN_PATH)
+        == _SKILL_CACHE_RELPATH
+    )
+
+
+def test_bedrock_cache_relpath_bad_prefix_raises() -> None:
+    from agent_loop.prep import _bedrock_cache_relpath
+
+    with pytest.raises(PrepError):
+        _bedrock_cache_relpath("skills/author-decision-record/SKILL.md")
+
+
+# --- the DDR recipe pins bedrock authorities at their 1.3.0 hashes ------------
+
+
+def test_ddr_recipe_pins_bedrock_authorities_from_cache_at_1_3_0() -> None:
+    specs = ddr_substrate_specs(
+        "DDR-004", "agent-loop/deliberation/ddr-004-x/record.md", from_run="prior"
+    )
+    by_id = {s.logical_id: s for s in specs}
+
+    ddr_tmpl = by_id["ddr-template"]
+    assert ddr_tmpl.bedrock_cache is True and ddr_tmpl.carry_forward is False
+    assert ddr_tmpl.expected_sha256 == _DDR_TEMPLATE_PIN
+    assert ddr_tmpl.origin == {
+        "source": "bedrock",
+        "path": "plugins/bedrock/skills/author-decision-record/templates/ddr-template.md",
+    }
+
+    skill = by_id["author-decision-record-SKILL"]
+    assert skill.bedrock_cache is True and skill.carry_forward is False
+    assert skill.expected_sha256 == _ADR_SKILL_PIN
+    assert skill.origin == {"source": "bedrock", "path": _SKILL_ORIGIN_PATH}
+
+    # sofia-vision stays carry-forward (Notion, not bedrock).
+    assert by_id["sofia-vision"].carry_forward is True
+    assert by_id["sofia-vision"].bedrock_cache is False
+
+
+def test_bedrock_cache_spec_without_pin_raises(tmp_path) -> None:
+    # A bedrock-cache spec must carry its ratified pin — the pin is its authority.
+    cache = _bedrock_cache_tree(tmp_path, {_SKILL_CACHE_RELPATH: "BODY"})
+    sofia_root = _sofia_with_vision(tmp_path)
+    unpinned = SubstrateSpec(
+        "author-decision-record-SKILL", "authorities",
+        {"source": "bedrock", "path": _SKILL_ORIGIN_PATH},
+        bedrock_cache=True,  # expected_sha256 left None
+    )
+    with pytest.raises(PrepError):
+        assemble_substrate(
+            [unpinned, _repo_intent_spec()],
+            run_dir=tmp_path / "runs" / "r1", sofia_root=sofia_root,
+            retrieved="2026-07-13", bedrock_cache_root=cache, verified_at="2026-07-13",
+        )

@@ -23,17 +23,25 @@
 # Usage:
 #   scripts/prep_run.py <run-id> <doc-id> [<doc-id> ...] [--from-run <run-id>]
 #                       [--draws <run-id> ...] [--sofia-root <path>]
+#                       [--bedrock-cache-root <path>]
+#                       [--accept-stale-authority <id> --reason <text>]...
 #
-# --from-run carries forward the substrate the runner cannot re-fetch (the
-# bedrock templates/skills and the Notion vision block), asserting each carried
-# file's hash against the prior draw's pin. --draws prepares several draws that
-# differ only in run_id (the two-draw verification standard).
+# --from-run carries forward the substrate the runner cannot re-fetch and that
+# is not forward-verifiable (the Notion vision block), asserting each carried
+# file's hash against the prior draw's pin. Bedrock authorities (RBT-54 F4) are
+# NOT carried forward: they are sourced from the installed plugin cache
+# (discovered from the plugin registry, or --bedrock-cache-root) and verified
+# pin-vs-installed; a drifted cache fails loud unless sanctioned with
+# --accept-stale-authority <id> --reason <text> (repeatable, order-matched).
+# --draws prepares several draws that differ only in run_id (the two-draw
+# verification standard).
 #
 # Provenance: this tool is authored for RBT-52 and cited to that ticket alone.
 
 from __future__ import annotations
 
 import argparse
+import json
 import subprocess
 import sys
 from datetime import date
@@ -57,6 +65,26 @@ def _git_head(sofia_root: Path) -> str:
     return completed.stdout.strip()
 
 
+def _resolve_bedrock_cache_root() -> Path:  # pragma: no cover
+    """Discover the installed bedrock plugin cache root from Claude's plugin
+    registry (`~/.claude/plugins/installed_plugins.json` ->
+    plugins['bedrock@bedrock'][*].installPath — the version-pinned cache dir).
+    Discovered, not hardcoded; fails loud if the plugin isn't installed, since
+    the DDR recipe's F4 currency check has nothing to verify against."""
+    config = Path.home() / ".claude" / "plugins" / "installed_plugins.json"
+    if not config.is_file():
+        raise SystemExit(f"bedrock plugin registry not found: {config}")
+    data = json.loads(config.read_text(encoding="utf-8"))
+    for entry in data.get("plugins", {}).get("bedrock@bedrock", []):
+        path = Path(entry.get("installPath", ""))
+        if path.is_dir():
+            return path
+    raise SystemExit(
+        "bedrock plugin not installed or its cache root is unresolvable "
+        "(no plugins['bedrock@bedrock'] installPath exists)"
+    )
+
+
 def main(argv: list[str] | None = None) -> None:  # pragma: no cover
     """CLI entry: stamp HEAD SHA + retrieval date, then prepare the run folder(s)."""
     parser = argparse.ArgumentParser(
@@ -70,23 +98,50 @@ def main(argv: list[str] | None = None) -> None:  # pragma: no cover
     parser.add_argument("--from-run", default=None, help="prior draw to carry substrate forward from")
     parser.add_argument("--draws", nargs="+", default=None, help="run-ids for N draws (differ only in run_id)")
     parser.add_argument("--sofia-root", default=str(Path(__file__).resolve().parents[1]))
+    parser.add_argument(
+        "--bedrock-cache-root", default=None,
+        help="installed bedrock plugin cache root (default: discovered from the plugin registry)",
+    )
+    parser.add_argument(
+        "--accept-stale-authority", action="append", default=[], metavar="ID",
+        help="sanction a bedrock pin mismatch for <ID> (needs a matching --reason)",
+    )
+    parser.add_argument(
+        "--reason", action="append", default=[],
+        help="reason for the corresponding --accept-stale-authority (order-matched)",
+    )
     args = parser.parse_args(argv)
 
     sofia_root = Path(args.sofia_root)
     runs_root = sofia_root / "agent-loop" / "runs"
     head_sha = _git_head(sofia_root)
     retrieved = date.today().isoformat()
+    verified_at = retrieved  # F4 currency check runs at this same prep instant
+
+    # F4: bedrock authorities are verified pin-vs-installed against the cache.
+    bedrock_cache_root = (
+        Path(args.bedrock_cache_root) if args.bedrock_cache_root
+        else _resolve_bedrock_cache_root()
+    )
+    print(f"bedrock cache root: {bedrock_cache_root}")
+    if len(args.accept_stale_authority) != len(args.reason):
+        parser.error("each --accept-stale-authority needs exactly one matching --reason")
+    accept_stale = dict(zip(args.accept_stale_authority, args.reason))
 
     if args.draws:
         folders = prep_draws(
             args.draws, args.doc_ids, sofia_root=sofia_root, runs_root=runs_root,
             sofia_head_sha=head_sha, retrieved=retrieved, from_run=args.from_run,
+            bedrock_cache_root=bedrock_cache_root, accept_stale=accept_stale,
+            verified_at=verified_at,
         )
     else:
         folders = [
             prep_run(
                 args.run_id, args.doc_ids, sofia_root=sofia_root, runs_root=runs_root,
                 sofia_head_sha=head_sha, retrieved=retrieved, from_run=args.from_run,
+                bedrock_cache_root=bedrock_cache_root, accept_stale=accept_stale,
+                verified_at=verified_at,
             )
         ]
     for folder in folders:
