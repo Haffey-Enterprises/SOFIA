@@ -1,0 +1,25 @@
+# ============================================================================
+# File: k8s/neo4j/10-storageclass.yaml
+# Author: Thaddeus Haffey — Executive Architect, Haffey Enterprises LLC
+# Created: 2026-07-14 / Revised: 2026-07-14
+# Description: Zonal-SSD StorageClass for the Neo4j PVC on the dev threshold
+#   (single-zone cluster). ZONAL pd-ssd, not regional-pd: a regional PD requires
+#   nodes in two zones, which the zonal dev cluster does not have, and cross-zone
+#   PD HA is a PROD topology decision deferred per ADR-002 §5.2 — not provisioned
+#   at the threshold. WaitForFirstConsumer is the load-bearing setting (provisions
+#   the disk in the pod's zone) — do not change to Immediate. For prod, switch to
+#   replication-type: regional-pd on the regional cluster.
+# ============================================================================
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: regional-ssd # name kept stable (referenced by the StatefulSet PVC); zonal at the dev threshold
+  labels:
+    app: neo4j
+    managed-by: terraform
+provisioner: pd.csi.storage.gke.io
+parameters:
+  type: pd-ssd
+volumeBindingMode: WaitForFirstConsumer
+allowVolumeExpansion: true
+reclaimPolicy: Retain

@@ -1,0 +1,15 @@
+[project]
+name = "seed-loader"
+version = "0.1.0"
+description = "RBT-58 KG seed loader + content-addressed manifest (bootstrap-era provisioning tool)."
+requires-python = ">=3.11"
+dependencies = ["neo4j>=5.20,<6", "PyYAML>=6.0,<7"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0,<9"]
+
+[project.scripts]
+seed-loader = "seed_loader.cli:main"
+
+[tool.setuptools]
+packages = ["seed_loader"]
