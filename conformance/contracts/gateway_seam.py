@@ -60,6 +60,10 @@ class MonotonicityViolationError(GatewayContractError):
     """A DECIDED_ON write breaks per-candidate strict decided_at monotonicity (#15)."""
 
 
+class SchemaViolationError(GatewayContractError):
+    """A register-plane declaration violates basis-declaration totality (#26)."""
+
+
 class GraphGateway(Protocol):
     """Minimal behavioral contract surface RBT-15's gateway must satisfy."""
 
@@ -103,6 +107,17 @@ class GraphGateway(Protocol):
         """Record a PromotionDecision's DECIDED_ON under per-candidate monotonicity (#15)."""
         ...
 
+    def register_plane(
+        self, *, plane_id: str, confidence_basis: str, property_schema: str
+    ) -> str:
+        """Register an Extension plane, validating basis-declaration totality (#26).
+
+        The declarations are the raw JSON the gateway parses; the parse must reject
+        a duplicate label key (last-wins would collapse the "one basis per label"
+        rule) as well as the structural-totality violations.
+        """
+        ...
+
 
 class UnimplementedGraphGateway:
     """The bare seam: every surface raises so contracts are meaningfully xfail.
@@ -141,5 +156,10 @@ class UnimplementedGraphGateway:
 
     def record_promotion_decision(
         self, *, decision_id: str, candidate_id: str, decided_at: str, outcome: str
+    ) -> str:
+        raise NotImplementedError(SEAM_REASON)
+
+    def register_plane(
+        self, *, plane_id: str, confidence_basis: str, property_schema: str
     ) -> str:
         raise NotImplementedError(SEAM_REASON)
