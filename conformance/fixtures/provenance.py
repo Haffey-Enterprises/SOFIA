@@ -250,3 +250,106 @@ EVIDENCE_DANGLING_VERSION_PIN: list[str] = [
            (e)-[:SOURCED_FROM]->(v2)
     """,
 ]
+
+# --- #20 ProvenanceSummary materialization + completeness ----------------------
+# Conformant, two cases:
+#   (A) cp-complete — a promotion candidate at terminal status:promoted whose
+#       §5 span is {ev-direct (PROPOSED_FROM), ev-viarp (PROPOSED_FROM ->
+#       ReasoningProgress -> SUPPORTED_BY)}, with a ProvenanceSummary whose
+#       frozen_evidence_ids equals that set exactly.
+#   (B) cp-retraction — a RETRACTION candidate at terminal status:promoted with
+#       NO ProvenanceSummary. #20 is scoped to proposal_kind:promotion (retraction
+#       builds none, SDD-001 §3.5.4), so this must NOT be flagged.
+PROVENANCE_SUMMARY_CONFORMANT: list[str] = [
+    """
+    CREATE (cp:Reasoning:CandidatePromotion {candidate_id: 'cp-complete',
+                                             proposal_kind: 'promotion', status: 'promoted'}),
+           (ed:Reasoning:Evidence {evidence_id: 'ev-direct', source_node_version: 1}),
+           (rp:Reasoning:ReasoningProgress {progress_id: 'rp-span',
+                                            reasoner_category: 'encoded_reasoning',
+                                            authoritative: true, origin_mechanism: 'authored',
+                                            recorded_at: '2026-01-01'}),
+           (er:Reasoning:Evidence {evidence_id: 'ev-viarp', source_node_version: 1}),
+           (ps:Reasoning:ProvenanceSummary {provenance_summary_id: 'ps-complete',
+                                            frozen_evidence_ids: ['ev-direct', 'ev-viarp'],
+                                            origin_mechanism: 'derived',
+                                            recorded_at: '2026-01-02'}),
+           (cp)-[:PROPOSED_FROM]->(ed),
+           (cp)-[:PROPOSED_FROM]->(rp),
+           (rp)-[:SUPPORTED_BY]->(er),
+           (ps)-[:MATERIALIZES_PROVENANCE_OF]->(cp)
+    """,
+    """
+    CREATE (:Reasoning:CandidatePromotion {candidate_id: 'cp-retraction',
+                                           proposal_kind: 'retraction', status: 'promoted'})
+    """,
+]
+
+# Conformant (empty span): a promotion sourced only from an ObservedPattern
+# (which contributes nothing to freeze, §5) has an empty §5 span, and carries a
+# ProvenanceSummary with empty frozen_evidence_ids — empty == empty is complete.
+# The positive proof that existence is enforced while empty-span is legitimate:
+# a *missing* summary on this shape is still flagged (PROVENANCE_SUMMARY_MISSING),
+# but a present empty one is not.
+PROVENANCE_SUMMARY_EMPTY_SPAN_CONFORMANT: list[str] = [
+    """
+    CREATE (cp:Reasoning:CandidatePromotion {candidate_id: 'cp-emptyspan',
+                                             proposal_kind: 'promotion', status: 'promoted'}),
+           (op:Operational:ObservedPattern {observed_pattern_id: 'op-empty',
+                                            origin_mechanism: 'derived',
+                                            derivation_class: 'distilled',
+                                            recorded_at: '2026-01-01',
+                                            source_record_ref: 'aiops:op-empty'}),
+           (ps:Reasoning:ProvenanceSummary {provenance_summary_id: 'ps-emptyspan',
+                                            frozen_evidence_ids: [],
+                                            origin_mechanism: 'derived',
+                                            recorded_at: '2026-01-02'}),
+           (cp)-[:PROPOSED_FROM]->(op),
+           (ps)-[:MATERIALIZES_PROVENANCE_OF]->(cp)
+    """,
+]
+
+# Violation (existence): a promotion candidate at terminal status:promoted with a
+# non-empty §5 span but NO ProvenanceSummary at all.
+PROVENANCE_SUMMARY_MISSING: list[str] = [
+    """
+    CREATE (cp:Reasoning:CandidatePromotion {candidate_id: 'cp-nosummary',
+                                             proposal_kind: 'promotion', status: 'promoted'}),
+           (e:Reasoning:Evidence {evidence_id: 'ev-nosummary', source_node_version: 1}),
+           (cp)-[:PROPOSED_FROM]->(e)
+    """,
+]
+
+# Violation (completeness — missing): the ProvenanceSummary freezes only one of
+# the two span Evidence ids (ev-b omitted).
+PROVENANCE_SUMMARY_INCOMPLETE: list[str] = [
+    """
+    CREATE (cp:Reasoning:CandidatePromotion {candidate_id: 'cp-incomplete',
+                                             proposal_kind: 'promotion', status: 'promoted'}),
+           (ea:Reasoning:Evidence {evidence_id: 'ev-a', source_node_version: 1}),
+           (eb:Reasoning:Evidence {evidence_id: 'ev-b', source_node_version: 1}),
+           (ps:Reasoning:ProvenanceSummary {provenance_summary_id: 'ps-incomplete',
+                                            frozen_evidence_ids: ['ev-a'],
+                                            origin_mechanism: 'derived',
+                                            recorded_at: '2026-01-02'}),
+           (cp)-[:PROPOSED_FROM]->(ea),
+           (cp)-[:PROPOSED_FROM]->(eb),
+           (ps)-[:MATERIALIZES_PROVENANCE_OF]->(cp)
+    """,
+]
+
+# Violation (completeness — extra): the ProvenanceSummary freezes an id not in
+# the span (set-equality fails in the other direction too).
+PROVENANCE_SUMMARY_EXTRA: list[str] = [
+    """
+    CREATE (cp:Reasoning:CandidatePromotion {candidate_id: 'cp-extra',
+                                             proposal_kind: 'promotion', status: 'promoted'}),
+           (e:Reasoning:Evidence {evidence_id: 'ev-real', source_node_version: 1}),
+           (ps:Reasoning:ProvenanceSummary {provenance_summary_id: 'ps-extra',
+                                            frozen_evidence_ids: ['ev-real', 'ev-phantom'],
+                                            origin_mechanism: 'derived',
+                                            recorded_at: '2026-01-02'}),
+           (cp)-[:PROPOSED_FROM]->(e),
+           (ps)-[:MATERIALIZES_PROVENANCE_OF]->(cp)
+    """,
+]
