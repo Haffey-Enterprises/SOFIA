@@ -65,5 +65,8 @@ def parse_file(path: Path) -> SeedDoc:
 def load_seed_dir(seed_dir: Path) -> list[SeedDoc]:
     """Parse every seed/*.md, ordered by load_order (Catalog first). The filename
     prefix and the frontmatter load_order must agree; load_order is authoritative."""
-    docs = [parse_file(p) for p in sorted(seed_dir.glob("*.md"))]
+    # Scopes to the numbered seed-data files; non-numbered .md (README/notes) is
+    # documentation, not seed data. A malformed NUMBERED file still fails loud
+    # (discipline preserved for actual seed files).
+    docs = [parse_file(p) for p in sorted(seed_dir.glob("[0-9]*.md"))]
     return sorted(docs, key=lambda d: d.load_order)

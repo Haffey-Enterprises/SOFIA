@@ -55,8 +55,8 @@ spec:
         fsGroup: 7474 # neo4j gid — lets the pod own the mounted /data
       containers:
         - name: neo4j
-          # [I] REPLACE REGION/PROJECT with the mirrored Artifact Registry path.
-          image: REGION-docker.pkg.dev/PROJECT/graph-dev/neo4j:5.26-enterprise
+          # [I] Mirrored Enterprise image in Artifact Registry (module output artifact_registry_repo).
+          image: us-central1-docker.pkg.dev/sofia-dev-he/graph-dev/neo4j:5.26-enterprise
           imagePullPolicy: IfNotPresent
           ports:
             - name: bolt

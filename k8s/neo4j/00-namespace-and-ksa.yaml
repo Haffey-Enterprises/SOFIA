@@ -25,5 +25,5 @@ metadata:
     environment: dev
     managed-by: terraform
   annotations:
-    # REPLACE with terraform output `neo4j_gsa_email` (neo4j-graph-dev@<project>.iam.gserviceaccount.com)
-    iam.gke.io/gcp-service-account: REPLACE-neo4j_gsa_email
+    # terraform output `neo4j_gsa_email`
+    iam.gke.io/gcp-service-account: neo4j-graph-dev@sofia-dev-he.iam.gserviceaccount.com

@@ -1,0 +1,101 @@
+{
+  "authority": "DDR-002 v1.3.0 (sha256 8ec413985f0eba094c815fd58f581311afacc9c083f45ae47e8d0f31bbe1bf16)",
+  "files": [
+    {
+      "edge_count": 5,
+      "labels": [
+        "Capability",
+        "Catalog",
+        "IacTemplate",
+        "Pattern",
+        "Technology"
+      ],
+      "load_order": 10,
+      "node_count": 6,
+      "path": "10-catalog.md",
+      "payload_sha256": "ddf2b829982354b217c144ba77951b3460e5dd688c67bb70f28fa8a13e9cc7af",
+      "plane": "Catalog",
+      "source_sha256": "c458d5ed1c905b129b35d34b8ba727ab3a3b94fc175494157e5566fcc557e030"
+    },
+    {
+      "edge_count": 3,
+      "labels": [
+        "ComplianceControl",
+        "PolicyRule",
+        "Standard",
+        "Standards"
+      ],
+      "load_order": 20,
+      "node_count": 3,
+      "path": "20-standards.md",
+      "payload_sha256": "afaedfbc171602d7b978a8cba5ad01db81be89f3e4e187bc2b58fa877054ae5e",
+      "plane": "Standards",
+      "source_sha256": "57f808cbcd83a41aec79720d9aef97a7e87e0d4f4a4e21b361b706d58e8e0633"
+    },
+    {
+      "edge_count": 6,
+      "labels": [
+        "ConfigurationItem",
+        "DeployedService",
+        "DeploymentEnvironment",
+        "Environment"
+      ],
+      "load_order": 30,
+      "node_count": 6,
+      "path": "30-environment.md",
+      "payload_sha256": "2dbf6a308913f00c0ba9b117139ab15fdd2fa162d124dee2efcf33d931c3a62c",
+      "plane": "Environment",
+      "source_sha256": "9776d7334b7ab7fe20c0889590cd4f9c0569210ed893f1612faa165dfe700fb0"
+    },
+    {
+      "edge_count": 1,
+      "labels": [
+        "ObservedPattern",
+        "Operational"
+      ],
+      "load_order": 40,
+      "node_count": 1,
+      "path": "40-operational.md",
+      "payload_sha256": "9fd6833945da061215ec473ac6a537d7f834ddc839a9180909d4047925b6f066",
+      "plane": "Operational",
+      "source_sha256": "eb50dcc6d7490ab6411fc19d8b0a03d8fe868b079c9278b4c766491fece022a2"
+    },
+    {
+      "edge_count": 6,
+      "labels": [
+        "Actor",
+        "Artifact",
+        "Decision",
+        "GateDecision",
+        "Governance",
+        "Role",
+        "Solution"
+      ],
+      "load_order": 50,
+      "node_count": 4,
+      "path": "50-governance.md",
+      "payload_sha256": "961f0ec42f245c5eb8b904711d39dfe4369ff8941248e668f7a08400be711949",
+      "plane": "Governance",
+      "source_sha256": "e084bdf4eaf13fc14af885914fa856dde879105ffb2f23cf1bc33467c2d67688"
+    },
+    {
+      "edge_count": 4,
+      "labels": [
+        "CapabilityCostEstimate",
+        "Cost",
+        "CostFactor",
+        "Extension",
+        "PlaneDefinition",
+        "RateCard"
+      ],
+      "load_order": 60,
+      "node_count": 4,
+      "path": "60-cost-extension.md",
+      "payload_sha256": "8bf4d9e1a16677f609132ac636cbcf1c7690fe8c1a3debccc22729bcf2be65f6",
+      "plane": "Extension+Cost",
+      "source_sha256": "e83445b999acb2f2d73e8075bfd39b21a131dea49ce44aee136029d7b5d653f8"
+    }
+  ],
+  "manifest_digest": "7fc26757b68503c46ff161cf9cff38e5714dc45ebbd7cdd5f8b6ed6f20287c98",
+  "schema": "rbt-58-seed-manifest/v1"
+}

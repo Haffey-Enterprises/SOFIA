@@ -257,7 +257,12 @@ CREATE INDEX idx_rejectedalt_type    IF NOT EXISTS FOR (n:RejectedAlternative)  
 //   Expected (this file): 27 PK-uniqueness + 9 (business_key,version)-uniqueness
 //     + 24 provenance-existence (12 label-scopes × {origin_mechanism, recorded_at})
 //     + (27 PK + 18 bk/ver + 1 Solution.version)=46 T1-existence
-//     = 106 constraints; 27 indexes.
+//     = 106 constraints; 27 EXPLICIT indexes.
+//   NOTE on the index count: raw `SHOW INDEXES` returns 65, not 27 — it also
+//   counts the 36 uniqueness-backing RANGE indexes (auto-created, one per
+//   uniqueness constraint: 27 PK + 9 bk/ver) and 2 default LOOKUP indexes.
+//   The check is the 27 EXPLICIT indexes: SHOW INDEXES YIELD owningConstraint
+//   WHERE owningConstraint IS NULL AND type = 'RANGE' RETURN count(*) => 27.
 //   A NODE-property-existence constraint FAILS TO CREATE on Community — its
 //   presence is the live proof the instance is Enterprise (ADR-002 §2.2 warrant).
 // ============================================================================

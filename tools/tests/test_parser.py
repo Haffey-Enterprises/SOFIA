@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pytest
 
-from seed_loader.parser import parse_text
+from seed_loader.parser import load_seed_dir, parse_text
 
 _SAMPLE = """---
 doctype: kg-seed
@@ -58,3 +58,15 @@ def test_missing_payload_raises():
     text = "---\nplane: Catalog\n---\n\n# no payload block\n"
     with pytest.raises(ValueError):
         parse_text(text, Path("bad.md"))
+
+
+def test_load_seed_dir_ignores_non_numbered_readme(tmp_path):
+    """A README.md (no frontmatter) in the seed dir is documentation, not seed
+    data — load_seed_dir scopes to numbered files and must not parse it."""
+    (tmp_path / "10-catalog.md").write_text(_SAMPLE, encoding="utf-8")
+    (tmp_path / "README.md").write_text(
+        "# RBT-58 — KG seed dataset\n\nNo frontmatter here.\n", encoding="utf-8"
+    )
+    docs = load_seed_dir(tmp_path)  # must not raise on README.md
+    assert [d.load_order for d in docs] == [10]
+    assert all("README" not in str(d.path) for d in docs)

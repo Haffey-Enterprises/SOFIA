@@ -31,7 +31,10 @@ resource "google_container_cluster" "primary" {
   }
 
   # Private cluster (02 §5): private nodes; control plane reachable only from
-  # the authorized CIDRs.
+  # the authorized CIDRs. NOTE: no Cloud NAT is provisioned — a deliberate
+  # zero-egress posture. Nodes cannot pull from public registries; every image is
+  # mirrored to Artifact Registry (PGA-reachable) instead (helpers/README.md).
+  # Revisit at the operational design (RBT-64) if outbound egress is ever needed.
   private_cluster_config {
     enable_private_nodes    = true
     enable_private_endpoint = false
