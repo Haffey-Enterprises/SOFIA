@@ -1,0 +1,120 @@
+# ============================================================================
+# File: k8s/neo4j/30-statefulset.yaml
+# Author: Thaddeus Haffey — Executive Architect, Haffey Enterprises LLC
+# Created: 2026-07-14 / Revised: 2026-07-14
+# Description: The self-managed Neo4j ENTERPRISE StatefulSet (ADR-002 §2.2; RBT-58
+#   DP-1). Single node (replicas: 1) for the dev threshold — topology deferred
+#   (ADR-002 §5.2); parameterized, not a hardcoded cluster. Guaranteed QoS
+#   (requests == limits), SSD PVC via volumeClaimTemplates (zonal at the dev
+#   NEO4J_AUTH projected from Secret Manager as a file (no k8s Secret).
+#
+# FLAGS (honest, for the end-of-batch review + build-time verification):
+#   [L] ENTERPRISE LICENSE: NEO4J_ACCEPT_LICENSE_AGREEMENT is set to "eval"
+#       (evaluation licence). Production Enterprise use requires a commercial
+#       Neo4j licence — a procurement/legal obligation, not a config value.
+#   [S] SECRET WIRING: NEO4J_AUTH_FILE assumes the pinned image reads the auth
+#       string from a file. VERIFY against the neo4j:5.26-enterprise image docs
+#       before apply; if unsupported, wrap with an entrypoint that exports
+#       NEO4J_AUTH="$(cat /etc/neo4j-secrets/neo4j-auth)". Do NOT assume.
+#   [I] IMAGE: pin + mirror the exact Enterprise image into Artifact Registry;
+#       replace the REGION/PROJECT placeholders with the module output.
+# ============================================================================
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: neo4j
+  namespace: neo4j
+  labels:
+    app: neo4j
+    environment: dev
+    managed-by: terraform
+spec:
+  serviceName: neo4j
+  replicas: 1 # single-node dev threshold; scale-to-zero is the scheduler's job, not a topology change
+  selector:
+    matchLabels:
+      app: neo4j
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: neo4j
+        environment: dev
+    spec:
+      serviceAccountName: neo4j
+      # Schedule only onto the dedicated graph node pool (tainted workload=neo4j).
+      nodeSelector:
+        workload: neo4j
+      tolerations:
+        - key: workload
+          operator: Equal
+          value: neo4j
+          effect: NoSchedule
+      securityContext:
+        fsGroup: 7474 # neo4j gid — lets the pod own the mounted /data
+      containers:
+        - name: neo4j
+          # [I] REPLACE REGION/PROJECT with the mirrored Artifact Registry path.
+          image: REGION-docker.pkg.dev/PROJECT/graph-dev/neo4j:5.26-enterprise
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: bolt
+              containerPort: 7687
+            - name: http
+              containerPort: 7474
+          env:
+            - name: NEO4J_ACCEPT_LICENSE_AGREEMENT
+              value: "eval" # [L] evaluation licence — commercial licence required for prod
+            - name: NEO4J_AUTH_FILE
+              value: /etc/neo4j-secrets/neo4j-auth # [S] VERIFY against image docs
+            - name: NEO4J_server_default__listen__address
+              value: 0.0.0.0
+          resources:
+            # Guaranteed QoS (04 §4): requests == limits so a DB is never throttled/evicted.
+            requests:
+              cpu: "2"
+              memory: 4Gi
+            limits:
+              cpu: "2"
+              memory: 4Gi
+          readinessProbe:
+            tcpSocket:
+              port: 7687
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 7687
+            initialDelaySeconds: 60
+            periodSeconds: 15
+          startupProbe:
+            tcpSocket:
+              port: 7687
+            failureThreshold: 30
+            periodSeconds: 10 # up to ~5 min for a slow first boot before liveness engages
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: neo4j-auth
+              mountPath: /etc/neo4j-secrets
+              readOnly: true
+      volumes:
+        - name: neo4j-auth
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: neo4j-auth
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+        labels:
+          app: neo4j
+          managed-by: terraform
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: regional-ssd
+        resources:
+          requests:
+            storage: 32Gi # keep in sync with module var data_disk_size_gb
