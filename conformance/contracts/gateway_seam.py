@@ -56,6 +56,10 @@ class ProvenanceMaterializationError(GatewayContractError):
     """A promotion's ProvenanceSummary could not be built complete in-transaction (#20)."""
 
 
+class MonotonicityViolationError(GatewayContractError):
+    """A DECIDED_ON write breaks per-candidate strict decided_at monotonicity (#15)."""
+
+
 class GraphGateway(Protocol):
     """Minimal behavioral contract surface RBT-15's gateway must satisfy."""
 
@@ -93,6 +97,12 @@ class GraphGateway(Protocol):
         """Materialize a promotion, building its ProvenanceSummary in-transaction (#20)."""
         ...
 
+    def record_promotion_decision(
+        self, *, decision_id: str, candidate_id: str, decided_at: str, outcome: str
+    ) -> str:
+        """Record a PromotionDecision's DECIDED_ON under per-candidate monotonicity (#15)."""
+        ...
+
 
 class UnimplementedGraphGateway:
     """The bare seam: every surface raises so contracts are meaningfully xfail.
@@ -127,4 +137,9 @@ class UnimplementedGraphGateway:
         raise NotImplementedError(SEAM_REASON)
 
     def materialize_promotion(self, *, decision_id: str, candidate_id: str) -> str:
+        raise NotImplementedError(SEAM_REASON)
+
+    def record_promotion_decision(
+        self, *, decision_id: str, candidate_id: str, decided_at: str, outcome: str
+    ) -> str:
         raise NotImplementedError(SEAM_REASON)

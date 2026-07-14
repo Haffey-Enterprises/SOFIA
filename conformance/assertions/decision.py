@@ -44,3 +44,43 @@ def decision_subtype_cardinality(driver: Driver) -> list[Violation]:
         )
         for row in rows
     ]
+
+
+# #15 companion (§2.4 per-candidate strict decided_at monotonicity): a candidate's
+# inbound DECIDED_ON edges must carry DISTINCT decided_at values, so "latest
+# decided_at" — the governing-verdict selector #15 keys on — is always well-
+# defined (ties are structurally excluded). Scoped to PromotionDecision ->
+# CandidatePromotion DECIDED_ON edges ONLY; the monotonicity rule is not extended
+# to GateDecision -> Solution (SDD-001 §3.6.3, an upstream question DDR-002 does
+# not answer). This is the standing 1a mirror of the gateway's write-time
+# monotonicity enforcement; it detects a tie however it arrived.
+_INV_DECIDED_AT_MONOTONICITY = "DDR-002 §7 #15"
+
+# decided_at is a property of the PromotionDecision NODE (§2.4), not the
+# DECIDED_ON edge (which carries {outcome}); read it from pd, matching the #15
+# governing-decision assertion.
+_DECIDED_AT_DUPLICATE = f"""
+MATCH (pd:{sc.PROMOTION_DECISION_LABEL})-[:{sc.DECIDED_ON}]->(cp:{sc.CANDIDATE_PROMOTION_LABEL})
+WITH cp, pd.{sc.PROP_DECIDED_AT} AS decided_at, count(*) AS occurrences
+WHERE occurrences > 1
+RETURN cp.{sc.PROP_CANDIDATE_ID} AS identity,
+       decided_at AS decided_at,
+       occurrences AS occurrences
+"""
+
+
+def decided_at_uniqueness(driver: Driver) -> list[Violation]:
+    """DDR-002 §7 #15 companion: per-candidate DECIDED_ON decided_at is distinct."""
+    rows = query_rows(driver, _DECIDED_AT_DUPLICATE)
+    return [
+        Violation(
+            invariant=_INV_DECIDED_AT_MONOTONICITY,
+            identity=str(row["identity"]),
+            detail=(
+                f"candidate has {row['occurrences']} DECIDED_ON edges sharing "
+                f"decided_at={row['decided_at']!r} (per-candidate decided_at must be distinct "
+                "so the governing verdict is well-defined; §2.4 monotonicity)"
+            ),
+        )
+        for row in rows
+    ]
