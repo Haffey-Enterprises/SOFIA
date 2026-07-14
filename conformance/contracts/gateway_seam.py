@@ -40,6 +40,10 @@ class EvidenceWriteError(GatewayContractError):
     """An evidence capture-unit write could not commit atomically (#14)."""
 
 
+class FlagCategoryMismatchError(GatewayContractError):
+    """A ReasoningProgress authoritative flag contradicts its reasoner_category (#23)."""
+
+
 class GraphGateway(Protocol):
     """Minimal behavioral contract surface RBT-15's gateway must satisfy."""
 
@@ -57,6 +61,10 @@ class GraphGateway(Protocol):
 
     def write_evidence(self, *, source_node_id: str, properties: Mapping[str, Any]) -> str:
         """Write an Evidence node and its SOURCED_FROM edge as one atomic unit."""
+        ...
+
+    def capture_conclusion(self, *, author: str, properties: Mapping[str, Any]) -> str:
+        """Write a ReasoningProgress, rejecting a flag<->category mismatch (#23)."""
         ...
 
 
@@ -78,4 +86,7 @@ class UnimplementedGraphGateway:
         raise NotImplementedError(SEAM_REASON)
 
     def write_evidence(self, *, source_node_id: str, properties: Mapping[str, Any]) -> str:
+        raise NotImplementedError(SEAM_REASON)
+
+    def capture_conclusion(self, *, author: str, properties: Mapping[str, Any]) -> str:
         raise NotImplementedError(SEAM_REASON)

@@ -102,6 +102,7 @@ PROP_SOURCE_RECORD_REF: Final = "source_record_ref"
 
 # --- Primary-key properties (DDR-002 §2, §4, §5; <entity>_id per §1) ----------
 PROP_EVIDENCE_ID: Final = "evidence_id"
+PROP_PROGRESS_ID: Final = "progress_id"  # (:Reasoning:ReasoningProgress) PK; §4
 PROP_REJECTED_ID: Final = "rejected_id"
 PROP_DECISION_ID: Final = "decision_id"
 PROP_CANDIDATE_ID: Final = "candidate_id"
