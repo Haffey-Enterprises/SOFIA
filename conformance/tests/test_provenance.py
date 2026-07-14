@@ -124,3 +124,41 @@ def test_dangling_version_pin_is_caught(graph: Driver) -> None:
     violations = provenance.evidence_dangling_version_pin(graph)
     assert [v.identity for v in violations] == ["ev-dangling"]
     assert violations[0].invariant == "DDR-001 check 5"
+
+
+# --- #20 ProvenanceSummary materialization + completeness ----------------------
+def test_complete_summary_and_retraction_pass(graph: Driver) -> None:
+    # A promotion candidate with a complete ProvenanceSummary, and a retraction
+    # candidate with none (scoped out) — neither is flagged.
+    seed(graph, fx.PROVENANCE_SUMMARY_CONFORMANT)
+    assert provenance.provenance_summary_materialization(graph) == []
+
+
+def test_empty_span_promotion_with_summary_passes(graph: Driver) -> None:
+    # An ObservedPattern-only promotion has an empty §5 span; a present
+    # ProvenanceSummary with empty frozen_evidence_ids is complete (empty==empty).
+    # Existence still proves the materialization act ran.
+    seed(graph, fx.PROVENANCE_SUMMARY_EMPTY_SPAN_CONFORMANT)
+    assert provenance.provenance_summary_materialization(graph) == []
+
+
+def test_promotion_without_summary_is_caught(graph: Driver) -> None:
+    seed(graph, fx.PROVENANCE_SUMMARY_MISSING)
+    violations = provenance.provenance_summary_materialization(graph)
+    assert [v.identity for v in violations] == ["cp-nosummary"]
+    assert violations[0].invariant == "DDR-002 §7 #20"
+    assert "carries no ProvenanceSummary" in violations[0].detail
+
+
+def test_incomplete_summary_span_is_caught(graph: Driver) -> None:
+    seed(graph, fx.PROVENANCE_SUMMARY_INCOMPLETE)
+    violations = provenance.provenance_summary_materialization(graph)
+    assert [v.identity for v in violations] == ["cp-incomplete"]
+    assert "missing=['ev-b']" in violations[0].detail
+
+
+def test_summary_with_extra_frozen_id_is_caught(graph: Driver) -> None:
+    seed(graph, fx.PROVENANCE_SUMMARY_EXTRA)
+    violations = provenance.provenance_summary_materialization(graph)
+    assert [v.identity for v in violations] == ["cp-extra"]
+    assert "extra=['ev-phantom']" in violations[0].detail

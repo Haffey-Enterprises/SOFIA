@@ -176,7 +176,8 @@ PROMOTED_ORIGIN: Final = "promoted"  # DDR-002 §7 #15 subject
 # proposal_kind — CandidatePromotion direction discriminator (DDR-002 §5). #25
 # keys the executed-proposal biconditional off the retraction value.
 PROPOSAL_KINDS: Final[frozenset[str]] = frozenset({"promotion", "retraction"})
-PROPOSAL_KIND_RETRACTION: Final = "retraction"
+PROPOSAL_KIND_PROMOTION: Final = "promotion"  # forward promotion; #20 subject
+PROPOSAL_KIND_RETRACTION: Final = "retraction"  # reversing un-promotion; #21/#25
 
 # CandidatePromotion lifecycle status (DDR-002 §5). Terminal ``promoted`` denotes
 # the proposal's effect was materialized — read uniformly across both

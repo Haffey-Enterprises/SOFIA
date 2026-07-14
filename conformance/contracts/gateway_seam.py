@@ -52,6 +52,10 @@ class ScopeConflictError(GatewayContractError):
     """An ingested successor cannot satisfy a conditional predecessor's scope (#22)."""
 
 
+class ProvenanceMaterializationError(GatewayContractError):
+    """A promotion's ProvenanceSummary could not be built complete in-transaction (#20)."""
+
+
 class GraphGateway(Protocol):
     """Minimal behavioral contract surface RBT-15's gateway must satisfy."""
 
@@ -85,6 +89,10 @@ class GraphGateway(Protocol):
         """Supersede a business key, enforcing the #22 conditional carry-forward gate."""
         ...
 
+    def materialize_promotion(self, *, decision_id: str, candidate_id: str) -> str:
+        """Materialize a promotion, building its ProvenanceSummary in-transaction (#20)."""
+        ...
+
 
 class UnimplementedGraphGateway:
     """The bare seam: every surface raises so contracts are meaningfully xfail.
@@ -116,4 +124,7 @@ class UnimplementedGraphGateway:
         successor: Mapping[str, Any],
         scope_disposition: str | None = None,
     ) -> str:
+        raise NotImplementedError(SEAM_REASON)
+
+    def materialize_promotion(self, *, decision_id: str, candidate_id: str) -> str:
         raise NotImplementedError(SEAM_REASON)
