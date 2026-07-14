@@ -161,8 +161,10 @@ DECISION_OUTCOMES: Final[frozenset[str]] = frozenset(
 APPROVING_OUTCOMES: Final[frozenset[str]] = frozenset({"approved", "approved_conditional"})
 
 # applicability_state on promoted KG nodes (DDR-002 §5); the conditional value is
-# what the #19 read-discipline contract filters on.
+# what the #19 read-discipline contract filters on and the #22 carry-forward keys.
 APPLICABILITY_STATES: Final[frozenset[str]] = frozenset({"unconditional", "conditional"})
+APPLICABILITY_STATE_CONDITIONAL: Final = "conditional"  # #19/#22 subject
+APPLICABILITY_STATE_UNCONDITIONAL: Final = "unconditional"  # §5 default
 
 # origin_mechanism values that, per invariant #17, require a source_record_ref:
 # every ``ingested`` node, plus every ``distilled`` (derivation_class) node.

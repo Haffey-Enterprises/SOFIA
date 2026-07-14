@@ -44,6 +44,14 @@ class FlagCategoryMismatchError(GatewayContractError):
     """A ReasoningProgress authoritative flag contradicts its reasoner_category (#23)."""
 
 
+class ScopeDispositionMissingError(GatewayContractError):
+    """A supersession of a conditional predecessor carries no scope disposition (#22)."""
+
+
+class ScopeConflictError(GatewayContractError):
+    """An ingested successor cannot satisfy a conditional predecessor's scope (#22)."""
+
+
 class GraphGateway(Protocol):
     """Minimal behavioral contract surface RBT-15's gateway must satisfy."""
 
@@ -65,6 +73,16 @@ class GraphGateway(Protocol):
 
     def capture_conclusion(self, *, author: str, properties: Mapping[str, Any]) -> str:
         """Write a ReasoningProgress, rejecting a flag<->category mismatch (#23)."""
+        ...
+
+    def supersede(
+        self,
+        *,
+        business_key: str,
+        successor: Mapping[str, Any],
+        scope_disposition: str | None = None,
+    ) -> str:
+        """Supersede a business key, enforcing the #22 conditional carry-forward gate."""
         ...
 
 
@@ -89,4 +107,13 @@ class UnimplementedGraphGateway:
         raise NotImplementedError(SEAM_REASON)
 
     def capture_conclusion(self, *, author: str, properties: Mapping[str, Any]) -> str:
+        raise NotImplementedError(SEAM_REASON)
+
+    def supersede(
+        self,
+        *,
+        business_key: str,
+        successor: Mapping[str, Any],
+        scope_disposition: str | None = None,
+    ) -> str:
         raise NotImplementedError(SEAM_REASON)
