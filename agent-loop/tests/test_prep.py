@@ -739,7 +739,7 @@ def test_prep_run_ddr_emits_substrate_without_sdd_leakage(tmp_path) -> None:
     sofia_root = _ddr_sofia_tree(tmp_path, ddr_id="DDR-004", ddr_slug="inherited-confidence")
     runs_root = tmp_path / "runs"
     _ddr_prior_draw(runs_root, "run-013-ddr")
-    cache = _real_bedrock_1_3_0_cache(tmp_path)  # skips if the plugin is absent
+    cache = _real_bedrock_1_4_0_cache(tmp_path)  # skips if the plugin is absent
     run_dir = prep_run(
         "run-014-ddr", ["DDR-004"], sofia_root=sofia_root, runs_root=runs_root,
         sofia_head_sha="HEADDDR", retrieved="2026-07-11", from_run="run-013-ddr",
@@ -760,7 +760,7 @@ def test_prep_run_ddr_emits_substrate_without_sdd_leakage(tmp_path) -> None:
     # Content is the real bytes: consuming context + design-intent lineage.
     assert (auth / "SDD-001.md").read_text() == "SDD-001 BODY"
     assert (intent / "deliberation-record-ddr-004.md").read_text() == "DDR-004 DELIBERATION RECORD"
-    # Bedrock authority is the installed-cache 1.3.0 bytes, with a structured
+    # Bedrock authority is the installed-cache 1.4.0 bytes, with a structured
     # verified_against record (pin-vs-installed matched) and no prose note.
     manifest = json.loads((substrate / "manifest.json").read_text(encoding="utf-8"))
     skill = next(e for e in manifest["files"] if e["logical_id"] == "author-decision-record-SKILL")
@@ -784,7 +784,7 @@ def test_prep_run_ddr_selects_recipe_by_default(tmp_path) -> None:
     sofia_root = _ddr_sofia_tree(tmp_path, ddr_id="DDR-004", ddr_slug="ic")
     runs_root = tmp_path / "runs"
     _ddr_prior_draw(runs_root, "run-013-ddr")
-    cache = _real_bedrock_1_3_0_cache(tmp_path)  # skips if the plugin is absent
+    cache = _real_bedrock_1_4_0_cache(tmp_path)  # skips if the plugin is absent
     run_dir = prep_run(
         "run-014-ddr", ["DDR-004"], sofia_root=sofia_root, runs_root=runs_root,
         sofia_head_sha="H", retrieved="2026-07-11", from_run="run-013-ddr",
@@ -913,7 +913,7 @@ def test_sdd_recipe_byte_regression_reproduces_run_011(tmp_path) -> None:
 # entry-level currency_override {status, expected_sha256, installed_sha256,
 # reason, timestamp}. origin.note retires for bedrock-origin entries.
 
-# The DDR recipe's ratified 1.3.0 pins (move only by explicit operator ratification).
+# The DDR recipe's ratified bedrock 1.4.0 pins (move only by explicit operator ratification).
 _DDR_TEMPLATE_PIN = "59068b3a2741f497e92bff240da238d4f8b6b57471c8ff7a76ab8c09ba9668f9"
 _ADR_SKILL_PIN = "d3fb4499b8d3ff899ae3f822e8873300c1f5330cc9ee55f193fc4f9eaf9da966"
 _SKILL_CACHE_RELPATH = "skills/author-decision-record/SKILL.md"
@@ -933,8 +933,8 @@ def _bedrock_cache_tree(tmp_path: Path, files: dict[str, str]) -> Path:
     return cache_root
 
 
-def _real_bedrock_1_3_0_cache(tmp_path: Path) -> Path:
-    """Copy the two DDR-recipe bedrock files from the real installed 1.3.0 cache
+def _real_bedrock_1_4_0_cache(tmp_path: Path) -> Path:
+    """Copy the two DDR-recipe bedrock files from the real installed 1.4.0 cache
     into a tmp cache root (keeps the run folder hermetic while sourcing bytes
     that hash to the ratified pins). Skips if the plugin isn't installed — these
     end-to-end tests exercise the real recipe, which carries real pins."""
@@ -1146,10 +1146,10 @@ def test_bedrock_cache_relpath_bad_prefix_raises() -> None:
         _bedrock_cache_relpath("skills/author-decision-record/SKILL.md")
 
 
-# --- the DDR recipe pins bedrock authorities at their 1.3.0 hashes ------------
+# --- the DDR recipe pins bedrock authorities at their 1.4.0 hashes ------------
 
 
-def test_ddr_recipe_pins_bedrock_authorities_from_cache_at_1_3_0() -> None:
+def test_ddr_recipe_pins_bedrock_authorities_from_cache_at_1_4_0() -> None:
     specs = ddr_substrate_specs(
         "DDR-004", "agent-loop/deliberation/ddr-004-x/record.md", from_run="prior"
     )
