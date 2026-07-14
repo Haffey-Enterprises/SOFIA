@@ -133,3 +133,92 @@ RETRACTS_FROM_NON_CANDIDATE: list[str] = [
            (rp)-[:RETRACTS]->(k)
     """,
 ]
+
+# --- #25 proposal_kind <-> RETRACTS (executed-proposal scope, v1.3.0) ----------
+# Conformant, three consistent cases:
+#   cp-exec  — proposal_kind:retraction at terminal status:promoted WITH a RETRACTS
+#              edge (the executed un-promotion);
+#   cp-unexec — proposal_kind:retraction not yet executed (status:approved) with NO
+#              RETRACTS edge (the edge-writing is the materialization act);
+#   cp-promo — a promotion candidate with no RETRACTS edge (not a #25 subject).
+PROPOSAL_KIND_RETRACTS_CONFORMANT: list[str] = [
+    """
+    CREATE (cp:Reasoning:CandidatePromotion {candidate_id: 'cp-exec',
+                                             proposal_kind: 'retraction', status: 'promoted'}),
+           (k:Catalog:Pattern {pattern_id: 'pat-exec', business_key: 'pat-exec', version: 1,
+                               origin_mechanism: 'promoted', recorded_at: '2026-01-01',
+                               applicability_state: 'unconditional'}),
+           (cp)-[:RETRACTS]->(k)
+    """,
+    """
+    CREATE (:Reasoning:CandidatePromotion {candidate_id: 'cp-unexec',
+                                           proposal_kind: 'retraction', status: 'approved'})
+    """,
+    """
+    CREATE (:Reasoning:CandidatePromotion {candidate_id: 'cp-promo',
+                                           proposal_kind: 'promotion', status: 'promoted'})
+    """,
+]
+
+# Violation (forward): an executed retraction (terminal status:promoted) with NO
+# RETRACTS edge.
+EXECUTED_RETRACTION_MISSING_EDGE: list[str] = [
+    """
+    CREATE (:Reasoning:CandidatePromotion {candidate_id: 'cp-executed-noedge',
+                                           proposal_kind: 'retraction', status: 'promoted'})
+    """,
+]
+
+# Violation (reverse): a RETRACTS edge from a proposal_kind:promotion candidate.
+RETRACTS_FROM_PROMOTION_KIND_25: list[str] = [
+    """
+    CREATE (cp:Reasoning:CandidatePromotion {candidate_id: 'cp-promo-retracts',
+                                             proposal_kind: 'promotion', status: 'promoted'}),
+           (k:Catalog:Pattern {pattern_id: 'pat-pr', business_key: 'pat-pr', version: 1,
+                               origin_mechanism: 'promoted', recorded_at: '2026-01-01',
+                               applicability_state: 'unconditional'}),
+           (cp)-[:RETRACTS]->(k)
+    """,
+]
+
+# Violation (pre-execution): a retraction proposal before materialization
+# (status:approved, not promoted) that already carries a RETRACTS edge.
+UNEXECUTED_RETRACTION_WITH_EDGE: list[str] = [
+    """
+    CREATE (cp:Reasoning:CandidatePromotion {candidate_id: 'cp-premature-edge',
+                                             proposal_kind: 'retraction', status: 'approved'}),
+           (k:Catalog:Pattern {pattern_id: 'pat-pm', business_key: 'pat-pm', version: 1,
+                               origin_mechanism: 'promoted', recorded_at: '2026-01-01',
+                               applicability_state: 'unconditional'}),
+           (cp)-[:RETRACTS]->(k)
+    """,
+]
+
+# Conformant (rejected retraction — the Touch-1 acceptance walkthrough shape): a
+# proposal_kind:retraction at terminal status:rejected with NO RETRACTS edge. The
+# old unscoped #25 produced a permanent false positive here (it demanded the edge
+# unconditionally); the v1.3.0 executed-proposal scope passes it — forward needs
+# status:promoted, reverse and pre-execution both need an edge. Ties the harness
+# to the RBT-54 Touch-1 acceptance record by name.
+REJECTED_RETRACTION_CONFORMANT: list[str] = [
+    """
+    CREATE (:Reasoning:CandidatePromotion {candidate_id: 'cp-rejected-ret',
+                                           proposal_kind: 'retraction', status: 'rejected'})
+    """,
+]
+
+# Violation (reverse, null-kind): a RETRACTS edge from a CandidatePromotion that
+# carries NO proposal_kind. proposal_kind is T2 — no DB existence constraint forces
+# it — so the reverse predicate must flag the null-kind source (IS NULL branch),
+# not null-skip it (A-3). An edge whose source cannot vouch for its kind is exactly
+# what the reverse direction exists to catch.
+RETRACTS_FROM_KINDLESS_CANDIDATE: list[str] = [
+    """
+    CREATE (cp:Reasoning:CandidatePromotion {candidate_id: 'cp-kindless',
+                                             status: 'promoted'}),
+           (k:Catalog:Pattern {pattern_id: 'pat-kl', business_key: 'pat-kl', version: 1,
+                               origin_mechanism: 'promoted', recorded_at: '2026-01-01',
+                               applicability_state: 'unconditional'}),
+           (cp)-[:RETRACTS]->(k)
+    """,
+]

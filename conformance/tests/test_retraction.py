@@ -65,3 +65,52 @@ def test_retracts_from_non_candidate_node_is_caught(graph: Driver) -> None:
     seed(graph, fx.RETRACTS_FROM_NON_CANDIDATE)
     violations = retraction.retraction_gated(graph)
     assert [v.identity for v in violations] == ["rp-not-a-candidate"]
+
+
+# --- #25 proposal_kind <-> RETRACTS (executed-proposal scope) ------------------
+def test_proposal_kind_retracts_consistent_cases_pass(graph: Driver) -> None:
+    # Executed retraction with its edge, unexecuted retraction without one, and a
+    # promotion with no edge — all consistent (DDR-002 §7 #25, v1.3.0 scope).
+    seed(graph, fx.PROPOSAL_KIND_RETRACTS_CONFORMANT)
+    assert retraction.proposal_kind_retracts_consistency(graph) == []
+
+
+def test_executed_retraction_missing_edge_is_caught(graph: Driver) -> None:
+    # Forward: a proposal_kind:retraction at terminal status:promoted must carry
+    # a RETRACTS edge (the un-promotion applied).
+    seed(graph, fx.EXECUTED_RETRACTION_MISSING_EDGE)
+    violations = retraction.proposal_kind_retracts_consistency(graph)
+    assert [v.identity for v in violations] == ["cp-executed-noedge"]
+    assert violations[0].invariant == "DDR-002 §7 #25"
+
+
+def test_retracts_edge_from_promotion_kind_is_caught(graph: Driver) -> None:
+    # Reverse: a RETRACTS edge originates only from a proposal_kind:retraction node.
+    seed(graph, fx.RETRACTS_FROM_PROMOTION_KIND_25)
+    violations = retraction.proposal_kind_retracts_consistency(graph)
+    assert [v.identity for v in violations] == ["cp-promo-retracts"]
+
+
+def test_unexecuted_retraction_with_edge_is_caught(graph: Driver) -> None:
+    # Pre-execution: a retraction proposal before materialization (status != promoted)
+    # must carry no RETRACTS edge — the edge-writing is the EA-gated act (#21/§5).
+    seed(graph, fx.UNEXECUTED_RETRACTION_WITH_EDGE)
+    violations = retraction.proposal_kind_retracts_consistency(graph)
+    assert [v.identity for v in violations] == ["cp-premature-edge"]
+
+
+def test_rejected_retraction_passes(graph: Driver) -> None:
+    # The Touch-1 walkthrough shape: a rejected retraction with no edge passes the
+    # executed-proposal scope (the old unscoped #25's permanent false positive).
+    seed(graph, fx.REJECTED_RETRACTION_CONFORMANT)
+    assert retraction.proposal_kind_retracts_consistency(graph) == []
+
+
+def test_retracts_from_kindless_candidate_is_caught(graph: Driver) -> None:
+    # A-3: proposal_kind is T2 (no DB existence constraint), so a RETRACTS from a
+    # kind-less candidate must flag via the reverse direction's IS NULL branch —
+    # not null-skip under Cypher three-valued logic.
+    seed(graph, fx.RETRACTS_FROM_KINDLESS_CANDIDATE)
+    violations = retraction.proposal_kind_retracts_consistency(graph)
+    assert [v.identity for v in violations] == ["cp-kindless"]
+    assert violations[0].invariant == "DDR-002 §7 #25"

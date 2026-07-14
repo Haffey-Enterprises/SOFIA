@@ -95,3 +95,80 @@ def retraction_gated(driver: Driver) -> list[Violation]:
             )
         )
     return violations
+
+
+_INV_PROPOSAL_KIND_RETRACTS = "DDR-002 §7 #25"
+
+# #25 (follow tier, graph-state), scoped to EXECUTED proposals as of v1.3.0 — three
+# checked directions (DDR-002 §7 #25; SDD-001 §3.5.4):
+#   forward       — a proposal_kind:retraction at terminal status:promoted carries
+#                   a RETRACTS edge (the un-promotion was applied);
+#   reverse       — a RETRACTS edge originates only from a proposal_kind:retraction
+#                   node (any other source is malformed);
+#   pre-execution — a retraction proposal before materialization (status != promoted)
+#                   carries NO RETRACTS edge (the edge-writing is the EA-gated act,
+#                   #21/§5). This is the direction the v1.3.0 scoping added; it is
+#                   what dissolves the pre-decision #21/#25 joint unsatisfiability.
+# The three are disjoint by construction (forward: retraction+promoted+no-edge;
+# reverse: non-retraction source; pre-exec: retraction+not-promoted+edge).
+_EXECUTED_RETRACTION_MISSING_EDGE = f"""
+MATCH (cp:{sc.RG_LABEL}:{sc.CANDIDATE_PROMOTION_LABEL})
+WHERE cp.{sc.PROP_PROPOSAL_KIND} = $retraction
+  AND cp.{sc.PROP_STATUS} = $promoted
+  AND NOT EXISTS {{ MATCH (cp)-[:{sc.RETRACTS}]->() }}
+RETURN cp.{sc.PROP_CANDIDATE_ID} AS identity
+"""
+
+_RETRACTS_FROM_NON_RETRACTION = f"""
+MATCH (src)-[:{sc.RETRACTS}]->()
+WHERE src.{sc.PROP_PROPOSAL_KIND} IS NULL OR src.{sc.PROP_PROPOSAL_KIND} <> $retraction
+RETURN DISTINCT
+       coalesce(src.{sc.PROP_CANDIDATE_ID}, src.{sc.PROP_PROGRESS_ID}, elementId(src)) AS identity,
+       src.{sc.PROP_PROPOSAL_KIND} AS kind
+"""
+
+_UNEXECUTED_RETRACTION_WITH_EDGE = f"""
+MATCH (cp:{sc.RG_LABEL}:{sc.CANDIDATE_PROMOTION_LABEL})-[:{sc.RETRACTS}]->()
+WHERE cp.{sc.PROP_PROPOSAL_KIND} = $retraction
+  AND (cp.{sc.PROP_STATUS} IS NULL OR cp.{sc.PROP_STATUS} <> $promoted)
+RETURN DISTINCT cp.{sc.PROP_CANDIDATE_ID} AS identity, cp.{sc.PROP_STATUS} AS status
+"""
+
+
+def proposal_kind_retracts_consistency(driver: Driver) -> list[Violation]:
+    """DDR-002 §7 #25: proposal_kind <-> RETRACTS consistency (executed-proposal scope)."""
+    params = {"retraction": sc.PROPOSAL_KIND_RETRACTION, "promoted": sc.CANDIDATE_STATUS_PROMOTED}
+    violations: list[Violation] = []
+    for row in query_rows(driver, _EXECUTED_RETRACTION_MISSING_EDGE, params):
+        violations.append(
+            Violation(
+                invariant=_INV_PROPOSAL_KIND_RETRACTS,
+                identity=str(row["identity"]),
+                detail=(
+                    "executed retraction (terminal status:promoted) carries no RETRACTS edge"
+                ),
+            )
+        )
+    for row in query_rows(driver, _RETRACTS_FROM_NON_RETRACTION, params):
+        violations.append(
+            Violation(
+                invariant=_INV_PROPOSAL_KIND_RETRACTS,
+                identity=str(row["identity"]),
+                detail=(
+                    f"RETRACTS edge originates from proposal_kind={row['kind']!r}, not "
+                    f"{sc.PROPOSAL_KIND_RETRACTION!r}"
+                ),
+            )
+        )
+    for row in query_rows(driver, _UNEXECUTED_RETRACTION_WITH_EDGE, params):
+        violations.append(
+            Violation(
+                invariant=_INV_PROPOSAL_KIND_RETRACTS,
+                identity=str(row["identity"]),
+                detail=(
+                    f"unexecuted retraction (status={row['status']!r}) carries a RETRACTS edge "
+                    "before materialization"
+                ),
+            )
+        )
+    return violations
