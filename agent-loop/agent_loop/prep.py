@@ -242,7 +242,7 @@ def ddr_substrate_specs(
             {"source": "bedrock",
              "path": "plugins/bedrock/skills/author-decision-record/SKILL.md"},
             bedrock_cache=True,
-            expected_sha256="28a7696576cc6c2d2f2a313f812e3696bdcf3468ebade9bcb485fca71c012afe",
+            expected_sha256="d3fb4499b8d3ff899ae3f822e8873300c1f5330cc9ee55f193fc4f9eaf9da966",
         ),
         # Design-intent lineage: the target DDR's deliberation record, by convention.
         SubstrateSpec(
