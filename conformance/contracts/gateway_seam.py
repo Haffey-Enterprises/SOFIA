@@ -64,6 +64,10 @@ class SchemaViolationError(GatewayContractError):
     """A register-plane declaration violates basis-declaration totality (#26)."""
 
 
+class NonCitableSourceError(GatewayContractError):
+    """A capture-evidence cites a non_citable-basis class node (#27; NON_CITABLE_SOURCE)."""
+
+
 class GraphGateway(Protocol):
     """Minimal behavioral contract surface RBT-15's gateway must satisfy."""
 

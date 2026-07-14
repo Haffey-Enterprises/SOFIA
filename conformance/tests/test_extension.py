@@ -4,15 +4,17 @@
 # Author: Haffey Enterprises LLC
 # Created: 2026-07-13
 # Revised: 2026-07-13
-# Description: Validator-correctness tests for the Extension-registry graph-state
-#   assertions — DDR-002 §7 #26 (basis-declaration totality: every PlaneDefinition
-#   declares exactly one confidence-derivation basis per declared node-label, with
-#   confidence_basis's label set equal to property_schema's, and a freshness
-#   operand present iff the basis is aging). Each assertion is exercised against
-#   its conformant + violation fixtures.
+# Description: Validator-correctness tests for the confidence-basis graph-state
+#   assertions — DDR-002 §7 #26 (basis-declaration totality) and #27 (basis-
+#   admissibility: every SOURCED_FROM target resolves to a citable basis; a
+#   non_citable class carries no inbound SOURCED_FROM). Each assertion is exercised
+#   against its conformant + violation fixtures.
 # Standards: ENG-STD-001 v3.2.0
 ##############################################################################
-"""Tests: the Extension-registry assertions vs. their conformant / violation fixtures."""
+"""Tests: the Extension-registry assertions vs. their conformant / violation fixtures.
+
+Covers DDR-002 §7 #26 (basis-declaration totality) and #27 (basis-admissibility).
+"""
 
 from neo4j import Driver
 
@@ -110,3 +112,47 @@ def test_duplicate_label_key_is_caught(graph: Driver) -> None:
     violations = extension.basis_declaration_totality(graph)
     assert [v.identity for v in violations] == ["plane-dupkey"]
     assert "duplicate key" in violations[0].detail
+
+
+# --- #27 basis-admissibility --------------------------------------------------
+def test_admissible_citations_pass(graph: Driver) -> None:
+    # SOURCED_FROM a core-plane node (Catalog flat_base) and a Cost estimate
+    # (native_confidence, declared in the cost PlaneDefinition) — both citable.
+    seed(graph, fx.BASIS_ADMISSIBILITY_CONFORMANT)
+    assert extension.basis_admissibility(graph) == []
+
+
+def test_non_citable_source_is_caught(graph: Driver) -> None:
+    # SOURCED_FROM a Cost:RateCard — declared non_citable in the cost
+    # PlaneDefinition; the citation is inadmissible (DDR-002 §7 #27 / §2.6).
+    seed(graph, fx.SOURCED_FROM_NON_CITABLE)
+    violations = extension.basis_admissibility(graph)
+    assert [v.identity for v in violations] == ["ev-ratecard"]
+    assert violations[0].invariant == "DDR-002 §7 #27"
+
+
+def test_unresolvable_basis_source_is_caught(graph: Driver) -> None:
+    # SOURCED_FROM a node whose class declares no basis (an unregistered Extension
+    # label) — admissibility unverifiable, fail loud (the A-1 pattern).
+    seed(graph, fx.SOURCED_FROM_UNRESOLVABLE_BASIS)
+    violations = extension.basis_admissibility(graph)
+    assert [v.identity for v in violations] == ["ev-mystery"]
+    assert "no declared basis" in violations[0].detail
+
+
+def test_superseded_version_declaration_does_not_govern(graph: Driver) -> None:
+    # A-5 version-filtering: a citation of RateCard resolves from the ACTIVE plane
+    # version (non_citable), not the superseded v1's citable declaration.
+    seed(graph, fx.SUPERSEDED_VERSION_DIFFERENT_DECLARATION)
+    violations = extension.basis_admissibility(graph)
+    assert [v.identity for v in violations] == ["ev-superseded"]
+    assert "non-citable" in violations[0].detail
+
+
+def test_conflicting_active_declarations_fail_loud(graph: Driver) -> None:
+    # A-5 collision: a label declared by two active planes is a conflict; the
+    # map-build must not silently pick one — a citation of it is flagged fail loud.
+    seed(graph, fx.CONFLICTING_ACTIVE_DECLARATIONS)
+    violations = extension.basis_admissibility(graph)
+    assert [v.identity for v in violations] == ["ev-conflict"]
+    assert "conflicting" in violations[0].detail

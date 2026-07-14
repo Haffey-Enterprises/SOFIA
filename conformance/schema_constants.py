@@ -120,6 +120,7 @@ PROP_APPLICABILITY_STATE: Final = "applicability_state"  # promoted-node marker 
 # --- Catch-up (DDR-002 v1.3.0) properties -------------------------------------
 PROP_STATUS: Final = "status"  # lifecycle / version status (§2.3, §5, §6)
 PROP_SUPERSEDED_BY: Final = "superseded_by"  # versioned supersession pointer (§6); #22
+VERSION_STATUS_ACTIVE: Final = "active"  # the one active version per business_key (§6)
 PROP_CONFIDENCE: Final = "confidence"  # node/edge confidence scalar (§3, §4); #24
 
 # CandidatePromotion direction discriminator (DDR-002 §5).

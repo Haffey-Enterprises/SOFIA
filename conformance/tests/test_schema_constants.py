@@ -173,3 +173,8 @@ def test_plane_definition_declaration_properties() -> None:
 def test_non_citable_source_rejection_type() -> None:
     # The declared-contract steering rejection for a non_citable citation (§2.6).
     assert sc.NON_CITABLE_SOURCE == "NON_CITABLE_SOURCE"
+
+
+def test_version_status_active_is_the_active_version_value() -> None:
+    # §6 one-active-version-per-business_key; #27 resolves off the active plane.
+    assert sc.VERSION_STATUS_ACTIVE == "active"
