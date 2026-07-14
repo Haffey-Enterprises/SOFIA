@@ -35,6 +35,12 @@ def test_decision_subtypes_are_gate_and_promotion() -> None:
 
 def test_applicability_states_match_ddr_002_section_5() -> None:
     assert sc.APPLICABILITY_STATES == {"unconditional", "conditional"}
+    # The singleton values #19/#22 key on and §5's default; pinned as vocabulary.
+    assert sc.APPLICABILITY_STATE_CONDITIONAL == "conditional"
+    assert sc.APPLICABILITY_STATE_UNCONDITIONAL == "unconditional"
+    assert {sc.APPLICABILITY_STATE_CONDITIONAL, sc.APPLICABILITY_STATE_UNCONDITIONAL} == (
+        sc.APPLICABILITY_STATES
+    )
 
 
 def test_source_record_ref_triggers_are_ingested_and_distilled() -> None:
@@ -93,6 +99,13 @@ def test_non_authoritative_category_is_only_llm_advisory() -> None:
     # #23 fixed mapping: llm_advisory -> authoritative False, all others -> True.
     assert sc.NON_AUTHORITATIVE_CATEGORY == "llm_advisory"
     assert sc.NON_AUTHORITATIVE_CATEGORY in sc.REASONER_CATEGORIES
+
+
+def test_reasoner_ref_property_name() -> None:
+    # DDR-002 §4: the specific reasoner, required when reasoner_category is
+    # specialized_agent. No numbered §7 check consumes it (write-time / SDD
+    # concern), so it is pinned here as vocabulary against drift.
+    assert sc.PROP_REASONER_REF == "reasoner_ref"
 
 
 def test_observed_pattern_statuses_include_archived() -> None:
