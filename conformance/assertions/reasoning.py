@@ -73,3 +73,53 @@ def flag_category_consistency(driver: Driver) -> list[Violation]:
             Violation(invariant=_INV_FLAG_CATEGORY, identity=str(row["identity"]), detail=detail)
         )
     return violations
+
+
+_INV_ROLLUP_CEILING = "DDR-002 §7 #24"
+
+# #24 (follow tier, graph-state only): ReasoningProgress.confidence <=
+# max(SUPPORTED_BY Evidence.confidence) — a conclusion is no more confident than
+# its strongest evidence path (DDR-002 §4). Scoped to conclusions WITH supporting
+# evidence: the MATCH requires a SUPPORTED_BY edge, so a zero-evidence conclusion
+# produces no row (that case is SDD-routed, §4). This is 1a-only by ruling — #24
+# is not checkable at conclusion-write time (evidence attaches later, SDD-001
+# §3.4.2), so there is no 1b write contract. The comparator is bound to §4's canon
+# (ceiling = max supporting Evidence.confidence); it amends with the SDD's rollup
+# function if that redefines path strength.
+#
+# Skip-path (honest floor): when every supporting Evidence carries a null
+# confidence, max() is null and the ceiling is undefined — such a conclusion is
+# NOT flagged here. That is an evidence-confidence-presence concern (the
+# inheritance/derivation surface), not the #24 rollup comparator; #24 is a
+# follow-tier reasoning-quality check, not a safety-critical one.
+# Mixed-null direction: Neo4j's max() ignores nulls, so a conclusion with SOME
+# null-confidence evidence takes its ceiling from the non-null subset only — which
+# under-states the true ceiling and therefore TIGHTENS (never loosens) the check.
+# The conservative direction is stated, not silent. (Presence coverage: obs O-1.)
+_ROLLUP_CEILING_EXCEEDED = f"""
+MATCH (rp:{sc.RG_LABEL}:{sc.REASONING_PROGRESS_LABEL})
+      -[:{sc.SUPPORTED_BY}]->(e:{sc.RG_LABEL}:{sc.EVIDENCE_LABEL})
+WITH rp, max(e.{sc.PROP_CONFIDENCE}) AS ceiling
+WHERE rp.{sc.PROP_CONFIDENCE} IS NOT NULL
+  AND ceiling IS NOT NULL
+  AND rp.{sc.PROP_CONFIDENCE} > ceiling
+RETURN rp.{sc.PROP_PROGRESS_ID} AS identity,
+       rp.{sc.PROP_CONFIDENCE} AS confidence,
+       ceiling AS ceiling
+"""
+
+
+def rollup_upper_bound(driver: Driver) -> list[Violation]:
+    """DDR-002 §7 #24: a conclusion's confidence <= its strongest evidence path."""
+    rows = query_rows(driver, _ROLLUP_CEILING_EXCEEDED)
+    return [
+        Violation(
+            invariant=_INV_ROLLUP_CEILING,
+            identity=str(row["identity"]),
+            detail=(
+                f"ReasoningProgress confidence {row['confidence']} exceeds the ceiling "
+                f"{row['ceiling']} (max supporting Evidence.confidence)"
+            ),
+        )
+        for row in rows
+    ]

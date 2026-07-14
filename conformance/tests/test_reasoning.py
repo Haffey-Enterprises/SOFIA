@@ -58,3 +58,20 @@ def test_absent_category_is_caught(graph: Driver) -> None:
     violations = reasoning.flag_category_consistency(graph)
     assert sorted(v.identity for v in violations) == ["rp-bare", "rp-nocat-auth"]
     assert all(v.invariant == "DDR-002 §7 #23" for v in violations)
+
+
+# --- #24 rollup upper bound ---------------------------------------------------
+def test_confidence_within_ceiling_passes(graph: Driver) -> None:
+    # A conclusion at or below max(SUPPORTED_BY Evidence.confidence), and a
+    # zero-evidence conclusion (out of #24's scope — SDD-routed), both pass.
+    seed(graph, fx.ROLLUP_CEILING_CONFORMANT)
+    assert reasoning.rollup_upper_bound(graph) == []
+
+
+def test_confidence_exceeding_ceiling_is_caught(graph: Driver) -> None:
+    # A conclusion more confident than its strongest supporting evidence path
+    # violates the ceiling (DDR-002 §4/§7 #24).
+    seed(graph, fx.ROLLUP_CEILING_EXCEEDED)
+    violations = reasoning.rollup_upper_bound(graph)
+    assert [v.identity for v in violations] == ["rp-overconfident"]
+    assert violations[0].invariant == "DDR-002 §7 #24"
