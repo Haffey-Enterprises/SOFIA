@@ -1,3 +1,8 @@
+# File: docs/rbt-58/INFRA-README.md
+# Author: Thaddeus Haffey — Executive Architect, Haffey Enterprises LLC
+# Created: 2026-07-14
+# Description: RBT-58 infrastructure hand-off notes (Batch B layout, apply order, open flags).
+
 # RBT-58 — Graph-store infrastructure (Batch B)
 
 Self-managed **Neo4j Enterprise** system-of-record on **GKE Standard** (ADR-002 §2.2;

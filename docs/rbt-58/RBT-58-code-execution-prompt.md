@@ -1,3 +1,8 @@
+# File: docs/rbt-58/RBT-58-code-execution-prompt.md
+# Author: Thaddeus Haffey — Executive Architect, Haffey Enterprises LLC
+# Created: 2026-07-14
+# Description: RBT-58 in-repo Code execution prompt (provision/bootstrap/seed/test steps).
+
 # RBT-58 — Claude Code execution prompt (BUILD-prep: provision + bootstrap + seed)
 
 **Surface roles.** This prompt is authored on the design surface (claude.ai). **You are

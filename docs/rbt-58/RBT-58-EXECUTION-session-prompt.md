@@ -1,3 +1,8 @@
+# File: docs/rbt-58/RBT-58-EXECUTION-session-prompt.md
+# Author: Thaddeus Haffey — Executive Architect, Haffey Enterprises LLC
+# Created: 2026-07-14
+# Description: RBT-58 execution-session kickoff prompt (build · seed · test the graph instance).
+
 # RBT-58 EXECUTION — Build · Seed · Test the graph instance (the proof point)
 
 *Paste this as the kickoff for a fresh execution session (Claude Code on your machine, or a
