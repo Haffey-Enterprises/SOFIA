@@ -228,8 +228,9 @@ def ddr_substrate_specs(
         ),
         # Doctype authoring authority — sourced from the installed bedrock
         # plugin cache and verified pin-vs-installed (RBT-54 F4 / G1). The pins
-        # are the ratified 1.3.0 content hashes; they move only by explicit
-        # operator ratification (a bump here IS the ratification act).
+        # are the ratified bedrock 1.4.0 content hashes (ddr-template unchanged
+        # since 1.3.0); they move only by explicit operator ratification (a bump
+        # here IS the ratification act).
         SubstrateSpec(
             "ddr-template", "authorities",
             {"source": "bedrock",
