@@ -9,8 +9,8 @@
 |---|---|
 | **Document ID** | ADR-002 |
 | **Status** | ACCEPTED |
-| **Version** | 1.1.0 |
-| **Date** | 2026-07-03 |
+| **Version** | 1.2.0 |
+| **Date** | 2026-07-15 |
 | **Authors** | Thaddeus Haffey (Executive Architect) |
 | **Supersedes** | None — establishes new platform principle. |
 
@@ -28,7 +28,7 @@ This ADR ends that ambiguity. It commits the graph as the system of record for a
 
 ## 2. Decision
 
-The Neo4j Enterprise graph is the system of record for all SOFIA architecture and reasoning state — the Knowledge Graph and Reasoning Graph realized as logical subgraphs in a single instance — with state-class authority divided across a three-store persistence backbone (Neo4j, PostgreSQL, Firestore). As a sub-decision of this ruling, the graph runs **self-managed on GKE** — the orchestrated-container exception to the platform's Cloud Run default, detailed at §2.2.
+The Neo4j Enterprise graph is the system of record for all SOFIA architecture and reasoning state — the Knowledge Graph and Reasoning Graph realized as logical subgraphs in a single instance — with state-class authority divided across a three-store persistence backbone (Neo4j, PostgreSQL, Firestore). As a sub-decision of this ruling, the graph's deployment runtime is **environment-differentiated**: the development environment runs on **managed Neo4j Aura (AuraDB Professional)** on GCP, and the production deployment runtime is **deferred** — decided when a production environment is built (§2.2). The system-of-record ruling is unchanged by this; runtime placement is a sub-decision, not the core commitment.
 
 ### 2.1 Graph as system of record
 
@@ -36,15 +36,15 @@ The graph is the authoritative store for all SOFIA architecture and reasoning st
 
 This is the structural commitment that makes ADR-001's reasoning-capture invariant durable: the RG is the system of record, queryable by traversal alongside the KG it links to, not a side-channel log that can drift from the decisions it records.
 
-### 2.2 Graph platform — Neo4j Enterprise, self-managed on GKE
+### 2.2 Graph platform — Neo4j Enterprise; environment-differentiated deployment runtime
 
 The system of record is a native graph database, realized by **Neo4j Enterprise**.
 
-Enterprise is the committed edition because the ratified schema's **DB-enforced property-existence constraints** (DDR-002 §7) are available only on Neo4j Enterprise per the vendor's current Cypher Manual (verified 2026-07-02) — uniqueness constraints are available on both editions, but property-existence constraints are Enterprise-only — and that constraint set is in active use in the schema. This is the present, testable dependency the edition commitment rests on. A secondary option-value consideration: the deferred production topology (§5.2) may adopt Enterprise clustering, which Community does not offer. A specific Neo4j minor-version pin is deferred to the data and operational designs (consistent with the topology deferral, §5.2); the edition (Enterprise) is the commitment fixed here.
+Enterprise is the committed edition because the ratified schema's **DB-enforced property-existence constraints** (DDR-002 §7) are available only on Neo4j Enterprise per the vendor's current Cypher Manual (verified 2026-07-02) — uniqueness constraints are available on both editions, but property-existence constraints are Enterprise-only — and that constraint set is in active use in the schema. This is the present, testable dependency the edition commitment rests on. A secondary option-value consideration: the deferred production topology (§5.2) may adopt Enterprise clustering, which Community does not offer. A specific Neo4j minor-version pin is deferred to the data and operational designs (consistent with the topology deferral, §5.2); the edition (Enterprise) is the commitment fixed here. Both the self-managed and the managed-Aura runtimes (see Deployment runtime below) run Neo4j Enterprise, and the managed runtime exposes the DB-enforced property-existence constraints DDR-002 §7 requires; the edition dependency therefore holds on either runtime.
 
-**Deployment runtime.** The graph runs **self-managed on GKE** — the orchestrated-container exception to the platform's Cloud Run default, per the platform's stateful-workload deployment criterion: a stateful, clustered graph database cannot run on serverless-container Cloud Run, and there is no managed Neo4j option on GCP, so SOFIA accepts operational responsibility for self-managed Neo4j Enterprise on GKE. This ADR is the home for that runtime exception. Runtime placement (GKE) and production topology (cluster count / HA, deferred per §5.2) are distinct axes — only the latter is deferred.
+**Deployment runtime — environment-differentiated.** The development environment runs the graph on **managed Neo4j Aura (AuraDB Professional)** on GCP — an external managed runtime, so the platform's serverless-container default and its self-managed-GKE exception do not apply to it. The **production deployment runtime is deferred**: it is not committed here but decided when a production environment is built, and that planning re-evaluates the runtime against production-scale cost and the data-sovereignty question §2.7 flags. A managed Neo4j runtime on GCP now exists (§4.6), so self-managed Neo4j Enterprise on GKE is no longer a *forced* runtime; should the deferred production runtime adopt it, it is the orchestrated-container exception to the Cloud Run default and carries the operational responsibility recorded at §5.2. Runtime placement and production topology (cluster count / HA, deferred per §5.2) remain distinct axes.
 
-**Substitution contract.** A replacement for Neo4j Enterprise must satisfy the plane-model graph at the complexity §2.3 commits (five planes plus Extension and the RG, with first-class cross-plane and cross-graph traversal); the precise capability bar is the **Substitution-Contract Capability Bar (DDR-001)**. Substituting a graph platform that cannot meet it — or moving the runtime off self-managed GKE — is an amendment to this ADR, not an implementation detail.
+**Substitution contract.** A replacement for Neo4j Enterprise must satisfy the plane-model graph at the complexity §2.3 commits (five planes plus Extension and the RG, with first-class cross-plane and cross-graph traversal); the precise capability bar is the **Substitution-Contract Capability Bar (DDR-001)**. Substituting a graph platform that cannot meet it — or changing an environment's committed deployment runtime — is an amendment to this ADR, not an implementation detail.
 
 ### 2.3 Logical plane realization
 
@@ -81,6 +81,8 @@ This is the system-of-record consequence of ADR-001's capture invariant: because
 ### 2.7 Data-protection posture — no CMEK, no PHI by design
 
 The initial build uses **no customer-managed encryption keys (CMEK)**. This is sound because the platform carries **no PHI by design**: data classification at intake and ingestion is an enforced constraint that keeps PHI out of the system, with compensating controls as the backstop should any leak in. A future change that brings PHI into scope is its own ADR, which would re-evaluate CMEK; this ADR commits the no-CMEK / no-PHI-by-design posture for the initial build only.
+
+The development environment's managed-Aura runtime (§2.2) locates graph data in the managed provider's external tenancy rather than the platform's own GCP project. For development's fixture data this is within the posture committed here; the production data-sovereignty question — external managed tenancy of production ground truth — is **deferred** to the production-environment build (§2.2, §5.2), which re-evaluates this posture at that time.
 
 ---
 
@@ -128,7 +130,7 @@ Fixing the store and its realization is also what makes the data and service arc
 
 *Description:* Run the graph on the platform's serverless-container default (Cloud Run), or adopt a GCP-managed graph service, rather than self-managing Neo4j Enterprise on GKE.
 
-*Rejection rationale:* This alternative is thin, by the honest standard — there is no managed Neo4j offering on GCP, and a stateful, clustered graph database cannot run on serverless-container Cloud Run. Self-managed Neo4j Enterprise on GKE is therefore the forced runtime, taken as the documented exception to the Cloud Run default (§2.2). The cost — operational responsibility for the self-managed cluster — is accepted and recorded as a constraint (§5.2).
+*Disposition:* **Cloud Run is rejected** — a stateful, clustered graph database cannot run on a serverless-container runtime. The **managed-Neo4j option is adopted for the development environment and deferred for production** (§2.2). A managed Neo4j runtime on GCP now exists — Neo4j Aura (managed AuraDB), which runs Neo4j Enterprise and exposes the DB-enforced property-existence constraints DDR-002 §7 requires — so the managed runtime is a real alternative, not the thin one the original rejection described. Development adopts it (AuraDB Professional) for the operational-burden retirement recorded at §5.2; the production runtime is deferred to the production-environment build, which weighs managed against self-managed on production-scale cost and the data-sovereignty posture (§2.7). The original rejection's premise — that no managed Neo4j option existed on GCP — no longer holds.
 
 ---
 
@@ -147,7 +149,7 @@ Fixing the store and its realization is also what makes the data and service arc
 
 - Services may not hold authoritative architecture or reasoning state locally — all such state flows through the graph; local stores are operational/cache/staging only.
 - The platform is committed to Neo4j Enterprise's licensing and operational footprint for the system of record; a graph platform that cannot meet the plane-model complexity §2.2/§2.3 commit is not a drop-in substitute (§2.2 substitution contract).
-- SOFIA accepts operational responsibility for the self-managed Neo4j Enterprise cluster on GKE (§2.2) — backup/restore, upgrade lifecycle, and cluster-health monitoring are platform burdens carried by the operational design, the accepted cost of the §2.2 self-managed exception over a managed runtime.
+- Operational responsibility for the graph runtime is **environment-differentiated** (§2.2). The development environment's managed-Aura runtime **retires** the self-managed operational burden — backup/restore, upgrade lifecycle, and cluster-health monitoring are the managed provider's responsibility. Should the deferred production runtime adopt self-managed Neo4j Enterprise on GKE, that burden returns for production, carried by the operational design as the accepted cost of a self-managed runtime — weighed at the production-environment build.
 - No service other than knowledge-service may hold a direct Neo4j driver; all graph access routes through knowledge-service's gateway (§2.5).
 - **Production topology is intentionally unspecified.** Cluster count and HA configuration are not committed by this ADR; they are determined after dev implement-and-test, sized to real workload rather than asserted as a premature minimum. Locking a specific cluster topology now (e.g., a three-node causal cluster) is rejected as a premature production commitment. Topology is independent of the CMEK posture (§2.7) and does not gate this ADR's acceptance.
 - No vector store is available as a retrieval substrate; designs needing semantic retrieval use graph-native traversal, and a genuine vector need is a new ADR, not a local addition.
@@ -190,6 +192,7 @@ Conformance with this ADR is verified at architecture review. The following are 
 
 | Version | Date | Ticket | Change |
 |---|---|---|---|
+| 1.2.0 | 2026-07-15 | RBT-63 | **Deployment-runtime premise re-evaluated — managed Neo4j on GCP now exists.** §4.6's original rejection premise ("there is no managed Neo4j option on GCP") was falsified: Neo4j Aura (managed AuraDB, Neo4j Enterprise under the hood) is available on GCP, and its DB-enforced property-existence-constraint parity with the ratified schema (DDR-002 §7) was empirically verified on an AuraDB Professional instance (`edition=enterprise`; NODE_PROPERTY_EXISTENCE / NODE_KEY / RELATIONSHIP_PROPERTY_EXISTENCE created and enforced). Deployment runtime made environment-differentiated: development adopts managed AuraDB Professional for operational-burden retirement (§5.2); the production runtime is deferred to the production-environment build, with a runtime + data-sovereignty re-evaluation as its trigger. §2 Decision, §2.2, §4.6, §5.2 amended; §2.7 gains a pointer to the deferred production-tenancy question. Core system-of-record ruling unchanged — amendment, not supersession. Decision change. |
 | 1.1.0 | 2026-07-03 | — | Triage-001 amendment batch (record: `agent-loop/triage/triage-001-distilled-set/record.md`). **General write-authority principle added (T-09):** every authoritative graph write has a named, component-scoped author; the sole-owner gateway (§2.5) is the sole executor / enforcement boundary and never the authoring authority; for EA-gated materializations authority rests with the approving decision. §2.6 restructured to state this general principle, with the synthesis-time ASA/AOE assignment (unchanged) as its instance; §6 gains the companion write-authorship check. Decision addition. |
 | 1.1.0 | 2026-07-03 | — | **Enterprise-edition requirement re-grounded (T-04):** the Community-trial narrative and the "empirically established and ratified" phrasing are removed from §2.2 and §4.1 — trial specifics were never captured and recollection is unreliable; the requirement is re-grounded on the vendor-verifiable dependency (property-existence constraints are Neo4j-Enterprise-only per the current Cypher Manual, verified 2026-07-02, and in active schema use per DDR-002 §7). §4.1 Alternative A rewritten on that testable deficiency; §2.2 substitution sentence and the §7 DDR-001 cross-reference now cite the Substitution-Contract Capability Bar (DDR-001) by name (T-23). |
 | 1.1.0 | 2026-07-03 | — | **Record-completeness / honesty (no decision change):** §2 Decision surfaces the self-managed-GKE runtime exception as an explicit sub-decision and §2.6 introduces ASA/AOE at first use (T-07); §2.4 Firestore row relabeled *immutable produced-solution snapshots (per-version; dual-home model → DDR-001)* (T-25); §6 aspirational-compliance line gains its tracking reference to the graph conformance harness (`conformance/`, RBT-33 Increment 1) and the catch-up increment RBT-48. |
