@@ -151,7 +151,7 @@ This assigns write **authority** only and is **graph-home-agnostic** — where `
 
 ## Substitution-Contract Capability Bar (ADR-002 §2.2 routes here)
 
-A replacement graph platform — or moving the runtime off self-managed GKE — is an ADR-002 amendment, not an implementation detail. A substitute must support:
+A replacement graph platform — or changing an environment's committed deployment runtime — is an ADR-002 amendment, not an implementation detail. A substitute must support:
 
 1. the five typed planes + Extension + RG as co-resident logical subgraphs in one instance;
 2. the multiple relationship/edge types the plane traversals require;
@@ -189,7 +189,7 @@ Downstream SDDs verify against:
 - **Upstream implemented:** ADR-001 v1.1.0 (spine), ADR-002 v1.1.0 (system of record).
 - **Sibling (forward):** DDR-003 — feedback-loop governance (**forthcoming, unauthored**); the architecture/governance split is settled (this DDR owns the data-path, DDR-003 owns governance).
 - **Downstream consumers:** DDR-002 — graph schema; SDDs — knowledge-service, snapshot-service. *(One-way dependency: DDR-002 depends on this DDR; DDR-001 routes schema concerns forward to DDR-002 but does not depend on it.)*
-- **Standards:** house conventions — self-managed-GKE exception (ADR-002 §2.2); data-classification tiers.
+- **Standards:** house conventions — deployment-runtime exception (ADR-002 §2.2); data-classification tiers.
 
 ---
 
@@ -209,6 +209,7 @@ DDR-001 is substrate for DDR-002 (schema), DDR-003's scope boundary, and the SDD
 
 | Version | Date | Ticket | Change |
 |---|---|---|---|
+| 1.3.0 | 2026-07-15 | RBT-63 | **Coherence rider (ADR-002 v1.2.0 runtime amendment; no decision change):** the Substitution-Contract Capability Bar and the §Standards runtime reference re-point to ADR-002 §2.2's now environment-differentiated deployment runtime (development on managed Aura, production deferred); "self-managed GKE" as the fixed runtime no longer holds. Cross-reference realignment only. |
 | 1.3.0 | 2026-07-03 | — | Triage-001 amendment batch (record: `agent-loop/triage/triage-001-distilled-set/record.md`). **Aggregate-confidence re-homed (T-01):** the session-root bullet drops "carries aggregate confidence"; confidence is per-conclusion (`ReasoningProgress` rollup, DDR-002 §4), any session-level aggregate a read-time traversal affordance, never a stored property — the per-Solution comparison intent moves to DDR-002's Named Gaps. **KG-entry checkpoint scoped (T-02):** Decision.5 second clause and conformance check 4 scoped to ADR-001 §2.5's object (SOFIA's own reasoning entering encoded knowledge); the broader all-KG-entry checkpoint routed by name to the forthcoming KG-entry-governance ADR. **Feedback-loop write authority recast (T-09):** the three-writes treatment and check 7 rewritten in author/executor/authorizer terms citing amended ADR-002 §2.6; Artifact write authority homed here (ASA authors `Solution` on creation; lifecycle-transition authority routed to SDDs). Decision.7 added. |
 | 1.3.0 | 2026-07-03 | — | **Enterprise-edition requirement re-grounded (T-04):** the Spike Findings section is retired entirely (trial specifics never captured; recollection unreliable; single-database non-contradiction guard removed with the narrative); its durable content re-homes as Substitution-Contract Capability Bar item 6 — DB-enforced property-existence-constraint capability, the vendor-verifiable dependency the edition rests on (verified 2026-07-02). Rationale re-grounded on that present dependency. |
 | 1.3.0 | 2026-07-03 | — | **Record-completeness / honesty (no decision change):** Decision list gains the feedback-loop write-authority component (Decision.7) citing amended ADR-002 (T-07); footnote ² adds the governance-participating-identities-only / no-IAM-mirror clause and per-action disposition-event exclusion (T-12); Firestore row's "concretized here as" preamble simplifies to a plain ADR-002 §2.4 citation (T-25); DDR-003 Cross-References entry gains the forthcoming/unauthored status marker (T-05 Leg 2); upstream references bumped to ADR-001 v1.1.0 / ADR-002 v1.1.0. |
