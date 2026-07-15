@@ -19,7 +19,7 @@ The platform operates with **hybrid reasoning** (LLM and SOFIA) within encoded b
 
 - **Language / runtime:** Python 3.11+
 - **Framework:** FastAPI (async)
-- **System of record:** graph database (Neo4j Enterprise, self-managed on GKE) — per ADR-002 / DDR-002
+- **System of record:** graph database (Neo4j Enterprise; deployment runtime environment-differentiated per ADR-002 §2.2 — dev on managed Aura, prod deferred) — per ADR-002 / DDR-002
 - **Persistence backbone:** Neo4j (architecture + reasoning state), PostgreSQL (workflow/audit/staging), Firestore (immutable snapshots) — no vector store
 - **Cloud / host:** GCP / GitHub
 
