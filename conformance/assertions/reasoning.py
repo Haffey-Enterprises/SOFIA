@@ -7,11 +7,14 @@
 # Description: Reasoning-Graph conclusion graph-state assertions (1a) — DDR-002
 #   §7 #23 (flag<->category consistency: every ReasoningProgress carries an
 #   authoritative value matching the fixed reasoner_category mapping,
-#   llm_advisory -> false / all other categories -> true). Safety-critical tier:
-#   guards against wrong-consumption of non-authoritative content as
-#   authoritative (the ADR-001 §5.2 read-discipline surface). Labels and property
-#   names are interpolated from conformance.schema_constants (single source);
-#   values are passed as query parameters.
+#   llm_advisory -> false / all other categories -> true; safety-critical tier,
+#   guarding wrong-consumption of non-authoritative content as authoritative — the
+#   ADR-001 §5.2 read-discipline surface), #24 (rollup upper bound: a conclusion's
+#   confidence <= its strongest supporting Evidence path; follow tier), and #28
+#   (Evidence.confidence presence: every (:Reasoning:Evidence) carries a non-null
+#   confidence; follow tier, the out-of-path presence backstop). Labels and
+#   property names are interpolated from conformance.schema_constants (single
+#   source); values are passed as query parameters.
 # Standards: ENG-STD-001 v3.2.0
 ##############################################################################
 """Graph-state conformance assertions for Reasoning-Graph conclusions."""
@@ -89,13 +92,15 @@ _INV_ROLLUP_CEILING = "DDR-002 §7 #24"
 #
 # Skip-path (honest floor): when every supporting Evidence carries a null
 # confidence, max() is null and the ceiling is undefined — such a conclusion is
-# NOT flagged here. That is an evidence-confidence-presence concern (the
-# inheritance/derivation surface), not the #24 rollup comparator; #24 is a
-# follow-tier reasoning-quality check, not a safety-critical one.
+# NOT flagged here. That is an evidence-confidence-presence concern owned by #28
+# (evidence_confidence_presence), not the #24 rollup comparator; the two concerns
+# stay distinct (comparator vs. presence, DDR-002 §7 #24/#28). #28 catches the
+# null Evidence directly, so the all-null supporting set #24 skips by construction
+# is covered — no open gap. #24 is a follow-tier reasoning-quality check.
 # Mixed-null direction: Neo4j's max() ignores nulls, so a conclusion with SOME
 # null-confidence evidence takes its ceiling from the non-null subset only — which
 # under-states the true ceiling and therefore TIGHTENS (never loosens) the check.
-# The conservative direction is stated, not silent. (Presence coverage: obs O-1.)
+# The conservative direction is stated, not silent. (Presence is #28's, obs O-1.)
 _ROLLUP_CEILING_EXCEEDED = f"""
 MATCH (rp:{sc.RG_LABEL}:{sc.REASONING_PROGRESS_LABEL})
       -[:{sc.SUPPORTED_BY}]->(e:{sc.RG_LABEL}:{sc.EVIDENCE_LABEL})
@@ -119,6 +124,51 @@ def rollup_upper_bound(driver: Driver) -> list[Violation]:
             detail=(
                 f"ReasoningProgress confidence {row['confidence']} exceeds the ceiling "
                 f"{row['ceiling']} (max supporting Evidence.confidence)"
+            ),
+        )
+        for row in rows
+    ]
+
+
+_INV_EVIDENCE_CONFIDENCE = "DDR-002 §7 #28"
+
+# #28 (follow tier, graph-state only): every (:Reasoning:Evidence) node carries a
+# non-null confidence (DDR-002 §7 #28). confidence is T2, so the DB-existence
+# constraints (provenance group + T1 required props) do not force it; the mediated
+# capture path guarantees a value by construction — DDR-004's derive-or-reject
+# totality computes the inherited value or rejects the citation typed (incl. the
+# branch-(i) null-native reject, DDR-004 §1), never defaulting a null — but no
+# graph-state check verifies presence on an Evidence node that arrived OUTSIDE
+# that path. #28 is that out-of-path presence backstop: the #23 pattern applied to
+# the confidence surface (as #23 backstops the authoritative flag despite the
+# sole-writer gateway), a fortiori proportionate as a follow-tier check.
+#
+# Quantified over ALL Evidence, NOT gated on SUPPORTED_BY: per DDR-002 §7 #28 the
+# check fires "independent of whether it yet supports any conclusion" — schema-
+# legal unlinked Evidence exists (§4), and an unlinked null-confidence node is
+# exactly the out-of-path shape 1a exists to catch. This also closes the
+# interaction #24 names: an all-null supporting set leaves #24's max() ceiling
+# undefined so #24 skips that conclusion by construction, while #28 catches the
+# null Evidence directly. 1a-only by ruling: the write-time guarantee is subsumed
+# by DDR-004's (now null-safe) derive-or-reject totality, so #28 carries no
+# separate 1b write contract of its own.
+_EVIDENCE_CONFIDENCE_ABSENT = f"""
+MATCH (e:{sc.RG_LABEL}:{sc.EVIDENCE_LABEL})
+WHERE e.{sc.PROP_CONFIDENCE} IS NULL
+RETURN e.{sc.PROP_EVIDENCE_ID} AS identity
+"""
+
+
+def evidence_confidence_presence(driver: Driver) -> list[Violation]:
+    """DDR-002 §7 #28: every Evidence node carries a non-null confidence."""
+    rows = query_rows(driver, _EVIDENCE_CONFIDENCE_ABSENT)
+    return [
+        Violation(
+            invariant=_INV_EVIDENCE_CONFIDENCE,
+            identity=str(row["identity"]),
+            detail=(
+                "Evidence carries a null confidence; the mediated capture path derives "
+                "or rejects (never defaults a null), so this node arrived outside it"
             ),
         )
         for row in rows

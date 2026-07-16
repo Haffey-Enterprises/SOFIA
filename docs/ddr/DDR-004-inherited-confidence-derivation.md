@@ -8,25 +8,25 @@
 | Field | Value |
 |---|---|
 | **Document ID** | DDR-004 |
-| **Version** | 1.2.0 |
+| **Version** | 1.3.0 |
 | **Status** | ACCEPTED |
-| **Date** | 2026-07-14 |
+| **Date** | 2026-07-15 |
 | **Authors** | Thaddeus Haffey (Executive Architect) |
 | **Supersedes** | None — new ruling |
-| **References** | DDR-002 v1.3.0 (§4 canonical confidence definition + inheritance rule + #24 ceiling + `Evidence.observed_at` capture-instant semantic, §1 contested-T2 convention, §2.1–2.5 + §2.6 plane schemas incl. the declared-basis carriers); DDR-001 v1.3.0; ADR-001 v1.1.0 (§2.2 source-attribution intent, §5.2 read discipline); ADR-002 v1.1.0; SDD-001 v1.2.0 (§3.4.3 derivation execution, §4.6 config surface, §9 cross-reference) |
+| **References** | DDR-002 v1.4.0 (§4 canonical confidence definition + inheritance rule + #24 ceiling + `Evidence.observed_at` capture-instant semantic, §1 contested-T2 convention, §2.1–2.5 + §2.6 plane schemas incl. the declared-basis carriers); DDR-001 v1.3.0; ADR-001 v1.1.0 (§2.2 source-attribution intent, §5.2 read discipline); ADR-002 v1.1.0; SDD-001 v1.3.0 (§3.4.3 derivation execution, §4.6 config surface, §9 cross-reference) |
 
 ---
 
 ## Decision
 
-`knowledge-service` computes an inherited confidence on every `Evidence` capture, realizing DDR-002 §4's inheritance rule — *"`Evidence.confidence` inherits from the `SOURCED_FROM` KG node's authority class at snapshot time."* DDR-002 fixes that inheritance happens, by authority class, at snapshot time, and that the rollup is ceilinged; it fixes no concrete function. **This record fixes the function, its constant treatment, its totality contract, its composition boundary, and its calibration governance.** The derivation is **total by construction** — derive or reject, never default — and **derived-at-creation** — computed once at capture, then frozen.
+`knowledge-service` computes an inherited confidence on every `Evidence` capture, realizing DDR-002 §4's inheritance rule — *"`Evidence.confidence` inherits from the `SOURCED_FROM` KG node's authority class at snapshot time."* DDR-002 fixes that inheritance happens, by authority class, at snapshot time, and that the rollup is ceilinged; it fixes no concrete function. **This record fixes the function, its constant treatment, its totality contract, its composition boundary, and its calibration governance.** The derivation is **total by construction** — derive or reject, never default, never propagate a null — and **derived-at-creation** — computed once at capture, then frozen.
 
 The ruling has six testable components:
 
 1. **Function form** — a two-branch derivation; Environment freshness is exponential decay. (§1)
 2. **Constant treatment** — the `1.0` class base is invariant-ground; the Environment `base` and `τ`, and the `DeploymentEnvironment` flat base, are contested tunables. (§2)
 3. **Δt reference anchor** — the capture instant, gateway-clocked, frozen. (§3)
-4. **Per-class declared-basis totality** — every citable node-class declares one of four bases at its definition boundary; `CONFIDENCE_UNDERIVABLE` is defense-in-depth. (§4)
+4. **Per-class declared-basis totality** — every citable node-class declares one of four bases at its definition boundary; a branch reaching no value — no declared basis (class-level), or a null native `confidence` to inherit (instance-level) — rejects typed `CONFIDENCE_UNDERIVABLE`, fail-closed. (§4)
 5. **Composition boundary** — branch (i) inherits node authority only; per-target edge certainty composes downstream in the `ReasoningProgress` rollup, under the #24 ceiling. (§5)
 6. **Calibration governance** — how the contested constants are tuned and what ratifies a tuned value. (§6)
 
@@ -40,7 +40,7 @@ Two commitments shape every ruling. **Form is design; constants are empirical.**
 
 On `capture-evidence`, the gateway derives `Evidence.confidence ∈ [0.0, 1.0]` from the `SOURCED_FROM` KG node, by two branches.
 
-**Branch (i) — native node confidence.** Where the cited node carries its own node `confidence` — Operational `ObservedPattern` (lesson reliability), Cost `CapabilityCostEstimate` (estimate reliability) — the inherited value **is that node confidence**. The node's plane has already expressed its authority measure natively; the Evidence inherits it unchanged.
+**Branch (i) — native node confidence.** Where the cited node carries its own node `confidence` — Operational `ObservedPattern` (lesson reliability), Cost `CapabilityCostEstimate` (estimate reliability) — the inherited value **is that node confidence**. The node's plane has already expressed its authority measure natively; the Evidence inherits it unchanged. **Where that node `confidence` is itself null** — a legal T2 state (DDR-002 §2.3 `ObservedPattern`, §2.6 `CapabilityCostEstimate`): the node carries no authority measure to inherit — the citation is **rejected, typed `CONFIDENCE_UNDERIVABLE`, fail-closed**, not inherited as a null. Branch (i) yields a value or rejects; it never propagates a null. (Presence of the resulting `Evidence.confidence` is graph-state-checked for out-of-path arrivals by DDR-002 §7 #28.)
 
 **Branch (ii) — class base × freshness.** Otherwise, the inherited value is a class base multiplied by a freshness factor:
 
@@ -49,7 +49,7 @@ On `capture-evidence`, the gateway derives `Evidence.confidence ∈ [0.0, 1.0]` 
 
 **Freshness form — exponential decay.** DDR-002 §4 mandates that Environment ages by freshness; the *shape* is fixed here as exponential: monotone decreasing, asymptotic to but never crossing zero (a stale fact remains weak evidence — never anti-evidence, never requiring a clamp), constant half-life. Exponential also reduces calibration to a clean two-parameter (`base`, `τ`) fit, the surface SDD-001 §4.6 already assumes. The form is fixed; linear and step decays are not retained as live alternatives.
 
-**Totality.** For every citable node-class exactly one branch yields a value, because every citable class carries a declared basis (§4). A citation that reaches no branch is **rejected, typed `CONFIDENCE_UNDERIVABLE`, fail-closed** — a defense-in-depth backstop, not the primary control (§4).
+**Totality.** For every citable node-class exactly one branch yields a value, because every citable class carries a declared basis (§4). A citation that reaches no branch — or reaches branch (i) but finds a null native `confidence` to inherit — is **rejected, typed `CONFIDENCE_UNDERIVABLE`, fail-closed**. The two triggers differ in role (§4): the no-branch case is the defense-in-depth backstop against a malformed or legacy class; the null-native case is a live steering rejection of a well-formed class whose cited instance carries no confidence to inherit.
 
 ## 2. Constant treatment — the invariant / contested split
 
@@ -75,14 +75,14 @@ Totality is a property established at each citable node-class's **definition bou
 
 | Basis | Treatment | Staleness |
 |---|---|---|
-| **1 — native confidence** | inherit the node's own `confidence` (branch (i)) | as encoded in the node's confidence |
+| **1 — native confidence** | inherit the node's own `confidence` (branch (i)); a null native `confidence` rejects (`CONFIDENCE_UNDERIVABLE`), never inherited | as encoded in the node's confidence |
 | **2 — non-aging flat base** | class base, no decay | supersession / lifecycle (not decay) |
 | **3 — aging** | `base × exp(−Δt/τ)` on a declared domain freshness operand (branch (ii), Environment) | continuous decay |
 | **4 — non-citable** | not a valid `Evidence` source; citation rejected, knowable at the definition boundary | — |
 
 Basis 2 covers both *versioned-reference* data (the Catalog/Standards/Governance posture) and *structurally-stable identity* (a node whose fact does not age); in both, staleness is governed by supersession or lifecycle rather than decay.
 
-A label without a declared basis fails registration (DDR-002 §2.6); non-citability is itself a declaration (basis 4), never an omission. `CONFIDENCE_UNDERIVABLE` is thereby unreachable for any well-formed plane, retained only as a fail-closed backstop against a malformed or legacy definition — **defense-in-depth, not the primary control.**
+A label without a declared basis fails registration (DDR-002 §2.6); non-citability is itself a declaration (basis 4), never an omission. `CONFIDENCE_UNDERIVABLE` is thereby unreachable at the **class** level for any well-formed plane — retained as the fail-closed backstop against a malformed or legacy *definition* (**defense-in-depth**). It stays reachable at the **instance** level: a well-formed native-confidence class whose cited *node* carries a null `confidence` has no value to inherit, and that citation rejects typed `CONFIDENCE_UNDERIVABLE` (branch (i), §1) — a **live steering rejection**, not defense-in-depth. The two triggers share the type and the fail-closed posture; they differ in whether a class definition or a cited instance supplies no value.
 
 **Per-class dispositions (current planes):**
 
@@ -137,8 +137,8 @@ SDD-001 §3.4.3 carried this derivation as interim implemented behavior, with au
 
 ## Cross-References
 
-- **Implements:** DDR-002 v1.3.0 §4 (canonical confidence definition, inheritance rule, #24 ceiling), §1 (contested-T2 convention), §2.1–2.5 + §2.6 (core-plane and Extension plane schemas, carrying this record's basis declarations); ADR-001 v1.1.0 §2.2 (source-attribution intent).
-- **Implemented by:** SDD-001 v1.2.0 (`knowledge-service` — the gateway that computes the derivation) §3.4.3, §4.6, §9; the forthcoming solutioning-agent SDD (the `ReasoningProgress` rollup and per-target composition, §5).
+- **Implements:** DDR-002 v1.4.0 §4 (canonical confidence definition, inheritance rule, #24 ceiling), §1 (contested-T2 convention), §2.1–2.5 + §2.6 (core-plane and Extension plane schemas, carrying this record's basis declarations); ADR-001 v1.1.0 §2.2 (source-attribution intent).
+- **Implemented by:** SDD-001 v1.3.0 (`knowledge-service` — the gateway that computes the derivation) §3.4.3, §4.6, §9; the forthcoming solutioning-agent SDD (the `ReasoningProgress` rollup and per-target composition, §5).
 - **Coordinates with:** RBT-54 (Touch 3) — the DDR-002 additive amendments this record entailed (declared-basis carriers; `Evidence.observed_at` semantic), landed at DDR-002 v1.3.0 and discharging Pre-Acceptance Conditions 1–2 (deliberation record: `agent-loop/deliberation/ddr-002-amendment-batch/record.md`).
 - **Review of record:** the run-014 ∪ run-015 two-draw review union and cold audit — `agent-loop/runs/run-014-ddr-004/audit.md` (primary) · `agent-loop/runs/run-015-ddr-004/audit.md` (companion + union) · `agent-loop/runs/run-015-ddr-004/disposition.md` (dispositions D1–D7 + close rulings R1–R6, ratified per item, 2026-07-11/12).
 - **Grounding:** the D1 election substrate — the run-009 audit's R6 inclination entry (the derivation's corpus entry point, explicitly unruled there), the run-010 / run-011 / run-012 audits, and the run-011 union disposition (Item 1); the RBT-53 design session (per-item ratifications, 2026-07-10).
@@ -148,6 +148,7 @@ SDD-001 §3.4.3 carried this derivation as interim implemented behavior, with au
 
 | Version | Date | Ticket | Change |
 |---|---|---|---|
+| 1.3.0 | 2026-07-15 | RBT-62 | **Additive MINOR amendment — branch-(i) null-native reject (decision-bearing).** Branch (i) (§1) and §4 gain the rule that a citation of a `native_confidence` source whose own `confidence` is null is **rejected typed `CONFIDENCE_UNDERIVABLE`, fail-closed**, not inherited as a null — closing the hole where derive-or-reject totality (which guarantees branch *reachability*) still let a T2-nullable native confidence (`ObservedPattern`, `CapabilityCostEstimate`; DDR-002 §2.3/§2.6) propagate a null onto `Evidence.confidence` on the fully-mediated path. `CONFIDENCE_UNDERIVABLE` reused per its accurate class-vs-instance split: class-level unreachable-for-well-formed-planes (defense-in-depth) + instance-level live steering rejection (null-native). Decision.4 and the preamble's derive-or-reject clause updated to name the null-propagation prohibition. Coordinates with DDR-002 §7 #28 (the out-of-path graph-state presence backstop) and SDD-001 §3.4.3 (the capture-time reject execution). **Honest floor: n=0 capture traffic; the null-native path is unexercised — form fixed on design warrant, no instance yet.** References re-pinned DDR-002 v1.4.0 / SDD-001 v1.3.0; the ADR-002 v1.1.0 pin currency is out of scope here — part of the pre-existing ADR-002 v1.2.0 cascade routed to a follow-up ticket. Ratified per item 2026-07-15 (locus A; `CONFIDENCE_UNDERIVABLE` reuse). Decision-bearing. |
 | 1.2.0 | 2026-07-14 | RBT-61 | **§4 alignment + honest-floor restatement — additive, no ruling.** §4 per-class dispositions gain `Extension PlaneDefinition` = basis 2 (flat base; versioned registry ground truth, staleness is supersession): the A-3 batch ruling landed at DDR-002 v1.3.0 §2.6 and named there for this record's next touch, aligned into its owning table here — rides Decision.4's per-class declared-basis totality, no new Decision entry. §4 honest floor restated to name citation-reachability as unverified for the basis-2 classes with no designed Evidence-citation role (`DeploymentEnvironment`, `Governance`-plane, `PlaneDefinition`) and the basis-4 non-citability assumption (`RateCard`/`CostFactor`): run-018 disposition P18-5 routed the `Governance` omission; `PlaneDefinition` joined for consistency with this touch's own basis-2 addition (v1.2.0 drafting-check). No decision change; DDR-002 §2.6 ↔ §4 no-drift re-verified. |
 | 1.1.0 | 2026-07-13 | RBT-54 | Conditions discharge — Pre-Acceptance Conditions 1–2 discharged by the DDR-002 v1.3.0 additive amendment batch (Condition 1: declared-basis carriers, §2 preamble + §2.1–2.5 annotations + §2.6 `confidence_basis` + checks #26/#27; Condition 2: the `Evidence.observed_at` capture-instant clarification at DDR-002 §4 — the preferred path, no new field). Status change rides the same landing per RBT-53 close ruling R1: **ACCEPTED-WITH-CONDITIONS → ACCEPTED.** §3/§4/§6/Pre-Acceptance/Reconciliation conditional phrasings resolved to earned tense; §4 omission semantics aligned to the landed carriers (a label without a declared basis fails registration; non-citability declared, never inferred — drafting-check adjudication A-5); References refreshed (DDR-002 v1.3.0; SDD-001 v1.2.0). The constants standing condition is unchanged — non-blocking, ongoing §6 governance. |
 | 1.0.0 | 2026-07-12 | RBT-53 | First ACCEPTED-WITH-CONDITIONS — two-draw review union (run-014 ∪ run-015, gen-5, cold audit; union validity 39/44; 44/44 rulings, disposition D1–D7, and close rulings R1–R6 ratified per item, 2026-07-11/12; acceptance carriers: `agent-loop/runs/run-014-ddr-004/audit.md` + `agent-loop/runs/run-015-ddr-004/audit.md` + `agent-loop/runs/run-015-ddr-004/disposition.md`). Conditions = the two DDR-002 amendment prerequisites (Pre-Acceptance Conditions 1–2, tracked on RBT-54 Touch 3); the constants standing condition stays non-blocking as authored; the three-hat-review condition is discharged by this review. Merge of this revision is the acceptance act; the ACCEPTED-WITH-CONDITIONS → ACCEPTED status change rides the RBT-54 Touch 3 landing. PROPOSED → ACCEPTED-WITH-CONDITIONS. |

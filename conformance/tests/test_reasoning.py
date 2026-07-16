@@ -7,8 +7,9 @@
 # Description: Validator-correctness tests for the Reasoning-Graph conclusion
 #   assertions — DDR-002 §7 #23 (flag<->category consistency: every
 #   ReasoningProgress carries an authoritative value matching the fixed
-#   reasoner_category mapping, llm_advisory -> false / all others -> true).
-#   Each assertion is exercised against its conformant + violation fixtures.
+#   reasoner_category mapping, llm_advisory -> false / all others -> true), #24
+#   (rollup upper bound), and #28 (Evidence.confidence presence). Each assertion
+#   is exercised against its conformant + violation fixtures.
 # Standards: ENG-STD-001 v3.2.0
 ##############################################################################
 """Tests: the RG-conclusion assertions vs. their conformant / violation fixtures."""
@@ -75,3 +76,30 @@ def test_confidence_exceeding_ceiling_is_caught(graph: Driver) -> None:
     violations = reasoning.rollup_upper_bound(graph)
     assert [v.identity for v in violations] == ["rp-overconfident"]
     assert violations[0].invariant == "DDR-002 §7 #24"
+
+
+# --- #28 Evidence.confidence presence -----------------------------------------
+def test_evidence_with_present_confidence_passes(graph: Driver) -> None:
+    # Every Evidence carries a non-null confidence — including an unlinked one —
+    # so #28 finds nothing (DDR-002 §7 #28).
+    seed(graph, fx.EVIDENCE_CONFIDENCE_CONFORMANT)
+    assert reasoning.evidence_confidence_presence(graph) == []
+
+
+def test_null_confidence_evidence_is_caught(graph: Driver) -> None:
+    # A null-confidence Evidence arrived outside the derive-or-reject capture path
+    # (which never defaults a null, DDR-004 §1) — the out-of-path shape #28 backstops.
+    seed(graph, fx.EVIDENCE_CONFIDENCE_ABSENT)
+    violations = reasoning.evidence_confidence_presence(graph)
+    assert [v.identity for v in violations] == ["ev-null-linked"]
+    assert violations[0].invariant == "DDR-002 §7 #28"
+
+
+def test_unlinked_null_confidence_evidence_is_caught(graph: Driver) -> None:
+    # #28 quantifies over ALL Evidence, not gated on SUPPORTED_BY: an unlinked
+    # null-confidence node is flagged directly, independent of whether it yet
+    # supports any conclusion (schema-legal unlinked Evidence exists, §4 / §7 #28).
+    seed(graph, fx.EVIDENCE_CONFIDENCE_ABSENT_UNLINKED)
+    violations = reasoning.evidence_confidence_presence(graph)
+    assert [v.identity for v in violations] == ["ev-null-unlinked"]
+    assert violations[0].invariant == "DDR-002 §7 #28"
