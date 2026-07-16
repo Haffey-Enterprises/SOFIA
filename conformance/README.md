@@ -40,6 +40,28 @@ landing, 1b stays `xfail` until RBT-15's gateway build.
   `property_schema` are modelled as JSON-string properties (§2.6 fixes them as
   declarations-not-edges; wire format binds at RBT-15).
 
+### v1.4.0 delta (RBT-62) — check #28
+
+Extends the catch-up harness to the DDR-002 **v1.4.0** contract (pin refreshed
+v1.3.0 → v1.4.0 in `schema_constants.py`; no new labels/props/enums — #28 reuses
+the existing confidence surface).
+
+- **1a — graph-state assertion:** #28 (`Evidence.confidence` presence) — every
+  `(:Reasoning:Evidence)` carries a non-null `confidence`. Quantified over **all**
+  `Evidence`, **not** gated on `SUPPORTED_BY`: the check fires independent of
+  whether a node yet supports any conclusion (schema-legal unlinked `Evidence`
+  exists, §4). Extends `reasoning.py` (no new module).
+- **No 1b contract.** #28 is **1a-only by ruling** — the write-time guarantee is
+  subsumed by DDR-004's derive-or-reject totality, now null-safe via the DDR-004 §1
+  branch-(i) null-native reject — so #28 carries no separate gateway write contract.
+  The null-native `CONFIDENCE_UNDERIVABLE` capture-time reject (DDR-004 §1 /
+  SDD-001 §3.4.3) is **gateway-build-scoped** (RBT-15), not staged here.
+- **Tier:** follow (the #24 class, guarding reasoning-quality integrity, not
+  ground-truth entry). It is the **out-of-path presence backstop** — the #23 pattern
+  applied to the confidence surface — and closes the null-ceiling interaction #24
+  names (an all-null supporting set escapes #24's comparator by construction; #28
+  catches the null `Evidence` directly).
+
 Increment 2 (remaining follow tier: #2–#6, #8, #10, #12, #18 + static-lint + the
 ADR-002 §6 design-review lint slice) is a later BUILD leg — not built here.
 

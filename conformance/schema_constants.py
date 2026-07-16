@@ -7,7 +7,7 @@
 # Description: Single source of truth for the DDR-002 graph-schema label,
 #   property, edge-type, and enum constants the conformance assertions and the
 #   seeded fixtures share (the M-2 fixture/real-schema parity mitigation). Values
-#   are fresh-fetched from the committed DDR-002 v1.3.0 §1-§7 — NOT from the
+#   are fresh-fetched from the committed DDR-002 v1.4.0 §1-§7 — NOT from the
 #   substrate's representative Cypher sketches. A future real-schema definition
 #   (RBT-15) is intended to source the same names from here.
 #
@@ -18,8 +18,13 @@
 #   authoritative, proposal_kind (v1.2.0); the confidence_basis declaration, the
 #   §2 four-basis enumeration + core-plane basis-resolution map, NON_CITABLE_
 #   SOURCE (v1.3.0).
-# Authority: DDR-002 v1.3.0 — docs/ddr/DDR-002-graph-schema.md, content sha256
-#   8ec413985f0eba094c815fd58f581311afacc9c083f45ae47e8d0f31bbe1bf16. This
+#   RBT-62 (v1.4.0): pin catch-up to the v1.4.0 contract, which adds §7 check #28
+#   (Evidence.confidence presence, follow tier). No new labels/props/enums — #28
+#   reuses the existing confidence surface (PROP_CONFIDENCE, EVIDENCE_LABEL,
+#   RG_LABEL, PROP_EVIDENCE_ID); the refresh is the pin + PROP_CONFIDENCE's
+#   #24/#28 co-ownership annotation only.
+# Authority: DDR-002 v1.4.0 — docs/ddr/DDR-002-graph-schema.md, content sha256
+#   2fdd403b6b5ee0477ffa2f9ab8cc7f4ef43601e413c38ed08202e9e74deaa32e. This
 #   module is a vendored snapshot of that canonical text; the pin above is what a
 #   currency check keys on (F4 / RBT-54). Re-fetch and re-verify the pin before
 #   any refresh.
@@ -27,10 +32,10 @@
 ##############################################################################
 """DDR-002 schema constants shared by conformance assertions and fixtures.
 
-Section references in comments point at the committed DDR-002 v1.3.0
+Section references in comments point at the committed DDR-002 v1.4.0
 (``docs/ddr/DDR-002-graph-schema.md``). The Increment-1 (safety-critical tier)
-surface and the RBT-48 catch-up checks (#20-#27, #15 companions) both source
-their labels/props/edges/enums here.
+surface, the RBT-48 catch-up checks (#20-#27, #15 companions), and the RBT-62
+v1.4.0 addition (#28) all source their labels/props/edges/enums here.
 """
 
 from typing import Final
@@ -121,7 +126,7 @@ PROP_APPLICABILITY_STATE: Final = "applicability_state"  # promoted-node marker 
 PROP_STATUS: Final = "status"  # lifecycle / version status (§2.3, §5, §6)
 PROP_SUPERSEDED_BY: Final = "superseded_by"  # versioned supersession pointer (§6); #22
 VERSION_STATUS_ACTIVE: Final = "active"  # the one active version per business_key (§6)
-PROP_CONFIDENCE: Final = "confidence"  # node/edge confidence scalar (§3, §4); #24
+PROP_CONFIDENCE: Final = "confidence"  # node/edge confidence scalar (§3, §4); #24/#28
 
 # CandidatePromotion direction discriminator (DDR-002 §5).
 PROP_PROPOSAL_KIND: Final = "proposal_kind"
