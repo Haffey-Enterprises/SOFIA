@@ -24,8 +24,12 @@ EventKind = Literal[
     "parse_dropped",  # emission-parsing seam rejected a malformed emission (§7)
     "coherence_skip",  # runner did not schedule the coherence sweep this pass (§6)
     "classified",  # arbiter set a finding's classification
-    "proposed_resolution",  # author proposed a fix (dry — nothing applied)
+    "proposed_resolution",  # author stub proposed a fix (dry — nothing applied)
     "proposed_escalation",  # router proposed a ticket (dry — nothing opened)
+    "author_edit",  # real author conformed a locus in the run's document copy (§9)
+    "author_refused",  # real author declined: the authority does not determine the fix
+    "author_anchor_fail",  # an edit's anchor did not match exactly once — escalated
+    "author_unresolved",  # the finding's target or named authority did not resolve
     "llm_call",  # a real LLM call completed (provenance/cost — run-prep §7)
     "llm_retry",  # a real LLM call was retried (transport, content, or reviewer re-draw)
     "hat_null",  # a reviewer re-draw was empty a second time — recorded, run continues (RBT-49 Item 2)

@@ -5,12 +5,15 @@
 #          admits them through the admission gate in a fixed deterministic order
 #          (§3) — no admission interleaves with any review. It then runs the
 #          arbiter on open/unclassified findings, snapshots the pass record at
-#          routing time, and routes; on CONTINUE the author stub acts. Dry mode
-#          throughout: resolutions and escalations are proposed and logged.
+#          routing time, and routes; on CONTINUE the author acts — the canned
+#          stub by default, the injected port on the real path. Dry mode
+#          throughout: escalations are proposed and logged, and the real author
+#          writes only the run's own document copy (run-supervision §9).
 # Scope:   Orchestration only. Judgment about "done" is in gates.route (no LLM).
-#          The only LLM judgment (the arbiter) is injected as a port; reviewers
-#          are injected via a Plan. Author, arbiter position, gates, router, the
-#          schema enums, and mode are untouched by the real-hats contract (§8).
+#          The LLM judgments (the arbiter on the exit path, the author on the
+#          write path) are injected as ports; reviewers are injected via a Plan.
+#          Arbiter position, gates, router, the schema enums, and mode are
+#          untouched by the real-hats contract (§8).
 
 from __future__ import annotations
 
@@ -21,6 +24,7 @@ from typing import Callable
 
 from agent_loop.admission import admit
 from agent_loop.arbiter import Arbiter
+from agent_loop.author import AuthorPort
 from agent_loop.gates import RouterExit, open_cbm, route
 from agent_loop.ledger import Ledger, LedgerHeader, LedgerStore, PassRecord
 from agent_loop.log import ActionLog
@@ -182,6 +186,7 @@ def run_loop(
     store: LedgerStore,
     *,
     fix_changes: dict[str, str] | None = None,
+    author: AuthorPort | None = None,
     authorities: object = None,
     design_intent: object = None,
     fetch_documents: DocumentFetcher = default_document_fetcher,
@@ -205,6 +210,11 @@ def run_loop(
         arbiter: The arbiter port (the only LLM judgment).
         store: The file-backed ledger store (fresh-fetched each pass).
         fix_changes: Author fix→doc-change map (stub path); empty by default.
+        author: The author port (the LLM on the write path). None — the default
+            — keeps the stub path exactly as it was: the canned `author_pass`
+            closes open resolvable findings against `fix_changes`, applying
+            nothing. The real path injects `LlmAuthor`, which conforms the run's
+            own document copy per run-supervision.protocol.md §9.
         authorities: Substrate passed to the arbiter (unchanged position, §8).
         design_intent: Design intent passed to the arbiter (§8).
         fetch_documents: Fresh document-set fetch (§5); placeholder by default.
@@ -344,9 +354,14 @@ def run_loop(
                 )
             return RunResult(exit_, pass_number, ledger, log)
 
-        # CONTINUE → back to the author.
+        # CONTINUE → back to the author. The port is injected on the real path
+        # (LlmAuthor, which conforms the run's document copy and escalates what
+        # it refuses); the stub path's canned author is unchanged.
         log.emit("continue", pass_number=pass_number, open_cbm=cbm)
-        author_pass(ledger, pass_number, effective_fix_changes, log)
+        if author is None:
+            author_pass(ledger, pass_number, effective_fix_changes, log)
+        else:
+            author(ledger, pass_number, log)
         store.save(ledger)
 
 

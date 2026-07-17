@@ -1045,7 +1045,11 @@ def test_run_real_integration_writes_finalized_manifest_and_log(tmp_path) -> Non
     manifest = json.loads((run_dir / "manifest.json").read_text())
     assert manifest["finalized"] is True
     assert manifest["head_sha"] == "48e031a-descendant"
-    assert len(manifest["prompt_sha256"]) == 5
+    # Six prompts pinned: the four hats, the arbiter, and the author — the
+    # author's charter is what authored the run's edits, so its hash is
+    # provenance the trust ramp is scored against (run-supervision §9).
+    assert len(manifest["prompt_sha256"]) == 6
+    assert "author.prompt.md" in manifest["prompt_sha256"]
     assert set(manifest["per_site_tokens"]) >= {
         "antagonist-LAA",
         "antagonist-SA",

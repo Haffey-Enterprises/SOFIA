@@ -3,9 +3,11 @@
 #          (run-prep.contract.md §8). Owns the six fail-loud prep gates (all
 #          before any LLM call), a gates-only validation entry point (used at
 #          prep with no LLM call), the full assembly (ledger home, real fetchers,
-#          four API-backed reviewers, real arbiter, real plan), the run manifest,
-#          and the live-log sink. Dry mode throughout; fix_changes empty;
-#          max_passes 10 (attended).
+#          four API-backed reviewers, real arbiter, real author, real plan), the
+#          run manifest, and the live-log sink. Dry mode throughout; fix_changes
+#          empty (the real author supersedes the stub's canned map, and writes
+#          only the run's own document copy — run-supervision §9); max_passes 10
+#          (attended).
 # Scope:   Orchestration + gates. The real Anthropic transport is constructed
 #          only on the launch path (build_real_transport); every function here is
 #          driven by an injected transport so no test makes a real API call.
@@ -31,6 +33,7 @@ from agent_loop.fetchers import (
     validate_substrate_manifest,
     verify_document_snapshot,
 )
+from agent_loop.author import LlmAuthor
 from agent_loop.emissions import EmissionCapture
 from agent_loop.ledger import DEFAULT_COUNTED_SEVERITIES, LedgerHeader, LedgerStore
 from agent_loop.log import ActionLog, JsonlFileSink
@@ -58,8 +61,17 @@ REVIEWER_PROMPTS: dict[ReviewerIdentity, str] = {
     IDENTITY_COHERENCE: "coherence-sweep.prompt.md",
 }
 ARBITER_PROMPT = "arbiter-classifier.prompt.md"
-# The five prompt files whose hashes the manifest records and gate 5 checks.
-ALL_PROMPT_FILES: tuple[str, ...] = tuple(REVIEWER_PROMPTS.values()) + (ARBITER_PROMPT,)
+AUTHOR_PROMPT = "author.prompt.md"
+# The six prompt files whose hashes the manifest records and gate 5 checks
+# (run-prep §7/§8 gate 5, count amended 2026-07-16). The author prompt joins the
+# set with the author port: its hash is the record of which charter authored a
+# run's edits — exactly the provenance the author's trust ramp (run-supervision
+# §9) is scored against — and gate 5 turns a missing author prompt into a prep
+# failure rather than a mid-run abort.
+ALL_PROMPT_FILES: tuple[str, ...] = tuple(REVIEWER_PROMPTS.values()) + (
+    ARBITER_PROMPT,
+    AUTHOR_PROMPT,
+)
 
 # Run-one configuration (model/params live in config, never hardcoded in the
 # transport module — run-prep §6). No sampling parameters: temperature/top_p/
@@ -376,8 +388,9 @@ def run_real(
 
     Runs the prep gates fail-loud (gate 7's one-token probe is the only prep-time
     API contact, before any reviewer or arbiter call), then assembles the ledger
-    home, real fetchers, four per-call-site API reviewers, the real arbiter, and
-    the real plan; writes the prep manifest; streams the action log to
+    home, real fetchers, four per-call-site API reviewers, the real arbiter, the
+    real author, and the real plan; writes the prep manifest; streams the action
+    log to
     `action-log.jsonl`; runs the loop (dry, fix_changes empty); and finalizes the
     manifest. On any run-path abort a `run_aborted` event is logged (and streamed)
     before the exception propagates, and the manifest is left unfinalized.
@@ -443,6 +456,25 @@ def run_real(
         reviewers[IDENTITY_EA],
         reviewers[IDENTITY_COHERENCE],
     )
+    # The author (run-supervision §9): its own call site, its own emitter, and a
+    # blast radius bounded to the run's document snapshot by construction.
+    author = LlmAuthor(
+        prompt_path=prompt_dir / AUTHOR_PROMPT,
+        emitter=build_api_emitter(
+            site_label="author",
+            model=model,
+            max_tokens=max_tokens,
+            log=log,
+            transport=transport,
+            now=now,
+            sleeper=sleeper,
+            backoff_seconds=backoff_seconds,
+            capture=capture,
+        ),
+        documents_root=documents_root,
+        substrate_fetcher=substrate_fetcher,
+        doc_ids=list(doc_ids),
+    )
     arbiter = ApiArbiter(
         prompt_path=prompt_dir / ARBITER_PROMPT,
         transport=transport,
@@ -499,6 +531,7 @@ def run_real(
             arbiter=arbiter,
             store=store,
             fix_changes={},
+            author=author,
             authorities=substrate.authorities,
             design_intent=substrate.design_intent,
             fetch_documents=doc_fetcher,

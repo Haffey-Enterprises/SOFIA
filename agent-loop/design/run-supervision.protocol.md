@@ -45,7 +45,7 @@ judgments and misses the run.
 
 1. Prep gates (run-prep contract §8) all passed — the runner enforces
    them, but confirm the manifest was written and records the expected
-   HEAD SHA (`48e031a` or its descendant) and all five prompt hashes.
+   HEAD SHA (`48e031a` or its descendant) and all six prompt hashes.
 2. Cost envelope acknowledged. Order-of-magnitude, stated honestly as
    estimate not measurement: the four distilled docs are ~145 KB ≈ ~36k
    tokens; with substrate and snapshot, each reviewer call is roughly
@@ -180,3 +180,39 @@ audit's findings-about-the-instrument (prompt defects, seam blur, arbiter
 miscalibration) route to the design docs as amendments through the normal
 ratify-then-implement path; findings-about-the-documents route to the
 Notion frontier or Linear per the standing three-surface split.
+
+## §9 — The author step (sandbox-apply semantics, attended-first)
+
+Companion to `author.prompt.md`; extends what dry mode means for the author,
+and adds its supervision streams.
+
+**What dry mode means for the author.** The author applies its conforming edits
+to the run's document working copy — `runs/<run-id>/documents/` — and nowhere
+else. The reviewed document evolves inside the run folder across passes (the
+per-pass fresh re-read picks up the edit), which is what makes review-fix-review
+mechanical rather than operator-driven. Dry mode's prohibition is unchanged in
+force, re-scoped in target: no write to the canonical corpus (`docs/`), no real
+ticket, no network write. A run's document is a snapshot copy, so writing it is
+not a canonical edit — and the fetcher already reads only
+`runs/<run-id>/documents/` (run-prep §2), so the author's blast radius is
+bounded to the run folder by construction.
+
+**First-target discipline.** Until the author has earned trust, its runs target
+only a **sandbox draft** — a review fixture or an upcoming record not yet in the
+canonical corpus — never a live canonical record. The sandbox draft is the
+author's proving ground, exactly as dry mode is the classifier's.
+
+**Author watch streams (added to §3).**
+f. **Refusal stream** — each `refuse` is the arbiter↔author seam; score it cold,
+   no abort.
+g. **Edit-then-reopen stream** — a finding the author edited that a later pass
+   reopens is the load-bearing trust signal (the edit smuggled something; the
+   re-review caught it); no abort — the loop self-corrects and oscillation halts
+   it to the operator by design.
+Abort only on an **anchor-fail storm** (edits whose `old_string` never matches —
+a prompt/assembly defect, same posture as a parse-drop storm).
+
+**Trust ramp.** The author does not advance from sandbox-only to canonical
+writes until the edit-then-reopen stream is boring across attended runs — the
+author-side analog of the classifier's unattended-trust gate. n=1 is the floor;
+state it.

@@ -35,7 +35,8 @@ Every run owns a folder: `agent-loop/runs/<run-id>/`.
   - `manifest.json` — the run manifest (§7).
   - `substrate/` — the frozen per-run substrate snapshot (§3).
   - `documents/` — the frozen per-run document snapshot, assembled at prep
-    (§2 as amended 2026-07-06; RBT-52).
+    (§2 as amended 2026-07-06; RBT-52). The author writes its conforming edits
+    to this copy and nowhere else — see `run-supervision.protocol.md` §9.
   - `emissions/` — verbatim raw LLM response bodies (§7; list entry added
     2026-07-06 correcting an omission from the 2026-07-02 §7 amendment).
   - `action-log.jsonl` — the live-streamed action log (§7).
@@ -202,7 +203,7 @@ stream is a named supervision watch. A real `Arbiter` adapter:
   - prep: run-id, created timestamp, document set (doc-ids +
     run-folder-relative snapshot paths + content SHA-256, recording what
     was actually reviewed, alongside `git rev-parse HEAD` of $SOFIA_ROOT)
-    (amended 2026-07-06, RBT-51 Item 3), prompt-file SHA-256 for all five
+    (amended 2026-07-06, RBT-51 Item 3), prompt-file SHA-256 for all six
     prompt files, substrate manifest reference, model + parameters.
   - run end: router exit, passes run, per-call-site token totals, run
     wall-clock. Per-hat cost is a first-class output — the held roster
@@ -236,7 +237,7 @@ validation. Prep gates, all fail-loud before any reviewer or arbiter call
    runs folder itself will churn.)
 3. All doc-ids in the header set resolve (one match each) via §2.
 4. `substrate/` is populated and its manifest validates (§3).
-5. All five prompt files exist and yield a non-empty `## System`.
+5. All six prompt files exist and yield a non-empty `## System`.
 6. `ANTHROPIC_API_KEY` is present in the environment.
 7. **Probe call:** prep sends one minimal message (`max_tokens: 1`)
    through the same emitter configuration (model, parameters, key) the run
