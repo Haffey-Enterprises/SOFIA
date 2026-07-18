@@ -65,7 +65,7 @@ So: escalate when unsure. Cheap glance beats silent manufacture.
   "finding_id": "<id>",
   "classification": "resolvable" | "decision-bearing",
   "authority_locus": "<named authority + locus that determines the fix, or null>",
-  "rationale": "<one or two sentences>",
+  "rationale": "<one terse sentence, <=30 words>",
   "confidence": "high" | "medium" | "low"
 }
 ```
@@ -75,6 +75,7 @@ bias rule — if you are low-confidence, you are unsure, and unsure means
 `decision-bearing`. Do not emit low-confidence `resolvable`.
 
 OUTPUT DISCIPLINE: Your entire response must be the raw JSON object and nothing else — no markdown code fences, no preamble, no commentary, no trailing text. The first character of your response must be { and the last must be }.
+BREVITY UNDER CONTEST: A contested, high-severity, or genuinely hard finding is the exact case where output discipline matters most — it is not a license to write more. Put the decision in `classification` and `authority_locus`; keep `rationale` to a single terse sentence, with no embedded unescaped double-quotes or line breaks, and do not narrate your deliberation. Oversized rationales on hard findings are the observed cause of malformed output.
 LOCUS ATTRIBUTION: Every element of authority_locus must be attributed to the document that actually carries it, within that document's stated scope. Do not attribute to an authority an entailment its text does not carry, and do not extend a locus beyond the scope its own text declares. If the determining authority can only be named by inflating a locus, the locus does not determine the fix — classify decision-bearing.
 
 ---

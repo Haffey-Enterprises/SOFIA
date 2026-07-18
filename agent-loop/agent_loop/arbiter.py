@@ -7,9 +7,11 @@
 # Scope:   A port (Arbiter protocol) so the skeleton can drive it deterministically.
 #          CannedArbiter returns each planted finding's expected classification —
 #          the only way to satisfy both "the only LLM judgment" and
-#          "deterministic across repeated runs". LlmArbiter is the production
-#          seam built to arbiter-classifier.prompt.md; it is NOT invoked in the
-#          skeleton and makes no network call (no LLM here, by design).
+#          "deterministic across repeated runs". The production arbiter is
+#          transport.ApiArbiter, which loads arbiter-classifier.prompt.md at run
+#          time; this module holds the port and the canned adapter only (no LLM
+#          here, by design). The retired LlmArbiter/ARBITER_SYSTEM_PROMPT seam
+#          (a never-wired duplicate ApiArbiter superseded) is gone as of RBT-67.
 
 from __future__ import annotations
 
@@ -119,65 +121,4 @@ class CannedArbiter:
             )
         raise KeyError(
             f"no canned verdict for finding id {finding.id!r} and no default set"
-        )
-
-
-# The production system prompt, verbatim contract from arbiter-classifier.prompt.md.
-# Held here so the LlmArbiter adapter is built against a stable spec. NOT used in
-# the skeleton run.
-ARBITER_SYSTEM_PROMPT = """\
-You are the Arbiter-Classifier in a design-review loop. You receive ONE finding
-raised against a design document, together with the set of already-ratified
-canonical authorities and the stated design intent. Your only task is to decide
-whether that finding can be resolved purely by conforming to authority that
-already exists, or whether resolving it requires a decision that has not been made.
-
-Output one of exactly two classifications: `resolvable` or `decision-bearing`.
-
-Hard rules:
-1. Classify `resolvable` only if you can name the specific authority + locus that
-   determines the fix. If you cannot name it, it is not resolvable.
-2. If resolving requires selecting among two or more conforming options that
-   authority does not disambiguate -> decision-bearing.
-3. If the finding exposes a gap or silence in authority -> decision-bearing.
-4. If two authorities conflict and none is higher -> decision-bearing.
-5. Do not propose or apply a fix. Classification only.
-6. Do not judge whether the loop has converged. Not your job.
-
-Bias: when unsure, classify decision-bearing. A false negative silently
-manufactures the operator's alignment (invisible, unrecoverable); a false
-positive merely costs one glance. Escalate when unsure.
-
-Output JSON only:
-{"finding_id","classification","authority_locus","rationale","confidence"}
-Do not emit low-confidence `resolvable`.
-"""
-
-
-class LlmArbiter:
-    """Production arbiter seam — built to the prompt, NOT wired in the skeleton.
-
-    Requires an injected LLM client (a callable taking system+user messages and
-    returning the model's JSON string). The skeleton never constructs this with
-    a real client and never calls it, so no network traffic and no
-    nondeterminism enters the acceptance suite. It exists so the runner is
-    written against a stable production interface.
-    """
-
-    def __init__(self, client: object | None = None) -> None:
-        """Bind an LLM client (None in the skeleton)."""
-        self._client = client
-
-    def classify(
-        self, finding: Finding, authorities: object, design_intent: object
-    ) -> ArbiterResult:
-        """Classify via the LLM. Unavailable until a client is wired (dry mode)."""
-        if self._client is None:
-            raise NotImplementedError(
-                "LlmArbiter has no client wired — the skeleton runs on "
-                "CannedArbiter in dry mode. Wiring the real classifier is a "
-                "separate, gated step."
-            )
-        raise NotImplementedError(
-            "LLM classification is intentionally not implemented in the skeleton."
         )
