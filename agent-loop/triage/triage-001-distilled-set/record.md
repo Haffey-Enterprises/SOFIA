@@ -330,6 +330,8 @@ Live defect: DDR-003 — the corpus's most-cited forthcoming document — appear
 
 ## Appendix A — Charter: KG-entry-governance ADR (authoring-session substrate)
 
+> **Resolved (RBT-59, 2026-07-17):** the "KG-entry-governance ADR" this charter scopes is now **ADR-008 (Ground-Truth Mutation Governance)**, ACCEPTED v1.0.0. The charter text below is preserved as the authoring-session substrate; ADR-008 is the authority of record.
+
 1. **Principle:** human-accountable checkpoint on mutation of enterprise ground truth — entry AND un-promotion — calibrated per source class.
 2. **Scope:** entry paths (ingestion, distillation, promotion) + un-promotion/retraction (T-05 Leg 4). Supplies retraction the upstream authority DDR-002 §7 #21 currently lacks.
 3. **Per-source-class calibration (Tad's stated intent):** authoritative-source ingestion → verification-weight checkpoint on the captured representation; operational distillation → substantive review of the distilled judgment (noisy-signal pollution is the driving risk); promotion → the existing EA gate as the already-built instance.

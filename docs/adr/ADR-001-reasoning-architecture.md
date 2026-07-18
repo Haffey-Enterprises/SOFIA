@@ -9,8 +9,8 @@
 |---|---|
 | **Document ID** | ADR-001 |
 | **Status** | ACCEPTED |
-| **Version** | 1.1.0 |
-| **Date** | 2026-07-03 |
+| **Version** | 1.2.0 |
+| **Date** | 2026-07-17 |
 | **Authors** | Thaddeus Haffey (Executive Architect) |
 | **Supersedes** | None — establishes new platform principle |
 
@@ -170,6 +170,7 @@ Conformance with this ADR is verified at architecture review. The following chec
 
 | Version | Date | Ticket | Change |
 |---|---|---|---|
+| 1.2.0 | 2026-07-17 | RBT-59 | Forward-note (no decision change). ADR-008 (Ground-Truth Mutation Governance), ACCEPTED v1.0.0, generalizes and homes §2.5's EA-gated-promotion authority as the general ground-truth-mutation authority; §2.5 remains valid as the reasoning-consolidation sub-case. No change to this record's decision. Pin cascade (records still pinning the pre-bump versions) routed to a follow-up ticket. |
 | 1.1.0 | 2026-07-03 | — | Triage-001 amendment batch (record: `agent-loop/triage/triage-001-distilled-set/record.md`). §2.2 retires the "illustrative" hedge — commits the reasoning-capture *categories* (conclusion / evidence / rejected alternative) and cites DDR-002 §4's now-ratified canonical vocabulary rather than deferring it (T-11); §2.2 altitude parenthetical signposts that structural containers, retention-mechanism nodes, and the Artifact family route their authority through DDR-001/DDR-002 §4–§5, not this capture contract (T-24); §6 checks 2 and 6 bind category-first, rename-safe against DDR-002 §4 (T-11); §7 Cross-References gains the Directives-Context-Envelope Bridge status marker (forthcoming, unauthored) (T-14); §6 Enforcement adds the three-hat-review fencing clause — platform-development governance, not a graph-captured gate (T-19). Clarification / reconciliation — no decision change. |
 | 1.0.0 | 2026-07-01 | — | Distilled to standalone contract form; ledger coupling and review-diary scaffolding removed; documentation-purity pass folded in (acronym expansions, downstream doc-IDs back-filled, illustrative RG-vocabulary refreshed to the canonical DDR-002 set, Date/organization normalized); no decision change. |
 | 1.0.0 | 2026-06-03 | — | Original authoring; ACCEPTED. |
