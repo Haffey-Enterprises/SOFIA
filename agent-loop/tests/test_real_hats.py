@@ -27,6 +27,7 @@ from agent_loop.ledger import (
 )
 from agent_loop.log import ActionLog
 from agent_loop.real_hats import (
+    _extract_json_array,
     assemble_user_prompt,
     build_real_hat_plan,
     build_real_reviewer,
@@ -49,6 +50,7 @@ from agent_loop.reviewers import (
 from agent_loop.runner import run_loop
 
 DESIGN_DIR = Path(__file__).resolve().parent.parent / "design"
+RUNS_DIR = Path(__file__).resolve().parent.parent / "runs"
 
 
 # --- helpers -----------------------------------------------------------------
@@ -390,13 +392,161 @@ def test_bare_json_array_still_parses() -> None:
     assert len(findings) == 1
 
 
-def test_prose_preamble_still_drops() -> None:
+# --- RBT-70: reviewer parse-seam array salvage (envelope-tolerant, strict item)
+
+
+def test_extract_json_array_covers_the_scan_branches() -> None:
+    # Directly exercise the salvage helper's balanced, string/escape-aware scan.
+    # A clean '['-first emission has no surrounding text.
+    assert _extract_json_array('[{"a": 1}]') == ('[{"a": 1}]', False)
+    # Trailing commentary after a valid array is surrounding text (salvaged).
+    assert _extract_json_array('[{"a": 1}]  done') == ('[{"a": 1}]', True)
+    # Nested arrays plus '[' / ']' and an escaped quote INSIDE a string value
+    # must not throw off the depth count — the whole span is returned intact.
+    payload = '[{"claim": "has ] and [ and \\" quote", "n": [1, 2]}]'
+    assert _extract_json_array("preamble " + payload) == (payload, True)
+    real = '[{"a": 1}]'
+    # A stray UNCLOSED '[' in the preamble never balances; the real array is
+    # found at the next '[' (the `end is None` skip path).
+    assert _extract_json_array("see [ open note\n" + real) == (real, True)
+    # A stray BALANCED but non-JSON '[...]' in the preamble is skipped (the
+    # JSONDecodeError path), and the real array is found after it.
+    assert _extract_json_array("[not, json] then " + real) == (real, True)
+    # No array at all, a bare object, and a truncated array each salvage nothing.
+    assert _extract_json_array("pure prose, no array") == (None, False)
+    assert _extract_json_array('{"a": 1}') == (None, False)
+    assert _extract_json_array('[{"a": 1}') == (None, False)
+
+
+def test_prose_preamble_before_array_is_salvaged() -> None:
+    # RBT-70: a reviewer that narrates before its findings array no longer parse-
+    # drops — the array is salvaged, findings admitted, and the preamble-stripped
+    # event fires so the residual rate stays observable.
     log = ActionLog()
     raw = "Here are the findings:\n" + json.dumps([_json_finding("c", bad_source=False)])
     findings = parse_emissions(IDENTITY_LAA, raw, log, emission_path="e.txt")
+    assert len(findings) == 1 and findings[0].claim == "c"
+    assert log.of_kind("parse_dropped") == []
+    stripped = log.of_kind("reviewer_output_preamble_stripped")[0]
+    assert stripped.detail["reviewer"] == IDENTITY_LAA.label
+    assert stripped.detail["finding_count"] == 1
+
+
+def test_clean_first_char_array_emits_no_preamble_event() -> None:
+    # A '['-first emission is clean transport: parsed, no preamble event.
+    log = ActionLog()
+    findings = parse_emissions(
+        IDENTITY_LAA, json.dumps([_json_finding("c", bad_source=False)]), log
+    )
+    assert len(findings) == 1
+    assert log.of_kind("reviewer_output_preamble_stripped") == []
+    assert log.of_kind("parse_dropped") == []
+
+
+def test_fenced_array_is_transport_not_a_preamble() -> None:
+    # A well-formed code fence is transport unwrapping, not a prose envelope.
+    log = ActionLog()
+    raw = "```json\n" + json.dumps([_json_finding("c", bad_source=False)]) + "\n```"
+    findings = parse_emissions(IDENTITY_LAA, raw, log)
+    assert len(findings) == 1
+    assert log.of_kind("reviewer_output_preamble_stripped") == []
+
+
+def test_genuine_malformation_still_drops() -> None:
+    # No array to salvage → the drop path is unchanged in effect (RBT-70): pure
+    # prose, a bare '{...}' object, and a truncated array each parse-drop with
+    # the "no parseable JSON array" reason and no preamble-stripped event.
+    for raw in (
+        "I could not find anything to report.",          # pure prose
+        json.dumps({"severity": "MATERIAL"}),            # bare object, no array
+        '[{"severity": "MATERIAL", "target": "DOC-A"',   # truncated, never closes
+    ):
+        log = ActionLog()
+        findings = parse_emissions(IDENTITY_LAA, raw, log, emission_path="e.txt")
+        assert findings == []
+        drop = log.of_kind("parse_dropped")[0]
+        assert drop.detail["reason"] == "no parseable JSON array"
+        assert drop.detail["emission_path"] == "e.txt"  # drop references the raw file
+        assert log.of_kind("reviewer_output_preamble_stripped") == []
+
+
+def test_stray_bracket_preamble_and_bracketed_finding_are_salvaged() -> None:
+    # RBT-70: a non-parseable '[…]' in the preamble does not shadow the real
+    # array, and a finding whose locus/claim carries '[' or ']' does not break
+    # the balanced scan.
+    log = ActionLog()
+    finding = _json_finding("§2 held under attack [checked]", bad_source=False)
+    finding["locus"] = "table row [Environment]"
+    raw = "Note [unparseable stub]:\n" + json.dumps([finding])
+    findings = parse_emissions(IDENTITY_SA, raw, log)
+    assert len(findings) == 1
+    assert findings[0].locus == "table row [Environment]"
+    assert "[checked]" in findings[0].claim
+    assert log.of_kind("reviewer_output_preamble_stripped")[0].detail["finding_count"] == 1
+
+
+def test_mis_salvaged_wrong_array_drops_per_item_never_admits() -> None:
+    # Envelope-tolerant, schema-strict: a stray '[1, 2, 3]' salvaged from prose
+    # fails per-item validation and drops — a bad finding is never admitted.
+    log = ActionLog()
+    findings = parse_emissions(IDENTITY_LAA, "noise [1, 2, 3] tail", log)
     assert findings == []
-    drop = log.of_kind("parse_dropped")[0]
-    assert drop.detail["emission_path"] == "e.txt"  # drop references the raw file
+    assert len(log.of_kind("parse_dropped")) == 3  # one per non-object item
+    # The salvage happened (preamble stripped), but strictness caught the items.
+    assert log.of_kind("reviewer_output_preamble_stripped")[0].detail["finding_count"] == 3
+
+
+def test_run029_coherence_preamble_fixture_is_salvaged() -> None:
+    # The captured defect (RBT-70): run-029 pass-2 coherence narrated a
+    # reconciliation preamble before its findings array, parse-dropped, and
+    # tripped a false InstrumentCompromisedError. The seam now salvages it.
+    raw = (
+        RUNS_DIR / "run-029-adr-008-rbt69" / "emissions" / "pass02-coherence-1.txt"
+    ).read_text(encoding="utf-8")
+    log = ActionLog()
+    findings = parse_emissions(
+        IDENTITY_COHERENCE, raw, log, emission_path="pass02-coherence-1.txt"
+    )
+    assert len(findings) == 6  # all six captured findings are well-formed
+    assert log.of_kind("parse_dropped") == []
+    stripped = log.of_kind("reviewer_output_preamble_stripped")[0]
+    assert stripped.detail["reviewer"] == IDENTITY_COHERENCE.label
+    assert stripped.detail["finding_count"] == 6
+
+
+def test_salvaged_emission_meeting_floor_does_not_trigger_redraw() -> None:
+    # Guard non-regression: a preamble-wrapped emission that meets the POSITIVE
+    # floor behaves normally through build_real_reviewer — salvaged on the first
+    # draw, no below-floor re-draw, no hat_null, no spurious compromise.
+    emission = "Reading the current state first.\n\n" + json.dumps(
+        [
+            _json_finding("held under attack A", severity="POSITIVE"),
+            _json_finding("held under attack B", severity="POSITIVE"),
+            _json_finding("a real defect"),
+        ]
+    )
+    calls: list[str] = []
+
+    def emitter(system: str, user: str) -> str:
+        calls.append(user)
+        return emission
+
+    reviewer = build_real_reviewer(
+        IDENTITY_LAA, DESIGN_DIR / "antagonist-LAA.prompt.md", emitter
+    )
+    log = ActionLog()
+    findings = reviewer.run(
+        1,
+        Ledger(header=_header()),
+        DocumentSet(documents={"DOC-A": "x"}),
+        Substrate(authorities={}, design_intent={}),
+        log,
+    )
+    assert len(findings) == 3
+    assert len(calls) == 1  # met the floor on the first draw — no re-draw
+    assert log.of_kind("llm_retry") == []
+    assert log.of_kind("hat_null") == []
+    assert log.of_kind("reviewer_output_preamble_stripped")[0].detail["finding_count"] == 3
 
 
 # --- §9f: malformed-emission drop --------------------------------------------
