@@ -51,12 +51,23 @@ _REFUSE_KEYS = ("reason", "confidence")
 # storm: a prompt or assembly defect, not a finding-level one. Fail loud.
 _ANCHOR_STORM_MIN = 2
 
+# The parse-fail storm threshold (RBT-67, run-027). A single parse-fail after a
+# content retry is a finding-level defect — logged, escalated (Change 3), the
+# run continues on the pass's other resolvables. A pass in which at least this
+# many findings parse-failed and none applied is the same prompt/assembly-defect
+# signal as the anchor storm, so it reuses the anchor-storm threshold.
+_PARSE_STORM_MIN = _ANCHOR_STORM_MIN
 
-class AuthorParseError(RuntimeError):
-    """The author output could not be parsed after its one content retry.
 
-    Mirrors `ArbiterParseError`: aborting is correct because the alternative is
-    fabricating an edit, and an edit lands on the write path.
+class AuthorParseStormError(RuntimeError):
+    """Enough findings this pass produced unparseable output that none applied.
+
+    The parse-side twin of `AuthorAnchorStormError` (RBT-67, run-027, where the
+    first live author-fire aborted the whole run on one finding's malformed
+    envelope). A single parse-fail is now escalated per finding and the run
+    continues; only a pass-wide storm — at least `_PARSE_STORM_MIN` parse-fails
+    with nothing applied — aborts, because that is a prompt or assembly defect,
+    not a finding-level one, and continuing would burn passes producing nothing.
     """
 
 
@@ -91,7 +102,7 @@ class AuthorEdit:
         old_string: The verbatim, unique anchor in the current document.
         new_string: The conformed replacement.
         authority_conformed: The authority + locus the edit derives from.
-        rationale: One or two sentences.
+        rationale: One terse sentence (<=~30 words).
         confidence: 'high' | 'medium'.
     """
 
@@ -138,24 +149,100 @@ class AuthorRefusal:
             raise ValueError("a refusal must give a reason")
 
 
-# --- parse seam: strict, never fabricate -------------------------------------
+# --- parse seam: envelope-tolerant, schema-strict, never fabricate -----------
 
 
-def _parse_author_output(raw_text: str, finding_id: str) -> AuthorEdit | AuthorRefusal | None:
+def _balanced_object_span(text: str, start: int) -> int | None:
+    """End index (exclusive) of the balanced `{...}` beginning at `text[start]`.
+
+    String- and escape-aware, so a brace inside a JSON string value (a `{` in the
+    document text an edit carries, say) does not throw off the depth count.
+    Returns None if the object never closes (a truncated tail).
+    """
+    depth = 0
+    in_string = False
+    escaped = False
+    for i in range(start, len(text)):
+        ch = text[i]
+        if in_string:
+            if escaped:
+                escaped = False
+            elif ch == "\\":
+                escaped = True
+            elif ch == '"':
+                in_string = False
+            continue
+        if ch == '"':
+            in_string = True
+        elif ch == "{":
+            depth += 1
+        elif ch == "}":
+            depth -= 1
+            if depth == 0:
+                return i + 1
+    return None
+
+
+def _extract_json_object(raw_text: str) -> tuple[str | None, bool]:
+    """The first balanced, JSON-parseable `{...}` in the fence-stripped text.
+
+    Defense-in-depth for run-027 (RBT-67): the first live author-fire aborted
+    because the model narrated ~1,900 characters of reasoning before an otherwise
+    valid JSON edit, and the strict whole-string parse failed at character 0. The
+    prompt (gen-10) forbids that preamble; this salvages the edit when it slips
+    through anyway, and the caller logs that it had to (so the prompt fix's
+    residual rate stays observable rather than silently masked).
+
+    Fence-unwraps first (transport unwrapping), then scans each `{` in turn and
+    returns the first balanced span that `json.loads` accepts — trying successive
+    braces makes it robust to a stray `{` in the prose preamble. Returns
+    `(object_text, had_surrounding_text)`, or `(None, False)` when the text holds
+    no parseable object (genuinely malformed — the caller escalates it).
+    """
+    text = strip_code_fences(raw_text)
+    for start, ch in enumerate(text):
+        if ch != "{":
+            continue
+        end = _balanced_object_span(text, start)
+        if end is None:
+            continue
+        candidate = text[start:end]
+        try:
+            json.loads(candidate)
+        except json.JSONDecodeError:
+            continue
+        had_surround = bool(text[:start].strip()) or bool(text[end:].strip())
+        return candidate, had_surround
+    return None, False
+
+
+def _parse_author_output(
+    raw_text: str, finding_id: str, log: ActionLog | None = None
+) -> AuthorEdit | AuthorRefusal | None:
     """Parse author output into one action, or None if malformed.
 
-    Strict, mirroring `_parse_arbiter_output`: the action must be one of the two
-    schema objects with all its fields and valid vocabulary — every invariant
-    above is enforced by construction. `finding_id` is stamped from the actual
-    finding, never trusted from the model's echo. Any defect returns None (a
-    content malformation), never a fabricated edit. The raw text is
-    fence-unwrapped first (transport unwrapping only).
+    The action must be one of the two schema objects with all its fields and
+    valid vocabulary — every invariant above is enforced by construction.
+    `finding_id` is stamped from the actual finding, never trusted from the
+    model's echo. Any defect returns None (a content malformation), never a
+    fabricated edit.
+
+    Tolerant on the envelope only, not the schema (RBT-67, run-027): the JSON
+    object is extracted from any surrounding prose (`_extract_json_object`), so a
+    leading reasoning preamble no longer defeats an otherwise-valid edit; when a
+    preamble had to be stripped and the object parses, an
+    `author_output_preamble_stripped` event is logged (if a `log` is given) so
+    the residual rate stays visible. The schema check that follows is unchanged
+    and strict.
     """
+    obj_text, had_surround = _extract_json_object(raw_text)
+    if obj_text is None:
+        return None
     try:
-        data = json.loads(strip_code_fences(raw_text))
+        data = json.loads(obj_text)
         action = data["action"]
         if action == "edit":
-            return AuthorEdit(
+            result: AuthorEdit | AuthorRefusal = AuthorEdit(
                 finding_id=finding_id,
                 target=data["target"],
                 old_string=data["old_string"],
@@ -164,29 +251,36 @@ def _parse_author_output(raw_text: str, finding_id: str) -> AuthorEdit | AuthorR
                 rationale=data["rationale"],
                 confidence=data["confidence"],
             )
-        if action == "refuse":
-            return AuthorRefusal(
+        elif action == "refuse":
+            result = AuthorRefusal(
                 finding_id=finding_id,
                 reason=data["reason"],
                 confidence=data["confidence"],
             )
-        return None
+        else:
+            return None
     except (json.JSONDecodeError, KeyError, TypeError, ValueError):
         return None
+    if had_surround and log is not None:
+        log.emit("author_output_preamble_stripped", finding_id=finding_id)
+    return result
 
 
 def _diagnose_author_defect(raw_text: str) -> str:
     """Name why author output failed to parse, for a corrective retry message.
 
     Read-only diagnosis mirroring `_parse_author_output`'s checks WITHOUT
-    changing the parser's strictness.
+    changing the parser's strictness — including its envelope tolerance, so the
+    retry names the real defect (a missing key, not "not JSON", when a parseable
+    object was present all along).
     """
-    try:
-        data = json.loads(strip_code_fences(raw_text))
-    except json.JSONDecodeError:
-        return "the previous output was not valid JSON"
-    if not isinstance(data, dict):
-        return "the previous output was not a JSON object"
+    obj_text, _ = _extract_json_object(raw_text)
+    if obj_text is None:
+        return "the previous output contained no parseable JSON object"
+    # `_extract_json_object` returns only a `{...}` span that already parsed, so
+    # this reparse cannot fail and yields a dict — the remaining defects are
+    # schema (wrong action, missing key, bad vocabulary), not envelope.
+    data = json.loads(obj_text)
     action = data.get("action")
     if action not in ("edit", "refuse"):
         return "the previous output's 'action' was not 'edit' or 'refuse'"
@@ -338,7 +432,9 @@ class LlmAuthor:
     authority resolved from the run's frozen substrate and document snapshot,
     and the current text of the finding's target document(s) from the run's own
     `documents/` copy. Malformed output gets ONE corrective content retry — the
-    second attempt's user block names the actual defect (logged) — then aborts.
+    second attempt's user block names the actual defect (logged) — then the
+    finding is escalated to the operator, never fabricated (Change 3, RBT-67); a
+    pass-wide storm of such give-ups aborts (`AuthorParseStormError`).
     """
 
     def __init__(
@@ -376,8 +472,9 @@ class LlmAuthor:
         document copies; the caller persists the ledger.
 
         Raises:
-            AuthorParseError: On malformed output after one content retry.
             AuthorAnchorStormError: When every attempted edit anchor-failed.
+            AuthorParseStormError: When `_PARSE_STORM_MIN`+ findings produced
+                unparseable output and none applied.
         """
         outcomes = [
             self._author_one(ledger, finding, pass_number, log)
@@ -388,6 +485,18 @@ class LlmAuthor:
             raise AuthorAnchorStormError(
                 f"pass {pass_number}: {anchor_fails} attempted edits all failed "
                 "their exact-single-match anchor check and none applied — the "
+                "author prompt or its assembly is defective, refusing to burn "
+                "further passes"
+            )
+        # Parse-fail storm (RBT-67, run-027): a single parse-fail is escalated
+        # per finding in `_author_one` and the pass continues; only a pass-wide
+        # storm with nothing applied aborts — the parse-side twin of the anchor
+        # storm above, reusing its threshold.
+        parse_fails = outcomes.count("parse_fail")
+        if parse_fails >= _PARSE_STORM_MIN and "edit" not in outcomes:
+            raise AuthorParseStormError(
+                f"pass {pass_number}: {parse_fails} findings produced output that "
+                "could not be parsed after a content retry and none applied — the "
                 "author prompt or its assembly is defective, refusing to burn "
                 "further passes"
             )
@@ -433,6 +542,18 @@ class LlmAuthor:
         action = self._call(
             finding, _assemble_author_user(finding, reference, authority_texts, documents), log
         )
+        if action is None:
+            # Malformed after one content retry (Change 3, RBT-67): escalate this
+            # one finding, never fabricate — and let the pass continue on its
+            # other resolvables. A pass-wide storm is caught back in `__call__`.
+            log.emit(
+                "author_parse_fail",
+                finding_id=finding.id,
+                reason="author output could not be parsed after one content retry",
+                authority_locus=finding.authority_locus,
+            )
+            _escalate(finding)
+            return "parse_fail"
         if isinstance(action, AuthorRefusal):
             log.emit(
                 "author_refused",
@@ -447,17 +568,19 @@ class LlmAuthor:
 
     def _call(
         self, finding: Finding, base_user: str, log: ActionLog
-    ) -> AuthorEdit | AuthorRefusal:
-        """One author call with one corrective content retry, then abort.
+    ) -> AuthorEdit | AuthorRefusal | None:
+        """One author call with one corrective content retry.
 
-        Mirrors `ApiArbiter.classify`: the transport retry, the abort behaviour,
-        and the parser's strictness are the emitter's and the parse seam's; only
-        the retry's user block is made corrective.
+        Mirrors `ApiArbiter.classify` for the transport retry and the parse seam;
+        only the retry's user block is made corrective. Returns the parsed action,
+        or None when both attempts are malformed — the caller escalates that one
+        finding rather than fabricating an edit (Change 3, RBT-67); a pass-wide
+        storm of such give-ups aborts in `__call__`.
         """
         user = base_user
         for attempt in (1, 2):
             raw_text = self._emitter(self._system, user)
-            parsed = _parse_author_output(raw_text, finding.id)
+            parsed = _parse_author_output(raw_text, finding.id, log)
             if parsed is not None:
                 return parsed
             if attempt == 1:
@@ -470,10 +593,7 @@ class LlmAuthor:
                     defect=defect,
                 )
                 user = base_user + _author_repair_suffix(defect)
-        raise AuthorParseError(
-            f"author output for finding {finding.id!r} malformed after one "
-            "content retry — aborting rather than fabricating an edit"
-        )
+        return None
 
     def _apply(
         self,

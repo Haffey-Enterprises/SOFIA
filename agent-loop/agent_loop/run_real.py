@@ -97,11 +97,15 @@ RUN_ONE_MAX_PASSES = 10
 # narrative saturation): the Contract's empty-array-is-a-protocol-violation floor
 # (R-E1, prompt-side — also resolving the standing 2-POSITIVE re-draw-floor
 # contradiction) plus a static recency review directive appended last in §5
-# assembly (R-E2). Rule 8 stays as landed.
+# assembly (R-E2). Rule 8 stays as landed. gen-10 ports gen-9's arbiter
+# output-discipline hardening to the author prompt (write path) after run-027's
+# first live author-fire aborted on a preamble-before-JSON output; it is paired
+# in code with a preamble-tolerant author parser and a parse-fail-escalates
+# policy (RBT-67), the code halves of the same fix.
 # The rationale cites by meaning: operational artifacts never carry ticket
 # numbers — ticket linkage lives in tickets, carriers, and audits.
 CALIBRATION = {
-    "generation": 9,
+    "generation": 10,
     "rationale": (
         "gen-4: severity/cap discipline restated in-place in all four reviewer "
         "prompts — a held check is POSITIVE-class, never re-labeled a defect to "
@@ -119,7 +123,15 @@ CALIBRATION = {
         "gen-9: arbiter output-discipline hardening — rationale capped to one "
         "terse sentence and a brevity-under-contest directive appended, after "
         "three malformed-JSON arbiter content-retries on oversized prose outputs "
-        "for genuinely-contested findings (r3/r5), zero on easy findings"
+        "for genuinely-contested findings (r3/r5), zero on easy findings; "
+        "gen-10: the same output-discipline hardening ported to the author prompt "
+        "(write path) — rationale capped to one terse sentence, a single-outlet-"
+        "for-reasoning rule, and a brevity-under-contest directive, after the "
+        "first live author-fire aborted when the model narrated ~1,900 chars of "
+        "deliberation before an otherwise-valid JSON edit (run-027); paired in "
+        "code with a preamble-tolerant author parser (logged) and a parse-fail-"
+        "escalates-not-aborts policy so one malformed envelope no longer preempts "
+        "the pass's other resolvables"
     ),
 }
 
