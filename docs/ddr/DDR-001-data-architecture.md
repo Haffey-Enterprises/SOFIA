@@ -8,12 +8,12 @@
 | Field | Value |
 |---|---|
 | **Document ID** | DDR-001 |
-| **Version** | 1.4.0 |
+| **Version** | 1.5.0 |
 | **Status** | ACCEPTED |
-| **Date** | 2026-07-17 |
+| **Date** | 2026-07-18 |
 | **Authors** | Thaddeus Haffey (Executive Architect) |
 | **Supersedes** | None |
-| **References** | ADR-001 v1.1.0; ADR-002 v1.1.0 |
+| **References** | ADR-001 v1.2.0; ADR-002 v1.1.0; ADR-008 v1.0.0 |
 
 ---
 
@@ -186,7 +186,7 @@ Downstream SDDs verify against:
 
 ## Cross-References
 
-- **Upstream implemented:** ADR-001 v1.1.0 (spine), ADR-002 v1.1.0 (system of record).
+- **Upstream implemented:** ADR-001 v1.2.0 (spine), ADR-002 v1.1.0 (system of record).
 - **Sibling (forward):** DDR-003 — feedback-loop governance (**forthcoming, unauthored**); the architecture/governance split is settled (this DDR owns the data-path, DDR-003 owns governance).
 - **Downstream consumers:** DDR-002 — graph schema; SDDs — knowledge-service, snapshot-service. *(One-way dependency: DDR-002 depends on this DDR; DDR-001 routes schema concerns forward to DDR-002 but does not depend on it.)*
 - **Standards:** house conventions — deployment-runtime exception (ADR-002 §2.2); data-classification tiers.
@@ -209,6 +209,7 @@ DDR-001 is substrate for DDR-002 (schema), DDR-003's scope boundary, and the SDD
 
 | Version | Date | Ticket | Change |
 |---|---|---|---|
+| 1.5.0 | 2026-07-18 | RBT-68 | **Pin-currency re-pin sweep — no decision change.** References + *Cross-References* Upstream-implemented pin refreshed to the version the RBT-59 / ADR-008 pointer-resolution batch produced: ADR-001 v1.1.0 → v1.2.0. **ADR-008 v1.0.0** added to the References metadata table (the RBT-59 batch resolved Decision.5 / conformance-check 4's entry-checkpoint routing to ADR-008 as accepted upstream authority but left the formal table-pin to lag, exactly as the RBT-53 / DDR-004 References add lagged to RBT-54). The **ADR-002 v1.1.0** pin is deliberately left as-is — the ADR-002 v1.1.0 → v1.2.0 currency cascade is tracked separately on RBT-66, not folded here. No content the pins carry changed; a pure currency touch does not restale sibling pins. MINOR per the corpus no-patch-species convention. |
 | 1.4.0 | 2026-07-17 | RBT-59 | **KG-entry-governance ADR pointer resolved to ADR-008 (Ground-Truth Mutation Governance), ACCEPTED v1.0.0 in this batch; no decision change.** Decision.5's broader-all-KG-entry checkpoint routing and conformance-check 4's entry-checkpoint routing resolve from the "forthcoming KG-entry-governance ADR" to ADR-008, now the accepted upstream authority. Routing prose and scope preserved; the historical v1.3.0 Triage-001 Change-Log row recording the original T-02 routing is left as authored. Pin cascade (records still pinning the pre-bump versions) routed to a follow-up ticket. No decision change. |
 | 1.3.0 | 2026-07-15 | RBT-63 | **Coherence rider (ADR-002 v1.2.0 runtime amendment; no decision change):** the Substitution-Contract Capability Bar and the §Standards runtime reference re-point to ADR-002 §2.2's now environment-differentiated deployment runtime (development on managed Aura, production deferred); "self-managed GKE" as the fixed runtime no longer holds. Cross-reference realignment only. |
 | 1.3.0 | 2026-07-03 | — | Triage-001 amendment batch (record: `agent-loop/triage/triage-001-distilled-set/record.md`). **Aggregate-confidence re-homed (T-01):** the session-root bullet drops "carries aggregate confidence"; confidence is per-conclusion (`ReasoningProgress` rollup, DDR-002 §4), any session-level aggregate a read-time traversal affordance, never a stored property — the per-Solution comparison intent moves to DDR-002's Named Gaps. **KG-entry checkpoint scoped (T-02):** Decision.5 second clause and conformance check 4 scoped to ADR-001 §2.5's object (SOFIA's own reasoning entering encoded knowledge); the broader all-KG-entry checkpoint routed by name to the forthcoming KG-entry-governance ADR. **Feedback-loop write authority recast (T-09):** the three-writes treatment and check 7 rewritten in author/executor/authorizer terms citing amended ADR-002 §2.6; Artifact write authority homed here (ASA authors `Solution` on creation; lifecycle-transition authority routed to SDDs). Decision.7 added. |
