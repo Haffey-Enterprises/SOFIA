@@ -295,10 +295,13 @@ def _escalate(finding: Finding) -> None:
 
     The transition is re-classification to `decision-bearing`, status left
     `open`. That is the one transition that composes with `gates.route` as it
-    stands: the router already halts, unbundled, on any open decision-bearing
-    finding regardless of severity, so the refused finding reaches the operator
-    at the next pass's routing with no gate change. It also leaves oscillation
-    accounting intact — the finding stays open, so `open_cbm` does not fall and
+    stands: the router halts, unbundled, on open decision-bearing findings
+    regardless of severity once a pass's resolvable work is exhausted (RBT-67
+    reorder — an open resolvable now outranks the decision halt), so the refused
+    finding is never dropped; it surfaces to the operator on the routing after
+    the last resolvable is closed, and waits, still open, while any resolvable
+    remains. It also leaves oscillation accounting intact — the finding stays
+    open, so `open_cbm` does not fall and
     plateau still measures real progress, whereas `status="escalated"` would
     drop it out of the count (reading as progress) and out of the router's view
     (which only sees open findings) — a silent drop of a discovered decision.
