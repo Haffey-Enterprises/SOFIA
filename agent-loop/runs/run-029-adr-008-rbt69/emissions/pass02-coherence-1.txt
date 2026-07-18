@@ -1,0 +1,64 @@
+Reading the current state: the doc-change log shows ADR-008 was re-touched this pass. Several prior-pass findings are marked closed/conformed, but I sweep the text as it stands now — the ledger's closed-status is narration, not verdict. I re-verify each against the current document text.
+
+[
+{
+  "severity": "MATERIAL",
+  "target": ["ADR-008"],
+  "locus": "§7 Cross-References — 'ADR-004 (file-driven ingestion, forthcoming)' and 'DDR-003 (Feedback Loop Governance, forthcoming)'",
+  "claim": "§7 still references two unauthored forthcoming records by concrete numeric identifier — 'DDR-003 (Feedback Loop Governance, forthcoming)' and 'The forthcoming ingestion decision record (file-driven ingestion, forthcoming)' with the parenthetical 'ADR-004 (file-driven ingestion, forthcoming)' in the SDD-001 line — while the body (§1, §2.2, §2.6) names the same referents by subject only ('the forthcoming feedback-loop governance design', 'the forthcoming ingestion decision record'). The document is internally inconsistent about which naming convention it follows for the same referents, and the concrete 'ADR-004' collides with the existing DDR-004 (Inherited-Confidence Derivation) cited in the same section.",
+  "cited_authority": {
+    "kind": "coherence",
+    "ref": "ADR-008 §7 (concrete 'DDR-003 (forthcoming)' / 'ADR-004 (file-driven ingestion, forthcoming)') in conflict with ADR-008 §1/§2.2/§2.6 (subject-name form for the same referents)"
+  }
+},
+{
+  "severity": "MATERIAL",
+  "target": ["ADR-008"],
+  "locus": "§2.2 per-source-class calibration table — Environment row, 'Realization routes to' cell vs. Environment prose and §5.3",
+  "claim": "The Environment row still states its control-type as 'per-policy capture-time-frozen aging (freshness-decayed confidence derived at Evidence capture and frozen), governed by DDR-004 §6's two-tier calibration governance; no per-write gate' in the control-type cell, but the 'Realization routes to' cell reads 'Form built (DDR-004); constants contested/unvalidated (n=0)'. The table's stated control-type is now consistent with DDR-004's capture-time-frozen mechanism (§1/§3, 'never recomputed at read'), and the §2.2 Environment prose 'the plane ages by construction — freshness-decayed confidence derived at Evidence capture and frozen, never recomputed at read' agrees. This surface holds against DDR-004 and against §5.3. Reporting as a survived check, not a defect.",
+  "cited_authority": {
+    "kind": "coherence",
+    "ref": "ADR-008 §2.2 Environment row checked against DDR-004 §1/§3 (capture-time-derived, frozen, never recomputed at read) and ADR-008 §5.3 (constants held contested) — consistent"
+  }
+},
+{
+  "severity": "MATERIAL",
+  "target": ["ADR-008"],
+  "locus": "§2.3 Un-promotion authority — 'the same per-write, EA-gated, human-accountable control *authority* as promotion itself' with the interleaved qualification, vs §5.3",
+  "claim": "§2.3 now contains two near-duplicate qualifying clauses about the built retraction instance: the first states 'homed under the same per-write, EA-gated, human-accountable control *authority* as promotion itself — though its built instance traces to *an* approving decision, not the *governing* one, and so does not yet supply promotion's governing-verdict guarantee; that governing-verdict detection analogue for executed retractions is a named follow-up (§5.3)', and a second sentence in the same paragraph repeats 'though it traces to *an* approving decision, not the *governing* one, so it does not yet supply promotion's governing-verdict guarantee; the governing-verdict detection analogue for executed retractions is a named follow-up (§5.3).' The qualification the operator ruling required is present, but stated twice within one paragraph — an internal redundancy the edit introduced.",
+  "cited_authority": {
+    "kind": "coherence",
+    "ref": "ADR-008 §2.3 — the governing-verdict qualification appears in two consecutive sentences of the same paragraph (self-duplication introduced by the conformance edit)"
+  }
+},
+{
+  "severity": "COSMETIC",
+  "target": ["ADR-008"],
+  "locus": "§2.2 Promotion row 'Realization routes to' — 'the graph-schema ruling's `PromotionDecision` gate and its promoted-origin invariant'",
+  "claim": "The Promotion-class authority in §2.2 is attributed to 'the existing EA promotion gate' realized via 'the graph-schema ruling's PromotionDecision gate and its promoted-origin invariant', and §2.2 prose states ADR-008 is the general authority with ADR-001 §2.5 'cited, not superseded, for its sub-case.' The relationship to ADR-001 §2.5 is stated across §2.1, §2.2, and §2.3 (generalization, subsumption of §2.5 as the promotion sub-case, un-promotion extension), and §7 cites ADR-001 §2.5 plus DDR-002 §5/§7 #15 as the durable promotion chain. The relationship is recorded self-containedly rather than asserted only in passing; this surface holds.",
+  "cited_authority": {
+    "kind": "coherence",
+    "ref": "ADR-008 §2.1/§2.2/§2.3/§7 checked against ADR-001 §2.5 (EA-gated promotion of SOFIA's own reasoning; silent on un-promotion) and DDR-002 §5/§7 #15 — relationship recorded self-containedly"
+  }
+},
+{
+  "severity": "POSITIVE",
+  "target": ["ADR-008"],
+  "locus": "§2 / §2.6 / §6 check 5 — decision-scope boundary against remedy-boundary and governance policy",
+  "claim": "I attacked the Decision for scope creep — a principle-layer ADR smuggling remedy-boundary or governance-policy commitments as if they were principle. It held: §2 declares it fixes invariant / accountability / control-type only; §2.6 explicitly withholds the remedy boundary, thresholds, cadence, retention windows, reviewer roles, and multi-condition semantics and routes them to the forthcoming feedback-loop governance design; §5.3 states control-types not calibrations; and §6 check 5 (boundary check) enforces the fence. The scoping is consistent across all four loci — the record decides what it claims and no more.",
+  "cited_authority": {
+    "kind": "design-intent",
+    "ref": "RBT-59 deliberation Item 5 (ADR owns invariant/accountability/control-type/lifecycle; remedy-boundary and all governance policy → the forthcoming feedback-loop governance design), realized at ADR-008 §2/§2.6/§5.3/§6"
+  }
+},
+{
+  "severity": "POSITIVE",
+  "target": ["ADR-008"],
+  "locus": "§2.1 scope exclusion — RG capture excluded from ground-truth mutation governance",
+  "claim": "I attacked the scope fence for a double-governance or gap defect at the boundary between this ADR's ground-truth-mutation scope and the reasoning-capture domain. It held: §2.1 excludes Reasoning-Graph capture as 'captured judgment', cites the correct owning authorities (ADR-001 §2.2, ADR-002 §2.6), and states the gateway-as-executor-never-authoring-authority separation consistently with ADR-002 §2.6 — so RG writes are neither doubly-governed by this ADR nor left ungoverned, and the executor/author line does not contradict the cited authority.",
+  "cited_authority": {
+    "kind": "coherence",
+    "ref": "ADR-008 §2.1 (RG capture excluded; gateway executes, never authors) checked against ADR-002 §2.6 (author/executor/authorizer separation) and ADR-001 §2.2 (reasoning-capture invariant) — scope boundary consistent, no double-governance or gap"
+  }
+}
+]

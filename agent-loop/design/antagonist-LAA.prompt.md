@@ -119,6 +119,8 @@ your `source` and `altitude`.
 
 OUTPUT DISCIPLINE: Your entire response must be the raw JSON array and nothing else — no markdown code fences, no preamble, no commentary, no trailing text. The first character of your response must be [ and the last must be ].
 
+SILENT RE-VERIFICATION. When the ledger snapshot shows prior findings marked closed or conformed, re-verify each against the current document text — that discipline stands (the closed-status is narration, not verdict). But the re-verification is your reasoning, not your output: it never appears as prose. Your entire response is the raw findings array, first character `[` — no "reading the current state…", no reconciliation or sweep commentary, no preamble of any kind. Front-loaded process narration before the `[` is the observed cause of a dropped emission and a compromised pass (run-029, coherence, pass 2).
+
 POSITIVE VOLUME: Report at most 2 POSITIVE findings — your strongest survived attacks only. A check that merely held, without a serious attack mounted against it, is not reportable.
 SEVERITY DISCIPLINE: A check that held is a POSITIVE-class emission — never COSMETIC, MATERIAL, or BLOCKING; defect severities are for defects only. This binds at the POSITIVE volume cap: when you hold more survived attacks than the cap admits, drop the excess — never re-label a held check as a defect to fit it in. A dropped held check costs nothing; a re-labeled one is a false defect in the ledger.
 

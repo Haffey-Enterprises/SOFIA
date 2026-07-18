@@ -1,0 +1,102 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References — ADR-004 / DDR-003 forthcoming entries",
+    "claim": "The Cross-References section names two unauthored forthcoming records by concrete identifier — 'ADR-004 (file-driven ingestion, forthcoming)' and 'DDR-003 (Feedback Loop Governance, forthcoming)' — while the body cites them by subject-name ('the forthcoming ingestion decision record', 'the forthcoming feedback-loop governance design'). The concrete identifiers are internally inconsistent with the body's own naming for the same referents and with the record's stated authoring convention.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §7 (concrete IDs 'ADR-004'/'DDR-003') vs ADR-008 §1, §2.2, §2.6 (subject-name forms for the same referents)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References — DDR-004 vs ADR-004 identifier collision",
+    "claim": "§7 cites 'DDR-004 (Inherited-Confidence Derivation)' as an existing authority and 'ADR-004 (file-driven ingestion, forthcoming)' as a forthcoming record. The DDR-004/ADR-004 numbering pairing invites the reader to conflate two distinct records at adjacent identifiers; the forthcoming ingestion record's identifier is asserted (ADR-004) without any authority in the fetched set fixing that allocation, and the substrate ADR ladder note (triage-001, ADR-003–007 reserved by other RBT tickets) does not substantiate ADR-004 as the ingestion record.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "author-decision-record SKILL — body-integrity forward-reference rule (forward references to unauthored records are subject-named only; concrete identifiers bind at the downstream record's landing)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Environment control-type + §6 Enforcement",
+    "claim": "The Environment control-type is stated as 'per-policy reliability-weighting at retrieval' (§2.2 table and §6 lists the Environment weighting derivation among already-mechanized instances). The cited realization, DDR-004, fixes the aging derivation as computed at Evidence capture and frozen ('never recomputed at read', DDR-004 §1/§3), not applied at retrieval — so the ADR's own account of the mechanism it points to as 'built' contradicts that mechanism's definition.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2/§6 ('reliability-weighting at retrieval', mechanized) vs DDR-004 §1/§3 (aging confidence derived at Evidence capture and frozen, never recomputed at read)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Environment control — 'Built' status claim",
+    "claim": "The §2.2 table marks the Environment control 'Built — the inherited-confidence derivation ruling's aging basis' without qualification. DDR-004 states the aging derivation's *form* is fixed but its constants (base, τ, and the DeploymentEnvironment flat base) are contested, unvalidated, at zero capture traffic (DDR-004 §2/§6). An unqualified 'Built' claim overstates the substantiated state — the form is built; the constants are not calibrated.",
+    "cited_authority": {
+      "kind": "soundness",
+      "ref": "ADR-008 §2.2 'Built' claim substantiation vs DDR-004 §2/§6 (form fixed, constants contested/unvalidated, n=0)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Operational distillation row + §5.2 candidate-ObservedPattern shape",
+    "claim": "§2.2 and §5.2 present the candidate-`ObservedPattern` shape (excluded from ground-truth traversal until approved) as a realization mechanism the control routes to, but DDR-002 §2.3 records the distillation checkpoint posture as 'explicitly un-decided' and no such candidate shape exists in the ratified schema — the promotion-boundary `CandidatePromotion` class does not cover it. The ADR states, in present-constraint voice, a schema shape that is forthcoming/additive, not an existing referent.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2/§5.2 (candidate-ObservedPattern shape as realization) vs DDR-002 §2.3 (distillation checkpoint posture explicitly un-decided) + DDR-002 §5 (CandidatePromotion does not cover a candidate-ObservedPattern)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "§2.3 Un-promotion authority — 'same ... control as promotion'",
+    "claim": "§2.3 asserts un-promotion is governed by 'the same per-write, EA-gated, human-accountable control as promotion itself' and names the built retraction shape as its instance, while §5.3 concedes the retraction invariant traces to *an* approving decision, not the *governing* one — so the built retraction instance does not yet supply promotion's governing-verdict guarantee. The §2.3 'same control' claim is stated without the §5.3 qualification, overstating the equivalence at the point where the control-equivalence is asserted.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.3 ('same control as promotion') vs ADR-008 §5.3 (retraction traces to an approving, not the governing, decision — no governing-verdict analogue yet) + DDR-002 §7 #21 vs #15"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References — ADR-001 §2.5 subsumption/generalization not stated as an explicit relationship",
+    "claim": "The record repeatedly positions itself as the general authority of which ADR-001 §2.5 is a sub-case (§1, §2.2, §2.3) but provides no explicit 'Relationship to ADR-001 §2.5' statement recording the generalization, the subsumption of §2.5's promotion gate as a sub-case, and the un-promotion extension; the position is asserted in passing across sections rather than recorded as a resolvable relationship. Additionally, the Promotion-class authority in §2.2 is attributed to 'the existing EA promotion gate' via the schema ruling's PromotionDecision gate, without the durable ADR-001 §2.5 + DDR-002 §5/§7 #15 chain being cited at the point of the claim.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-001 §2.5 (EA-gated promotion of SOFIA's own reasoning) — ADR-008 generalizes and homes it but does not record the relationship self-containedly"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "Metadata table — Supersedes: None",
+    "claim": "ADR-008 asserts an entirely new principle and repeatedly narrates that it supersedes nothing (ADR-001 §2.5 'cited, not superseded'). 'Supersedes: None — establishes new platform principle' is consistent with the body's stated position that no record is retired; the metadata does not overreach the record's own supersession claims. Checked for a hidden supersession of DDR-001 Decision.5's routing or DDR-002 §2.3's un-decided posture — the record consumes those as interim postures routed to it, which is subsumption, not supersession, so 'None' holds.",
+    "cited_authority": {
+      "kind": "soundness",
+      "ref": "ADR-008 metadata 'Supersedes: None' vs §2.2/§2.3/§7 supersession claims — verdict contested only if a superseded record existed; none does"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.1 accountability invariant scope vs RG exclusion",
+    "claim": "Attacked the boundary between this ADR's ground-truth-mutation scope and the reasoning-capture domain for a scope contradiction: the record could have overreached into RG capture (governed by ADR-001 §2.2 / ADR-002 §2.6) or left the gateway-as-executor-not-author line inconsistent with ADR-002 §2.6. It held — §2.1 explicitly excludes RG capture as captured judgment, cites the correct owning authorities, and states the executor/authoring-authority separation consistently with ADR-002 §2.6. The scope fence is internally sound and correctly conformant to the cited authorities.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-002 §2.6 (author/executor/authorizer separation) + ADR-001 §2.2 (reasoning-capture invariant) — ADR-008 §2.1 conforms"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.2 gate-all rejection vs §4.1 Alternative A vs R30 declined-option",
+    "claim": "Attacked the calibration rationale for a conflict with the substrate's R30 ruling, which declined 'gate all KG writes' on bottleneck grounds and preserved the derive/promote seam. The ADR's §2.2 (per-class calibration keeping each control clear of the bottleneck) and §4.1 (gate-all rejected for making observational planes unwritable) hold consistently against R30's surviving distinctions (Operational vs authoritative selection knowledge; distillation not authoritative selection) and do not resurrect the declined constraint. The distillation control-type escalation above R30's non-gated staging inference is stated self-containedly on the criterion-shift rationale, per the standalone-ADR requirement.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "Reboot Decision Ledger R30 (derive/promote seam; gate-all declined for bottleneck) — ADR-008 §2.2/§4.1 conforms while stating the distillation escalation self-containedly"
+    }
+  }
+]

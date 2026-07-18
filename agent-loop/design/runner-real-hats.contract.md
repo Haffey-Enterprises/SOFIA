@@ -123,9 +123,27 @@ Contract block). A runner-side adapter:
 
 Before JSON parsing, the seam strips well-defined markdown code fences — an
 opening ``` or ```json line and a closing ``` line — and surrounding
-whitespace from the emission. This is transport unwrapping, not content
-repair: no other tolerance is added, and prose preambles, trailing
-commentary, or malformed structure still drop (amended 2026-07-02).
+whitespace from the emission.
+
+**Envelope tolerance (RBT-70, ratified 2026-07-18, reversing the 2026-07-02
+strictness for a prose envelope only).** The seam then salvages the findings
+array from any surrounding prose envelope: it scans the fence-stripped text for
+the first balanced `[...]` span that `json.loads` accepts and parses that,
+logging `reviewer_output_preamble_stripped` when a preamble had to be stripped
+(the parallel of the author's `author_output_preamble_stripped`, so the residual
+rate stays observable). This tolerance is on the **envelope only** — the
+per-item schema check is unchanged and strict, so a mis-salvaged wrong array
+fails item validation and drops per item, never admitting a bad finding. An
+emission with no parseable array — a bare `{...}` object, pure prose, a
+truncated array — has nothing to salvage and **still drops** with the observable
+`parse_dropped` line, and the instrument-compromised guard (§3) is unchanged: a
+reviewer that drops and admits nothing still aborts the pass. The forcing
+function stays in the prompt (the gen-11 `SILENT RE-VERIFICATION` output
+discipline forbids the preamble at the source), so this seam tolerance is
+defense-in-depth for a slipped-through envelope — not a license to narrate.
+run-029 (the coherence hat narrated a reconciliation preamble at pass 2, parse-
+dropped, and tripped a false `InstrumentCompromisedError`) is the empirical
+basis.
 
 ## 8. No change elsewhere
 

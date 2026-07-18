@@ -1,0 +1,1296 @@
+{
+  "header": {
+    "set": [
+      "ADR-008"
+    ],
+    "counted_severities": [
+      "BLOCKING",
+      "MATERIAL"
+    ],
+    "plateau_N": 3,
+    "mode": "dry"
+  },
+  "findings": [
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a72.2 Environment row \u2014 'Realization routes to: Built \u2014 the inherited-confidence derivation ruling's aging basis'",
+      "claim": "The Environment control-type is stated as 'per-policy reliability-weighting at retrieval', but the substrate it cites (DDR-004 \u00a71/\u00a73) fixes the mechanism as capture-time-frozen \u2014 confidence is 'computed once at capture and frozen ... never recomputed at read'. The record claims a retrieval-time weighting the cited authority does not support; the decision as stated mischaracterizes the mechanism it rests on.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-008 \u00a72.2 (Environment row, 'weighting ... at retrieval') vs DDR-004 \u00a71/\u00a73 (capture-time-frozen aging derivation, 'never recomputed at read')"
+      },
+      "id": "f6c2434043a8b4cd",
+      "classification": "decision-bearing",
+      "authority_locus": "ADR-008 operator rulings, Ruling D (findings db343ac9 + 9d7e8220): drop 'reliability-weighting at retrieval'; state capture-time-frozen aging (DDR-004 \u00a71/\u00a73) + \u00a76 governance; relabel \u00a72.2 status to 'form built; constants contested (n=0)'",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a72.2 Environment row 'Built' status; \u00a72.5 / \u00a75.3 empirical floor",
+      "claim": "The Environment control's realization is marked 'Built' unqualified, but the cited DDR-004 basis has its constants held contested and unvalidated at n=0 (DDR-004 \u00a72/\u00a76). The record itself states the empirical floor at \u00a75.3 for constants, contradicting the flat 'Built' claim in the decision table \u2014 the status claim overstates what the substrate supports (form built; constants contested/unvalidated).",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-008 \u00a72.2 (Environment 'Built') vs ADR-008 \u00a75.3 (empirical floor: constants held contested) and DDR-004 \u00a72/\u00a76 (contested, unvalidated, n=0)"
+      },
+      "id": "e08faf1c3a427eab",
+      "classification": "resolvable",
+      "authority_locus": "ADR-008-run-025-operator-rulings Ruling D (relabel \u00a72.2 status to 'form built (DDR-004); constants contested/unvalidated (n=0)')",
+      "status": "closed",
+      "pass_raised": 1,
+      "pass_closed": 1,
+      "recurrence_count": 0,
+      "resolution_note": "conformed to ADR-008-run-025-operator-rulings Ruling D (relabel \u00a72.2 status to 'form built (DDR-004); constants contested/unvalidated (n=0)')",
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a75.2 Constraints Imposed \u2014 'realized through a candidate-`ObservedPattern` shape excluded from ground-truth traversal until approved'",
+      "claim": "The record asserts the distillation control is realized through a candidate-`ObservedPattern` shape as if it were a present schema construct, but DDR-002 \u00a72.3 leaves the distillation checkpoint 'explicitly un-decided' and the built `CandidatePromotion` class does not cover it. The consequence-clause states as present a schema shape that is forthcoming/additive (introduced downstream), overstating what the decision substrate currently supports.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-008 \u00a75.2 (candidate-ObservedPattern shape stated as realization mechanism) vs DDR-002 \u00a72.3 (distillation checkpoint 'explicitly un-decided')"
+      },
+      "id": "d61623f4f1e7d092",
+      "classification": "resolvable",
+      "authority_locus": "ADR-008-run-025-operator-rulings Ruling E (candidate-ObservedPattern shape stated as forthcoming/additive, not present)",
+      "status": "closed",
+      "pass_raised": 1,
+      "pass_closed": 1,
+      "recurrence_count": 0,
+      "resolution_note": "conformed to ADR-008-run-025-operator-rulings Ruling E (candidate-ObservedPattern shape stated as forthcoming/additive, not present)",
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a72.3 Un-promotion authority \u2014 'the built retraction shape ... is the instance of this authority'",
+      "claim": "\u00a72.3 claims un-promotion is governed by 'the same per-write, EA-gated' control as promotion and points to the built retraction shape as its instance, but \u00a75.3 concedes that the built retraction invariant traces to an approving decision, not the governing one, so it does not supply the governing-verdict guarantee promotion has. The \u00a72.3 'same control' claim asserts an equivalence the record's own \u00a75.3 rebuts; the decision content overstates what the cited instance decides.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-008 \u00a72.3 ('same per-write, EA-gated control ... built retraction shape is the instance') vs ADR-008 \u00a75.3 (retraction invariant traces to an approving, not the governing, decision \u2014 no standing detection analogue)"
+      },
+      "id": "4ae76af0e8fc0656",
+      "classification": "resolvable",
+      "authority_locus": "ADR-008-run-025-operator-rulings Ruling F",
+      "status": "closed",
+      "pass_raised": 1,
+      "pass_closed": 1,
+      "recurrence_count": 0,
+      "resolution_note": "conformed to ADR-008-run-025-operator-rulings Ruling F (\u00a72.3 'same control' qualified to match the \u00a75.3 concession)",
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a77 Cross-References \u2014 'ADR-004 (file-driven ingestion, forthcoming)' and 'DDR-003 (Feedback Loop Governance, forthcoming)'",
+      "claim": "The record references forthcoming, unauthored records by concrete identifier (ADR-004, DDR-003) rather than subject-name. Its own governing convention (the author-decision-record body-integrity forward-reference rule) and the RBT-59 deliberation record's own numbering note both hold that forward references to unauthored records are subject-named only, concrete identifiers binding at the downstream record's landing; the ADR-004/DDR-004 numbering is itself ambiguous. Declaring a concrete number a forthcoming record has not yet claimed is a claim the substrate does not support.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-008 \u00a77 (concrete IDs 'ADR-004', 'DDR-003' for forthcoming records) vs RBT-59 deliberation record Item 1 / author-decision-record forward-reference rule (forthcoming records named by subject only)"
+      },
+      "id": "4a3a4a87fb67493f",
+      "classification": "decision-bearing",
+      "authority_locus": "ADR-008-run-025-operator-rulings Ruling G (forthcoming records subject-named, never by concrete identifier) + author-decision-record SKILL forward-reference body-integrity rule",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "COSMETIC",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a77 Cross-References \u2014 Reboot Decision Ledger R30",
+      "claim": "R30 is cited in the body's Cross-References as substrate ('fetched verbatim as substrate'), which is consistent with the record's standalone stance; however the RBT-59 governing principle holds R30 is substrate 'never durable in-body ADR citations.' A Cross-References substrate pointer sits on the boundary of that rule \u2014 flagging for the arbiter whether a ledger-ruling name belongs in the durable body at all versus the deliberation record only.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-008 \u00a77 (R30 named in Cross-References) vs RBT-59 governing principle (Reboot Decision Ledger rulings never durable in-body ADR citations)"
+      },
+      "id": "a2879100b839ea27",
+      "classification": "decision-bearing",
+      "authority_locus": "RBT-59 operator rulings, governing principle ('an ADR is standalone; Reboot Decision Ledger rulings are substrate but never durable in-body ADR citations')",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a72 / \u00a72.6 \u2014 decision-scope boundary against remedy-boundary and governance policy",
+      "claim": "I attacked the Decision for scope creep \u2014 smuggled policy commitments riding along as principle. \u00a72 declares it fixes invariant/accountability/control-type only, and \u00a72.6 explicitly holds the remedy boundary, thresholds, cadence, retention, reviewer roles, and multi-condition semantics out and routes them to the feedback-loop governance design. The scoping is consistent across \u00a72.2 (control-type vs mechanics), \u00a72.6, \u00a75.3 (control-types not calibrations), and \u00a76 check 5 (boundary check). The record decides what it claims to decide and no more; the attack held.",
+      "cited_authority": {
+        "kind": "design-intent",
+        "ref": "RBT-59 deliberation Item 5 (ADR owns invariant/accountability/control-type/lifecycle; remedy-boundary and governance policy \u2192 feedback-loop governance design), realized at ADR-008 \u00a72/\u00a72.6/\u00a76"
+      },
+      "id": "1b8c8b5c92484635",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": [
+        "I attacked the Decision for scope creep \u2014 commitments riding along as principle that are actually policy the forthcoming governance design should own. The attack failed: \u00a72 declares the record fixes only invariant, accountability, and control-type; \u00a72.6 explicitly holds out the remedy boundary (supersede vs retract), thresholds, cadence, retention windows, reviewer-role assignments, and multi-condition composition and routes them downstream; \u00a75.3 restates that the record commits control-types not calibrations; and \u00a76 check 5 (boundary check) makes the exclusion enforceable. The scoping is consistent across all four sites and the record decides no more than it claims."
+      ]
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a72.1 / \u00a77 \u2014 relationship to ADR-001 \u00a72.5 and Supersedes declaration",
+      "claim": "I attacked the record for a claim-fidelity failure on its relationship to ADR-001 \u00a72.5 \u2014 either an unstated supersession or an overreach beyond \u00a72.5's authority. The record instead states the relationship explicitly (\u00a72.1, \u00a72.2 promotion row, \u00a72.3): it generalizes \u00a72.5, subsumes it as the promotion sub-case, extends to un-promotion, and cites \u00a72.5 as still-valid, not superseded \u2014 consistent with 'Supersedes: None' for a new principle. The generalization-and-subsumption is recorded, not asserted in passing; the attack held.",
+      "cited_authority": {
+        "kind": "design-intent",
+        "ref": "RBT-59 deliberation Item 2 / Ruling B (ADR-008 generalizes ADR-001 \u00a72.5 as sub-case, homes un-promotion, supersedes nothing; Supersedes: None stands), realized at ADR-008 \u00a72.1/\u00a72.3/\u00a77"
+      },
+      "id": "9f07f71c18fa9ca4",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a77 Cross-References \u2014 ADR-004 / DDR-003 forthcoming entries",
+      "claim": "The Cross-References section names two unauthored forthcoming records by concrete identifier \u2014 'ADR-004 (file-driven ingestion, forthcoming)' and 'DDR-003 (Feedback Loop Governance, forthcoming)' \u2014 while the body cites them by subject-name ('the forthcoming ingestion decision record', 'the forthcoming feedback-loop governance design'). The concrete identifiers are internally inconsistent with the body's own naming for the same referents and with the record's stated authoring convention.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-008 \u00a77 (concrete IDs 'ADR-004'/'DDR-003') vs ADR-008 \u00a71, \u00a72.2, \u00a72.6 (subject-name forms for the same referents)"
+      },
+      "id": "a483c8cbf8962cc2",
+      "classification": "decision-bearing",
+      "authority_locus": "ADR-008 operator rulings, Ruling G (RBT-59/ADR-008 run-025+026 dispositions): forthcoming-record references are subject-named, not numbered",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a77 Cross-References \u2014 DDR-004 vs ADR-004 identifier collision",
+      "claim": "\u00a77 cites 'DDR-004 (Inherited-Confidence Derivation)' as an existing authority and 'ADR-004 (file-driven ingestion, forthcoming)' as a forthcoming record. The DDR-004/ADR-004 numbering pairing invites the reader to conflate two distinct records at adjacent identifiers; the forthcoming ingestion record's identifier is asserted (ADR-004) without any authority in the fetched set fixing that allocation, and the substrate ADR ladder note (triage-001, ADR-003\u2013007 reserved by other RBT tickets) does not substantiate ADR-004 as the ingestion record.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "author-decision-record SKILL \u2014 body-integrity forward-reference rule (forward references to unauthored records are subject-named only; concrete identifiers bind at the downstream record's landing)"
+      },
+      "id": "c9e1741f67e41fa4",
+      "classification": "resolvable",
+      "authority_locus": "Operator Ruling G (ADR-008 run-025 rulings) + author-decision-record SKILL body-integrity forward-reference rule",
+      "status": "closed",
+      "pass_raised": 1,
+      "pass_closed": 1,
+      "recurrence_count": 0,
+      "resolution_note": "conformed to author-decision-record SKILL body-integrity forward-reference rule \u2014 forward references to unauthored records are subject-named only; concrete identifiers bind at the downstream record's landing",
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a72.2 Environment control-type + \u00a76 Enforcement",
+      "claim": "The Environment control-type is stated as 'per-policy reliability-weighting at retrieval' (\u00a72.2 table and \u00a76 lists the Environment weighting derivation among already-mechanized instances). The cited realization, DDR-004, fixes the aging derivation as computed at Evidence capture and frozen ('never recomputed at read', DDR-004 \u00a71/\u00a73), not applied at retrieval \u2014 so the ADR's own account of the mechanism it points to as 'built' contradicts that mechanism's definition.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-008 \u00a72.2/\u00a76 ('reliability-weighting at retrieval', mechanized) vs DDR-004 \u00a71/\u00a73 (aging confidence derived at Evidence capture and frozen, never recomputed at read)"
+      },
+      "id": "a1a4c97d1e833186",
+      "classification": "resolvable",
+      "authority_locus": "ADR-008-run-025-operator-rulings Ruling D + DDR-004 \u00a71/\u00a73 (capture-time-frozen aging; drop 'reliability-weighting at retrieval'; relabel \u00a72.2 status)",
+      "status": "closed",
+      "pass_raised": 1,
+      "pass_closed": 1,
+      "recurrence_count": 0,
+      "resolution_note": "conformed to ADR-008-run-025-operator-rulings Ruling D + DDR-004 \u00a71/\u00a73 (capture-time-frozen aging, never recomputed at read; \u00a76 two-tier calibration governance)",
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a72.2 Environment control \u2014 'Built' status claim",
+      "claim": "The \u00a72.2 table marks the Environment control 'Built \u2014 the inherited-confidence derivation ruling's aging basis' without qualification. DDR-004 states the aging derivation's *form* is fixed but its constants (base, \u03c4, and the DeploymentEnvironment flat base) are contested, unvalidated, at zero capture traffic (DDR-004 \u00a72/\u00a76). An unqualified 'Built' claim overstates the substantiated state \u2014 the form is built; the constants are not calibrated.",
+      "cited_authority": {
+        "kind": "soundness",
+        "ref": "ADR-008 \u00a72.2 'Built' claim substantiation vs DDR-004 \u00a72/\u00a76 (form fixed, constants contested/unvalidated, n=0)"
+      },
+      "id": "7f848b6bfeae6d62",
+      "classification": "resolvable",
+      "authority_locus": "ADR-008-run-025-operator-rulings Ruling D \u2014 relabel \u00a72.2 to 'form built (DDR-004); constants contested/unvalidated (n=0)'",
+      "status": "closed",
+      "pass_raised": 1,
+      "pass_closed": 1,
+      "recurrence_count": 0,
+      "resolution_note": "conformed to ADR-008-run-025-operator-rulings Ruling D \u2014 \u00a72.2 relabel to 'form built (DDR-004); constants contested/unvalidated (n=0)'",
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a72.2 Operational distillation row + \u00a75.2 candidate-ObservedPattern shape",
+      "claim": "\u00a72.2 and \u00a75.2 present the candidate-`ObservedPattern` shape (excluded from ground-truth traversal until approved) as a realization mechanism the control routes to, but DDR-002 \u00a72.3 records the distillation checkpoint posture as 'explicitly un-decided' and no such candidate shape exists in the ratified schema \u2014 the promotion-boundary `CandidatePromotion` class does not cover it. The ADR states, in present-constraint voice, a schema shape that is forthcoming/additive, not an existing referent.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-008 \u00a72.2/\u00a75.2 (candidate-ObservedPattern shape as realization) vs DDR-002 \u00a72.3 (distillation checkpoint posture explicitly un-decided) + DDR-002 \u00a75 (CandidatePromotion does not cover a candidate-ObservedPattern)"
+      },
+      "id": "316fa3f2d4b1813d",
+      "classification": "resolvable",
+      "authority_locus": "ADR-008-run-025-operator-rulings Ruling E (candidate-ObservedPattern shape is forthcoming/additive, not present; earned tense)",
+      "status": "closed",
+      "pass_raised": 1,
+      "pass_closed": 1,
+      "recurrence_count": 0,
+      "resolution_note": "conformed to ADR-008-run-025-operator-rulings Ruling E (candidate-ObservedPattern shape is forthcoming/additive, not present; earned tense), \u00a75.2",
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "COSMETIC",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a72.3 Un-promotion authority \u2014 'same ... control as promotion'",
+      "claim": "\u00a72.3 asserts un-promotion is governed by 'the same per-write, EA-gated, human-accountable control as promotion itself' and names the built retraction shape as its instance, while \u00a75.3 concedes the retraction invariant traces to *an* approving decision, not the *governing* one \u2014 so the built retraction instance does not yet supply promotion's governing-verdict guarantee. The \u00a72.3 'same control' claim is stated without the \u00a75.3 qualification, overstating the equivalence at the point where the control-equivalence is asserted.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-008 \u00a72.3 ('same control as promotion') vs ADR-008 \u00a75.3 (retraction traces to an approving, not the governing, decision \u2014 no governing-verdict analogue yet) + DDR-002 \u00a77 #21 vs #15"
+      },
+      "id": "e4821ecdcbfc622c",
+      "classification": "resolvable",
+      "authority_locus": "ADR-008-run-025-operator-rulings Ruling F (qualify \u00a72.3 'same control' to match the \u00a75.3 concession; authority homed, governing-verdict detection analogue is named follow-up per DDR-002 \u00a77 #21/#15)",
+      "status": "closed",
+      "pass_raised": 1,
+      "pass_closed": 1,
+      "recurrence_count": 0,
+      "resolution_note": "conformed to ADR-008-run-025-operator-rulings Ruling F (qualify \u00a72.3 'same control' to match the \u00a75.3 concession; authority homed, governing-verdict detection analogue is a named follow-up)",
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a77 Cross-References \u2014 ADR-001 \u00a72.5 subsumption/generalization not stated as an explicit relationship",
+      "claim": "The record repeatedly positions itself as the general authority of which ADR-001 \u00a72.5 is a sub-case (\u00a71, \u00a72.2, \u00a72.3) but provides no explicit 'Relationship to ADR-001 \u00a72.5' statement recording the generalization, the subsumption of \u00a72.5's promotion gate as a sub-case, and the un-promotion extension; the position is asserted in passing across sections rather than recorded as a resolvable relationship. Additionally, the Promotion-class authority in \u00a72.2 is attributed to 'the existing EA promotion gate' via the schema ruling's PromotionDecision gate, without the durable ADR-001 \u00a72.5 + DDR-002 \u00a75/\u00a77 #15 chain being cited at the point of the claim.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "ADR-001 \u00a72.5 (EA-gated promotion of SOFIA's own reasoning) \u2014 ADR-008 generalizes and homes it but does not record the relationship self-containedly"
+      },
+      "id": "fd586478e43aad58",
+      "classification": "decision-bearing",
+      "authority_locus": "ADR-008-run-025-operator-rulings Ruling B (add explicit 'Relationship to ADR-001 \u00a72.5' statement; fix Promotion-class citation to ADR-001 \u00a72.5 + DDR-002 \u00a75 / \u00a77 #15)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "COSMETIC",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "Metadata table \u2014 Supersedes: None",
+      "claim": "ADR-008 asserts an entirely new principle and repeatedly narrates that it supersedes nothing (ADR-001 \u00a72.5 'cited, not superseded'). 'Supersedes: None \u2014 establishes new platform principle' is consistent with the body's stated position that no record is retired; the metadata does not overreach the record's own supersession claims. Checked for a hidden supersession of DDR-001 Decision.5's routing or DDR-002 \u00a72.3's un-decided posture \u2014 the record consumes those as interim postures routed to it, which is subsumption, not supersession, so 'None' holds.",
+      "cited_authority": {
+        "kind": "soundness",
+        "ref": "ADR-008 metadata 'Supersedes: None' vs \u00a72.2/\u00a72.3/\u00a77 supersession claims \u2014 verdict contested only if a superseded record existed; none does"
+      },
+      "id": "695741ea2d880459",
+      "classification": "decision-bearing",
+      "authority_locus": "Operator Ruling B (RBT-59/ADR-008): 'It supersedes nothing... Supersedes: None stands (house norm for a new principle).'",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a72.1 accountability invariant scope vs RG exclusion",
+      "claim": "Attacked the boundary between this ADR's ground-truth-mutation scope and the reasoning-capture domain for a scope contradiction: the record could have overreached into RG capture (governed by ADR-001 \u00a72.2 / ADR-002 \u00a72.6) or left the gateway-as-executor-not-author line inconsistent with ADR-002 \u00a72.6. It held \u2014 \u00a72.1 explicitly excludes RG capture as captured judgment, cites the correct owning authorities, and states the executor/authoring-authority separation consistently with ADR-002 \u00a72.6. The scope fence is internally sound and correctly conformant to the cited authorities.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "ADR-002 \u00a72.6 (author/executor/authorizer separation) + ADR-001 \u00a72.2 (reasoning-capture invariant) \u2014 ADR-008 \u00a72.1 conforms"
+      },
+      "id": "cc6469754986c1a2",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a72.2 gate-all rejection vs \u00a74.1 Alternative A vs R30 declined-option",
+      "claim": "Attacked the calibration rationale for a conflict with the substrate's R30 ruling, which declined 'gate all KG writes' on bottleneck grounds and preserved the derive/promote seam. The ADR's \u00a72.2 (per-class calibration keeping each control clear of the bottleneck) and \u00a74.1 (gate-all rejected for making observational planes unwritable) hold consistently against R30's surviving distinctions (Operational vs authoritative selection knowledge; distillation not authoritative selection) and do not resurrect the declined constraint. The distillation control-type escalation above R30's non-gated staging inference is stated self-containedly on the criterion-shift rationale, per the standalone-ADR requirement.",
+      "cited_authority": {
+        "kind": "design-intent",
+        "ref": "Reboot Decision Ledger R30 (derive/promote seam; gate-all declined for bottleneck) \u2014 ADR-008 \u00a72.2/\u00a74.1 conforms while stating the distillation escalation self-containedly"
+      },
+      "id": "97f0e0fdcb8a0eac",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a77 Cross-References \u2014 'ADR-004 (file-driven ingestion, forthcoming)' and 'DDR-003 (Feedback Loop Governance, forthcoming)'",
+      "claim": "The record references forthcoming, unauthored records by concrete numeric identifier (ADR-004, DDR-003). The RBT-59 operator rulings (Ruling G) direct that forward references to unauthored records be stated by subject-name only, never by concrete identifier, with numbering binding only at the downstream record's landing. Committing ADR-008 to specific numbers for records that do not yet exist is a premature commitment: the ingestion record's slot is contested (the ADR ladder ADR-003\u2013007 is reserved by standing tickets per the triage charter, and ADR-004 is elsewhere referenced as the inherited-confidence-derivation record \u2014 a live numbering ambiguity), and the identifier binds directionally at the other record's landing, not from this record.",
+      "cited_authority": {
+        "kind": "design-intent",
+        "ref": "ADR-008-run-025-operator-rulings, Ruling G: 'Forward references to unauthored records ... are stated by subject-name only in the ADR body and cross-references, never by concrete identifier ... Concrete identifiers bind only at the downstream record's landing (the pointer-resolution pass), and directionally'"
+      },
+      "id": "294eeeaf3489a862",
+      "classification": "decision-bearing",
+      "authority_locus": "ADR-008-run-025-operator-rulings, Ruling G (subject-name-only forward references; conformance directive replacing ADR-004/DDR-003 numbered forms)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a72.2 Per-source-class calibration table, Environment row + Operational-distillation row (Realization column)",
+      "claim": "The calibration table's 'Realization routes to' column marks Promotion and Environment as 'Built', but the Environment control's built form is capture-time-frozen aging (derived at Evidence capture, never recomputed at read) plus per-policy calibration governance of contested constants \u2014 its constants are contested and unvalidated at n=0. Stating the Environment control as flatly 'Built' overstates its maturity: the form is built (the derivation ruling), the constants are not. The operator rulings direct that the Environment status be relabeled to distinguish form-built from constants-contested, so this ADR's timing-of-commitment (asserting a control as settled) pulls against the record it depends on.",
+      "cited_authority": {
+        "kind": "design-intent",
+        "ref": "ADR-008-run-025-operator-rulings, Ruling D: 'relabel the \u00a72.2 \"Built\" status to \"form built (DDR-004); constants contested/unvalidated (n=0).\"' and 'drop \"reliability-weighting at retrieval\"; state capture-time-frozen aging'"
+      },
+      "id": "1a6aa03fb8bd3087",
+      "classification": "decision-bearing",
+      "authority_locus": "ADR-008-run-025-operator-rulings, Ruling D (relabel \u00a72.2 Environment status to 'form built (DDR-004); constants contested/unvalidated (n=0)'; drop 'reliability-weighting at retrieval', state capture-time-frozen aging)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a72.2 Environment row and Environment bullet \u2014 'per-policy reliability-weighting at retrieval' / 'its aging confidence basis is fixed'",
+      "claim": "The Environment control is described as reliability-weighting 'at retrieval'. The built mechanism (DDR-004 \u00a71/\u00a73) is capture-time-frozen: the freshness-decayed confidence is derived at Evidence capture and frozen, explicitly 'never recomputed at read', consumed at reasoning time under the DDR-002 \u00a74 ceiling. Describing the control as operating 'at retrieval' mischaracterizes an accepted, ratified downstream mechanism and pulls against the substrate this ADR integrates with \u2014 a posture defect at the seam between this record and DDR-004.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-008 \u00a72.2 Environment bullet ('reliability weighting at retrieval') in conflict with DDR-004 \u00a73 'Confidence is computed once at capture and frozen onto Evidence.confidence; it is never recomputed at read'"
+      },
+      "id": "01b85d5826308506",
+      "classification": "resolvable",
+      "authority_locus": "ADR-008-run-025-operator-rulings Ruling D + DDR-004 \u00a71/\u00a73 (capture-time-frozen aging; 'never recomputed at read')",
+      "status": "closed",
+      "pass_raised": 1,
+      "pass_closed": 1,
+      "recurrence_count": 0,
+      "resolution_note": "conformed to ADR-008-run-025-operator-rulings Ruling D + DDR-004 \u00a73 ('never recomputed at read')",
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a75.2 Constraints Imposed \u2014 'realized through a candidate-ObservedPattern shape excluded from ground-truth traversal until approved'",
+      "claim": "The record states the distillation control is realized through a candidate-`ObservedPattern` shape as though that shape is a present schema constraint. The candidate-`ObservedPattern` shape does not exist in the ratified schema \u2014 DDR-002 \u00a72.3 leaves the distillation checkpoint 'explicitly un-decided', and the promotion-boundary `CandidatePromotion` class does not cover it. It is an additive shape a downstream design (the feedback-loop governance design plus a future schema amendment) introduces. Stating a forthcoming/additive mechanism in present, settled voice commits the record to a mechanism decision that deserves its own downstream ruling first, and states timing in a tense the facts do not yet support.",
+      "cited_authority": {
+        "kind": "design-intent",
+        "ref": "ADR-008-run-025-operator-rulings, Ruling E: 'the candidate-ObservedPattern shape does not exist in the ratified schema ... It is the additive shape the downstream design introduces ... state the candidate-ObservedPattern shape as forthcoming / additive (introduced downstream), not as a present schema constraint'"
+      },
+      "id": "b731dfeb6775e606",
+      "classification": "decision-bearing",
+      "authority_locus": "ADR-008-run-025-operator-rulings, Ruling E (earned tense: state candidate-ObservedPattern shape as forthcoming/additive, not a present schema constraint)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a72.3 Un-promotion authority \u2014 'The built retraction shape ... is the instance of this authority' / \u00a72.2 Promotion row 'Built'",
+      "claim": "\u00a72.3 presents the built retraction shape as the instance discharging un-promotion authority without qualifying that the built instance (the retraction-gated invariant) traces to *an* approving decision, not the *governing* one \u2014 so it does not yet supply promotion's governing-verdict guarantee. \u00a75.3 concedes exactly this for the re-decision case, but \u00a72.3 asserts 'same control' without the concession, leaving \u00a72.3 and \u00a75.3 in tension. The operator rulings direct that \u00a72.3's 'same control' claim be qualified to match the \u00a75.3 concession \u2014 the authority is homed, but the governing-verdict detection analogue is a named follow-up, not a present guarantee.",
+      "cited_authority": {
+        "kind": "design-intent",
+        "ref": "ADR-008-run-025-operator-rulings, Ruling F: 'qualify \u00a72.3's \"same control\" claim to match the \u00a75.3 concession \u2014 the authority is homed; the governing-verdict detection analogue for executed retractions is the named follow-up'"
+      },
+      "id": "2f3e77e327f088b9",
+      "classification": "resolvable",
+      "authority_locus": "ADR-008-run-025-operator-rulings Ruling F (qualify \u00a72.3 'same control' to match \u00a75.3 concession; governing-verdict analogue is named follow-up per DDR-002 \u00a77 #21/#15)",
+      "status": "closed",
+      "pass_raised": 1,
+      "pass_closed": 1,
+      "recurrence_count": 0,
+      "resolution_note": "conformed to ADR-008-run-025-operator-rulings Ruling F \u2014 qualify \u00a72.3's 'same control' claim to match the \u00a75.3 concession; authority homed, governing-verdict analogue is named follow-up",
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a72.2 Operational-distillation bullet + \u00a77 Cross-References (DDR-002) \u2014 reliance on Reboot Decision Ledger R30 substrate without self-containment",
+      "claim": "The distillation control's rationale (a distilled judgment is an inference whose self-assigned confidence cannot gate its own soundness, distinct from a non-gated Environment observation) supersedes R30's staging-tier / non-gated-distillation inference on a criterion-shift. The governing principle established by the operator rulings is that an ADR is standalone and R30 rulings are substrate, never durable in-body citations \u2014 the ADR must state the distillation control-type and this superseding rationale self-containedly. The record states the rationale but the superseding relationship to the prior ratified R30 inference is not made explicit, so a reader cannot tell this ADR overrides a prior ratified staging-tier posture; the record commits to a position (distillation is checkpoint-governed, not staging-tier-free) that supersedes an existing ruling without recording the supersession in-body.",
+      "cited_authority": {
+        "kind": "design-intent",
+        "ref": "ADR-008-run-025-operator-rulings, Ruling A: 'It supersedes R30's staging-tier / non-gated-distillation inference on the ratified criterion-shift ... state the distillation control-type and this rationale self-containedly in the ADR body'"
+      },
+      "id": "fd95e676c12d683a",
+      "classification": "decision-bearing",
+      "authority_locus": "ADR-008-run-025-operator-rulings, Ruling A (state distillation control-type and superseding rationale self-containedly in body; do not cite R30)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a72 Decision / \u00a72.1 accountability invariant + \u00a74.1 Alternative A",
+      "claim": "Attacked the core decision shape for integration with prior ratified posture: whether an invariant-plus-per-class-calibrated-control frame pulls against the platform's existing narrow ADR-001 \u00a72.5 gate or over-commits the observational planes to a bottleneck. It held \u2014 the decision correctly makes accountability the invariant and control-form the calibrated variable, cites \u00a72.5 as the sub-case it generalizes rather than superseding it (consistent with 'Supersedes: None' as the house norm for a new principle), and explicitly rejects the gate-all alternative (\u00a74.1) that R30 already declined. The posture integrates with rather than pulls against the ratified substrate.",
+      "cited_authority": {
+        "kind": "design-intent",
+        "ref": "RBT-59-ADR-008-deliberation-record Item 2 (frame: 'the invariant is human accountability ... the form of the control is calibrated per source class') and Item 3; ADR-008-run-025-operator-rulings Ruling B ('It supersedes nothing \u2014 \u00a72.5 remains valid; Supersedes: None stands')"
+      },
+      "id": "e2073030b155da44",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a72.6 Governance boundary + \u00a75.3 Risks (decision-provenance retention gap; executed-retraction detection)",
+      "claim": "Attacked the ADR/DDR-003 altitude boundary for over-reach \u2014 whether this principle-layer record smuggles governance policy (remedy boundary, thresholds, cadence) that belongs to the forthcoming governance design, and whether it asserts settled guarantees over unbuilt mechanisms. It held: \u00a72.6 cleanly routes the remedy boundary and all policy downstream, \u00a75.3 honestly names the provenance-retention gap and the executed-retraction detection gap as tracked follow-ups rather than claiming them resolved, and the record states control-types not calibrations. The altitude discipline holds at the boundary.",
+      "cited_authority": {
+        "kind": "design-intent",
+        "ref": "ADR-008-run-025-operator-rulings, Ruling F follow-up + RBT-59-ADR-008-deliberation-record Item 5 ('ADR owns invariant + accountability + control-type ... Remedy-boundary ... and all governance policy \u2192 DDR-003')"
+      },
+      "id": "2fefafab3dfef9c1",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a77 Cross-References \u2014 forthcoming-record references and the ADR-004/DDR-004 numbering ambiguity",
+      "claim": "The body and cross-references cite unauthored forthcoming records by concrete identifier \u2014 '**DDR-003 (Feedback Loop Governance, forthcoming)**' and '**ADR-004 (file-driven ingestion, forthcoming)**' \u2014 in violation of the operator ruling (Ruling G) and the author-decision-record body-integrity forward-reference convention, which require forthcoming, unauthored records to be named by subject only ('the forthcoming feedback-loop governance design'; 'the forthcoming file-driven ingestion decision record'). \u00a72.2's realization-route column and \u00a72.6 already use the subject-name form correctly, so the document is internally inconsistent about which convention it follows. The concrete 'ADR-004' identifier for file-driven ingestion also collides with the existing DDR-004 (Inherited-Confidence Derivation) cited two lines above, reintroducing exactly the numbering ambiguity the subject-name form removes.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-008 \u00a77 (concrete 'DDR-003 (forthcoming)' / 'ADR-004 (file-driven ingestion, forthcoming)') in conflict with ADR-008 \u00a72.2/\u00a72.6 (subject-name form 'the forthcoming feedback-loop governance design' / 'the forthcoming file-driven ingestion decision record')"
+      },
+      "id": "587fbc798e6ea552",
+      "classification": "decision-bearing",
+      "authority_locus": "ADR-008-run-025 Ruling G (subject-name-only for forthcoming unauthored records) + author-decision-record body-integrity forward-reference rule",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a72.2 per-source-class calibration table \u2014 Environment 'Realization routes to' cell vs. the Environment prose and Ruling D",
+      "claim": "The Environment row's calibration is stated as 'reliability-**weighting at retrieval**' (\u00a72.2 table control-type). Per the operator ruling (Ruling D) and DDR-004, the Environment reliability control is capture-time-frozen, not retrieval-time: the aging derivation (base \u00d7 exp(\u2212\u0394t/\u03c4)) is computed at Evidence capture and frozen, explicitly 'never recomputed at read' (DDR-004 \u00a71/\u00a73), and is merely consumed at reasoning time. The \u00a72.2 Environment prose is even more internally contradictory \u2014 it says the plane 'ages by construction' (a capture-time-frozen basis) while the same row's control-type says the weighting happens 'at retrieval.' The phrase 'weighting at retrieval' describes a mechanism DDR-004 does not supply.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-008 \u00a72.2 Environment control-type 'per-policy reliability-weighting at retrieval' in conflict with DDR-004 \u00a71/\u00a73 (capture-time-derived, frozen, 'never recomputed at read') and with ADR-008 \u00a72.2 Environment prose 'the plane ages by construction'"
+      },
+      "id": "472812824f2e5637",
+      "classification": "decision-bearing",
+      "authority_locus": "ADR-008-run-025-operator-rulings Ruling D (drop 'reliability-weighting at retrieval'; state capture-time-frozen aging + DDR-004 \u00a76 governance; relabel status) + DDR-004 \u00a71/\u00a73 (capture-time-derived, frozen, never recomputed at read)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a72.2 Environment row \u2014 'Built' realization status vs. the empirical-floor concession in \u00a75.3",
+      "claim": "The \u00a72.2 table marks the Environment control 'Built \u2014 the inherited-confidence derivation ruling's aging basis.' Per the operator ruling (Ruling D) this should read 'form built (DDR-004); constants contested/unvalidated (n=0),' and the document's own \u00a75.3 Risk concedes exactly this \u2014 'calibration constants ... are held contested and config-surfaced.' The bare 'Built' status in \u00a72.2 therefore overstates the maturity of the Environment control relative to the record's own \u00a75.3 statement and the DDR-004 authority it cites, which holds base/\u03c4 as contested unvalidated defaults at n=0 (DDR-004 \u00a72/\u00a76).",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-008 \u00a72.2 Environment realization 'Built' in conflict with ADR-008 \u00a75.3 ('calibration constants ... held contested') and DDR-004 \u00a72/\u00a76 (base/\u03c4 contested, unvalidated, n=0)"
+      },
+      "id": "e01fbbc1fb4e197d",
+      "classification": "decision-bearing",
+      "authority_locus": "ADR-008-run-025-operator-rulings Ruling D (\u00a72.2 relabel: 'form built (DDR-004); constants contested/unvalidated (n=0)')",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a75.2 Constraints Imposed \u2014 candidate-ObservedPattern shape stated as present schema mechanism",
+      "claim": "\u00a75.2 describes Operational distillation as 'realized through a candidate-`ObservedPattern` shape excluded from ground-truth traversal until approved.' Per the operator ruling (Ruling E) and DDR-002 \u00a72.3, this shape does not exist in the ratified schema \u2014 DDR-002 \u00a72.3 leaves the distillation checkpoint 'explicitly un-decided,' and the promotion-boundary `CandidatePromotion` class does not cover it; the candidate-`ObservedPattern` shape is the additive shape a downstream design introduces (routed to the feedback-loop governance design plus a future DDR-002 amendment). The constraint clause reads as a present schema mechanism rather than a forthcoming/additive one. \u00a75.2 does append '\u2014 a downstream governance design and an additive schema shape,' partially hedging it, but the leading 'realized through' still asserts present realization; earned tense requires the shape be stated as forthcoming.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-008 \u00a75.2 ('realized through a candidate-ObservedPattern shape excluded from ground-truth traversal until approved') in conflict with DDR-002 \u00a72.3 (distillation checkpoint 'explicitly un-decided'; no schema shape present) \u2014 the shape is forthcoming/additive, not present"
+      },
+      "id": "6aad770744b622e7",
+      "classification": "resolvable",
+      "authority_locus": "ADR-008-run-025-operator-rulings Ruling E (candidate-ObservedPattern shape stated as forthcoming/additive, not present) + author-decision-record SKILL body-integrity 'tense is earned by enforcement'",
+      "status": "closed",
+      "pass_raised": 1,
+      "pass_closed": 1,
+      "recurrence_count": 0,
+      "resolution_note": "conformed to ADR-008-run-025-operator-rulings Ruling E \u2014 state the candidate-ObservedPattern shape as forthcoming/additive, not a present realization",
+      "claim_variants": []
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "COSMETIC",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a72.3 Un-promotion authority \u2014 'the same ... control as promotion' vs. \u00a75.3 detection-gap concession",
+      "claim": "\u00a72.3 states un-promotion is 'governed by the same per-write, EA-gated, human-accountable control as promotion itself,' citing the built retraction shape (DDR-002 \u00a75, retraction-gated invariant) as its instance. Per the operator ruling (Ruling F), the built retraction instance (DDR-002 \u00a77 #21) traces to *an* approving decision, not the *governing* one, so it does not yet supply promotion's governing-verdict guarantee (#15); the 'same control' claim is unqualified at \u00a72.3 while \u00a75.3 correctly concedes the executed-retraction detection analogue is a named follow-up. \u00a72.3's 'same' claim overstates parity relative to the record's own \u00a75.3 concession and the DDR-002 #21-vs-#15 asymmetry.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-008 \u00a72.3 ('the same per-write, EA-gated ... control as promotion itself') in conflict with ADR-008 \u00a75.3 (executed-retraction detection analogue is a named follow-up) and DDR-002 \u00a77 #21 vs #15 (retraction traces to an approving, not the governing, decision)"
+      },
+      "id": "bc471872b708046f",
+      "classification": "decision-bearing",
+      "authority_locus": "RBT-59 Operator Ruling F (run-025 dispositions): qualify \u00a72.3 'same control' to match the \u00a75.3 concession \u2014 authority homed, governing-verdict detection analogue named as follow-up (DDR-002 \u00a77 / DDR-003)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a72.1 / \u00a72.3 / \u00a77 \u2014 un-promotion authority homing against ADR-001 \u00a72.5's scope",
+      "claim": "Checked the load-bearing claim that ADR-008 homes an authority ADR-001 \u00a72.5 does not carry: \u00a72.3 asserts \u00a72.5 'authorizes promotion only and does not stretch to its reversal,' and \u00a77 states 'Supersedes: None.' Fetch-verified against ADR-001 \u00a72.5, which authorizes only EA-gated promotion of SOFIA's own reasoning into encoded knowledge and is silent on un-promotion; ADR-008 correctly generalizes/subsumes rather than contradicts \u00a72.5, so no supersession is claimed. The relationship holds and is consistent with the Ruling B disposition (record the generalization + un-promotion extension; Supersedes: None stands).",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-008 \u00a72.1/\u00a72.3/\u00a77 checked against ADR-001 \u00a72.5 (EA-gated promotion of SOFIA's own reasoning; silent on un-promotion) \u2014 generalization/subsumption, no supersession, consistent"
+      },
+      "id": "95945cdfc229696b",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a72.1 scope exclusion \u2014 RG capture excluded from ground-truth mutation governance",
+      "claim": "Checked the boundary claim that the accountability invariant is scoped to KG authoritative ground truth and excludes Reasoning-Graph capture (\u00a72.1: 'RG capture is not ground truth \u2014 it is captured judgment ... outside this record's scope'). Verified against ADR-002 \u00a72.6 (RG write-authority: ASA authors ReasoningProgress, gateway executes) and ADR-001 \u00a72.2 (capture invariant / reasoning-capture): the RG is governed by the reasoning-capture invariant and its write-authority assignment, not by ground-truth mutation controls, so ADR-008's exclusion does not collide with the RG's own governance and does not leave RG writes doubly-governed or ungoverned. The scope line holds.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-008 \u00a72.1 (RG capture excluded) checked against ADR-002 \u00a72.6 (RG write-authority) and ADR-001 \u00a72.2 (reasoning-capture invariant) \u2014 scope boundary consistent, no double-governance or gap"
+      },
+      "id": "df680acdc14c40bd",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a77 Cross-References \u2014 'DDR-003 (Feedback Loop Governance, forthcoming)' and 'The forthcoming ingestion decision record (file-driven ingestion, forthcoming)'",
+      "claim": "The Cross-References section names two unauthored forthcoming records by concrete numeric identifier \u2014 'DDR-003' and, within the ingestion entry, '(file-driven ingestion, forthcoming)' paired with the earlier concrete 'DDR-004' \u2014 while the body (\u00a71, \u00a72.2 realization column, \u00a72.6) names the same referents by subject-name only ('the forthcoming feedback-loop governance design', 'the forthcoming ingestion decision record'). The document is internally inconsistent about which naming form it follows for the same records; a \u00a7-cite reader cannot tell whether the forthcoming feedback-loop design is decidedly DDR-003 or subject-named.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-008 \u00a77 (concrete 'DDR-003 (Feedback Loop Governance, forthcoming)') vs ADR-008 \u00a71/\u00a72.2/\u00a72.6 (subject-name form 'the forthcoming feedback-loop governance design' for the same referent)"
+      },
+      "id": "7816c27324b1216c",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "COSMETIC",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a72.3 Un-promotion authority \u2014 'homed under the same per-write, EA-gated, human-accountable control authority as promotion' followed by two near-identical qualifying clauses",
+      "claim": "\u00a72.3 states the un-promotion authority and its governing-verdict caveat twice in near-identical wording within two adjacent sentences: first 'though its built instance traces to *an* approving decision, not the *governing* one, and so does not yet supply promotion's governing-verdict guarantee; that governing-verdict detection analogue for executed retractions is a named follow-up (\u00a75.3)', then again 'though it traces to *an* approving decision, not the *governing* one, so it does not yet supply promotion's governing-verdict guarantee; the governing-verdict detection analogue for executed retractions is a named follow-up (\u00a75.3)'. The duplicated qualification is a drafting artifact \u2014 the decision content is stated redundantly, obscuring the single ruling.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-008 \u00a72.3 sentence 1 vs \u00a72.3 sentence 2 (both carry the identical 'an approving, not the governing, decision / named follow-up \u00a75.3' qualification for the same claim)"
+      },
+      "id": "d5bbc8ac05d897cc",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a77 Cross-References \u2014 Reboot Decision Ledger R30 named as substrate in the durable body",
+      "claim": "\u00a77 names 'Reboot Decision Ledger ruling R30 (the derive/promote authority seam), fetched verbatim as substrate' in the durable Cross-References body. The distillation control-type and its superseding rationale are stated self-containedly in \u00a72.2 (which does not name R30), so the R30 pointer in \u00a77 carries no load the body depends on \u2014 it is a substrate/deliberation reference sitting in the durable record. The record's stated relationship to R30 (a prior ratified inference this ADR supersedes on a criterion-shift) is a deliberation-record and governance-ledger matter; a durable in-body ledger-ruling citation does not surface anywhere else in the body as an authority the ADR rests on, making it standalone-body noise rather than a resolvable cross-reference.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-008 \u00a77 (R30 named in durable Cross-References body) vs ADR-008 \u00a72.2 (distillation control-type + superseding rationale stated self-containedly, R30 not named) \u2014 the body does not rest on the R30 pointer"
+      },
+      "id": "f07cfb7ae93b5c0f",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a72.2 Per-source-class calibration table \u2014 Environment 'Realization routes to' cell vs the Environment prose bullet and vs DDR-004",
+      "claim": "The Environment row of the \u00a72.2 table gives the control-type as 'per-policy capture-time-frozen aging (freshness-decayed confidence derived at Evidence capture and frozen ...)', and the Environment prose bullet correctly restates capture-time-frozen aging \u2014 but the same table row's Realization cell is labeled 'Form built (DDR-004); constants contested/unvalidated (n=0)' while the Promotion row's Realization reads 'Built \u2014 the graph-schema ruling's PromotionDecision gate'. The two Realization cells use inconsistent status vocabulary ('Built' vs 'Form built ... constants contested') to describe the same 'is-this-mechanized' axis, and the \u00a76 Enforcement paragraph lists 'the Environment weighting derivation' flatly among 'already mechanized' instances without the form-built/constants-contested qualifier the \u00a72.2 cell and \u00a75.3 both carry \u2014 leaving \u00a76 asserting a maturity the \u00a72.2 relabel and \u00a75.3 empirical floor withhold.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-008 \u00a76 Enforcement ('the Environment weighting derivation' listed flatly among 'already mechanized' instances) vs ADR-008 \u00a72.2 Environment Realization cell ('Form built (DDR-004); constants contested/unvalidated (n=0)') and \u00a75.3 (constants held contested, n=0)"
+      },
+      "id": "46d9416a053f8020",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "COSMETIC",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a72.2 Environment bullet \u2014 'its aging confidence basis is fixed in the inherited-confidence derivation ruling, governed by DDR-004 \u00a76's two-tier calibration governance'",
+      "claim": "The Environment bullet refers to 'the inherited-confidence derivation ruling' by subject-name in one clause and then to 'DDR-004 \u00a76' by concrete identifier in the same sentence, for the same authority. DDR-004 is an existing ACCEPTED record (its concrete identifier is legitimate), but naming the same authority once by subject-name and once by number within one sentence is an inconsistent citation style that reads as though two different records are meant.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-008 \u00a72.2 Environment bullet ('the inherited-confidence derivation ruling' subject-named) vs same sentence ('DDR-004 \u00a76' concrete) \u2014 one authority, two naming forms"
+      },
+      "id": "2b25e34bead9b9f3",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a72.1 / \u00a72.3 / \u00a77 \u2014 relationship to ADR-001 \u00a72.5, un-promotion homing, and Supersedes declaration",
+      "claim": "I attacked the record for a claim-fidelity failure on its relationship to ADR-001 \u00a72.5 \u2014 either an unstated supersession or an overreach beyond \u00a72.5's authority. The attack failed: \u00a72.1 and the \u00a72.2 Promotion bullet state that this ADR is the general upstream authority of which \u00a72.5's EA-gated promotion is a sub-case, \u00a72.3 states \u00a72.5 authorizes promotion only and does not stretch to un-promotion (homing that authority here), and \u00a77 cites \u00a72.5 as still-valid, consistent with the metadata 'Supersedes: None \u2014 establishes new platform principle'. The generalization-and-subsumption is recorded across \u00a72.1/\u00a72.2/\u00a72.3, not merely asserted in passing, and no superseded record exists to contradict the 'None' declaration.",
+      "cited_authority": {
+        "kind": "design-intent",
+        "ref": "RBT-59 deliberation Item 2 / Ruling B (ADR-008 generalizes ADR-001 \u00a72.5 as sub-case, homes un-promotion, supersedes nothing; Supersedes: None stands), realized at ADR-008 \u00a72.1/\u00a72.2/\u00a72.3/\u00a77 and metadata"
+      },
+      "id": "b6d27b6a430a7e0b",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a72.3 Un-promotion authority \u2014 'homed under the same per-write, EA-gated, human-accountable control authority as promotion itself'",
+      "claim": "\u00a72.3 contains a self-contradiction produced by a duplicated qualification: the second sentence states the built retraction shape 'is the instance of this authority, though it traces to an approving decision, not the governing one, so it does not yet supply promotion's governing-verdict guarantee; the governing-verdict detection analogue for executed retractions is a named follow-up (\u00a75.3)' \u2014 and this exact clause is repeated verbatim within the same paragraph (once as an em-dash aside in the first sentence, once as the full second sentence). The clause is stated twice in one paragraph, an internal redundancy that reads as a drafting fault at the point where the control-equivalence is being qualified.",
+      "cited_authority": {
+        "kind": "soundness",
+        "ref": "ADR-008 \u00a72.3 (the 'though it traces to an approving decision, not the governing one ... named follow-up (\u00a75.3)' qualification appears twice within the single un-promotion-authority paragraph)"
+      },
+      "id": "e1e1082b2766f49c",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a77 Cross-References \u2014 'The forthcoming ingestion decision record (file-driven ingestion, forthcoming)'",
+      "claim": "The Cross-References entry for the ingestion record reads 'The forthcoming ingestion decision record (file-driven ingestion, forthcoming)'. This does not resolve to any named artifact in the fetched set: no ingestion decision record exists among the substrate documents, and the parenthetical redundantly repeats 'forthcoming' twice. Read against \u00a71, \u00a72.2, and \u00a72.6 \u2014 which name the same referent as 'the forthcoming ingestion decision record' \u2014 the \u00a77 entry is a cross-reference that names its target only by subject, which is correct, but its doubled 'forthcoming' and the residual '(file-driven ingestion' parenthetical is an unresolved artifact of a prior concrete-identifier form, so the reference's terms are internally inconsistent with the body's own subject-name form.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-008 \u00a77 ('The forthcoming ingestion decision record (file-driven ingestion, forthcoming)') vs ADR-008 \u00a71/\u00a72.2/\u00a72.6 ('the forthcoming ingestion decision record')"
+      },
+      "id": "cff0305eff5b23b5",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a77 Cross-References \u2014 'DDR-003 (Feedback Loop Governance, forthcoming)'",
+      "claim": "\u00a77 names an unauthored forthcoming record by concrete identifier 'DDR-003' while \u00a71, \u00a72.2, and \u00a72.6 name the same referent by subject only ('the forthcoming feedback-loop governance design'). No fetched authority in the set fixes the identifier 'DDR-003' for this record \u2014 the substrate cross-references it as forthcoming and unauthored throughout \u2014 so the concrete numeric identifier in \u00a77 is a claim the set does not substantiate, and it is internally inconsistent with the body's own subject-name usage for the identical referent.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-008 \u00a77 ('DDR-003 (Feedback Loop Governance, forthcoming)') vs ADR-008 \u00a72.2/\u00a72.6 ('the forthcoming feedback-loop governance design') and DDR-002 Cross-References (DDR-003 forthcoming, unauthored \u2014 no identifier-binding authority)"
+      },
+      "id": "c54cc84dc48d2a99",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a72.2 per-source-class calibration table, Environment row \u2014 'per-policy capture-time-frozen aging (freshness-decayed confidence derived at Evidence capture and frozen ...)' vs the same table's control-type phrasing 'Per-policy reliability-weighting at retrieval' in \u00a72.5 cross-reference and \u00a72.2 prose",
+      "claim": "The Environment control is characterized inconsistently within the record. The \u00a72.2 table row and Environment bullet correctly state the mechanism as capture-time-frozen aging \u2014 confidence 'derived at Evidence capture and frozen, never recomputed at read' \u2014 consistent with its cited authority DDR-004 \u00a71/\u00a73. However, \u00a72.6 and the \u00a75.3 risk statement refer to it as a 'weighting policy' / 'reliability-weighting,' and the general framing in \u00a72.2 ('Per-policy' control-type) elides that the weighting is not applied at retrieval. The mechanism as cited (DDR-004 \u00a73: 'computed once at capture and frozen ... never recomputed at read') is capture-time; any residual retrieval-time framing mischaracterizes the authority the decision rests on.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-008 \u00a72.2 Environment row (capture-time-frozen, correct) vs DDR-004 \u00a71/\u00a73 (derived at capture, frozen, never recomputed at read) \u2014 verify no residual retrieval-time characterization survives across \u00a72.2/\u00a72.5/\u00a75.3"
+      },
+      "id": "c0da105ce981d3fd",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "COSMETIC",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a75.2 Constraints Imposed \u2014 'The candidate-`ObservedPattern` shape that would carry it \u2014 excluded from ground-truth traversal until approved \u2014 is forthcoming and additive, introduced downstream by a future schema amendment: a downstream governance design and an additive schema shape.'",
+      "claim": "The clause ends with a trailing appositive ('a downstream governance design and an additive schema shape') that restates in fragment form what the preceding clause already states ('is forthcoming and additive, introduced downstream by a future schema amendment'). The sentence carries the earned-tense correction but leaves a redundant, ungrammatical tail \u2014 the colon introduces a noun-phrase list that duplicates the just-stated predicate rather than adding content.",
+      "cited_authority": {
+        "kind": "soundness",
+        "ref": "ADR-008 \u00a75.2 (candidate-ObservedPattern constraint clause \u2014 trailing appositive duplicates the forthcoming/additive predicate it follows)"
+      },
+      "id": "11ab751b490bdc31",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a76 Compliance, check 1 \u2014 'names the human accountable for it (per-write or per-policy)'; \u00a72.2 Environment row Accountability 'Per-policy'",
+      "claim": "\u00a76 check 1 requires a design to 'name the human accountable' for a mutation, per-write or per-policy. For the Environment class, \u00a72.2 states accountability is per-policy and a human is 'answerable for the weighting policy ... not for each observation,' with the calibration governed by DDR-004 \u00a76's two-tier calibration governance. But DDR-004 \u00a76 states 'no calibration is possible until the platform runs' and holds the constants as unvalidated at n=0 \u2014 so the 'human answerable for the policy' is, at the ratified state, answerable for a policy whose values are POC-asserted defaults no human has yet ratified against evidence. The accountability check is satisfiable in form (the two-tier governance exists) but the record does not disclose that the per-policy accountability control for Environment is presently discharged only over unvalidated defaults, which the empirical-floor risk (\u00a75.3) names for constants generally but the \u00a72.2/\u00a76 accountability claim states without that qualification.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-008 \u00a72.2 Environment ('a human is answerable for the weighting policy ... calibration is a ratified act') / \u00a76 check 1 vs DDR-004 \u00a76 ('no calibration is possible until the platform runs'; constants unvalidated at n=0)"
+      },
+      "id": "d3861552fc6ac14d",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a72 / \u00a72.6 \u2014 decision scope against smuggled governance policy",
+      "claim": "I attacked the Decision for smuggling a remedy-boundary or governance-policy ruling into the principle layer. \u00a72 declares it fixes invariant, accountability, and control-type only; \u00a72.6 explicitly holds out the remedy boundary (supersede vs retract), thresholds, cadence, retention windows, reviewer-role assignments, and multi-condition composition, routing them to the forthcoming feedback-loop governance design; \u00a75.3 restates it commits control-types not calibrations; \u00a76 check 5 (boundary check) enforces the same fence at review. The scoping is internally consistent across all four loci and conforms to DDR-002 \u00a72.4, which already routes the remedy boundary to the governance design. The record decides what it claims to and no more; the attack held.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-008 \u00a72/\u00a72.6/\u00a75.3/\u00a76-check-5 checked against DDR-002 \u00a72.4/\u00a75 (remedy boundary routed to feedback-loop governance) \u2014 scope fence internally consistent and conformant"
+      },
+      "id": "50615191266d24e1",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a72.1 scope exclusion of Reasoning-Graph capture",
+      "claim": "I attacked the scope boundary for either overreaching into RG capture or leaving the executor/author line inconsistent with its cited authority. \u00a72.1 excludes RG capture as captured judgment governed by ADR-001 \u00a72.2 and ADR-002 \u00a72.6, and states the gateway is the executor and never the authoring authority \u2014 verified against ADR-002 \u00a72.6 (ASA authors ReasoningProgress; the sole-owner gateway is sole executor, never the authoring authority) and ADR-001 \u00a72.2 (reasoning-capture invariant). The exclusion neither double-governs RG writes nor leaves them ungoverned, and the executor/author separation is stated consistently with the cited authority. The boundary held.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-008 \u00a72.1 (RG capture excluded; gateway executor-not-author) checked against ADR-002 \u00a72.6 (author/executor separation) and ADR-001 \u00a72.2 (reasoning-capture invariant) \u2014 consistent, no governance gap"
+      },
+      "id": "fa2f23aa5a970969",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a72.2 Environment row 'Realization routes to' + \u00a72.2 Environment bullet \u2014 'per-policy capture-time-frozen aging' with 'form built (DDR-004); constants contested/unvalidated (n=0)'",
+      "claim": "The Environment control-type is committed as a settled principle-layer decision \u2014 per-policy capture-time-frozen aging, no per-write gate \u2014 while the record concedes in the same cell and in \u00a75.3 that the mechanism's constants are contested and unvalidated at zero traffic. This commits the platform to a reversibility posture whose justification depends on constants no one has calibrated: the decision that Environment needs *no human gate* rests on the claim that aging-decay confidence adequately governs over-reliance, which is exactly the property n=0 cannot yet substantiate. From EA altitude the question is whether committing 'no per-write gate' for a class at this altitude is proportionate to the risk of being wrong about the untested weighting, or whether the no-gate commitment should be qualified as provisional-pending-calibration.",
+      "cited_authority": {
+        "kind": "design-intent",
+        "ref": "RBT-59 deliberation Item 3 (Environment control-type rests on the design-fixed form; constants held contested, n=0) \u2014 ADR-008 \u00a72.2 commits the no-gate posture as settled while its enabling weighting is uncalibrated"
+      },
+      "id": "68509ea941f97b9e",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a72.5 Cross-class precedence + \u00a72.2 Environment/distillation calibration",
+      "claim": "The cross-class precedence rule (withhold-and-escalate when a lighter control's mutation would override a heavier control's scope) integrates cleanly with the promotion class, but its interaction with the *ungated* Environment class is unstated. An Environment observation that structurally collides with an EA-set governance scope must, per \u00a72.5, withhold and escalate \u2014 yet \u00a72.2 commits Environment to no per-write gate and per-policy accountability only. The record does not reconcile how a continuous, ungated, high-volume observation stream is subjected to a per-write withhold-and-escalate on collision without reintroducing the per-write inspection \u00a72.2 declines. This is a posture seam: the two decisions are each stated but their composition at the Environment/promotion boundary is left to the reader.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-008 \u00a72.5 (per-write withhold-and-escalate on cross-class collision) vs \u00a72.2 Environment row (no per-write gate; per-policy accountability) \u2014 the composition at the Environment\u2194promoted-scope boundary is unspecified"
+      },
+      "id": "8c4d1406b68d7fd0",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a72.2 Authoritative-source ingestion row + \u00a75.2 Constraints Imposed",
+      "claim": "The authoritative-source ingestion control commits a new, hard-to-reverse platform posture \u2014 that ingestion is no longer a direct write but must pass a pre-official-entry human fidelity verification introducing a provisional-versus-official distinction \u2014 while the record it depends on for realization (the forthcoming file-driven ingestion decision record) does not yet exist. This commits downstream ingestion design to a provisional/official dual-state model before the record that would decide that model's shape has been authored. A commitment of this reversibility cost (it reshapes every authoritative-source write path) taken ahead of the deciding record risks committing the project to a position that deserves its own decision record first.",
+      "cited_authority": {
+        "kind": "design-intent",
+        "ref": "RBT-59 deliberation Item 3 (authoritative-source ingestion \u2192 pre-entry fidelity verification; mechanics routed to the forthcoming ingestion decision record) \u2014 ADR-008 \u00a72.2/\u00a75.2 commits the provisional/official dual-state before its deciding record exists"
+      },
+      "id": "2125312d2c1c06c1",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "COSMETIC",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a76 Enforcement + \u00a72.2 realization statuses",
+      "claim": "\u00a76 states several control instances 'are already mechanized (the EA promotion gate ... the EA-gated retraction invariant ...)' without carrying the qualification the record applies elsewhere: the retraction invariant is conceded at \u00a72.3/\u00a75.3 to trace to an approving, not the governing, decision. Listing the retraction invariant flatly among 'already mechanized' instances in \u00a76 restates a maturity the record's own \u00a75.3 qualifies, mirroring the \u00a72.3 overstatement at the enforcement-summary altitude.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-008 \u00a76 ('the EA-gated retraction invariant' listed among already-mechanized instances) vs \u00a75.3 (retraction invariant traces to an approving, not the governing, decision \u2014 no standing detection analogue)"
+      },
+      "id": "47715393f81d622e",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a72 / \u00a72.6 / \u00a75.3 \u2014 decision-scope boundary against remedy-boundary and governance policy",
+      "claim": "I attacked the Decision from EA altitude for committing positions that deserve their own downstream decision record first \u2014 specifically whether the principle layer smuggles remedy-boundary or governance-policy rulings that pull authority from the forthcoming feedback-loop governance design. It held: \u00a72 fixes invariant/accountability/control-type only, \u00a72.6 explicitly withholds the remedy boundary, thresholds, cadence, retention, reviewer roles, and multi-condition semantics and routes them downstream, and \u00a75.3 states control-types not calibrations. The altitude discipline is consistent across \u00a72.2, \u00a72.6, \u00a75.3, and \u00a76 check 5; the record decides at its altitude and no lower.",
+      "cited_authority": {
+        "kind": "design-intent",
+        "ref": "RBT-59 deliberation Item 5 (ADR owns invariant/accountability/control-type/lifecycle; remedy-boundary and governance policy \u2192 forthcoming feedback-loop governance design), realized at ADR-008 \u00a72/\u00a72.6/\u00a76"
+      },
+      "id": "714a7346231ba6ba",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-008"
+      ],
+      "locus": "\u00a72.1 / \u00a72.3 / \u00a77 \u2014 un-promotion authority homing and Supersedes:None against ADR-001 \u00a72.5's scope",
+      "claim": "I attacked the record's integration with the prior ratified ADR-001 \u00a72.5 posture \u2014 whether it silently supersedes, over-reaches beyond \u00a72.5's authority, or leaves un-promotion doubly-governed. It held: ADR-001 \u00a72.5 authorizes only EA-gated promotion of SOFIA's own reasoning and is silent on un-promotion; ADR-008 generalizes it as the promotion sub-case and homes the un-promotion authority \u00a72.5 does not reach, citing \u00a72.5 as still-valid (Supersedes: None, house norm for a new principle). The generalization integrates with rather than pulls against the ratified substrate.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "ADR-001 \u00a72.5 (EA-gated promotion of SOFIA's own reasoning; silent on un-promotion) \u2014 ADR-008 \u00a72.1/\u00a72.3/\u00a77 generalizes and homes without supersession"
+      },
+      "id": "2d26203a43cb8cd9",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    }
+  ],
+  "passes": [
+    {
+      "pass_number": 1,
+      "open_cbm_count": 21,
+      "agents_run": [
+        "antagonist-LAA",
+        "antagonist-SA",
+        "antagonist-EA",
+        "coherence",
+        "arbiter"
+      ],
+      "timestamp": "2026-07-18T21:37:55.484108+00:00"
+    }
+  ],
+  "doc_changes": [
+    {
+      "doc": "ADR-008",
+      "pass_number": 1
+    },
+    {
+      "doc": "ADR-008",
+      "pass_number": 1
+    },
+    {
+      "doc": "ADR-008",
+      "pass_number": 1
+    },
+    {
+      "doc": "ADR-008",
+      "pass_number": 1
+    },
+    {
+      "doc": "ADR-008",
+      "pass_number": 1
+    },
+    {
+      "doc": "ADR-008",
+      "pass_number": 1
+    },
+    {
+      "doc": "ADR-008",
+      "pass_number": 1
+    },
+    {
+      "doc": "ADR-008",
+      "pass_number": 1
+    },
+    {
+      "doc": "ADR-008",
+      "pass_number": 1
+    },
+    {
+      "doc": "ADR-008",
+      "pass_number": 1
+    },
+    {
+      "doc": "ADR-008",
+      "pass_number": 1
+    }
+  ]
+}

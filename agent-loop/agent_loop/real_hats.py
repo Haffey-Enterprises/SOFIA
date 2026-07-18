@@ -193,6 +193,77 @@ def substrate_cache_prefix(user: str) -> str | None:
 # --- §7: emission-parsing seam (validate, construct, stamp, drop) ------------
 
 
+def _balanced_span(text: str, start: int, opener: str, closer: str) -> int | None:
+    """End index (exclusive) of the balanced `opener…closer` span at `text[start]`.
+
+    The bracket-general form of `author._balanced_object_span` (which is fixed to
+    `{`/`}`): string- and escape-aware, so an `opener` or `closer` character
+    inside a JSON string value — a `[` or `]` in a finding's `claim`/`locus`, say
+    — does not throw off the depth count. Returns None if the span never closes
+    (a truncated tail).
+    """
+    depth = 0
+    in_string = False
+    escaped = False
+    for i in range(start, len(text)):
+        ch = text[i]
+        if in_string:
+            if escaped:
+                escaped = False
+            elif ch == "\\":
+                escaped = True
+            elif ch == '"':
+                in_string = False
+            continue
+        if ch == '"':
+            in_string = True
+        elif ch == opener:
+            depth += 1
+        elif ch == closer:
+            depth -= 1
+            if depth == 0:
+                return i + 1
+    return None
+
+
+def _extract_json_array(raw_text: str) -> tuple[str | None, bool]:
+    """The first balanced, JSON-parseable `[...]` in the fence-stripped text.
+
+    The reviewer-seam analog of `author._extract_json_object`, adapted object→
+    array (RBT-70). Defense-in-depth for run-029: the coherence hat narrated a
+    reconciliation preamble before an otherwise-valid findings array, so the
+    strict whole-string parse failed at character 0, the emission parse-dropped,
+    and the hat admitted nothing → a false `InstrumentCompromisedError`. The
+    prompt (gen-11) forbids that preamble; this salvages the array when it slips
+    through anyway, and the caller logs that it had to (so the prompt fix's
+    residual rate stays observable rather than silently masked).
+
+    Fence-unwraps first (transport unwrapping), then scans each `[` in turn and
+    returns the first balanced span that `json.loads` accepts — trying successive
+    `[`s makes it robust to a stray, non-parseable `[…]` in the prose preamble
+    (that span is skipped). A balanced `[...]` that parses is necessarily a list,
+    so no separate type check is needed. Returns `(array_text,
+    had_surrounding_text)`, or `(None, False)` when the text holds no parseable
+    array — a bare `{...}` object or pure prose (genuinely malformed; the caller
+    drops it, and the instrument-compromised guard stays load-bearing).
+    """
+    text = strip_code_fences(raw_text)
+    for start, ch in enumerate(text):
+        if ch != "[":
+            continue
+        end = _balanced_span(text, start, "[", "]")
+        if end is None:
+            continue
+        candidate = text[start:end]
+        try:
+            json.loads(candidate)
+        except json.JSONDecodeError:
+            continue
+        had_surround = bool(text[:start].strip()) or bool(text[end:].strip())
+        return candidate, had_surround
+    return None, False
+
+
 def _valid_cited_authority(raw: object) -> bool:
     """Shape/vocabulary check for a cited_authority payload (not scope/honesty).
 
@@ -218,43 +289,50 @@ def parse_emissions(
 ) -> list[Finding]:
     """Parse one reviewer's raw JSON emission into stamped Finding templates.
 
-    Fence-unwraps the raw text, then validates shape and vocabulary, constructs
-    Finding templates, and **stamps `source`/`altitude` from the invoked
-    reviewer's identity, ignoring whatever the model emitted** (§7; ledger-schema
-    §Identity — hardcode over trust). A malformed emission (bad JSON, not an
-    array, missing field, invalid enum) is dropped with an observable
-    `parse_dropped` line referencing the captured raw file — never silently,
-    never by crashing the pass. Scope drops (null/bare authority) remain
+    Salvages the findings array from any surrounding prose envelope
+    (`_extract_json_array`, RBT-70), then validates shape and vocabulary,
+    constructs Finding templates, and **stamps `source`/`altitude` from the
+    invoked reviewer's identity, ignoring whatever the model emitted** (§7;
+    ledger-schema §Identity — hardcode over trust). When a preamble had to be
+    stripped, a `reviewer_output_preamble_stripped` line fires so the residual
+    rate stays observable (the parallel of `author_output_preamble_stripped`).
+    The envelope tolerance is exactly that — the per-item schema check below is
+    unchanged and strict, so a mis-salvaged wrong array still drops per item and
+    never admits a bad finding. A genuinely-unparseable emission (a bare `{...}`
+    object, pure prose, a truncated array) has no array to salvage and is dropped
+    with an observable `parse_dropped` line referencing the captured raw file —
+    never silently, never by crashing the pass, and it can still trip the
+    instrument-compromised guard. Scope drops (null/bare authority) remain
     admission's job.
 
     Args:
         identity: The invoking reviewer's identity (source/altitude to stamp).
-        raw_text: The model's raw output (expected: a JSON array of findings).
+        raw_text: The model's raw output (expected: a JSON array of findings,
+            tolerated behind a prose envelope).
         log: The structured action log.
         emission_path: Path to the captured raw emission, referenced on a drop.
 
     Returns:
         The list of well-formed, stamped Finding templates (possibly empty).
     """
-    text = strip_code_fences(raw_text)
-    try:
-        data = json.loads(text)
-    except json.JSONDecodeError:
+    array_text, had_surrounding_text = _extract_json_array(raw_text)
+    if array_text is None:
         log.emit(
             "parse_dropped",
             reviewer=identity.label,
-            reason="invalid JSON",
+            reason="no parseable JSON array",
             emission_path=emission_path,
         )
         return []
-    if not isinstance(data, list):
+    # `_extract_json_array` returns only a span that `json.loads` already
+    # accepted, so this reparse cannot fail and yields a list.
+    data = json.loads(array_text)
+    if had_surrounding_text:
         log.emit(
-            "parse_dropped",
+            "reviewer_output_preamble_stripped",
             reviewer=identity.label,
-            reason="emission is not a JSON array",
-            emission_path=emission_path,
+            finding_count=len(data),
         )
-        return []
 
     findings: list[Finding] = []
     for index, item in enumerate(data):

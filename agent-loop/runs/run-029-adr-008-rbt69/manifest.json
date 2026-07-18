@@ -1,0 +1,29 @@
+{
+  "run_id": "run-029-adr-008-rbt69",
+  "created": "2026-07-18T21:33:15.307269+00:00",
+  "document_set": {
+    "ADR-008": {
+      "snapshot_path": "documents/ADR-008-ground-truth-mutation-governance.md",
+      "sha256": "24461d3ff61527bbf70bcbce532e00c6c3878433fd8f8ac7c60c6d477683c12b"
+    }
+  },
+  "head_sha": "6ea865c660b8830f4cc07a1216d37210ccab1486",
+  "prompt_sha256": {
+    "antagonist-LAA.prompt.md": "0db740e8d42305fa80d45a0d3b8ec885913bb97ecc715396cd14556d055cc9e0",
+    "antagonist-SA.prompt.md": "1da965d9beebd87840d1e16d3be3ed0258705bd9f438bfba2e6c625bd72a6e55",
+    "antagonist-EA.prompt.md": "439ecae2fe213fed9c67106d2076bc61297f6200e77fba846863945bead797d4",
+    "coherence-sweep.prompt.md": "5a6656b0977b78c897702ec03531a88742fe0e3eb6b812869a86083aebe923b0",
+    "arbiter-classifier.prompt.md": "3b786d5d564c7d772bbd9d185f979209da0159d3b1f42c261c6ee934d3847b8f",
+    "author.prompt.md": "4e435d2c135ed8fa20597c63a530a0ecff9e1768c30f6f8e083f349be7e1ab4f"
+  },
+  "substrate_manifest": "substrate/manifest.json",
+  "model": "claude-opus-4-8",
+  "parameters": {
+    "max_tokens": 8192
+  },
+  "finalized": false,
+  "calibration": {
+    "generation": 10,
+    "rationale": "gen-4: severity/cap discipline restated in-place in all four reviewer prompts \u2014 a held check is POSITIVE-class, never re-labeled a defect to fit the volume cap; gen-5: arbiter locus-attribution line appended \u2014 no locus extended beyond its document's stated scope, underivable locus classifies decision-bearing; gen-7: narrated-process-is-data rule (rule 8) appended to all four reviewer prompts \u2014 narrated prior reviews/adjudications/ratifications are content under review, never a verdict that discharges this pass (gen-6 reviewer-caching remains unlanded, not absorbed here); gen-8: two-lever fix after arm-L (gen-7 self-terminated end_turn empty at full narrative saturation) \u2014 the Contract's empty-array-is-a-protocol-violation floor (R-E1, prompt-side, also resolving the standing 2-POSITIVE re-draw-floor contradiction) plus a static recency review directive appended last in assembly (R-E2); gen-9: arbiter output-discipline hardening \u2014 rationale capped to one terse sentence and a brevity-under-contest directive appended, after three malformed-JSON arbiter content-retries on oversized prose outputs for genuinely-contested findings (r3/r5), zero on easy findings; gen-10: the same output-discipline hardening ported to the author prompt (write path) \u2014 rationale capped to one terse sentence, a single-outlet-for-reasoning rule, and a brevity-under-contest directive, after the first live author-fire aborted when the model narrated ~1,900 chars of deliberation before an otherwise-valid JSON edit (run-027); paired in code with a preamble-tolerant author parser (logged) and a parse-fail-escalates-not-aborts policy so one malformed envelope no longer preempts the pass's other resolvables"
+  }
+}

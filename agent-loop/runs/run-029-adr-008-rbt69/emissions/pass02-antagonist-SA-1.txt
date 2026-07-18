@@ -1,0 +1,82 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.3 Un-promotion authority — 'homed under the same per-write, EA-gated, human-accountable control authority as promotion itself'",
+    "claim": "§2.3 contains a self-contradiction produced by a duplicated qualification: the second sentence states the built retraction shape 'is the instance of this authority, though it traces to an approving decision, not the governing one, so it does not yet supply promotion's governing-verdict guarantee; the governing-verdict detection analogue for executed retractions is a named follow-up (§5.3)' — and this exact clause is repeated verbatim within the same paragraph (once as an em-dash aside in the first sentence, once as the full second sentence). The clause is stated twice in one paragraph, an internal redundancy that reads as a drafting fault at the point where the control-equivalence is being qualified.",
+    "cited_authority": {
+      "kind": "soundness",
+      "ref": "ADR-008 §2.3 (the 'though it traces to an approving decision, not the governing one ... named follow-up (§5.3)' qualification appears twice within the single un-promotion-authority paragraph)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References — 'The forthcoming ingestion decision record (file-driven ingestion, forthcoming)'",
+    "claim": "The Cross-References entry for the ingestion record reads 'The forthcoming ingestion decision record (file-driven ingestion, forthcoming)'. This does not resolve to any named artifact in the fetched set: no ingestion decision record exists among the substrate documents, and the parenthetical redundantly repeats 'forthcoming' twice. Read against §1, §2.2, and §2.6 — which name the same referent as 'the forthcoming ingestion decision record' — the §7 entry is a cross-reference that names its target only by subject, which is correct, but its doubled 'forthcoming' and the residual '(file-driven ingestion' parenthetical is an unresolved artifact of a prior concrete-identifier form, so the reference's terms are internally inconsistent with the body's own subject-name form.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §7 ('The forthcoming ingestion decision record (file-driven ingestion, forthcoming)') vs ADR-008 §1/§2.2/§2.6 ('the forthcoming ingestion decision record')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References — 'DDR-003 (Feedback Loop Governance, forthcoming)'",
+    "claim": "§7 names an unauthored forthcoming record by concrete identifier 'DDR-003' while §1, §2.2, and §2.6 name the same referent by subject only ('the forthcoming feedback-loop governance design'). No fetched authority in the set fixes the identifier 'DDR-003' for this record — the substrate cross-references it as forthcoming and unauthored throughout — so the concrete numeric identifier in §7 is a claim the set does not substantiate, and it is internally inconsistent with the body's own subject-name usage for the identical referent.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §7 ('DDR-003 (Feedback Loop Governance, forthcoming)') vs ADR-008 §2.2/§2.6 ('the forthcoming feedback-loop governance design') and DDR-002 Cross-References (DDR-003 forthcoming, unauthored — no identifier-binding authority)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 per-source-class calibration table, Environment row — 'per-policy capture-time-frozen aging (freshness-decayed confidence derived at Evidence capture and frozen ...)' vs the same table's control-type phrasing 'Per-policy reliability-weighting at retrieval' in §2.5 cross-reference and §2.2 prose",
+    "claim": "The Environment control is characterized inconsistently within the record. The §2.2 table row and Environment bullet correctly state the mechanism as capture-time-frozen aging — confidence 'derived at Evidence capture and frozen, never recomputed at read' — consistent with its cited authority DDR-004 §1/§3. However, §2.6 and the §5.3 risk statement refer to it as a 'weighting policy' / 'reliability-weighting,' and the general framing in §2.2 ('Per-policy' control-type) elides that the weighting is not applied at retrieval. The mechanism as cited (DDR-004 §3: 'computed once at capture and frozen ... never recomputed at read') is capture-time; any residual retrieval-time framing mischaracterizes the authority the decision rests on.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 Environment row (capture-time-frozen, correct) vs DDR-004 §1/§3 (derived at capture, frozen, never recomputed at read) — verify no residual retrieval-time characterization survives across §2.2/§2.5/§5.3"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "§5.2 Constraints Imposed — 'The candidate-`ObservedPattern` shape that would carry it — excluded from ground-truth traversal until approved — is forthcoming and additive, introduced downstream by a future schema amendment: a downstream governance design and an additive schema shape.'",
+    "claim": "The clause ends with a trailing appositive ('a downstream governance design and an additive schema shape') that restates in fragment form what the preceding clause already states ('is forthcoming and additive, introduced downstream by a future schema amendment'). The sentence carries the earned-tense correction but leaves a redundant, ungrammatical tail — the colon introduces a noun-phrase list that duplicates the just-stated predicate rather than adding content.",
+    "cited_authority": {
+      "kind": "soundness",
+      "ref": "ADR-008 §5.2 (candidate-ObservedPattern constraint clause — trailing appositive duplicates the forthcoming/additive predicate it follows)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§6 Compliance, check 1 — 'names the human accountable for it (per-write or per-policy)'; §2.2 Environment row Accountability 'Per-policy'",
+    "claim": "§6 check 1 requires a design to 'name the human accountable' for a mutation, per-write or per-policy. For the Environment class, §2.2 states accountability is per-policy and a human is 'answerable for the weighting policy ... not for each observation,' with the calibration governed by DDR-004 §6's two-tier calibration governance. But DDR-004 §6 states 'no calibration is possible until the platform runs' and holds the constants as unvalidated at n=0 — so the 'human answerable for the policy' is, at the ratified state, answerable for a policy whose values are POC-asserted defaults no human has yet ratified against evidence. The accountability check is satisfiable in form (the two-tier governance exists) but the record does not disclose that the per-policy accountability control for Environment is presently discharged only over unvalidated defaults, which the empirical-floor risk (§5.3) names for constants generally but the §2.2/§6 accountability claim states without that qualification.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 Environment ('a human is answerable for the weighting policy ... calibration is a ratified act') / §6 check 1 vs DDR-004 §6 ('no calibration is possible until the platform runs'; constants unvalidated at n=0)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2 / §2.6 — decision scope against smuggled governance policy",
+    "claim": "I attacked the Decision for smuggling a remedy-boundary or governance-policy ruling into the principle layer. §2 declares it fixes invariant, accountability, and control-type only; §2.6 explicitly holds out the remedy boundary (supersede vs retract), thresholds, cadence, retention windows, reviewer-role assignments, and multi-condition composition, routing them to the forthcoming feedback-loop governance design; §5.3 restates it commits control-types not calibrations; §6 check 5 (boundary check) enforces the same fence at review. The scoping is internally consistent across all four loci and conforms to DDR-002 §2.4, which already routes the remedy boundary to the governance design. The record decides what it claims to and no more; the attack held.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2/§2.6/§5.3/§6-check-5 checked against DDR-002 §2.4/§5 (remedy boundary routed to feedback-loop governance) — scope fence internally consistent and conformant"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.1 scope exclusion of Reasoning-Graph capture",
+    "claim": "I attacked the scope boundary for either overreaching into RG capture or leaving the executor/author line inconsistent with its cited authority. §2.1 excludes RG capture as captured judgment governed by ADR-001 §2.2 and ADR-002 §2.6, and states the gateway is the executor and never the authoring authority — verified against ADR-002 §2.6 (ASA authors ReasoningProgress; the sole-owner gateway is sole executor, never the authoring authority) and ADR-001 §2.2 (reasoning-capture invariant). The exclusion neither double-governs RG writes nor leaves them ungoverned, and the executor/author separation is stated consistently with the cited authority. The boundary held.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.1 (RG capture excluded; gateway executor-not-author) checked against ADR-002 §2.6 (author/executor separation) and ADR-001 §2.2 (reasoning-capture invariant) — consistent, no governance gap"
+    }
+  }
+]

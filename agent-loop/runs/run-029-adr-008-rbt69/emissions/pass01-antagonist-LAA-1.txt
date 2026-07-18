@@ -1,0 +1,82 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Environment row — 'Realization routes to: Built — the inherited-confidence derivation ruling's aging basis'",
+    "claim": "The Environment control-type is stated as 'per-policy reliability-weighting at retrieval', but the substrate it cites (DDR-004 §1/§3) fixes the mechanism as capture-time-frozen — confidence is 'computed once at capture and frozen ... never recomputed at read'. The record claims a retrieval-time weighting the cited authority does not support; the decision as stated mischaracterizes the mechanism it rests on.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 (Environment row, 'weighting ... at retrieval') vs DDR-004 §1/§3 (capture-time-frozen aging derivation, 'never recomputed at read')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Environment row 'Built' status; §2.5 / §5.3 empirical floor",
+    "claim": "The Environment control's realization is marked 'Built' unqualified, but the cited DDR-004 basis has its constants held contested and unvalidated at n=0 (DDR-004 §2/§6). The record itself states the empirical floor at §5.3 for constants, contradicting the flat 'Built' claim in the decision table — the status claim overstates what the substrate supports (form built; constants contested/unvalidated).",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 (Environment 'Built') vs ADR-008 §5.3 (empirical floor: constants held contested) and DDR-004 §2/§6 (contested, unvalidated, n=0)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§5.2 Constraints Imposed — 'realized through a candidate-`ObservedPattern` shape excluded from ground-truth traversal until approved'",
+    "claim": "The record asserts the distillation control is realized through a candidate-`ObservedPattern` shape as if it were a present schema construct, but DDR-002 §2.3 leaves the distillation checkpoint 'explicitly un-decided' and the built `CandidatePromotion` class does not cover it. The consequence-clause states as present a schema shape that is forthcoming/additive (introduced downstream), overstating what the decision substrate currently supports.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §5.2 (candidate-ObservedPattern shape stated as realization mechanism) vs DDR-002 §2.3 (distillation checkpoint 'explicitly un-decided')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.3 Un-promotion authority — 'the built retraction shape ... is the instance of this authority'",
+    "claim": "§2.3 claims un-promotion is governed by 'the same per-write, EA-gated' control as promotion and points to the built retraction shape as its instance, but §5.3 concedes that the built retraction invariant traces to an approving decision, not the governing one, so it does not supply the governing-verdict guarantee promotion has. The §2.3 'same control' claim asserts an equivalence the record's own §5.3 rebuts; the decision content overstates what the cited instance decides.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.3 ('same per-write, EA-gated control ... built retraction shape is the instance') vs ADR-008 §5.3 (retraction invariant traces to an approving, not the governing, decision — no standing detection analogue)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References — 'ADR-004 (file-driven ingestion, forthcoming)' and 'DDR-003 (Feedback Loop Governance, forthcoming)'",
+    "claim": "The record references forthcoming, unauthored records by concrete identifier (ADR-004, DDR-003) rather than subject-name. Its own governing convention (the author-decision-record body-integrity forward-reference rule) and the RBT-59 deliberation record's own numbering note both hold that forward references to unauthored records are subject-named only, concrete identifiers binding at the downstream record's landing; the ADR-004/DDR-004 numbering is itself ambiguous. Declaring a concrete number a forthcoming record has not yet claimed is a claim the substrate does not support.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §7 (concrete IDs 'ADR-004', 'DDR-003' for forthcoming records) vs RBT-59 deliberation record Item 1 / author-decision-record forward-reference rule (forthcoming records named by subject only)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References — Reboot Decision Ledger R30",
+    "claim": "R30 is cited in the body's Cross-References as substrate ('fetched verbatim as substrate'), which is consistent with the record's standalone stance; however the RBT-59 governing principle holds R30 is substrate 'never durable in-body ADR citations.' A Cross-References substrate pointer sits on the boundary of that rule — flagging for the arbiter whether a ledger-ruling name belongs in the durable body at all versus the deliberation record only.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §7 (R30 named in Cross-References) vs RBT-59 governing principle (Reboot Decision Ledger rulings never durable in-body ADR citations)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2 / §2.6 — decision-scope boundary against remedy-boundary and governance policy",
+    "claim": "I attacked the Decision for scope creep — smuggled policy commitments riding along as principle. §2 declares it fixes invariant/accountability/control-type only, and §2.6 explicitly holds the remedy boundary, thresholds, cadence, retention, reviewer roles, and multi-condition semantics out and routes them to the feedback-loop governance design. The scoping is consistent across §2.2 (control-type vs mechanics), §2.6, §5.3 (control-types not calibrations), and §6 check 5 (boundary check). The record decides what it claims to decide and no more; the attack held.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "RBT-59 deliberation Item 5 (ADR owns invariant/accountability/control-type/lifecycle; remedy-boundary and governance policy → feedback-loop governance design), realized at ADR-008 §2/§2.6/§6"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.1 / §7 — relationship to ADR-001 §2.5 and Supersedes declaration",
+    "claim": "I attacked the record for a claim-fidelity failure on its relationship to ADR-001 §2.5 — either an unstated supersession or an overreach beyond §2.5's authority. The record instead states the relationship explicitly (§2.1, §2.2 promotion row, §2.3): it generalizes §2.5, subsumes it as the promotion sub-case, extends to un-promotion, and cites §2.5 as still-valid, not superseded — consistent with 'Supersedes: None' for a new principle. The generalization-and-subsumption is recorded, not asserted in passing; the attack held.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "RBT-59 deliberation Item 2 / Ruling B (ADR-008 generalizes ADR-001 §2.5 as sub-case, homes un-promotion, supersedes nothing; Supersedes: None stands), realized at ADR-008 §2.1/§2.3/§7"
+    }
+  }
+]

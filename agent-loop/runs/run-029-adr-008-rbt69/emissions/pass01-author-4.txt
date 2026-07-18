@@ -1,0 +1,10 @@
+{
+  "action": "edit",
+  "finding_id": "4ae76af0e8fc0656",
+  "target": "ADR-008",
+  "old_string": "The built retraction shape — the EA-gated reversing `CandidatePromotion` with its `RETRACTS` edge (the graph-schema ruling's §5 and its retraction-gated invariant) — is the instance of this authority.",
+  "new_string": "The built retraction shape — the EA-gated reversing `CandidatePromotion` with its `RETRACTS` edge (the graph-schema ruling's §5 and its retraction-gated invariant) — is the instance of this authority, though it traces to *an* approving decision, not the *governing* one, so it does not yet supply promotion's governing-verdict guarantee; the governing-verdict detection analogue for executed retractions is a named follow-up (§5.3).",
+  "authority_conformed": "ADR-008-run-025-operator-rulings Ruling F (§2.3 'same control' qualified to match the §5.3 concession)",
+  "rationale": "Ruling F directs qualifying §2.3's built-instance claim to match §5.3's concession that the retraction shape traces to an approving, not governing, decision.",
+  "confidence": "high"
+}

@@ -1,0 +1,7 @@
+{
+  "finding_id": "695741ea2d880459",
+  "classification": "resolvable",
+  "authority_locus": "Operator Ruling B (RBT-59/ADR-008): 'It supersedes nothing... Supersedes: None stands (house norm for a new principle).'",
+  "rationale": "Ruling B explicitly ratifies Supersedes: None for ADR-008 as a new principle; the finding conforms by confirming the metadata is already correct.",
+  "confidence": "high"
+}

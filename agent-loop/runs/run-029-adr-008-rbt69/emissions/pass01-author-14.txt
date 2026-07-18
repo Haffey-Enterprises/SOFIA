@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "695741ea2d880459",
+  "reason": "The named authority (Operator Ruling B) affirms the document's current state — 'Supersedes: None stands' — so it entails no change to the text; the finding itself concludes 'None holds.' No edit is determined.",
+  "confidence": "high"
+}

@@ -1,0 +1,8 @@
+Ruling G names two exact replacements but the two forthcoming-record references sit in two distinct bullets; I must emit one minimal edit per finding locus, and both bullets are named by this single finding — I edit both since the finding's locus names both and the authority prescribes both replacements verbatim. However, one edit is one find-replace; the two strings are non-contiguous. I anchor the DDR-003 bullet and the ADR-004 bullet together.
+
+{
+  "action": "refuse",
+  "finding_id": "4a3a4a87fb67493f",
+  "reason": "The finding's locus names two non-contiguous cross-reference bullets ('ADR-004 ...' and 'DDR-003 ...') that Ruling G prescribes replacing with two different subject-name forms; a single exact find-replace cannot cover both non-adjacent loci, and I may emit only one minimal edit per finding.",
+  "confidence": "medium"
+}

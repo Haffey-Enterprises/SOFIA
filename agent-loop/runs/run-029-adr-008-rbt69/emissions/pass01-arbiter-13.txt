@@ -1,0 +1,7 @@
+{
+  "finding_id": "fd586478e43aad58",
+  "classification": "resolvable",
+  "authority_locus": "ADR-008-run-025-operator-rulings Ruling B (add explicit 'Relationship to ADR-001 §2.5' statement; fix Promotion-class citation to ADR-001 §2.5 + DDR-002 §5 / §7 #15)",
+  "rationale": "Operator Ruling B names the exact conformance: add the relationship statement and cite the durable chain; no unmade choice remains.",
+  "confidence": "high"
+}

@@ -1,0 +1,8 @@
+The DDR-003 line carries an extra clause (upstream authority, pointer-resolution) whose disposition Ruling G does not determine; only the ingestion line is a clean subject-name swap that Ruling G verbatim specifies.
+
+{
+  "action": "refuse",
+  "finding_id": "294eeeaf3489a862",
+  "reason": "The document's §7 references do not match the finding's paraphrase: there is no 'ADR-004 (file-driven ingestion, forthcoming)' string — the ingestion line already reads 'The forthcoming ingestion decision record (file-driven ingestion, forthcoming)'. The 'DDR-003 (Feedback Loop Governance, forthcoming)' line exists but carries additional clauses (upstream-authority statement, pointer-resolution obligation naming DDR-003's concrete ID) that Ruling G's verbatim swap does not address, so conforming it requires deciding how to rewrite content beyond the subject-name substitution.",
+  "confidence": "medium"
+}

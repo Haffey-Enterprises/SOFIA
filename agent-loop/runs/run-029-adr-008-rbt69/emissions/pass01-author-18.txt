@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "b731dfeb6775e606",
+  "reason": "The locus text the finding names ('realized through a candidate-ObservedPattern shape ... until approved') already reads as forthcoming/additive in the current document — 'realized through a forthcoming candidate-`ObservedPattern` shape — additive, introduced downstream by a future schema amendment — that would be excluded'. Ruling E's earned-tense conformance is already satisfied here; no edit is determined.",
+  "confidence": "high"
+}

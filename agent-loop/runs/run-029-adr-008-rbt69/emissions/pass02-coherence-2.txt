@@ -1,0 +1,74 @@
+Now sweeping the current state of ADR-008 as it stands, reading doc-changes from the ledger's change log (dry mode). The prior pass shows conformance edits applied for the "resolvable" findings (§2.2 relabel, §5.2 tense, §2.3 qualification, capture-time-frozen correction). But I read the current text fresh — several corrections claimed as "closed" are NOT reflected in the ADR-008 text I was handed, and the decision-bearing findings remain open in the body.
+
+[
+{
+"severity": "MATERIAL",
+"target": ["ADR-008"],
+"locus": "§7 Cross-References — 'ADR-004 (file-driven ingestion, forthcoming)' and 'DDR-003 (Feedback Loop Governance, forthcoming)'",
+"claim": "§7 references two unauthored forthcoming records by concrete identifier — 'DDR-003 (Feedback Loop Governance, forthcoming)' and 'ADR-004 (file-driven ingestion, forthcoming)' — while §1, §2.2, and §2.6 name the same referents by subject-name only ('the forthcoming feedback-loop governance design', 'the forthcoming ingestion decision record'). The document is internally inconsistent about which naming convention governs the same two referents. The 'ADR-004' identifier for file-driven ingestion also sits two lines above 'DDR-004 (Inherited-Confidence Derivation)', an existing authority, reintroducing the numbering collision the subject-name form removes.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-008 §7 (concrete 'DDR-003 (forthcoming)' / 'ADR-004 (file-driven ingestion, forthcoming)') in conflict with ADR-008 §1/§2.2/§2.6 (subject-name form for the same two referents)"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-008"],
+"locus": "§2.3 Un-promotion authority — 'though its built instance traces to *an* approving decision, not the *governing* one ... that governing-verdict detection analogue ... is a named follow-up (§5.3). The built retraction shape ... is the instance of this authority, though it traces to *an* approving decision, not the *governing* one ...'",
+"claim": "§2.3 states the governing-verdict qualification twice within the same paragraph — once mid-sentence after 'though its built instance traces to *an* approving decision', and again in the following sentence 'though it traces to *an* approving decision, not the *governing* one, so it does not yet supply promotion's governing-verdict guarantee; the governing-verdict detection analogue for executed retractions is a named follow-up (§5.3)'. The same qualification and its §5.3 follow-up pointer are duplicated verbatim in intent, making the paragraph self-repeating. A single qualification is the coherent form.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-008 §2.3 (governing-verdict qualification and §5.3 follow-up pointer stated twice in one paragraph)"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-008"],
+"locus": "§7 Cross-References — Reboot Decision Ledger R30 named in the durable ADR body",
+"claim": "§7 names 'Reboot Decision Ledger ruling R30 (the derive/promote authority seam), fetched verbatim as substrate' in the durable Cross-References of the ADR. The distillation control's superseding rationale over R30's staging-tier inference is stated self-containedly in §2.2 (correct), but the record's governing standalone-ADR principle holds that Reboot Decision Ledger rulings are substrate, never durable in-body ADR citations; a Cross-References entry naming R30 by identifier sits inside the durable body and pulls against that principle.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-008 §7 (R30 named in durable Cross-References) in conflict with the standalone-ADR principle governing this record (Reboot Decision Ledger rulings are substrate, not durable in-body ADR citations) — and with §2.2, which correctly states the superseding rationale self-containedly without naming R30"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-008"],
+"locus": "§7 Cross-References — ADR-001 §2.5 entry vs the absence of an explicit 'Relationship to ADR-001 §2.5' statement",
+"claim": "The record positions itself across §1, §2.1, §2.2 (promotion row), and §2.3 as the general authority of which ADR-001 §2.5 is a sub-case, extended to un-promotion — but the generalization/subsumption/un-promotion-extension relationship is asserted in passing across those sections rather than recorded as one explicit, self-contained relationship statement. A reader cannot locate a single place where the record states what it does to §2.5 (generalizes, subsumes as sub-case, extends to un-promotion, supersedes nothing). Additionally, the §2.2 Promotion-class authority is attributed to 'the existing EA promotion gate' and 'the graph-schema ruling's PromotionDecision gate' without the durable ADR-001 §2.5 + DDR-002 §5/§7 #15 citation chain named at the point of the claim.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-008 §1/§2.1/§2.2/§2.3 (§2.5 relationship asserted in passing, no consolidated 'Relationship to ADR-001 §2.5' statement) vs ADR-001 §2.5 (EA-gated promotion of SOFIA's own reasoning) — the durable ADR-001 §2.5 + DDR-002 §5/§7 #15 chain is not cited at the §2.2 promotion-class claim"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["ADR-008"],
+"locus": "§2.2 Environment row 'Realization routes to' cell — 'Form built (DDR-004); constants contested/unvalidated (n=0)' vs the row's control-type cell 'per-policy capture-time-frozen aging'",
+"claim": "The Environment control-type in §2.2 now reads 'per-policy capture-time-frozen aging' and the realization cell 'Form built (DDR-004); constants contested/unvalidated (n=0)', and the §2.2 Environment bullet and §2.6 correctly describe capture-time-frozen aging 'never recomputed at read'. Checked for a residual 'at retrieval' mischaracterization of the DDR-004 mechanism: none remains in the control-type or the bullet. The one residual seam is §2.2's bullet phrase 'not consumed as authoritative selection knowledge' juxtaposed with the derivation being 'consumed at reasoning time' — these describe distinct facts (selection-authority exclusion vs consumption timing) and do not conflict, but the two 'consumed' usages sit close enough to invite a misread.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-008 §2.2 Environment bullet (two adjacent 'consumed' usages: 'consumed at reasoning time' vs 'never consumed as authoritative selection knowledge') — distinct facts, proximate phrasing"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-008"],
+"locus": "§2 / §2.6 / §5.3 / §6 check 5 — decision-scope fence against remedy-boundary and governance policy",
+"claim": "Attacked the Decision for scope creep — policy commitments (thresholds, cadence, retention windows, reviewer roles, remedy boundary, multi-condition semantics) smuggled in as principle. The fence holds consistently across four surfaces: §2 declares the record fixes invariant/accountability/control-type only; §2.6 explicitly routes the remedy boundary and all named policy to the forthcoming feedback-loop governance design; §5.3 states control-types not calibrations; §6 check 5 is an enforceable boundary check flagging any smuggled remedy-boundary ruling. No policy commitment appears in the Decision. The record decides what it claims to decide and no more.",
+"cited_authority": {
+"kind": "design-intent",
+"ref": "RBT-59 deliberation Item 5 (ADR owns invariant/accountability/control-type/lifecycle; remedy-boundary and all governance policy → the forthcoming feedback-loop governance design), realized consistently at ADR-008 §2/§2.6/§5.3/§6"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-008"],
+"locus": "§2.1 scope exclusion — RG capture excluded from ground-truth mutation governance",
+"claim": "Attacked the §2.1 scope fence for a cross-document double-governance or gap: whether excluding Reasoning-Graph capture from this ADR leaves RG writes ungoverned, or whether the ADR's gateway-executor-not-author line contradicts ADR-002 §2.6. It held — §2.1 scopes the invariant to KG authoritative ground truth, excludes RG capture as captured judgment governed by ADR-001 §2.2 and ADR-002 §2.6, and states the executor/authoring-authority separation consistently with ADR-002 §2.6. The RG remains governed by its own capture invariant and write-authority assignment; no write class is left doubly-governed or ungoverned across the two records.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-008 §2.1 (RG capture excluded; gateway executes, never authors) checked against ADR-002 §2.6 (author/executor/authorizer separation) and ADR-001 §2.2 (reasoning-capture invariant) — scope boundary consistent, no double-governance or gap"
+}
+}
+]
