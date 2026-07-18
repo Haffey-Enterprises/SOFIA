@@ -8,8 +8,8 @@
 | Field | Value |
 |---|---|
 | **Document ID** | ADR-008 |
-| **Status** | PROPOSED |
-| **Version** | 0.1.0 |
+| **Status** | ACCEPTED |
+| **Version** | 1.0.0 |
 | **Date** | 2026-07-17 |
 | **Authors** | Thaddeus Haffey (Executive Architect) |
 | **Supersedes** | None — establishes new platform principle |
@@ -169,4 +169,5 @@ Conformance with this ADR is verified at three-hat (LAA / SA / EA — Lead Appli
 
 | Version | Date | Ticket | Change |
 |---|---|---|---|
+| 1.0.0 | 2026-07-17 | RBT-59 | **PROPOSED → ACCEPTED.** Acceptance rests on the four-pass three-hat design-review-loop (runs 025–028): every finding resolved or operator-ratified per item, composition coherence-verified. The mechanical converged loop verdict is deferred to a confirming re-review once the loop's cross-pass carry-forward (RBT-67) lands; a genuinely new finding there is amended then. Status promotion only — no decision or body change from v0.1.0. |
 | 0.1.0 | 2026-07-17 | RBT-59 | Initial draft. Authored from the RBT-59 pre-authoring deliberation (six items ratified per item, 2026-07-17): doctype and number (ADR-008); the accountability invariant and per-class-calibrated control frame; the four-class calibration with the entry/transition/withdrawal lifecycle scope, the expire-not-delete and provenance-survival commitments, and the revalidation obligation; un-promotion authority; the ADR ↔ feedback-loop-governance boundary; and the cross-class precedence principle. PROPOSED pending three-hat design-review-loop. |

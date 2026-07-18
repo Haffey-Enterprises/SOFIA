@@ -8,9 +8,9 @@
 | Field | Value |
 |---|---|
 | **Document ID** | DDR-001 |
-| **Version** | 1.3.0 |
+| **Version** | 1.4.0 |
 | **Status** | ACCEPTED |
-| **Date** | 2026-07-03 |
+| **Date** | 2026-07-17 |
 | **Authors** | Thaddeus Haffey (Executive Architect) |
 | **Supersedes** | None |
 | **References** | ADR-001 v1.1.0; ADR-002 v1.1.0 |
@@ -25,7 +25,7 @@ The Knowledge Graph (KG) and Reasoning Graph (RG) are realized as co-resident lo
 - **Decision.2** — The KG is partitioned into **five typed planes** (Catalog, Environment, Operational, Governance, Standards) **plus an Extension layer**.
 - **Decision.3** — Persistence is a **three-store backbone** — Neo4j (system of record), PostgreSQL (workflow/audit/staging), Firestore (immutable snapshots) — **with no vector store**.
 - **Decision.4** — All graph access flows through a **single sole-owner gateway** (knowledge-service), the only holder of the Neo4j driver.
-- **Decision.5** — A **scheduled, EA-gated feedback loop** promotes recurring RG findings into the KG; **SOFIA does not self-modify its EA-gated encoded knowledge** (scoped to ADR-001 §2.5's object — SOFIA's own reasoning entering encoded knowledge). The broader human-accountable checkpoint governing *all* KG entry is routed to the forthcoming **KG-entry-governance ADR**, not asserted here.
+- **Decision.5** — A **scheduled, EA-gated feedback loop** promotes recurring RG findings into the KG; **SOFIA does not self-modify its EA-gated encoded knowledge** (scoped to ADR-001 §2.5's object — SOFIA's own reasoning entering encoded knowledge). The broader human-accountable checkpoint governing *all* KG entry is routed to **ADR-008 (Ground-Truth Mutation Governance)**, not asserted here.
 - **Decision.6** — This DDR owns **plane definitions and data-architecture patterns** (the architecture half of the architecture-vs-schema split); the node/relationship/constraint contract is **DDR-002's**.
 - **Decision.7** — Write authority for the three feedback-loop graph writes is **component-scoped and gateway-routed** under **ADR-002 §2.6's general write-authority principle** (as amended): the `CandidatePromotion` proposal is authored by the scheduled feedback-loop job; the at-promotion provenance snapshot and the EA-gated KG materialization execute via the gateway, the materialization's authoring authority resting with the approving `PromotionDecision`.
 
@@ -169,7 +169,7 @@ Downstream SDDs verify against:
 1. All graph access routes through the sole-owner gateway; no other component holds a Neo4j driver.
 2. No authoritative KG/RG state in local stores (local = cache/operational/staging only).
 3. RG content is authored only by ASA (`ReasoningProgress`); `ReasoningSession` lifecycle only by AOE; both gateway-mediated.
-4. `CandidatePromotion` proposals are excluded from synthesis ground-truth traversal until EA-approved; SOFIA does not self-modify its EA-gated encoded knowledge (ADR-001 §2.5). The broader entry-checkpoint principle governing all KG entry → forthcoming KG-entry-governance ADR.
+4. `CandidatePromotion` proposals are excluded from synthesis ground-truth traversal until EA-approved; SOFIA does not self-modify its EA-gated encoded knowledge (ADR-001 §2.5). The broader entry-checkpoint principle governing all KG entry → ADR-008 (Ground-Truth Mutation Governance).
 5. RG Evidence resolves to its pinned KG version (point-in-time explainability).
 6. Every KG node carries provenance; promoted knowledge is distinguishable from ingested.
 7. Feedback-loop graph writes honor ADR-002 §2.6's author/executor/authorizer separation: the `CandidatePromotion` proposal is authored by the scheduled feedback-loop job; the at-promotion provenance snapshot and the materialized KG node are executed by the gateway, their authoring authority resting with the approving `PromotionDecision`. The KG materialization occurs **only on EA approval** — SOFIA does not self-modify its EA-gated encoded knowledge (cf. check 4).
@@ -209,6 +209,7 @@ DDR-001 is substrate for DDR-002 (schema), DDR-003's scope boundary, and the SDD
 
 | Version | Date | Ticket | Change |
 |---|---|---|---|
+| 1.4.0 | 2026-07-17 | RBT-59 | **KG-entry-governance ADR pointer resolved to ADR-008 (Ground-Truth Mutation Governance), ACCEPTED v1.0.0 in this batch; no decision change.** Decision.5's broader-all-KG-entry checkpoint routing and conformance-check 4's entry-checkpoint routing resolve from the "forthcoming KG-entry-governance ADR" to ADR-008, now the accepted upstream authority. Routing prose and scope preserved; the historical v1.3.0 Triage-001 Change-Log row recording the original T-02 routing is left as authored. Pin cascade (records still pinning the pre-bump versions) routed to a follow-up ticket. No decision change. |
 | 1.3.0 | 2026-07-15 | RBT-63 | **Coherence rider (ADR-002 v1.2.0 runtime amendment; no decision change):** the Substitution-Contract Capability Bar and the §Standards runtime reference re-point to ADR-002 §2.2's now environment-differentiated deployment runtime (development on managed Aura, production deferred); "self-managed GKE" as the fixed runtime no longer holds. Cross-reference realignment only. |
 | 1.3.0 | 2026-07-03 | — | Triage-001 amendment batch (record: `agent-loop/triage/triage-001-distilled-set/record.md`). **Aggregate-confidence re-homed (T-01):** the session-root bullet drops "carries aggregate confidence"; confidence is per-conclusion (`ReasoningProgress` rollup, DDR-002 §4), any session-level aggregate a read-time traversal affordance, never a stored property — the per-Solution comparison intent moves to DDR-002's Named Gaps. **KG-entry checkpoint scoped (T-02):** Decision.5 second clause and conformance check 4 scoped to ADR-001 §2.5's object (SOFIA's own reasoning entering encoded knowledge); the broader all-KG-entry checkpoint routed by name to the forthcoming KG-entry-governance ADR. **Feedback-loop write authority recast (T-09):** the three-writes treatment and check 7 rewritten in author/executor/authorizer terms citing amended ADR-002 §2.6; Artifact write authority homed here (ASA authors `Solution` on creation; lifecycle-transition authority routed to SDDs). Decision.7 added. |
 | 1.3.0 | 2026-07-03 | — | **Enterprise-edition requirement re-grounded (T-04):** the Spike Findings section is retired entirely (trial specifics never captured; recollection unreliable; single-database non-contradiction guard removed with the narrative); its durable content re-homes as Substitution-Contract Capability Bar item 6 — DB-enforced property-existence-constraint capability, the vendor-verifiable dependency the edition rests on (verified 2026-07-02). Rationale re-grounded on that present dependency. |
