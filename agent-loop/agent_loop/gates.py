@@ -117,19 +117,48 @@ def _open_decisions(ledger: Ledger) -> list[Finding]:
     ]
 
 
+def _open_resolvables(ledger: Ledger) -> list[Finding]:
+    """Open findings the author can act on this pass (classification 'resolvable').
+
+    The author edits only `resolvable` findings and never touches a
+    decision-bearing one, so these — and only these — are the work a CONTINUE
+    hands it. Mirrors `author._open_resolvable`; the router keeps its own copy so
+    CONTINUE stays a pure gate concern with no import of the write path.
+    """
+    return [
+        finding
+        for finding in ledger.findings
+        if finding.status == "open" and finding.classification == "resolvable"
+    ]
+
+
 # --- 3. router (exactly three exits; precedence top-to-bottom) ---------------
 
 
 def route(ledger: Ledger) -> RouterExit:
     """Compose the gates into exactly three exits; first match wins.
 
-    Precedence: oscillation → decision-bearing → converged → continue. A
-    decision-bearing finding halts even when open_cbm == 0 (severity-independent):
-    silently auto-resolving or dropping a discovered decision is the
-    manufactured-alignment failure the whole loop exists to prevent. The
-    CONVERGED exit is the mechanical conjunction: open_cbm == 0 AND no open
-    decision-bearing AND not oscillating.
+    Precedence: oscillation → open-resolvable → decision-bearing → converged.
+    The author edits only `resolvable` findings and never touches a
+    decision-bearing one, so those two concerns are independent: an open decision
+    must not preempt the author from the resolvable work it can still do
+    (RBT-67, after run-026 — one COSMETIC decision-bearing finding halted the
+    loop over 21 real resolvables the author never got to). So an open resolvable
+    now outranks the decision-bearing halt: the loop CONTINUEs, the author fires
+    on the resolvables, and the decision-bearing findings stay open on the ledger
+    — recorded, never dropped — surfacing once the resolvables are exhausted.
+
+    Two guarantees the reorder preserves:
+      - Oscillation still wins over everything — a `resolvable` that keeps
+        reopening is trading, not converging, and halts (the anti-infinite-loop
+        backstop; plateau_N / max_passes bounds unchanged).
+      - CONVERGED is still unreachable while any decision-bearing finding is open
+        (the decision-bearing branch precedes the converged one) — the change
+        lets the author work while decisions wait, it does not let the run finish
+        with a decision open. CONVERGED remains the mechanical conjunction:
+        open_cbm == 0 AND no open decision-bearing AND not oscillating.
     """
+    # 1. Oscillation backstop — unchanged, and it still outranks CONTINUE.
     if oscillating(ledger):
         payload = (
             _recurring_findings(ledger)
@@ -138,13 +167,24 @@ def route(ledger: Ledger) -> RouterExit:
         )
         return RouterExit(kind="HALT_DECISION", reason="oscillation", payload=payload)
 
+    # 2. Any open resolvable the author can act on → CONTINUE. Now outranks the
+    #    decision-bearing halt; the open decisions ride along on the ledger.
+    if _open_resolvables(ledger):
+        return RouterExit(kind="CONTINUE")
+
+    # 3. Resolvables exhausted; open decision-bearing findings remain → surface
+    #    only those, unbundled (severity-independent — even a COSMETIC decision
+    #    halts). Precedes CONVERGED, so a run never ends with a decision open.
     open_decisions = _open_decisions(ledger)
     if open_decisions:
         return RouterExit(
             kind="HALT_DECISION", reason="decision-bearing", payload=open_decisions
         )
 
+    # 4. Nothing the loop can act on and no decision pending → CONVERGED, guarded
+    #    on the counter. A leftover open counted finding that is neither
+    #    resolvable nor decision-bearing (should not occur post-arbiter)
+    #    CONTINUEs rather than falsely converging.
     if converged_by_count(ledger):
         return RouterExit(kind="CONVERGED")
-
     return RouterExit(kind="CONTINUE")

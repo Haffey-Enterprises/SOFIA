@@ -212,3 +212,105 @@ def test_router_plateau_payload_is_open_counted_set() -> None:
     assert exit_.kind == "HALT_DECISION"
     assert exit_.reason == "oscillation"
     assert {f.id for f in exit_.payload} == {"a", "b"}
+
+
+# --- router: open-resolvable outranks the decision-bearing halt (RBT-67) ------
+#
+# After run-026: a lone COSMETIC, arbiter-variance decision-bearing finding
+# tripped HALT_DECISION and preempted the author from firing on 21 open
+# resolvables. The author only ever edits resolvable findings and never touches
+# a decision-bearing one, so no decision-bearing finding should block it. The
+# reorder makes an open resolvable outrank the decision halt; the invariants
+# (convergence needs zero open decisions; oscillation still wins) hold.
+
+
+def test_router_continue_when_open_resolvable_and_open_decision_bearing() -> None:
+    # The run-026 shape at the unit level: resolvable work AND an open decision.
+    # CONTINUE so the author can fire; the decision-bearing finding is recorded
+    # and surfaced later, not dropped.
+    ledger = Ledger(
+        header=_header(),
+        findings=[
+            _finding("r", classification="resolvable"),
+            _finding("d", severity="COSMETIC", classification="decision-bearing"),
+        ],
+    )
+    exit_ = route(ledger)
+    assert exit_.kind == "CONTINUE"
+    assert exit_.payload == []  # CONTINUE surfaces nothing to the operator
+    # The decision-bearing finding is untouched on the ledger — still open, still
+    # decision-bearing — so a later pass surfaces it once resolvables are gone.
+    d = next(f for f in ledger.findings if f.id == "d")
+    assert d.status == "open" and d.classification == "decision-bearing"
+
+
+def test_router_halt_decision_when_resolvables_exhausted() -> None:
+    # Resolvable closed (author acted a prior pass); the open decision remains →
+    # HALT_DECISION with exactly the decision-bearing findings in the payload.
+    ledger = Ledger(
+        header=_header(),
+        findings=[
+            _finding("r", classification="resolvable", status="closed"),
+            _finding("d", classification="decision-bearing"),
+        ],
+    )
+    exit_ = route(ledger)
+    assert exit_.kind == "HALT_DECISION"
+    assert exit_.reason == "decision-bearing"
+    assert [f.id for f in exit_.payload] == ["d"]
+
+
+def test_router_oscillating_resolvable_halts_over_continue() -> None:
+    # The anti-infinite-loop backstop is intact after the reorder: a resolvable
+    # that reopens (recurrence >= threshold) HALTs even though, absent the guard,
+    # its open-resolvable status would route CONTINUE.
+    ledger = Ledger(
+        header=_header(),
+        findings=[_finding("a", classification="resolvable", recurrence_count=1)],
+    )
+    exit_ = route(ledger)
+    assert exit_.kind == "HALT_DECISION"
+    assert exit_.reason == "oscillation"
+    assert [f.id for f in exit_.payload] == ["a"]
+
+
+def test_router_converged_only_when_nothing_open_and_never_with_open_decision() -> None:
+    # Nothing open → CONVERGED.
+    converged = Ledger(header=_header(), findings=[_finding("a", status="closed")])
+    assert route(converged).kind == "CONVERGED"
+    # CONVERGED is never returned while a decision-bearing finding is open, even
+    # with every counted finding resolved (open_cbm == 0 via COSMETIC).
+    with_open_decision = Ledger(
+        header=_header(),
+        findings=[
+            _finding("a", status="closed"),
+            _finding("d", severity="COSMETIC", classification="decision-bearing"),
+        ],
+    )
+    assert open_cbm(with_open_decision) == 0
+    assert route(with_open_decision).kind != "CONVERGED"
+    assert route(with_open_decision).kind == "HALT_DECISION"
+
+
+def test_router_open_cosmetic_resolvable_continues_severity_blind() -> None:
+    # An open COSMETIC (uncounted) resolvable must still route CONTINUE so the
+    # severity-blind author fixes it — open_cbm == 0 alone must not converge past
+    # open resolvable work.
+    ledger = Ledger(
+        header=_header(),
+        findings=[_finding("a", severity="COSMETIC", classification="resolvable")],
+    )
+    assert open_cbm(ledger) == 0
+    assert route(ledger).kind == "CONTINUE"
+
+
+def test_router_open_counted_unclassified_continues_not_converged() -> None:
+    # Defensive branch: an open counted finding that is neither resolvable nor
+    # decision-bearing (should not occur post-arbiter) CONTINUEs rather than
+    # falsely converging — the CONVERGED conjunction stays honest.
+    ledger = Ledger(
+        header=_header(),
+        findings=[_finding("u", classification="unclassified")],
+    )
+    assert open_cbm(ledger) == 1
+    assert route(ledger).kind == "CONTINUE"
