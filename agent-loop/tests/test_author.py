@@ -16,11 +16,12 @@ from agent_loop.arbiter import ArbiterResult, CannedArbiter
 from agent_loop.author import (
     AuthorAnchorStormError,
     AuthorEdit,
-    AuthorParseError,
+    AuthorParseStormError,
     AuthorRefusal,
     LlmAuthor,
     _authority_reference,
     _diagnose_author_defect,
+    _parse_author_output,
 )
 from agent_loop.fetchers import RepoDocumentFetcher
 from agent_loop.gates import route
@@ -47,6 +48,7 @@ from agent_loop.transport import LlmResponse, LlmTransportError, build_api_emitt
 
 DESIGN_DIR = Path(__file__).resolve().parents[1] / "design"
 AUTHOR_PROMPT = DESIGN_DIR / "author.prompt.md"
+FIXTURES = Path(__file__).resolve().parent / "fixtures"
 
 _DOC_TEXT = "# ADR-001\n\nAlpha section.\n\nBeta section.\n\nGamma section.\n"
 
@@ -391,28 +393,65 @@ def test_findings_are_authored_one_per_call_in_admission_order_severity_blind(
     assert closed.pass_closed is None
 
 
-# --- content retry: one, then abort; never fabricate -------------------------
+# --- content retry: one, then escalate (not abort); never fabricate ----------
 
 
-def test_malformed_output_gets_one_corrective_retry_then_aborts(tmp_path) -> None:
+def test_malformed_output_after_one_retry_escalates_the_finding(tmp_path) -> None:
+    # Change 3 (RBT-67): a single parse-fail no longer aborts the run — it
+    # escalates that one finding and the pass continues on its other resolvables.
     emitter = ScriptedEmitter(["not json at all", "still not json"])
     author = _author(tmp_path, emitter)
     finding = _finding()
     ledger = _ledger([finding])
     log = ActionLog()
 
-    with pytest.raises(AuthorParseError, match="rather than fabricating an edit"):
-        author(ledger, 1, log)
+    author(ledger, 1, log)  # does not raise — one finding, not a storm
 
     assert len(emitter.calls) == 2  # exactly one retry
     retry = log.of_kind("llm_retry")[0]
     assert retry.detail["site"] == "author"
     assert retry.detail["retry_kind"] == "content"
-    assert retry.detail["defect"] == "the previous output was not valid JSON"
+    assert retry.detail["defect"] == "the previous output contained no parseable JSON object"
     # Nothing fabricated: no edit, no close, no doc-change.
     assert (tmp_path / "documents" / "ADR-001-distilled.md").read_text() == _DOC_TEXT
     assert ledger.doc_changes == []
+    assert log.of_kind("author_edit") == []
+    # Escalated to the operator, unbundled — not dropped, not re-attempted forever.
+    parse_fail = log.of_kind("author_parse_fail")[0]
+    assert parse_fail.detail["finding_id"] == finding.id
     assert finding.status == "open"
+    assert finding.classification == "decision-bearing"
+    exit_ = route(ledger)
+    assert exit_.kind == "HALT_DECISION" and exit_.reason == "decision-bearing"
+    assert [f.id for f in exit_.payload] == [finding.id]
+
+
+def test_a_parse_fail_storm_aborts(tmp_path) -> None:
+    # Two findings, each malformed on both attempts, none applied: the parse-side
+    # twin of the anchor storm — a prompt/assembly defect, not finding-level.
+    emitter = ScriptedEmitter(["nope", "nope", "nope", "nope"])
+    author = _author(tmp_path, emitter)
+    ledger = _ledger([_finding(claim="one", locus="§2"), _finding(claim="two", locus="§3")])
+
+    with pytest.raises(AuthorParseStormError, match="none applied"):
+        author(ledger, 1, ActionLog())
+
+
+def test_one_parse_fail_alongside_one_applied_edit_is_not_a_storm(tmp_path) -> None:
+    # An applied edit this pass proves the prompt/assembly is not broken, so a
+    # lone parse-fail is finding-level: escalated, run continues (mirrors anchor).
+    emitter = ScriptedEmitter(
+        [_edit_json("Beta section.", "Bravo section."), "nope", "nope"]
+    )
+    author = _author(tmp_path, emitter)
+    good = _finding(claim="one", locus="§2")
+    bad = _finding(claim="two", locus="§3")
+    ledger = _ledger([good, bad])
+
+    author(ledger, 1, ActionLog())  # does not raise
+
+    assert good.status == "closed"
+    assert bad.status == "open" and bad.classification == "decision-bearing"
 
 
 def test_the_retry_names_the_defect_and_the_second_attempt_can_succeed(tmp_path) -> None:
@@ -431,25 +470,28 @@ def test_the_retry_names_the_defect_and_the_second_attempt_can_succeed(tmp_path)
     assert finding.status == "closed"
 
 
-def test_a_low_confidence_edit_is_malformed_not_applied(tmp_path) -> None:
+def test_a_low_confidence_edit_is_malformed_and_escalates_not_applied(tmp_path) -> None:
     # The bias rule's mirror of the arbiter's low-confidence `resolvable` ban:
-    # low confidence means unsure, and unsure means refuse.
+    # low confidence means unsure, and unsure means refuse. A low-confidence edit
+    # fails construction (malformed), so — like any parse-fail (Change 3) — the
+    # lone finding escalates and nothing is written.
     low = _edit_json("Beta section.", "Bravo section.", confidence="low")
     emitter = ScriptedEmitter([low, low])
     author = _author(tmp_path, emitter)
-    ledger = _ledger([_finding()])
+    finding = _finding()
+    ledger = _ledger([finding])
 
-    with pytest.raises(AuthorParseError):
-        author(ledger, 1, ActionLog())
+    author(ledger, 1, ActionLog())  # does not raise — one finding, not a storm
 
     assert (tmp_path / "documents" / "ADR-001-distilled.md").read_text() == _DOC_TEXT
+    assert finding.status == "open" and finding.classification == "decision-bearing"
 
 
 @pytest.mark.parametrize(
     ("raw", "expected"),
     [
-        ("<not json>", "the previous output was not valid JSON"),
-        ("[]", "the previous output was not a JSON object"),
+        ("<not json>", "the previous output contained no parseable JSON object"),
+        ("[]", "the previous output contained no parseable JSON object"),
         ('{"action": "rewrite"}', "the previous output's 'action' was not 'edit' or 'refuse'"),
         (
             '{"action": "edit", "target": "ADR-001"}',
@@ -468,6 +510,95 @@ def test_a_low_confidence_edit_is_malformed_not_applied(tmp_path) -> None:
 )
 def test_defect_diagnosis_names_the_actual_defect(raw, expected) -> None:
     assert expected in _diagnose_author_defect(raw)
+
+
+# --- envelope tolerance: salvage a valid edit from a prose preamble ----------
+
+
+def test_parser_extracts_the_edit_from_run027s_preamble_emission() -> None:
+    # Change 2 (RBT-67): the real run-027 ef063aa4 emission — ~1,900 chars of
+    # reasoning prose before an otherwise-valid JSON edit — parses to that edit,
+    # and the preamble-stripped event fires (residual rate stays observable).
+    raw = (FIXTURES / "author_preamble_run027_ef063aa4.txt").read_text(encoding="utf-8")
+    log = ActionLog()
+
+    action = _parse_author_output(raw, "ef063aa4e596a64e", log)
+
+    assert isinstance(action, AuthorEdit)
+    assert action.finding_id == "ef063aa4e596a64e"  # stamped from the arg, not echoed
+    assert action.target == "ADR-008"
+    assert action.old_string.startswith("| **Environment**")
+    assert action.confidence == "high"
+    stripped = log.of_kind("author_output_preamble_stripped")[0]
+    assert stripped.detail["finding_id"] == "ef063aa4e596a64e"
+
+
+def test_parser_handles_a_clean_object_without_a_preamble_event() -> None:
+    log = ActionLog()
+    action = _parse_author_output(_edit_json("A", "B"), "fid", log)
+    assert isinstance(action, AuthorEdit) and action.finding_id == "fid"
+    assert log.of_kind("author_output_preamble_stripped") == []  # nothing to strip
+
+
+def test_parser_handles_a_fenced_object_without_a_preamble_event() -> None:
+    # A well-formed code fence is transport unwrapping, not a preamble.
+    fenced = "```json\n" + _edit_json("A", "B") + "\n```"
+    log = ActionLog()
+    action = _parse_author_output(fenced, "fid", log)
+    assert isinstance(action, AuthorEdit)
+    assert log.of_kind("author_output_preamble_stripped") == []
+
+
+def test_parser_is_robust_to_a_stray_nested_brace_in_the_preamble() -> None:
+    # A nested '{...}' in the prose that is not a valid object must not shadow the
+    # real edit — the scan skips past the whole unparseable span (depth-aware).
+    raw = "Consider the nested set {a: {b}} of cells.\n\n" + _edit_json("A", "B")
+    log = ActionLog()
+    action = _parse_author_output(raw, "fid", log)
+    assert isinstance(action, AuthorEdit) and action.new_string == "B"
+    assert log.of_kind("author_output_preamble_stripped")[0].detail["finding_id"] == "fid"
+
+
+def test_parser_returns_none_when_there_is_no_json_object() -> None:
+    log = ActionLog()
+    assert _parse_author_output("I refuse to answer in JSON. Sorry.", "fid", log) is None
+    assert log.of_kind("author_output_preamble_stripped") == []
+
+
+def test_parser_scan_is_string_and_escape_aware() -> None:
+    # A brace or an escaped quote inside a JSON string value must not confuse the
+    # balanced-brace scan.
+    action = _parse_author_output(
+        _edit_json('a { brace and a "quoted" bit', "B"), "fid"
+    )
+    assert isinstance(action, AuthorEdit)
+    assert action.old_string == 'a { brace and a "quoted" bit'
+
+
+def test_parser_returns_none_on_a_truncated_object() -> None:
+    # An object that opens but never closes (a max_tokens truncation) is not a
+    # balanced span, so it is not salvageable — genuinely malformed.
+    assert _parse_author_output('{"action": "edit", "target": "ADR-001"', "fid") is None
+
+
+def test_a_preamble_wrapped_edit_applies_on_the_first_attempt(tmp_path) -> None:
+    # The behavioural fix end-to-end: a preamble before a valid, anchor-matching
+    # edit is salvaged, applied, and closes the finding — no content retry.
+    wrapped = "Let me reason about the locus first.\n\n" + _edit_json(
+        "Beta section.", "Bravo section."
+    )
+    emitter = ScriptedEmitter([wrapped])
+    author = _author(tmp_path, emitter)
+    finding = _finding()
+    log = ActionLog()
+
+    author(_ledger([finding]), 1, log)
+
+    assert len(emitter.calls) == 1  # salvaged on the first attempt, no retry
+    assert log.of_kind("llm_retry") == []
+    assert finding.status == "closed"
+    assert "Bravo section." in (tmp_path / "documents" / "ADR-001-distilled.md").read_text()
+    assert log.of_kind("author_output_preamble_stripped")[0].detail["finding_id"] == finding.id
 
 
 @pytest.mark.parametrize(

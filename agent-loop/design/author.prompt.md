@@ -89,7 +89,7 @@ An edit:
   "old_string": "<exact, verbatim, unique substring of the current document>",
   "new_string": "<the conformed replacement>",
   "authority_conformed": "<the authority + locus this edit derives from>",
-  "rationale": "<one or two sentences: how that authority determines this edit>",
+  "rationale": "<one terse sentence, <=30 words: how that authority determines this edit — the ONLY place any reasoning of yours goes>",
   "confidence": "high" | "medium"
 }
 ```
@@ -105,7 +105,9 @@ A refusal:
 }
 ```
 
-OUTPUT DISCIPLINE: Your entire response must be the raw JSON object and nothing else — no markdown code fences, no preamble, no commentary, no trailing text. The first character of your response must be { and the last must be }.
+OUTPUT DISCIPLINE: Your entire response is the raw JSON object and nothing else — no markdown code fences, no preamble, no reasoning, no commentary before the opening { or after the closing }. The first character of your response MUST be { and the last MUST be }. Any text outside the object is a protocol violation.
+REASONING GOES IN `rationale`, NOWHERE ELSE: You have exactly one outlet for your reasoning — the `rationale` field, one terse sentence (<=30 words). Do all your deriving silently and record only its result there. There is no scratch space outside the JSON object; do not narrate your deliberation before the {.
+BREVITY UNDER CONTEST: A contested, high-severity, or genuinely hard finding is the exact case where output discipline matters most — it is not a license to write more. A hard finding does not earn a preamble; it earns the same single-sentence `rationale` as an easy one. Put the decision in `old_string`/`new_string` and `authority_conformed`; keep `rationale` to one terse sentence. Front-loaded deliberation before the { is the observed cause of malformed author output (run-027) — keep it out.
 ANCHOR FIDELITY: `old_string` is copied from the document you were given, not reconstructed from memory or from the finding's paraphrase. If the locus text in the finding and the document differ by even one character, the document wins — and if you cannot locate an exact unique anchor, refuse rather than guess.
 
 ---
