@@ -154,15 +154,34 @@ def test_ledger_store_round_trips_state(tmp_path) -> None:
         pass_number=1,
         log=log,
     )
+    # A materially-different claim admits to the open id → the divergence guard
+    # captures it in claim_variants (RBT-69). It must survive the round trip.
+    admit(
+        ledger,
+        Finding(
+            source="antagonist-stub",
+            altitude="LAA",
+            severity="MATERIAL",
+            target=["DOC-A"],
+            locus="l",
+            claim="a materially different claim at the same locus",
+            cited_authority=CitedAuthority(kind="canonical", ref="AUTH-1"),
+        ),
+        pass_number=1,
+        log=log,
+    )
 
     # Act: persist and fetch fresh.
     store.save(ledger)
     reloaded = store.load()
 
-    # Assert: the finding and its nested authority survive the round trip.
+    # Assert: the finding, its nested authority, and its claim_variants survive.
     assert store.exists() is True
     assert len(reloaded.findings) == 1
     assert reloaded.findings[0].cited_authority.kind == "canonical"
+    assert reloaded.findings[0].claim_variants == [
+        "a materially different claim at the same locus"
+    ]
     assert reloaded.header.plateau_N == 2
 
 

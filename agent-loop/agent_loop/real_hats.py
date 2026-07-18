@@ -123,13 +123,25 @@ _REVIEW_DIRECTIVE = (
 )
 
 
+# The heading that opens the morphing tail — everything from here on (document
+# set, ledger snapshot, recency directive) varies within a run and is NEVER
+# cached. `substrate_cache_prefix` slices `user` at this heading so the leading
+# frozen substrate block becomes the cache prefix (RBT-69 Piece 2). Defined once
+# and used by both the assembler and the splitter so the boundary cannot diverge.
+_DOCUMENT_SET_HEADING = "DOCUMENT SET (fetched fresh):\n"
+
+
 def assemble_user_prompt(
     records: DocumentSet, substrate: Substrate, snapshot: Ledger
 ) -> str:
     """Assemble the reviewer's `## User` block from the fetched-fresh inputs.
 
-    The static R-E2 recency directive (`_REVIEW_DIRECTIVE`) is appended last,
-    after the ledger snapshot, for every hat.
+    Order (RBT-69 Piece 2): `SUBSTRATE → DOCUMENT SET → LEDGER SNAPSHOT → recency
+    directive`. The frozen per-run substrate leads so it can be marked as the
+    cacheable prefix (mirroring the arbiter's Ra-2 reorder); the morphing surface
+    — the author-mutated document set and the growing per-pass ledger snapshot —
+    trails as the uncached tail. The static R-E2 recency directive
+    (`_REVIEW_DIRECTIVE`) is appended last, for every hat.
 
     Args:
         records: The document set under review.
@@ -152,15 +164,30 @@ def assemble_user_prompt(
     )
     snapshot_json = json.dumps(asdict(snapshot), indent=2, sort_keys=False)
     return (
-        "DOCUMENT SET (fetched fresh):\n"
-        f"{docs}\n\n"
         "SUBSTRATE (fetched fresh):\n"
         f"Authorities:\n{authorities}\n"
         f"Design intent:\n{design_intent}\n\n"
+        f"{_DOCUMENT_SET_HEADING}"
+        f"{docs}\n\n"
         "LEDGER SNAPSHOT (immutable, prior-pass):\n"
         f"{snapshot_json}\n\n"
         f"{_REVIEW_DIRECTIVE}"
     )
+
+
+def substrate_cache_prefix(user: str) -> str | None:
+    """The leading frozen-substrate slice of an assembled hat `## User` block.
+
+    Returns `user` up to (not including) the `DOCUMENT SET` heading — the frozen
+    substrate block, byte-identical across passes for a given run — so the hat
+    transport can cache it (RBT-69 Piece 2). Sliced from the call's own `user`, so
+    the cached head is byte-identical to the sent bytes by construction (the
+    content-neutrality guarantee; never a hand-built substrate string). Returns
+    `None` when the heading is absent or at position 0, so no user-level caching
+    is requested — a valid prefix or nothing, never the morphing tail.
+    """
+    index = user.find(_DOCUMENT_SET_HEADING)
+    return user[:index] if index > 0 else None
 
 
 # --- §7: emission-parsing seam (validate, construct, stamp, drop) ------------

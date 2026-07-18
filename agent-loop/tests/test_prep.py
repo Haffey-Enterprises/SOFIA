@@ -24,6 +24,7 @@ from agent_loop.prep import (
     RECIPES,
     PrepError,
     SubstrateSpec,
+    _resolve_docs_root,
     adr_substrate_specs,
     assemble_substrate,
     ddr_substrate_specs,
@@ -1507,3 +1508,22 @@ def test_docs_root_outside_the_repo_fails_loud(tmp_path) -> None:
         )
     # Fail before the folder is created (no silently-partial run).
     assert not (runs_root / "run-023-adr").exists()
+
+
+def test_resolve_docs_root_relative_override_is_repo_relative(tmp_path) -> None:
+    # The relative-override happy path of _resolve_docs_root: an operator-typed
+    # repo-relative docs_root resolves under $SOFIA_ROOT and is returned. Covered
+    # directly (no bedrock plugin needed) so the 100% line+branch bar holds in CI,
+    # where the plugin-gated real-recipe tests that also exercise this path skip.
+    sofia_root = tmp_path
+    fixture = sofia_root / "agent-loop" / "sandbox" / "adr-003-fixture" / "docs"
+    fixture.mkdir(parents=True)
+
+    resolved = _resolve_docs_root("agent-loop/sandbox/adr-003-fixture/docs", sofia_root)
+
+    assert resolved == fixture.resolve()
+
+
+def test_resolve_docs_root_none_is_the_canonical_corpus(tmp_path) -> None:
+    # None → <sofia_root>/docs (the canonical corpus), the other lawful branch.
+    assert _resolve_docs_root(None, tmp_path) == tmp_path / "docs"

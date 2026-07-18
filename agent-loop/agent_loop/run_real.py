@@ -33,7 +33,7 @@ from agent_loop.fetchers import (
     validate_substrate_manifest,
     verify_document_snapshot,
 )
-from agent_loop.author import LlmAuthor
+from agent_loop.author import LlmAuthor, author_cache_prefix
 from agent_loop.emissions import EmissionCapture
 from agent_loop.ledger import DEFAULT_COUNTED_SEVERITIES, LedgerHeader, LedgerStore
 from agent_loop.log import ActionLog, JsonlFileSink
@@ -42,7 +42,12 @@ from agent_loop.manifest import (
     per_site_token_totals,
     write_prep_manifest,
 )
-from agent_loop.real_hats import build_real_reviewer, load_system_prompt, real_hat_plan
+from agent_loop.real_hats import (
+    build_real_reviewer,
+    load_system_prompt,
+    real_hat_plan,
+    substrate_cache_prefix,
+)
 from agent_loop.reviewers import (
     IDENTITY_COHERENCE,
     IDENTITY_EA,
@@ -461,6 +466,8 @@ def run_real(
             sleeper=sleeper,
             backoff_seconds=backoff_seconds,
             capture=capture,
+            # Cache the frozen substrate prefix once per hat per run (RBT-69 §2).
+            cache_prefix_of=substrate_cache_prefix,
         )
         reviewers[identity] = build_real_reviewer(
             identity, prompt_dir / prompt_name, emitter, capture, redraw=True,
@@ -486,6 +493,8 @@ def run_real(
             sleeper=sleeper,
             backoff_seconds=backoff_seconds,
             capture=capture,
+            # Cache the stable run-document prefix per finding (RBT-69 §2).
+            cache_prefix_of=author_cache_prefix,
         ),
         documents_root=documents_root,
         substrate_fetcher=substrate_fetcher,

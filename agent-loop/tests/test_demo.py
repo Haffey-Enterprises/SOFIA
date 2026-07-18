@@ -17,7 +17,8 @@ def test_run_all_reports_every_scenario_exit(tmp_path) -> None:
     assert "S2: HALT_DECISION (decision-bearing)" in joined
     assert "S2b: HALT_DECISION (decision-bearing)" in joined
     assert "S3: HALT_DECISION (oscillation)" in joined
-    assert "S3b: HALT_DECISION (oscillation)" in joined
+    # RBT-69 Piece 3: S3b's plateau-without-recurrence is now `non-convergence`.
+    assert "S3b: HALT_DECISION (non-convergence)" in joined
     assert "S4: CONVERGED" in joined
 
 

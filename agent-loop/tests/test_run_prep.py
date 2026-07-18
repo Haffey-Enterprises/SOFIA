@@ -792,6 +792,10 @@ def test_per_site_token_totals_aggregates() -> None:
         "output_tokens": 15,
         "cache_creation_input_tokens": 0,
         "cache_read_input_tokens": 0,
+        # The TTL-bucket split defaults to 0 for events emitted without it
+        # (RBT-69 review follow-up) — the sum stays additive.
+        "cache_creation_ephemeral_1h_input_tokens": 0,
+        "cache_creation_ephemeral_5m_input_tokens": 0,
         "calls": 2,
     }
     assert totals["arbiter"]["calls"] == 1
@@ -1289,11 +1293,11 @@ def test_anthropic_transport_marks_system_and_cache_prefix_and_reads_cache_usage
 
     # System is a cache-marked content block.
     assert seen["system"] == [
-        {"type": "text", "text": "SYS", "cache_control": {"type": "ephemeral"}}
+        {"type": "text", "text": "SYS", "cache_control": {"type": "ephemeral", "ttl": "1h"}}
     ]
     # User splits at the prefix: cached head block + plain tail block.
     content = seen["messages"][0]["content"]
-    assert content[0] == {"type": "text", "text": "PREFIX", "cache_control": {"type": "ephemeral"}}
+    assert content[0] == {"type": "text", "text": "PREFIX", "cache_control": {"type": "ephemeral", "ttl": "1h"}}
     assert content[1] == {"type": "text", "text": "tail"}
     # The sent user content reconstructs the input byte-for-byte.
     assert content[0]["text"] + content[1]["text"] == "PREFIXtail"
@@ -1320,7 +1324,7 @@ def test_anthropic_transport_without_cache_prefix_sends_one_user_block() -> None
     response = AnthropicTransport(client)("SYS", "USER", "m", 10)  # cache_prefix defaults None
 
     assert seen["messages"][0]["content"] == [{"type": "text", "text": "USER"}]
-    assert seen["system"][0]["cache_control"] == {"type": "ephemeral"}
+    assert seen["system"][0]["cache_control"] == {"type": "ephemeral", "ttl": "1h"}
     assert response.cache_creation_input_tokens == 0
     assert response.cache_read_input_tokens == 0
 
@@ -1341,7 +1345,7 @@ def test_anthropic_transport_cache_prefix_covering_whole_user_drops_empty_tail()
     client = SimpleNamespace(messages=SimpleNamespace(create=create))
     AnthropicTransport(client)("SYS", "WHOLE", "m", 10, cache_prefix="WHOLE")
     assert seen["messages"][0]["content"] == [
-        {"type": "text", "text": "WHOLE", "cache_control": {"type": "ephemeral"}}
+        {"type": "text", "text": "WHOLE", "cache_control": {"type": "ephemeral", "ttl": "1h"}}
     ]
 
 

@@ -342,8 +342,13 @@ def run_loop(
                 reason=exit_.reason,
                 pass_number=pass_number,
                 payload=[f.id for f in exit_.payload],
+                # The non-convergence context line (RBT-69 Piece 3) rides on the
+                # halt event so the operator sees the non-exhausted resolvable
+                # surface + plateaued open_cbm; None on every other disposition.
+                context=exit_.context,
             )
-            # Dry mode: one proposed escalation per finding, unbundled. Bundling
+            # Dry mode: one proposed escalation per finding, unbundled — for the
+            # non-convergence payload exactly as for decision-bearing. Bundling
             # multiple decisions into one escalation is prohibited.
             for finding in exit_.payload:
                 log.emit(

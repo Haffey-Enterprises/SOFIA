@@ -122,7 +122,7 @@ def _finding(
         classification=classification,  # type: ignore[arg-type]
         authority_locus=authority_locus,
     )
-    finding.id = derive_id(finding.target, finding.locus, finding.claim)
+    finding.id = derive_id(finding.target, finding.locus, finding.altitude)
     return finding
 
 

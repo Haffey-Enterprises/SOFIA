@@ -21,12 +21,18 @@ def per_site_token_totals(log: ActionLog) -> dict[str, dict[str, int]]:
 
     The cache-creation / cache-read sums (RBT-49 Item 1 §4) make the run-level
     caching effect summable per site; `input_tokens` is the uncached input. The
-    cache fields default to 0 for events emitted without them (older events, or
-    a transport that reported no cache usage), so this stays additive.
+    cache-creation 1h/5m TTL-bucket split (RBT-69 Piece 2) is summed alongside the
+    total so the manifest shows, per actor, how many cache-creation tokens landed
+    in the 1-hour bucket vs the 5-minute one — the structural proof (C3) that the
+    1-hour TTL was applied. All cache fields default to 0 for events emitted
+    without them (older events, or a transport that reported no cache usage), so
+    this stays additive.
 
     Returns:
         Map of call-site label → {input_tokens, output_tokens,
-        cache_creation_input_tokens, cache_read_input_tokens, calls}.
+        cache_creation_input_tokens, cache_read_input_tokens,
+        cache_creation_ephemeral_1h_input_tokens,
+        cache_creation_ephemeral_5m_input_tokens, calls}.
     """
     totals: dict[str, dict[str, int]] = {}
     for event in log.of_kind("llm_call"):
@@ -38,6 +44,8 @@ def per_site_token_totals(log: ActionLog) -> dict[str, dict[str, int]]:
                 "output_tokens": 0,
                 "cache_creation_input_tokens": 0,
                 "cache_read_input_tokens": 0,
+                "cache_creation_ephemeral_1h_input_tokens": 0,
+                "cache_creation_ephemeral_5m_input_tokens": 0,
                 "calls": 0,
             },
         )
@@ -48,6 +56,12 @@ def per_site_token_totals(log: ActionLog) -> dict[str, dict[str, int]]:
         )
         bucket["cache_read_input_tokens"] += int(
             event.detail.get("cache_read_input_tokens", 0)  # type: ignore[arg-type]
+        )
+        bucket["cache_creation_ephemeral_1h_input_tokens"] += int(
+            event.detail.get("cache_creation_ephemeral_1h_input_tokens", 0)  # type: ignore[arg-type]
+        )
+        bucket["cache_creation_ephemeral_5m_input_tokens"] += int(
+            event.detail.get("cache_creation_ephemeral_5m_input_tokens", 0)  # type: ignore[arg-type]
         )
         bucket["calls"] += 1
     return totals

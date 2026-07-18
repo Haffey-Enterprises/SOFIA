@@ -94,17 +94,28 @@ def test_s3_recurrence_halts_at_the_reopen(tmp_path) -> None:
     assert reopened.recurrence_count == 1
 
 
-def test_s3b_plateau_halts_at_plateau_n_plus_one(tmp_path) -> None:
+def test_s3b_plateau_halts_as_non_convergence_at_plateau_n_plus_one(tmp_path) -> None:
     # Act
     result = run_scenario(scenario_s3b(), _store(tmp_path, "s3b"))
 
-    # Assert: plateau trips at plateau_N + 1 = 4 passes; no same-id reopen.
+    # Assert: plateau trips at plateau_N + 1 = 4 passes; no same-id reopen. RBT-69
+    # Piece 3 — a plateau WITHOUT recurrence is accumulation, not trade, so the
+    # disposition is `non-convergence`, NOT `oscillation` (the one dummy scenario
+    # whose label legitimately changed; asserted explicitly here).
     assert result.exit.kind == "HALT_DECISION"
-    assert result.exit.reason == "oscillation"
+    assert result.exit.reason == "non-convergence"
     assert result.passes_run == 4
     assert all(f.recurrence_count == 0 for f in result.ledger.findings)
     # The flat plateau signal: open_cbm_count held at 2 across the window.
     assert [p.open_cbm_count for p in result.ledger.passes] == [2, 2, 2, 2]
+    # The churn findings are resolvable (no open decision-bearing) → payload falls
+    # back to the plateaued open counted set, and the context line rode the halt.
+    assert {f.id for f in result.exit.payload} == {
+        f.id for f in result.ledger.findings if f.status == "open"
+    }
+    halt = result.log.of_kind("halt")[0]
+    assert halt.detail["reason"] == "non-convergence"
+    assert "open_cbm plateaued at 2" in halt.detail["context"]
 
 
 # --- S4 ----------------------------------------------------------------------
@@ -133,7 +144,7 @@ def test_s4_preference_is_dropped_and_ledger_converges(tmp_path) -> None:
         (scenario_s2, "HALT_DECISION", "decision-bearing", 1),
         (scenario_s2b, "HALT_DECISION", "decision-bearing", 1),
         (scenario_s3, "HALT_DECISION", "oscillation", 3),
-        (scenario_s3b, "HALT_DECISION", "oscillation", 4),
+        (scenario_s3b, "HALT_DECISION", "non-convergence", 4),
         (scenario_s4, "CONVERGED", None, 1),
     ],
 )
