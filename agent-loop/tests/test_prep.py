@@ -24,6 +24,7 @@ from agent_loop.prep import (
     RECIPES,
     PrepError,
     SubstrateSpec,
+    adr_substrate_specs,
     assemble_substrate,
     ddr_substrate_specs,
     infer_doctype,
@@ -933,11 +934,19 @@ def _bedrock_cache_tree(tmp_path: Path, files: dict[str, str]) -> Path:
     return cache_root
 
 
-def _real_bedrock_1_4_0_cache(tmp_path: Path) -> Path:
-    """Copy the two DDR-recipe bedrock files from the real installed 1.4.0 cache
-    into a tmp cache root (keeps the run folder hermetic while sourcing bytes
-    that hash to the ratified pins). Skips if the plugin isn't installed — these
-    end-to-end tests exercise the real recipe, which carries real pins."""
+_DDR_TEMPLATE_CACHE_RELPATH = "skills/author-decision-record/templates/ddr-template.md"
+_ADR_TEMPLATE_CACHE_RELPATH = "skills/author-decision-record/templates/adr-template.md"
+
+
+def _real_bedrock_1_4_0_cache(
+    tmp_path: Path,
+    relpaths: tuple[str, ...] = (_DDR_TEMPLATE_CACHE_RELPATH, _SKILL_CACHE_RELPATH),
+) -> Path:
+    """Copy a recipe's bedrock files from the real installed 1.4.0 cache into a
+    tmp cache root (keeps the run folder hermetic while sourcing bytes that hash
+    to the ratified pins). Defaults to the DDR recipe's pair; the ADR recipe
+    passes its own. Skips if the plugin isn't installed — these end-to-end tests
+    exercise the real recipe, which carries real pins."""
     import shutil
 
     config = Path.home() / ".claude" / "plugins" / "installed_plugins.json"
@@ -953,10 +962,7 @@ def _real_bedrock_1_4_0_cache(tmp_path: Path) -> Path:
     if install_path is None:
         pytest.skip("bedrock plugin cache not resolvable")
     cache_root = tmp_path / "real-bedrock-cache"
-    for relpath in (
-        "skills/author-decision-record/templates/ddr-template.md",
-        _SKILL_CACHE_RELPATH,
-    ):
+    for relpath in relpaths:
         src = install_path / relpath
         if not src.is_file():
             pytest.skip(f"installed bedrock cache missing {relpath}")
@@ -1236,3 +1242,268 @@ def test_prep_run_extra_canon_duplicate_logical_id_raises_and_emits_no_folder(tm
         )
     # Fail before the folder is created (no silently-partial run).
     assert not (runs_root / "run-x").exists()
+
+
+# =============================================================================
+# RBT-67 — the ADR recipe + sandbox-fixture ingest (docs_root override)
+# =============================================================================
+
+# Substrate belonging to other doctypes' recipes, which an ADR prep must not leak.
+_NON_ADR_SUBSTRATE = _SDD_ONLY_SUBSTRATE | {"ddr-template", "SDD-001"}
+
+
+def _adr_sofia_tree(tmp_path: Path) -> Path:
+    """A synthetic $SOFIA_ROOT wired for an ADR review: the canonical authority
+    paths the ADR recipe hardcodes, the fixed triage-001 charter carrier, and a
+    SANDBOX fixture holding the reviewed ADR-003 — deliberately outside docs/,
+    which is what keeps the canonical tree clean for gate 2. Carry-forward
+    substrate (sofia-vision) is not here; it arrives from a prior draw."""
+    sofia_root = tmp_path / "sofia"
+    docs = sofia_root / "docs"
+    for sub in ("adr", "ddr"):
+        (docs / sub).mkdir(parents=True)
+    for rel, body in {
+        "adr/ADR-001-reasoning-architecture.md": "ADR-001 BODY",
+        "adr/ADR-002-graph-system-of-record.md": "ADR-002 BODY",
+        "ddr/DDR-001-data-architecture.md": "DDR-001 BODY",
+        "ddr/DDR-002-graph-schema.md": "DDR-002 BODY",
+    }.items():
+        (docs / rel).write_text(body, encoding="utf-8")
+    charter = sofia_root / "agent-loop" / "triage" / "triage-001-distilled-set"
+    charter.mkdir(parents=True)
+    (charter / "record.md").write_text("TRIAGE-001 CHARTER", encoding="utf-8")
+    # The sandbox fixture: the reviewed draft, never canonical.
+    fixture = sofia_root / "agent-loop" / "sandbox" / "adr-003-fixture" / "docs" / "adr"
+    fixture.mkdir(parents=True)
+    (fixture / "ADR-003-kg-entry-governance.md").write_text(
+        "ADR-003 SANDBOX FIXTURE BODY", encoding="utf-8"
+    )
+    return sofia_root
+
+
+def _adr_prior_draw(runs_root: Path, run_id: str) -> Path:
+    """A prior draw carrying the ADR recipe's sole carry-forward substrate — the
+    Notion sofia-vision block, which prep cannot re-fetch. The bedrock
+    adr-template + SKILL do not ride --from-run (RBT-54 F4), so they are absent."""
+    return _build_prior_draw(
+        runs_root, run_id, substrate={"design-intent": {"sofia-vision": "VISION BODY"}},
+    )
+
+
+def test_infer_doctype_from_adr_docid() -> None:
+    assert infer_doctype(["ADR-003"]) == "adr"
+
+
+def test_select_recipe_adr_returns_adr_specs(tmp_path) -> None:
+    recipe = select_recipe(["ADR-003"], sofia_root=tmp_path)
+    assert recipe is adr_substrate_specs
+    assert "adr" in RECIPES
+
+
+def test_adr_recipe_present_and_excluded_substrate() -> None:
+    specs = adr_substrate_specs(from_run="seed-ddr-carry-forward")
+    ids = {s.logical_id for s in specs}
+    # Present: shared canon + doctype authoring authority + the fixed charter
+    # carrier + doctype-agnostic vision.
+    assert ids == {
+        "ADR-001", "ADR-002", "DDR-001", "DDR-002",
+        "adr-template", "author-decision-record-SKILL",
+        "triage-001-charter",
+        "sofia-vision",
+    }
+    # The ratified floor: without these the seeded defects are not catchable.
+    assert {"ADR-001", "ADR-002", "DDR-002", "adr-template", "triage-001-charter"} <= ids
+    # Excluded: no other doctype's artifact leaks in.
+    assert not (_NON_ADR_SUBSTRATE & ids)
+    # Both categories populated (gate 4 requires each non-empty).
+    assert {s.category for s in specs} == {"authorities", "design-intent"}
+    # Notion vision carries forward; bedrock authorities are cache-sourced
+    # (RBT-54 F4), not --from-run; repo-canonical items are neither.
+    assert {s.logical_id for s in specs if s.carry_forward} == {"sofia-vision"}
+    assert {s.logical_id for s in specs if s.bedrock_cache} == {
+        "adr-template", "author-decision-record-SKILL"
+    }
+
+
+def test_adr_recipe_has_no_per_target_resolver() -> None:
+    # Unlike the DDR recipe, an ADR's charter is the fixed triage-001 record —
+    # the recipe takes no target and yields the same charter for any ADR.
+    for target in (["ADR-003"], ["ADR-009"]):
+        recipe = select_recipe(target, sofia_root=Path("/nonexistent"))
+        ids = {s.logical_id for s in recipe(from_run="prior")}
+        assert "triage-001-charter" in ids
+        assert not any(i.startswith("deliberation-record-") for i in ids)
+
+
+def test_adr_recipe_requires_from_run_for_carry_forward() -> None:
+    with pytest.raises(PrepError):
+        adr_substrate_specs(from_run=None)
+
+
+def test_prep_run_adr_sandbox_ingest_emits_fixture_snapshot_and_canon_substrate(
+    tmp_path,
+) -> None:
+    sofia_root = _adr_sofia_tree(tmp_path)
+    runs_root = tmp_path / "runs"
+    _adr_prior_draw(runs_root, "seed-adr")
+    cache = _real_bedrock_1_4_0_cache(
+        tmp_path, (_ADR_TEMPLATE_CACHE_RELPATH, _SKILL_CACHE_RELPATH)
+    )
+    sandbox_docs = sofia_root / "agent-loop" / "sandbox" / "adr-003-fixture" / "docs"
+
+    run_dir = prep_run(
+        "run-019-adr-003-sandbox", ["ADR-003"], sofia_root=sofia_root, runs_root=runs_root,
+        sofia_head_sha="HEADADR", retrieved="2026-07-17", from_run="seed-adr",
+        bedrock_cache_root=cache, verified_at="2026-07-17", docs_root=sandbox_docs,
+    )
+
+    # The reviewed document came from the SANDBOX, not the canonical corpus.
+    snap = run_dir / "documents" / "ADR-003-kg-entry-governance.md"
+    assert snap.read_text() == "ADR-003 SANDBOX FIXTURE BODY"
+    doc_manifest = json.loads((run_dir / "documents" / "manifest.json").read_text())
+    entry = doc_manifest["files"][0]
+    assert entry["doc_id"] == "ADR-003"
+    # Provenance rides the content hash; the canonical_path records the fixture.
+    assert entry["sha256"] == sha256_text("ADR-003 SANDBOX FIXTURE BODY")
+    assert "sandbox/adr-003-fixture" in entry["origin"]["canonical_path"]
+    assert not entry["origin"]["canonical_path"].startswith("docs/")
+
+    # The authorities still came from the REAL docs/ — a fixture read against canon.
+    auth = run_dir / "substrate" / "authorities"
+    for stem in ("ADR-001", "ADR-002", "DDR-001", "DDR-002",
+                 "adr-template", "author-decision-record-SKILL"):
+        assert (auth / f"{stem}.md").is_file()
+    assert (auth / "ADR-001.md").read_text() == "ADR-001 BODY"
+    intent = run_dir / "substrate" / "design-intent"
+    assert (intent / "triage-001-charter.md").read_text() == "TRIAGE-001 CHARTER"
+    assert (intent / "sofia-vision.md").read_text() == "VISION BODY"
+    # The real adr-template bytes landed (pin-verified against the installed cache).
+    assert "adr" in (auth / "adr-template.md").read_text().lower()
+    # No other doctype's substrate leaked in.
+    leaked = [p.name for p in (run_dir / "substrate").rglob("*.md")
+              if p.stem in _NON_ADR_SUBSTRATE]
+    assert leaked == []
+    # The sandbox source survived its copy (lesson #3 holds for the fixture too).
+    assert (sandbox_docs / "adr" / "ADR-003-kg-entry-governance.md").is_file()
+
+
+def test_docs_root_override_wins_over_the_canonical_corpus(tmp_path) -> None:
+    # The discriminating case: the same doc-id resolvable in BOTH trees. The
+    # override decides — otherwise a sandbox run could silently review canon.
+    sofia_root = _adr_sofia_tree(tmp_path)
+    (sofia_root / "docs" / "adr" / "ADR-003-kg-entry-governance.md").write_text(
+        "ADR-003 CANONICAL BODY", encoding="utf-8"
+    )
+    runs_root = tmp_path / "runs"
+    _adr_prior_draw(runs_root, "seed-adr")
+    cache = _real_bedrock_1_4_0_cache(
+        tmp_path, (_ADR_TEMPLATE_CACHE_RELPATH, _SKILL_CACHE_RELPATH)
+    )
+    sandbox_docs = sofia_root / "agent-loop" / "sandbox" / "adr-003-fixture" / "docs"
+
+    run_dir = prep_run(
+        "run-020-adr", ["ADR-003"], sofia_root=sofia_root, runs_root=runs_root,
+        sofia_head_sha="H", retrieved="2026-07-17", from_run="seed-adr",
+        bedrock_cache_root=cache, verified_at="2026-07-17", docs_root=sandbox_docs,
+    )
+    text = (run_dir / "documents" / "ADR-003-kg-entry-governance.md").read_text()
+    assert text == "ADR-003 SANDBOX FIXTURE BODY"
+    assert "CANONICAL" not in text
+
+
+def test_docs_root_defaults_to_the_canonical_corpus(tmp_path) -> None:
+    # Omitting the override is the production path: docs/ is the source.
+    sofia_root = _adr_sofia_tree(tmp_path)
+    (sofia_root / "docs" / "adr" / "ADR-003-kg-entry-governance.md").write_text(
+        "ADR-003 CANONICAL BODY", encoding="utf-8"
+    )
+    runs_root = tmp_path / "runs"
+    _adr_prior_draw(runs_root, "seed-adr")
+    cache = _real_bedrock_1_4_0_cache(
+        tmp_path, (_ADR_TEMPLATE_CACHE_RELPATH, _SKILL_CACHE_RELPATH)
+    )
+    run_dir = prep_run(
+        "run-021-adr", ["ADR-003"], sofia_root=sofia_root, runs_root=runs_root,
+        sofia_head_sha="H", retrieved="2026-07-17", from_run="seed-adr",
+        bedrock_cache_root=cache, verified_at="2026-07-17",
+    )
+    assert (run_dir / "documents" / "ADR-003-kg-entry-governance.md").read_text() == (
+        "ADR-003 CANONICAL BODY"
+    )
+
+
+def test_sandbox_prepped_folder_validates_and_gate2_reads_the_real_docs_tree(
+    tmp_path,
+) -> None:
+    # Gate 2's subject is unchanged by the sandbox ingest: it checks the
+    # canonical docs/ tree of $SOFIA_ROOT, which the fixture never touches.
+    sofia_root = _adr_sofia_tree(tmp_path)
+    runs_root = tmp_path / "runs"
+    _adr_prior_draw(runs_root, "seed-adr")
+    cache = _real_bedrock_1_4_0_cache(
+        tmp_path, (_ADR_TEMPLATE_CACHE_RELPATH, _SKILL_CACHE_RELPATH)
+    )
+    sandbox_docs = sofia_root / "agent-loop" / "sandbox" / "adr-003-fixture" / "docs"
+    prep_run(
+        "run-019-adr-003-sandbox", ["ADR-003"], sofia_root=sofia_root, runs_root=runs_root,
+        sofia_head_sha="H", retrieved="2026-07-17", from_run="seed-adr",
+        bedrock_cache_root=cache, verified_at="2026-07-17", docs_root=sandbox_docs,
+    )
+    seen: list[Path] = []
+
+    def git_status(root: Path) -> str:
+        seen.append(root)
+        return ""  # clean docs tree
+
+    report = validate_prep(
+        "run-019-adr-003-sandbox", ["ADR-003"], sofia_root=sofia_root,
+        runs_root=runs_root, prompt_dir=DESIGN_DIR, git_status=git_status, env={},
+    )
+    # Gate 2 was asked about the real $SOFIA_ROOT, not the sandbox root.
+    assert seen == [sofia_root]
+    # Gates 1-5 and 8 pass on a sandbox-prepped folder; 6/7 pend without a key.
+    passed = {r.number for r in report.results if r.passed}
+    assert {1, 2, 3, 4, 5, 8} <= passed
+    assert {r.number for r in report.results if r.pending} == {6, 7}
+
+
+def test_docs_root_relative_override_is_repo_relative(tmp_path) -> None:
+    # The CLI shape: an operator types --docs-root agent-loop/sandbox/.../docs.
+    # A relative root resolves against $SOFIA_ROOT, and the snapshot's
+    # repo-relative canonical_path provenance still computes.
+    sofia_root = _adr_sofia_tree(tmp_path)
+    runs_root = tmp_path / "runs"
+    _adr_prior_draw(runs_root, "seed-adr")
+    cache = _real_bedrock_1_4_0_cache(
+        tmp_path, (_ADR_TEMPLATE_CACHE_RELPATH, _SKILL_CACHE_RELPATH)
+    )
+    run_dir = prep_run(
+        "run-022-adr", ["ADR-003"], sofia_root=sofia_root, runs_root=runs_root,
+        sofia_head_sha="H", retrieved="2026-07-17", from_run="seed-adr",
+        bedrock_cache_root=cache, verified_at="2026-07-17",
+        docs_root="agent-loop/sandbox/adr-003-fixture/docs",  # relative
+    )
+    assert (run_dir / "documents" / "ADR-003-kg-entry-governance.md").read_text() == (
+        "ADR-003 SANDBOX FIXTURE BODY"
+    )
+    entry = json.loads((run_dir / "documents" / "manifest.json").read_text())["files"][0]
+    assert entry["origin"]["canonical_path"] == (
+        "agent-loop/sandbox/adr-003-fixture/docs/adr/ADR-003-kg-entry-governance.md"
+    )
+
+
+def test_docs_root_outside_the_repo_fails_loud(tmp_path) -> None:
+    # Provenance is repo-relative, so an out-of-repo root has none to record.
+    sofia_root = _adr_sofia_tree(tmp_path)
+    outside = tmp_path / "elsewhere" / "docs"
+    (outside / "adr").mkdir(parents=True)
+    (outside / "adr" / "ADR-003-x.md").write_text("OUTSIDE", encoding="utf-8")
+    runs_root = tmp_path / "runs"
+    with pytest.raises(PrepError, match="outside .SOFIA_ROOT"):
+        prep_run(
+            "run-023-adr", ["ADR-003"], sofia_root=sofia_root, runs_root=runs_root,
+            sofia_head_sha="H", retrieved="2026-07-17",
+            recipe=_mini_recipe, docs_root=outside,
+        )
+    # Fail before the folder is created (no silently-partial run).
+    assert not (runs_root / "run-023-adr").exists()

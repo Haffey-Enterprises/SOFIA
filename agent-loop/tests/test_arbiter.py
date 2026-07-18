@@ -2,13 +2,12 @@
 # Purpose: Specify the arbiter port's fail-safe invariants and the canned
 #          adapter. The arbiter is the ONLY LLM judgment; its result object
 #          enforces the prompt's hard rules structurally so a malformed judgment
-#          cannot reach the router. The LlmArbiter seam must stay unwired in the
-#          skeleton (no network, no nondeterminism).
-# Scope:   Unit tests over ArbiterResult, CannedArbiter, LlmArbiter.
+#          cannot reach the router.
+# Scope:   Unit tests over ArbiterResult and CannedArbiter.
 
 import pytest
 
-from agent_loop.arbiter import ArbiterResult, CannedArbiter, LlmArbiter
+from agent_loop.arbiter import ArbiterResult, CannedArbiter
 from agent_loop.ledger import CitedAuthority, Finding
 
 
@@ -90,9 +89,3 @@ def test_canned_arbiter_uses_default_for_unknown_id() -> None:
 def test_canned_arbiter_without_verdict_or_default_raises() -> None:
     with pytest.raises(KeyError):
         CannedArbiter().classify(_finding("missing"), None, None)
-
-
-def test_llm_arbiter_is_unwired_in_the_skeleton() -> None:
-    # The only LLM path must not run in dry mode: no client → NotImplementedError.
-    with pytest.raises(NotImplementedError):
-        LlmArbiter().classify(_finding("a"), None, None)

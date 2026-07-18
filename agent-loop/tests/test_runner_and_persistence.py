@@ -6,7 +6,7 @@
 
 import pytest
 
-from agent_loop.arbiter import ArbiterResult, CannedArbiter, LlmArbiter
+from agent_loop.arbiter import ArbiterResult, CannedArbiter
 from agent_loop.admission import admit
 from agent_loop.ledger import (
     CitedAuthority,
@@ -193,24 +193,6 @@ def test_arbiter_result_rejects_unknown_confidence() -> None:
             authority_locus=None,
             rationale="r",
             confidence="certain",  # type: ignore[arg-type]
-        )
-
-
-def test_llm_arbiter_with_client_still_unimplemented_in_skeleton() -> None:
-    # Even with a client, the LLM path is intentionally not implemented here.
-    with pytest.raises(NotImplementedError):
-        LlmArbiter(client=object()).classify(
-            Finding(
-                source="antagonist-stub",
-                altitude="LAA",
-                severity="MATERIAL",
-                target=["DOC-A"],
-                locus="l",
-                claim="c",
-                cited_authority=CitedAuthority(kind="canonical", ref="AUTH-1"),
-            ),
-            None,
-            None,
         )
 
 

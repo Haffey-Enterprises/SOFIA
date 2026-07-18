@@ -262,6 +262,96 @@ def ddr_substrate_specs(
     return specs
 
 
+def adr_substrate_specs(*, from_run: str | None) -> list[SubstrateSpec]:
+    """The ADR review recipe (RBT-67 substrate ruling, ratified 2026-07-17).
+
+    What an ADR review reads against:
+      - Shared canon: ADR-001/002 (the spine and the graph-as-system-of-record
+        decision a new ADR must not contradict) and DDR-001/002 (the data and
+        schema decisions an architecture decision lands on top of).
+      - Doctype authoring authority: the adr-template and the
+        author-decision-record SKILL — sourced from the installed bedrock plugin
+        cache and verified pin-vs-installed (RBT-54 F4), as the DDR recipe does.
+        The ratified pin is their authority; a drifted cache fails loud at prep.
+      - Design-intent: the triage-001 record — the charter carrier for the
+        distilled set. Unlike the DDR recipe there is no per-target
+        deliberation-record resolver: an ADR's charter is this fixed record, so
+        there is nothing to resolve by convention and nothing to fail loud on.
+      - General context: sofia-vision (doctype-agnostic, carried forward exactly
+        as the SDD and DDR recipes carry it).
+
+    Explicitly EXCLUDED (other doctypes' artifacts): sdd-template, ddr-template,
+    sdd-001-charter-notes, deliberation-record-sdd-001, SDD-001 consuming
+    context — none appear below, so an ADR prep cannot leak them.
+
+    Args:
+        from_run: Prior draw to carry the Notion vision block forward from;
+            required whenever the recipe emits a carry-forward spec.
+
+    Returns:
+        The ADR substrate spec list.
+
+    Raises:
+        PrepError: If carry-forward substrate is emitted without a `from_run`.
+    """
+    specs = [
+        # Shared canon — duplicated (not shared) to keep the SDD recipe pristine
+        # and byte-for-byte regression-clean, the convention RBT-57 set.
+        SubstrateSpec(
+            "ADR-001", "authorities",
+            {"source": "sofia-repo", "path": "docs/adr/ADR-001-reasoning-architecture.md"},
+            repo_relpath="docs/adr/ADR-001-reasoning-architecture.md",
+        ),
+        SubstrateSpec(
+            "ADR-002", "authorities",
+            {"source": "sofia-repo", "path": "docs/adr/ADR-002-graph-system-of-record.md"},
+            repo_relpath="docs/adr/ADR-002-graph-system-of-record.md",
+        ),
+        SubstrateSpec(
+            "DDR-001", "authorities",
+            {"source": "sofia-repo", "path": "docs/ddr/DDR-001-data-architecture.md"},
+            repo_relpath="docs/ddr/DDR-001-data-architecture.md",
+        ),
+        SubstrateSpec(
+            "DDR-002", "authorities",
+            {"source": "sofia-repo", "path": "docs/ddr/DDR-002-graph-schema.md"},
+            repo_relpath="docs/ddr/DDR-002-graph-schema.md",
+        ),
+        # Doctype authoring authority — pin-verified against the installed cache
+        # (RBT-54 F4). The SKILL pin is the ratified bedrock 1.4.0 hash the DDR
+        # recipe already carries; the adr-template pin is its 1.4.0 sibling.
+        SubstrateSpec(
+            "adr-template", "authorities",
+            {"source": "bedrock",
+             "path": "plugins/bedrock/skills/author-decision-record/templates/adr-template.md"},
+            bedrock_cache=True,
+            expected_sha256="1540825bc9fe86c9c07b647e37b44446d8f5997966110d046c6182ae3d5cb607",
+        ),
+        SubstrateSpec(
+            "author-decision-record-SKILL", "authorities",
+            {"source": "bedrock",
+             "path": "plugins/bedrock/skills/author-decision-record/SKILL.md"},
+            bedrock_cache=True,
+            expected_sha256="d3fb4499b8d3ff899ae3f822e8873300c1f5330cc9ee55f193fc4f9eaf9da966",
+        ),
+        # Design-intent: the charter carrier — fixed, not resolved per target.
+        SubstrateSpec(
+            "triage-001-charter", "design-intent",
+            {"source": "sofia-repo",
+             "path": "agent-loop/triage/triage-001-distilled-set/record.md"},
+            repo_relpath="agent-loop/triage/triage-001-distilled-set/record.md",
+        ),
+        # General context (doctype-agnostic; carried forward as the others do).
+        SubstrateSpec("sofia-vision", "design-intent", carry_forward=True),
+    ]
+    if from_run is None and any(spec.carry_forward for spec in specs):
+        raise PrepError(
+            "the ADR recipe carries the Notion vision block forward and requires "
+            "--from-run; no prior draw was given"
+        )
+    return specs
+
+
 def resolve_deliberation_record(sofia_root: str | Path, target: str) -> Path:
     """Resolve a DDR's deliberation record by convention, or raise on 0/>1.
 
@@ -328,6 +418,18 @@ def _sdd_recipe_for(
     return sdd_substrate_specs
 
 
+def _adr_recipe_for(
+    doc_ids: list[str], sofia_root: str | Path
+) -> Callable[..., list[SubstrateSpec]]:
+    """Registry builder for the ADR recipe — target context is not needed.
+
+    An ADR's charter is the fixed triage-001 record, not a per-target
+    deliberation record, so there is nothing to resolve off the target and the
+    recipe is returned directly (the SDD builder's shape, not the DDR's).
+    """
+    return adr_substrate_specs
+
+
 def _ddr_recipe_for(
     doc_ids: list[str], sofia_root: str | Path
 ) -> Callable[..., list[SubstrateSpec]]:
@@ -349,10 +451,11 @@ def _ddr_recipe_for(
     return recipe
 
 
-# Keyed by reviewed doctype. Add `adr` here to extend — no other change needed.
+# Keyed by reviewed doctype. Extending is one entry — no other change needed.
 RECIPES = {
     "sdd": _sdd_recipe_for,
     "ddr": _ddr_recipe_for,
+    "adr": _adr_recipe_for,
 }
 
 
@@ -703,6 +806,32 @@ def assemble_substrate(
 # --- orchestration: one draw, then N draws (act e) ----------------------------
 
 
+def _resolve_docs_root(docs_root: str | Path | None, sofia_root: Path) -> Path:
+    """Resolve the reviewed-document source root against $SOFIA_ROOT.
+
+    None -> the canonical corpus (`<sofia_root>/docs`). A relative override is
+    interpreted repo-relative (`agent-loop/sandbox/<fixture>/docs`), which is how
+    an operator naturally types it and how the fixture is referenced in the run
+    record. The resolved root must live inside `sofia_root`: the snapshot's
+    provenance records each source as a repo-relative `canonical_path`, so a root
+    outside the repo has no expressible provenance — fail loud here with the
+    constraint named, rather than deep in the snapshot with a bare path error.
+    """
+    if docs_root is None:
+        return sofia_root / "docs"
+    resolved = Path(docs_root)
+    if not resolved.is_absolute():
+        resolved = sofia_root / resolved
+    resolved = resolved.resolve()
+    if not resolved.is_relative_to(sofia_root.resolve()):
+        raise PrepError(
+            f"docs_root {resolved} is outside $SOFIA_ROOT {sofia_root.resolve()}; "
+            "snapshot provenance records a repo-relative canonical_path, so the "
+            "reviewed document must live inside the repo"
+        )
+    return resolved
+
+
 def prep_run(
     run_id: str,
     doc_ids: list[str],
@@ -717,6 +846,7 @@ def prep_run(
     accept_stale: dict[str, str] | None = None,
     verified_at: str | None = None,
     extra_specs: list[SubstrateSpec] | None = None,
+    docs_root: str | Path | None = None,
 ) -> Path:
     """Prepare one run folder (documents snapshot + substrate) and return it.
 
@@ -741,8 +871,23 @@ def prep_run(
     recipe does not carry (run-016 reviews amended DDR-002 and must see DDR-004).
     An extra spec whose logical_id already appears in the recipe is rejected (no
     silent duplicate), and the check runs before any folder is created.
+
+    `docs_root` (RBT-67 sandbox ingest) overrides where the REVIEWED document is
+    resolved and snapshotted from; it defaults to `<sofia_root>/docs`, the
+    canonical corpus. It moves the snapshot source only — the recipe still reads
+    its repo-canonical authorities from `<sofia_root>/docs`, so a sandbox review
+    reads a fixture against the real canon. This is what lets the author's first
+    target be a sandbox draft rather than a live canonical record
+    (run-supervision.protocol.md §9, first-target discipline), and it keeps prep
+    gate 2 honest: a fixture outside `docs/` leaves the canonical docs tree
+    clean, so the HEAD stamp still means what it says. For a fixture the
+    git-HEAD linkage is nominal — provenance rides the content hash, which is
+    the correct pin for bytes that were never canonical.
     """
     sofia_root = Path(sofia_root)
+    # Resolved up front, beside recipe selection: a bad source root must fail
+    # before any folder is created, never leaving a partial run behind.
+    docs_root = _resolve_docs_root(docs_root, sofia_root)
     if recipe is None:
         recipe = select_recipe(doc_ids, sofia_root=sofia_root)
     specs = list(recipe(from_run=from_run))
@@ -763,8 +908,6 @@ def prep_run(
     from_run_dir = runs_root / from_run if from_run is not None else None
     if from_run_dir is not None and not from_run_dir.is_dir():
         raise PrepError(f"--from-run draw not found: {from_run_dir}")
-
-    docs_root = sofia_root / "docs"
 
     assemble_substrate(
         specs,

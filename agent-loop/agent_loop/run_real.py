@@ -101,7 +101,7 @@ RUN_ONE_MAX_PASSES = 10
 # The rationale cites by meaning: operational artifacts never carry ticket
 # numbers — ticket linkage lives in tickets, carriers, and audits.
 CALIBRATION = {
-    "generation": 8,
+    "generation": 9,
     "rationale": (
         "gen-4: severity/cap discipline restated in-place in all four reviewer "
         "prompts — a held check is POSITIVE-class, never re-labeled a defect to "
@@ -115,7 +115,11 @@ CALIBRATION = {
         "self-terminated end_turn empty at full narrative saturation) — the "
         "Contract's empty-array-is-a-protocol-violation floor (R-E1, prompt-side, "
         "also resolving the standing 2-POSITIVE re-draw-floor contradiction) plus "
-        "a static recency review directive appended last in assembly (R-E2)"
+        "a static recency review directive appended last in assembly (R-E2); "
+        "gen-9: arbiter output-discipline hardening — rationale capped to one "
+        "terse sentence and a brevity-under-contest directive appended, after "
+        "three malformed-JSON arbiter content-retries on oversized prose outputs "
+        "for genuinely-contested findings (r3/r5), zero on easy findings"
     ),
 }
 
@@ -571,6 +575,11 @@ def main() -> None:  # pragma: no cover
     parser.add_argument("doc_ids", nargs="+", help="e.g. ADR-001 ADR-002 DDR-001 DDR-002")
     parser.add_argument("--sofia-root", default=str(Path(__file__).resolve().parents[2]))
     parser.add_argument(
+        "--max-passes", type=int, default=RUN_ONE_MAX_PASSES,
+        help=f"loud pass bound for this attended run (default {RUN_ONE_MAX_PASSES}); "
+             "lower it to cap an attended convergence run",
+    )
+    parser.add_argument(
         "--coherence-addendum-file", default=None,
         help="file whose text is appended to the coherence hat's brief (RBT-54 R-C seam list)",
     )
@@ -589,6 +598,7 @@ def main() -> None:  # pragma: no cover
         runs_root=agent_loop_root / "runs",
         prompt_dir=agent_loop_root / "design",
         transport=build_real_transport(),
+        max_passes=args.max_passes,
         coherence_addendum=coherence_addendum,
     )
     print(f"{args.run_id}: {result.exit.kind} in {result.passes_run} pass(es)")
