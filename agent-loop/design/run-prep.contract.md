@@ -222,6 +222,80 @@ stream is a named supervision watch. A real `Arbiter` adapter:
   distinguish an aborted run from one sitting in backoff (amended
   2026-07-02).
 
+## §7a — Reviewer-substrate caching (RBT-49 Item 1 / RBT-69 Piece 2)
+
+Prompt caching was previously uncontracted — inline in `transport.py` only. This
+section gives it a contract (added RBT-69). It is a **performance change under a
+hard coverage-preservation obligation**: every finding the un-cached loop surfaces
+must still surface; caching provably alters cost, never content.
+
+- **What is cached — the run-frozen leading prefix, per actor.** For a given actor
+  in a run, two blocks are stable and are marked `cache_control`: (1) the `##
+  System` block (per-actor, pinned verbatim by §5), and (2) a **leading substrate
+  prefix** of the `## User` block. Each actor leads its user block with its frozen
+  block so that block can front a byte-identical cache prefix:
+  - **hats** — the frozen substrate (`SUBSTRATE → DOCUMENT SET → LEDGER SNAPSHOT →
+    recency directive`; `real_hats.assemble_user_prompt`);
+  - **arbiter** — the frozen authorities + design-intent substrate, ahead of the
+    per-finding tail (the existing Ra-2 reorder; `_assemble_arbiter_substrate`);
+  - **author** — the stable run document(s), ahead of the per-finding tail (the
+    finding + its specific resolved authority; `_assemble_author_user`).
+- **Never cached — the morphing tail.** The document set (author-mutated in live
+  mode) and the growing per-pass ledger snapshot for hats; the per-finding finding
+  and resolved authority for the author. These trail the cache breakpoint and are
+  re-sent uncached every call. The correctness invariant: *what each actor sees is
+  the frozen per-run substrate set, byte-identical to the uncached path; no stale
+  or cross-run bleed.*
+- **Content-neutrality by construction.** The cached head is **sliced from the
+  call's own assembled `user`** (`transport._user_content_blocks` splits `user` at
+  `len(cache_prefix)` into a cached head + uncached tail, whose concatenation is
+  `user`). A substrate string is never hand-built where it could diverge from what
+  is sent. This makes the two guarded invariants — the arbiter's frozen-substrate
+  authority-independence (§6) and the hats' stance-isolation — safe by
+  construction, not by test luck: both are properties of *what each context
+  contains*, and caching does not alter content.
+- **Port preserved.** The `LlmEmitter` port stays `Callable[[str, str], str]` (§5,
+  §9 unchanged). `build_api_emitter` takes an optional `cache_prefix_of:
+  Callable[[str], str | None]` splitter, applied to the call's own `user` *inside*
+  the emitter closure — so no caller passes a prefix through the port. The splitter
+  slices at the actor's frozen/variable boundary (`real_hats.substrate_cache_prefix`,
+  `author.author_cache_prefix`); a boundary that cannot be located yields `None`
+  (no user-level caching) — a valid prefix or nothing, never the morphing tail.
+- **1-hour cache TTL.** The two run-frozen breakpoints carry
+  `cache_control: {"type": "ephemeral", "ttl": "1h"}` (GA on the first-party
+  Messages API — no beta header). Passes run minutes apart; the default 5-minute
+  ephemeral TTL expired *between* passes, so the once-per-pass hats read ≈0 from
+  cache (run-028: LAA `cache_read` 2,564; SA/EA/coherence 0). The 1-hour window
+  survives the inter-pass gap. Cost trade, stated honestly: a 1-hour write is
+  priced above a 5-minute write; reads are equally cheap — net-positive whenever a
+  prefix is re-read across ≥2 passes (the expensive multi-pass runs), mildly
+  wasteful on a single-pass run (which is cheap regardless).
+- **Scope: once per actor per run, not once per run.** A single shared cross-actor
+  substrate prefix is **out of scope** (deferred): prompt caching matches an exact
+  prefix from the start of the request, and each actor's stance-bearing `## System`
+  (pinned verbatim, §5) diverges the prefix before the substrate is reached.
+  Hoisting substrate ahead of every actor's stance to force one shared entry would
+  trade the verbatim-system contract and stance clarity to save ~5 one-time writes
+  across a run — not pursued.
+- **Cost capture (unchanged, §7).** Each `llm_call` already carries the
+  `cache_creation_input_tokens` / `cache_read_input_tokens` split, summed per site
+  in the manifest — the measurement surface for the caching effect. The
+  cache-creation TTL-bucket breakdown (`ephemeral_1h_input_tokens` /
+  `ephemeral_5m_input_tokens`, from the response's `usage.cache_creation`) is
+  likewise captured per `llm_call` and summed per site as the structural proof
+  that the 1-hour TTL was applied — writes landing in the 1h bucket, distinct from
+  the total (RBT-69 Piece 2 / C3).
+
+**Test obligations.** C1 — byte-identity: for every call site the reconstructed
+sent content (head + tail) equals the single-block uncached assembly, for an
+arbitrary `cache_prefix` (unit, BLOCKING). C2 — cross-run isolation: a
+genuinely-different substrate produces different leading-prefix bytes; identical
+substrate produces identical bytes (a hit on identical bytes is correct by
+construction, not bleed) (unit, BLOCKING). C3 — a multi-pass supervised run shows
+hat-site `cache_read > 0` on passes 2+, where run-028 showed ≈0, read from the
+manifest's `cache_creation`/`cache_read` split (supervised-run acceptance, not a
+unit test).
+
 ## §8 — Run assembly and prep gates
 
 A run entry module (`agent_loop.run_real`) owning assembly and prep

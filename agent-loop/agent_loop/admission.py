@@ -13,7 +13,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from agent_loop.identity import derive_id
+from agent_loop.identity import derive_id, normalize_claim
 from agent_loop.ledger import Finding, Ledger
 from agent_loop.log import ActionLog
 
@@ -68,6 +68,31 @@ def _citation_is_wellformed(finding: Finding) -> bool:
     return True
 
 
+def _capture_claim_divergence(
+    existing: Finding, incoming: Finding, finding_id: str, log: ActionLog
+) -> None:
+    """Preserve a materially-different claim admitting to an open id (RBT-69).
+
+    Fires only when the incoming claim normalizes differently from the existing
+    record's claim AND is not already captured (so a hat re-emitting the same
+    wording each pass does not append duplicates, while a genuinely-new divergent
+    variant is always retained). The record stays open; the variant is appended to
+    `claim_variants`; a `claim_divergence` event carries both claims for the audit.
+    """
+    if normalize_claim(incoming.claim) == normalize_claim(existing.claim):
+        return
+    seen = {normalize_claim(variant) for variant in existing.claim_variants}
+    if normalize_claim(incoming.claim) in seen:
+        return
+    existing.claim_variants.append(incoming.claim)
+    log.emit(
+        "claim_divergence",
+        finding_id=finding_id,
+        existing_claim=existing.claim,
+        incoming_claim=incoming.claim,
+    )
+
+
 def admit(
     ledger: Ledger, finding: Finding, pass_number: int, log: ActionLog
 ) -> AdmissionResult:
@@ -89,7 +114,11 @@ def admit(
     Returns:
         An AdmissionResult describing what happened.
     """
-    finding_id = derive_id(finding.target, finding.locus, finding.claim)
+    # Identity is stance-at-locus (RBT-69): (sorted(target), normalize_locus,
+    # altitude). `altitude` is stamped from the invoked reviewer's identity at the
+    # real_hats.parse_emissions seam before admission (hardcode over trust); the
+    # claim is no longer identity-bearing.
+    finding_id = derive_id(finding.target, finding.locus, finding.altitude)
     finding.id = finding_id
 
     # (1) Scope gate — structural. A dropped finding is never counted, but the
@@ -105,8 +134,14 @@ def admit(
 
     existing = ledger.find_by_id(finding_id)
 
-    # (3a) Same id already open → the same standing finding, no new record.
+    # (3a) Same id already open → the same standing finding, no new record. The
+    # claim-divergence guard (RBT-69) is the safety net for the coarser key: a
+    # materially-different claim admitting to the same open id is NOT hidden — the
+    # finding stays open, the incoming claim is preserved in `claim_variants`, and
+    # a `claim_divergence` event is emitted so the cold hand-audit can split a
+    # true two-as-one. No new record; no claim discarded (ledger-schema §Identity).
     if existing is not None and existing.status == "open":
+        _capture_claim_divergence(existing, finding, finding_id, log)
         log.emit("dedup_open", finding_id=finding_id)
         return AdmissionResult(finding_id=finding_id)
 

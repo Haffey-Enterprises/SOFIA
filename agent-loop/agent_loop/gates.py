@@ -22,15 +22,20 @@ class RouterExit:
 
     Attributes:
         kind: One of the exactly-three exits.
-        reason: For HALT_DECISION, 'oscillation' or 'decision-bearing'; else
-            None.
+        reason: For HALT_DECISION, 'oscillation', 'non-convergence', or
+            'decision-bearing'; else None.
         payload: The findings carried to the operator (unbundled, one
             escalation each on HALT).
+        context: A single human-readable context line, set only on the
+            'non-convergence' disposition (RBT-69 Piece 3) — records that the
+            resolvable surface was not exhausted and the plateaued open_cbm value.
+            None on every other exit.
     """
 
     kind: ExitKind
     reason: str | None = None
     payload: list[Finding] = field(default_factory=list)
+    context: str | None = None
 
 
 # --- 1. convergence counter --------------------------------------------------
@@ -132,40 +137,81 @@ def _open_resolvables(ledger: Ledger) -> list[Finding]:
     ]
 
 
+def _non_convergence_context(ledger: Ledger) -> str:
+    """The context line for a non-convergence plateau halt (RBT-69 Piece 3).
+
+    Records the two facts that distinguish accumulation from oscillation: the
+    plateaued `open_cbm` value, and that the resolvable surface was not exhausted
+    (net-new findings still arriving faster than the author closes them) — no
+    recurrence, so it is a pile of decisions to rule, not two altitudes trading.
+    """
+    return (
+        f"non-convergence: open_cbm plateaued at {open_cbm(ledger)} over the last "
+        f"{ledger.header.plateau_N + 1} passes with "
+        f"{len(_open_resolvables(ledger))} open resolvable finding(s) still on the "
+        "ledger — the resolvable surface was not exhausted (net-new still "
+        "arriving), and no finding recurred (accumulation, not trade)"
+    )
+
+
 # --- 3. router (exactly three exits; precedence top-to-bottom) ---------------
 
 
 def route(ledger: Ledger) -> RouterExit:
     """Compose the gates into exactly three exits; first match wins.
 
-    Precedence: oscillation → open-resolvable → decision-bearing → converged.
+    Precedence (RBT-69 Piece 3): `[recurrence-oscillation | non-convergence-
+    plateau] → open-resolvable (CONTINUE) → decision-bearing (HALT) → CONVERGED`.
+    The top backstop position is unchanged; only its disposition splits — a
+    non-decreasing open set now halts honestly as `non-convergence` instead of
+    masquerading as `oscillation`.
+
     The author edits only `resolvable` findings and never touches a
     decision-bearing one, so those two concerns are independent: an open decision
     must not preempt the author from the resolvable work it can still do
     (RBT-67, after run-026 — one COSMETIC decision-bearing finding halted the
     loop over 21 real resolvables the author never got to). So an open resolvable
-    now outranks the decision-bearing halt: the loop CONTINUEs, the author fires
-    on the resolvables, and the decision-bearing findings stay open on the ledger
-    — recorded, never dropped — surfacing once the resolvables are exhausted.
+    outranks the decision-bearing halt: the loop CONTINUEs, the author fires on
+    the resolvables, and the decision-bearing findings stay open on the ledger —
+    recorded, never dropped — surfacing once the resolvables are exhausted.
 
     Two guarantees the reorder preserves:
-      - Oscillation still wins over everything — a `resolvable` that keeps
-        reopening is trading, not converging, and halts (the anti-infinite-loop
-        backstop; plateau_N / max_passes bounds unchanged).
+      - The oscillation/non-convergence backstop still wins over everything — a
+        `resolvable` that keeps reopening is trading, not converging (oscillation);
+        an `open_cbm` that stops falling is accumulating (non-convergence). Either
+        halts (the anti-infinite-loop backstop; plateau_N / max_passes unchanged).
       - CONVERGED is still unreachable while any decision-bearing finding is open
         (the decision-bearing branch precedes the converged one) — the change
         lets the author work while decisions wait, it does not let the run finish
         with a decision open. CONVERGED remains the mechanical conjunction:
-        open_cbm == 0 AND no open decision-bearing AND not oscillating.
+        open_cbm == 0 AND no open decision-bearing AND not oscillating/non-converging.
     """
-    # 1. Oscillation backstop — unchanged, and it still outranks CONTINUE.
-    if oscillating(ledger):
-        payload = (
-            _recurring_findings(ledger)
-            if recurrence(ledger)
-            else _plateaued_findings(ledger)
+    # 1a. Recurrence backstop → oscillation. A closed finding that came back is
+    #     real two-altitude trading; the recurring ids are the payload. Unchanged.
+    if recurrence(ledger):
+        return RouterExit(
+            kind="HALT_DECISION", reason="oscillation", payload=_recurring_findings(ledger)
         )
-        return RouterExit(kind="HALT_DECISION", reason="oscillation", payload=payload)
+
+    # 1b. Plateau without recurrence → non-convergence (RBT-69 Piece 3). open_cbm
+    #     stopped strictly decreasing while positive: accumulation, no trade —
+    #     "operator, there is a pile of decisions to rule and the surface is not
+    #     exhausted." The honest disposition, split out of the oscillation label it
+    #     was mislabeled under. Payload: the open decision-bearing findings the
+    #     operator must rule, unbundled; falling back to the plateaued open counted
+    #     findings when no decision is open (pure resolvable non-progress). A single
+    #     context line records the non-exhausted resolvable surface + plateaued
+    #     open_cbm. Only meaningful after Piece 1 — before the identity fix,
+    #     open_cbm climbed on re-wording inflation and plateau fired on noise.
+    if plateau(ledger):
+        open_decisions = _open_decisions(ledger)
+        payload = open_decisions if open_decisions else _plateaued_findings(ledger)
+        return RouterExit(
+            kind="HALT_DECISION",
+            reason="non-convergence",
+            payload=payload,
+            context=_non_convergence_context(ledger),
+        )
 
     # 2. Any open resolvable the author can act on → CONTINUE. Now outranks the
     #    decision-bearing halt; the open decisions ride along on the ledger.

@@ -357,13 +357,33 @@ def _resolve_authority_texts(
     }
 
 
+# The heading that opens the author's per-finding-variable tail. `_assemble_author_user`
+# leads with the stable run document(s) so that block can be cached; everything
+# from this heading on (the finding, the resolved determining authority) varies
+# per finding and stays uncached (RBT-69 Piece 2). Defined once and used by both
+# the assembler and `author_cache_prefix` so the boundary cannot diverge.
+_AUTHOR_VARIABLE_HEADING = "RESOLVABLE FINDING:\n"
+
+
 def _assemble_author_user(
     finding: Finding,
     reference: str,
     authority_texts: dict[str, str],
     documents: dict[str, str],
 ) -> str:
-    """Assemble the author's `## User` block per its prompt template."""
+    """Assemble the author's `## User` block per its prompt template.
+
+    Order (RBT-69 Piece 2): the stable run document(s) lead so that block — the
+    single largest input sink, re-sent per finding (run-028: 2.12M input tokens,
+    59 calls) — becomes the cacheable leading prefix. The per-finding-variable
+    portion (the finding verbatim and the specific resolved determining authority)
+    trails as the uncached tail. Exact split per the spec's leave-to-Code note:
+    the run document is cached; the finding and *all* resolved authority stay in
+    the tail (a content-neutral split that does not attempt to sub-partition
+    authority into shared-vs-per-finding, which is not mechanically determinable
+    from the resolver). Byte-identical to the pre-reorder assembly's *content*;
+    only section order changed.
+    """
     authority = "\n\n".join(
         f"### {name}\n{text}" for name, text in authority_texts.items()
     )
@@ -371,14 +391,29 @@ def _assemble_author_user(
         f"### {doc_id}\n{documents[doc_id]}" for doc_id in sorted(finding.target)
     )
     return (
-        "RESOLVABLE FINDING:\n"
+        "CURRENT DOCUMENT (fetched fresh):\n"
+        f"{docs}\n\n"
+        f"{_AUTHOR_VARIABLE_HEADING}"
         f"{json.dumps(asdict(finding), indent=2)}\n\n"
         "DETERMINING AUTHORITY (fetched fresh):\n"
         f"Named as determining the fix: {reference}\n\n"
-        f"{authority}\n\n"
-        "CURRENT DOCUMENT (fetched fresh):\n"
-        f"{docs}"
+        f"{authority}"
     )
+
+
+def author_cache_prefix(user: str) -> str | None:
+    """The leading stable-run-document slice of an assembled author `## User` block.
+
+    Returns `user` up to (not including) the `RESOLVABLE FINDING` heading — the
+    run document(s), stable per run (unchanging in dry mode; content-addressed so
+    a real edit in live mode simply refreshes the cache) — so the author
+    transport can cache it (RBT-69 Piece 2). Sliced from the call's own `user`, so
+    the cached head is byte-identical to the sent bytes by construction. Returns
+    `None` when the heading is absent or at position 0, so no user-level caching
+    is requested — a valid prefix or nothing, never the per-finding tail.
+    """
+    index = user.find(_AUTHOR_VARIABLE_HEADING)
+    return user[:index] if index > 0 else None
 
 
 # --- the escalation transition (D3) ------------------------------------------

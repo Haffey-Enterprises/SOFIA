@@ -170,7 +170,10 @@ def test_no_admission_occurs_until_all_reviewers_returned(tmp_path) -> None:
     def make(identity: ReviewerIdentity, claim: str) -> ScheduledReviewer:
         def run(pn, snap, recs, sub, log):  # noqa: ANN001
             seen.append(len(log.of_kind("admitted")))
-            return [_finding(claim)]
+            # Stamp each finding with its hat's altitude (as the real parse seam
+            # does): three distinct altitudes at one (target, locus) → three
+            # distinct ids, so all three remain distinct records post-RBT-69.
+            return [_finding(claim, altitude=identity.altitude)]
 
         return ScheduledReviewer(identity, run)
 

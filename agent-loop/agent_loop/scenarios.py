@@ -261,7 +261,9 @@ def _s3b_churn(pass_number: int, ledger: Ledger) -> list[Finding]:
 
 def scenario_s3b() -> Scenario:
     """S3b — plateau without a clean reopen: open_cbm holds flat at 2, plateau
-    trips at plateau_N + 1 passes → HALT_DECISION (oscillation)."""
+    trips at plateau_N + 1 passes → HALT_DECISION (non-convergence). Since RBT-69
+    Piece 3, a plateau WITHOUT recurrence is accumulation, not trade, and gets the
+    honest `non-convergence` disposition (not `oscillation`)."""
     churn_default = ArbiterResult(
         finding_id="_",
         classification="resolvable",
