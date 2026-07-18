@@ -1,0 +1,8 @@
+The finding claims the table control-type cell says "reliability-weighting at retrieval," but the current document's Environment control-type cell already reads "Per-policy capture-time-frozen aging (freshness-decayed confidence derived at Evidence capture and frozen)..." and the prose already says "never recomputed at read." The named anchor phrase does not exist in the document.
+
+{
+  "action": "refuse",
+  "finding_id": "472812824f2e5637",
+  "reason": "The finding's target phrase 'reliability-weighting at retrieval' does not appear in the current document: the §2.2 Environment control-type cell already reads 'capture-time-frozen aging ... derived at Evidence capture and frozen' and the prose already states 'never recomputed at read' and the status is already 'Form built (DDR-004); constants contested/unvalidated (n=0).' Ruling D's conformance is already satisfied; no exact anchor exists to edit and no change remains that the authority determines.",
+  "confidence": "high"
+}

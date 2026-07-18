@@ -1,0 +1,8 @@
+The finding names two loci but the file-driven ingestion reference already uses subject-name form ("The forthcoming ingestion decision record"); only the DDR-003 bullet carries a concrete identifier. Ruling G determines the subject-name replacement for it, but the bullet also contains a DDR-003-specific clause ("resolve DDR-003's pointer... lives in DDR-003's definition of done") whose conforming rewrite requires deciding phrasing not entailed by the authority.
+
+{
+  "action": "refuse",
+  "finding_id": "587fbc798e6ea552",
+  "reason": "One named locus (file-driven ingestion) already uses the subject-name form, so the finding's premise partly misdescribes the document; and the remaining DDR-003 bullet embeds concrete-identifier clauses ('resolve DDR-003's pointer to this record's concrete document identifier lives in DDR-003's definition of done') whose subject-name rewrite Ruling G does not uniquely determine — multiple conforming phrasings exist. Refusing rather than authoring one.",
+  "confidence": "medium"
+}

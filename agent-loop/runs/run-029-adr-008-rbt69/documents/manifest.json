@@ -1,0 +1,17 @@
+{
+  "run_id": "run-029-adr-008-rbt69",
+  "sofia_head_sha": "6ea865c660b8830f4cc07a1216d37210ccab1486",
+  "files": [
+    {
+      "doc_id": "ADR-008",
+      "snapshot_path": "documents/ADR-008-ground-truth-mutation-governance.md",
+      "origin": {
+        "source": "sofia-repo",
+        "canonical_path": "agent-loop/sandbox/adr-008/docs/adr/ADR-008-ground-truth-mutation-governance.md"
+      },
+      "retrieved": "2026-07-18",
+      "sha256": "24461d3ff61527bbf70bcbce532e00c6c3878433fd8f8ac7c60c6d477683c12b",
+      "note": "Byte-identical to run-028's pre-run target (sha 24461d3f), snapshotted fresh from the pristine sandbox canonical source for the RBT-69 before/after replay. Substrate copied verbatim from run-028's frozen snapshot so the RBT-69 code change is the only variable."
+    }
+  ]
+}

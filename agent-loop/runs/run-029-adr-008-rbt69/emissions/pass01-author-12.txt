@@ -1,0 +1,10 @@
+{
+  "action": "edit",
+  "finding_id": "e4821ecdcbfc622c",
+  "target": "ADR-008",
+  "old_string": "is the **withdrawal-leg of the promotion class**, governed by the same per-write, EA-gated, human-accountable control as promotion itself.",
+  "new_string": "is the **withdrawal-leg of the promotion class**, governed by the same per-write, EA-gated, human-accountable control *authority* as promotion itself — though its built instance does not yet supply promotion's governing-verdict guarantee (§5.3).",
+  "authority_conformed": "ADR-008-run-025-operator-rulings Ruling F (qualify §2.3 'same control' to match the §5.3 concession; authority homed, governing-verdict detection analogue is a named follow-up)",
+  "rationale": "Ruling F directs qualifying §2.3's 'same control' claim to match the §5.3 concession that the built retraction instance lacks promotion's governing-verdict guarantee; §5.3 already states this.",
+  "confidence": "medium"
+}

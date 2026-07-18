@@ -1,0 +1,72 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References — 'DDR-003 (Feedback Loop Governance, forthcoming)' and 'The forthcoming ingestion decision record (file-driven ingestion, forthcoming)'",
+    "claim": "The Cross-References section names two unauthored forthcoming records by concrete numeric identifier — 'DDR-003' and, within the ingestion entry, '(file-driven ingestion, forthcoming)' paired with the earlier concrete 'DDR-004' — while the body (§1, §2.2 realization column, §2.6) names the same referents by subject-name only ('the forthcoming feedback-loop governance design', 'the forthcoming ingestion decision record'). The document is internally inconsistent about which naming form it follows for the same records; a §-cite reader cannot tell whether the forthcoming feedback-loop design is decidedly DDR-003 or subject-named.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §7 (concrete 'DDR-003 (Feedback Loop Governance, forthcoming)') vs ADR-008 §1/§2.2/§2.6 (subject-name form 'the forthcoming feedback-loop governance design' for the same referent)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "§2.3 Un-promotion authority — 'homed under the same per-write, EA-gated, human-accountable control authority as promotion' followed by two near-identical qualifying clauses",
+    "claim": "§2.3 states the un-promotion authority and its governing-verdict caveat twice in near-identical wording within two adjacent sentences: first 'though its built instance traces to *an* approving decision, not the *governing* one, and so does not yet supply promotion's governing-verdict guarantee; that governing-verdict detection analogue for executed retractions is a named follow-up (§5.3)', then again 'though it traces to *an* approving decision, not the *governing* one, so it does not yet supply promotion's governing-verdict guarantee; the governing-verdict detection analogue for executed retractions is a named follow-up (§5.3)'. The duplicated qualification is a drafting artifact — the decision content is stated redundantly, obscuring the single ruling.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.3 sentence 1 vs §2.3 sentence 2 (both carry the identical 'an approving, not the governing, decision / named follow-up §5.3' qualification for the same claim)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References — Reboot Decision Ledger R30 named as substrate in the durable body",
+    "claim": "§7 names 'Reboot Decision Ledger ruling R30 (the derive/promote authority seam), fetched verbatim as substrate' in the durable Cross-References body. The distillation control-type and its superseding rationale are stated self-containedly in §2.2 (which does not name R30), so the R30 pointer in §7 carries no load the body depends on — it is a substrate/deliberation reference sitting in the durable record. The record's stated relationship to R30 (a prior ratified inference this ADR supersedes on a criterion-shift) is a deliberation-record and governance-ledger matter; a durable in-body ledger-ruling citation does not surface anywhere else in the body as an authority the ADR rests on, making it standalone-body noise rather than a resolvable cross-reference.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §7 (R30 named in durable Cross-References body) vs ADR-008 §2.2 (distillation control-type + superseding rationale stated self-containedly, R30 not named) — the body does not rest on the R30 pointer"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Per-source-class calibration table — Environment 'Realization routes to' cell vs the Environment prose bullet and vs DDR-004",
+    "claim": "The Environment row of the §2.2 table gives the control-type as 'per-policy capture-time-frozen aging (freshness-decayed confidence derived at Evidence capture and frozen ...)', and the Environment prose bullet correctly restates capture-time-frozen aging — but the same table row's Realization cell is labeled 'Form built (DDR-004); constants contested/unvalidated (n=0)' while the Promotion row's Realization reads 'Built — the graph-schema ruling's PromotionDecision gate'. The two Realization cells use inconsistent status vocabulary ('Built' vs 'Form built ... constants contested') to describe the same 'is-this-mechanized' axis, and the §6 Enforcement paragraph lists 'the Environment weighting derivation' flatly among 'already mechanized' instances without the form-built/constants-contested qualifier the §2.2 cell and §5.3 both carry — leaving §6 asserting a maturity the §2.2 relabel and §5.3 empirical floor withhold.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §6 Enforcement ('the Environment weighting derivation' listed flatly among 'already mechanized' instances) vs ADR-008 §2.2 Environment Realization cell ('Form built (DDR-004); constants contested/unvalidated (n=0)') and §5.3 (constants held contested, n=0)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Environment bullet — 'its aging confidence basis is fixed in the inherited-confidence derivation ruling, governed by DDR-004 §6's two-tier calibration governance'",
+    "claim": "The Environment bullet refers to 'the inherited-confidence derivation ruling' by subject-name in one clause and then to 'DDR-004 §6' by concrete identifier in the same sentence, for the same authority. DDR-004 is an existing ACCEPTED record (its concrete identifier is legitimate), but naming the same authority once by subject-name and once by number within one sentence is an inconsistent citation style that reads as though two different records are meant.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 Environment bullet ('the inherited-confidence derivation ruling' subject-named) vs same sentence ('DDR-004 §6' concrete) — one authority, two naming forms"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2 / §2.6 — decision-scope boundary against remedy-boundary and governance policy",
+    "claim": "I attacked the Decision for scope creep — commitments riding along as principle that are actually policy the forthcoming governance design should own. The attack failed: §2 declares the record fixes only invariant, accountability, and control-type; §2.6 explicitly holds out the remedy boundary (supersede vs retract), thresholds, cadence, retention windows, reviewer-role assignments, and multi-condition composition and routes them downstream; §5.3 restates that the record commits control-types not calibrations; and §6 check 5 (boundary check) makes the exclusion enforceable. The scoping is consistent across all four sites and the record decides no more than it claims.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "RBT-59 deliberation Item 5 (ADR owns invariant/accountability/control-type/lifecycle; remedy-boundary and all governance policy → the forthcoming feedback-loop governance design), realized at ADR-008 §2/§2.6/§5.3/§6 check 5"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.1 / §2.3 / §7 — relationship to ADR-001 §2.5, un-promotion homing, and Supersedes declaration",
+    "claim": "I attacked the record for a claim-fidelity failure on its relationship to ADR-001 §2.5 — either an unstated supersession or an overreach beyond §2.5's authority. The attack failed: §2.1 and the §2.2 Promotion bullet state that this ADR is the general upstream authority of which §2.5's EA-gated promotion is a sub-case, §2.3 states §2.5 authorizes promotion only and does not stretch to un-promotion (homing that authority here), and §7 cites §2.5 as still-valid, consistent with the metadata 'Supersedes: None — establishes new platform principle'. The generalization-and-subsumption is recorded across §2.1/§2.2/§2.3, not merely asserted in passing, and no superseded record exists to contradict the 'None' declaration.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "RBT-59 deliberation Item 2 / Ruling B (ADR-008 generalizes ADR-001 §2.5 as sub-case, homes un-promotion, supersedes nothing; Supersedes: None stands), realized at ADR-008 §2.1/§2.2/§2.3/§7 and metadata"
+    }
+  }
+]

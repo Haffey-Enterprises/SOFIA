@@ -1,0 +1,7 @@
+{
+  "finding_id": "a2879100b839ea27",
+  "classification": "resolvable",
+  "authority_locus": "RBT-59 operator rulings, governing principle ('an ADR is standalone; Reboot Decision Ledger rulings are substrate but never durable in-body ADR citations')",
+  "rationale": "The governing principle explicitly bars ledger-ruling names from durable in-body ADR citations, dictating removal of the R30 name from Cross-References.",
+  "confidence": "high"
+}

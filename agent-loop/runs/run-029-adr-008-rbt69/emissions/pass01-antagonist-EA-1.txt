@@ -1,0 +1,82 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References — 'ADR-004 (file-driven ingestion, forthcoming)' and 'DDR-003 (Feedback Loop Governance, forthcoming)'",
+    "claim": "The record references forthcoming, unauthored records by concrete numeric identifier (ADR-004, DDR-003). The RBT-59 operator rulings (Ruling G) direct that forward references to unauthored records be stated by subject-name only, never by concrete identifier, with numbering binding only at the downstream record's landing. Committing ADR-008 to specific numbers for records that do not yet exist is a premature commitment: the ingestion record's slot is contested (the ADR ladder ADR-003–007 is reserved by standing tickets per the triage charter, and ADR-004 is elsewhere referenced as the inherited-confidence-derivation record — a live numbering ambiguity), and the identifier binds directionally at the other record's landing, not from this record.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "ADR-008-run-025-operator-rulings, Ruling G: 'Forward references to unauthored records ... are stated by subject-name only in the ADR body and cross-references, never by concrete identifier ... Concrete identifiers bind only at the downstream record's landing (the pointer-resolution pass), and directionally'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Per-source-class calibration table, Environment row + Operational-distillation row (Realization column)",
+    "claim": "The calibration table's 'Realization routes to' column marks Promotion and Environment as 'Built', but the Environment control's built form is capture-time-frozen aging (derived at Evidence capture, never recomputed at read) plus per-policy calibration governance of contested constants — its constants are contested and unvalidated at n=0. Stating the Environment control as flatly 'Built' overstates its maturity: the form is built (the derivation ruling), the constants are not. The operator rulings direct that the Environment status be relabeled to distinguish form-built from constants-contested, so this ADR's timing-of-commitment (asserting a control as settled) pulls against the record it depends on.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "ADR-008-run-025-operator-rulings, Ruling D: 'relabel the §2.2 \"Built\" status to \"form built (DDR-004); constants contested/unvalidated (n=0).\"' and 'drop \"reliability-weighting at retrieval\"; state capture-time-frozen aging'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Environment row and Environment bullet — 'per-policy reliability-weighting at retrieval' / 'its aging confidence basis is fixed'",
+    "claim": "The Environment control is described as reliability-weighting 'at retrieval'. The built mechanism (DDR-004 §1/§3) is capture-time-frozen: the freshness-decayed confidence is derived at Evidence capture and frozen, explicitly 'never recomputed at read', consumed at reasoning time under the DDR-002 §4 ceiling. Describing the control as operating 'at retrieval' mischaracterizes an accepted, ratified downstream mechanism and pulls against the substrate this ADR integrates with — a posture defect at the seam between this record and DDR-004.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 Environment bullet ('reliability weighting at retrieval') in conflict with DDR-004 §3 'Confidence is computed once at capture and frozen onto Evidence.confidence; it is never recomputed at read'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§5.2 Constraints Imposed — 'realized through a candidate-ObservedPattern shape excluded from ground-truth traversal until approved'",
+    "claim": "The record states the distillation control is realized through a candidate-`ObservedPattern` shape as though that shape is a present schema constraint. The candidate-`ObservedPattern` shape does not exist in the ratified schema — DDR-002 §2.3 leaves the distillation checkpoint 'explicitly un-decided', and the promotion-boundary `CandidatePromotion` class does not cover it. It is an additive shape a downstream design (the feedback-loop governance design plus a future schema amendment) introduces. Stating a forthcoming/additive mechanism in present, settled voice commits the record to a mechanism decision that deserves its own downstream ruling first, and states timing in a tense the facts do not yet support.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "ADR-008-run-025-operator-rulings, Ruling E: 'the candidate-ObservedPattern shape does not exist in the ratified schema ... It is the additive shape the downstream design introduces ... state the candidate-ObservedPattern shape as forthcoming / additive (introduced downstream), not as a present schema constraint'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.3 Un-promotion authority — 'The built retraction shape ... is the instance of this authority' / §2.2 Promotion row 'Built'",
+    "claim": "§2.3 presents the built retraction shape as the instance discharging un-promotion authority without qualifying that the built instance (the retraction-gated invariant) traces to *an* approving decision, not the *governing* one — so it does not yet supply promotion's governing-verdict guarantee. §5.3 concedes exactly this for the re-decision case, but §2.3 asserts 'same control' without the concession, leaving §2.3 and §5.3 in tension. The operator rulings direct that §2.3's 'same control' claim be qualified to match the §5.3 concession — the authority is homed, but the governing-verdict detection analogue is a named follow-up, not a present guarantee.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "ADR-008-run-025-operator-rulings, Ruling F: 'qualify §2.3's \"same control\" claim to match the §5.3 concession — the authority is homed; the governing-verdict detection analogue for executed retractions is the named follow-up'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Operational-distillation bullet + §7 Cross-References (DDR-002) — reliance on Reboot Decision Ledger R30 substrate without self-containment",
+    "claim": "The distillation control's rationale (a distilled judgment is an inference whose self-assigned confidence cannot gate its own soundness, distinct from a non-gated Environment observation) supersedes R30's staging-tier / non-gated-distillation inference on a criterion-shift. The governing principle established by the operator rulings is that an ADR is standalone and R30 rulings are substrate, never durable in-body citations — the ADR must state the distillation control-type and this superseding rationale self-containedly. The record states the rationale but the superseding relationship to the prior ratified R30 inference is not made explicit, so a reader cannot tell this ADR overrides a prior ratified staging-tier posture; the record commits to a position (distillation is checkpoint-governed, not staging-tier-free) that supersedes an existing ruling without recording the supersession in-body.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "ADR-008-run-025-operator-rulings, Ruling A: 'It supersedes R30's staging-tier / non-gated-distillation inference on the ratified criterion-shift ... state the distillation control-type and this rationale self-containedly in the ADR body'"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2 Decision / §2.1 accountability invariant + §4.1 Alternative A",
+    "claim": "Attacked the core decision shape for integration with prior ratified posture: whether an invariant-plus-per-class-calibrated-control frame pulls against the platform's existing narrow ADR-001 §2.5 gate or over-commits the observational planes to a bottleneck. It held — the decision correctly makes accountability the invariant and control-form the calibrated variable, cites §2.5 as the sub-case it generalizes rather than superseding it (consistent with 'Supersedes: None' as the house norm for a new principle), and explicitly rejects the gate-all alternative (§4.1) that R30 already declined. The posture integrates with rather than pulls against the ratified substrate.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "RBT-59-ADR-008-deliberation-record Item 2 (frame: 'the invariant is human accountability ... the form of the control is calibrated per source class') and Item 3; ADR-008-run-025-operator-rulings Ruling B ('It supersedes nothing — §2.5 remains valid; Supersedes: None stands')"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.6 Governance boundary + §5.3 Risks (decision-provenance retention gap; executed-retraction detection)",
+    "claim": "Attacked the ADR/DDR-003 altitude boundary for over-reach — whether this principle-layer record smuggles governance policy (remedy boundary, thresholds, cadence) that belongs to the forthcoming governance design, and whether it asserts settled guarantees over unbuilt mechanisms. It held: §2.6 cleanly routes the remedy boundary and all policy downstream, §5.3 honestly names the provenance-retention gap and the executed-retraction detection gap as tracked follow-ups rather than claiming them resolved, and the record states control-types not calibrations. The altitude discipline holds at the boundary.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "ADR-008-run-025-operator-rulings, Ruling F follow-up + RBT-59-ADR-008-deliberation-record Item 5 ('ADR owns invariant + accountability + control-type ... Remedy-boundary ... and all governance policy → DDR-003')"
+    }
+  }
+]

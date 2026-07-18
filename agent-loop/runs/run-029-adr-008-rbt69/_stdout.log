@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/thaffey/Documents/GitHub/SOFIA/agent-loop/agent_loop/run_real.py", line 629, in <module>
+    main()
+  File "/Users/thaffey/Documents/GitHub/SOFIA/agent-loop/agent_loop/run_real.py", line 615, in main
+    result = run_real(
+             ^^^^^^^^^
+  File "/Users/thaffey/Documents/GitHub/SOFIA/agent-loop/agent_loop/run_real.py", line 553, in run_real
+    result = run_loop(
+             ^^^^^^^^^
+  File "/Users/thaffey/Documents/GitHub/SOFIA/agent-loop/agent_loop/runner.py", line 275, in run_loop
+    raise InstrumentCompromisedError(
+agent_loop.runner.InstrumentCompromisedError: run-029-adr-008-rbt69 pass 2: reviewer(s) ['coherence'] produced parse-dropped emissions and admitted no findings — instrument compromised, refusing to route (would risk a false CONVERGED)
