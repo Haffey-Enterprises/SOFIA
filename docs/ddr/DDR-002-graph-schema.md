@@ -8,12 +8,12 @@
 | Field | Value |
 |---|---|
 | **Document ID** | DDR-002 |
-| **Version** | 1.5.0 |
+| **Version** | 1.6.0 |
 | **Status** | ACCEPTED |
-| **Date** | 2026-07-17 |
+| **Date** | 2026-07-18 |
 | **Authors** | Thaddeus Haffey (Executive Architect) |
 | **Supersedes** | None — new design ruling. |
-| **References** | ADR-001 v1.1.0; ADR-002 v1.2.0; DDR-001 v1.3.0 |
+| **References** | ADR-001 v1.2.0; ADR-002 v1.2.0; ADR-008 v1.0.0; DDR-001 v1.4.0 |
 
 ---
 
@@ -345,7 +345,7 @@ So the provenance *existence constraint* (§7) scopes to **KG nodes + the three 
 - **→ Process-node work:** the `Process` node type + its deferred edges (`PRESCRIBES`→Process, `FOR_PROCESS`→Process) land when the Process use case is designed.
 - **→ gate-enum reconcile:** `GateDecision.gate` placeholder → enterprise SDLC gate taxonomy.
 
-**Upstream implemented:** ADR-001 v1.1.0 (reasoning architecture / Position 4–5), ADR-002 v1.2.0 (graph system-of-record), DDR-001 v1.3.0 (data architecture — the architecture half of the split).
+**Upstream implemented:** ADR-001 v1.2.0 (reasoning architecture / Position 4–5), ADR-002 v1.2.0 (graph system-of-record), DDR-001 v1.4.0 (data architecture — the architecture half of the split).
 
 **Standards:** house conventions — data-classification tiers; deployment-runtime exception (ADR-002 §2.2).
 
@@ -383,6 +383,7 @@ Amendments to the locked T1/T2 contract — node keys, the provenance two-axis m
 
 | Version | Date | Ticket | Change |
 |---|---|---|---|
+| 1.6.0 | 2026-07-18 | RBT-68 | **Pin-currency re-pin sweep — no schema, contract, or decision change.** References + *Cross-References* Upstream-implemented pins refreshed to the versions the RBT-59 / ADR-008 pointer-resolution batch produced: ADR-001 v1.1.0 → v1.2.0, DDR-001 v1.3.0 → v1.4.0. **ADR-008 v1.0.0** added to the References metadata table (the RBT-59 batch resolved the body pointers to ADR-008 as accepted upstream authority — §2.3 / §2.4 / §5 and the *Cross-References* boundary-routing map — but left the formal table-pin to lag, exactly as the RBT-53 / DDR-004 References add lagged to RBT-54). ADR-002's pin was already at v1.2.0 (caught up in the RBT-62 batch). No content the pins carry changed; a pure currency touch does not restale sibling pins. MINOR per the corpus no-patch-species convention. |
 | 1.5.0 | 2026-07-17 | RBT-59 | **KG-entry-governance ADR pointer resolved to ADR-008 (Ground-Truth Mutation Governance), ACCEPTED v1.0.0 in this batch; no decision change.** The three body pointers to the "forthcoming KG-entry-governance ADR" — §2.3 distillation-write checkpoint routing, §2.4/§5 un-promotion/retraction upstream authority, and the *Cross-References* boundary-routing-map entry — resolve to ADR-008, now the accepted upstream authority for ground-truth mutation. Routing prose and § pointers preserved; the historical v1.2.0 Change-Log rows recording the original routing are left as authored. Pin cascade (records still pinning the pre-bump versions) routed to a follow-up ticket. No schema, contract, or decision change. |
 | 1.4.0 | 2026-07-15 | RBT-62 | **Additive MINOR amendment — `Evidence.confidence` presence ownership (O-1; decision-bearing).** New §7 check **#28** (`Evidence.confidence` presence, follow tier): every `(:Reasoning:Evidence)` carries a non-null `confidence`; CI-only set 27 → 28. Resolves the ownership question the check-set had not answered — presence is T2 (uncovered by the DB-existence constraints), guaranteed on the mediated path by DDR-004's derive-or-reject totality but unverified for out-of-path arrivals (the #23 pattern applied to the confidence surface), and the all-null supporting set escapes #24's ceiling comparator by construction. 1a-only (no 1b write contract — the mediated path rejects a null at capture); §4 confidence-canon gains the presence clause; #24 gains the null-ceiling scoping naming #28 as owner (resolves the harness's named `obs O-1` gap). No new field or label — no schema perturbation. **Honest floor: n=0 capture traffic; both coverage holes are hypothetical, closed pre-BUILD on the ratified #23/#24 precedent — a stated threshold override, ratified per item 2026-07-15.** **Override discharge (why it holds, not merely that it was ratified):** the #23 precedent is on-point — 1a graph-state exists *precisely* to catch arrivals outside the mediated write path despite the sole-writer gateway (defense-in-depth already ratified there), so a follow-tier backstop of the same species is *a fortiori* proportionate to the safety-critical one; and the branch-(i) root-cause (DDR-004 v1.3.0) shows the presence hole is not purely hypothetical — a null-native inheritance would propagate a null on the mediated path, now prevented at capture and backstopped out-of-path by #28. Decision-bearing. |
 | 1.4.0 | 2026-07-15 | RBT-62 | **De-drift, no decision change (F-1 + §2.6 illustration; co-riders on the same touch).** #20's quantifier glossed to **promotion-kind** (`proposal_kind: promotion`) — the literal all-`promoted` reading swept `proposal_kind: retraction` terminal-`promoted` candidates, which by design build no `ProvenanceSummary` (§5); the harness already scopes to promotion-kind, so the text catches up to the mechanization. §2.6 cost-plane registration illustration corrected from the flat `{label: basis-string}` map to the nested per-label declaration-object form (`{basis: <kind>, freshness_operand? …}`) that §2.6 prose and check #26 require — the flat form was the RBT-58 seed-load trap; an `aging`-shape example folded into the illustration gloss. Cosmetic/de-drift class; no schema, contract, or harness change. Also folds a pin catch-up surfaced in review: References + Upstream-implemented ADR-002 v1.1.0 → v1.2.0, matching the §Standards runtime reference the RBT-63 rider already realigned (the version pin lagged the body). Ratified per item 2026-07-15. |
