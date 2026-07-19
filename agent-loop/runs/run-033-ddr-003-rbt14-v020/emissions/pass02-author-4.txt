@@ -1,0 +1,9 @@
+{
+  "action": "close_satisfied",
+  "finding_id": "6121a2306337e847",
+  "evidence_present": "An accountability mechanism must therefore surface stale lessons for their governed transition (a resolution or supersession, itself a distillation judgment under §2.2).",
+  "evidence_absent": null,
+  "authority_satisfied": "ADR-008 §2.4 (revalidation obligation) — explicitly fixes a distilled lesson's governed transition (resolution or supersession) as 'itself a distillation judgment under §2.2', granting the distillation control scope over lifecycle transitions; DDR-003 §5.2 cites exactly this locus.",
+  "rationale": "ADR-008 §2.4 verbatim homes lesson transitions on the §2.2 distillation control; DDR-003 §5.2 already cites §2.4 for precisely this, so the granting locus the finding claims is missing exists and is cited.",
+  "confidence": "high"
+}

@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "5b337e739479932e",
+  "reason": "ADR-008 §2.1/§2.2 fix that the control is human review of the judgment and the gateway is executor, but they are silent on where the detection/candidate-surfacing automation sits relative to the human fence — closing the assignment-vs-amendment line for review-workflow automation requires an unratified drafting choice (what clause to add, where), which the cited authority does not uniquely determine.",
+  "confidence": "high"
+}

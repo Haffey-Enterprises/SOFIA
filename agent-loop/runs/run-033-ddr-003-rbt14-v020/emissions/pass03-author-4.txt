@@ -1,0 +1,9 @@
+{
+  "action": "close_satisfied",
+  "finding_id": "2104f0849b3b3f2e",
+  "evidence_present": "Archival after a reviewed terminal transition is a policy-scheduled act under per-policy accountability (the judgment was already reviewed at §5.2)",
+  "evidence_absent": null,
+  "authority_satisfied": "ADR-008 §2.2 + docket ruling D8-adjacent §5.4 posture (a): archival of an already-terminal lesson is a policy-scheduled retention demotion, ratified 2026-07-19",
+  "rationale": "The named authority ratifies §5.4's per-policy characterization exactly as the current text asserts it; the document already conforms verbatim, so no edit is warranted.",
+  "confidence": "high"
+}

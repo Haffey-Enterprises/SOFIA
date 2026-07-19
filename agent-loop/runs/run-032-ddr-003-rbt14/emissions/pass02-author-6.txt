@@ -1,0 +1,12 @@
+The finding says #20 and #25 are cited nowhere in the body. But #20 IS cited in the body: §7.2 references "the Evidence-scoped provenance summary." Let me verify #20/#25 numeric citations. The body cites #9, #15, #19, #21, #22 by number. #20 and #25 are not cited by number in the body. But removing them requires deciding the exact replacement form — and #25's subject is uncited too. The authority determines only removal of the uncited numbers, which is mechanical.
+
+{
+  "action": "edit",
+  "finding_id": "7b9361fbd159d3e1",
+  "target": "DDR-003",
+  "old_string": "§7 (the cited invariant set: #9, #15, #19, #20, #21, #22, #25).",
+  "new_string": "§7 (the cited invariant set: #9, #15, #19, #21, #22).",
+  "authority_conformed": "author-decision-record SKILL — body-integrity: point-don't-mirror / no zero-load claims (a Cross-References enumeration must reflect what the record actually cites)",
+  "rationale": "Body cites #9, #15, #19, #21, #22 by number; #20 and #25 appear nowhere by number or subject, so the enumeration must drop them to reflect what the record cites.",
+  "confidence": "medium"
+}

@@ -1,0 +1,1 @@
+{"finding_id":"18d1f333647e35ee","classification":"decision-bearing","authority_locus":null,"rationale":"Which role's window governs a cross-role lookback read is unspecified; no ratified authority (D7, Obligation 4, docket) resolves the shortest-window-vs-per-window ambiguity for multi-role signals.","confidence":"high"}

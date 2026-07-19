@@ -1,0 +1,72 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "Decision.10 vs §7.1",
+    "claim": "Decision.10 states the retention model is 'three RG retention classes plus the Operational archival posture' while §7.1 enumerates four numbered classes: (1) Durable governance ledger, (2) Decision-consumed Evidence, (3) Working reasoning tier, (4) Operational track-record — with (4) explicitly labelled 'not an RG class'. The Decision block calls the RG classes 'three' and §7.1 numbers the fourth item as class (4) inside the same list that item (2)'s survival exemption and check 11 both refer to as 'classes 1–2'. A reader cannot tell from the contract whether there are three or four classes without reconciling the parenthetical.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 Decision.10 ('three RG retention classes plus the Operational archival posture') in conflict with §7.1 numbering '(4) Operational track-record — not an RG class'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003", "DDR-002"],
+    "locus": "§6.2 / §9 executed-retraction detection analogue vs DDR-002 §2.4",
+    "claim": "DDR-003 §9 asserts its executed-retraction ruling is 'discharging the graph schema's §2.4 routing at the policy layer'. DDR-002 §2.4's retraction re-decision text routes to 'the DDR-003 remedy boundary' the un-retraction *remedy* and 'a standing detection analogue of #15 for executed retractions'. DDR-003 §6.2 rules the remedy (forward-act re-promotion) but explicitly defers the detection analogue to a named gap (§9). The claim of 'discharging the routing at the policy layer' overstates: DDR-002's routing named two items and DDR-003 discharges one while re-deferring the other, so the routed obligation is only partially met, not discharged.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §9 'discharging the graph schema's §2.4 routing at the policy layer' in conflict with DDR-002 §2.4 (routes both the un-retraction remedy AND a standing detection analogue) — DDR-003 §6.2/§9 defers the detection analogue"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "§8 item 4 vs §6.2",
+    "claim": "§8 item 4 marks Re-admission forward-act-only as '(safety-relevant; holds by construction on the read path)'. §6.2 states re-admission executes as re-promotion 'through the full EA gate' — an authored governance act, not a read-path property. What holds by construction on the read path is *read-exclusion keyed on the executed RETRACTS edge*; the forward-act requirement for re-admission is a governance rule the record commits, not a by-construction property of any mechanism. The conformance label conflates the read-path exclusion invariant with the governance re-admission rule.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §8 item 4 'holds by construction on the read path' in conflict with §6.2 'Un-retraction executes as re-promotion: a fresh forward candidate through the full EA gate' (a governance act, not a read-path construction)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["DDR-003"],
+    "locus": "References metadata table vs DDR-004 References",
+    "claim": "DDR-003 References pins DDR-002 v1.6.0 and DDR-004 v1.4.0. DDR-004 v1.4.0's own References table pins DDR-002 v1.5.0 and ADR-002 v1.1.0, while DDR-003 pins ADR-002 v1.2.0. DDR-003 cites DDR-004 §6 for the two-tier calibration governance (§4.1); the two records disagree on which ADR-002 version is current authority, a standing cross-document pin drift that a reader following the citation chain will encounter.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 References 'ADR-002 v1.2.0' vs DDR-004 v1.4.0 References 'ADR-002 v1.1.0' — divergent authority-version pins across the cited chain"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "§7.1 class (4) vs Decision.6 / §5.4",
+    "claim": "§7.1 defines retention class (4) 'Operational track-record — not an RG class; its posture is §5.4's archival demotion.' §5.4 governs archival of terminal-state (`resolved`/`superseded`) lessons after a dwell. But §5.4 states archival is 'retention-tier demotion, never hard-deletion' and re-activation is reversible — i.e. the Operational plane has no expiry at all, only demotion. DDR-002 §2.3 confirms 'No in-graph TTL' for the Operational plane. Listing Operational as a 'retention class' alongside three RG classes that carry bounded windows and survival exemptions frames a non-expiring, demotion-only plane as if it participated in the retention-window model, which it does not.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §7.1 class (4) framed as a retention class vs §5.4 (demotion-only, reversible, never hard-deleted) and DDR-002 §2.3 ('No in-graph TTL' for Operational)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-003", "ADR-008"],
+    "locus": "§1.3 / Decision.3 — non-human role-holder boundary",
+    "claim": "Checked whether DDR-003's role-assignment mechanism (Decision.3, §1.3 — 'the holder set of each role is a role-assignment act under the platform's access model, not an amendment to this record') smuggles in authority to relax ADR-008 §2.2's requirement that both the promotion and distillation controls are HUMAN review with a named human answerable. The record explicitly fences this: '§2.2 fixes both controls as human review... any future non-human role-holder is therefore an amendment question for that upstream authority, not an assignment act under this record.' The upstream-authority rule holds — DDR-003 does not rescue a non-human holder via a downstream qualifier. Attack failed.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §1.3 / Decision.3 checked against ADR-008 §2.2 (controls fixed as human review) — no downstream relaxation of the upstream human-accountability requirement"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-003", "DDR-002"],
+    "locus": "§3.2 no-leak invariant vs DDR-001/DDR-002 action classes",
+    "claim": "Attacked the §3.2 no-leak invariant (source-quality signals never cross into promotion) against the landed feedback-loop action classes to see if the record over-claims a separation the schema/data-path does not support. DDR-001's Feedback-Loop Architecture names two action classes — knowledge promotion (EA-gated) and source-quality feedback (feeds ingestion scoring, no promotion) — and DDR-003 §3.2 restates exactly that boundary with a registration rule that a novel action class enters one of the two paths additively. The invariant is consistent with the cited upstream and adds no bypass. Attack failed.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §3.2 checked against DDR-001 Feedback-Loop Architecture (two action classes: promotion EA-gated / source-quality no-promotion) — no-leak invariant faithfully instantiates the upstream split"
+    }
+  }
+]

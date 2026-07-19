@@ -1,0 +1,1 @@
+{"finding_id":"b6887d982779c745","classification":"decision-bearing","authority_locus":null,"rationale":"Non-selected-candidate Evidence retention-class membership is undecided; no ratified authority partitions it, and the docket's D7/D4 rulings do not resolve the multi-candidate 0..* gap.","confidence":"high"}

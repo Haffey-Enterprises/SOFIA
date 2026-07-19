@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "a6a80e7dd0399596",
+  "reason": "The 'point, don't mirror / don't overstate' convention flags that #20 and #25 are enumerated-but-uncited, but does not uniquely determine the fix: removing both #20 and #25, removing only one, or adding a body citation for each are all conforming responses, and the body in fact touches #20's subject (provenance survival, §7.2) and #25's subject (retraction/RETRACTS shape) without numbering them — so whether these count as 'leaned on' is a judgment the authority does not settle.",
+  "confidence": "high"
+}

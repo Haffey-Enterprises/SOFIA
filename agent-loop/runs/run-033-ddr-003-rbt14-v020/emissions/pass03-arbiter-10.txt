@@ -1,0 +1,1 @@
+{"finding_id":"6d6a3a9bee1c24bb","classification":"decision-bearing","authority_locus":null,"rationale":"ADR-008 governs distillation entry and revalidation-triggered withdrawal but is silent on re-activation of an archived lesson as a re-entry act; homing that control is an unmade choice.","confidence":"medium"}

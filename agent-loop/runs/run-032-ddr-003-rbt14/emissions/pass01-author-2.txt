@@ -1,0 +1,9 @@
+{
+  "action": "close_satisfied",
+  "finding_id": "ce5440232abd58aa",
+  "evidence_present": "Each candidate receives a **per-dimension verdict, recorded durably** — including inside a batch decision.",
+  "evidence_absent": null,
+  "authority_satisfied": "author-decision-record SKILL, Body integrity — the recording obligation is already enumerated as Decision.2 and §8 check 6",
+  "rationale": "The §2.2 durable per-dimension recording obligation is already enumerated in Decision.2 and carried by §8 check 6; the Decision enumeration is not out of date.",
+  "confidence": "high"
+}

@@ -1,0 +1,72 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "§5.1 interim posture vs DDR-002 §2.3",
+    "claim": "§5.1 states 'until that shape and the review surface land, no conforming distillation write path into the Operational plane exists.' The cited owning authority DDR-002 §2.3 defines `(:Operational:ObservedPattern)` with `origin_mechanism: derived` / `derivation_class: distilled` as a live ratified schema shape and states verbatim: 'The distillation write's checkpoint posture is explicitly un-decided: whether writing a `derived` `ObservedPattern` into the Operational plane warrants a human-accountable checkpoint before entry is routed to ADR-008 ... not asserted here.' The owning authority treats the checkpoint as un-decided/open; DDR-003 §5.1 asserts a categorical bar (no conforming write path exists) that the authority it cites does not carry.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §2.3 — ObservedPattern distillation write is a live ratified shape with checkpoint posture 'explicitly un-decided,' not prohibited"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "§8 conformance check 4 — 're-admission forward-act-only holds by construction'",
+    "claim": "§8 item 4 asserts re-admission forward-act-only is a '(safety-relevant; holds by construction)' property because 'no consumption path evaluates governing verdicts at read time; read-exclusion keys on the executed `RETRACTS` edge (§6.2).' §6.2 itself concedes 'A standing detection analogue for executed retractions whose governing verdict is non-approving — the retraction-side mirror of the promoted-origin invariant (DDR-002 §7 #15) — is a named gap (§9); the forward-act rule is what makes that gap an audit-reconciliation concern rather than a consumption defect.' The property rests on a reviewed forward-act discipline (human behavior) plus the absence of a read-time verdict check, not on a structural guarantee; the missing structural check is routed to a future amendment. 'Holds by construction' overstates a guarantee that is partly behavioral and partly deferred.",
+    "cited_authority": {
+      "kind": "soundness",
+      "ref": "DDR-003 §8 item 4 'holds by construction' contradicted by §6.2/§9 admission that the executed-retraction detection analogue is an unbuilt named gap"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "§7.3 audit posture vs §2.2 / §8 item 6 / §9",
+    "claim": "§7.3 asserts 'the record of *who ruled what, on which candidate, on what basis* — including §2.2's per-dimension verdicts and §6.1's remedy determinations — is reachable by traversal from the governed fact itself.' §2.2 states 'a structured queryable capture shape is a named gap realized by a future additive graph-schema amendment at first real use,' §8 item 6 marks per-dimension capture '(follow; design-review-enforced, interim) ... mechanized capture arrives with the structured-capture gap (§9),' and §9 carries 'Structured diagnosis capture' as a named gap. The interim carrier for the per-dimension verdicts is unstructured decision rationale, which is not traversable-by-dimension. §7.3's traversal-reachability claim about the per-dimension record is not substantiated for the interim state the record occupies.",
+    "cited_authority": {
+      "kind": "soundness",
+      "ref": "DDR-003 §7.3 traversal-reachability claim contradicted by §2.2 / §8 item 6 / §9 deferral of the structured-capture shape"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["DDR-003"],
+    "locus": "§8 conformance item 1 — 'DDR-001 conformance check 4 ... mechanized'",
+    "claim": "§8 item 1 classes the non-bypassable gates as '(safety-relevant; aspirational — mechanization deferred per DDR-001)' and states 'promotion and un-promotion ride the landed gate invariants (DDR-002 §7 #9, #15, #21, #22; DDR-001 conformance check 4).' The word 'landed' misdescribes the cited authorities' own enforcement state: DDR-001's Conformance Checks section is headed 'Conformance Checks (aspirational; mechanization deferred)' and closes '*Aspirational checkpoints — mechanized enforcement is deferred, not CI-enforced at authoring.*', and DDR-002 §7 marks #9 as follow-tier gateway-enforced read-discipline plus structural label-skip aid, not a landed mechanized invariant. Calling these gate invariants 'landed' overstates the enforcement state the cited authorities declare.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-001 'Conformance Checks (aspirational; mechanization deferred)' header + closing line; DDR-002 §7 #9 (follow-tier, gateway-enforced read-discipline)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["DDR-003"],
+    "locus": "Cross-References — DDR-002 invariant list (#20)",
+    "claim": "The Cross-References DDR-002 entry lists 'the cited invariant set: #9, #15, #19, #21, #22.' The body cites #9 (§2.1, §5.1, §8), #15 (§1.2, §2.1, §6.2), #19 (§6.3), #21 (§6.1, §6.2), and #22 (§6.1, §6.3). The record's §7.2 and §5.4/§2.3 reference the provenance chain and archival semantics but no §7 invariant number #20 is cited by number or subject in the body, while §7.2's promotion-consumed-substrate exemption rests on the provenance-summary/materialization mechanism that #20 governs — the enumeration and body are not in exact correspondence. Verify the Cross-References invariant list matches what the body actually cites.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 Cross-References DDR-002 invariant list vs body citations"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-003"],
+    "locus": "§6.1 / §6.2 remedy boundary and re-admission",
+    "claim": "Attacked the remedy-boundary and re-admission rulings for conformance with their upstream authority and the landed schema, and for scope overreach into mechanics owned elsewhere. §6.1's replaceability-first / conjunctive-retraction test matches ADR-008 §2.6's remedy-boundary framing (supersession when replaceable; retraction only when should-never-have-been-promoted AND no correct replacement), records the defect-at-promotion-vs-world-moved axis as informing-only ('never decides the remedy'), and executes on landed mechanics (DDR-002 §7 #21/#22, SDD-001 §3.5.3–§3.5.4) which it cites rather than re-authors. §6.2 keys read-exclusion on 'the executed `RETRACTS` edge exactly as landed' (DDR-002 §5) and routes un-retraction through a fresh forward EA-gated re-promotion, adding no read-time verdict evaluation, with the executed-retraction detection residue honestly deferred to §9. Verified against ADR-008 §2.6 and DDR-002 §5/§7 #21 — conformant.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-008 §2.6 (remedy boundary routed here) + DDR-002 §5 / §7 #21 (retraction shape / read-exclusion)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-003"],
+    "locus": "§1.2 / §1.3 two-controls seam and human-review constraint",
+    "claim": "Attacked the two-distinct-controls seam and the distillation-reviewer role model for asserting a gated/ungated split ADR-008 forbids and for a downstream carve-out permitting a non-human holder of a control ADR-008 fixes as human review. It held: §1.2 frames derive vs promote as an authority boundary between two human controls (ADR-008 §2.2's operational-distillation and promotion classes), states explicitly 'not a gated/ungated split,' and confines itself to which control governs which write rather than re-authoring the control-types; §1.3 fences the human-review constraint at the upstream authority — 'ADR-008 §2.2 fixes both controls as *human* review ... any future non-human role-holder is therefore an amendment question for that upstream authority, not an assignment act under this record' — so no downstream qualifier rescues a non-human holder past the upstream commitment. Checked against ADR-008 §2.2 and §2.6 — conformant.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-008 §2.2 (promotion + operational-distillation control-types, human review with a named human answerable) + §2.6 (governance policy routed here)"
+    }
+  }
+]

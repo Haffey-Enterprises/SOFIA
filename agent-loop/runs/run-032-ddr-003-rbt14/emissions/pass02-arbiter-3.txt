@@ -1,0 +1,7 @@
+{
+  "finding_id": "d76e5cfbe37c0ec0",
+  "classification": "resolvable",
+  "authority_locus": "ADR-008 §2.2 (both controls fixed as human review, named human answerable) as reflected in DDR-003 §1.3; the qualifier is already-ratified upstream content the Decision enumeration must mirror",
+  "rationale": "The §1.3 carve-out is dictated by ADR-008 §2.2; reconciling the Decision line to its own cited body is enumeration-completeness against ratified authority, no new choice.",
+  "confidence": "high"
+}

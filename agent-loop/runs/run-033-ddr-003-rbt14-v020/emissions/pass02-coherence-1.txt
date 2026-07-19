@@ -1,0 +1,102 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "§7.1 class 2 definition vs §9 non-selected-candidate deferral",
+    "claim": "§7.1 defines retention class 2 as 'Evidence in the SUPPORTED_BY closure of the reasoning trail of a session that PRODUCED a Solution which reached the selection-constituting `approved` gate outcome (DDR-002 §5)', then in the same section concedes 'Whether non-selected candidates' reasoning trails warrant class-2 survival resolves with the survival-mechanism gap (§9).' The class-2/class-3 partition is therefore incomplete: a session PRODUCED multiple candidate Solutions (DDR-002 §5 fixes PRODUCED as 0..*), and the Evidence for non-selected candidates — which DDR-001 frames as the primary feedback-loop input — has no determined class. The retention partition cannot be applied as a total function because the boundary case it names is deferred.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §7.1 class-2 definition in conflict with its own §9 deferral of non-selected-candidate survival; the retention-class partition is not total"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "§6.2 re-admission 'via the supersession path' vs §6.1 retraction prong",
+    "claim": "§6.2 states 'Un-retraction executes as re-promotion: a fresh forward candidate through the full EA gate, materializing a new active version via the supersession path (DDR-002 §6) — the replaceability-first test applied to the retraction itself (the valid fact is its own correct replacement).' §6.1 retracts a fact only when 'no correct replacement exists.' DDR-002 §6 Option A supersession requires a live retained predecessor version to mark superseded; a retracted node is read-excluded via a `RETRACTS` edge, not a live version in a supersession chain. The record does not specify what the re-promotion supersedes, nor how the new active version interacts with the standing `RETRACTS` edge, while asserting supersession applies to a case §6.1 defined by the absence of any replacement.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §6.2 ('via the supersession path', 'the valid fact is its own correct replacement') in conflict with §6.1 retraction prong ('no correct replacement exists') and DDR-002 §6 supersession requiring a superseded predecessor version"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "§4.3 retention ≥ lookback (per-window) vs §7.1 class-3 per-role windows and §3.1 multi-role signals",
+    "claim": "§4.3 binds 'Every §7.1 working-tier retention window must be greater than or equal to every detection lookback window that reads the retained data'; §7.1 class 3 carries 'per-role retention windows (one per RG role)'. §3.1's override-recurrence signal traverses multiple RG roles (ReasoningProgress conclusions and their RejectedAlternative overrides, and per DDR-002 §5 PROPOSED_FROM potentially Evidence). When one lookback reads a joined multi-role trail it is bounded by the shortest window among the traversed roles, but §4.3's per-window rule does not resolve which role's window governs a cross-role read. The coherence rule is stated against 'every detection lookback window that reads the retained data' without reconciling the cross-role case, leaving it unenforceable as written for multi-role signals.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §4.3 (retention ≥ lookback, per-window) in conflict with §7.1 class-3 per-role windows and §3.1 signals traversing multiple RG roles"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003", "ADR-008"],
+    "locus": "§5.2 lifecycle-transition accountability vs ADR-008 §2.2 / §2.4 scope",
+    "claim": "§5.2 states 'Resolving, superseding, or re-activating a distilled lesson is itself a distillation judgment under the same distillation-class review,' and §1.3 assigns lifecycle transitions to the distillation-reviewer role. ADR-008 §2.2's operational-distillation control-type row is scoped to 'Substantive, evidence-visible human review of the distinct distilled judgment' — the *entry* of a distilled lesson, per-distinct-lesson. Withdrawal (resolve/supersede/archive) is governed by ADR-008 §2.4 and §2.1 scopes the invariant across a distinct 'withdrawal' lifecycle stage. DDR-003 extends the distillation *entry* control to cover *transitions* of an already-entered lesson without citing an ADR-008 locus that homes the Operational-plane withdrawal control on the distillation control.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-008 §2.2 (operational-distillation control scoped to the distilled judgment's entry, per-distinct-lesson) and §2.4 (withdrawal posture) — DDR-003 §5.2 assigns lifecycle-transition accountability to the distillation reviewer without a granting ADR-008 locus"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "Decision.3 / §1.3 human-review fence vs §3.4 / §5.1 automation surface",
+    "claim": "Decision.3 and §1.3 fix that a non-human role-holder is an ADR-008 §2.2 amendment question while role-holder widening is a routine access-model act. §3.4 permits detection as 'deterministic encoded logic over captured graph state' and §5.1 requires a distillation candidate excluded from traversal until the distillation-reviewer approves. The record does not declare whether the detection mechanism surfacing a candidate to the reviewer, and the candidate-review-surface automation, sit inside or outside the ADR-008 human-review boundary — the consequence of the human-only fence on the loop's automation surface is under-declared, leaving the assignment-vs-amendment line unfixed where automation of the review workflow (as distinct from the judgment) would fall.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-008 §2.2 (distillation control is human review of the distinct distilled judgment) + §2.1 (gateway is executor, control is on the judgment) — DDR-003 §1.3/§3.4/§5.1 under-declare the fence's scope over the detection/candidate-surfacing automation"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003", "DDR-002"],
+    "locus": "§9 'discharging the graph schema's §2.4 routing at the policy layer' vs DDR-002 §2.4",
+    "claim": "DDR-003 §9 asserts its executed-retraction ruling is 'discharging the graph schema's §2.4 routing at the policy layer.' DDR-002 §2.4's retraction re-decision text routes two items to DDR-003: the un-retraction *remedy* and 'a standing detection analogue of #15 for executed retractions.' DDR-003 §6.2 rules the remedy (forward-act re-promotion) but explicitly re-defers the detection analogue to a named gap (§9). 'Discharging the routing at the policy layer' overstates: one of two routed items is discharged and the other re-deferred, so the routed obligation is partially met, not discharged.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §9 'discharging the graph schema's §2.4 routing at the policy layer' in conflict with DDR-002 §2.4 (routes both the un-retraction remedy AND a standing detection analogue); §6.2/§9 defer the detection analogue"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "§7.2 survival exemptions vs their unstated resolution trigger",
+    "claim": "§7.2 commits two interim survival exemptions (decision-consumed Evidence; promotion-consumed substrate) 'held until their deferred survival mechanism lands,' and §7.1 defers every class-3 window value to onboarding while §4.3 binds retention ≥ lookback at configuration time against those deferred values. The decision-consumed survival mechanism is itself an unscheduled §9 graph-schema gap. The record states the exemptions are 'reversible at zero traffic' but names no event that forces them to resolve into a real mechanism — so the interim is a standing commitment with no defined exit, and ADR-008 §2.4's decision-rationale-survival guarantee rests on an open-ended exemption rather than a bounded bridge.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-008 §2.4 — 'the traceable rationale of a decision that consumed a ground-truth fact must survive that fact's later mutation'; DDR-003 §7.2 discharges this via an exemption whose resolution trigger is unstated"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["DDR-003"],
+    "locus": "§2.2 dimension 5 forward reference '(§6.3)' vs §6.3 content scope",
+    "claim": "§2.2 dimension 5 states 'Conditional-vs-unconditional applicability ... this dimension drives approved_conditional (§6.3).' §6.3 ('Conditional-scope governance') addresses re-scope deliberation and the multi-condition interim posture; it does not define how dimension-5 diagnosis produces an `approved_conditional` verdict or authors the initial `Condition` predicate at the gate (stated only glancingly as 'the predicate is EA-authored in the approval act'). A reader following the reference for 'how dimension 5 drives approved_conditional' lands on re-scope/multi-condition content, not the gate-time authoring the reference promises.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §2.2 dimension-5 forward reference '(§6.3)' vs §6.3 content scope (re-scope + multi-condition, not gate-time Condition authoring)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-003", "ADR-008"],
+    "locus": "§1.2 two-distinct-controls seam vs ADR-008 §2.2 per-source-class calibration",
+    "claim": "Attacked the two-controls seam for collapse or mis-mapping onto the wrong ADR-008 source class. It held: §1.2 maps 'derive' to ADR-008 §2.2's operational-distillation control (evidence-visible, per-distinct-lesson, distinctness-bounded — verbatim to ADR-008's row) and 'promote' to the promotion class's per-write EA gate, and states a distillation approval 'makes a lesson consumable track-record and nothing more — Catalog/Standards entry still requires the EA gate.' The two failure modes stay distinct; neither control is conflated with the other, and the entry-vs-promote authority boundary is preserved. Checked against ADR-008 §2.2's calibration table.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-008 §2.2 per-source-class calibration table (promotion vs operational-distillation control-types and accountability) — DDR-003 §1.2 conforms"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-003"],
+    "locus": "§9 named gaps + Pre-Acceptance Conditions vs body deferrals",
+    "claim": "Attacked the record for smuggled deferrals — body commitments that ride along without being surfaced. Traced each body deferral (candidate-ObservedPattern shape §5.1→§9; executed-retraction detection analogue §6.2→§9; structured diagnosis capture §2.2→§9; decision-consumed survival mechanism §7.2→§9; multi-condition composition §6.3→§9; all §4 calibration values→§9; batch guardrails §2.3→§9; access-model surface §1.3→§9; retrieval affordance §7.2→§9). Each has a matching §9 entry with a named owner and a reversal path, and Pre-Acceptance correctly states every deferral is a named gap, not an acceptance condition. The deferral-declaration discipline held under attack.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "author-decision-record SKILL — deferred scope must be surfaced as a named gap with owner and reversal path, not smuggled; DDR-003 §9 + Pre-Acceptance Conditions ↔ body deferrals all resolve"
+    }
+  }
+]

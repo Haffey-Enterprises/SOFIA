@@ -1,0 +1,1 @@
+{"finding_id":"06e580b220b1e8c8","classification":"decision-bearing","authority_locus":null,"rationale":"Resolving the overstated 'holds by construction' claim requires choosing how to reframe a partly-behavioral, partly-deferred property; no authority dictates the correct phrasing or scope.","confidence":"medium"}

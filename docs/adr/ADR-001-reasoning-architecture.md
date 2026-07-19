@@ -9,7 +9,7 @@
 |---|---|
 | **Document ID** | ADR-001 |
 | **Status** | ACCEPTED |
-| **Version** | 1.2.0 |
+| **Version** | 1.3.0 |
 | **Date** | 2026-07-17 |
 | **Authors** | Thaddeus Haffey (Executive Architect) |
 | **Supersedes** | None — establishes new platform principle |
@@ -66,7 +66,7 @@ This ADR is honest about design maturity. No service is yet deployed and no per-
 
 ### 2.5 Encoding-density growth mechanism
 
-The trajectory toward Position 4 is made real by a promotion mechanism: recurring reasoning patterns consolidate, over time, from LLM-rendered narrative or human override into encoded SOFIA logic. Every promotion into encoded knowledge passes a human (EA) approval gate — **SOFIA does not self-modify its encoded reasoning without EA approval.** This mechanism is what distinguishes the committed trajectory from a static Position 5: without it, recurring reasoning never consolidates and the platform is Position 5 today and Position 5 forever. The governance of the promotion mechanism is designed in the forthcoming Feedback Loop Governance design (DDR-003); this ADR commits the principle that the mechanism exists, is EA-gated, and is the engine of the Position 4 trajectory.
+The trajectory toward Position 4 is made real by a promotion mechanism: recurring reasoning patterns consolidate, over time, from LLM-rendered narrative or human override into encoded SOFIA logic. Every promotion into encoded knowledge passes a human (EA) approval gate — **SOFIA does not self-modify its encoded reasoning without EA approval.** This mechanism is what distinguishes the committed trajectory from a static Position 5: without it, recurring reasoning never consolidates and the platform is Position 5 today and Position 5 forever. The governance of the promotion mechanism is designed in DDR-003 (Feedback Loop Governance, ACCEPTED); this ADR commits the principle that the mechanism exists, is EA-gated, and is the engine of the Position 4 trajectory.
 
 ---
 
@@ -170,6 +170,7 @@ Conformance with this ADR is verified at architecture review. The following chec
 
 | Version | Date | Ticket | Change |
 |---|---|---|---|
+| 1.3.0 | 2026-07-19 | RBT-14 | Pointer resolution — §2.5's forward reference to the Feedback Loop Governance design drops its forthcoming marker: **DDR-003 ACCEPTED v1.0.0**, landed in this batch. Marker-level; no decision change. |
 | 1.2.0 | 2026-07-17 | RBT-59 | Forward-note (no decision change). ADR-008 (Ground-Truth Mutation Governance), ACCEPTED v1.0.0, generalizes and homes §2.5's EA-gated-promotion authority as the general ground-truth-mutation authority; §2.5 remains valid as the reasoning-consolidation sub-case. No change to this record's decision. Pin cascade (records still pinning the pre-bump versions) routed to a follow-up ticket. |
 | 1.1.0 | 2026-07-03 | — | Triage-001 amendment batch (record: `agent-loop/triage/triage-001-distilled-set/record.md`). §2.2 retires the "illustrative" hedge — commits the reasoning-capture *categories* (conclusion / evidence / rejected alternative) and cites DDR-002 §4's now-ratified canonical vocabulary rather than deferring it (T-11); §2.2 altitude parenthetical signposts that structural containers, retention-mechanism nodes, and the Artifact family route their authority through DDR-001/DDR-002 §4–§5, not this capture contract (T-24); §6 checks 2 and 6 bind category-first, rename-safe against DDR-002 §4 (T-11); §7 Cross-References gains the Directives-Context-Envelope Bridge status marker (forthcoming, unauthored) (T-14); §6 Enforcement adds the three-hat-review fencing clause — platform-development governance, not a graph-captured gate (T-19). Clarification / reconciliation — no decision change. |
 | 1.0.0 | 2026-07-01 | — | Distilled to standalone contract form; ledger coupling and review-diary scaffolding removed; documentation-purity pass folded in (acronym expansions, downstream doc-IDs back-filled, illustrative RG-vocabulary refreshed to the canonical DDR-002 set, Date/organization normalized); no decision change. |

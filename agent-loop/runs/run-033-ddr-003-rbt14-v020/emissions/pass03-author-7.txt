@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "0a3efa308aa2f53a",
+  "reason": "The named authority is only §6.3's declared scope; while it establishes the '(§6.3)' pointer imperfectly matches gate-time authoring, it does not uniquely determine the fix — options include re-pointing to §2.2's own approved_conditional disposition, dropping the reference, adding §6.3's gate-time-authoring clause, or expanding §6.3. Choosing among these is an unratified authoring decision.",
+  "confidence": "high"
+}

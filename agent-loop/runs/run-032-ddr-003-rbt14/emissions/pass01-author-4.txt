@@ -1,0 +1,10 @@
+{
+  "action": "edit",
+  "finding_id": "a87a1919bd20f869",
+  "target": "DDR-003",
+  "old_string": "One EA-owned, data-configured, audit-logged, fresh-read parameter mechanism governs every tunable value of the loop (§4). **Every value is deferred to operational-onboarding calibration; this record asserts none.**",
+  "new_string": "One EA-owned, data-configured, audit-logged, fresh-read parameter mechanism governs every tunable value of the loop (§4); the parameter store homes with the detection-promotion mechanism that consumes it (§4.4). **Every value is deferred to operational-onboarding calibration; this record asserts none.**",
+  "authority_conformed": "author-decision-record SKILL body-integrity rule (Decision enumeration must carry rulings present in body); ratified deliberation Item M-8; DDR-003 §4.4",
+  "rationale": "§4.4's placement ruling is decision content absent from Decision.5's enumeration; body-integrity rule requires the Decision entry to surface it, verbatim from §4.4.",
+  "confidence": "high"
+}

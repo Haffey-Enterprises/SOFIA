@@ -1,0 +1,7 @@
+{
+  "finding_id": "7b9361fbd159d3e1",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record SKILL — body-integrity: point-don't-mirror / no zero-load claims (a Cross-References enumeration must reflect what the record actually cites)",
+  "rationale": "Fix is determined: reconcile the enumerated invariant list to the invariants the body cites; no unratified choice among options.",
+  "confidence": "high"
+}

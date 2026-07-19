@@ -1,0 +1,62 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "References metadata table vs. §1.1 / §6.1 / §6.4 authority citations",
+    "claim": "The References table pins ADR-002 v1.2.0, but the record's cited authorities for ADR-002 §2.6 (author/executor/authorizer separation) are load-bearing throughout (§1.1, §6.1, §6.4). ADR-002's own metadata table in the substrate shows Version 1.2.0, so the pin is current — however DDR-004 v1.4.0 and SDD-001 v1.5.0 (both in DDR-003's References) still pin ADR-002 at v1.1.0, and DDR-003 pins v1.2.0, so the sibling corpus disagrees on the ADR-002 version this record depends on. A downstream reader reconciling DDR-003 §1.1's ADR-002 §2.6 citation against SDD-001's own ADR-002 v1.1.0 pin cannot confirm they reference the same amended §2.6 text.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 References (ADR-002 v1.2.0) + §1.1 in conflict with SDD-001 v1.5.0 References (ADR-002 v1.1.0) and DDR-004 v1.4.0 References (ADR-002 v1.1.0)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "§8 conformance check 2 (\"Class-4 review\") vs. §1.2 / §5.1 (\"distillation-class review\")",
+    "claim": "§8 check 2 is titled \"Class-4 review before consumable track-record\" and refers to \"class-4 review,\" but the term \"class-4\" is defined nowhere in the record's own control vocabulary: §1.2 names the control \"distillation-class review\" and ADR-008 §2.2's table does not number its source classes. The self-review addendum in the substrate deliberation record explicitly flagged and claims to have fixed exactly this drift (\"'class-4' session shorthand → 'distillation-class review'\"), yet check 2 in the live §8 text still reads \"Class-4 review before consumable track-record.\" The numbering resolves to no defined referent in this document or ADR-008.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §8 check 2 (\"Class-4 review\") in conflict with §1.2 / §5.1 (\"distillation-class review\"); referent undefined"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "§4 parameter set vs. §7.1 retention-class model (\"working-tier retention windows\")",
+    "claim": "§4 lists \"working-tier retention windows (§7.1)\" as a member of the calibration-parameter set governed by the EA-owned mechanism, and §4.3 validates \"every §7.1 working-tier retention window\" against lookbacks. But §7.1's four-class model places retention classes 1 (durable governance ledger, \"never expires\") and 2 (decision-consumed Evidence, \"survival-exempt\") beyond the working tier, and §4.3's coherence rule \"retention ≥ lookback\" is scoped only to working-tier (class-3) windows. §7.1 states class-3 windows have \"values deferred (§4),\" i.e. governed by the §4 mechanism — but §4's own enumeration names \"working-tier retention windows\" as a single parameter while §7.1 implies per-something windows (\"bounded retention windows\" plural, coherence-validated against multiple lookbacks). Whether the working tier has one window or many, and whether class-2's expiry-exemption is itself a §4 parameter or a fixed interim (§7.2 says \"exempt from expiry ... until a survival mechanism ... lands\"), is not consistently stated between §4 and §7.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §4 parameter enumeration in conflict with §7.1/§7.2 retention-class scoping of working-tier windows and class-2 exemption"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["DDR-003"],
+    "locus": "§9 Named gaps — \"Provenance-survival retrieval affordance\" vs. Decision block",
+    "claim": "§9 routes ten named gaps, but Decision.10 (\"Retention and audit\") enumerates the retention/audit ruling without surfacing that a survival-mechanism dependency (§7.2) and a retrieval-affordance gap (§9) are carried as open. The Decision block is the contract's index; a reader treating the enumeration as complete would not learn from Decision.10 that class-2 survival rests on an interim exemption pending an unowned schema mechanism. This is an enumeration-completeness drift, not a contradiction — the gaps are fully stated in §7.2/§9, only not indexed at Decision.10.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 Decision.10 in conflict with §7.2 / §9 (survival-mechanism interim exemption not reflected in Decision enumeration)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-003"],
+    "locus": "§1.3 / §5.1 distillation-reviewer human-review constraint vs. ADR-008 §2.2",
+    "claim": "Checked the record's role model against ADR-008's upstream constraint that the operational-distillation control is a human review with a named human answerable (ADR-008 §2.2). Attempted to fault DDR-003 for permitting agent-holdership of the distillation-reviewer role via its §1.3 role-assignment escape hatch. It held: §1.3 explicitly fences this — \"ADR-008 §2.2 fixes both controls as *human* review ... any future non-human role-holder is therefore an amendment question for that upstream authority, not an assignment act under this record.\" The upstream-authority rule is honored; no downstream carve-out rescues a non-human holder.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-008 §2.2 (per-source-class human review) — DDR-003 §1.3 conforms"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-003"],
+    "locus": "§6.2 re-admission forward-act rule vs. DDR-002 §5 / §7 #21 retraction read-discipline",
+    "claim": "Checked the un-retraction ruling against the landed schema's retracted-node read-discipline (DDR-002 §5: read-exclusion keyed on the EA-approved RETRACTS edge; §7 #21 retraction-gated). Attempted to fault §6.2 for asserting a consumption behavior the schema does not support (that a governing-verdict flip could silently re-admit a retracted fact, or that the record invents a read-time verdict evaluation). It held: §6.2 keys read-exclusion on \"the executed RETRACTS edge exactly as landed\" and routes re-admission through a fresh forward EA-gated re-promotion via the §6 supersession path — consistent with DDR-002's edge-keyed exclusion and adding no read-time verdict evaluation. The claimed consistency is real, and the executed-retraction detection analogue is honestly carried as a named gap (§9) rather than asserted enforced.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §5 (retracted-node read-discipline) + §7 #21 — DDR-003 §6.2 conforms"
+    }
+  }
+]

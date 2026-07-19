@@ -1,0 +1,1 @@
+{"finding_id":"f8a0b37f3710b7a0","classification":"decision-bearing","authority_locus":null,"rationale":"No authority fixes which pin a new record should carry when siblings sit at v1.1.0 pending an unlanded cascade; both pin states conform and RBT-66's scope is unratified across records.","confidence":"high"}

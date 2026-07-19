@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "2f2e5c7181d3f90b",
+  "reason": "The named authority is coherence between §2.2 dim-5's '(§6.3)' pointer and §6.3's content; it establishes a mismatch but does not uniquely determine the fix. Multiple conforming edits exist (drop the pointer, repoint to §6.1's gate-time authoring, add a §6.3 gate-time sentence, or re-word dim-5) and choosing among them is an unratified authorial decision that belongs in escalation.",
+  "confidence": "high"
+}

@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "06480c0a6478972d",
+  "reason": "The named authority (§2.2/§8-check-6/§9) establishes that structured per-dimension capture is deferred, but it does not uniquely determine how §7.3 must be conformed — the fix could scope §7.3's traversal claim to content-not-shape, add an interim caveat, drop the per-dimension mention, or lean on §7.3's own existing 'capture-shape mechanics beyond landed schema are the named structured-capture gap' clause. §7.3 already distinguishes content ('audit content requirements bind on the decision act') from shape, arguably self-reconciling; whether that suffices or requires an edit, and which edit, is an unratified authorial choice.",
+  "confidence": "medium"
+}

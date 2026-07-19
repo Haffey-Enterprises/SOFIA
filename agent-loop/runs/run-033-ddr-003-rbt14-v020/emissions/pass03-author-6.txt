@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "7aeac21165409534",
+  "reason": "The named authority (D2, which reworded the §5.1 interim to governance-conformance framing; ADR-008 §2.3 checkpoint routing; Obligation 5 interim posture) ratifies the interim non-conformance posture as authored — it does not require, nor uniquely determine, a scoped-exit or dependency-timing clause. ADR-001 §2.4 commits a lifecycle-spanning invariant but is silent on any timing or exit obligation for a deferred stage; supplying one would be an unratified authorial choice.",
+  "confidence": "high"
+}

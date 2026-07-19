@@ -1,0 +1,10 @@
+{
+  "action": "edit",
+  "finding_id": "d76e5cfbe37c0ec0",
+  "target": "DDR-003",
+  "old_string": "the holder set of each role is a role-assignment act under the platform's access model (§1.3), not an amendment to this record.",
+  "new_string": "the holder set of each role is a role-assignment act under the platform's access model (§1.3), not an amendment to this record — save that a non-human role-holder is an amendment question for ADR-008 §2.2, which fixes both controls as human review, not an assignment act here (§1.3).",
+  "authority_conformed": "ADR-008 §2.2 (both controls fixed as human review, named human answerable) as reflected in DDR-003 §1.3",
+  "rationale": "§1.3's ratified carve-out (non-human holder is an ADR-008 §2.2 amendment question) is decision content the Decision.3 enumeration must mirror rather than flatly contradict.",
+  "confidence": "high"
+}

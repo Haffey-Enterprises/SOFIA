@@ -1,0 +1,7 @@
+{
+  "finding_id": "df4a115a2e0438f1",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record SKILL, Body integrity — 'An amendment that adds a ruling updates the Decision enumeration' (the Decision block is the contract's index); ratified as T-07 skill fix in triage-001 charter",
+  "rationale": "Surfacing an already-authored body foreclosure as a Decision-block/Consequences entry is dictated by the enumeration-completeness convention; no new choice is introduced.",
+  "confidence": "high"
+}

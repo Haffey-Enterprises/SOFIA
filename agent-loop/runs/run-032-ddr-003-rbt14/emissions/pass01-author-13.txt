@@ -1,0 +1,10 @@
+{
+  "action": "edit",
+  "finding_id": "d63ecacb8aebf32d",
+  "target": "DDR-003",
+  "old_string": "**Class-4 review before consumable track-record**",
+  "new_string": "**Distillation-class review before consumable track-record**",
+  "authority_conformed": "DDR-003 §1.2 / §5.1 canonical control vocabulary ('distillation-class review'); deliberation-record self-review addendum ratifying the 'class-4'→'distillation-class review' rename",
+  "rationale": "The canonical vocabulary (§1.2/§5.1) names the control 'distillation-class review'; the ratified rename determines replacing the undefined 'Class-4' referent with that exact term.",
+  "confidence": "high"
+}

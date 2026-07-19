@@ -1,0 +1,1 @@
+{"finding_id":"e956940f6c536813","classification":"decision-bearing","authority_locus":null,"rationale":"ADR-008 §2.2 scopes the distillation control to entry of the distilled judgment; whether lifecycle transitions of an entered lesson ride that same control is an unruled scope choice no cited locus grants.","confidence":"medium"}

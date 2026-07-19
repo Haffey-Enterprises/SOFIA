@@ -1,0 +1,130 @@
+{
+  "files": [
+    {
+      "logical_id": "ADR-001",
+      "category": "authorities",
+      "origin": {
+        "source": "sofia-repo",
+        "path": "docs/adr/ADR-001-reasoning-architecture.md"
+      },
+      "retrieved": "2026-07-19",
+      "sha256": "3832c786669dac8d652ab77ad1043034beefb3d993bb02859bdba2bef42e117f"
+    },
+    {
+      "logical_id": "ADR-002",
+      "category": "authorities",
+      "origin": {
+        "source": "sofia-repo",
+        "path": "docs/adr/ADR-002-graph-system-of-record.md"
+      },
+      "retrieved": "2026-07-19",
+      "sha256": "22c9e0b09b2d67555dc1f649c09ba9f5ef3d5a273445d9dc4497805a493b8de6"
+    },
+    {
+      "logical_id": "ADR-008",
+      "category": "authorities",
+      "origin": {
+        "source": "sofia-repo",
+        "path": "docs/adr/ADR-008-ground-truth-mutation-governance.md"
+      },
+      "retrieved": "2026-07-19",
+      "sha256": "0be8c5cd00d67537e461f1d3f4c425d698ef742dc0482a61ff1ad798ce8034d9"
+    },
+    {
+      "logical_id": "DDR-001",
+      "category": "authorities",
+      "origin": {
+        "source": "sofia-repo",
+        "path": "docs/ddr/DDR-001-data-architecture.md"
+      },
+      "retrieved": "2026-07-19",
+      "sha256": "717a336d6c2c2dcfda05ade09a6a0c0ad91e3d1355670a8642eee5e5df0ee510"
+    },
+    {
+      "logical_id": "DDR-002",
+      "category": "authorities",
+      "origin": {
+        "source": "sofia-repo",
+        "path": "docs/ddr/DDR-002-graph-schema.md"
+      },
+      "retrieved": "2026-07-19",
+      "sha256": "7625883eef75bf39553a99569fee9a7897705e079513074385710214254cf08f"
+    },
+    {
+      "logical_id": "DDR-004",
+      "category": "authorities",
+      "origin": {
+        "source": "sofia-repo",
+        "path": "docs/ddr/DDR-004-inherited-confidence-derivation.md"
+      },
+      "retrieved": "2026-07-19",
+      "sha256": "8e37e7c796673baef92211107d9fb65257b5217c5d900bff3c23a900271a375c"
+    },
+    {
+      "logical_id": "SDD-001",
+      "category": "authorities",
+      "origin": {
+        "source": "sofia-repo",
+        "path": "docs/sdd/SDD-001-knowledge-service.md"
+      },
+      "retrieved": "2026-07-19",
+      "sha256": "1742693c49d291a984c2eded70c1ac58bb6c04077cf3c154fb5151a0c232efca"
+    },
+    {
+      "logical_id": "ddr-template",
+      "category": "authorities",
+      "origin": {
+        "source": "bedrock",
+        "path": "plugins/bedrock/skills/author-decision-record/templates/ddr-template.md"
+      },
+      "retrieved": "2026-07-19",
+      "sha256": "59068b3a2741f497e92bff240da238d4f8b6b57471c8ff7a76ab8c09ba9668f9"
+    },
+    {
+      "logical_id": "author-decision-record-SKILL",
+      "category": "authorities",
+      "origin": {
+        "source": "bedrock",
+        "path": "plugins/bedrock/skills/author-decision-record/SKILL.md"
+      },
+      "retrieved": "2026-07-19",
+      "sha256": "d3fb4499b8d3ff899ae3f822e8873300c1f5330cc9ee55f193fc4f9eaf9da966"
+    },
+    {
+      "logical_id": "ddr-003-deliberation-record",
+      "category": "design-intent",
+      "origin": {
+        "source": "sofia-repo",
+        "path": "agent-loop/deliberation/ddr-003-feedback-loop-governance/record.md"
+      },
+      "retrieved": "2026-07-19",
+      "sha256": "7a07e3376a7209af9343e8241fcd6505f7a197ff0475ea1038039113666433ce"
+    },
+    {
+      "logical_id": "triage-001-charter",
+      "category": "design-intent",
+      "origin": {
+        "source": "sofia-repo",
+        "path": "agent-loop/triage/triage-001-distilled-set/record.md"
+      },
+      "retrieved": "2026-07-19",
+      "sha256": "78dc5e99744ae184e445ce921446bd81357eaa4e9c09b73114c9647f3b16c0fe"
+    },
+    {
+      "logical_id": "sofia-vision",
+      "category": "design-intent",
+      "origin": {
+        "source": "notion",
+        "page_title": "SOFIA",
+        "page_id": "370caeea-1325-8069-893f-c829d0f01551",
+        "url": "https://app.notion.com/p/370caeea13258069893fc829d0f01551",
+        "content_as_of": "2026-07-03T21:32:38Z",
+        "scope": "vision block only (above the Roadmap divider)",
+        "snapshotted_from": "agent-loop/runs/run-031-adr-008-rbt71/substrate/design-intent/sofia-vision.md",
+        "note": "Current ratified vision (b499614d\u2026). Carried forward frozen from prior runs."
+      },
+      "retrieved": "2026-07-19",
+      "sha256": "b499614d51fc30aba7d6f7d264b49dfe612c0ee67df82f2bcea87c08b5bf05bc"
+    }
+  ]
+}

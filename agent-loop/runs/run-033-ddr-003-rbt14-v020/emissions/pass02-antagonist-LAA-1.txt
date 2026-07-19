@@ -1,0 +1,82 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "§6.1 remedy boundary / Decision.7 vs §6.2 re-admission",
+    "claim": "§6.1's retraction prong requires 'no correct replacement exists' — retraction fires precisely when nothing can succeed the fact. §6.2 then states 'Un-retraction executes as re-promotion: a fresh forward candidate through the full EA gate, materializing a new active version via the supersession path (DDR-002 §6) — the replaceability-first test applied to the retraction itself (the valid fact is its own correct replacement).' The record decides two things that conflict: retraction presupposes no replacement, yet re-admission asserts 'the valid fact is its own correct replacement' and routes through the supersession path, which per DDR-002 §6 Option A requires a retained predecessor version node to mark superseded. The retracted node was read-excluded via a RETRACTS edge, not left as a live version in a supersession chain. The record commits a re-admission consequence its own remedy-boundary premise does not support, and does not declare how re-promotion interacts with the standing RETRACTS edge.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §6.2 ('via the supersession path', 'the valid fact is its own correct replacement') in conflict with §6.1 retraction prong ('no correct replacement exists') and the DDR-002 §6 supersession model requiring a superseded predecessor"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "§7.1 retention class 2 vs §9 deferral",
+    "claim": "§7.1 defines retention class 2 as Evidence in the SUPPORTED_BY closure of a session that 'PRODUCED a Solution which reached the selection-constituting `approved` gate outcome.' The class-2 boundary as decided captures only the selected candidate's trail, yet §7.1's own next sentence concedes 'Whether non-selected candidates' reasoning trails warrant class-2 survival resolves with the survival-mechanism gap (§9).' A session may PRODUCE multiple candidates (DDR-002 §5, PRODUCED 0..*), each with its own SUPPORTED_BY closure. The record decides a retention-class partition that is not total: the Evidence of non-selected candidates is neither firmly assigned to class 2 nor to class 3, and the question the class-2 definition needed answered to make the partition complete is deferred. A retention classification whose membership is undecided for a live case is a scope gap in what the record claims to decide.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §7.1 class-2 definition vs its own §9 deferral of non-selected-candidate survival — the retention-class partition is left non-total"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "§5.2 lifecycle transitions / Decision.6 vs §7.2, §7.1",
+    "claim": "§5.2 decides that resolving, superseding, or re-activating a distilled lesson is a distillation judgment under the distillation-class review, and §5.1's candidate control is scoped to Operational-plane entry. ADR-008 §2.2's operational-distillation control-type row addresses the distinct distilled judgment's entry, per-distinct-lesson; ADR-008 §2.1 treats withdrawal (retraction/un-promotion) as a distinct lifecycle stage and §2.4 homes withdrawal on a read-exclusion/retention-demotion posture. DDR-003 extends the distillation-review accountability to cover Operational-plane lifecycle transitions/withdrawals but cites no ADR-008 locus that homes the *transition/withdrawal* control on the distillation control. The record commits a governed accountability assignment (distillation reviewer answerable for resolve/supersede/re-activate) whose upstream authority chain is not established at the cited section.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §5.2 / §1.3 (distillation-reviewer role covers lifecycle transitions) vs ADR-008 §2.2 (control scoped to distilled-judgment entry) and §2.4 (withdrawal posture) — the transition-control home is asserted without a granting upstream locus cited at the assigning section"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "§4.3 retention ≥ lookback / Decision.5 vs §7.1 class-3 per-role windows and §3.1 signals",
+    "claim": "§4.3 decides a binding coherence rule: 'Every §7.1 working-tier retention window must be greater than or equal to every detection lookback window that reads the retained data,' validated at configuration time. §7.1 class 3 decides 'per-role retention windows (one per RG role).' §3.1 decides signals — e.g. override-recurrence — that traverse multiple RG roles for a single detection (ReasoningProgress conclusions, their RejectedAlternative overrides, and per DDR-002 §5 PROPOSED_FROM potentially Evidence). When one lookback reads a joined multi-role trail, the effective retention bound is the shortest window among the roles traversed, not any single role's window. The record decides both per-role windows and a per-window coherence rule but does not decide which role's window governs the multi-role read, leaving §4.3's binding rule underspecified for exactly the multi-role signals §3.1 commits.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §4.3 (retention ≥ lookback, stated per-window) vs §7.1 class-3 per-role windows and §3.1 signals that traverse multiple RG roles — the cross-role read case is undecided"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["DDR-003"],
+    "locus": "§2.2 diagnosis dimension 5 forward reference vs §6.3 content scope",
+    "claim": "§2.2 dimension 5 states 'Conditional-vs-unconditional applicability ... this dimension drives approved_conditional (§6.3).' §6.3 is titled 'Conditional-scope governance' and its decided content is the re-scope deliberation obligation and the multi-condition interim posture — the re-scoping of already-conditional facts and composition, not the gate-time authoring of the initial Condition from the diagnosis. The gate-time authoring the forward reference promises appears only glancingly in §6.3 ('the predicate is EA-authored in the approval act'). A reader following '(§6.3)' for 'how dimension 5 drives approved_conditional' lands on re-scope/multi-condition content; the cross-reference target is imprecise for the claim it carries.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §2.2 dimension-5 forward reference '(§6.3)' vs §6.3 decided scope (re-scope obligation + multi-condition interim, not gate-time Condition authoring)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["DDR-003"],
+    "locus": "§5.4 archival accountability-mode vs the Rationale mechanism-now/values-held cut",
+    "claim": "§5.4 decides archival after a reviewed terminal transition is 'a policy-scheduled act under per-policy accountability,' with the dwell held as a §4 config value. The dwell (a constant) is correctly held; but the per-policy (versus per-write) accountability-mode assignment for archival is asserted definitively while the Rationale states the record holds constants and fixes form under an n=0 floor (n=0 distillations, n=0 archivals). The record surfaces its calibration values as form-fixed/constant-held throughout §4, but the archival accountability *mode* — a governance-shape choice, not merely a value — is stated as ruled without the same form-fixed/instance-absent framing applied to comparable assignments. The distinction the Change Log narrates (§5.4 'surfaced as decision-bearing') is decided, but its per-policy characterization is presented as settled rather than as a form-choice under an absent driving instance.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §5.4 (per-policy archival accountability, asserted) vs the Rationale's mechanism-now/values-held cut applied to §4's constants under the stated n=0 floor"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-003"],
+    "locus": "§9 named gaps + Pre-Acceptance Conditions vs the body's declared deferrals",
+    "claim": "Attacked the record for smuggled deferrals — a commitment made in body prose that rides along without surfacing as a decision or a named gap (a scope defect from this altitude regardless of merit). Traced each body deferral to §9: candidate-ObservedPattern shape (§5.1→§9), executed-retraction detection analogue (§6.2→§9), structured diagnosis capture (§2.2→§9), decision-consumed survival mechanism (§7.2→§9), multi-condition composition (§6.3→§9), all §4 calibration values (§4→§9), batch guardrails (§2.3→§9), access-model surface (§1.3→§9), retrieval affordance (§7.2→§9). Each has a matching §9 entry with owner and reversal path, and Pre-Acceptance Conditions correctly states every deferral is a named gap, not an acceptance condition. The deferral-declaration discipline held under attack.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §9 + Pre-Acceptance Conditions ↔ body deferrals — every deferral surfaced as a named gap with owner and reversal path, none smuggled"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-003"],
+    "locus": "Decision block (Decisions 1–10) vs the decided rulings in §§1–7",
+    "claim": "Attacked the Decision-block-as-contract-index discipline: whether load-bearing rulings ride in the body without appearing in the enumeration. Traced the centerpiece rulings — two-controls seam (Decision.1/§1.2), five diagnosis dimensions (Decision.2/§2.2), role split with human-review amendment boundary (Decision.3/§1.3), no-leak invariant (Decision.4/§3.2), parameter mechanism (Decision.5/§4), distillation candidate/lifecycle/revalidation/archival (Decision.6/§5), remedy boundary (Decision.7/§6.1), conditional-scope (Decision.8/§6.3), cross-class four-outcome resolution (Decision.9/§6.4), retention-class model and audit posture (Decision.10/§7) — each traces to its body section and back. The load-bearing decisions all resolve in the enumeration; the index discipline held, with only under-surfaced components reported as defects above.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 Decision block ↔ §§1–7 — enumeration traced against decided rulings; load-bearing decisions all surfaced"
+    }
+  }
+]

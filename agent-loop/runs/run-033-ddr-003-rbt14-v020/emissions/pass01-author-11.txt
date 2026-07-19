@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "5001aade1e697247",
+  "reason": "The named authorities (D6 + deliberation Item 7) affirmatively ratify the executed-retraction analogue as deferred-with-trigger and rule the deferral non-load-bearing per the forward-act rule; they do not require the added risk-reweighing justification the finding demands. No authority determines a specific conforming edit — the finding asks for content (a proportionate cost justification) the ratified rulings do not entail, and would require an unratified choice.",
+  "confidence": "high"
+}

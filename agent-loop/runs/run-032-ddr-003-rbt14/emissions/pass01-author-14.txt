@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "7f2df0073deb1027",
+  "reason": "The named authority ('an amendment that adds a ruling updates the Decision enumeration') governs added rulings, not the wording of an interim exemption to surface in an existing enumeration item; it does not uniquely determine what text Decision.10 must gain, admitting multiple conforming phrasings — an unratified drafting choice.",
+  "confidence": "medium"
+}

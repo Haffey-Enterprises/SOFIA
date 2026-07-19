@@ -1,0 +1,9 @@
+{
+  "action": "close_satisfied",
+  "finding_id": "8d253f83a7db47d2",
+  "evidence_present": "three RG retention classes plus the Operational archival posture",
+  "evidence_absent": null,
+  "authority_satisfied": "run-032-docket-rulings D4 — 'Decision.10 restated as three RG retention classes + the Operational archival posture'",
+  "rationale": "D4 mandates exactly the phrasing already present verbatim in Decision.10; the ruling reconciles §7.1's item (4) as the Operational archival posture, not a fourth RG class.",
+  "confidence": "high"
+}

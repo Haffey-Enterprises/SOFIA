@@ -1,0 +1,1 @@
+{"finding_id":"bd824d35d8f48c82","classification":"decision-bearing","authority_locus":null,"rationale":"Re-admission's interaction with the standing RETRACTS edge and the supersession-needs-live-predecessor mechanics is unruled; no authority determines how re-promotion binds to a read-excluded retracted node.","confidence":"high"}

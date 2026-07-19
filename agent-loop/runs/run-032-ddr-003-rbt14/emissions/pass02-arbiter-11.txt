@@ -1,0 +1,7 @@
+{
+  "finding_id": "796e0e3670293968",
+  "classification": "resolvable",
+  "authority_locus": "DDR-001 'Conformance Checks (aspirational; mechanization deferred)' section header + closing italic line; DDR-002 §7 'Current state (marker-level)' 1a/1b tiering as the accurate status vocabulary",
+  "rationale": "DDR-001's own text fixes check 4 as aspirational/deferred, so the corrected label is determined by the cited authority, not a new choice.",
+  "confidence": "high"
+}

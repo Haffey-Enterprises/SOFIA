@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "f180a5793bf438f5",
+  "reason": "The named authority (D2 + Obligation 5 + ADR-001 §2.4) ratified the interim no-conforming-write posture as-is; neither it nor ADR-001 §2.4 supplies a scoped exit, dependency timing, or proportionality justification, so any edit adding one would author unratified content. The finding asks for justification the authority does not determine.",
+  "confidence": "high"
+}

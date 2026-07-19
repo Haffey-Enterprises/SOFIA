@@ -1,0 +1,1 @@
+{"finding_id":"ee056e921a169483","classification":"decision-bearing","authority_locus":null,"rationale":"No ratified authority fixes the exit-trigger for the interim survival exemptions; naming what event forces resolution is an unmade choice.","confidence":"high"}

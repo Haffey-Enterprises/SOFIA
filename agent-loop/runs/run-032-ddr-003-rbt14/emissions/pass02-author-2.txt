@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "df4a115a2e0438f1",
+  "reason": "The named authority ('an amendment that adds a ruling updates the Decision enumeration') requires surfacing the §5.1 interim foreclosure into the Decision block, but does not determine the conforming wording, which Decision (amend Decision.6 vs add a consequence clause), or exact phrasing — multiple conforming edits exist, requiring an unratified authorial choice.",
+  "confidence": "high"
+}

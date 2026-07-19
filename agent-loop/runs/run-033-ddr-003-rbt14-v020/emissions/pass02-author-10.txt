@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "d920e8761faaaa60",
+  "reason": "The body-integrity rule authorizes correcting or re-scoping the internal forward reference, but does not uniquely determine the fix: §6.3 does contain gate-time Condition-authoring content ('the predicate is EA-authored in the approval act'), so whether to keep '(§6.3)', add a sub-anchor, or re-word the driving clause is an unratified choice among conforming options.",
+  "confidence": "high"
+}

@@ -1,0 +1,9 @@
+{
+  "action": "close_satisfied",
+  "finding_id": "e63a8020731c6e10",
+  "evidence_present": "ADR-002 v1.2.0",
+  "evidence_absent": null,
+  "authority_satisfied": "run-032-docket-rulings D1: 'A References pin asserts the record's own verified-current authority set, not its siblings' tables' — ADR-002 fetched fresh is v1.2.0, so DDR-003's pin is correct and stands.",
+  "rationale": "D1 rules a pin asserts the record's own verified-current set; ADR-002 fetched fresh is v1.2.0, matching DDR-003's pin — siblings' stale pins are out of scope.",
+  "confidence": "high"
+}

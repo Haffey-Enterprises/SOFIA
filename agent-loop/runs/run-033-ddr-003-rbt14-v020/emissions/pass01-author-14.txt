@@ -1,0 +1,9 @@
+{
+  "action": "close_satisfied",
+  "finding_id": "51f84a2ca7921239",
+  "evidence_present": "ADR-002 v1.2.0",
+  "evidence_absent": null,
+  "authority_satisfied": "run-032 docket ruling D1 (ratified 2026-07-19): a References pin asserts the record's own verified-current authority set, not its siblings' tables; sibling stale pins are the standing pin-currency cascade's concern, not DDR-003's",
+  "rationale": "D1 rules DDR-003's pin asserts its own verified-current set (ADR-002 v1.2.0, which matches ADR-002's actual v1.2.0); sibling DDR-004's stale pin is not DDR-003's concern — already conforming.",
+  "confidence": "high"
+}
