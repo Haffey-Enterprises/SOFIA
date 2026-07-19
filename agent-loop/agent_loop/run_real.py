@@ -107,10 +107,16 @@ RUN_ONE_MAX_PASSES = 10
 # first live author-fire aborted on a preamble-before-JSON output; it is paired
 # in code with a preamble-tolerant author parser and a parse-fail-escalates
 # policy (RBT-67), the code halves of the same fix.
+# gen-11 hardens reviewer output-discipline (the SILENT RE-VERIFICATION rule) in
+# all four reviewer prompts — re-verify silently, the response is the raw findings
+# array first-char `[`, no reconciliation prose — paired in code with the
+# preamble-tolerant reviewer array-salvage seam (real_hats._extract_json_array,
+# logged) so a narrated preamble degrades to a logged strip rather than aborting a
+# pass (run-029 → RBT-70), the reviewer-side analog of gen-10's author fix.
 # The rationale cites by meaning: operational artifacts never carry ticket
 # numbers — ticket linkage lives in tickets, carriers, and audits.
 CALIBRATION = {
-    "generation": 10,
+    "generation": 11,
     "rationale": (
         "gen-4: severity/cap discipline restated in-place in all four reviewer "
         "prompts — a held check is POSITIVE-class, never re-labeled a defect to "
@@ -136,7 +142,13 @@ CALIBRATION = {
         "deliberation before an otherwise-valid JSON edit (run-027); paired in "
         "code with a preamble-tolerant author parser (logged) and a parse-fail-"
         "escalates-not-aborts policy so one malformed envelope no longer preempts "
-        "the pass's other resolvables"
+        "the pass's other resolvables; gen-11: reviewer output-discipline "
+        "hardening (SILENT RE-VERIFICATION) across all four reviewer prompts — "
+        "re-verify silently, the response is the raw findings array, first "
+        "character `[`, no reconciliation prose; paired in code with the "
+        "preamble-tolerant reviewer array-salvage seam "
+        "(real_hats._extract_json_array, logged) so a narrated preamble no "
+        "longer aborts a pass (run-029)"
     ),
 }
 
