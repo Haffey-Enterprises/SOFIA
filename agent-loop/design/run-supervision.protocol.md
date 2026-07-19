@@ -54,6 +54,8 @@ judgments and misses the run.
 3. **Match the target to the question.** Decision-dense records (e.g. ADR-008) never exhaust and run long by nature — use them only when you need that behavior. Keep a small near-convergeable target on hand for CONVERGED / decision-bearing / disposition proofs.
 4. **Mine captured fixtures before spending.** A finalized run folder is a rich, free fixture; most what-happened / why questions — cold audits, defect triage, cost profiling — answer from captured artifacts at $0. Spend a new run only when no captured run can answer it.
 
+A run's pre-registration is satisfied by criteria committed to git before launch (e.g. a spec §-criteria + launch-prompt pair at a pre-run HEAD); a separate PRE-REGISTRATION.md is the conventional carrier, not the only lawful one.
+
 The Batch API (50%) and per-actor model-mix are architectural cost levers, tracked separately (RBT-72) — they change what a run costs; these four govern whether it runs.
 
 2. Cost envelope acknowledged. Order-of-magnitude, stated honestly as

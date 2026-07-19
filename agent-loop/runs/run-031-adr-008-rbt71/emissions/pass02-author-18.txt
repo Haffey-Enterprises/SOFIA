@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "2f826631ac728d6b",
+  "reason": "The finding's quoted §2.4 text ('A design that relied on a lesson which later resolves, or on a promoted fact which is later retracted, must remain answerable by traversal...') does not appear in the current document; the actual §2.4 text already carries the scoping qualifier ('the frozen-provenance survival guarantee is currently scoped to promoted facts (§5.3)'), so I cannot locate an exact unique anchor for the unqualified commitment the finding targets, and whether the current already-qualified prose satisfies or still over-commits requires interpretation the named authority does not uniquely resolve.",
+  "confidence": "medium"
+}

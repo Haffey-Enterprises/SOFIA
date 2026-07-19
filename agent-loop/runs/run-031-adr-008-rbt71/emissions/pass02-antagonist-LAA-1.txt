@@ -1,0 +1,72 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["ADR-008"],
+"locus": "§7 Cross-References — 'DDR-003 (Feedback Loop Governance, forthcoming)' and 'ADR-004 (file-driven ingestion, forthcoming)'",
+"claim": "The §7 Cross-References name two unauthored, forthcoming records by concrete numbered identifier: 'DDR-003 (Feedback Loop Governance, forthcoming)' and 'ADR-004 (file-driven ingestion, forthcoming)'. The body decides these same records to name-only elsewhere — §2.2 'the forthcoming ingestion decision record' and 'the forthcoming feedback-loop governance design', §2.6 'the forthcoming feedback-loop governance design', §5.2 'introduced downstream'. The record therefore decides the same forthcoming referents to both subject-name-only and to a concrete number, an internal inconsistency in what the record commits about its own forward references.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-008 §2.2/§2.6/§5.2 (subject-name form) in conflict with ADR-008 §7 ('DDR-003 (Feedback Loop Governance, forthcoming)', 'ADR-004 (file-driven ingestion, forthcoming)')"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["ADR-008"],
+"locus": "§2.2 Authoritative-source-ingestion row ('the forthcoming ingestion decision record') vs §7 ('ADR-004 (file-driven ingestion, forthcoming)')",
+"claim": "Within one record the same forthcoming ingestion referent is decided two ways: §2.2's 'Realization routes to' cell reads 'The forthcoming ingestion decision record; the knowledge-service ingestion port' while §7 binds it to 'ADR-004 (file-driven ingestion, forthcoming)'. A reader cannot tell whether the ADR-004 number is a committed decision or an unbound placeholder — the record's claim about this forward reference is not self-consistent.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-008 §2.2 ('the forthcoming ingestion decision record') in conflict with ADR-008 §7 ('ADR-004 (file-driven ingestion, forthcoming)')"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-008"],
+"locus": "§2 Decision enumeration (§2.1–§2.6) vs §2.4 withdrawal-posture and revalidation-obligation rulings",
+"claim": "The §2 Decision preamble states the record 'fixes the invariant, the accountability, and the control-type per class. It fixes no policy, threshold, cadence, or mechanism.' §2.4 then commits two additional decision-bearing rulings not surfaced in that enumeration: the withdrawal posture ('Withdrawal of a ground-truth fact ... is read-exclusion and retention-demotion, never hard-deletion') and the revalidation obligation ('A distilled lesson may not persist as authoritative track-record indefinitely without re-grounding ... This ADR commits that the obligation exists'). A reader treating the §2 statement's enumeration as the contract's index misses both rulings — they are decided but not declared in the Decision index.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "author-decision-record SKILL, Body integrity: 'the Decision block is the contract's index' / 'An amendment that adds a ruling updates the Decision enumeration ... a ruling it doesn't enumerate is invisible to every reader who correctly treats the enumeration as complete' — applied to ADR-008 §2.4's withdrawal and revalidation rulings absent from §2's stated enumeration"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-008"],
+"locus": "§2.4 provenance-survival commitment vs §5.3 Decision-provenance retention gap",
+"claim": "§2.4 states as a committed decision: 'A design that relied on a lesson which later resolves, or on a promoted fact which is later retracted, must remain answerable by traversal to the fact as it stood when it was consumed.' §5.3 then concedes 'The frozen-provenance survival guarantee is currently scoped to promoted facts; a design decision that consumed a fact without promoting it relies on Reasoning-Graph evidence under bounded retention, which could age out the graph-native trace.' The §2.4 prose commits a survival consequence broader than the mechanism the record's own Risks section acknowledges exists — the decided consequence outruns the declared substrate for the un-promoted-consumed case.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-008 §2.4 (unqualified provenance-survival commitment across resolved lessons and retracted facts) in conflict with ADR-008 §5.3 ('scoped to promoted facts ... could age out the graph-native trace')"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["ADR-008"],
+"locus": "Metadata 'Supersedes: None' vs §2.2/§2.3 ADR-001 §2.5 generalization/subsumption",
+"claim": "The record decides that ADR-001 §2.5's EA-gated promotion is 'now the ... sub-case' subsumed under this ADR's general authority (§2.2: 'this ADR is the general upstream authority for promotion as ground-truth mutation, and §2.5 is cited, not superseded'; §2.3 homes the un-promotion authority §2.5 does not reach). This generalization-and-subsumption is a decided relationship to a ratified authority, but it is stated only in passing across §1, §2.2, and §2.3 with no single declared 'Relationship to ADR-001 §2.5' locus. The decided relationship to §2.5 is distributed rather than surfaced as a decision, so the reader must reconstruct the record's position on §2.5 from scattered asides.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "adr-template §2 (Decision: 'expand into testable sub-decisions ... include only sub-decisions this ADR constrains') — the ADR-001 §2.5 generalization/subsumption is a decided relationship stated only in passing at ADR-008 §1, §2.2, §2.3, not surfaced as a decision"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-008"],
+"locus": "§2.6 Governance boundary vs §5.2/§6",
+"claim": "Attacked whether the record smuggles remedy-boundary, threshold, cadence, role, or multi-condition policy decisions in under the accountability-principle frame — a scope over-claim from this altitude. §2.6 explicitly fences the remedy boundary (supersede vs retract), criteria, thresholds, cadence, retention windows, role assignments, and multi-condition semantics to the forthcoming feedback-loop governance design, and states 'The accountability principle this ADR commits holds identically whichever remedy applies, which is why the choice between them is policy, not principle, and is not ruled here.' §5.2 and §6 route the new commitments outward rather than deciding them. The scope held: no policy ruling is smuggled into the principle layer.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-008 §2.6 (remedy boundary + all governance policy routed to the forthcoming feedback-loop governance design) reconciled with §5.2/§6 (new commitments routed, not decided)"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-008"],
+"locus": "§2.1 scope exclusion of Reasoning-Graph capture",
+"claim": "Attacked whether the record over-claims its scope onto Reasoning-Graph capture — which would reach into a domain ADR-001 §2.2 and ADR-002 §2.6 own, and would collide with the distillation control it does govern. §2.1 bounds the invariant to 'KG authoritative ground truth' and states 'Reasoning-Graph capture is not ground truth — it is captured judgment, governed by the reasoning-capture invariant and its write-authority assignment (ADR-001 §2.2; ADR-002 §2.6) — and is outside this record's scope.' The distillation control it commits (§2.2) targets a derived ObservedPattern entering the Operational KG plane, not RG capture, so no exemption gap opens between the two. The scope claim is fidelity-clean and decides exactly ground-truth mutation.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-008 §2.1 scope exclusion (RG capture) reconciled with §2.2 (Operational-plane distillation control) — no scope collision with ADR-001 §2.2 / ADR-002 §2.6"
+}
+}
+]

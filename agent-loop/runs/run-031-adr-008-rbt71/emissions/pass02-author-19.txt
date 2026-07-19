@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "f751259530a44b3f",
+  "reason": "Ruling B mandates adding an explicit 'Relationship to ADR-001 §2.5' statement recording generalization + subsumption + un-promotion extension, but neither the ruling nor any authority fixes the wording or the exact placement (which section, before/after which paragraph) of this new statement — deriving its prose and locating its insertion point requires an unratified authorial choice, not a mechanical conformance.",
+  "confidence": "high"
+}

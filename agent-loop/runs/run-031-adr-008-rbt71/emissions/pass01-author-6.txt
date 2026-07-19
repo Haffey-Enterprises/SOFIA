@@ -1,0 +1,8 @@
+The finding names two DDR-003 references in §7; Ruling G only mandates replacing exactly two verbatim strings. But there are two separate bullet lines to fix, and one contains extra prose. I must edit each with exact anchors. Ruling G names both replacement strings, so I derive both edits — but I may emit only one minimal edit per finding. The DDR-003 bullet also contains an internal "DDR-003's pointer" and "DDR-003's definition of done" that Ruling G does not address. This makes the DDR-003 line's conformance non-uniquely determined.
+
+{
+  "action": "refuse",
+  "finding_id": "370065d20a406ab5",
+  "reason": "Ruling G determines replacing the two identifier strings, but the DDR-003 bullet contains additional concrete-identifier uses ('DDR-003's pointer', 'DDR-003's definition of done') that Ruling G does not address, and the finding spans two separate loci (ADR-004 and DDR-003 lines) requiring two edits — no single minimal find-replace conforms all of it, and how to handle the residual DDR-003 self-references is not uniquely determined by the named authority.",
+  "confidence": "medium"
+}

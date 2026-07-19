@@ -1,0 +1,72 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Environment row 'Realization routes to' cell",
+    "claim": "The prior-pass ledger marks the Environment 'at retrieval' / flat 'Built' defects closed, but the current §2.2 table text at the Environment row still reads: 'Per-policy capture-time-frozen aging (freshness-decayed confidence derived at capture, never recomputed at read) under §6 calibration governance; no per-write gate' in the Control-type cell, and 'Form built (DDR-004); constants contested/unvalidated (n=0)' in the Realization cell. This conforms to DDR-004 §1/§3 and §2. Verified against the live text and DDR-004; the closed finding conforms. Reported as MATERIAL only because the Environment paragraph below the table cites 'its aging confidence basis is fixed in the inherited-confidence derivation ruling' by subject-name where DDR-004 §2.1–§2.6 declares the aging basis per class — the ADR states the aging basis is fixed there without a fetch-verifiable §-locus for the Environment class declaration.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-004 §4 (per-class declared-basis table: 'Environment DeployedService, ConfigurationItem — basis 3 (aging; freshness operand observed_at)') — ADR-008 §2.2 Environment paragraph asserts the aging basis is fixed in DDR-004 without citing the §4 locus that declares it"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.3 Un-promotion authority vs §5.3 Executed-retraction re-decision detection",
+    "claim": "§2.3 states 'the built instance traces to an approving decision, not the governing one, so it does not yet supply promotion's governing-verdict guarantee — the authority is homed, and the governing-verdict detection analogue for executed retractions is a named follow-up (§5.3).' This qualification now conforms to the built retraction instance (DDR-002 §7 #21 traces to 'an approving PromotionDecision', not the governing edge that #15 keys on). Verified: §2.3's cross-reference to §5.3 resolves and §5.3 carries the concession. The qualification held against the built substrate.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.3 (governing-verdict qualification) reconciled with §5.3 (detection follow-up) against DDR-002 §7 #21 ('traces — via DECIDED_ON — to an approving PromotionDecision') vs #15 ('the governing DECIDED_ON edge — latest decided_at')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§6 Compliance — check 3 'un-promotes authoritative ground truth routes to the EA-gated retraction shape and cites this ADR as its authority (§2.3)'",
+    "claim": "Check 3 requires a design that un-promotes ground truth to 'cite this ADR as its authority (§2.3).' The record makes the EA-gated retraction shape the un-promotion authority, but the built retraction shape (DDR-002 §5 / §7 #21) does not carry a fetch-verified citation to ADR-008 in the substrate — SDD-001 §3.5.4 and DDR-002 §2.4 route the un-promotion upstream authority to 'the forthcoming KG-entry-governance ADR' by subject-name, not to a concrete ADR-008. The compliance check states as a present obligation ('cites this ADR as its authority') a citation that the downstream records do not yet carry and cannot carry until the pointer-resolution pass binds ADR-008's identifier. The check is stated in present tense where the substantiating citations are forthcoming.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §2.4 ('its upstream authority for un-promotion routes to the forthcoming KG-entry-governance ADR') and SDD-001 §3.5 (cross-origin escalation cited to 'the forthcoming KG-entry-governance ADR') — the downstream instances do not cite ADR-008; ADR-008 §6 check 3 asserts they cite this ADR"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.4 Provenance-survival commitment vs §5.3 Decision-provenance retention gap",
+    "claim": "§2.4 commits without qualification: 'A design that relied on a lesson which later resolves, or on a promoted fact which is later retracted, must remain answerable by traversal to the fact as it stood when it was consumed.' §5.3 then concedes: 'The frozen-provenance survival guarantee is currently scoped to promoted facts; a design decision that consumed a fact without promoting it relies on Reasoning-Graph evidence under bounded retention, which could age out the graph-native trace.' Verified against DDR-002 §5 (provenance-survival guarantee) and §7 #20 (at-promotion ProvenanceSummary materialization, promotion-kind scoped) and DDR-001 Versioning (bounded RG retention): the §2.4 commitment states a survival property broader than the substrate mechanism supplies — a consumed-but-unpromoted fact's trace is not preserved by any built mechanism, so the specified behavior would not hold if a design relied on a resolved lesson it did not promote.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.4 (unqualified 'must remain answerable by traversal') in conflict with §5.3 ('scoped to promoted facts ... could age out the graph-native trace'); DDR-002 §7 #20 (ProvenanceSummary at-promotion, 'promotion-kind scoping') and §5 provenance-survival guarantee (promotion-scoped)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Operational-distillation row vs §5.2 candidate-ObservedPattern tense",
+    "claim": "§2.2 states the distillation control-type as 'Substantive, evidence-visible human review of the distinct distilled judgment, bounded by distinctness' and routes realization to 'the forthcoming feedback-loop governance design; the detection-promotion service design.' §5.2 states the review is 'to be realized through a forthcoming candidate-ObservedPattern shape, introduced downstream, that is to be excluded from ground-truth traversal until approved.' The 'to be realized' / 'to be excluded' phrasing is earned tense and conforms to DDR-002 §2.3 ('distillation-write checkpoint posture is explicitly un-decided'). Verified: the candidate-ObservedPattern shape does not exist in the ratified schema and the ADR states it as forthcoming/additive. Held.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §2.3 ('the distillation write's checkpoint posture is explicitly un-decided, routed to the forthcoming KG-entry-governance ADR') — ADR-008 §5.2 states the candidate-ObservedPattern shape in earned forthcoming tense, conforming"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.6 Governance boundary vs §5 / §6",
+    "claim": "Deliberately attacked whether the record smuggles a governance-policy or remedy-boundary ruling into the principle layer — the failure mode that would put ADR-008 at the wrong altitude and pre-empt the forthcoming feedback-loop governance design. §2.6 fences the remedy boundary (supersede vs retract), criteria, thresholds, cadence, retention, roles, and multi-condition semantics to that downstream design and states 'The accountability principle this ADR commits holds identically whichever remedy applies, which is why the choice between them is policy, not principle, and is not ruled here.' §6 check 5 (Boundary check) enforces the same non-smuggling rule, and §5.2's constraints route new commitments outward rather than deciding them. No policy ruling is decided at the principle layer; the scope boundary is internally consistent across §2.6, §5, and §6. Held.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.6 (remedy-boundary and governance policy routed to the feedback-loop governance design) consistent with §6 check 5 (Boundary check) and DDR-002 §2.4 (remedy boundary routed to DDR-003)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.1 scope exclusion + §2.2 Operational-distillation control vs DDR-002 §2.3 / R30",
+    "claim": "Attacked whether §2.1's exclusion of Reasoning-Graph capture from scope ('Reasoning-Graph capture is not ground truth ... outside this record's scope') collides with the distillation control §2.2 purports to govern — which would open an exemption gap where the distillation write escapes both the RG-capture invariant and this ADR. It held: the distillation control targets a derived ObservedPattern entering the Operational KG plane (ground-truth mutation, origin_mechanism: derived per DDR-002 §2.3), not an RG write, so no write falls between the two authorities. The scope exclusion cites the correct owning authorities (ADR-001 §2.2; ADR-002 §2.6) and does not reach into the RG-capture domain it names as another authority's.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.1 (RG exclusion, citing ADR-001 §2.2 / ADR-002 §2.6) vs §2.2 (Operational-distillation control over a DDR-002 §2.3 origin_mechanism: derived KG-plane write) — no exemption gap; consistent with R30 derive/promote seam"
+    }
+  }
+]

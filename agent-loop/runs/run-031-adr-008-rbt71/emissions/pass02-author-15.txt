@@ -1,0 +1,9 @@
+{
+  "action": "close_satisfied",
+  "finding_id": "3f982fa021b530a1",
+  "evidence_present": "**The forthcoming file-driven ingestion decision record** — owns the ingestion mechanics realizing the authoritative-source ingestion control (§2.2).",
+  "evidence_absent": "ADR-004 (file-driven ingestion, forthcoming)",
+  "authority_satisfied": "ADR-008-run-025 Ruling G (forthcoming-record references subject-named, not numbered); §7 ingestion entry",
+  "rationale": "§7 already uses the subject-name form 'The forthcoming file-driven ingestion decision record'; the numbered 'ADR-004' form the finding cites is absent from the document.",
+  "confidence": "high"
+}

@@ -1,0 +1,7 @@
+{
+  "finding_id": "a9318bf577e7dd4a",
+  "classification": "resolvable",
+  "authority_locus": "ADR-008-run-025-operator-rulings Ruling G (forthcoming-record references subject-named, not numbered); author-decision-record SKILL body-integrity forward-reference rule",
+  "rationale": "Operator Ruling G directly dictates replacing the numbered forthcoming references in \u00a77 with subject-name forms, resolving the internal inconsistency.",
+  "confidence": "high"
+}

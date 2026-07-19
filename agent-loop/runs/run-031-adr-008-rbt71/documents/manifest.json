@@ -1,0 +1,16 @@
+{
+  "run_id": "run-031-adr-008-rbt71",
+  "sofia_head_sha": "461ad0c1158a0168007fdf4b0dbf9bd5a20632d9",
+  "files": [
+    {
+      "doc_id": "ADR-008",
+      "snapshot_path": "documents/ADR-008-ground-truth-mutation-governance.md",
+      "origin": {
+        "source": "sofia-repo",
+        "canonical_path": "agent-loop/sandbox/adr-008/docs/adr/ADR-008-ground-truth-mutation-governance.md"
+      },
+      "retrieved": "2026-07-19",
+      "sha256": "24461d3ff61527bbf70bcbce532e00c6c3878433fd8f8ac7c60c6d477683c12b"
+    }
+  ]
+}

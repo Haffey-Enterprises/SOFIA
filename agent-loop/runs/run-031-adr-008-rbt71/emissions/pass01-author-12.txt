@@ -1,0 +1,10 @@
+{
+  "action": "edit",
+  "finding_id": "f683ec77705c9697",
+  "target": "ADR-008",
+  "old_string": "| **Promotion** — Reasoning-Graph findings into authoritative selection knowledge (Catalog / Standards) | The existing EA promotion gate | Per-write (EA) | Built — the graph-schema ruling's `PromotionDecision` gate and its promoted-origin invariant |",
+  "new_string": "| **Promotion** — Reasoning-Graph findings into authoritative selection knowledge (Catalog / Standards) | The existing EA promotion gate | Per-write (EA) | Built — the durable chain: ADR-001 §2.5 (EA-gated-promotion principle) + DDR-002 §5 (`PromotionDecision` gate) / §7 #15 (promoted-origin invariant) |",
+  "authority_conformed": "ADR-008-run-025-operator-rulings Ruling B (durable chain: ADR-001 §2.5 + DDR-002 §5 / §7 #15)",
+  "rationale": "Ruling B directs the Promotion-class authority citation be fixed to the durable chain ADR-001 §2.5 + DDR-002 §5 / §7 #15; the §-loci are fetch-verified in the source documents.",
+  "confidence": "high"
+}

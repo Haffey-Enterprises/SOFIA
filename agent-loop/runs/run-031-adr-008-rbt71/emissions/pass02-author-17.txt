@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "3cb8a91c7a113071",
+  "reason": "The §2 preamble is prose ('This record fixes the invariant, the accountability, and the control-type per class'), not a numbered enumeration index; the SKILL's 'Decision block is the contract's index / an amendment updates the Decision enumeration' presupposes an itemized enumeration to append to, and §2 has none. Conforming would require deciding whether to add an enumeration item, rewrite the preamble sentence, or extend it — an unratified authorial choice among conforming forms, not a uniquely-determined edit.",
+  "confidence": "medium"
+}

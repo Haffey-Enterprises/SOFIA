@@ -1,0 +1,62 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2 Decision preamble enumeration vs §2.4 withdrawal-posture and revalidation-obligation rulings",
+    "claim": "The §2 preamble frames the contract as 'This record fixes the invariant, the accountability, and the control-type per class. It fixes no policy, threshold, cadence, or mechanism.' §2.4 then commits two decision-bearing rulings the enumeration does not name: the withdrawal posture ('Withdrawal of a ground-truth fact ... is read-exclusion and retention-demotion, never hard-deletion') and the revalidation obligation ('A distilled lesson may not persist as authoritative track-record indefinitely without re-grounding ... This ADR commits that the obligation exists'). A reader treating §2.1–§2.6's stated summary as the contract's index would not find either §2.4 commitment declared as something the record fixes.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "author-decision-record SKILL, Body integrity: 'the Decision block is the contract's index' / 'An amendment that adds a ruling updates the Decision enumeration ... a ruling it doesn't enumerate is invisible to every reader who correctly treats the enumeration as complete' — applied to ADR-008 §2.4 withdrawal + revalidation rulings absent from the §2 enumeration"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.4 Provenance-survival commitment vs §5.3 Decision-provenance retention gap",
+    "claim": "§2.4 commits as a standing decision: 'A design that relied on a promoted fact which is later retracted must remain answerable by traversal to the fact as it stood when it was consumed; the frozen-provenance survival guarantee is currently scoped to promoted facts, so a design that consumed a fact without promoting it relies on Reasoning-Graph evidence under bounded retention.' §5.3 concedes: 'The frozen-provenance survival guarantee is currently scoped to promoted facts; a design decision that consumed a fact without promoting it relies on Reasoning-Graph evidence under bounded retention, which could age out the graph-native trace.' The §2.4 statement of what 'must' survive is broader than the built mechanism §5.3 acknowledges exists for the un-promoted-consumption case — the decided requirement outruns the declared substrate.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.4 (provenance-survival 'must remain answerable by traversal') in conflict with ADR-008 §5.3 ('scoped to promoted facts ... could age out the graph-native trace')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Environment row 'Realization routes to' cell — 'under §6 calibration governance'",
+    "claim": "The Environment row's Control-type cell reads 'Per-policy capture-time-frozen aging (freshness-decayed confidence derived at capture, never recomputed at read) under DDR-004 §6 calibration governance; no per-write gate.' The intra-body §6 self-reference in the Environment paragraph and the compliance cross-check must resolve correctly: ADR-008's own §6 is the Compliance (three-hat review) section, whereas the calibration governance the row means lives in DDR-004 §6. Where a bare '§6' appears without the DDR-004 qualifier it resolves to the wrong section within this record.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §6 (Compliance — three-hat review) vs DDR-004 §6 (Calibration and constant governance); author-decision-record SKILL 'Section citations are facts — fetch-verify them'"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "Metadata 'Supersedes: None' + §2.2/§2.3 — ADR-001 §2.5 generalization/subsumption",
+    "claim": "The record decides a generalization-and-subsumption relationship to ADR-001 §2.5 — §2.2 Promotion bullet: 'this ADR is the general upstream authority for promotion as ground-truth mutation, and §2.5 is cited, not superseded'; §2.3 homes the un-promotion extension §2.5 does not reach. This decided relationship to a ratified spine ADR is asserted in passing across §1, §2.2, and §2.3 with no single locus declaring it as a decision, so a reader must reconstruct the record's position on §2.5 from scattered asides.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "adr-template §2 (Decision: 'expand into testable sub-decisions ... include only sub-decisions this ADR constrains') — the ADR-001 §2.5 generalization/subsumption is a decided relationship stated only in passing at ADR-008 §1, §2.2, §2.3, not surfaced as a decision"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References — forthcoming-record references",
+    "claim": "Attacked whether the record still commits unauthored forthcoming records by concrete numbered identifier (the prior-pass defect). It held: §7 now names 'The forthcoming feedback-loop governance design' and 'The forthcoming file-driven ingestion decision record' by subject only — no 'DDR-003' or 'ADR-004' number remains — matching the body's subject-name references at §1/§2.2/§2.6/§5.2/§5.3, and §7 states 'This ADR is its upstream authority' with the pointer-resolution obligation placed in the downstream record's definition of done. Subject-name form is consistent across body and cross-references.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §7 (subject-name forms 'The forthcoming feedback-loop governance design' / 'The forthcoming file-driven ingestion decision record') consistent with §1/§2.2/§2.6/§5.2/§5.3 subject-name references; author-decision-record body-integrity forward-reference rule"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.6 Governance boundary vs §5 / §6",
+    "claim": "Deliberately attacked whether the record smuggles a governance-policy or remedy-boundary ruling into the principle layer — the failure mode that would put this ADR at the wrong altitude and pre-empt the forthcoming feedback-loop governance design. §2.6 fences the remedy boundary (supersede vs retract), criteria, thresholds, cadence, retention windows, role assignments, and multi-condition composition to that downstream design and states 'The accountability principle this ADR commits holds identically whichever remedy applies, which is why the choice between them is policy, not principle, and is not ruled here.' §2 states 'It fixes no policy, threshold, cadence, or mechanism,' §6 check 5 (Boundary check) enforces the same non-smuggling rule, and §5.2 routes new commitments outward. No policy ruling is decided at the principle layer.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.6 (remedy boundary + governance policy routed to the forthcoming feedback-loop governance design) consistent with §2 ('fixes no policy, threshold, cadence, or mechanism'), §6 check 5, and §5.2 outward routing"
+    }
+  }
+]

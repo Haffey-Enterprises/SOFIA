@@ -31,6 +31,8 @@ functions over its state.
   ref:  "<named artifact + locus>" | "<quoted design-intent>" | "<target+locus in conflict>" | "<named defect>" }
 ```
 
+On `classification`: POSITIVE findings are never classified — the arbiter classifies defects only, so a POSITIVE remains `unclassified` for its whole life; an audit reading "N unclassified at halt" should reconcile it against the POSITIVE count first.
+
 ### Satisfied-close disposition (RBT-71)
 
 The author's third action, `close_satisfied` (`author.py`; `author.prompt.md`),

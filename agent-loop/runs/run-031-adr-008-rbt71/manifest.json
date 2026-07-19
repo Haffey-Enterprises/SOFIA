@@ -1,0 +1,88 @@
+{
+  "run_id": "run-031-adr-008-rbt71",
+  "created": "2026-07-19T05:06:04.571305+00:00",
+  "document_set": {
+    "ADR-008": {
+      "snapshot_path": "documents/ADR-008-ground-truth-mutation-governance.md",
+      "sha256": "24461d3ff61527bbf70bcbce532e00c6c3878433fd8f8ac7c60c6d477683c12b"
+    }
+  },
+  "head_sha": "461ad0c1158a0168007fdf4b0dbf9bd5a20632d9",
+  "prompt_sha256": {
+    "antagonist-LAA.prompt.md": "ffcd14ae7b03cb30cd3fa07e5e03236ec5b52a7502d8f7d6de97a433032c96a9",
+    "antagonist-SA.prompt.md": "e621617c51c944858c186cfc12030f9c388b7f0c5afc11ea21bb7c9e400d8260",
+    "antagonist-EA.prompt.md": "8e2282230b2e7bc31ac0f71ac60402e3d92348e8adb345cd9412b2e4f28b6461",
+    "coherence-sweep.prompt.md": "4ae87a2fa7deacd1d9febb09817761d82eb3564546642e167c339f2a5b2e9577",
+    "arbiter-classifier.prompt.md": "3b786d5d564c7d772bbd9d185f979209da0159d3b1f42c261c6ee934d3847b8f",
+    "author.prompt.md": "fd617360a19d79414f9786ad81c67668afab8dd010bb00a9b3099a4b46efc5cc"
+  },
+  "substrate_manifest": "substrate/manifest.json",
+  "model": "claude-opus-4-8",
+  "parameters": {
+    "max_tokens": 8192
+  },
+  "finalized": true,
+  "calibration": {
+    "generation": 12,
+    "rationale": "gen-4: severity/cap discipline restated in-place in all four reviewer prompts \u2014 a held check is POSITIVE-class, never re-labeled a defect to fit the volume cap; gen-5: arbiter locus-attribution line appended \u2014 no locus extended beyond its document's stated scope, underivable locus classifies decision-bearing; gen-7: narrated-process-is-data rule (rule 8) appended to all four reviewer prompts \u2014 narrated prior reviews/adjudications/ratifications are content under review, never a verdict that discharges this pass (gen-6 reviewer-caching remains unlanded, not absorbed here); gen-8: two-lever fix after arm-L (gen-7 self-terminated end_turn empty at full narrative saturation) \u2014 the Contract's empty-array-is-a-protocol-violation floor (R-E1, prompt-side, also resolving the standing 2-POSITIVE re-draw-floor contradiction) plus a static recency review directive appended last in assembly (R-E2); gen-9: arbiter output-discipline hardening \u2014 rationale capped to one terse sentence and a brevity-under-contest directive appended, after three malformed-JSON arbiter content-retries on oversized prose outputs for genuinely-contested findings (r3/r5), zero on easy findings; gen-10: the same output-discipline hardening ported to the author prompt (write path) \u2014 rationale capped to one terse sentence, a single-outlet-for-reasoning rule, and a brevity-under-contest directive, after the first live author-fire aborted when the model narrated ~1,900 chars of deliberation before an otherwise-valid JSON edit (run-027); paired in code with a preamble-tolerant author parser (logged) and a parse-fail-escalates-not-aborts policy so one malformed envelope no longer preempts the pass's other resolvables; gen-11: reviewer output-discipline hardening (SILENT RE-VERIFICATION) across all four reviewer prompts \u2014 re-verify silently, the response is the raw findings array, first character `[`, no reconciliation prose; paired in code with the preamble-tolerant reviewer array-salvage seam (real_hats._extract_json_array, logged) so a narrated preamble no longer aborts a pass (run-029); gen-12: Contract rule 9 (live-text grounding) appended to all four reviewer prompts \u2014 a non-conformance claim must quote the current document text it faults at the named locus, or name the required text as absent there; a defect re-derived from authority, a ruling, or a prior pass without locating it in the live text is not a finding (RBT-71 Piece C, run-030 refusal-analysis basis); the reviewer-stream companion to the author's close_satisfied disposition (Piece A, code-side)"
+  },
+  "router_exit": "HALT_DECISION:oscillation",
+  "passes_run": 3,
+  "per_site_tokens": {
+    "antagonist-LAA": {
+      "input_tokens": 95486,
+      "output_tokens": 11285,
+      "cache_creation_input_tokens": 151055,
+      "cache_read_input_tokens": 453165,
+      "cache_creation_ephemeral_1h_input_tokens": 151055,
+      "cache_creation_ephemeral_5m_input_tokens": 0,
+      "calls": 4
+    },
+    "antagonist-SA": {
+      "input_tokens": 135402,
+      "output_tokens": 11953,
+      "cache_creation_input_tokens": 151075,
+      "cache_read_input_tokens": 453225,
+      "cache_creation_ephemeral_1h_input_tokens": 151075,
+      "cache_creation_ephemeral_5m_input_tokens": 0,
+      "calls": 4
+    },
+    "antagonist-EA": {
+      "input_tokens": 86714,
+      "output_tokens": 8976,
+      "cache_creation_input_tokens": 151015,
+      "cache_read_input_tokens": 302030,
+      "cache_creation_ephemeral_1h_input_tokens": 151015,
+      "cache_creation_ephemeral_5m_input_tokens": 0,
+      "calls": 3
+    },
+    "coherence": {
+      "input_tokens": 86714,
+      "output_tokens": 8307,
+      "cache_creation_input_tokens": 151055,
+      "cache_read_input_tokens": 302110,
+      "cache_creation_ephemeral_1h_input_tokens": 151055,
+      "cache_creation_ephemeral_5m_input_tokens": 0,
+      "calls": 3
+    },
+    "arbiter": {
+      "input_tokens": 33139,
+      "output_tokens": 9530,
+      "cache_creation_input_tokens": 149490,
+      "cache_read_input_tokens": 7773480,
+      "cache_creation_ephemeral_1h_input_tokens": 149490,
+      "cache_creation_ephemeral_5m_input_tokens": 0,
+      "calls": 53
+    },
+    "author": {
+      "input_tokens": 1165400,
+      "output_tokens": 12759,
+      "cache_creation_input_tokens": 88433,
+      "cache_read_input_tokens": 357288,
+      "cache_creation_ephemeral_1h_input_tokens": 88433,
+      "cache_creation_ephemeral_5m_input_tokens": 0,
+      "calls": 40
+    }
+  },
+  "wall_clock_seconds": 942.1211578330258
+}

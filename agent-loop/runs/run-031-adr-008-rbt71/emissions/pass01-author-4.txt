@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "18f385c2a7083300",
+  "reason": "The cited authority ('an amendment that adds a ruling updates the Decision enumeration') governs amendments adding a ruling; ADR-008 is an initial draft (v0.1.0), not an amendment, and the §2 preamble is prose, not a numbered enumeration — no unique enumeration list exists to append §2.4's rulings to. The authority neither identifies a specific insertion locus nor determines the exact conforming text, so more than one conforming edit is admissible.",
+  "confidence": "medium"
+}

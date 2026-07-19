@@ -1,0 +1,9 @@
+{
+  "action": "close_satisfied",
+  "finding_id": "6af9a91bd6fdf41a",
+  "evidence_present": "the built instance traces to *an* approving decision, not the *governing* one, so it does not yet supply promotion's governing-verdict guarantee — the authority is homed, and the governing-verdict detection analogue for executed retractions is a named follow-up (§5.3)",
+  "evidence_absent": null,
+  "authority_satisfied": "ADR-008 §2.3 (governing-verdict qualification) reconciled with §5.3 detection follow-up against DDR-002 §7 #21 ('traces — via DECIDED_ON — to an approving PromotionDecision') vs #15 (governing latest-decided_at edge)",
+  "rationale": "The finding itself verifies §2.3's qualification holds against DDR-002 #21/#15 and §5.3 carries the concession; the quoted §2.3 text already conforms.",
+  "confidence": "high"
+}

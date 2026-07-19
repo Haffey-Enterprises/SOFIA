@@ -1,0 +1,62 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2 Decision preamble vs §2.4 Withdrawal and expiry posture",
+    "claim": "The §2 preamble states 'This record fixes the invariant, the accountability, and the control-type per class. It fixes no policy, threshold, cadence, or mechanism.' and §2.4 is not among the enumerated sub-decisions the §2 statement names as its contract. §2.4 commits two decision-bearing rulings absent from that enumeration: 'Withdrawal of a ground-truth fact ... is read-exclusion and retention-demotion, never hard-deletion' and 'A distilled lesson may not persist as authoritative track-record indefinitely without re-grounding ... This ADR commits that the obligation exists'. A reader treating the §2 statement as the contract's index does not find the §2.4 withdrawal and revalidation rulings.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "author-decision-record SKILL, Body integrity: 'the Decision block is the contract's index' / 'an amendment that adds a ruling updates the Decision enumeration ... a ruling it doesn't enumerate is invisible to every reader who correctly treats the enumeration as complete' — applied to ADR-008 §2.4 withdrawal and revalidation rulings not surfaced in the §2 enumeration"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.4 Provenance-survival commitment vs §5.3 Decision-provenance retention gap",
+    "claim": "§2.4 commits without scope qualification: 'A design that relied on a promoted fact which is later retracted must remain answerable by traversal to the fact as it stood when it was consumed.' §5.3 then concedes 'the frozen-provenance survival guarantee is currently scoped to promoted facts; a design that consumed a fact without promoting it relies on Reasoning-Graph evidence under bounded retention' (per the graph-schema ruling's §7 #20, promotion-kind scoped) — so the §2.4 commitment specifies a survival property the substrate does not supply for the consumed-but-unpromoted case, and the specified behavior would not hold if a design relied on a resolved lesson it did not promote. The two sections state a broader requirement in §2.4 than §5.3 acknowledges the mechanism honors.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.4 (unqualified provenance-survival commitment) in conflict with ADR-008 §5.3 ('scoped to promoted facts ... could age out the graph-native trace'); DDR-002 §7 #20 (at-promotion ProvenanceSummary materialization, promotion-kind scoped)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "§2.2 per-source-class table, Environment row — 'under §6 calibration governance'",
+    "claim": "The Environment row states the per-policy control operates 'under §6 calibration governance', but ADR-008's own §6 is the Compliance section (three-hat review checks). The calibration governance the row means is DDR-004's calibration-governance section, not ADR-008 §6. The bare '§6' at this locus resolves within this record to the wrong section — a section-citation error of the class the governing skill treats as a distinct fault.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 Environment row ('under §6 calibration governance') vs ADR-008 §6 (Compliance — three-hat review), the calibration governance being DDR-004 §6 (Calibration and constant governance); author-decision-record SKILL 'Section citations are facts — fetch-verify them'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References — DDR-002 provenance-survival citation",
+    "claim": "§7 cites the graph-schema ruling's provenance-survival guarantee at '§2.4 / §5', but the DDR-002 provenance-survival guarantee is at §5 (Cross-graph linkage + the feedback loop, the ProvenanceSummary bullet) and its at-promotion materialization invariant is §7 #20 — DDR-002 §2.4 covers PromotionDecision/retraction schema and routes the remedy boundary, not the survival guarantee. The §5.3 finding on which §2.4's qualification rests names DDR-002 §5 / §7 #20 as the survival mechanism, so ADR-008's own cross-reference should resolve to those loci; the cited-authority chain for the survival commitment is under-substantiated at the loci given.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §5 (provenance-survival guarantee: ProvenanceSummary, at-promotion materialization) and §7 #20 (at-promotion ProvenanceSummary materialization + completeness) — ADR-008 §7 asserts the survival guarantee's DDR-002 home without a fetch-verifiable locus matching the built mechanism; author-decision-record SKILL 'Section citations are facts — fetch-verify them'"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.3 Un-promotion authority vs DDR-002 §7 #21 / #15",
+    "claim": "Attacked whether §2.3's claim that un-promotion is governed by 'the same per-write, EA-gated, human-accountable control as promotion itself' and that the built retraction shape 'is the instance of this authority' over-claims against the built substrate, whose retraction-gated invariant (DDR-002 §7 #21) traces to 'an approving PromotionDecision', not the governing edge that promotion's #15 keys on. The claim held: §2.3 carries the qualification in-place — 'the built instance traces to an approving decision, not the governing one, so it does not yet supply promotion's governing-verdict guarantee — the authority is homed, and the governing-verdict detection analogue for executed retractions is a named follow-up (§5.3)' — and §5.3 restates the concession. Authority-class equivalence is asserted; the built-mechanism gap is not over-stated.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.3 (governing-verdict qualification) reconciled with §5.3 against DDR-002 §7 #21 (retraction traces to an approving PromotionDecision) vs #15 (promotion governing DECIDED_ON edge — latest decided_at)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.1 scope exclusion of Reasoning-Graph capture vs §2.2 Operational-distillation control",
+    "claim": "Attacked whether §2.1's exclusion of Reasoning-Graph capture from scope ('Reasoning-Graph capture is not ground truth ... outside this record's scope', citing ADR-001 §2.2 and ADR-002 §2.6) opens an exemption gap where the distillation write §2.2 governs escapes both the RG-capture invariant and this ADR. The attack failed: the distillation control targets a derived ObservedPattern entering the Operational KG plane — a ground-truth mutation, origin_mechanism: derived per DDR-002 §2.3 — not an RG write, so no write falls between the two authorities. The scope exclusion cites the correct owning authorities and does not reach into the RG-capture domain it names as another authority's; internally correct.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.1 (RG exclusion, citing ADR-001 §2.2 / ADR-002 §2.6) vs §2.2 (Operational-distillation control over a DDR-002 §2.3 origin_mechanism: derived KG-plane write) — no exemption gap"
+    }
+  }
+]

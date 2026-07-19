@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "c5fa95db5e2a3a47",
+  "reason": "Ruling G forbids concrete identifiers for unauthored records, but the deliberation record itself repeatedly uses 'DDR-003' and 'ADR-004' as the concrete identifiers for these forthcoming records (Item 5, Item 3, standing to-dos), so the authority does not uniquely determine that these labels be stripped to subject-name-only; whether §7's parenthetical-annotated forms ('DDR-003 (Feedback Loop Governance, forthcoming)') violate G or satisfy it is contested and requires an unratified reading.",
+  "confidence": "medium"
+}

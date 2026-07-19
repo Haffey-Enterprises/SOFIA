@@ -1,0 +1,9 @@
+{
+  "action": "close_satisfied",
+  "finding_id": "13393f17b9d6cc90",
+  "evidence_present": "| **Environment** — CMDB-observed deployed reality | Per-policy capture-time-frozen aging (freshness-decayed confidence derived at capture, never recomputed at read) under §6 calibration governance; **no** per-write gate | Per-policy | Form built (DDR-004); constants contested/unvalidated (n=0) |",
+  "evidence_absent": null,
+  "authority_satisfied": "ADR-008-run-025-operator-rulings Ruling D (relabel §2.2 Environment status to 'form built (DDR-004); constants contested/unvalidated (n=0)')",
+  "rationale": "The Environment row already reads 'Form built (DDR-004); constants contested/unvalidated (n=0)', exactly the relabel Ruling D determines; no unqualified 'Built' remains.",
+  "confidence": "high"
+}

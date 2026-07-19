@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "87ee43088d5b4c73",
+  "reason": "Ruling B directs adding an explicit 'Relationship to ADR-001 §2.5' statement recording generalization + subsumption + un-promotion extension, but neither the ruling nor the template determines where the new statement is placed (new subsection number, or folded into §2.2/§2.3) or its exact wording; multiple conforming edits exist, so the authority does not uniquely determine the edit.",
+  "confidence": "medium"
+}

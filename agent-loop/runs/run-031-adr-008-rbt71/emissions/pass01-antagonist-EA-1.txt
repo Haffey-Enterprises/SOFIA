@@ -1,0 +1,72 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References — forthcoming-record references",
+    "claim": "§7 references two unauthored records by concrete identifier — 'ADR-004 (file-driven ingestion, forthcoming)' and 'DDR-003 (Feedback Loop Governance, forthcoming)' — while the body's own §2.2 and §2.6 name these same records by subject only ('the forthcoming ingestion decision record', 'the forthcoming feedback-loop governance design'). The RBT-59 operator ruling G directs that forward references to unauthored records be stated by subject-name only, never by concrete identifier, and that the ADR-004/DDR-004 numbering binds only at the downstream record's landing. Committing a concrete ADR-004 number to an unauthored ingestion record pre-allocates a number the ADR ladder has not confirmed for that purpose, and pulls against the standalone-record posture the governing intent establishes.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "RBT-59-ADR-008-deliberation-record Ruling G: 'Forward references to unauthored records are stated by subject-name only in the ADR body and cross-references, never by concrete identifier'; author-decision-record SKILL body-integrity forward-reference rule"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Per-source-class calibration — Environment 'Built' status",
+    "claim": "The Environment row's 'Realization routes to' cell reads 'Built — the inherited-confidence derivation ruling's aging basis' with no qualification, but operator Ruling D directs that this status be relabeled to 'form built (DDR-004); constants contested/unvalidated (n=0)' because the mechanism is capture-time-frozen aging with contested, unvalidated constants at n=0. The flat 'Built' label overstates the maturity of the Environment control against the ratified design intent, which distinguishes a built form from unvalidated constants.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "ADR-008-run-025-operator-rulings Ruling D: 'relabel the §2.2 \"Built\" status to \"form built (DDR-004); constants contested/unvalidated (n=0).\"'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 / §5.2 — candidate-ObservedPattern shape tense",
+    "claim": "§5.2 states the distillation control is 'realized through a candidate-`ObservedPattern` shape excluded from ground-truth traversal until approved — a downstream governance design and an additive schema shape.' Operator Ruling E establishes that this candidate-`ObservedPattern` shape does NOT exist in the ratified schema (DDR-002 §2.3 leaves the distillation checkpoint 'explicitly un-decided' and the `CandidatePromotion` class does not cover it), and directs earned tense — stating the shape as forthcoming/additive, not as a present schema constraint. The phrasing 'realized through' reads as a present realization rather than a forthcoming one.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "ADR-008-run-025-operator-rulings Ruling E: 'earned tense — state the candidate-`ObservedPattern` shape as forthcoming / additive (introduced downstream), not as a present schema constraint.'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.3 Un-promotion authority — 'same control' claim",
+    "claim": "§2.3 asserts un-promotion is 'governed by the same per-write, EA-gated, human-accountable control as promotion itself' and names the built retraction shape as 'the instance of this authority' without qualification. Operator Ruling F directs that the built retraction instance (DDR-002 §7 #21) traces to *an* approving decision, not the *governing* one, and so does not yet supply promotion's governing-verdict guarantee (#15); the 'same control' claim must be qualified to match the §5.3 concession. §5.3 does concede the detection gap, but §2.3's authority statement itself carries no such qualification, leaving the two sections in tension on whether the control is fully equivalent to promotion's.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.3 ('the same per-write, EA-gated, human-accountable control as promotion itself') vs §5.3 ('The retraction invariant traces to an approving decision, not the governing one'); ADR-008-run-025-operator-rulings Ruling F"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "§2.1 / metadata — Relationship to ADR-001 §2.5",
+    "claim": "Operator Ruling B directs that the ADR add an explicit 'Relationship to ADR-001 §2.5' statement recording the generalization, subsumption, and un-promotion extension, 'so the position is recorded, not asserted in passing.' The current text asserts the generalization only in passing — §1 ('ADR-001 §2.5 requires an EA approval gate on the consolidation of SOFIA's own reasoning ... that authority reaches only that case'), §2.2's promotion bullet, and §2.3 — with no dedicated, labeled statement of the recorded position. The relationship is scattered rather than homed.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "ADR-008-run-025-operator-rulings Ruling B: 'add an explicit \"Relationship to ADR-001 §2.5\" statement recording the generalization + subsumption + un-promotion extension, so the position is recorded, not asserted in passing'"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2 Decision — altitude and integration with the ratified substrate",
+    "claim": "Attacked whether the Decision over-reaches its ADR altitude by committing governance policy that belongs downstream. It holds: §2.6 explicitly reserves the remedy boundary, criteria, thresholds, cadence, retention, roles, and multi-condition composition to the forthcoming feedback-loop governance design, and §2 states 'It fixes no policy, threshold, cadence, or mechanism.' The Decision commits invariant + accountability + control-type only, consistent with the RBT-59 Item-5 altitude line and DDR-002's routing of remedy-boundary to the governance design. The decision integrates with rather than pulls against the ratified substrate.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "RBT-59-ADR-008-deliberation-record Item 5 (ADR owns invariant + accountability + control-type + lifecycle; remedy-boundary and policy → DDR-003); ADR-008 §2.6"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.3 / §7 — un-promotion upstream authority home and citation chain",
+    "claim": "Attacked whether the un-promotion authority is properly homed on a durable chain rather than an ephemeral ledger citation. It holds: §2.3 homes the authority in this ADR (§2.5 authorizes promotion only), names the built retraction shape (DDR-002 §5 + retraction-gated invariant) as its instance, and §7 cites the durable ADR-001 §2.5 + DDR-002 §5 chain with no R30/ledger citation in the body — consistent with the standalone-ADR governing principle and operator Ruling B's durable-chain requirement. The reversibility/withdrawal posture is proportionate to the risk and rests on ratified authorities.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "ADR-008-run-025-operator-rulings governing principle (an ADR is standalone; ledger rulings are substrate, never durable in-body citations) and Ruling B (durable chain: ADR-001 §2.5 + DDR-002 §5 / §7 #15)"
+    }
+  }
+]

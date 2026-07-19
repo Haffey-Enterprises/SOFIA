@@ -9,7 +9,7 @@
 |---|---|
 | **Document** | rbt-71-decision-surface.spec.md |
 | **Doctype** | Construct-local design spec (ruled via the `author-decision-record` / `author-standard` gate: not ADR/DDR/SDD — governs the agent-loop construct's machinery only, survives no platform test, cited by construct documents; same ruling and genre as `rbt-69-loop-optimization.spec.md`) |
-| **Status** | PROPOSED v0.1.0 |
+| **Status** | ACCEPTED v1.0.0 — promoted 2026-07-19 on run-031 proving evidence (runs/run-031-adr-008-rbt71/audit.md); findings ratified by Tad |
 | **Date** | 2026-07-19 |
 | **Ticket** | RBT-71 |
 | **Author** | Thaddeus Haffey (Executive Architect), authored on claude.ai |

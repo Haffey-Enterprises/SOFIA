@@ -1,0 +1,8 @@
+The finding targets §7 with two DDR-003 and ADR-004 bullets. Ruling G determines subject-name replacement, but the DDR-003 bullet contains an additional embedded clause about pointer-resolution that Ruling G's replacement text does not address; however the ruling explicitly instructs replacing the identifier strings. I must produce two edits but rule 2 permits one minimal edit. The two bullets are separate loci but the finding names both. The DDR-003 bullet's trailing sentence references "DDR-003's pointer" and "DDR-003's definition of done" — replacing just the header string leaves internal DDR-003 references, which Ruling G says to replace "anywhere in the body." This exceeds a single unique find-replace and requires deciding how to reword the embedded clauses.
+
+{
+  "action": "refuse",
+  "finding_id": "06d343cb69b5f1ff",
+  "reason": "Ruling G determines subject-name replacement for both identifiers, but conforming requires two separate non-adjacent bullet edits plus rewording the DDR-003 bullet's trailing clause ('DDR-003's pointer', 'DDR-003's definition of done', 'this record's concrete document identifier') — the ruling does not dictate a unique rewording of those embedded self-references, so more than one conforming edit exists and no single minimal find-replace conforms the locus.",
+  "confidence": "medium"
+}

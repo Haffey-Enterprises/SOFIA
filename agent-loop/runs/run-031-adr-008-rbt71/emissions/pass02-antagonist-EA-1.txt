@@ -1,0 +1,62 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References — forthcoming-record identifiers 'DDR-003 (Feedback Loop Governance, forthcoming)' and 'ADR-004 (file-driven ingestion, forthcoming)'",
+    "claim": "§7 commits concrete numbered identifiers to two unauthored records — 'DDR-003 (Feedback Loop Governance, forthcoming)' and 'ADR-004 (file-driven ingestion, forthcoming)' — while the body names the same records by subject only ('the forthcoming feedback-loop governance design' §2.2/§2.6/§5.3; 'the forthcoming ingestion decision record' §1/§2.2/§5.2). At the EA altitude this is a premature commitment: the ADR is a standalone platform-principle record whose posture (governing principle: 'an ADR is standalone') forecloses binding an in-body number to an unauthored downstream artifact. The numbering also carries an unresolved collision — the substrate itself flags an ADR-004/DDR-004 numbering ambiguity — so committing 'ADR-004' pre-allocates a ladder slot that has not been confirmed for that purpose.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "ADR-008-run-025-operator-rulings Ruling G: 'Forward references to unauthored records are stated by subject-name only ... never by concrete identifier'; concrete identifiers bind only at the downstream record's landing, and directionally (other records cite ADR-008 by ID; ADR-008 cites forthcoming records by subject-name)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.4 Withdrawal and expiry posture vs §2 Decision enumeration (§2.1–§2.6)",
+    "claim": "§2.4 commits two decision-bearing rulings — the withdrawal posture ('read-exclusion and retention-demotion, never hard-deletion') and the distillation revalidation obligation ('A distilled lesson may not persist as authoritative track-record indefinitely without re-grounding') — but the §2 Decision preamble frames the contract as fixing only 'the invariant, the accountability, and the control-type per class' and states 'It fixes no policy, threshold, cadence, or mechanism.' A reviewer judging posture at this altitude reads the §2 preamble as the contract index; the never-delete withdrawal rule and the revalidation obligation are commitments the platform will be held to that the Decision statement's own summary does not enumerate, so the record's index of what it decides is incomplete against the rulings it actually makes.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "RBT-59-ADR-008-deliberation-record Item 3 lifecycle sharpening (entry+transition+withdrawal) and the ratified revalidation obligation and expire-not-delete rulings — decision-bearing commitments not surfaced in the §2 enumeration"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.4 provenance-survival commitment vs §5.3 decision-provenance retention gap",
+    "claim": "§2.4 commits, as a standing decision, that 'A design that relied on a lesson which later resolves, or on a promoted fact which is later retracted, must remain answerable by traversal to the fact as it stood when it was consumed.' §5.3 then concedes the survival guarantee 'is currently scoped to promoted facts' and that a decision consuming an un-promoted fact 'could age out the graph-native trace.' At the posture altitude, the §2.4 commitment stands ahead of the substrate that supports it: the record commits a survival requirement broader than any built mechanism honors and defers the extension to a follow-up. Whether an ADR should commit a requirement its own Risks section flags as unmet by present mechanism — versus committing the requirement scoped to what the substrate supports today — is a posture question the record resolves in one direction (commit-broad) without reconciling the two sections.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.4 (unqualified provenance-survival commitment) in conflict with ADR-008 §5.3 ('scoped to promoted facts ... could age out the graph-native trace'); RBT-59 deliberation Item 3 caveat: 'ADR commits the survival requirement; extending the mechanism → named DDR-002 + DDR-003 follow-up'"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "Metadata table 'Supersedes: None' / §2.2 Promotion bullet / §2.3 — Relationship to ADR-001 §2.5",
+    "claim": "The record decides a generalization-and-subsumption relationship to ADR-001 §2.5 (§2.2 Promotion bullet: 'this ADR is the general upstream authority for promotion as ground-truth mutation, and §2.5 is cited, not superseded'; §2.3 homes the un-promotion extension §2.5 does not reach), but the position is asserted in passing across §1, §2.2, and §2.3 rather than recorded at one locus as a decided relationship. For a platform principle that reshapes how an accepted spine ADR's authority is read, the subsumption is a posture the record should home explicitly, not distribute.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "ADR-008-run-025-operator-rulings Ruling B: 'add an explicit \"Relationship to ADR-001 §2.5\" statement recording the generalization + subsumption + un-promotion extension, so the position is recorded, not asserted in passing'"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.6 Governance boundary — altitude discipline",
+    "claim": "Attacked whether the record over-reaches its ADR altitude by smuggling remedy-boundary, threshold, cadence, or reviewer-role decisions into the principle layer. The attack failed: §2.6 explicitly fences the remedy boundary (supersede vs retract), criteria, thresholds, cadence, retention, roles, and multi-condition composition to the forthcoming feedback-loop governance design, §2 states 'It fixes no policy, threshold, cadence, or mechanism,' and §5/§6 route the new commitments outward rather than deciding them. The record commits invariant + accountability + control-type only, integrating with the ratified altitude line rather than pulling against it. Held.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "RBT-59-ADR-008-deliberation-record Item 5 (ADR owns invariant + accountability + control-type + lifecycle; remedy-boundary and governance policy route downstream, citing this ADR as authority); ADR-008 §2.6"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.6 / §7 — ADR ↔ feedback-loop-governance citation direction",
+    "claim": "Attacked whether the record creates a dependency inversion by leaning on the forthcoming governance design — i.e. listing DDR-003 as an upstream it depends on, which would make the ADR non-standalone. The attack failed: §7 states 'This ADR is its upstream authority' and places the pointer-resolution obligation in the downstream record's definition of done, and §2.6 routes remedy-boundary and policy downstream without depending on them; the ADR never lists the forthcoming governance design as an upstream dependency. The citation direction is proportionate and one-way, consistent with the standalone-record posture. Held.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "ADR-008-run-025-operator-rulings governing principle (an ADR is standalone; downstream records cite it, never the reverse) + Ruling B durable-chain requirement; ADR-008 §2.6/§7"
+    }
+  }
+]

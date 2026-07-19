@@ -1,0 +1,52 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2 Decision statement enumeration (§2.1–§2.6) vs §2.4 withdrawal-posture and revalidation-obligation rulings",
+    "claim": "The §2 Decision preamble states 'This record fixes the invariant, the accountability, and the control-type per class. It fixes no policy, threshold, cadence, or mechanism.' §2.4 then commits two decision-bearing rulings not surfaced in that enumeration: the withdrawal posture ('Withdrawal of a ground-truth fact ... is read-exclusion and retention-demotion, never hard-deletion') and the revalidation obligation ('A distilled lesson may not persist as authoritative track-record indefinitely without re-grounding ... This ADR commits that the obligation exists'). A reader treating the §2 statement as the contract's index misses both rulings — they are decided but not declared in the Decision index.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "author-decision-record SKILL, Body integrity: 'the Decision block is the contract's index' / 'An amendment that adds a ruling updates the Decision enumeration ... a ruling it doesn't enumerate is invisible to every reader who correctly treats the enumeration as complete' — applied to ADR-008 §2.4's withdrawal and revalidation rulings, which the §2 preamble's stated enumeration does not name"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.4 Provenance-survival commitment vs §5.3 Decision-provenance retention gap",
+    "claim": "§2.4 commits as a decision: 'A decision that relied on a promoted fact which is later retracted must remain answerable by traversal to the fact as it stood when it was consumed.' §2.4 immediately qualifies that the frozen-provenance survival guarantee is scoped to promoted facts, and §5.3 concedes a design consuming an un-promoted fact 'relies on Reasoning-Graph evidence under bounded retention, which could age out the graph-native trace.' The §2.4 survival requirement is stated as a committed platform property broader than any built mechanism honors for the un-promoted-consumption case — the decided consequence outruns the substrate the record itself acknowledges, and whether the ADR should commit-broad-with-caveat versus commit-scoped-to-supported is resolved in one direction without reconciling the §2.4 requirement statement and the §5.3 concession into a single coherent commitment.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.4 (survival requirement 'must remain answerable by traversal') in conflict with ADR-008 §5.3 ('scoped to promoted facts ... could age out the graph-native trace')"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "Metadata table 'Supersedes: None' + §2.2 Promotion bullet + §2.3 — Relationship to ADR-001 §2.5",
+    "claim": "The record decides a generalization-and-subsumption relationship to ADR-001 §2.5: §2.2's Promotion bullet states 'this ADR is the general upstream authority for promotion as ground-truth mutation, and §2.5 is cited, not superseded'; §2.3 homes the un-promotion authority §2.5 does not reach. This is a decided relationship to a ratified spine ADR — a consequence of the decision — but it is stated only in passing across §1, §2.2, and §2.3, with no single declared 'Relationship to ADR-001 §2.5' locus recording the generalization + subsumption + un-promotion extension. The decided relationship is distributed rather than homed as a decision.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "adr-template §2 (Decision: 'expand into testable sub-decisions ... include only sub-decisions this ADR constrains') — the ADR-001 §2.5 generalization/subsumption is a decided relationship stated only in passing at ADR-008 §1, §2.2, §2.3, not surfaced as a decision at one locus"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.6 Governance boundary vs §5 / §6",
+    "claim": "Attacked whether the record smuggles remedy-boundary, threshold, cadence, retention, role, or multi-condition composition decisions in under the accountability-principle frame — a scope over-claim from the claim-fidelity altitude. The attack failed: §2.6 explicitly fences the remedy boundary (supersede vs retract), criteria, thresholds, cadence, retention windows, role assignments, and multi-condition semantics to the forthcoming feedback-loop governance design, and §2 states 'It fixes no policy, threshold, cadence, or mechanism.' §5.2 and §6 (check 5, Boundary check) route the new commitments outward rather than deciding them. The record decides invariant + accountability + control-type only; no policy ruling rides into the principle layer, and the title, summary, and body decision-content match.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.6 (remedy boundary + all governance policy routed to the forthcoming feedback-loop governance design) reconciled with §2 ('It fixes no policy, threshold, cadence, or mechanism') and §5.2/§6 check 5 outward routing — no scope over-reach"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.1 scope exclusion of Reasoning-Graph capture vs §2.2 Operational-distillation control",
+    "claim": "Attacked whether §2.1's exclusion of Reasoning-Graph capture ('Reasoning-Graph capture is not ground truth ... outside this record's scope') opens an exemption gap with the distillation control §2.2 governs — a write that escapes both the RG-capture invariant and this ADR. It held: the distillation control targets a derived ObservedPattern entering the Operational KG plane (ground-truth mutation, origin_mechanism: derived per DDR-002 §2.3), not an RG write, so no mutation falls between the two authorities. §2.1 cites the correct owning authorities (ADR-001 §2.2; ADR-002 §2.6) for the excluded domain and does not over-claim scope onto RG capture. The scope declaration matches the decision content.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.1 (RG-capture exclusion citing ADR-001 §2.2 / ADR-002 §2.6) vs §2.2 (Operational-distillation control over a DDR-002 §2.3 origin_mechanism: derived KG-plane write) — no exemption gap; consistent with R30 derive/promote seam"
+    }
+  }
+]
