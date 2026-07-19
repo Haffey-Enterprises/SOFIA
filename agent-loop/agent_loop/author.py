@@ -43,6 +43,12 @@ _EDIT_KEYS = (
     "confidence",
 )
 _REFUSE_KEYS = ("reason", "confidence")
+# The `close_satisfied` required keys are only the always-present three. The two
+# evidence fields (`evidence_present`, `evidence_absent`) are individually
+# nullable — either may be null so long as at least one is supplied — so their
+# presence is enforced as a construction invariant (§at-least-one), not as a
+# missing-key parse check.
+_SATISFIED_KEYS = ("authority_satisfied", "rationale", "confidence")
 
 # The anchor-fail storm threshold (§9: "abort only on an anchor-fail storm").
 # A single anchor fail is a finding-level defect — logged, escalated, not looped
@@ -57,6 +63,13 @@ _ANCHOR_STORM_MIN = 2
 # many findings parse-failed and none applied is the same prompt/assembly-defect
 # signal as the anchor storm, so it reuses the anchor-storm threshold.
 _PARSE_STORM_MIN = _ANCHOR_STORM_MIN
+
+# The productive outcomes for the storm guards' "nothing applied" conjunction. A
+# storm (anchor or parse) fires only when at least the threshold of failures
+# occurred AND nothing was applied this pass. A satisfied-close is productive —
+# it closes a finding on mechanically-verified evidence, exactly as an edit does
+# — so a pass of valid satisfied-closes is not a storm (RBT-71 Piece A).
+_PRODUCTIVE_OUTCOMES = frozenset({"edit", "satisfied"})
 
 
 class AuthorParseStormError(RuntimeError):
@@ -80,7 +93,7 @@ class AuthorAnchorStormError(RuntimeError):
     """
 
 
-# --- the two author actions (invariants enforced at construction) ------------
+# --- the three author actions (invariants enforced at construction) ----------
 
 
 @dataclass(frozen=True)
@@ -147,6 +160,62 @@ class AuthorRefusal:
             raise ValueError(f"invalid confidence {self.confidence!r}")
         if not self.reason.strip():
             raise ValueError("a refusal must give a reason")
+
+
+@dataclass(frozen=True)
+class AuthorSatisfied:
+    """A satisfied-close: the finding's demand is already met by the current text.
+
+    The author's third action (RBT-71 Piece A), lawful only when the conforming
+    state is *quotable* verbatim from the current document (or the offending text
+    is verifiably absent). The closure is accepted only after a mechanical
+    evidence check in `_apply_satisfied`; on any failure it degrades to today's
+    escalate, closing nothing. Construction enforces the prompt's invariants so a
+    malformed satisfied-close can never reach the apply path:
+      - at least one evidence field must be supplied (non-null and non-empty) —
+        a satisfied-close with no quotable evidence is exactly the interpretive
+        close the bias rule forbids, so it is a construction error, not a close;
+      - `confidence` must be `high` or `medium` — a `low`-confidence close is a
+        contradiction with the bias rule (unsure means refuse), exactly as for
+        an `AuthorEdit`;
+      - `authority_satisfied` must be non-empty — the closure names the authority
+        + locus the current text already conforms to.
+
+    Attributes:
+        finding_id: The finding this closes (stamped from the ledger).
+        evidence_present: A verbatim substring of the current document showing the
+            conformed state — checked to occur >= 1 time — or None.
+        evidence_absent: The offending string the finding targets, checked to occur
+            0 times in the current document — or None.
+        authority_satisfied: The authority + locus the current text conforms to.
+        rationale: One terse sentence (<=~30 words).
+        confidence: 'high' | 'medium'.
+    """
+
+    finding_id: str
+    evidence_present: str | None
+    evidence_absent: str | None
+    authority_satisfied: str
+    rationale: str
+    confidence: str
+
+    def __post_init__(self) -> None:
+        if not (self.evidence_present or self.evidence_absent):
+            raise ValueError(
+                "a satisfied-close must supply at least one non-empty evidence "
+                "field (evidence_present and/or evidence_absent) — an unquotable "
+                "satisfaction is a refusal, not a close"
+            )
+        if self.confidence not in ("high", "medium"):
+            raise ValueError(
+                "a satisfied-close's confidence must be 'high' or 'medium' — a "
+                "low-confidence close is forbidden (bias rule), got "
+                f"{self.confidence!r}"
+            )
+        if not self.authority_satisfied.strip():
+            raise ValueError(
+                "a satisfied-close must name the authority its text conforms to"
+            )
 
 
 # --- parse seam: envelope-tolerant, schema-strict, never fabricate -----------
@@ -218,10 +287,10 @@ def _extract_json_object(raw_text: str) -> tuple[str | None, bool]:
 
 def _parse_author_output(
     raw_text: str, finding_id: str, log: ActionLog | None = None
-) -> AuthorEdit | AuthorRefusal | None:
+) -> AuthorEdit | AuthorRefusal | AuthorSatisfied | None:
     """Parse author output into one action, or None if malformed.
 
-    The action must be one of the two schema objects with all its fields and
+    The action must be one of the three schema objects with all its fields and
     valid vocabulary — every invariant above is enforced by construction.
     `finding_id` is stamped from the actual finding, never trusted from the
     model's echo. Any defect returns None (a content malformation), never a
@@ -242,7 +311,7 @@ def _parse_author_output(
         data = json.loads(obj_text)
         action = data["action"]
         if action == "edit":
-            result: AuthorEdit | AuthorRefusal = AuthorEdit(
+            result: AuthorEdit | AuthorRefusal | AuthorSatisfied = AuthorEdit(
                 finding_id=finding_id,
                 target=data["target"],
                 old_string=data["old_string"],
@@ -255,6 +324,19 @@ def _parse_author_output(
             result = AuthorRefusal(
                 finding_id=finding_id,
                 reason=data["reason"],
+                confidence=data["confidence"],
+            )
+        elif action == "close_satisfied":
+            # The two evidence fields are individually nullable — an omitted key
+            # reads as null (the AuthorSatisfied construction invariant enforces
+            # at-least-one-supplied), so they are fetched leniently while the
+            # always-present keys stay strict, mirroring the edit/refuse idiom.
+            result = AuthorSatisfied(
+                finding_id=finding_id,
+                evidence_present=data.get("evidence_present"),
+                evidence_absent=data.get("evidence_absent"),
+                authority_satisfied=data["authority_satisfied"],
+                rationale=data["rationale"],
                 confidence=data["confidence"],
             )
         else:
@@ -282,9 +364,16 @@ def _diagnose_author_defect(raw_text: str) -> str:
     # schema (wrong action, missing key, bad vocabulary), not envelope.
     data = json.loads(obj_text)
     action = data.get("action")
-    if action not in ("edit", "refuse"):
-        return "the previous output's 'action' was not 'edit' or 'refuse'"
-    required = _EDIT_KEYS if action == "edit" else _REFUSE_KEYS
+    if action not in ("edit", "refuse", "close_satisfied"):
+        return (
+            "the previous output's 'action' was not 'edit', 'refuse', or "
+            "'close_satisfied'"
+        )
+    required = {
+        "edit": _EDIT_KEYS,
+        "refuse": _REFUSE_KEYS,
+        "close_satisfied": _SATISFIED_KEYS,
+    }[action]
     missing = [key for key in required if key not in data]
     if missing:
         return "the previous output was missing required key(s): " + ", ".join(missing)
@@ -292,7 +381,10 @@ def _diagnose_author_defect(raw_text: str) -> str:
         "the previous output used an invalid vocabulary value (an 'edit' needs a "
         "non-empty target and a non-empty old_string, and confidence 'high' or "
         "'medium' — never 'low'; a 'refuse' needs a non-empty reason and "
-        "confidence 'high', 'medium', or 'low')"
+        "confidence 'high', 'medium', or 'low'; a 'close_satisfied' needs a "
+        "non-empty authority_satisfied, at least one non-empty evidence field "
+        "(evidence_present and/or evidence_absent), and confidence 'high' or "
+        "'medium' — never 'low')"
     )
 
 
@@ -305,8 +397,8 @@ def _author_repair_suffix(defect: str) -> str:
     return (
         f"\n\nYOUR PREVIOUS RESPONSE COULD NOT BE PARSED: {defect}. "
         "Emit the complete raw JSON object per the Output section — exactly one "
-        "of the edit or refusal objects, with all of its fields, no fences, "
-        "first character {."
+        "of the edit, refusal, or satisfied-close objects, with all of its "
+        "fields, no fences, first character {."
     )
 
 
@@ -515,8 +607,9 @@ class LlmAuthor:
             self._author_one(ledger, finding, pass_number, log)
             for finding in _open_resolvable(ledger)
         ]
+        applied = bool(set(outcomes) & _PRODUCTIVE_OUTCOMES)
         anchor_fails = outcomes.count("anchor_fail")
-        if anchor_fails >= _ANCHOR_STORM_MIN and "edit" not in outcomes:
+        if anchor_fails >= _ANCHOR_STORM_MIN and not applied:
             raise AuthorAnchorStormError(
                 f"pass {pass_number}: {anchor_fails} attempted edits all failed "
                 "their exact-single-match anchor check and none applied — the "
@@ -528,7 +621,7 @@ class LlmAuthor:
         # storm with nothing applied aborts — the parse-side twin of the anchor
         # storm above, reusing its threshold.
         parse_fails = outcomes.count("parse_fail")
-        if parse_fails >= _PARSE_STORM_MIN and "edit" not in outcomes:
+        if parse_fails >= _PARSE_STORM_MIN and not applied:
             raise AuthorParseStormError(
                 f"pass {pass_number}: {parse_fails} findings produced output that "
                 "could not be parsed after a content retry and none applied — the "
@@ -539,7 +632,11 @@ class LlmAuthor:
     def _author_one(
         self, ledger: Ledger, finding: Finding, pass_number: int, log: ActionLog
     ) -> str:
-        """Author one finding. Returns the outcome: edit/refused/anchor_fail/unresolved."""
+        """Author one finding.
+
+        Returns the outcome:
+        edit/satisfied/refused/satisfied_evidence_fail/anchor_fail/parse_fail/unresolved.
+        """
         # Fetched fresh per finding: an earlier finding's edit this same pass is
         # visible here, so anchors are checked against the text as it now stands.
         documents = self._fetcher(self._doc_ids).documents
@@ -599,11 +696,15 @@ class LlmAuthor:
             )
             _escalate(finding)
             return "refused"
+        if isinstance(action, AuthorSatisfied):
+            return self._apply_satisfied(
+                ledger, finding, action, documents, pass_number, log
+            )
         return self._apply(ledger, finding, action, documents, pass_number, log)
 
     def _call(
         self, finding: Finding, base_user: str, log: ActionLog
-    ) -> AuthorEdit | AuthorRefusal | None:
+    ) -> AuthorEdit | AuthorRefusal | AuthorSatisfied | None:
         """One author call with one corrective content retry.
 
         Mirrors `ApiArbiter.classify` for the transport retry and the parse seam;
@@ -693,3 +794,82 @@ class LlmAuthor:
             path=str(path),
         )
         return "edit"
+
+    def _apply_satisfied(
+        self,
+        ledger: Ledger,
+        finding: Finding,
+        action: AuthorSatisfied,
+        documents: dict[str, str],
+        pass_number: int,
+        log: ActionLog,
+    ) -> str:
+        """Close a finding that the current text already satisfies, or escalate (RBT-71).
+
+        The satisfied-close writes no document and records no DocChange — its
+        whole act is a mechanically-verified ledger transition. The evidence is
+        checked against the current text of the finding's target document(s)
+        (all present in `documents` by construction — `_author_one` escalated any
+        unknown target before this point):
+          - `evidence_present` supplied → must occur at least once, verbatim
+            (presence, not uniqueness — this is evidence, not an edit anchor);
+          - `evidence_absent` supplied → must occur zero times;
+          - both supplied → both must hold.
+        On verify: the finding is closed (`status`, `pass_closed`,
+        `resolution_note`) and `author_satisfied` is emitted. On any failure:
+        `author_satisfied_evidence_fail` is emitted with which check failed and
+        the match counts, and the finding is escalated exactly as today — a
+        malformed or unverified satisfied-close can never close a finding.
+        """
+        present_count: int | None = None
+        absent_count: int | None = None
+        present_ok = True
+        absent_ok = True
+        if action.evidence_present:
+            present_count = sum(
+                documents[doc].count(action.evidence_present) for doc in finding.target
+            )
+            present_ok = present_count >= 1
+        if action.evidence_absent:
+            absent_count = sum(
+                documents[doc].count(action.evidence_absent) for doc in finding.target
+            )
+            absent_ok = absent_count == 0
+
+        if not (present_ok and absent_ok):
+            failed = []
+            if action.evidence_present and not present_ok:
+                failed.append("evidence_present")
+            if action.evidence_absent and not absent_ok:
+                failed.append("evidence_absent")
+            log.emit(
+                "author_satisfied_evidence_fail",
+                finding_id=finding.id,
+                failed=failed,
+                evidence_present_count=present_count,
+                evidence_absent_count=absent_count,
+            )
+            _escalate(finding)
+            return "satisfied_evidence_fail"
+
+        kinds = [
+            kind
+            for kind, supplied in (
+                ("present", bool(action.evidence_present)),
+                ("absent", bool(action.evidence_absent)),
+            )
+            if supplied
+        ]
+        finding.status = "closed"
+        finding.pass_closed = pass_number
+        finding.resolution_note = (
+            f"satisfied: already conforms to {action.authority_satisfied}"
+        )
+        log.emit(
+            "author_satisfied",
+            finding_id=finding.id,
+            evidence=kinds,
+            authority_satisfied=action.authority_satisfied,
+            confidence=action.confidence,
+        )
+        return "satisfied"

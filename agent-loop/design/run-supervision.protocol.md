@@ -46,6 +46,16 @@ judgments and misses the run.
 1. Prep gates (run-prep contract §8) all passed — the runner enforces
    them, but confirm the manifest was written and records the expected
    HEAD SHA (`48e031a` or its descendant) and all six prompt hashes.
+
+**Spend discipline — does this run need to exist?** A live proving run is the last resort, not the default; clear these four before acknowledging the envelope.
+
+1. **Units before dollars.** Spend a live run only on what a unit test cannot answer. Mechanical behavior — routing, disposition, identity collapse, gate logic — proves out in the S-/T-suites for free; a determined-not-observed disposition (a deterministic gate over captured state) needs no live event at all. Reserve live runs for genuinely emergent, real-input questions: caching under real inter-pass gaps, reviewer output discipline, emergent finding volume and false-positive rate.
+2. **Bound to the minimum passes.** Set `max_passes` from what the target criterion needs, not a high ceiling. Most criteria prove out in 1–3 passes; a low bound also forces a disposition cheaply where a natural halt would otherwise run long.
+3. **Match the target to the question.** Decision-dense records (e.g. ADR-008) never exhaust and run long by nature — use them only when you need that behavior. Keep a small near-convergeable target on hand for CONVERGED / decision-bearing / disposition proofs.
+4. **Mine captured fixtures before spending.** A finalized run folder is a rich, free fixture; most what-happened / why questions — cold audits, defect triage, cost profiling — answer from captured artifacts at $0. Spend a new run only when no captured run can answer it.
+
+The Batch API (50%) and per-actor model-mix are architectural cost levers, tracked separately (RBT-72) — they change what a run costs; these four govern whether it runs.
+
 2. Cost envelope acknowledged. Order-of-magnitude, stated honestly as
    estimate not measurement: the four distilled docs are ~145 KB ≈ ~36k
    tokens; with substrate and snapshot, each reviewer call is roughly
@@ -139,6 +149,27 @@ honored? any false-resolvable is a serious miss), POSITIVE proportionality
 (per-hat volume + survived-attack framing), and per-hat cost from the
 manifest (tokens per hat per pass — the denominator of the roster
 question).
+
+**Cross-pass edit-region overlap (RBT-71 D-2 audit watch).** Computed cold at $0
+from the captured author emissions: whether any two edits across passes have
+anchor regions that intersect in the document — the same span rewritten across
+passes even where the recurrence guard saw no reopen (the guard keys on identity
+and is blind to semantic trading arriving under differing locus wordings; run-030
+rewrote the §2.2 Environment cell in all five pass-states with recurrence = 0).
+This instruments the known semantic-churn gap rather than closing it. Promotion
+trigger: post-fix audits still showing cross-pass edit-region churn → a mechanical
+same-region re-edit trigger routed into the oscillation family, designed against
+post-fix data.
+
+**Docket-discipline surfacing (RBT-71 Piece B).** When a halt's decision set is
+surfaced to the operator it is presented **grouped by distinct underlying
+decision**, not one ask per finding record: each group is one ratification ask,
+its member finding-ids listed, with the body-evidence per group; ratification is
+per decision; groups are splittable on operator demand (the presentation shape is
+codified in the `design-review-loop` skill's triage section). The ledger records
+stay unbundled and distinct — RBT-69 counting semantics are preserved — this is a
+presentation shape, not a runner change; the audit records whether surfacing
+honored it.
 
 ## §6 — Baseline comparison set
 

@@ -113,10 +113,20 @@ RUN_ONE_MAX_PASSES = 10
 # preamble-tolerant reviewer array-salvage seam (real_hats._extract_json_array,
 # logged) so a narrated preamble degrades to a logged strip rather than aborting a
 # pass (run-029 → RBT-70), the reviewer-side analog of gen-10's author fix.
+# gen-12 appends Contract rule 9 (live-text grounding) to all four reviewer
+# prompts — a non-conformance claim must quote the current document text it
+# faults at the named locus, or name the required text as absent there; a defect
+# re-derived from authority or a prior pass without locating it in the live text
+# is not a finding (RBT-71 Piece C, run-030 refusal-analysis basis: re-derived-
+# not-located claims among the phantom refusal stream). Paired-in-concept with
+# the author's `close_satisfied` disposition (RBT-71 Piece A, code-side) but
+# independently a prompt-only change. The gen-stamp is set manually here pending
+# the RBT-70 gen-stamp-hygiene fast-follow (the known gap: the manifest stamp is
+# not yet mechanically derived from the landed prompt hashes).
 # The rationale cites by meaning: operational artifacts never carry ticket
 # numbers — ticket linkage lives in tickets, carriers, and audits.
 CALIBRATION = {
-    "generation": 11,
+    "generation": 12,
     "rationale": (
         "gen-4: severity/cap discipline restated in-place in all four reviewer "
         "prompts — a held check is POSITIVE-class, never re-labeled a defect to "
@@ -148,7 +158,14 @@ CALIBRATION = {
         "character `[`, no reconciliation prose; paired in code with the "
         "preamble-tolerant reviewer array-salvage seam "
         "(real_hats._extract_json_array, logged) so a narrated preamble no "
-        "longer aborts a pass (run-029)"
+        "longer aborts a pass (run-029); gen-12: Contract rule 9 (live-text "
+        "grounding) appended to all four reviewer prompts — a non-conformance "
+        "claim must quote the current document text it faults at the named "
+        "locus, or name the required text as absent there; a defect re-derived "
+        "from authority, a ruling, or a prior pass without locating it in the "
+        "live text is not a finding (RBT-71 Piece C, run-030 refusal-analysis "
+        "basis); the reviewer-stream companion to the author's close_satisfied "
+        "disposition (Piece A, code-side)"
     ),
 }
 

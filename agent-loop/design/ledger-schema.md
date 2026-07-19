@@ -23,13 +23,39 @@ functions over its state.
 | `pass_raised` | int | admission | pass number first admitted |
 | `pass_closed` | int \| null | author | pass number closed |
 | `recurrence_count` | int | admission | increments when a previously-`closed` `id` is re-admitted `open` |
-| `resolution_note` | string \| null | author | in dry mode: *proposed* only, not applied |
+| `resolution_note` | string \| null | author | in dry mode: *proposed* only, not applied. Variants: `conformed to <authority>` (edit) \| `satisfied: already conforms to <authority>` (satisfied-close, RBT-71 — see §Satisfied-close disposition) |
 
 `cited_authority` shape:
 ```
 { kind: "canonical" | "design-intent" | "coherence" | "soundness",
   ref:  "<named artifact + locus>" | "<quoted design-intent>" | "<target+locus in conflict>" | "<named defect>" }
 ```
+
+### Satisfied-close disposition (RBT-71)
+
+The author's third action, `close_satisfied` (`author.py`; `author.prompt.md`),
+closes a finding whose demand the current document text *already* meets. It adds
+**no schema field and no status value** — a satisfied-close is an ordinary close
+(`status = "closed"`, `pass_closed` stamped), so `open_cbm`, plateau, and the
+router are arithmetically untouched (a satisfied-closed finding counts exactly as
+an edit-closed one). It is distinguished only by its `resolution_note` variant
+and its action-log events:
+
+- `resolution_note = "satisfied: already conforms to <authority_satisfied>"` — the
+  satisfied variant, parallel to the edit's `"conformed to <authority>"`.
+- Action-log event **`author_satisfied`** (`finding_id`, `evidence` — the kind(s)
+  checked, `["present"]` / `["absent"]` / both, `authority_satisfied`,
+  `confidence`) — emitted when the mechanical evidence check passes and the
+  finding closes.
+- Action-log event **`author_satisfied_evidence_fail`** (`finding_id`, `failed` —
+  which check(s) did not hold, `evidence_present_count`, `evidence_absent_count`)
+  — emitted when the evidence does not verify; the finding is **escalated**, never
+  closed. A malformed or unverified satisfied-close can never close a finding.
+
+Safety: a *wrong* satisfied-close is caught by the existing recurrence trigger — a
+reviewer re-raising the same identity next pass reopens the closed `id`,
+increments `recurrence_count`, and halts loudly as `oscillation` (§Identity;
+`mechanical-gates.md` §2).
 
 ## Pass record
 

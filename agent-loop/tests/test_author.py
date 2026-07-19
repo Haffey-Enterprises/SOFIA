@@ -18,13 +18,14 @@ from agent_loop.author import (
     AuthorEdit,
     AuthorParseStormError,
     AuthorRefusal,
+    AuthorSatisfied,
     LlmAuthor,
     _authority_reference,
     _diagnose_author_defect,
     _parse_author_output,
 )
 from agent_loop.fetchers import RepoDocumentFetcher
-from agent_loop.gates import route
+from agent_loop.gates import open_cbm, route
 from agent_loop.identity import derive_id
 from agent_loop.ledger import (
     CitedAuthority,
@@ -455,7 +456,7 @@ def test_one_parse_fail_alongside_one_applied_edit_is_not_a_storm(tmp_path) -> N
 
 
 def test_the_retry_names_the_defect_and_the_second_attempt_can_succeed(tmp_path) -> None:
-    # An action outside the two-object schema is malformed — never coerced.
+    # An action outside the three-object schema is malformed — never coerced.
     emitter = ScriptedEmitter(
         ['{"action": "rewrite"}', _edit_json("Beta section.", "Bravo section.")]
     )
@@ -465,7 +466,7 @@ def test_the_retry_names_the_defect_and_the_second_attempt_can_succeed(tmp_path)
 
     second_user = emitter.calls[1][1]
     assert "YOUR PREVIOUS RESPONSE COULD NOT BE PARSED" in second_user
-    assert "'action' was not 'edit' or 'refuse'" in second_user
+    assert "'action' was not 'edit', 'refuse', or 'close_satisfied'" in second_user
     assert "first character {" in second_user
     assert finding.status == "closed"
 
@@ -492,7 +493,10 @@ def test_a_low_confidence_edit_is_malformed_and_escalates_not_applied(tmp_path) 
     [
         ("<not json>", "the previous output contained no parseable JSON object"),
         ("[]", "the previous output contained no parseable JSON object"),
-        ('{"action": "rewrite"}', "the previous output's 'action' was not 'edit' or 'refuse'"),
+        (
+            '{"action": "rewrite"}',
+            "the previous output's 'action' was not 'edit', 'refuse', or 'close_satisfied'",
+        ),
         (
             '{"action": "edit", "target": "ADR-001"}',
             "the previous output was missing required key(s): old_string, new_string, "
@@ -610,6 +614,12 @@ def test_a_preamble_wrapped_edit_applies_on_the_first_attempt(tmp_path) -> None:
         lambda: AuthorEdit("f", "ADR-001", "", "new", "auth", "why", "high"),
         lambda: AuthorRefusal("f", "reason", "certain"),
         lambda: AuthorRefusal("f", "  ", "high"),
+        # A satisfied-close is rejected on each of its prompt invariants (RBT-71):
+        # no evidence supplied, low confidence, and an empty authority.
+        lambda: AuthorSatisfied("f", None, None, "auth §4", "why", "high"),
+        lambda: AuthorSatisfied("f", "", "", "auth §4", "why", "high"),
+        lambda: AuthorSatisfied("f", "quote", None, "auth §4", "why", "low"),
+        lambda: AuthorSatisfied("f", "quote", None, "  ", "why", "high"),
     ],
 )
 def test_author_action_invariants_are_enforced_at_construction(action) -> None:
@@ -831,3 +841,336 @@ def test_edit_then_reopen_halts_to_the_operator(tmp_path) -> None:
     assert reopened.status == "open" and reopened.recurrence_count == 1
     # One proposed escalation, unbundled.
     assert len(log.of_kind("proposed_escalation")) == 1
+
+
+# --- RBT-71: the satisfied-close disposition (S-SAT-suite) -------------------
+
+
+RUN030 = Path(__file__).resolve().parents[1] / "runs" / "run-030-adr-008-rbt69"
+
+
+def _satisfied_json(
+    *,
+    present: str | None = None,
+    absent: str | None = None,
+    authority: str = "adr-template §4",
+    confidence: str = "high",
+) -> str:
+    """A `close_satisfied` author emission (finding_id is stamped from the ledger)."""
+    return json.dumps(
+        {
+            "action": "close_satisfied",
+            "finding_id": "echoed-value-ignored",
+            "evidence_present": present,
+            "evidence_absent": absent,
+            "authority_satisfied": authority,
+            "rationale": "the current text already conforms to the cited authority",
+            "confidence": confidence,
+        }
+    )
+
+
+def test_ssat1_verifying_evidence_present_closes_and_is_absent_from_the_halt_payload(
+    tmp_path,
+) -> None:
+    # S-SAT-1: a close_satisfied whose evidence_present occurs verbatim closes the
+    # finding on the mechanical check alone — no doc write, no DocChange — and the
+    # closed finding never appears in a halt payload.
+    emitter = ScriptedEmitter([_satisfied_json(present="Beta section.")])
+    author = _author(tmp_path, emitter)
+    satisfied = _finding(claim="already conforms", locus="§2")
+    decision = _finding(claim="a real fork", locus="§9", classification="decision-bearing")
+    ledger = _ledger([satisfied, decision])
+    log = ActionLog()
+
+    author(ledger, 4, log)
+
+    # Closed, but nothing was written and no doc-change was recorded.
+    assert (tmp_path / "documents" / "ADR-001-distilled.md").read_text() == _DOC_TEXT
+    assert ledger.doc_changes == []
+    assert satisfied.status == "closed"
+    assert satisfied.pass_closed == 4
+    assert satisfied.resolution_note == "satisfied: already conforms to adr-template §4"
+    event = log.of_kind("author_satisfied")[0]
+    assert event.detail["finding_id"] == satisfied.id
+    assert event.detail["evidence"] == ["present"]
+    assert event.detail["authority_satisfied"] == "adr-template §4"
+    assert event.detail["confidence"] == "high"
+    # Never surfaced: the run halts on the co-finding decision; the satisfied id
+    # is absent from that payload.
+    exit_ = route(ledger)
+    assert exit_.kind == "HALT_DECISION" and exit_.reason == "decision-bearing"
+    payload_ids = [f.id for f in exit_.payload]
+    assert decision.id in payload_ids
+    assert satisfied.id not in payload_ids
+
+
+def test_ssat2_nonoccurring_evidence_present_escalates_and_stays_open(tmp_path) -> None:
+    # S-SAT-2 (the never-hides-a-live-finding test): evidence_present that does not
+    # occur in the document fails the mechanical check → escalate, nothing closed.
+    emitter = ScriptedEmitter([_satisfied_json(present="Zeta section (not present).")])
+    author = _author(tmp_path, emitter)
+    finding = _finding()
+    ledger = _ledger([finding])
+    log = ActionLog()
+
+    author(ledger, 1, log)
+
+    assert (tmp_path / "documents" / "ADR-001-distilled.md").read_text() == _DOC_TEXT
+    assert ledger.doc_changes == []
+    assert log.of_kind("author_satisfied") == []
+    fail = log.of_kind("author_satisfied_evidence_fail")[0]
+    assert fail.detail["finding_id"] == finding.id
+    assert fail.detail["failed"] == ["evidence_present"]
+    assert fail.detail["evidence_present_count"] == 0
+    # Stays open, escalates, surfaces to the operator — a live finding is not hidden.
+    assert finding.status == "open"
+    assert finding.classification == "decision-bearing"
+    assert route(ledger).kind == "HALT_DECISION"
+
+
+def test_ssat3_occurring_evidence_absent_escalates(tmp_path) -> None:
+    # S-SAT-3: evidence_absent must occur ZERO times; "Beta section." is present, so
+    # the offending-text-is-gone claim is false → escalate, nothing closed.
+    emitter = ScriptedEmitter([_satisfied_json(absent="Beta section.")])
+    author = _author(tmp_path, emitter)
+    finding = _finding()
+    ledger = _ledger([finding])
+    log = ActionLog()
+
+    author(ledger, 1, log)
+
+    assert log.of_kind("author_satisfied") == []
+    fail = log.of_kind("author_satisfied_evidence_fail")[0]
+    assert fail.detail["failed"] == ["evidence_absent"]
+    assert fail.detail["evidence_absent_count"] == 1
+    assert finding.status == "open"
+    assert finding.classification == "decision-bearing"
+
+
+def test_ssat4_reraised_satisfied_close_increments_recurrence_and_halts_oscillation(
+    tmp_path,
+) -> None:
+    # S-SAT-4 (pins the safety net): a satisfied-close is recurrence-catchable
+    # exactly as an edit-close is. A reviewer re-raising the closed identity next
+    # pass reopens it, increments recurrence_count, and halts loudly as oscillation.
+    finding = _finding()
+    documents_root, ran, plan = _multipass_rig(
+        tmp_path, {1: [finding], 2: [_finding()]}  # pass 2 re-emits the same id
+    )
+    emitter = ScriptedEmitter([_satisfied_json(present="Beta section.")])
+    author = LlmAuthor(
+        prompt_path=AUTHOR_PROMPT,
+        emitter=emitter,
+        documents_root=documents_root,
+        substrate_fetcher=_substrate_fetcher(),
+        doc_ids=["ADR-001"],
+    )
+    verdict = ArbiterResult(finding.id, "resolvable", "adr-template §4", "determined", "high")
+    log = ActionLog()
+
+    result = run_loop(
+        header=LedgerHeader(set=["ADR-001"], counted_severities=["BLOCKING", "MATERIAL"]),
+        plan=plan,
+        arbiter=CannedArbiter({finding.id: verdict}),
+        store=LedgerStore(tmp_path / "ledger.json"),
+        author=author,
+        fetch_documents=RepoDocumentFetcher(documents_root),
+        fetch_substrate=_substrate_fetcher(),
+        log=log,
+        clock=lambda: "2026-07-19T00:00:00Z",
+    )
+
+    assert result.exit.kind == "HALT_DECISION"
+    assert result.exit.reason == "oscillation"
+    assert [f.id for f in result.exit.payload] == [finding.id]
+    reopened = result.ledger.find_by_id(finding.id)
+    assert reopened.status == "open" and reopened.recurrence_count == 1
+    # The pass-1 close was a satisfied-close (no doc write, no DocChange) — the
+    # safety net still fires.
+    assert len(log.of_kind("author_satisfied")) == 1
+    assert result.ledger.doc_changes == []
+    assert len(emitter.calls) == 1  # the reopened finding was not re-authored
+
+
+@pytest.mark.parametrize(
+    ("label", "bad_emission"),
+    [
+        ("low-confidence", _satisfied_json(present="Beta section.", confidence="low")),
+        ("evidence-less", _satisfied_json(present=None, absent=None)),
+    ],
+)
+def test_ssat5_unconstructable_satisfied_close_escalates_and_applies_nothing(
+    tmp_path, label, bad_emission
+) -> None:
+    # S-SAT-5: a low-confidence or evidence-less close_satisfied fails construction
+    # in the parser (never reaches apply). Both attempts malformed → escalate via
+    # the content-retry/parse path; one finding, so it is below the storm floor.
+    emitter = ScriptedEmitter([bad_emission, bad_emission])
+    author = _author(tmp_path, emitter)
+    finding = _finding()
+    ledger = _ledger([finding])
+    log = ActionLog()
+
+    author(ledger, 1, log)
+
+    assert (tmp_path / "documents" / "ADR-001-distilled.md").read_text() == _DOC_TEXT
+    assert ledger.doc_changes == []
+    assert log.of_kind("author_satisfied") == []
+    assert log.of_kind("author_edit") == []
+    assert log.of_kind("author_parse_fail")  # escalated via the malformed path
+    assert finding.status == "open"
+    assert finding.classification == "decision-bearing"
+
+
+def test_ssat6_satisfied_close_arithmetic_is_identical_to_an_edit_close(tmp_path) -> None:
+    # S-SAT-6: open_cbm/plateau/router arithmetic is untouched by a satisfied-close
+    # — a closed-satisfied finding counts exactly as a closed-edited one.
+    a_author = _author(tmp_path / "a", ScriptedEmitter([_edit_json("Beta section.", "Bravo.")]))
+    a_finding = _finding(severity="MATERIAL")
+    a_ledger = _ledger([a_finding])
+    a_author(a_ledger, 1, ActionLog())
+
+    b_author = _author(tmp_path / "b", ScriptedEmitter([_satisfied_json(present="Beta section.")]))
+    b_finding = _finding(severity="MATERIAL")
+    b_ledger = _ledger([b_finding])
+    b_author(b_ledger, 1, ActionLog())
+
+    # Identical arithmetic: both closed, open_cbm 0, both converge.
+    assert a_finding.status == "closed" and b_finding.status == "closed"
+    assert open_cbm(a_ledger) == open_cbm(b_ledger) == 0
+    a_exit, b_exit = route(a_ledger), route(b_ledger)
+    assert a_exit.kind == b_exit.kind == "CONVERGED"
+
+
+def test_a_satisfied_close_is_productive_so_anchor_fails_alongside_it_do_not_storm(
+    tmp_path,
+) -> None:
+    # Storm accounting: a satisfied-close counts as applied for the storm guards'
+    # "nothing applied" conjunction. Two anchor-fails alone would abort as a storm;
+    # with a valid satisfied-close in the pass, the pass is productive and continues.
+    emitter = ScriptedEmitter(
+        [
+            _satisfied_json(present="Beta section."),
+            _edit_json("Nope one", "x"),
+            _edit_json("Nope two", "y"),
+        ]
+    )
+    author = _author(tmp_path, emitter)
+    satisfied = _finding(claim="already conforms", locus="§2")
+    bad_one = _finding(claim="bad one", locus="§3")
+    bad_two = _finding(claim="bad two", locus="§4")
+    ledger = _ledger([satisfied, bad_one, bad_two])
+
+    author(ledger, 1, ActionLog())  # does not raise — the pass applied a close
+
+    assert satisfied.status == "closed"
+    assert bad_one.classification == "decision-bearing"
+    assert bad_two.classification == "decision-bearing"
+
+
+# --- RBT-71: captured-fixture replays over run-030 (R-suite, $0) -------------
+
+
+def test_r1_captured_run030_refusals_parse_to_refusal_and_escalate(tmp_path) -> None:
+    # R-1 (backward compatibility): every captured run-030 author refusal still
+    # parses to AuthorRefusal under the close_satisfied-aware parser, and the refuse
+    # path still escalates. The 20 edits and 2 malformed retries are unchanged, and
+    # nothing is misparsed as the new satisfied action.
+    from collections import Counter
+
+    emissions = sorted((RUN030 / "emissions").glob("pass*-author-*.txt"))
+    assert emissions, "run-030 author-emission fixtures are missing"
+    kinds: Counter[str] = Counter()
+    for path in emissions:
+        parsed = _parse_author_output(path.read_text(encoding="utf-8"), "stamped-from-ledger")
+        kinds[type(parsed).__name__] += 1
+    assert kinds["AuthorRefusal"] == 46
+    assert kinds["AuthorEdit"] == 20
+    assert kinds["NoneType"] == 2  # the two content-retried malformed first attempts
+    assert kinds["AuthorSatisfied"] == 0
+
+    # The refuse path still escalates: drive one captured refusal through the real
+    # author and confirm it flips the finding to decision-bearing, unbundled.
+    refusal_text = next(
+        path.read_text(encoding="utf-8")
+        for path in emissions
+        if isinstance(
+            _parse_author_output(path.read_text(encoding="utf-8"), "x"), AuthorRefusal
+        )
+    )
+    author = _author(tmp_path, ScriptedEmitter([refusal_text]))
+    finding = _finding()
+    ledger = _ledger([finding])
+    log = ActionLog()
+
+    author(ledger, 1, log)
+
+    assert log.of_kind("author_refused")
+    assert finding.status == "open"
+    assert finding.classification == "decision-bearing"
+
+
+def test_r2_run030_phantom_satisfied_closes_drop_open_decision_bearing_to_33() -> None:
+    # R-2: replay the run-030 ledger with the 19 phantom-class findings (every id
+    # whose categorization is not GENUINE) closed via verifying satisfied-close
+    # fixtures, and assert the open decision-bearing set at the halt boundary is 33
+    # (6 born + 27 genuine), not 52. Proves the decision-surface de-pollutes through
+    # the real _apply_satisfied disposition + the real router. Per-finding evidence
+    # correctness is the categorization's concern (hand-audited on run-030 and pinned
+    # mechanically by S-SAT-1/2/3); here each fixture supplies a verbatim substring
+    # of the finding's own (frozen, captured) target document, so every close verifies.
+    categorization = json.loads(
+        (RUN030 / "rbt-71-categorization.json").read_text(encoding="utf-8")
+    )
+    phantom = {fid for fid, entry in categorization.items() if entry[0] != "GENUINE"}
+    assert len(phantom) == 19
+
+    ledger = LedgerStore(RUN030 / "ledger.json").load()
+
+    def open_decisions() -> list:
+        return [
+            f
+            for f in ledger.findings
+            if f.status == "open" and f.classification == "decision-bearing"
+        ]
+
+    assert len(open_decisions()) == 52
+    assert phantom <= {f.id for f in open_decisions()}
+
+    documents = RepoDocumentFetcher(RUN030 / "documents")(["ADR-008"]).documents
+    anchor = documents["ADR-008"][:40]  # a verbatim, guaranteed-present substring
+    assert anchor and documents["ADR-008"].count(anchor) >= 1
+
+    author = LlmAuthor(
+        prompt_path=AUTHOR_PROMPT,
+        emitter=ScriptedEmitter([]),  # _apply_satisfied never calls the emitter
+        documents_root=RUN030 / "documents",
+        substrate_fetcher=_substrate_fetcher(),
+        doc_ids=["ADR-008"],
+    )
+    log = ActionLog()
+    for fid in phantom:
+        finding = ledger.find_by_id(fid)
+        assert finding is not None and finding.target == ["ADR-008"]
+        action = AuthorSatisfied(
+            finding_id=fid,
+            evidence_present=anchor,
+            evidence_absent=None,
+            authority_satisfied="run-030 categorization: conforms at the captured end-state",
+            rationale="the current text already conforms",
+            confidence="high",
+        )
+        outcome = author._apply_satisfied(
+            ledger, finding, action, documents, finding.pass_raised, log
+        )
+        assert outcome == "satisfied" and finding.status == "closed"
+
+    # 52 → 33: the 19 phantom closes de-pollute the decision surface.
+    assert len(open_decisions()) == 33
+    assert len(log.of_kind("author_satisfied")) == 19
+    exit_ = route(ledger)
+    assert exit_.kind == "HALT_DECISION" and exit_.reason == "decision-bearing"
+    payload_ids = {f.id for f in exit_.payload}
+    assert len(payload_ids) == 33
+    assert not (phantom & payload_ids)  # no phantom finding is surfaced
