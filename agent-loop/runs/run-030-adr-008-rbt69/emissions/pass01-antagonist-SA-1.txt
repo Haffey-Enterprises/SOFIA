@@ -1,0 +1,72 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References — forthcoming-record entries (DDR-003, ADR-004)",
+    "claim": "The Cross-References section cites forthcoming, unauthored records by concrete numeric identifier — 'DDR-003 (Feedback Loop Governance, forthcoming)' and 'ADR-004 (file-driven ingestion, forthcoming)' — while the same body text elsewhere refers to these records by subject-name only ('the forthcoming feedback-loop governance design', 'the forthcoming ingestion decision record'). The concrete-identifier form for an unauthored record is inconsistent with the subject-name form used in §1, §2.2, §2.6, and §5.2 of this same document. The ratified operator ruling supplied as design-intent substrate (Ruling G, run-025-operator-rulings) states forthcoming-record references are 'subject-named, not numbered' and names precisely these two §7 entries as the loci to fix; and the DDR-004 / ADR-004 numbering ambiguity the ruling flags is present — ADR-004 is used for 'file-driven ingestion' here while DDR-004 is the inherited-confidence-derivation record cited in the same section.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §7 (numbered forthcoming-record citations) in conflict with ADR-008 §1/§2.2/§2.6/§5.2 (subject-name form) and with author-decision-record SKILL body-integrity forward-reference rule ('a forward reference in the body is subject-named only … concrete identifiers bind only at the downstream record's landing')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Environment row + §2.2 Environment bullet + §5.1 (Environment control description)",
+    "claim": "The Environment control-type is described as 'per-policy reliability-weighting at retrieval' (§2.2 table, control-type column). This contradicts the mechanism it cites: the inherited-confidence derivation ruling (DDR-004) computes the aging confidence base × exp(−Δt/τ) at Evidence capture and freezes it — 'computed once at capture and frozen ... never recomputed at read' (DDR-004 §1/§3). The control is capture-time-frozen, not applied at retrieval. The same 'at retrieval' framing is repeated in the §5.1 Positive Consequences and in the §2.2 bullet's reliance on 'ages by construction'. A design that reads 'weighting at retrieval' as the Environment control would specify a retrieval-time mechanism that does not exist as ratified.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-004 §1/§3 (inherited confidence 'computed once at capture and frozen onto Evidence.confidence; never recomputed at read') vs. ADR-008 §2.2 Environment row 'reliability-weighting at retrieval'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Environment row — 'Realization routes to' column ('Built')",
+    "claim": "The Environment control is marked 'Built — the inherited-confidence derivation ruling's aging basis.' This over-states substantiation: DDR-004 fixes the derivation *form* (ACCEPTED) but holds its constants contested and empirically unvalidated at n=0 — 'zero capture traffic to date; these values are unvalidated' (DDR-004 §2/§6). The per-policy accountability §2.2 assigns to Environment (a human answerable for the weighting policy) is discharged specifically by DDR-004 §6's two-tier calibration governance of those contested constants, which cannot occur until traffic exists. Labeling the control flatly 'Built' does not disclose that the form is built while the constants — and therefore the calibrated policy the accountability attaches to — are not yet validated. The ADR's own §5.3 risk concedes the empirical floor, contradicting the unqualified 'Built' status in §2.2.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 Environment 'Built' status in conflict with ADR-008 §5.3 ('No promotion, ingestion, or capture traffic has run … constants are held contested') and DDR-004 §2/§6 (constants contested/unvalidated at n=0; calibration is ongoing governance)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§5.2 Constraints Imposed — Operational-distillation bullet ('candidate-ObservedPattern shape excluded from ground-truth traversal until approved')",
+    "claim": "The constraint states distillation is 'realized through a candidate-ObservedPattern shape excluded from ground-truth traversal until approved' in a voice that presents the shape as an existing realization mechanism. This shape does not exist in the ratified schema: DDR-002 §2.3 leaves the distillation-write checkpoint 'explicitly un-decided,' and the promotion-boundary CandidatePromotion class does not cover a candidate ObservedPattern. §5.2 is a Constraints-Imposed section; the same bullet does gloss it as 'an additive schema shape,' but the primary clause states the realization as present tense rather than as forthcoming/additive introduced downstream. The tense is not earned — no such schema constraint currently binds.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §2.3 (distillation-write checkpoint 'explicitly un-decided'; no candidate-ObservedPattern class in the ratified schema) vs. ADR-008 §5.2 stating the candidate-ObservedPattern shape as a present realization"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "Metadata table + §2.3 — un-promotion authority vs. Supersedes",
+    "claim": "The record sets 'Supersedes: None' and §2.3/§2.2 state ADR-001 §2.5 is 'cited, not superseded.' The relationship this ADR bears to ADR-001 §2.5 is a generalization-with-subsumption plus an un-promotion extension — §2.5's promotion authority becomes a sub-case of this ADR's general authority. The metadata correctly records no supersession, but the body states the generalization/subsumption in passing (§2.2 promotion bullet, §2.3) rather than as a single explicit 'Relationship to ADR-001 §2.5' statement; a reader reconciling the two records must assemble the position from three separate loci. This is an internal-completeness gap in how the record documents its own standing relative to the authority it generalizes, not a substantive conflict.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 (promotion bullet: '§2.5 is cited, not superseded, for its sub-case') and §2.3 ('ADR-001 §2.5 authorizes promotion only and does not stretch to its reversal') — the subsumption relationship is stated distributed across loci rather than as one recorded position"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.3 Un-promotion authority",
+    "claim": "Checked the un-promotion 'same control' claim against the built retraction instance for over-claim. §2.3 claims un-promotion is governed by the same per-write EA-gated control as promotion and cites the built retraction shape (DDR-002 §5 / retraction-gated invariant) as its instance. The §5.3 risk correctly qualifies that the built retraction invariant traces to *an* approving decision, not the *governing* one, and thus does not yet supply promotion's governing-verdict guarantee — so the ADR homes the authority principle at its altitude without asserting the built detection analogue exists. The authority-principle claim is homed on the durable chain (ADR-001 §2.5 reaches promotion only; DDR-002 §7 retraction-gated invariant), and the record does not over-state the built mechanism. The claim held.",
+    "cited_authority": {
+      "kind": "soundness",
+      "ref": "ADR-008 §2.3 checked against DDR-002 §5 / retraction-gated invariant (retracted node EA-gated, retained, read-excluded) and ADR-008 §5.3 (governing-verdict detection analogue named as follow-up, not claimed built)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.6 Governance boundary + §6 check 5 (Boundary check)",
+    "claim": "Attacked the ADR/governance-design boundary for scope leakage — whether the ADR silently rules the remedy boundary (supersede vs. retract) it claims to defer. §2.6 explicitly withholds the remedy boundary, criteria, thresholds, cadence, retention windows, reviewer-role assignments, and multi-condition composition, routing all to the forthcoming feedback-loop governance design, and §6 check 5 mechanizes the non-leakage as a review check. Cross-checked against every substantive section: §2.2 fixes control-*types* not policies, §2.3 homes authority not remedy, §2.5 fixes the withhold-and-escalate *direction* while routing the richer resolution disposition to governance policy. No section smuggles a policy ruling under the principle layer. The boundary held.",
+    "cited_authority": {
+      "kind": "soundness",
+      "ref": "ADR-008 §2.6 (remedy boundary and governance policy explicitly routed to the feedback-loop governance design) checked against §2.2/§2.3/§2.5 for a smuggled policy ruling; none found"
+    }
+  }
+]

@@ -1,0 +1,7 @@
+{
+  "finding_id": "dc68682de19ce106",
+  "classification": "resolvable",
+  "authority_locus": "ADR-008-run-025-operator-rulings Ruling E (candidate-ObservedPattern shape is forthcoming/additive, not present); DDR-002 §2.3 (distillation checkpoint 'explicitly un-decided')",
+  "rationale": "Ruling E dictates the exact fix: state the shape as forthcoming/additive rather than present-realization voice; no unmade choice remains.",
+  "confidence": "high"
+}

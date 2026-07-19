@@ -1,0 +1,1 @@
+{"finding_id":"033a427bd10f483d","classification":"decision-bearing","authority_locus":null,"rationale":"No ratified authority fixes which role holds per-policy Environment accountability; Ruling D names DDR-004 §6 governance but not the accountable role, leaving a choice unmade.","confidence":"medium"}

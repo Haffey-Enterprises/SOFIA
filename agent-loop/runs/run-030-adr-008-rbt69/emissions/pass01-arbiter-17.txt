@@ -1,0 +1,1 @@
+{"finding_id":"a227c32c42d8d5e8","classification":"resolvable","authority_locus":"ADR-008-run-025-operator-rulings Ruling D + DDR-004 §3 (capture-time-frozen aging; drop 'reliability-weighting at retrieval'; §6 governance)","rationale":"Operator Ruling D names the exact fix and DDR-004 §3 supplies the correct mechanism; no unmade choice remains.","confidence":"high"}

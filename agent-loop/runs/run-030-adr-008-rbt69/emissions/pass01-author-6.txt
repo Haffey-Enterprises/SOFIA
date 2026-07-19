@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "c96fac369e9a2a0e",
+  "reason": "The rule 'subject-named, not numbered' determines the two §7 entries must drop their numeric identifiers, but the entries carry identifier-bound content the authority does not tell me how to conform: the DDR-003 bullet's second sentence pins 'the obligation to resolve DDR-003's pointer to this record's concrete document identifier lives in DDR-003's definition of done', and the cross-reference list is otherwise keyed by concrete IDs. Restating these two as subject-name-only entries requires deciding how to re-anchor that pointer sentence and how a numberless entry sits in a numbered list — choices the forward-reference rule does not fix. Multiple conforming rewrites exist; refuse.",
+  "confidence": "medium"
+}

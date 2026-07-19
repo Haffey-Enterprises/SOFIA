@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "6e8c4a6f1712f37c",
+  "reason": "The 'stable subject-name only' rule requires one name but does not determine which of the two competing names ('the forthcoming ingestion decision record' vs 'the forthcoming file-driven ingestion decision record') is the correct stable subject-name; choosing between them — or whether 'file-driven' is a substantive qualifier denoting a distinct record — is an unratified choice.",
+  "confidence": "high"
+}

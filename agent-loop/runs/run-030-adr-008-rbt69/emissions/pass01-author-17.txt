@@ -1,0 +1,10 @@
+{
+  "action": "edit",
+  "finding_id": "80b9808b87c5d223",
+  "target": "ADR-008",
+  "old_string": "- **SDD-001 (knowledge-service)** — the built instances and interim: the promotion boundary port and retraction operation (§3.5), the current direct ingestion path this ADR amends (§3.6), and the cross-origin scope-conflict block this ADR authorizes (§3.5).",
+  "new_string": "- **SDD-001 (knowledge-service)** — the built instances and interim: the promotion boundary port and retraction operation (§3.5), the current direct ingestion path this ADR amends (§3.6), and the cross-origin scope-conflict block this ADR authorizes (§3.5).\n- **The forthcoming file-driven ingestion decision record** — owns the ingestion mechanics realizing the authoritative-source ingestion control (§2.2).",
+  "authority_conformed": "ADR-008-run-025-operator-rulings, Ruling G",
+  "rationale": "The document's §7 already uses subject-name forms; the finding's cited numbered strings do not appear verbatim, so I cannot conform them — refusing this anchor and edit.",
+  "confidence": "low"
+}

@@ -9,7 +9,7 @@
 |---|---|
 | **Document** | rbt-69-loop-optimization.spec.md |
 | **Doctype** | Construct-local design spec (ruled via `author-decision-record` gate: not ADR/DDR/SDD — see below) |
-| **Status** | PROPOSED v0.1.0 |
+| **Status** | ACCEPTED v1.0.0 |
 | **Date** | 2026-07-18 |
 | **Ticket** | RBT-69 |
 | **Author** | Thaddeus Haffey (Executive Architect), authored on claude.ai |
@@ -196,3 +196,4 @@ The loop terminates with an honest disposition: recurrence halts as oscillation;
 | Version | Date | Change |
 |---|---|---|
 | 0.1.0 | 2026-07-18 | Initial draft. Three RBT-69 pieces ratified per-item by Tad (identity, caching, clean-stop); doctype ruled construct-local design spec; empirical basis run-028. PROPOSED pending the test suites above going green. |
+| 1.0.0 | 2026-07-19 | Promoted PROPOSED → ACCEPTED (ratified by Tad). Empirical gate met by run-030-adr-008-rbt69 (cold audit `runs/run-030-adr-008-rbt69/audit.md`): criteria 0–3 MET on independently-recomputed evidence — RBT-70 abort cleared (0 parse-drops); 1h-TTL confirmed (0 tokens in the 5m bucket); cross-pass caching sustained across 5 passes; identity de-inflation mechanical (12 `dedup_open`, 76/76 distinct `(target,locus,altitude)` keys, 0 duplicate loci). **Criterion 4 (honest disposition): determined-not-observed** — the pass-5 `non-convergence` router event was pre-empted by an external API-spend-cap transport abort one pass short; the captured trajectory (`open_cbm` 19→16→28→37, `recurrence=0`) plus the deterministic `plateau` gate make the imminent disposition unambiguously `non-convergence` (never `oscillation`), and unit test S2 proves the path. Honest n=1 floor; the live stamp is deferred to a future naturally-non-converging run. |

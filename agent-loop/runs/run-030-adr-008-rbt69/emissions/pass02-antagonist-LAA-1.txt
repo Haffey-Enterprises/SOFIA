@@ -1,0 +1,52 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.3 Un-promotion authority — 'the same per-write, EA-gated, human-accountable control class as promotion itself'",
+    "claim": "§2.3 claims un-promotion is governed by 'the same per-write, EA-gated, human-accountable control class as promotion itself' and cites the built retraction shape as its instance. The same subsection then concedes the built retraction invariant 'traces to an approving decision, not the governing one, so it does not yet supply promotion's governing-verdict guarantee.' The decision content asserts control parity in its opening clause that its own trailing clause — and §5.3 — retract. The claim of what the decision establishes (equivalent control to promotion) is stronger than the record's own concession supports; the two are not reconciled into one consistent statement of what is decided.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.3 ('the same per-write, EA-gated, human-accountable control class as promotion itself') vs ADR-008 §2.3 trailing clause + §5.3 (retraction traces to an approving, not the governing, decision — detection analogue a named follow-up)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Promotion bullet + §7 ADR-001 cross-reference — subsumption of ADR-001 §2.5",
+    "claim": "The record decides that this ADR generalizes ADR-001 §2.5 and subsumes it as a sub-case (§2.2 promotion bullet: '§2.5 is cited, not superseded, for its sub-case'; §2.3: '§2.5 authorizes promotion only and does not stretch to its reversal'; §1 Context: the gap §2.5 does not reach). This is a decision about the record's own standing relative to the authority it generalizes, and it is stated distributed across three loci in passing rather than surfaced as a single recorded position. A reader reconciling ADR-008 against ADR-001 §2.5 must assemble the generalization-plus-subsumption-plus-un-promotion-extension relationship from separate sentences; the decision the record makes about its relationship to §2.5 is not itself surfaced as a discrete decision.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 promotion bullet + §2.3 + §7 ADR-001 entry — the generalization/subsumption/un-promotion-extension position stated distributed across loci, not recorded as one position"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "§5.2 Constraints Imposed — Operational-distillation bullet",
+    "claim": "§5.2 states distillation 'is no longer an unchecked derived write. A distilled lesson must pass a substantive, evidence-visible human review before it is consumable track-record, realized through a forthcoming, additive candidate-`ObservedPattern` shape ... that will exclude it from ground-truth traversal until approved.' The bullet correctly marks the shape 'forthcoming, additive' and 'will exclude' — earned tense. But the leading declarative — 'Operational distillation is no longer an unchecked derived write' — states as a present accomplished constraint a change whose realizing mechanism the same sentence marks as forthcoming and not yet existing in the ratified schema (DDR-002 §2.3 leaves the distillation checkpoint 'explicitly un-decided'). The constraint's declared present-tense effect outruns the forthcoming mechanism that would make it true.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §5.2 ('Operational distillation is no longer an unchecked derived write', present) vs same bullet's 'forthcoming, additive candidate-ObservedPattern shape ... that will exclude' and DDR-002 §2.3 (distillation checkpoint 'explicitly un-decided')"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2 Decision, §2.6 Governance boundary, §6 check 5 — scope claim vs governance-policy content",
+    "claim": "Attacked the Decision for scope creep — a smuggled policy ruling riding under a principle-only frame, which at this altitude is a scope defect regardless of merit. It held: §2 states it fixes invariant, accountability, and control-type only and 'fixes no policy, threshold, cadence, or mechanism'; §2.6 enumerates the remedy boundary, criteria, thresholds, cadence, retention windows, reviewer-role assignments, and multi-condition composition as NOT ruled and routes them to the forthcoming feedback-loop governance design; §2.5 defers the richer resolution disposition; §6 check 5 mechanizes the non-leakage as a review check. Cross-read §2.2/§2.3/§2.5 for a policy ruling stated under the principle layer — none found. The scope boundary the record claims for itself is honored by its content.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "RBT-59 deliberation record Item 5 (ADR owns invariant + accountability + control-type + lifecycle; remedy-boundary and governance policy → the forthcoming feedback-loop governance design); ADR-008 §2 / §2.6 / §6 check 5"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.4 Withdrawal and expiry posture — provenance-survival consequence declared",
+    "claim": "Attacked §2.4's provenance-survival commitment for an undeclared consequence — whether the record commits a survival guarantee its cited substrate does not actually deliver for all consumed facts. The decision holds and, critically, declares its own gap rather than overclaiming: §2.4 commits provenance-survives-mutation as a requirement, and §5.3 explicitly surfaces the side effect that the frozen-provenance survival guarantee is currently scoped to promoted facts, so a decision-consumed-but-unpromoted fact relies on bounded-retention RG evidence and could age out — routing the extension as a named follow-up. The consequence of the withdrawal decision (that unpromoted-but-consumed facts are not yet covered) is surfaced as a risk, not left silent. Checked against ADR-001's auditability commitment.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.4 (provenance survives mutation, committed as requirement) + §5.3 (decision-provenance retention gap surfaced as named risk/follow-up) vs ADR-001 auditability commitment — consequence declared, not smuggled"
+    }
+  }
+]

@@ -1,0 +1,10 @@
+{
+  "action": "edit",
+  "finding_id": "db62bb6a013a24c0",
+  "target": "ADR-008",
+  "old_string": "governed by the same per-write, EA-gated, human-accountable control *class* as promotion itself — the **authority** is homed here on the same footing; the built retraction instance does not yet supply promotion's governing-verdict guarantee (see this subsection's trailing clause and §5.3).",
+  "new_string": "governed by the same per-write, EA-gated, human-accountable control *class* as promotion itself — the **authority** is homed here on the same footing; the governing-verdict detection analogue for executed retractions is the named follow-up (DDR-002 §7 / DDR-003), since the built retraction instance does not yet supply promotion's governing-verdict guarantee (see this subsection's trailing clause and §5.3).",
+  "authority_conformed": "ADR-008-run-025-operator-rulings Ruling F (§2.3 'same control' qualified: authority homed; governing-verdict detection analogue for executed retractions is the named DDR-002 §7 / DDR-003 follow-up)",
+  "rationale": "Ruling F directs qualifying §2.3's 'same control' claim to the §5.3 concession: authority homed, governing-verdict detection named as the DDR-002 §7 / DDR-003 follow-up.",
+  "confidence": "medium"
+}

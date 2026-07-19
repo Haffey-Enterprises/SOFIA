@@ -1,0 +1,8 @@
+The finding's cited authority (Ruling D) determines only the §2.2 status-label relabel, which the document already shows: "Form built (DDR-004); constants contested/unvalidated (n=0)." The finding's actual complaint — whether the principle should stand while a control's accountability is structurally unperformable at n=0 — is a posture judgment Ruling D does not adjudicate.
+
+{
+  "action": "refuse",
+  "finding_id": "6a15b249a94b78d9",
+  "reason": "Ruling D determines only two conformance acts: correcting the Environment control to capture-time-frozen wording and relabeling the §2.2 status to 'form built (DDR-004); constants contested/unvalidated (n=0)' — both already present in the current document. It does not adjudicate the finding's actual complaint (whether the principle may stand while a control's per-policy accountability is structurally unperformable at n=0); on that posture judgment the ruling is silent, so no edit is determined.",
+  "confidence": "high"
+}

@@ -1,0 +1,1 @@
+{"finding_id":"3c1f040b66402fdb","classification":"resolvable","authority_locus":"DDR-002 §2.4 (PromotionDecision DECIDED_ON → CandidatePromotion, 1:many batch; per-candidate verdict on each edge)","rationale":"The built promotion instance the ADR cites is authoritative and batch-capable; conforming §2.2/§2.3 wording to it is dictated, no unmade choice.","confidence":"high"}

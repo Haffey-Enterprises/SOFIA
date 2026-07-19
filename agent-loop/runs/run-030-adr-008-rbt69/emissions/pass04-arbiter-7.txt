@@ -1,0 +1,1 @@
+{"finding_id":"7815488c82fa5270","classification":"decision-bearing","authority_locus":null,"rationale":"How the ADR characterizes promotion's accountability granularity against the batch-capable built instance is an authorial framing choice no operator ruling (A-G) or cited authority disambiguates.","confidence":"medium"}

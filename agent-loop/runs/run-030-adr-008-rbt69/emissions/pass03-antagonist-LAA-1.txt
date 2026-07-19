@@ -1,0 +1,82 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Per-source-class calibration table — 'Realization routes to' column, Environment row vs the other four rows",
+    "claim": "The 'Realization routes to' column is a routing column — every other row names a destination record or port (the graph-schema ruling / DDR-002 §5 §7 #15; the forthcoming ingestion decision record + ingestion port; the forthcoming feedback-loop governance design + detection-promotion service design). The Environment row's cell instead carries a build-status label — 'form built (DDR-004); constants contested/unvalidated (n=0) — the inherited-confidence derivation ruling's aging basis' — conflating the column's stated function (where realization routes) with a substantiation claim. The record's own table column contract is not honored uniformly across its rows.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 table Environment 'Realization routes to' cell (status label) in conflict with the other four rows' 'Realization routes to' cells (destination records/ports)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 table + §5.2 + §7 — subject-name for the forthcoming ingestion record",
+    "claim": "The same forthcoming ingestion artifact is named non-identically across loci: '§2.2 table and §5.2 name 'the forthcoming ingestion decision record'; §2.2 prose and §7 name 'The forthcoming file-driven ingestion decision record'. A reader resolving the record's own cross-references cannot verify these denote one artifact or two (a general ingestion record vs a file-driven-specific one). A forward reference whose subject-name is unstable across the loci that cite it does not decide, unambiguously, which forthcoming record this control's realization is routed to.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 table + §5.2 ('the forthcoming ingestion decision record') vs §2.2 prose + §7 ('the forthcoming file-driven ingestion decision record') — same referent named non-identically"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "§5.2 Constraints Imposed — Operational-distillation bullet, leading clause",
+    "claim": "The bullet correctly marks the realizing mechanism as forthcoming ('realized through a forthcoming, additive candidate-`ObservedPattern` shape … that will exclude it from ground-truth traversal until approved') — earned tense on the mechanism. But its leading declarative — 'Operational distillation is no longer an unchecked derived write' — states as a present, accomplished constraint an effect whose realizing mechanism the same sentence marks as forthcoming and not yet in the ratified schema. The constraint's asserted present-tense effect outruns the forthcoming mechanism that would make it true.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §5.2 ('Operational distillation is no longer an unchecked derived write', present) vs same bullet's 'forthcoming, additive candidate-ObservedPattern shape … that will exclude' (forthcoming)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§1 Context — 'the forthcoming feedback-loop governance design is blocked on this record … authority that multiple accepted records depend on does not yet exist' vs metadata Status: PROPOSED",
+    "claim": "§1 states that downstream work is blocked on this record and that accepted records depend on the authority it homes, framing the ADR as the load-bearing dependency the corpus is waiting on. The record's own metadata carries Status: PROPOSED (v0.1.0). A PROPOSED record has not yet decided anything the corpus can bind to — the authority it purports to home is not established until acceptance. The Context claims a discharged-authority standing the record's own status does not yet support; the decision-content of what this record supplies to the corpus is stated in a tense its status has not earned.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 metadata (Status: PROPOSED) vs §1 Context ('the forthcoming feedback-loop governance design is blocked on this record'; 'authority that multiple accepted records depend on does not yet exist')"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Promotion row 'Per-write (EA)' / §2.3 'same per-write … control' vs the built PromotionDecision batch form",
+    "claim": "§2.2 labels the Promotion control 'Per-write (EA)' and §2.3 calls un-promotion 'the same per-write, EA-gated … control'. The built instance the record cites (DDR-002 §2.4/§5) is batch-capable: a single PromotionDecision may decide multiple candidates via a 1:many per-candidate DECIDED_ON edge. A single human decision act over N candidates is not literally per-materialized-write in the sense §2.2 uses 'per-write' for ingestion (one human confirmation per captured representation). The 'per-write' label for Promotion does not disclose the batch granularity of the very built instance the record names as its realization — a side-effect of the cited decision the record's own text elsewhere qualifies but this label does not.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 Promotion 'Per-write (EA)' / §2.3 'same per-write … control' vs DDR-002 §2.4 (PromotionDecision DECIDED_ON 1:many batch — one decision decides multiple candidates)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "§2.1 'a named human is answerable' + §6 check 1 vs §2.2 Environment / §2.5 resolution — the per-policy accountable role",
+    "claim": "§2.1 requires that a named human be answerable for every control, per-write or per-policy, and §6 check 1 mechanizes 'names the human accountable for it (per-policy).' For the Promotion, ingestion, and distillation classes the record names EA or a distinct reviewer; for the Environment per-policy control and the §2.5 cross-class resolution step it states only that a human is answerable, without fixing which role holds that accountability (EA? a config/governance owner?). The decision the record claims to make — that a named human is accountable for every class — is under-specified for the per-policy branch it introduces, so §6 check 1's own conformance criterion for that branch is under-determined against §2.1's 'named human' requirement.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.1 ('a named human is answerable') + §6 check 1 ('names the human accountable … per-policy') vs §2.2 Environment / §2.5 resolution — the per-policy accountable role is not fixed"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2 Decision + §2.6 Governance boundary + §6 check 5 — scope claim vs governance-policy content",
+    "claim": "I attacked the Decision for scope creep — a smuggled policy or remedy ruling riding under the principle-only frame, which at this altitude is a scope defect regardless of merit. It held: §2 states it fixes invariant, accountability, and control-type only and 'fixes no policy, threshold, cadence, or mechanism'; §2.6 enumerates the remedy boundary, criteria, thresholds, cadence, retention windows, reviewer-role assignments, and multi-condition composition as NOT ruled and routes them to the forthcoming feedback-loop governance design; §2.5 defers the richer resolution disposition while fixing only the withhold-and-escalate direction; §6 check 5 mechanizes the non-leakage as a review check. Cross-read §2.2/§2.3/§2.5 for a policy ruling stated under the principle layer — none found. The scope boundary the record claims for itself is honored by its content.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "RBT-59 deliberation record Item 5 (ADR owns invariant + accountability + control-type + lifecycle; remedy-boundary and governance policy → the forthcoming feedback-loop governance design); ADR-008 §2 / §2.6 / §6 check 5"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.4 Withdrawal and expiry posture + §5.3 — provenance-survival consequence declared, not smuggled",
+    "claim": "I attacked §2.4's provenance-survival commitment for an undeclared consequence — whether the record commits a survival guarantee its cited substrate does not deliver for all consumed facts. It held and, notably, declares its own gap rather than overclaiming: §2.4 commits provenance-survives-mutation as a requirement, and §5.3 explicitly surfaces that the frozen-provenance survival guarantee is currently scoped to promoted facts, so a decision-consumed-but-unpromoted fact relies on bounded-retention RG evidence and could age out — routed as a named follow-up. The side effect of the withdrawal decision (unpromoted-but-consumed facts not yet covered) is surfaced as a risk, not left silent. Checked against ADR-001's auditability commitment.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.4 (provenance survives mutation, committed as requirement) + §5.3 (decision-provenance retention gap surfaced as named risk/follow-up) vs ADR-001 auditability commitment"
+    }
+  }
+]

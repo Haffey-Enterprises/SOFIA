@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "663c6d40c8803ce4",
+  "reason": "The authority names a coherence defect (non-identical subject-names for one referent) but does not fix which of the two forms is the canonical name — 'the forthcoming ingestion decision record' vs 'the forthcoming file-driven ingestion decision record'. Ruling G and the forward-reference rule (subject-name genus plus what's unsettled) permit either normalization direction; choosing which to conform the four loci to is an unratified choice across multiple conforming edits.",
+  "confidence": "medium"
+}

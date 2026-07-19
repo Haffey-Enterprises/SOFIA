@@ -1,0 +1,1 @@
+{"finding_id":"7145767cdb66a5f5","classification":"resolvable","authority_locus":"ADR-008-run-025-operator-rulings Ruling D — relabel §2.2 Environment status to 'form built (DDR-004); constants contested/unvalidated (n=0)'","rationale":"Operator Ruling D names the exact relabel; the fix conforms to ratified design intent with no new choice.","confidence":"high"}

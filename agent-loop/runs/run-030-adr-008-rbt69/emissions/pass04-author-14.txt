@@ -1,0 +1,8 @@
+The finding's claim references a status label ("Form built (DDR-004); constants contested/unvalidated (n=0)") in the Environment 'Realization routes to' cell, but the actual document text in that cell reads "The inherited-confidence derivation ruling's aging basis and its §6 calibration governance (DDR-004)" — which is already a proper destination-record routing consistent with the sibling rows.
+
+{
+  "action": "refuse",
+  "finding_id": "4f1c656b4b79177f",
+  "reason": "The finding's cited locus does not match the document: the Environment 'Realization routes to' cell currently reads 'The inherited-confidence derivation ruling's aging basis and its §6 calibration governance (DDR-004)' — already a destination routing like the sibling rows, not the status-label text the finding quotes; no non-conforming anchor exists to conform.",
+  "confidence": "high"
+}

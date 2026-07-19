@@ -1,0 +1,10 @@
+{
+  "action": "edit",
+  "finding_id": "77bdd9c63465a3d4",
+  "target": "ADR-008",
+  "old_string": "| **Promotion** — Reasoning-Graph findings into authoritative selection knowledge (Catalog / Standards) | The existing EA promotion gate (ADR-001 §2.5 EA-gated-promotion principle) | Per-write (EA) | Built",
+  "new_string": "| **Promotion** — Reasoning-Graph findings into authoritative selection knowledge (Catalog / Standards) | The existing EA promotion gate (ADR-001 §2.5 EA-gated-promotion principle) | Per-decision-act (EA), batch-capable | Built",
+  "authority_conformed": "DDR-002 §2.4 (PromotionDecision DECIDED_ON 1:many batch, per-candidate verdict on each edge) + ADR-008-run-025-operator-rulings Governing principle (human accountability at the decision act)",
+  "rationale": "DDR-002 §2.4 fixes PromotionDecision as a batch decision-act deciding N candidates, so accountability granularity is per-decision-act over a batch, not per-materialized-write.",
+  "confidence": "medium"
+}

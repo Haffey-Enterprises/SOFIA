@@ -1,0 +1,23 @@
+{
+  "run_id": "run-030-adr-008-rbt69",
+  "sofia_head_sha": "6ea865c660b8830f4cc07a1216d37210ccab1486",
+  "copied_from": {
+    "run_id": "run-029-adr-008-rbt69",
+    "reason": "Single-variable replay of run-029. NOT re-snapshotted from the live tree (which has drifted — RBT-70 merged into it). The one intended variable is the RBT-70 change: the four gen-11 reviewer prompts + real_hats.py array-salvage seam. The code exercised by run-030 is at HEAD 0370254 (PR #37), recorded independently in the top-level manifest.json head_sha; sofia_head_sha above is the HEAD at which these bytes' provenance was pinned (run-029 prep, 6ea865c).",
+    "target_provenance": "The reviewed target (sha 24461d3f) is the PRISTINE PRE-RUN document, sourced from the untouched sandbox canonical source (agent-loop/sandbox/adr-008/...), byte-identical to run-029's recorded pre-run pin (24461d3f) — the bytes run-029 actually reviewed at pass 1. run-029's committed documents/ copy (sha 19897547) is deliberately NOT used: it is the post-run author-mutated end-state (the dry-mode author writes edits into documents/ across passes, run-supervision §9), not the frozen target. Same for run-028 (committed 7be888af vs pin 24461d3f).",
+    "substrate_provenance": "Substrate (14 files) copied verbatim from run-029's committed substrate/ and hash-verified byte-identical to run-029; substrate is never author-mutated (run-prep §3), and each file re-hashes to its own substrate/manifest.json pin (gate 4)."
+  },
+  "files": [
+    {
+      "doc_id": "ADR-008",
+      "snapshot_path": "documents/ADR-008-ground-truth-mutation-governance.md",
+      "origin": {
+        "source": "sofia-repo",
+        "canonical_path": "agent-loop/sandbox/adr-008/docs/adr/ADR-008-ground-truth-mutation-governance.md"
+      },
+      "retrieved": "2026-07-18",
+      "sha256": "24461d3ff61527bbf70bcbce532e00c6c3878433fd8f8ac7c60c6d477683c12b",
+      "note": "Byte-identical to run-028's pre-run target (sha 24461d3f), snapshotted fresh from the pristine sandbox canonical source for the RBT-69 before/after replay. Substrate copied verbatim from run-028's frozen snapshot so the RBT-69 code change is the only variable."
+    }
+  ]
+}

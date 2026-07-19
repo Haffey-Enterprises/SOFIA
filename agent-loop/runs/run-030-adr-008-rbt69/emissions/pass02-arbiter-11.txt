@@ -1,0 +1,1 @@
+{"finding_id": "563d86da9b46431a", "classification": "decision-bearing", "authority_locus": null, "rationale": "How the ADR should characterize promotion accountability granularity against the batch-capable built instance is not settled by any ratified operator ruling; Rulings A-G do not reach the per-write-vs-per-decision-act framing.", "confidence": "medium"}

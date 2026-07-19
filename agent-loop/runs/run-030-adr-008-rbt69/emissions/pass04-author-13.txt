@@ -1,0 +1,8 @@
+The finding requires a stable subject-name, but the authority (subject-name only, per the SKILL forward-reference rule) does not itself determine which of the two names — 'ingestion decision record' or 'file-driven ingestion decision record' — is canonical; choosing the target name is an unratified decision.
+
+{
+  "action": "refuse",
+  "finding_id": "287f2bb428def037",
+  "reason": "The named authority establishes that the subject-name must be stable across loci but does not fix WHICH of the two competing names ('the forthcoming ingestion decision record' vs 'the forthcoming file-driven ingestion decision record') is canonical; conforming would require choosing one, an unratified selection among two conforming options.",
+  "confidence": "high"
+}

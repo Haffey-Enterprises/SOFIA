@@ -1,0 +1,7 @@
+{
+  "finding_id": "5bf632100d3945c8",
+  "classification": "resolvable",
+  "authority_locus": "ADR-008-run-025-operator-rulings Ruling F (qualify \u00a72.3 'same control' to match the \u00a75.3 concession \u2014 authority homed; governing-verdict detection analogue named follow-up)",
+  "rationale": "Operator Ruling F fixes the exact reconciliation: the authority principle holds, the built-instance parity claim is qualified to the \u00a75.3 concession.",
+  "confidence": "high"
+}

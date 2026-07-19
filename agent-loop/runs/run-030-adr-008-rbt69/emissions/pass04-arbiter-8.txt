@@ -1,0 +1,7 @@
+{
+  "finding_id": "db62bb6a013a24c0",
+  "classification": "resolvable",
+  "authority_locus": "ADR-008-run-025-operator-rulings Ruling F (§2.3 'same control' qualified to match the §5.3 concession: authority homed; governing-verdict detection analogue for executed retractions is the named DDR-002 §7 / DDR-003 follow-up)",
+  "rationale": "Ruling F prescribes the exact fix: qualify §2.3 so authority-principle-homed and built-instance-does-not-yet-supply-governing-verdict cohere, matching the §5.3 concession.",
+  "confidence": "high"
+}

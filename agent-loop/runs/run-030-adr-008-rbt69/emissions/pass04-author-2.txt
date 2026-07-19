@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "a9058eded6e1656c",
+  "reason": "Ruling D only mandates the label text 'form built (DDR-004); constants contested/unvalidated (n=0)' — which the current Environment cell already carries — and does not prescribe converting that cell into a destination-only routing form matching the sibling rows. Conforming the cell to the uniform-column contract requires deciding what destination phrasing to substitute, an unratified choice; the arbiter-named authority does not uniquely determine it.",
+  "confidence": "medium"
+}
