@@ -1,0 +1,9 @@
+```json
+{
+  "finding_id": "675a45736074be64",
+  "classification": "resolvable",
+  "authority_locus": "ADR-008-run-025-operator-rulings Ruling D (drop 'reliability-weighting at retrieval'; state capture-time-frozen aging + DDR-004 §6 governance; relabel status 'form built; constants contested (n=0)')",
+  "rationale": "Operator Ruling D names the exact conformance and the durable substrate (DDR-004 §3 capture-time-frozen, §6 calibration governance); the fix is determined, no choice remains.",
+  "confidence": "high"
+}
+```

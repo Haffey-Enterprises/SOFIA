@@ -1,0 +1,7 @@
+{
+  "finding_id": "b1dcbc85806da7e1",
+  "classification": "resolvable",
+  "authority_locus": "kg-entry-rulings Ruling 1 (Environment-plane confidence-weighting at retrieval, not per-write checkpoint) — the ratified design intent the ADR-003 §2.2 text realizes; the fix is aligning the §2 Decision sentence/title framing to the already-ratified per-source-class calibration, in which retrieval-time weighting is an admitted form.",
+  "rationale": "The intent already ratifies that the 'checkpoint' is calibrated per source class and that Environment uses retrieval-time weighting rather than a per-write gate; the finding is a within-document framing overreach whose correction is dictated by that ratified calibration — no new choice is introduced, only conforming the headline to the settled §2.2 disposition and the enumerated 'per-write gate OR retrieval-time weighting' form set.",
+  "confidence": "medium"
+}

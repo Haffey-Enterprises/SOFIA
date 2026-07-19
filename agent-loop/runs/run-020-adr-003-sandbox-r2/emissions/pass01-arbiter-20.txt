@@ -1,0 +1,7 @@
+{
+  "finding_id": "65fb6deb45a07df4",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding exposes a genuine internal contradiction: \u00a72.2 explicitly defers the Environment-plane checkpoint posture (per-write review vs confidence-weighting) while \u00a75.2 asserts a blanket constraint that every ground-truth-mutating path route through the checkpoint. Resolving it requires choosing whether Environment-plane facts are inside or outside the committed constraint \u2014 the very Environment-plane calibration the KG-entry-governance ADR charter (triage Appendix A item 5) names as an open question the ADR must rule (per-write review vs confidence-weighting, with volume/bottleneck a real design constraint). No higher authority disambiguates; the substrate flags it as unresolved.",
+  "confidence": "high"
+}

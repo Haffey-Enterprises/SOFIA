@@ -1,0 +1,7 @@
+{
+  "finding_id": "36d95fdd1d5f1dd7",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record SKILL, Body integrity: 'An amendment that adds a ruling updates the Decision enumeration' — a ruling the Decision block does not enumerate is invisible to every reader who treats the enumeration as complete. The record itself already carries the un-promotion-authority grant in §2.3; conformance requires surfacing that existing ruling as a numbered sub-decision.",
+  "rationale": "The fix is determined by an already-ratified authoring convention: the un-promotion-authority grant is an already-made ruling present in §2.3 prose, and the skill mandates that any ruling appear in the Decision enumeration. Surfacing the existing grant introduces no new choice about the grant itself.",
+  "confidence": "high"
+}

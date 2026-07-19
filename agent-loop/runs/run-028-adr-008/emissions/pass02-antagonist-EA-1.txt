@@ -1,0 +1,62 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§1 Context / §2.6 / §7 — dependency on the forthcoming feedback-loop governance design and the forthcoming ingestion decision record, both named as blocked-on or realizing this record",
+    "claim": "This ADR is positioned as the keystone upstream authority that several accepted records 'were left routing to await' and that the forthcoming feedback-loop governance design is 'blocked on.' Yet the record commits three new per-class control-types (authoritative-source ingestion fidelity verification, operational-distillation review, distillation revalidation obligation) whose realizing designs do not exist, and §6 concedes these commitments are 'aspirational pending their downstream design and mechanization.' The posture question at EA altitude: fixing a general, cited-as-authoritative mutation-governance principle in this shape, at this time, commits the platform to three control-types before any realizing design confirms the control-type is instantiable as stated — a hard-to-reverse commitment (downstream records already depend on it) whose justification rests on designs still to be authored.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "adr-template §2 ('Include only sub-decisions this ADR actually constrains') + RBT-59 deliberation record Item 2 altitude line ('ADR fixes invariant + accountability + control-type per class; downstream fixes control form + mechanics'); ADR-008 §1 ('the forthcoming feedback-loop governance design is blocked on this record') vs §6 ('aspirational pending their downstream design and mechanization')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.3 Un-promotion authority — 'governed by the same per-write, EA-gated, human-accountable control as promotion itself'",
+    "claim": "The record homes un-promotion authority as a platform commitment stated as parity with promotion ('the withdrawal-leg of the promotion class ... the same per-write, EA-gated, human-accountable control'), while §5.3 concedes the built retraction instance (DDR-002 §7 #21) traces only to an approving decision, not the governing one, so promotion's governing-verdict guarantee (#15) does not hold for retraction. At EA altitude this is a reversibility/posture concern: the record fixes a position stronger than the ratified substrate can currently discharge, and the gap it depends on is a named follow-up rather than a satisfied dependency. Committing 'same control' parity that the substrate does not deliver pulls the posture ahead of what integrates with the prior ratified schema decisions.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.3 ('the same per-write, EA-gated, human-accountable control as promotion itself') in tension with ADR-008 §5.3 ('the retraction invariant traces to an approving decision, not the governing one, so a re-decided executed retraction has no standing detection analogue yet')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Per-source-class calibration table — Environment row ('Realization routes to: Form built (DDR-004); constants contested/unvalidated (n=0)')",
+    "claim": "The Environment control's realization is homed on DDR-004's aging basis, whose constants (base, τ, the DeploymentEnvironment flat base) DDR-004 §2/§6 hold contested and unvalidated at n=0 capture traffic. At EA altitude the posture question is timing: the record fixes the control-type as settled while the calibration governance that discharges the per-policy human accountability (a human ratifies base/τ by amendment, DDR-004 §6) has never operated — no policy has been ratified because no traffic exists. Fixing 'a human is answerable for the weighting policy (its calibration is a ratified act)' as a present accountability discharge, when the calibration act is empirically impossible until the platform runs, states an accountability commitment ahead of its enabling condition.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 Environment ('a human is answerable for the weighting policy ... its calibration is a ratified act under that ruling's governance') vs DDR-004 §6 ('Empirical floor: n=0 capture traffic and n=0 re-observations; no calibration is possible until the platform runs')"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "Metadata Description / §1 closing vs title / §2 Decision scope",
+    "claim": "The title and §2 frame the record's decision as a general 'human-accountable control on every mutation of enterprise ground truth,' while the metadata Description and §1 closing foreground the narrower act of homing the un-promotion authority ADR-001 §2.5 does not reach. At EA altitude a posture record's decided scope should read the same from its framing surfaces as from its decision body; the two framings (general invariant vs un-promotion homing) sit in tension and require a reader to reconcile which act the record principally performs — a scope-legibility concern for a keystone authority other records will cite.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 metadata Description ('homes the upstream authority for un-promotion that ADR-001 §2.5 does not reach') and §1 closing vs §2 Decision ('Enterprise ground truth is mutated only under a human-accountable control calibrated to the source class') — decided-scope framing alignment"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2 / §2.6 Governance boundary — invariant + control-type fixed here; policy, remedy-boundary, thresholds, cadence, retention routed downstream",
+    "claim": "I attacked the record for committing the project to a position that deserved its own decision first — specifically whether fixing per-class control-types smuggles in remedy-boundary or governance-policy that belongs to a downstream decision record. It held: §2 explicitly fixes 'no policy, threshold, cadence, or mechanism'; §2.6 disclaims the supersede-vs-retract remedy boundary, reviewer-role assignments, and retention windows, routing them to the forthcoming feedback-loop governance design with the citation direction correct (downstream cites this ADR, not the reverse); §6 check 5 reinforces the boundary. The altitude split (invariant + accountability + control-type here; form + mechanics downstream) is drawn consistently and does not over-reach into downstream policy.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "RBT-59 deliberation record Item 2 ('ADR fixes invariant + accountability + control-type per class; downstream fixes control form + mechanics') and Item 5 (remedy-boundary and governance policy → forthcoming feedback-loop governance design); ADR-008 §2, §2.6, §6 check 5"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.5 / §5.2 Cross-class precedence — withhold-and-escalate on structural collision with an EA-set governance scope",
+    "claim": "I attacked the cross-class precedence rule as a premature commitment that could pull against the Environment 'no per-write gate' posture or foreclose the forthcoming governance design's disposition space. It held: the rule is scoped to a gateway-mechanical conflict-detection firing only on structural collision with an EA-set governance scope (explicitly not a per-write human gate on the routine observation stream), fixes only the fail-safe direction (withhold, not admit), places human accountability at the resolution step, routes the richer resolution disposition to the forthcoming governance policy, and rests on a built interim instance (the knowledge-service cross-origin scope-conflict block). The commitment is proportionate to its reversibility and integrates with the Environment ungated-observation posture rather than contradicting it.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.5 (gateway-mechanical withhold on structural collision, human accountability at resolution) reconciled with §2.2 Environment ('no per-write gate'); richer disposition routed to the forthcoming feedback-loop governance design per §2.6"
+    }
+  }
+]

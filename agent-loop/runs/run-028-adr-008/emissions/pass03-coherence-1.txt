@@ -1,0 +1,82 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§5.3 Risks — 'Empirical floor' bullet ('calibration constants (for example the Environment weighting parameters) are held contested and config-surfaced')",
+    "claim": "§2.2's Environment control-type cell was corrected to 'capture-time-frozen aging of confidence,' dropping the 'weighting' framing, but §5.3 still names 'the Environment weighting parameters' as the exemplar contested constants, and the §2.2 Environment bullet still says 'a human is answerable for the weighting policy.' The record now describes the same DDR-004 mechanism with two divergent nouns — 'capture-time-frozen aging' (control-type cell) versus 'weighting policy'/'weighting parameters' (§2.2 bullet and §5.3) — leaving a reader to reconcile whether the human is answerable for a weighting policy or an aging basis.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 control-type cell ('capture-time-frozen aging of confidence ... never recomputed at read') in conflict with ADR-008 §2.2 Environment bullet ('answerable for the weighting policy') and §5.3 ('the Environment weighting parameters'); grounded in DDR-004 §1/§3 (aging derivation base × exp(−Δt/τ), frozen at capture)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.3 Un-promotion authority — opening 'governed by the same per-write, EA-gated, human-accountable control as promotion itself' vs the same paragraph's qualifying clause and §5.3",
+    "claim": "§2.3 opens by asserting un-promotion is governed by 'the same per-write, EA-gated, human-accountable control as promotion itself,' then in the same paragraph concedes the built retraction shape 'traces to an approving decision, not the governing one, so it does not yet supply promotion's governing-verdict guarantee.' The head assertion claims control identity; the qualifier concedes the retraction instance lacks the governing-verdict property (DDR-002 §7 #21 traces to an approving decision; #15 keys off the governing edge). A reader taking the opening 'same control' at face value is contradicted before the sentence ends — the head claim is not scoped to match its own qualification.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.3 ('the same per-write, EA-gated, human-accountable control as promotion itself') in tension with the same section's qualifier ('does not yet supply promotion's governing-verdict guarantee') and §5.3 Executed-retraction re-decision risk; DDR-002 §7 #21 vs #15"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Promotion row ('Built — the graph-schema ruling's PromotionDecision gate and its promoted-origin invariant') vs Environment row relabel and §5.3 empirical floor",
+    "claim": "The Environment row was relabeled to distinguish form-built from unvalidated-at-n=0 ('Form built (DDR-004); constants contested/unvalidated (n=0)'), but the Promotion row carries the same n=0 condition — §5.3 states 'No promotion, ingestion, or capture traffic has run' — while labeled unqualifiedly 'Built.' The promoted-origin invariant #15 is CI-only per DDR-002 §7 and has run against no traffic. The record applies a form-built-vs-unvalidated qualification discipline inconsistently across rows of the same table for structurally identical n=0 states.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 Promotion row 'Built' (unqualified) vs Environment row 'Form built ... constants contested/unvalidated (n=0)' and §5.3 ('No promotion, ingestion, or capture traffic has run'); DDR-002 §7 #15 CI-only status"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.4 Revalidation obligation (distillation) + §5.2 Constraints ('A mechanism must surface stale lessons for governed transition') vs §2.2 calibration table Operational row and §2.6 routing enumeration",
+    "claim": "The record commits a revalidation obligation as a decided consequence and constraint — a mechanism must surface stale lessons for governed transition — but the §2.2 calibration table's Operational row names only the review control, not a staleness-surfacing mechanism, and §2.6's enumeration of items routed to the forthcoming feedback-loop governance design does not list revalidation cadence/trigger. §2.4 states the surfacing mechanism is 'routed to the forthcoming feedback-loop governance design,' yet that routed item does not appear in §2.6's own enumeration of what it routes there — the consequence's realization route is asserted in §2.4 but not carried at the record's consolidated routing surface (§2.6).",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.4 / §5.2 (revalidation obligation committed, mechanism routed to the forthcoming feedback-loop governance design) vs §2.2 Operational row (no revalidation-mechanism realization route) and §2.6 (routed items enumerated; revalidation cadence/trigger not among them)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "Metadata Description + §1 closing ('homes the upstream authority for un-promotion that ADR-001 §2.5 does not reach') vs title / §2 Decision scope ('every mutation of enterprise ground truth ... calibrated per source class')",
+    "claim": "The title and §2 frame the decided scope as a general human-accountable control on every mutation of enterprise ground truth across four source classes, while the metadata Description and §1 closing foreground the narrower act of homing the un-promotion authority. A reader must reconcile whether the record's discrete decision act is the general four-class invariant or primarily the un-promotion gap-closure; the two framings sit in tension at the record's own summary surfaces and are not reconciled in the prose.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 metadata Description / §1 closing (un-promotion homing emphasis) vs §2 Decision ('every mutation ... calibrated per source class') and title — scope-framing alignment"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Operational distillation row 'Realization routes to' ('the forthcoming feedback-loop governance design; the detection-promotion service design') vs §7 subject-name rendering of the same forthcoming records",
+    "claim": "§2.2's Operational-distillation realization cell names 'the detection-promotion service design' as a subject-name descriptor, consistent with the subject-name-only forward-reference discipline the body otherwise follows. Checked whether this reintroduces a concrete-identifier drift surface after the forthcoming-record cleanup: it does not — the descriptor is subject-named and resolves consistently to the same detection-promotion SDD the substrate names elsewhere. The only residue is a minor cross-reference-consistency wrinkle between 'service design' here and 'SDD' in the substrate; no unresolved identifier.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 Operational 'Realization routes to' descriptor ('the detection-promotion service design') vs §7/§5.2 subject-name conventions for the same forthcoming design"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.1 scope exclusion of Reasoning-Graph capture + gateway executor-not-author claim",
+    "claim": "Attacked the mutation-scope boundary for over-reach — whether the accountability invariant quietly extends over Reasoning-Graph capture, or relocates authorship onto the gateway. It held: §2.1 declares RG capture out of scope as captured judgment, cites its governing authority verbatim (ADR-001 §2.2; ADR-002 §2.6), confines the invariant to KG authoritative ground truth, and states the sole-owner gateway is the executor of every mutation and never the authoring authority — a faithful application of ADR-002 §2.6's author/executor/authorizer principle, not an unsupported extension. No overlap or contradiction with the cited upstream authorities.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.1 scope exclusion + gateway-executor claim cross-checked against ADR-001 §2.2 (reasoning-capture invariant) and ADR-002 §2.6 (author/executor/authorizer separation; gateway never the authoring authority)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.6 Governance boundary + §2 ('fixes no policy, threshold, cadence, or mechanism') + §6 Compliance check 5",
+    "claim": "Attacked the decide-vs-defer boundary as a scope-creep surface — whether a remedy-boundary or governance-policy ruling is smuggled in under the principle. It held: §2.6 disclaims ruling the remedy boundary (supersede vs retract), thresholds, cadence, retention windows, and reviewer-role assignments, routing them to the forthcoming feedback-loop governance design with citation direction correct (downstream cites this ADR); §2 confines the decision to invariant + accountability + control-type per class; §6 boundary-check 5 reinforces that a design must not smuggle a remedy-boundary ruling into this principle layer. No downstream policy is decided here as a commitment.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.6 + §2 ('fixes no policy, threshold, cadence, or mechanism') + §6 Compliance check 5 (boundary check) — decided scope confined to the principle layer"
+    }
+  }
+]

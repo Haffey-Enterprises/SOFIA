@@ -1,0 +1,1 @@
+{"action": "refuse", "finding_id": "ec8d3723884ad828", "reason": "The finding's own fetch-verification concludes the cited §2.4/§5 loci carry the content and the cross-reference chain is internally consistent ('Verified as accurate') — it identifies no defect to conform, so the authority determines no edit.", "confidence": "high"}

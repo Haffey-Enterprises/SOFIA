@@ -1,0 +1,7 @@
+{
+  "finding_id": "d62c42c7a8d48248",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §2.4 (:Governance:Decision:PromotionDecision) — origin_mechanism: authored, no source_record_ref (ratified; triage-001 T-22)",
+  "rationale": "The finding is a direct contradiction with an already-ratified canonical schema: DDR-002 §2.4 fixes PromotionDecision as origin_mechanism: authored, and the ADR's stated 'ingested' is simply wrong against that authority. The correct value is dictated, not chosen — conform to DDR-002 §2.4.",
+  "confidence": "high"
+}

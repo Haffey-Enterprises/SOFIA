@@ -1,0 +1,7 @@
+{
+  "finding_id": "cf55661f0c03c015",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The two sections of ADR-003 make contradictory claims about where un-promotion authority lives — §1 says ADR-001 §2.5 does NOT reach un-promotion (hence this ADR is the authority), while §2.3 re-anchors on §2.5 as the authority. The ratified corpus corroborates §1's reading: ADR-001 §2.5 is scoped to promotion/encoded-knowledge only, and triage-001 T-05 Leg 4 ('ADR-001 §2.5 authorizes promotion only; un-promotion has no upstream authority') routes un-promotion authority to a forthcoming KG-entry-governance ADR. But this exposes a genuine open choice: whether ADR-003 itself holds un-promotion authority (§1's framing), defers it to the KG-entry-governance ADR (the triage routing), or re-derives it from §2.5 (§2.3's framing). No ratified authority disambiguates which of these the ADR should commit to, and the correct fix depends on that unmade decision.",
+  "confidence": "high"
+}

@@ -1,0 +1,92 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§4.1 Alternative A",
+    "claim": "The rationale claims Neo4j Community Edition as the graph store ('The graph store is Neo4j Community Edition, whose existence-constraint capability makes the mandatory-property guarantee enforceable at the database layer'), but the ratified ADR-002 §2.2 commits Neo4j *Enterprise* precisely because DB-enforced property-existence constraints are Enterprise-only per the vendor Cypher Manual (ADR-002 §4.1 rejects Community for this exact deficiency). ADR-004's §3 Rationale asserts a capability of Community that its own substrate says Community lacks.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-002 §2.2 / §4.1 (Neo4j Enterprise committed; property-existence constraints Enterprise-only, Community rejected)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2.2",
+    "claim": "§2.2 states 'the graph gateway — the sole executor of graph writes per the write-authority principle at ADR-002 §2.4' — but ADR-002's sole-executor gateway principle is at §2.5 (graph access authority / knowledge-service sole holder of the driver) and §2.6 (write authority: general principle / sole executor). ADR-002 §2.4 is the persistence-backbone (three-store) decision and does not state the sole-executor principle cited. The cross-reference cites a locus that does not carry the claimed content.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-002 §2.5 / §2.6 (sole-owner gateway, sole executor) vs. §2.4 (persistence backbone) — ADR-004 §2.2 citation misresolves"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2.2",
+    "claim": "§2.2 names 'the graph gateway' as the sole executor stamping provenance, but the ratified substrate names knowledge-service as the sole graph-access boundary/gateway (ADR-002 §2.5) and the gateway is the *executor*, never the *author* of provenance (ADR-002 §2.6 author/executor/authorizer separation). ADR-004 §2.2's phrasing 'stamped by the graph gateway ... at node creation' attributes the authoring of provenance to the gateway, which the ADR-002 §2.6 general write-authority principle prohibits (the gateway is never the authoring authority). The term 'graph gateway' is also used without resolving to the substrate's named component (knowledge-service).",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-002 §2.6 (author/executor/authorizer separation — gateway is sole executor, never authoring authority)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2.1 / §3",
+    "claim": "§2.1 asserts the provenance group is 'the existence-constraint requirement fixed at DDR-002 §6', but DDR-002's DB-enforced provenance existence constraints are fixed at §7 (Constraints, indexes & conformance), not §6 (Versioning & temporal model). §6 of DDR-002 does not contain the existence-constraint definition ADR-004 cites.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §7 (existence constraints on provenance group) vs. §6 (versioning/temporal) — ADR-004 §2.1 citation misresolves"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2.1 vs. DDR-002 §1 provenance scope",
+    "claim": "§2.1 asserts 'No KG node is exempt' and elevates a provenance group to a universal invariant on 'every node in every KG plane', but the substrate's provenance existence-constraint scope (DDR-002 §1, §4, §7) is not KG-node-uniform in the way ADR-004 implies: DDR-002 scopes the existence constraint to KG nodes *plus* three authored RG types, ProvenanceSummary, and the Artifact family, while treating derivation_class as N/A for promoted and Evidence as surrogate-only. ADR-004's flat 'every KG node' framing is consistent with the KG subset, but its silence on the promoted/Evidence/derivation-axis nuances leaves the platform principle underspecified against the schema it claims to elevate — and specifically the ADR does not reconcile 'immutable ... never mutated' (§2.3) with DDR-002's supersession/versioning model where promoted-vs-ingested and derivation-nature recovery rely on traversal, not on a frozen single group.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.1/§2.3 vs. DDR-002 §1 (two-axis provenance, promoted → N/A, Evidence surrogate-only) + §7 (existence-constraint scope)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-004"],
+    "locus": "§4.1 Alternative A",
+    "claim": "Alternative A is described as 'obviously wrong and nobody would defend it', which is a strawman disposition: the ADR template and house authoring discipline require each alternative be described as its proponents would, then given a specific rejection rationale. A dismissal-by-obviousness supplies no citable rejection rationale and fails the 'describe as proponents would' construction, unlike Alternative B which is properly framed.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "adr-template §4 (\"Describe each as its proponents would, then give a specific rejection rationale\"); author-decision-record-SKILL (\"A strawman is worse than a gap\")"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-004"],
+    "locus": "§7 Cross-References",
+    "claim": "§7 states 'No downstream records depend on this ADR yet' and §5.2 asserts constraints ('no write path may bypass the gateway; no code may mutate a written provenance group') that are already committed and enforced by ratified upstream records (ADR-002 §2.5/§2.6, DDR-002 §7). The ADR presents itself as introducing constraints that its own §1/§2.1 concede are pre-existing schema/system-of-record requirements — leaving the record's added constraint over the substrate unstated (what, if anything, this principle binds that ADR-002/DDR-002 do not already bind).",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §5.2 constraints vs. ADR-002 §2.5/§2.6 + DDR-002 §7 (already-committed write-boundary and immutability enforcement)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-004"],
+    "locus": "§2.2 / §5.3 fail-closed claim",
+    "claim": "Attacked the internal-correctness claim that 'a service attempting a direct write fails closed at the gateway boundary' for a silent unstamped-node entry path. Given the substrate (ADR-002 §2.5: knowledge-service is the sole Neo4j driver holder; no other service holds a direct client), there is by construction no write path that bypasses the enforcing component, so the fail-closed / no-unstamped-node claim holds against the ratified access-authority principle. The claim survives.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-002 §2.5 (sole-owner gateway; no other service holds a direct Neo4j driver)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-004"],
+    "locus": "§2.1 mandatory-provenance principle vs. DDR-002 KG scope",
+    "claim": "Attacked whether the load-bearing decision — provenance group mandatory on every KG node — conflicts with the schema's actual per-node-family provenance treatment. For the KG-node subset specifically, DDR-002 §1 and §7 do carry a provenance existence constraint on every KG node (origin_mechanism + recorded_at), so ADR-004's core KG-node universality claim conforms to the schema authority it elevates. The KG-scoped invariant held.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §1 (provenance group on every KG node) + §7 (DB-enforced existence constraint on KG nodes)"
+    }
+  }
+]

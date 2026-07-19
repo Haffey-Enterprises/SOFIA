@@ -1,0 +1,7 @@
+{
+  "finding_id": "561aa0cb2c090170",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding exposes an internal tension in ADR-003 (a document not present in the ratified corpus) between its blocked-on claim and its no-new-mechanism-for-promotion claim; resolving it requires an authorial choice — either restate what DDR-003 is actually blocked on (a scoping decision about which entry paths this ADR governs) or revise the promotion-path characterization — and no ratified authority dictates which. The KG-entry rulings and triage charter route promotion criteria to DDR-003 and the promotion gate to the existing ADR-001 §2.5 instance, but neither text determines how ADR-003 should characterize its own contribution.",
+  "confidence": "high"
+}

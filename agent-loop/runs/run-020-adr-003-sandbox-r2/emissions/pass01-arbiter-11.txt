@@ -1,0 +1,7 @@
+{
+  "finding_id": "efb867938d0355cc",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §2.4 (PromotionDecision — 'origin_mechanism: authored ... and therefore no source_record_ref') and §1 provenance scoping matrix (authored → primary; ingested reserved for externally-mirrored decisions)",
+  "rationale": "The ratified schema fixes PromotionDecision's provenance value as origin_mechanism: authored and reserves ingested for externally-mirrored decisions; ADR-003 §2.3's assignment of ingested to a reversing PromotionDecision contradicts that fixed value, so conformance to the named authority determines the fix without introducing any new choice.",
+  "confidence": "high"
+}

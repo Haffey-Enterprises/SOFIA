@@ -1,0 +1,7 @@
+{
+  "finding_id": "51c98ce2fd2283e7",
+  "classification": "resolvable",
+  "authority_locus": "ADR-001 §2.5 (Encoding-density growth mechanism / EA promotion gate) — the ratified locus that commits the EA-gated promotion mechanism, cross-confirmed by ADR-003's own §1 and §2.3 which cite §2.5",
+  "rationale": "This is a section-citation error of the exact species the corpus already treats as fetch-verifiable fact (triage Appendix D, capture-fidelity pattern): ADR-001's EA-gated promotion mechanism is unambiguously at §2.5, ADR-003's other citations already point there, and §2.6 of ADR-001 does not exist. The fix is determined — correct §2.6 to §2.5 — with no choice among conforming options.",
+  "confidence": "high"
+}

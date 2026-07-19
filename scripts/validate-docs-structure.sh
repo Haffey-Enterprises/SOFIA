@@ -100,10 +100,15 @@ metadata_value() {
 # its name is still a real portability bug). Note that a documents/ snapshot is a verbatim
 # copy of a decision record and so carries an ADR-/DDR-/SDD- basename outside docs/ —
 # without this exemption it would false-RED the doctype-placement check by construction.
+# The same holds for the session-archive and sandbox trees, which hold verbatim historical
+# session artifacts and review fixtures — archive-only by convention, never live canonical
+# records; without this exemption they false-RED doctype-placement by construction.
 is_frozen_snapshot() {
     case "$1" in
         agent-loop/runs/*/substrate/*) return 0 ;;
         agent-loop/runs/*/documents/*) return 0 ;;
+        docs/session-archive/*) return 0 ;;
+        agent-loop/sandbox/*) return 0 ;;
     esac
     return 1
 }

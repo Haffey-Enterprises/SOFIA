@@ -1,0 +1,82 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["ADR-008"],
+"locus": "§2.2 Environment control-type cell ('capture-time-frozen aging ... never recomputed at read') vs the §2.2 Environment bullet ('answerable for the weighting policy') and §5.3 Risks ('the Environment weighting parameters')",
+"claim": "The §2.2 control-type cell was corrected to 'per-policy capture-time-frozen aging of confidence (derived at capture, never recomputed at read)', but the §2.2 Environment bullet still names the human as 'answerable for the weighting policy' and §5.3 still cites 'the Environment weighting parameters' as the example of calibration constants. The realizing authority DDR-004 §1/§3 describes an aging derivation (base × exp(−Δt/τ)) computed at capture; DDR-004 does not term the control a retrieval-time 'weighting'. The record describes one and the same DDR-004 mechanism with divergent nouns ('weighting policy'/'weighting parameters' vs 'aging'), leaving unresolved whether the accountable human is answerable for a 'weighting policy' or an 'aging basis'.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-008 §2.2 control-type cell ('capture-time-frozen aging') vs §2.2 Environment bullet ('the weighting policy') / §5.3 ('the Environment weighting parameters'); DDR-004 §1/§3 (aging derivation base × exp(−Δt/τ) frozen at capture)"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-008"],
+"locus": "§2.2 Environment row ('Realization routes to: Form built (DDR-004); constants contested/unvalidated (n=0)') and Environment bullet ('its calibration is a ratified act under that ruling's governance')",
+"claim": "The Environment control-type is homed on DDR-004's aging basis and the record states a human 'is answerable for the weighting policy (its calibration is a ratified act under that ruling's governance).' DDR-004 §6 states the two-tier calibration governance is a process, not a result, and that 'no calibration is possible until the platform runs' at n=0 capture traffic; DDR-004 §2 states the constants are POC-asserted and unvalidated. As written, the per-policy accountability control the record names as its discharge — a human ratifying base/τ by amendment — has never been performed and cannot be until traffic exists. The record's Environment realization asserts a discharging per-policy accountability act while the cited authority establishes that act is empirically impossible at the current state; the 'form built' relabel narrows the constants claim but does not reach whether the ratifying accountability act has occurred.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "DDR-004 §6 ('This section defines the process, not a result ... no calibration is possible until the platform runs') and §2 ('Empirical floor: zero capture traffic to date; these values are unvalidated') vs ADR-008 §2.2 Environment bullet ('its calibration is a ratified act')"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-008"],
+"locus": "§7 Cross-References — 'ADR-004 (file-driven ingestion, forthcoming)' and 'DDR-003 (Feedback Loop Governance, forthcoming)'",
+"claim": "The Cross-References section identifies two forthcoming, unauthored records by concrete numeric identifier ('ADR-004', 'DDR-003'), while the body (§1, §2.6, §3) refers to the same records by subject-name ('the forthcoming file-driven ingestion decision record', 'the forthcoming feedback-loop governance design'). Neither number resolves to a named artifact in the substrate: 'ADR-004' does not correspond to any record in scope, and the substrate carries DDR-004 (Inherited-Confidence Derivation) at that number — the 'ADR-004' descriptor collides in the reader's mind with the ratified DDR-004 and asserts a numbering allocation the record has no authority to fix. A cross-reference that names a forthcoming record by a number not resolving to any existing artifact is an unresolved/ambiguous pointer.",
+"cited_authority": {
+"kind": "design-intent",
+"ref": "author-decision-record SKILL body-integrity forward-reference rule ('A forward reference in the body is subject-named only ... concrete identifiers bind only at the downstream record's landing') vs ADR-008 §7 'ADR-004 (file-driven ingestion, forthcoming)' / 'DDR-003 (Feedback Loop Governance, forthcoming)'"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-008"],
+"locus": "§2.3 Un-promotion authority — opening 'governed by the same per-write, EA-gated, human-accountable control as promotion itself' vs the same section's qualifying clause and §5.3",
+"claim": "§2.3 opens asserting un-promotion is governed by 'the same' control as promotion, then within the same paragraph concedes the built retraction shape 'traces to an approving decision, not the governing one, so it does not yet supply promotion's governing-verdict guarantee.' Verified against DDR-002 §7 #21 (retraction traces to an approving PromotionDecision) and #15 (promotion traces to the governing DECIDED_ON edge, latest decided_at): the two controls are not identical — the retraction instance lacks the governing-verdict property. The head assertion ('the same ... control') is not scoped to match its own qualifier; a reader taking the opening claim at face value is contradicted before the sentence ends. The qualifying clause partially rescues the claim but the unscoped head overstates parity relative to the substrate and the record's own §5.3 concession.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-008 §2.3 head ('the same per-write, EA-gated, human-accountable control as promotion itself') in tension with the same section's qualifier and §5.3 ('the retraction invariant traces to an approving decision, not the governing one'); DDR-002 §7 #21 vs #15"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-008"],
+"locus": "§2.2 Promotion row ('Realization routes to: Built') vs Environment row ('Form built ... constants contested/unvalidated (n=0)') and §5.3 Empirical floor",
+"claim": "The Promotion row is labeled unqualifiedly 'Built', while the structurally comparable Environment row was relabeled to distinguish form-built from unvalidated-at-n=0. §5.3 Empirical floor states 'No promotion, ingestion, or capture traffic has run', and the promoted-origin invariant #15 the Promotion row rests on is a CI-only invariant that per DDR-002 §7's own status has not run against traffic. The record applies its own claim-fidelity discipline (form-built vs unvalidated-at-n=0) to the Environment row but not to the Promotion row, which shares the n=0 condition — an inconsistency in status-qualification discipline across rows of the same table. Note: the Promotion gate (the EA PromotionDecision structure) is more genuinely built than the Environment constants, so the tension is weaker than the Environment case, but the unqualified 'Built' against a stated n=0 floor is still asserted more strongly than the same floor is elsewhere admitted.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-008 §2.2 Promotion row 'Built' (unqualified) vs Environment row 'form built ... constants contested/unvalidated (n=0)' and §5.3 'No promotion, ingestion, or capture traffic has run'; DDR-002 §7 #15 (CI-only invariant)"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-008"],
+"locus": "§2.4 Revalidation obligation (distillation) + §5.2 Constraints ('A mechanism must surface stale lessons for governed transition') vs §2.2 calibration table Operational row and §2.6 routed-items enumeration",
+"claim": "The record commits a revalidation obligation as a decided consequence and constraint — 'An accountability mechanism must therefore surface stale lessons for their governed transition' (§2.4) and 'A mechanism must surface stale lessons for governed transition' (§5.2). The §2.2 calibration table Operational row names only the distillation review control as its realization route, not any staleness-surfacing mechanism. §2.4 defers cadence and trigger to the forthcoming feedback-loop governance design, but §2.6's enumeration of what it routes to that design (remedy boundary, promotion/review criteria, thresholds, cadence, retention windows, reviewer-role assignments, multi-condition composition) does not name the revalidation-surfacing mechanism. The consequence (a mechanism must surface stale lessons) is committed without its realization route being declared in the record's calibration table or named among the record's own routed items — a committed dependency left undeclared at the record's routing surfaces.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-008 §2.4 / §5.2 (revalidation obligation committed; 'a mechanism must surface stale lessons') vs §2.2 Operational row (no revalidation-mechanism realization route) and §2.6 (routed items enumerated; revalidation-surfacing mechanism not among them)"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-008"],
+"locus": "§2.1 scope exclusion of Reasoning-Graph capture + gateway executor-not-author claim",
+"claim": "Attacked the scope boundary for conformance defects — whether the accountability invariant over-reaches into Reasoning-Graph capture or mis-states the gateway's authority. It held: §2.1 confines the invariant to KG authoritative ground truth, declares RG capture out of scope as captured judgment, and cites its governing authorities to loci that carry the stated content — ADR-001 §2.2 owns the reasoning-capture invariant, ADR-002 §2.6 owns RG write authority (ASA authors ReasoningProgress; AOE owns ReasoningSession lifecycle). The 'gateway is the executor of every mutation and never the authoring authority' claim is a faithful application of ADR-002 §2.6's verbatim author/executor/authorizer principle, not an unsupported extension. Named dependencies resolve to existing loci with the stated content.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "ADR-001 §2.2 (reasoning-capture invariant) + ADR-002 §2.6 (author/executor/authorizer separation; gateway never the authoring authority) — ADR-008 §2.1 scope exclusion and gateway-executor claim conform"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-008"],
+"locus": "§2.3 / §2.4 never-a-bare-delete withdrawal posture cross-checked against DDR-002 §2.3, §5, §6",
+"claim": "Attacked the withdrawal posture ('never a bare delete — read-excluded from ground-truth synthesis and retained, fully traceable, for audit') as a possible over-claim against the ratified schema. It held: DDR-002 §2.3 ('archived is retention-tier demotion, never hard-deletion'), §5 (retracted node retained and fully traceable, gateway-enforced read-exclusion keyed on the EA-approved RETRACTS edge), and §6 (never-delete via retained versions) substantiate the claim in the same terms. The provenance-survival commitment in §2.4 is also honestly bounded — §5.3 concedes the frozen-provenance guarantee is promotion-scoped and flags the decision-consumed-but-unpromoted retention gap as a named follow-up rather than asserting coverage it lacks. The withdrawal and provenance claims conform to and do not exceed the schema authority.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "DDR-002 §2.3 (archived = retention-demotion), §5 (retracted-node retained/traceable, read-exclusion on EA-approved RETRACTS), §6 (never-delete) — ADR-008 §2.3/§2.4 withdrawal posture conforms"
+}
+}
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§3 Rationale — 'The graph store is Neo4j Community Edition' vs §2.1 / §6 mandatory-property enforcement claim",
+    "claim": "ADR-004 §3 states the graph store is Neo4j Community Edition and rests its enforceability claim on Community's existence-constraint capability ('whose existence-constraint capability makes the mandatory-property guarantee enforceable at the database layer'). ADR-002 §2.2/§4.1 and DDR-001 Substitution-Contract Capability Bar item 6 both hold that DB-enforced property-existence constraints are Neo4j-Enterprise-only per the vendor Cypher Manual and that Community cannot enforce them — ADR-002 §4.1 rejects Community precisely because it 'cannot enforce the schema's DB-enforced property-existence constraints.' ADR-004's edition claim and its database-enforceability rationale cannot both be true alongside the ratified substrate.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §3 ('Neo4j Community Edition, whose existence-constraint capability makes the mandatory-property guarantee enforceable at the database layer') in conflict with ADR-002 §2.2/§4.1 and DDR-001 Substitution-Contract Capability Bar item 6 (property-existence constraints Enterprise-only; Community rejected)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2.2 / §5.2 — provenance stamped by 'the graph gateway' vs ADR-002 §2.5 sole gateway named 'knowledge-service'",
+    "claim": "ADR-004 §2.2 attributes provenance-stamping to 'the graph gateway — the sole executor of graph writes per the write-authority principle at ADR-002 §2.4'. ADR-002 fixes the sole-owner gateway as knowledge-service (§2.5), and the general author/executor/authorizer write-authority principle is at §2.6, not §2.4 (§2.4 is the persistence-backbone / three-store decision). ADR-004's cited section (§2.4) does not carry the write-authority principle it invokes; the section pointer is to a decision about a different subject.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.2 ('the sole executor of graph writes per the write-authority principle at ADR-002 §2.4') in conflict with ADR-002 §2.4 (persistence backbone — three stores) and §2.6 (write authority — author/executor/authorizer principle) and §2.5 (knowledge-service as sole gateway)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2.1 / §1 — 'Every node in every KG plane carries origin_mechanism and recorded_at' vs DDR-002 §1 provenance-existence scope",
+    "claim": "ADR-004 §2.1 asserts the provenance group (origin_mechanism + recorded_at) is mandatory on 'every node in every KG plane', framing the invariant as KG-node-scoped and citing DDR-002 §6 as the existence-constraint source. DDR-002 owns the provenance existence constraint and locates it at §7 (not §6), and DDR-002 §1/§4 scope the existence constraint beyond KG nodes to also include the three authored RG types, the derived ProvenanceSummary, and the Artifact family — while excluding Evidence (the sole surrogate-only RG type, which carries no provenance group). ADR-004's citation section is wrong (§6 vs §7) and its 'every KG node' framing does not match the owning document's actual constraint scope.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.1 ('This is the existence-constraint requirement fixed at DDR-002 §6') in conflict with DDR-002 §7 (existence constraints) and DDR-002 §1/§4 provenance-existence scope (KG nodes + three authored RG types + ProvenanceSummary + Artifact family; Evidence exempt)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-004"],
+    "locus": "§7 Cross-References vs metadata Supersedes / DDR-001 dependency direction",
+    "claim": "ADR-004 §7 lists DDR-001 as a cross-reference ('DDR-001 (data architecture)') on equal footing with DDR-002 and ADR-002, but the ratified substrate makes ADR-004's provenance invariant a downstream elevation of DDR-002 §7's existence constraint (DDR-002 depends on DDR-001, and both are upstream of any node-level provenance principle). The cross-reference set does not itself state an authority direction, leaving a reader to infer ADR-004's altitude relative to DDR-001/DDR-002 rather than reading it stated.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §7 Cross-References in conflict with DDR-002 §7 (owns the provenance existence constraint ADR-004 §2.1 elevates) and DDR-001 one-way dependency direction (DDR-002 depends on DDR-001)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-004"],
+    "locus": "§2.3 immutability vs substrate never-delete / supersession mechanisms",
+    "claim": "Checked ADR-004 §2.3's immutability claim ('corrections are made by the schema's versioning and never-delete mechanisms, not by overwriting provenance in place') against DDR-002 §6 (Option A supersession — retained version nodes, never-delete) and DDR-001's version-pinned / never-delete posture. The claim is consistent: the substrate does provide versioning and never-delete correction paths, so ADR-004's 'correct by versioning, not overwrite' framing holds against the owning documents. Attack on immutability-vs-correction contradiction failed.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.3 checked against DDR-002 §6 (Option A supersession / never-delete) and DDR-001 Versioning & Temporal Model"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-004"],
+    "locus": "§2.2 sole-write-boundary posture vs ADR-002 sole-owner gateway commitment",
+    "claim": "Checked ADR-004's core structural claim ('no service writes to the graph outside the gateway, so no node can enter without provenance') against ADR-002 §2.5 (knowledge-service sole holder of the Neo4j driver / single graph-access boundary) and §2.6 (gateway sole executor of all graph writes). The single-write-boundary premise ADR-004 leans on is genuinely committed upstream, so the 'no unstamped node can enter' argument is load-bearing-consistent with the substrate — independent of the misattributed §2.4 section cite (reported separately).",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.2 sole-write-boundary claim checked against ADR-002 §2.5 (sole-owner gateway) and §2.6 (gateway sole executor of graph writes)"
+    }
+  }
+]

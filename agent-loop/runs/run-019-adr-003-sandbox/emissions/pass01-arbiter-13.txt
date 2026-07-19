@@ -1,0 +1,7 @@
+{
+  "finding_id": "cec96ffd82e53475",
+  "classification": "resolvable",
+  "authority_locus": "adr-template §4 ('Describe each as its proponents would, then give a specific rejection rationale'; 'One means it wasn't a real choice') + author-decision-record SKILL deliberation gate ('A strawman is worse than a gap')",
+  "rationale": "The cited authorities directly and specifically dictate the fix: rewrite Alternative A in non-strawman form (as its proponents would state it, with a specific rejection rationale). This is a conformance-to-existing-authority correction with no unratified choice introduced; the ADR either uses the KG-entry-governance deliberation substrate to state a genuine alternative or is held in PROPOSED per the gate.",
+  "confidence": "medium"
+}

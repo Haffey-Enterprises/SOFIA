@@ -1,0 +1,7 @@
+{
+  "finding_id": "1084b26e805b644d",
+  "classification": "resolvable",
+  "authority_locus": "ADR-002 §2.6 (General principle — author/executor/authorizer): 'The sole-owner gateway (§2.5) is the sole executor and enforcement boundary of all graph writes; it is never itself the authoring authority... For EA-gated materializations, the authoring authority is the approving decision.'",
+  "rationale": "ADR-002 §2.6 is a ratified, higher-altitude authority that directly determines the fix: the gateway may not be the authoring authority, and for EA-gated approvals the authoring authority is the approving decision — ADR-003 §2.4 must conform by removing the gateway-as-authoring-authority assignment. The conforming target is uniquely dictated by named authority, introducing no new choice.",
+  "confidence": "high"
+}

@@ -1,0 +1,7 @@
+{
+  "finding_id": "007983cbcb9dca56",
+  "classification": "resolvable",
+  "authority_locus": "ADR-002 §2.6 (write authority — general principle: the sole-owner gateway is the sole executor and enforcement boundary and is never itself the authoring authority; for EA-gated materializations the authoring authority is the approving decision)",
+  "rationale": "The ratified ADR-002 §2.6 principle directly determines the fix: the gateway is executor, never author, and an EA-gated approval's author is the approving decision — so ADR-003's §2.4 'gateway is the authoring authority' must conform to that named authority, with no unratified choice among options.",
+  "confidence": "high"
+}

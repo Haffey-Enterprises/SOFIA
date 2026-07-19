@@ -1,0 +1,7 @@
+{
+  "finding_id": "4512a7b09eece8d4",
+  "classification": "resolvable",
+  "authority_locus": "Ruling G (ADR-008-run-025-operator-rulings) + author-decision-record SKILL body-integrity forward-reference rule",
+  "rationale": "Operator Ruling G dictates the exact fix: replace concrete identifiers with subject-name forms for forthcoming records; no choice remains.",
+  "confidence": "high"
+}

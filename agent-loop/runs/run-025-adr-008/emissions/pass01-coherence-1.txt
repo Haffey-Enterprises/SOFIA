@@ -1,0 +1,82 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Per-source-class calibration table — Operational distillation row",
+    "claim": "The distillation control-type is stated as a per-write human review discharged 'per-distinct-lesson', but §2.1 defines the two accountability forms as strictly 'per-write' and 'per-policy' ('Accountability is discharged per-write for classes that warrant a gate or a review, and per-policy for a class whose volume cannot bear a per-write gate'). 'Per-distinct-lesson' is a third accountability form the record's own scoping vocabulary does not supply, and it is not reconciled to the per-write/per-policy dichotomy §2.1 asserts is exhaustive.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.1 (per-write/per-policy accountability dichotomy) in conflict with ADR-008 §2.2 table ('Per-distinct-lesson') and §2.2 Operational-distillation bullet ('bounded by distinctness')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Environment row and §2.5 Cross-class precedence",
+    "claim": "§2.2 fixes for Environment 'no per-write gate' and per-policy weighting with no withholding, while §2.5 commits that any mutation from one class that would override another class's human-accountable control 'withholds and escalates … the mutation is blocked'. An observational Environment write is per-policy and ungated by §2.2, yet §2.5 requires that same write be blocked when it would conflict with an EA-set governance scope on promoted knowledge — the two sections cannot both hold for the Environment class's write path without a reconciliation of how an ungated, per-policy plane performs a per-write withhold-and-block.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 (Environment: 'no per-write gate', per-policy weighting) in conflict with ADR-008 §2.5 ('the mutation is blocked and surfaced')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008", "ADR-001"],
+    "locus": "§2.2 Promotion row / §2.3 / §7 cross-reference vs ADR-001 §2.5",
+    "claim": "ADR-008 §2.3 and §2.2 assert this ADR is 'the general upstream authority for promotion as ground-truth mutation' and homes un-promotion authority that 'ADR-001 §2.5 does not stretch to' — a downstream ADR (PROPOSED) enlarging the authority scope over a commitment whose upstream text (ADR-001 §2.5, ACCEPTED) authorizes only 'consolidating SOFIA's own reasoning into encoded knowledge'. ADR-001 §2.5 carries no promotion-as-general-mutation scope and no un-promotion carve-out; the reconciliation depends entirely on ADR-008 asserting a broader authority the upstream text does not carry.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-001 §2.5 (EA-gated promotion scoped to SOFIA's own reasoning into encoded knowledge) in conflict with ADR-008 §2.2/§2.3/§7 (this ADR as general upstream authority for promotion and un-promotion)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008", "DDR-002"],
+    "locus": "§2.3 Un-promotion authority / §5.3 Executed-retraction risk",
+    "claim": "ADR-008 §2.3 asserts un-promotion is 'governed by the same per-write, EA-gated, human-accountable control as promotion itself' and cites the built retraction shape (DDR-002 §7 #21) as 'the instance of this authority'. But DDR-002 §7 #21 traces a RETRACTS edge to 'an approving PromotionDecision' — not to the governing (latest decided_at) decision the way #15 keys promotion — and DDR-002 §2.4 itself names the executed-retraction re-decision case as unruled and routed to DDR-003. ADR-008 §5.3 concedes this ('The retraction invariant traces to an approving decision, not the governing one'). The claim that un-promotion carries the same per-write accountable control as promotion overstates the built instance's guarantee: the promotion side is governing-verdict-keyed (#15) and the retraction side is not, so 'the same control' is not what the cited instance supplies.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.3 ('same per-write, EA-gated control … the built retraction shape is the instance of this authority') in conflict with DDR-002 §7 #21 (traces to an approving, not the governing, decision) and ADR-008 §5.3 (concedes the gap)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References — DDR-003 entry vs body references",
+    "claim": "The §7 Cross-References entry names 'DDR-003 (Feedback Loop Governance, forthcoming)', while §1, §2.6, and §3 refer to it only as 'the forthcoming feedback-loop governance design' without the DDR-003 identifier. §7 additionally states 'the obligation to resolve DDR-003's pointer to this record's concrete document identifier lives in DDR-003's definition of done' — yet the body uses the un-numbered subject-name form, so a reader reconciling the body against §7 must infer that the subject-named 'feedback-loop governance design' and 'DDR-003' are the same referent; the identifier binding is asserted in §7 alone.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §7 ('DDR-003 (Feedback Loop Governance, forthcoming)') vs ADR-008 §1/§2.6/§3 ('the forthcoming feedback-loop governance design', un-numbered)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008", "DDR-002", "SDD-001"],
+    "locus": "§2.5 Cross-class precedence — 'cross-origin scope-conflict block' as the interim instance",
+    "claim": "ADR-008 §2.5 states 'the knowledge-service design's cross-origin scope-conflict block is the interim instance this principle authorizes' and generalizes the principle to any conflict where 'a mutation from one source class would override or conflict with a human-accountable control set by another class'. But SDD-001 §3.5.2 scopes SCOPE_CONFLICT narrowly to the ingestion-path supersession of a promoted conditional node (an ingested successor that cannot structurally satisfy #22). The cited instance covers one specific cross-origin case (ingestion-vs-conditional-promoted-scope); ADR-008's principle spans all cross-class conflicts, so calling the SDD block 'the interim instance' presents a narrow, single-case mechanism as the instance of a broad principle it does not cover.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.5 (general cross-class precedence principle, SDD block as 'the interim instance') in conflict with SDD-001 §3.5.2 (SCOPE_CONFLICT scoped to the ingestion-path supersession of a conditional promoted node only)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.1 scope exclusion of Reasoning-Graph capture vs ADR-001 §2.2 / ADR-002 §2.6",
+    "claim": "Checked ADR-008's scope boundary — 'Reasoning-Graph capture is not ground truth … governed by the reasoning-capture invariant and its write-authority assignment (ADR-001 §2.2; ADR-002 §2.6) — and is outside this record's scope' — against the cited authorities. ADR-001 §2.2 does own the reasoning-capture invariant, and ADR-002 §2.6 does own the RG write-authority assignment (ASA authors ReasoningProgress; AOE owns ReasoningSession lifecycle). The exclusion of RG capture from the ground-truth-mutation invariant holds against both citations; no drift found in the scope carve-out.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.1 scope exclusion checked against ADR-001 §2.2 (reasoning-capture invariant) and ADR-002 §2.6 (RG write-authority) — consistent"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008", "ADR-002"],
+    "locus": "§2.1 gateway executor/author separation vs ADR-002 §2.6",
+    "claim": "Checked ADR-008's load-bearing claim that 'the sole-owner graph gateway is the executor of every mutation and is never the authoring authority for it (ADR-002 §2.6)' against the cited upstream. ADR-002 §2.6's general principle states the sole-owner gateway 'is the sole executor and enforcement boundary of all graph writes; it is never itself the authoring authority'. ADR-008's use of that separation to place accountability on the authoring human/component rather than the gateway is faithful to the upstream text; the citation supports the claim exactly.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.1 (gateway executes, never authors) checked against ADR-002 §2.6 (author/executor/authorizer separation) — consistent"
+    }
+  }
+]

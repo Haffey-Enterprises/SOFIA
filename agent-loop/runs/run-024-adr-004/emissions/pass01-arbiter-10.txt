@@ -1,0 +1,1 @@
+{"finding_id":"a5547bf812e9e050","classification":"decision-bearing","authority_locus":null,"rationale":"ADR-004's provenance principle is being newly authored above DDR-002's two-axis/surrogate/supersession model; reconciling scope and the immutable-vs-versioning tension requires authorial choices no ratified authority dictates.","confidence":"high"}

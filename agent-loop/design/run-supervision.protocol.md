@@ -176,8 +176,8 @@ honored it.
 ## §6 — Baseline comparison set
 
 The human-review baseline for the four docs: the review records in
-`docs/reviews/` at HEAD, plus the cold-review artifacts in ~/Downloads
-(`COLD-REVIEW-Findings.md`, `COLD-REVIEW-2-Findings.md`) — assembled into
+`docs/reviews/` at HEAD, plus the cold-review baseline artifacts
+(`agent-loop/baselines/COLD-REVIEW-Findings.md`, `COLD-REVIEW-2-Findings.md`) — assembled into
 the run folder at audit time (not run time; the loop never sees them).
 Only **still-live** defects count as missable: a baseline finding that the
 distillation already resolved is out of scope for recall scoring.

@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "8c391d4a86963317",
+  "reason": "The named authorities determine only the Environment-row qualification (Ruling D relabels the Environment 'Built' to 'form built ... n=0') and the Promotion-class authority chain (Ruling B fixes the citation to ADR-001 §2.5 + DDR-002 §5/§7 #15). Neither ruling directs relabeling the Promotion row's 'Built' status; Ruling B affirms the PromotionDecision gate is durably built (per-write EA gate, DDR-002 §7 #15) and does not extend Ruling D's status-qualification discipline to the Promotion row. Whether and how to qualify Promotion's 'Built' against the n=0 floor — the very inconsistency the finding raises — is an unratified choice the arbiter did not resolve; conforming it would require deciding the qualification wording the authorities are silent on.",
+  "confidence": "high"
+}

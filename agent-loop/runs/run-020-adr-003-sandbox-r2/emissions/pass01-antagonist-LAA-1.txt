@@ -1,0 +1,92 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.1 (Per-source-class calibration, Promotion bullet) and §7 Cross-References",
+    "claim": "The Promotion bullet cites 'the existing EA gate committed at ADR-001 §2.6' as the already-built instance, but ADR-001's EA-gated promotion mechanism is committed at ADR-001 §2.5 (the record's own §1 Context and §2.3 both cite §2.5 for promotion). §2.6 does not exist in ADR-001. The decision content of §2.1 depends on which prior commitment it is anchoring to, and the citation points to a non-existent locus.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.1 Promotion bullet ('EA gate committed at ADR-001 §2.6') vs ADR-003 §1 and §2.3 ('ADR-001 §2.5 commits the EA-gated promotion mechanism') and ADR-001 §2.5 (Encoding-density growth mechanism / EA promotion gate)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2 Decision and Title/Summary vs §2.2 Environment plane",
+    "claim": "The decision claims mutation of enterprise ground truth 'passes a human-accountable checkpoint whose weight is calibrated to the source class of the write' — stated as a universal commitment. But §2.2 explicitly defers the Environment plane's checkpoint posture entirely ('this ADR does not rule it here'). A source class of KG ground-truth writes is carved out of the very commitment the Decision states unconditionally; the Decision does not surface this exception, so title/summary/Decision claim more scope than the body decides.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2 Decision (universal checkpoint commitment) vs §2.2 Environment plane ('deferred to a named follow-up ... this ADR does not rule it here')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.3 Un-promotion authority",
+    "claim": "The record claims 'this ADR is its upstream authority' for un-promotion — a substantive new decision granting authority ADR-001 §2.5 does not supply. But the Decision statement in §2 frames un-promotion only as 'governed by the same principle' as the checkpoint. The upstream-authority grant is a distinct decision (it is what DDR-002 §7 #21 and the triage T-05 Leg 4 route here for), yet it is not enumerated as a numbered sub-decision at the Decision altitude — it surfaces only inside §2.3 prose. A decision this record is chartered to make (supplying retraction its missing upstream authority) is not surfaced in the Decision enumeration.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.3 ('this ADR is its upstream authority') vs §2 Decision (un-promotion stated only as 'governed by the same principle'); the un-promotion-authority grant is not a numbered Decision sub-decision"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.4 The checkpoint executor",
+    "claim": "§2.4 asserts 'the graph gateway is the authoring authority for each checkpoint approval.' This directly names the gateway as an authoring authority, which contradicts the write-authority principle this record depends on: ADR-002 §2.6 (as amended) states the sole-owner gateway is the sole EXECUTOR and is 'never itself the authoring authority'; for EA-gated materializations the authoring authority is the approving decision. The consequence (a decision that mis-assigns authoring authority to the gateway) is not declared, and the prose retracts a principle the substrate holds.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.4 ('the graph gateway is the authoring authority') vs ADR-002 §2.6 general write-authority principle ('the sole-owner gateway ... is never itself the authoring authority; ... the authoring authority is the approving decision')"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-003"],
+    "locus": "§7 Cross-References, first bullet",
+    "claim": "The first Cross-References bullet cites 'ADR-002 §2.6 (write authority)' but §7 does not name ADR-001 §2.5 despite §1, §2.3, and the un-promotion authority basis all resting on it; and the same bullet is the sole home reconciling the §2.1 '§2.6' vs body '§2.5' promotion-mechanism citation. The cross-reference set does not name the promotion-mechanism authority (ADR-001 §2.5) that the record's core dependency rests on.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §7 Cross-References (names ADR-001 §2.5 for promotion, ADR-002 §2.6 for write authority) vs §2.1 Promotion bullet citing 'ADR-001 §2.6' — the two loci disagree and §7 does not resolve which is the promotion-mechanism authority"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-003"],
+    "locus": "§2.5 Distillation entry",
+    "claim": "§2.5 states a distillation write 'produces an ObservedPattern in the Operational plane carrying a flat_base confidence.' DDR-002 §2.3 declares the Operational plane's confidence-derivation basis as native_confidence (the plane's authority measure is the node's own confidence / lesson reliability), not flat_base. The record asserts a schema-property value the substrate does not support for ObservedPattern.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.5 ('ObservedPattern ... carrying a flat_base confidence') vs DDR-002 §2.3 Operational plane confidence-derivation basis ('native_confidence (basis 1), plane-level')"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-003"],
+    "locus": "§2.3 Un-promotion authority (retraction mechanism reference)",
+    "claim": "Checked whether §2.3's claimed retraction mechanism ('an EA-gated reversing CandidatePromotion whose approving PromotionDecision carries origin_mechanism: ingested') faithfully matches the schema shape it cites. Attacked the origin_mechanism value: DDR-002 §2.4 assigns PromotionDecision origin_mechanism: authored, not ingested. The claim as written names the approving PromotionDecision as carrying 'origin_mechanism: ingested' — this does NOT hold against the substrate; the attack succeeds, so this is reported as the MATERIAL below rather than confirmed. (Retained here only to record the surface was probed.)",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.3 vs DDR-002 §2.4 PromotionDecision ('origin_mechanism: authored')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.3 Un-promotion authority",
+    "claim": "§2.3 describes the retraction mechanism as 'an EA-gated reversing CandidatePromotion whose approving PromotionDecision carries origin_mechanism: ingested.' The substrate assigns PromotionDecision origin_mechanism: authored (DDR-002 §2.4, the SOFIA-issued feedback-loop EA approval). The reversing CandidatePromotion goes through the same PromotionDecision gate as forward promotion (DDR-002 §5, §7 #21), which is authored. The record's cited schema value conflicts with DDR-002; the prose claims a schema fact the substrate contradicts.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.3 ('approving PromotionDecision carries origin_mechanism: ingested') vs DDR-002 §2.4 PromotionDecision ('origin_mechanism: authored ... therefore no source_record_ref')"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-003"],
+    "locus": "§2.2 and §7 (Environment-plane deferral)",
+    "claim": "Attacked whether the Environment-plane deferral is a smuggled or undisclosed scope decision. It is not: §2.2 explicitly names the deferral, states the pending constraint (volume/bottleneck), and §7 carries the named follow-up with a tracking ticket. The deferral is surfaced as a deferral, consistently, in both the sub-decision and the cross-references — the scope boundary is declared rather than hidden. This deferral surface held against the smuggled-scope attack.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.2 (Environment plane deferral) consistent with §7 Named follow-up (§2.2) tracked at KG-entry-governance follow-up ticket"
+    }
+  }
+]

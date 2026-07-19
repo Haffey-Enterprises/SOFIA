@@ -1,0 +1,7 @@
+{
+  "finding_id": "fade1d9c2c0b1393",
+  "classification": "resolvable",
+  "authority_locus": "Ruling G (ADR-008 run-025/026 operator rulings) + author-decision-record SKILL body-integrity forward-reference rule; §7 replace 'ADR-004 (file-driven ingestion, forthcoming)' with subject-name form",
+  "rationale": "Ruling G explicitly disposes this exact class, mandating subject-name-only forms for the forthcoming ingestion record; the fix is determined, not chosen.",
+  "confidence": "high"
+}

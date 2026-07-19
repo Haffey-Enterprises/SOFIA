@@ -1,0 +1,7 @@
+{
+  "finding_id": "d86b3ca4cd4b271b",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §2.4 PromotionDecision definition — `origin_mechanism: authored` (approving Actor is a human EA; SOFIA is the issuing authority; no `source_record_ref`), grounded in the §1 provenance matrix's `authored → primary` case for SOFIA-recorded human decisions",
+  "rationale": "DDR-002 §2.4 is the owning definition of PromotionDecision and unambiguously fixes its `origin_mechanism` as `authored`; the ADR-003 draft's `ingested` value directly contradicts ratified schema, and conformance is determined by that named locus with no unmade choice — the fix is dictated, not selected.",
+  "confidence": "high"
+}

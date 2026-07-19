@@ -1,0 +1,62 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.4 The checkpoint executor",
+    "claim": "ADR-003 commits the graph gateway (knowledge-service) as the 'authoring authority' for each checkpoint approval, recorded 'as the gateway's own act at the write boundary.' This pulls directly against ADR-002 §2.6's ratified general write-authority principle, which states the sole-owner gateway 'is never itself the authoring authority' and that for EA-gated materializations 'the authoring authority is the approving decision.' A checkpoint approval is a human-accountable act; assigning its authorship to the gateway executor conflicts with the ratified author/executor separation this record otherwise relies on.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.4 vs ADR-002 §2.6 (general write-authority principle — gateway is sole executor, never authoring authority; EA-gated materialization authority rests with the approving decision)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§1 Context / §7 Cross-References (DDR-003 dependency)",
+    "claim": "ADR-003 is authored as the upstream authority DDR-003 is 'blocked on' for its promotion-gate criteria, yet ADR-003 in turn defers its own load-bearing remedy-boundary content (§2.3) to DDR-003, which the record itself states is 'forthcoming, blocked on this ADR.' The two records are described as mutually blocking; ratifying ADR-003 as DRAFT resolving DDR-003's block while ADR-003 depends on an unauthored DDR-003 for the un-promotion remedy boundary is a timing/reversibility posture that deserves scrutiny — a hard-to-unwind commitment resting on a document that does not yet exist.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "triage-001 charter Appendix C — 'DDR-003 ... gates the detection-promotion SDD; cites the KG-entry ADR as authority for its promotion-gate criteria'; ADR-003 §7 'DDR-003 (forthcoming, blocked on this ADR)' vs §2.3 remedy boundary 'deferred there'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.2 Environment plane",
+    "claim": "The decision statement (§2) commits 'mutation of enterprise ground truth ... is subject to a human-accountable checkpoint calibrated to the source class' as a platform principle, but §2.2 defers the Environment-plane posture entirely — the highest-volume ground-truth entry path — to an unscheduled follow-up pending 'deliberation of the volume/bottleneck constraint.' Committing the governing principle across all ground-truth mutation while leaving the single largest-volume entry path's posture unruled means the principle is asserted before the constraint (R30 bottleneck) that most tests it has been settled. This is premature relative to its own named unsettled dependency.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "triage-001 charter Appendix A item 5 — 'Environment plane posture ... per-write review vs confidence-weighting; volume/bottleneck is a real design constraint'; item 4 — R30 declined 'gate all KG writes' for bottleneck reasons"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-003"],
+    "locus": "§6 Compliance",
+    "claim": "ADR-003 states conformance is 'checked at design-review time against this ADR,' but does not integrate with the ratified three-hat (LAA/SA/EA) design-review gate that ADR-001 §6 and ADR-002 §6 establish as the operational conformance mechanism every SDD and DDR passes through. The compliance posture stands apart from the platform's committed enforcement seam rather than plugging into it.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §6 vs ADR-001 §6 Enforcement / ADR-002 §6 Enforcement (three-hat review as the operational conformance gate for every SDD and DDR)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-003"],
+    "locus": "§2.3 Un-promotion authority",
+    "claim": "Attacked the un-promotion authority claim for over-reach against the ratified corpus: ADR-003 §2.3 claims to be the upstream authority for un-promotion 'supplying the authority ADR-001 §2.5 (promotion only) does not provide.' Checked against ADR-001 §2.5 (which indeed authorizes only promotion/encoding-density growth) and DDR-002 §2.4/§7 #21 (retraction shape whose upstream authority routes to 'the forthcoming KG-entry-governance ADR'). The gap ADR-003 fills is real, correctly scoped to the accountability act while explicitly leaving the remedy boundary elsewhere, and matches the routing the ratified schema already declared. The claim held.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-001 §2.5 (promotion only) + DDR-002 §2.4/§7 #21 (retraction upstream authority routed to KG-entry-governance ADR) — ADR-003 §2.3 fills exactly that named gap"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-003"],
+    "locus": "§2.5 Distillation entry",
+    "claim": "Attacked the distillation checkpoint's fit with the R30 bottleneck constraint: ADR-003 §2.5 claims the substantive review governs the small set of distinct durable lessons (ObservedPatterns), not the high-volume raw telemetry, keeping Operational writable. Checked against DDR-001 §Two-Graph Model (Operational = durable distilled ObservedPatterns, update-in-place, no per-observation node) and DDR-002 §2.3 (bounded-by-distinctness, update-in-place). The claim that a per-distinct-lesson review satisfies the bottleneck constraint without abandoning the checkpoint is consistent with the ratified Operational-plane realization. It held.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-001 §Two-Graph Model (durable distilled ObservedPatterns, bounded-by-distinctness) + DDR-002 §2.3 (update-in-place) — ADR-003 §2.5 review-set scoping is consistent"
+    }
+  }
+]

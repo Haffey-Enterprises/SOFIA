@@ -1,0 +1,7 @@
+{
+  "finding_id": "c4d4b36d7cec0877",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding exposes a dangling, circular citation: ADR-003 leans on DDR-003 \u00a74 for its promotion-path checkpoint criteria while DDR-003 is unauthored and itself blocked on ADR-003, so the cited authority does not resolve in the artifact set. Fixing this requires a choice the substrate has not made \u2014 whether ADR-003 states the promotion-path checkpoint principle self-sufficiently (per the Appendix A charter's calibration intent) or re-points to some other existing authority, or restructures the ADR/DDR boundary \u2014 and no ratified authority disambiguates which, since DDR-003 does not yet exist to supply \u00a74.",
+  "confidence": "high"
+}

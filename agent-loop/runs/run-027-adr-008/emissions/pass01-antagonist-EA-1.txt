@@ -1,0 +1,72 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§1 Context / §2.6 Governance boundary — dependency on the forthcoming feedback-loop governance design (DDR-003) and the forthcoming ingestion decision record",
+    "claim": "ADR-008 is stated to end an indecision that multiple accepted records depend on, yet its own operative controls are only realized by records that do not yet exist: the operational-distillation control routes to 'the forthcoming feedback-loop governance design,' the ingestion control to 'the forthcoming ingestion decision record,' and §2.6 concedes the remedy boundary, criteria, thresholds, cadence, retention, reviewer-role assignments, and multi-condition composition are all owned downstream. This ADR ratifies a control-type per class while the mechanism that would make three of the four classes operative is unwritten — the posture question is whether an authority-homing record should stand now when the records that instantiate it are unauthored and, per the substrate, one of them (DDR-003) is itself blocked on this record. The timing of standing this record ahead of the records it depends on for realization deserves scrutiny.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "RBT-59-ADR-008-deliberation-record Item 5: 'DDR-003 is a downstream consumer citing this ADR as authority; the ADR never lists DDR-003 as an upstream it depends on' — vs. ADR-008 §1 'The forthcoming feedback-loop governance design is blocked on this record' and §2.2 realization-routes column naming forthcoming records as the realization home for two of four classes"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.3 Un-promotion authority — 'governed by the same per-write, EA-gated, human-accountable control as promotion itself'",
+    "claim": "§2.3 asserts un-promotion is governed by 'the same' control as promotion, but the built instance it names does not deliver the same guarantee: DDR-002 §7 #21 (the retraction-gated invariant) traces to *an* approving decision, whereas the promotion invariant #15 traces to the *governing* (latest-decided_at) approving edge. §5.3 of this same ADR concedes exactly this asymmetry ('a re-decided executed retraction has no standing detection analogue yet'). The §2.3 'same control' claim therefore overstates the reversibility guarantee actually homed — a hard-to-reverse authoritative-ground-truth mutation (un-promotion) is committed to a control posture whose detection analogue is a named gap, and the record's own §5.3 rebuts the §2.3 phrasing.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.3 ('same per-write, EA-gated, human-accountable control as promotion itself') in conflict with ADR-008 §5.3 ('the retraction invariant traces to an approving decision, not the governing one, so a re-decided executed retraction has no standing detection analogue yet')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Per-source-class calibration table — Environment control-type 'Per-policy reliability-weighting at retrieval'",
+    "claim": "The Environment control is described as reliability-weighting 'at retrieval,' but the ratified substrate mechanism (DDR-004 §1/§3) derives the aging confidence at Evidence *capture* and freezes it — 'never recomputed at read.' An ADR fixing a control-type per class against a mechanism it mischaracterizes on the capture/retrieval axis pulls against the ratified DDR-004 posture it depends on for this class's realization; the calibration this record ratifies rests on a description its own upstream authority contradicts.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-004 §1/§3 — inherited confidence 'derived at Evidence capture and frozen', 'never recomputed at read' — vs. ADR-008 §2.2 Environment row 'Per-policy reliability-weighting at retrieval' and §2.2 Environment bullet"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 realization-routes column and §7 Cross-References — 'ADR-004 (file-driven ingestion, forthcoming)'",
+    "claim": "The record cites a forthcoming ingestion decision record as 'ADR-004,' but ADR-004 is not an ingestion record: the substrate defines DDR-004 as the accepted inherited-confidence derivation record and the ADR ladder ADR-003–007 as reserved by standing tickets (triage-001 Item 1), with ADR-004's slot not assigned to ingestion. Committing a concrete forward identifier to an unauthored record — when that identifier collides with an existing accepted record's neighbor and the numbering is not yet allocated — is a premature commitment that binds the platform to a document-identity decision that has not been made. The authoring discipline requires forthcoming records be named by subject only until they land.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "author-decision-record SKILL body-integrity rule: 'A forward reference in the body is subject-named only ... Concrete identifiers bind only at the downstream record's landing' — vs. ADR-008 §7 'ADR-004 (file-driven ingestion, forthcoming)' and §2.2 'the forthcoming ingestion decision record'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.4 Withdrawal and expiry posture — 'Provenance survives mutation' commitment vs. §5.3 retention-gap risk",
+    "claim": "§2.4 commits as an invariant that 'the traceable rationale of a decision that consumed a ground-truth fact must survive that fact's later mutation,' answerable by traversal to the fact as it stood when consumed. But §5.3 concedes the frozen-provenance survival guarantee is scoped to *promoted* facts only; a decision that consumed a fact without promoting it relies on Reasoning-Graph evidence under bounded retention that 'could age out the graph-native trace.' The record commits a general provenance-survival principle whose realizing mechanism it admits does not yet reach the general case — an over-broad commitment relative to the reversibility the substrate actually supports, deserving its own resolution before the principle is stated unqualified.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.4 ('must remain answerable by traversal to the fact as it stood when it was consumed') in conflict with ADR-008 §5.3 ('The frozen-provenance survival guarantee is currently scoped to promoted facts; ... could age out the graph-native trace')"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.1 accountability invariant scope — exclusion of Reasoning-Graph capture from ground-truth mutation governance",
+    "claim": "Attacked the scope boundary for pulling against prior ratified decisions: whether folding all four mutation paths under one accountability invariant re-opens or contradicts ADR-001's reasoning-capture invariant or ADR-002's write-authority separation. The boundary holds — §2.1 explicitly scopes to KG authoritative ground truth and excludes RG capture (routing it to ADR-001 §2.2 / ADR-002 §2.6), and §2.1 preserves ADR-002 §2.6's author/executor separation by naming who is accountable without relocating authorship onto the gateway. It integrates with, rather than pulls against, the ratified reasoning-capture and system-of-record commitments.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-001 §2.2 (reasoning-capture invariant) and ADR-002 §2.6 (author/executor/authorizer separation) — ADR-008 §2.1 scopes to ground truth, excludes RG capture, and preserves the gateway-as-executor-never-author rule"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.5 Cross-class precedence — withhold-and-escalate fail-safe direction",
+    "claim": "Attacked the cross-class precedence rule as a possibly-premature commitment lacking a homed instance. It holds: the withhold-not-admit fail-safe is grounded in a built interim instance (the knowledge-service cross-origin scope-conflict block, SDD-001 §3.5.2) that the record correctly cites as the instance this principle authorizes, and the richer disposition is proportionately deferred to governance policy (§2.6). Reversibility is proportionate — the interim instance is n=0-costless per the substrate, and the principle does not foreclose the downstream resolution disposition.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "SDD-001 §3.5.2 (SCOPE_CONFLICT block, mechanical, disclosed) — ADR-008 §2.5 names it as the interim instance this principle authorizes; richer disposition routed to §2.6"
+    }
+  }
+]

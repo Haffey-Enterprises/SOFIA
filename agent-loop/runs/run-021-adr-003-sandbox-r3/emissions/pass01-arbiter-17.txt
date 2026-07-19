@@ -1,0 +1,7 @@
+{
+  "finding_id": "5bca068a70e786a8",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The Environment-plane checkpoint posture (per-write review vs. confidence-weighting) is explicitly named as an open question the KG-entry-governance ADR must rule (charter Appendix A item 5), gated on the R30 volume/bottleneck constraint that no ratified authority resolves — so whether the governing principle can be committed while this largest-volume path stays unruled is itself an unmade choice, not something any existing authority determines.",
+  "confidence": "high"
+}

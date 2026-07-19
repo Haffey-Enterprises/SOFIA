@@ -1,0 +1,7 @@
+{
+  "finding_id": "09d01e83c043a32d",
+  "classification": "resolvable",
+  "authority_locus": "ADR-008-run-025-operator-rulings Ruling D (relabel \u00a72.2 Environment 'Built' to 'form built (DDR-004); constants contested/unvalidated (n=0)')",
+  "rationale": "Ruling D directly dictates the exact relabel this finding names; the fix is determined, no choice remains.",
+  "confidence": "high"
+}

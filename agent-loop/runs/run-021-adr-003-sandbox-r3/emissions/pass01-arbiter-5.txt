@@ -1,0 +1,7 @@
+{
+  "finding_id": "0466feb7351ec3c4",
+  "classification": "resolvable",
+  "authority_locus": "ADR-003 §2.1 (its own decision content: 'the existing EA gate committed at ADR-001 §2.5 is the already-built instance ... no new mechanism is introduced for the promotion path') vs ADR-003 §1/§7 (the internal-consistency requirement that §1/§7 dependency claims accurately describe the dependency the decision creates)",
+  "rationale": "The finding is a pure internal-consistency defect within ADR-003: §1/§7 assert DDR-003's promotion-gate criteria are blocked on / authorized by this ADR, while this ADR's own §2.1 states it introduces no new promotion-path mechanism (authority stays ADR-001 §2.5). The fix is determined by conforming the cross-reference prose to the ADR's own settled decision content — no unmade choice; the correct dependency is already fixed by §2.1.",
+  "confidence": "high"
+}

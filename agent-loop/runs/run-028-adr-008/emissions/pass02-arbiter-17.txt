@@ -1,0 +1,7 @@
+{
+  "finding_id": "755ec745d37b6854",
+  "classification": "resolvable",
+  "authority_locus": "RBT-59 deliberation record Item 2 (ratified frame: invariant = human accountability over ground-truth mutation; general authority) + Item 1 slug ruling (ground-truth-mutation-governance, scopes beyond un-promotion)",
+  "rationale": "Ratified frame fixes the general-invariant scope as primary; reconciling the prose emphasis conforms to it, introducing no new choice.",
+  "confidence": "high"
+}

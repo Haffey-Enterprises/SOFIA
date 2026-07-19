@@ -1,0 +1,1 @@
+{"finding_id":"fd4079f6bb1ab8a4","classification":"decision-bearing","authority_locus":null,"rationale":"Whether ADR-004 should stay KG-scoped or extend its provenance principle to the RG/ProvenanceSummary/Artifact population DDR-002 fixes is an unmade scoping choice, not dictated by existing authority.","confidence":"medium"}

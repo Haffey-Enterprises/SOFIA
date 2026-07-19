@@ -1,0 +1,7 @@
+{
+  "finding_id": "ef10772c0742bbff",
+  "classification": "resolvable",
+  "authority_locus": "Triage-001 record §T-05 Leg 4 + Appendix A (KG-entry-governance ADR charter, scope: 'mutation of enterprise ground truth generally, entry AND un-promotion') and DDR-002 §2.4 / §5 routing-target text ('the forthcoming KG-entry-governance ADR')",
+  "rationale": "The identity of ADR-003 as the KG-entry-governance ADR that DDR-002 §2.4 routes un-promotion authority to is already fixed by the ratified triage record (T-05 Leg 4 assigns un-promotion authority to that forthcoming ADR; Appendix A charters it with exactly that scope); the finding's substance is that the DRAFT/unaccepted status makes the discharge-claim tense unearned, which the skill's own 'tense is earned by enforcement' / 'status claims earned by the trail' rules dictate directly (a forthcoming/DRAFT authority is stated in conditional voice, not as an accomplished discharge).",
+  "confidence": "high"
+}

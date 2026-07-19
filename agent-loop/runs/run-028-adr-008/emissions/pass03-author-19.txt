@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "057cbcfd64cd5aa0",
+  "reason": "The cited authority (RBT-59 Item 2 frame + Item 4 un-promotion-as-sub-case + summary-alignment discipline) establishes that the general four-class invariant is the frame and un-promotion is a sub-case, but it does not dictate which specific words in the Description and §1 closing must change, or how to re-weight them — subordinating, deleting, or re-phrasing the un-promotion clause are all conforming options, so the authority admits more than one edit and does not uniquely determine the fix.",
+  "confidence": "medium"
+}

@@ -1,0 +1,1 @@
+{"finding_id":"9d7e8220da50cb38","classification":"decision-bearing","authority_locus":null,"rationale":"Whether 'Built' means schema/gate exists (true) or means validated-and-mechanized (contested at n=0) is a labeling-convention choice no cited authority disambiguates.","confidence":"medium"}

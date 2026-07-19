@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "ec23d0b0a825891c",
+  "reason": "The cited RBT-59 altitude line ('ADR fixes invariant + accountability + control-type per class; downstream fixes control form + mechanics') ratifies precisely the shape the document already takes — fixing control-types now with realizing mechanics routed downstream. It affirms the current commitment rather than determining any edit against it. The finding raises an EA timing objection (commit control-types before realizing designs confirm instantiability), but the named authority resolves that objection in favor of the existing text, not against it; nothing in Items 2/3/5 entails a specific conforming change to §1, §2.6, or §7. No unique edit is derivable.",
+  "confidence": "high"
+}

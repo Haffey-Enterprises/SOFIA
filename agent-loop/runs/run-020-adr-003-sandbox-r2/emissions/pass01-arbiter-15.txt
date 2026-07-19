@@ -1,0 +1,7 @@
+{
+  "finding_id": "0fdbb0932b5e2ce5",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record SKILL, 'The cold read' + 'Body integrity' (the stranger-test: a dangling hinge — a cross-reference that resolves to nothing in the artifact set — must be closed; navigability of a forward reference is carried back by the referenced record); DDR-002 §2.3/§2.4/Cross-References route to 'the forthcoming KG-entry-governance ADR' as the named referent ADR-003 must claim.",
+  "rationale": "The fix is determined: ADR-003 must self-identify as the KG-entry-governance record that DDR-002's forward routing points to, closing the dangling hinge the cold-read gate names; the referent is already fixed by DDR-002's routing and Triage-001 Appendix A charter, so no unmade choice is introduced.",
+  "confidence": "high"
+}

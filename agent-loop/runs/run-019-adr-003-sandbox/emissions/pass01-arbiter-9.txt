@@ -1,0 +1,7 @@
+{
+  "finding_id": "b8761d5917cc14a8",
+  "classification": "resolvable",
+  "authority_locus": "DDR-001 Decision.5 / DDR-002 §2.4 (both ratified): ADR-001 §2.5 authorizes promotion only and does not stretch to un-promotion; un-promotion authority routed to the KG-entry-governance ADR",
+  "rationale": "The two ratified authorities the finding cites already fix the correct statement — ADR-001 §2.5 does not extend to un-promotion — so ADR-003's §2.3 claim that §2.5 governs reversal must conform to that settled position; the fix is determined, not a new choice, and the correct upstream authority for un-promotion is already named (the KG-entry-governance ADR per DDR-002 §2.4 / triage T-05 Leg 4).",
+  "confidence": "high"
+}

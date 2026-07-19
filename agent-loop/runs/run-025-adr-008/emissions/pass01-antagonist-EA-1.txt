@@ -1,0 +1,62 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Operational distillation control-type — reversal of R30's ratified posture",
+    "claim": "ADR-008 fixes a per-distinct-lesson substantive human review as the control-type for operational distillation, which overturns the Reboot Decision Ledger R30 ruling (ratified 2026-06-22) that distillation *deriving* an ObservedPattern into the Operational plane is a permitted non-EA-gated `derived` write and that the Operational plane is the non-gated staging tier. A ratified cross-cutting decision that reconciled two ADR/DDR commitments is being reversed by a PROPOSED record; the reversal of a ratified prior decision is a hard-to-undo commitment whose justification-against-the-ratified-record is asserted (criterion-shift) rather than carried as its own supersession decision.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "R30-reboot-decision-ledger — 'Distillation deriving an ObservedPattern into the Operational plane is a permitted non-EA-gated derived write ... The Operational plane is the staging tier' vs ADR-008 §2.2 Operational-distillation row + §2.6 boundary"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§1 Context / §2 Decision — dependency on unsettled DDR-003 and forthcoming ingestion decision record",
+    "claim": "ADR-008 states it 'ends that indecision' and 'homes the authority the downstream records were routed to await,' but its per-class control REALIZATIONS route to records that do not yet exist (the forthcoming feedback-loop governance design DDR-003, the forthcoming ingestion decision record ADR-004). DDR-003 is simultaneously named as blocked on this ADR (§1) and as the owner of the remedy boundary and promotion/review criteria this ADR's controls presuppose (§2.6). This is a circular timing dependency: the principle is asserted as settled while the mechanism that instantiates it is deferred to an unauthored record, leaving whether the calibrated controls are workable unverifiable at ratification.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §1 ('The forthcoming feedback-loop governance design ... is blocked on this record') vs §2.6 ('owned by the forthcoming feedback-loop governance design') + §2.2 Realization-routes column"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2 Decision / metadata Supersedes field — commitment posture against ADR-001 §2.5",
+    "claim": "ADR-008 generalizes and homes upstream authority that ADR-001 §2.5 currently holds for the promotion sub-case, and declares un-promotion authority ADR-001 §2.5 'does not stretch to,' yet the Supersedes field reads 'None — establishes new platform principle.' A record that repositions itself as the general upstream authority over a scope ADR-001 §2.5 partially occupies, and that other accepted records (DDR-001 Decision.5, DDR-002 §2.3/§2.4) were routed to await, is taking a load-bearing position relative to a ratified ACCEPTED ADR without recording a supersession or amendment relationship to it — the integration posture against prior ratified decisions is understated.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 metadata 'Supersedes: None' vs §2.2/§2.3 ('this ADR is the general upstream authority for promotion'; 'This ADR is the upstream authority for un-promotion') + ADR-001 §2.5"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References / §2.6 — forward references to DDR-003 and ADR-004 by provisional identifier",
+    "claim": "ADR-008 refers to 'DDR-003 (Feedback Loop Governance, forthcoming)' and 'ADR-004 (file-driven ingestion, forthcoming)' by concrete document identifier while both are unauthored; the record's own §7 concedes 'the obligation to resolve DDR-003's pointer to this record's concrete document identifier lives in DDR-003's definition of done,' i.e. a bidirectional pointer whose one leg is not yet resolvable. Committing a concrete downstream identifier before that record exists risks a stale pointer if numbering diverges (the same class of dependency the deliberation record flags for the ADR-008 number allocation itself).",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §7 ('ADR-004 (file-driven ingestion, forthcoming)'; 'DDR-003 (Feedback Loop Governance, forthcoming)') vs RBT-59 deliberation record Item 1 (pointer-resolution deferred to landing pass)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2 / §2.6 Governance boundary — altitude of the commitment",
+    "claim": "Tested whether ADR-008 over-commits by ruling policy that belongs downstream (thresholds, cadence, remedy boundary, reviewer roles). It held: §2 fixes only invariant + accountability + control-type per class and explicitly declines the remedy boundary and governance policy at §2.6, routing them to the feedback-loop governance design; the ADR-vs-DDR altitude line is drawn consistently and the record does not lock the downstream policy space it defers. This is proportionate ADR-altitude scoping.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "RBT-59 deliberation record Item 2 ('ADR fixes invariant + accountability + control-type per class; downstream fixes control form + mechanics') + Item 5 boundary ruling"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Environment class — per-policy weighting vs the R30 gate-all bottleneck constraint",
+    "claim": "Attacked the Environment-class posture as pulling against the deferred production-topology and the ratified aging basis. It held: the per-policy reliability-weighting-not-per-write-gate control integrates with DDR-004's ratified aging basis and honors R30's declined gate-all constraint (per-pattern human action must not make the observational plane unwritable), and the control-type rests on a design-fixed form while calibration constants are honestly held contested at n=0. The integration with prior ratified decisions is sound for this class.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-004 §2/§6 (Environment aging basis, contested constants at n=0) + R30-reboot-decision-ledger declined-option ('Gate all KG writes ... makes the Operational plane unwritable')"
+    }
+  }
+]

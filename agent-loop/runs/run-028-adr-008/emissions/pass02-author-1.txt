@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "7b9d78a93a681080",
+  "reason": "Ruling D determines only the mechanism correction (capture-time-frozen, drop 'at retrieval') and the exact relabel 'form built (DDR-004); constants contested/unvalidated (n=0)' — both already present verbatim in the document. The finding's actual claim (that the per-policy accountability act, human ratification of base/τ, has never been performed at n=0 and so the discharging control is not truly realized) is not addressed by the cited ruling; Ruling D affirms the form is built and per-policy governance discharges accountability, and supplies no conforming edit for the unexercised-ratification point.",
+  "confidence": "high"
+}

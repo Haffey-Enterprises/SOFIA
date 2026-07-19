@@ -1,0 +1,7 @@
+{
+  "finding_id": "26935bd08f606d96",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "Resolving the finding requires establishing what the R30 bottleneck constraint actually says and then either substantiating the satisfaction claim against it or restating the claim — but R30's authoritative text is not in the ratified substrate (triage-001 Appendix A #4 states it is owed/reachable-via-Tad, not present). Whether the checkpoint truly satisfies a constraint whose content is absent cannot be determined from existing authority; closing the gap needs a choice not yet ratified (fetch and verify R30, or re-scope the claim).",
+  "confidence": "high"
+}

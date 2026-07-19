@@ -1,0 +1,16 @@
+{
+  "run_id": "run-024-adr-004",
+  "sofia_head_sha": "4e5d88fa49d1cea916a0b365f8976d839be893d7",
+  "files": [
+    {
+      "doc_id": "ADR-004",
+      "snapshot_path": "documents/ADR-004-provenance-invariant.md",
+      "origin": {
+        "source": "sofia-repo",
+        "canonical_path": "agent-loop/sandbox/adr-004-fixture/docs/adr/ADR-004-provenance-invariant.md"
+      },
+      "retrieved": "2026-07-17",
+      "sha256": "42810ce6cf7adbde83502afa092516b0fba425cd692382f465b85134616198cf"
+    }
+  ]
+}

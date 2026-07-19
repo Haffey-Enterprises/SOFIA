@@ -1,0 +1,690 @@
+{
+  "header": {
+    "set": [
+      "ADR-004"
+    ],
+    "counted_severities": [
+      "BLOCKING",
+      "MATERIAL"
+    ],
+    "plateau_N": 3,
+    "mode": "dry"
+  },
+  "findings": [
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "Title / \u00a71 Context / \u00a72 Decision \u2014 the 'platform principle, no new schema' claim vs. what the body actually decides",
+      "claim": "The record's own framing states it 'introduces no new schema' and merely 'elevates' the existence-constraint fixed at DDR-002 \u00a76 to a platform principle \u2014 but \u00a72.1 cites 'DDR-002 \u00a76' as the existence-constraint home while the ratified DDR-002 places the provenance existence constraint at \u00a77 (\u00a76 is the versioning/temporal model). The record decides its central invariant by pointing at a locus that does not carry it, so what the ADR claims to be elevating and what it actually names diverge.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72.1 'existence-constraint requirement fixed at DDR-002 \u00a76' vs. DDR-002 \u00a77 (Constraints, indexes & conformance \u2014 'Existence constraints on the provenance group ... on every KG node') and DDR-002 \u00a76 (Versioning & temporal model)"
+      },
+      "id": "1a83620ab1b57553",
+      "classification": "resolvable",
+      "authority_locus": "DDR-002 \u00a77 (Constraints, indexes & conformance) \u2014 carries the provenance-group existence constraint; \u00a76 is Versioning & temporal model",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.2 'Provenance is written at the sole write boundary' / \u00a72.3 immutability",
+      "claim": "The Decision (\u00a72.2, \u00a72.3) commits provenance to every KG node universally \u2014 stamped at the sole gateway, never mutated. But the substrate ADR-004 elevates (DDR-002 \u00a77 provenance scope) does NOT scope the provenance existence constraint to KG nodes alone: it scopes it to KG nodes PLUS the three authored RG types PLUS the derived ProvenanceSummary PLUS the Artifact family, and expressly exempts Evidence as surrogate-only. The ADR's title and decision content assert coverage of 'every knowledge-graph node' while the constraint set it claims to restate covers a materially different node population \u2014 the ADR decides less than DDR-002 fixed while presenting itself as the faithful platform-principle statement of it.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72.1/\u00a72.2 ('every node in every KG plane', 'no node can enter without provenance') vs. DDR-002 \u00a74 RG-provenance posture and \u00a77 'Provenance scope' (KG nodes + three authored RG types + ProvenanceSummary + Artifact family; Evidence sole surrogate-only)"
+      },
+      "id": "fd4079f6bb1ab8a4",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.2 / \u00a73 Rationale \u2014 write-boundary and edition claims",
+      "claim": "\u00a72.2 asserts the gateway is 'the sole executor of graph writes per the write-authority principle at ADR-002 \u00a72.4', but ADR-002's sole-owner/single-graph-access-boundary principle is fixed at \u00a72.5 (\u00a72.4 is the persistence-backbone / three-store division). Separately, \u00a73 Rationale states 'The graph store is Neo4j Community Edition' \u2014 this directly contradicts ADR-002 \u00a72.2/\u00a74.1, which commit Neo4j Enterprise precisely because the property-existence constraint the ADR relies on is Enterprise-only. The ADR's rationale rests its enforceability claim on an edition the substrate rejects; the decision's stated dependency is unsupported by the substrate it cites.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a73 'Neo4j Community Edition' and \u00a72.2 'ADR-002 \u00a72.4' vs. ADR-002 \u00a72.2/\u00a74.1 (Enterprise committed; property-existence constraints Enterprise-only) and ADR-002 \u00a72.5 (sole-owner gateway / graph-access authority)"
+      },
+      "id": "27bec221c7537e6e",
+      "classification": "resolvable",
+      "authority_locus": "ADR-002 \u00a72.5 (sole-owner gateway / graph-access authority) and ADR-002 \u00a72.2/\u00a74.1 (Neo4j Enterprise committed; property-existence constraints Enterprise-only)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a74.1 Alternative A / \u00a74.2 Alternative B \u2014 Alternatives Considered",
+      "claim": "Both alternatives are presented as strawmen the record itself concedes: \u00a74.1 opens 'This is obviously wrong and nobody would defend it', and \u00a74.2 characterizes the alternative only through what 'its proponents would argue' before rejecting it on the platform's already-committed posture. Per the record's own doctype discipline (adr-template \u00a74: 'Describe each as its proponents would, then give a specific rejection rationale ... A strawman is worse than a gap'), these do not constitute a real alternatives evaluation \u2014 the decision claims deliberative grounding its Alternatives section does not provide.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "adr-template.md \u00a74 Alternatives Considered ('one means it wasn't a real choice ... A strawman is worse than a gap') and author-decision-record-SKILL 'The deliberation gate' (fabricated/strawman alternatives)"
+      },
+      "id": "77a15807be9136a3",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "COSMETIC",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a77 Cross-References \u2014 dependency declaration",
+      "claim": "\u00a77 lists ADR-002, DDR-002, DDR-001 as cross-references but does not declare which artifact is the actual authority for the existence constraint the ADR elevates, nor name the deliberation substrate grounding the decision. The record depends on DDR-002's provenance-scope ruling for its entire content yet surfaces that dependency only as a generic parenthetical, leaving the load-bearing dependency named imprecisely (compounding the \u00a76-vs-\u00a77 locus error).",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "adr-template.md \u00a77 Cross-References ('the deliberation artifact that grounds the decision') and author-decision-record-SKILL 'Section citations are facts \u2014 fetch-verify them'"
+      },
+      "id": "3e86692c8e835132",
+      "classification": "resolvable",
+      "authority_locus": "adr-template.md \u00a77 Cross-References ('Downstream DDRs/SDDs that implement this \u00b7 ... the deliberation artifact that grounds the decision') + author-decision-record-SKILL body-integrity 'Point, don't mirror' / cold-read 'dangling hinge'",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.3 immutability vs. DDR-002 correction mechanisms",
+      "claim": "I attacked \u00a72.3's claim that corrections are made 'by the schema's versioning and never-delete mechanisms, not by overwriting provenance in place' for smuggling a decision the ADR is not entitled to make about DDR-002's schema. It held: DDR-002 \u00a76 (Option A supersession, never-delete via retained versions) and \u00a77 (#8 never-delete) already carry exactly this mechanism, so \u00a72.3 restates a ratified downstream commitment rather than deciding new schema \u2014 the scope claim is faithful.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72.3 vs. DDR-002 \u00a76 (Supersession \u2014 Option A, never-delete) and \u00a77 #8 (never-delete)"
+      },
+      "id": "e34f0dcba37f539c",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a75 Consequences \u2014 scope of declared consequences",
+      "claim": "I checked whether \u00a75 surfaces the decision's side effects at the ADR's own altitude or lets commitments ride along undeclared. It held: \u00a75.2 names the imposed constraints (no write path bypasses the gateway; no code mutates written provenance) and \u00a75.3 names the fail-closed behavior and the rejected-write-volume signal to watch \u2014 the consequences declared match the decision content of \u00a72.1\u2013\u00a72.3 without smuggling additional commitments.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "adr-template.md \u00a75 Consequences (positive / constraints imposed / risks with signal) vs. ADR-004 \u00a72 decision content"
+      },
+      "id": "06c34bebdc882787",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a74.1 Alternative A",
+      "claim": "The rationale claims Neo4j Community Edition as the graph store ('The graph store is Neo4j Community Edition, whose existence-constraint capability makes the mandatory-property guarantee enforceable at the database layer'), but the ratified ADR-002 \u00a72.2 commits Neo4j *Enterprise* precisely because DB-enforced property-existence constraints are Enterprise-only per the vendor Cypher Manual (ADR-002 \u00a74.1 rejects Community for this exact deficiency). ADR-004's \u00a73 Rationale asserts a capability of Community that its own substrate says Community lacks.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "ADR-002 \u00a72.2 / \u00a74.1 (Neo4j Enterprise committed; property-existence constraints Enterprise-only, Community rejected)"
+      },
+      "id": "e4ad360b219f4010",
+      "classification": "resolvable",
+      "authority_locus": "ADR-002 \u00a72.2 / \u00a74.1 (Neo4j Enterprise committed; property-existence constraints Enterprise-only, Community rejected)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.2",
+      "claim": "\u00a72.2 states 'the graph gateway \u2014 the sole executor of graph writes per the write-authority principle at ADR-002 \u00a72.4' \u2014 but ADR-002's sole-executor gateway principle is at \u00a72.5 (graph access authority / knowledge-service sole holder of the driver) and \u00a72.6 (write authority: general principle / sole executor). ADR-002 \u00a72.4 is the persistence-backbone (three-store) decision and does not state the sole-executor principle cited. The cross-reference cites a locus that does not carry the claimed content.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "ADR-002 \u00a72.5 / \u00a72.6 (sole-owner gateway, sole executor) vs. \u00a72.4 (persistence backbone) \u2014 ADR-004 \u00a72.2 citation misresolves"
+      },
+      "id": "5632ddf2654e3cdd",
+      "classification": "resolvable",
+      "authority_locus": "ADR-002 \u00a72.6 (write authority: general principle / sole executor) and \u00a72.5 (graph access authority) \u2014 the sole-executor principle's actual loci; \u00a72.4 is persistence backbone",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.2",
+      "claim": "\u00a72.2 names 'the graph gateway' as the sole executor stamping provenance, but the ratified substrate names knowledge-service as the sole graph-access boundary/gateway (ADR-002 \u00a72.5) and the gateway is the *executor*, never the *author* of provenance (ADR-002 \u00a72.6 author/executor/authorizer separation). ADR-004 \u00a72.2's phrasing 'stamped by the graph gateway ... at node creation' attributes the authoring of provenance to the gateway, which the ADR-002 \u00a72.6 general write-authority principle prohibits (the gateway is never the authoring authority). The term 'graph gateway' is also used without resolving to the substrate's named component (knowledge-service).",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "ADR-002 \u00a72.6 (author/executor/authorizer separation \u2014 gateway is sole executor, never authoring authority)"
+      },
+      "id": "bbc43ff89bc02174",
+      "classification": "resolvable",
+      "authority_locus": "ADR-002 \u00a72.6 (author/executor/authorizer separation: gateway is sole executor, never authoring authority) + \u00a72.5 (knowledge-service is the named sole-owner gateway)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.1 / \u00a73",
+      "claim": "\u00a72.1 asserts the provenance group is 'the existence-constraint requirement fixed at DDR-002 \u00a76', but DDR-002's DB-enforced provenance existence constraints are fixed at \u00a77 (Constraints, indexes & conformance), not \u00a76 (Versioning & temporal model). \u00a76 of DDR-002 does not contain the existence-constraint definition ADR-004 cites.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "DDR-002 \u00a77 (existence constraints on provenance group) vs. \u00a76 (versioning/temporal) \u2014 ADR-004 \u00a72.1 citation misresolves"
+      },
+      "id": "070995e8d5ceb5fd",
+      "classification": "resolvable",
+      "authority_locus": "DDR-002 \u00a77 (DB-enforced provenance existence constraints) \u2014 the correct locus the ADR-004 \u00a72.1 citation must point to instead of \u00a76",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.1 vs. DDR-002 \u00a71 provenance scope",
+      "claim": "\u00a72.1 asserts 'No KG node is exempt' and elevates a provenance group to a universal invariant on 'every node in every KG plane', but the substrate's provenance existence-constraint scope (DDR-002 \u00a71, \u00a74, \u00a77) is not KG-node-uniform in the way ADR-004 implies: DDR-002 scopes the existence constraint to KG nodes *plus* three authored RG types, ProvenanceSummary, and the Artifact family, while treating derivation_class as N/A for promoted and Evidence as surrogate-only. ADR-004's flat 'every KG node' framing is consistent with the KG subset, but its silence on the promoted/Evidence/derivation-axis nuances leaves the platform principle underspecified against the schema it claims to elevate \u2014 and specifically the ADR does not reconcile 'immutable ... never mutated' (\u00a72.3) with DDR-002's supersession/versioning model where promoted-vs-ingested and derivation-nature recovery rely on traversal, not on a frozen single group.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72.1/\u00a72.3 vs. DDR-002 \u00a71 (two-axis provenance, promoted \u2192 N/A, Evidence surrogate-only) + \u00a77 (existence-constraint scope)"
+      },
+      "id": "a5547bf812e9e050",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "COSMETIC",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a74.1 Alternative A",
+      "claim": "Alternative A is described as 'obviously wrong and nobody would defend it', which is a strawman disposition: the ADR template and house authoring discipline require each alternative be described as its proponents would, then given a specific rejection rationale. A dismissal-by-obviousness supplies no citable rejection rationale and fails the 'describe as proponents would' construction, unlike Alternative B which is properly framed.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "adr-template \u00a74 (\"Describe each as its proponents would, then give a specific rejection rationale\"); author-decision-record-SKILL (\"A strawman is worse than a gap\")"
+      },
+      "id": "923c7c6c2e2868c3",
+      "classification": "resolvable",
+      "authority_locus": "adr-template \u00a74 (\"Describe each as its proponents would, then give a specific rejection rationale\") + author-decision-record-SKILL (\"A strawman is worse than a gap\"; \"'Doesn't scale' is not a rejection rationale\")",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "COSMETIC",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a77 Cross-References",
+      "claim": "\u00a77 states 'No downstream records depend on this ADR yet' and \u00a75.2 asserts constraints ('no write path may bypass the gateway; no code may mutate a written provenance group') that are already committed and enforced by ratified upstream records (ADR-002 \u00a72.5/\u00a72.6, DDR-002 \u00a77). The ADR presents itself as introducing constraints that its own \u00a71/\u00a72.1 concede are pre-existing schema/system-of-record requirements \u2014 leaving the record's added constraint over the substrate unstated (what, if anything, this principle binds that ADR-002/DDR-002 do not already bind).",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a75.2 constraints vs. ADR-002 \u00a72.5/\u00a72.6 + DDR-002 \u00a77 (already-committed write-boundary and immutability enforcement)"
+      },
+      "id": "9a7fe468af452964",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.2 / \u00a75.3 fail-closed claim",
+      "claim": "Attacked the internal-correctness claim that 'a service attempting a direct write fails closed at the gateway boundary' for a silent unstamped-node entry path. Given the substrate (ADR-002 \u00a72.5: knowledge-service is the sole Neo4j driver holder; no other service holds a direct client), there is by construction no write path that bypasses the enforcing component, so the fail-closed / no-unstamped-node claim holds against the ratified access-authority principle. The claim survives.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "ADR-002 \u00a72.5 (sole-owner gateway; no other service holds a direct Neo4j driver)"
+      },
+      "id": "8da0130cd3fa3f54",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.1 mandatory-provenance principle vs. DDR-002 KG scope",
+      "claim": "Attacked whether the load-bearing decision \u2014 provenance group mandatory on every KG node \u2014 conflicts with the schema's actual per-node-family provenance treatment. For the KG-node subset specifically, DDR-002 \u00a71 and \u00a77 do carry a provenance existence constraint on every KG node (origin_mechanism + recorded_at), so ADR-004's core KG-node universality claim conforms to the schema authority it elevates. The KG-scoped invariant held.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "DDR-002 \u00a71 (provenance group on every KG node) + \u00a77 (DB-enforced existence constraint on KG nodes)"
+      },
+      "id": "bdcfafbc3eeffa66",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.1 / \u00a71 \u2014 relationship to DDR-002 \u00a76 and the ratified substrate",
+      "claim": "ADR-004 states it 'elevates to a platform principle' the provenance existence-constraint 'fixed at DDR-002 \u00a76', but the ratified DDR-002 in the substrate carries no \u00a76 that fixes this constraint \u2014 the provenance existence-constraint lives at DDR-002 \u00a77 (DB-enforced existence constraints) and \u00a71 (provenance group). Cited-section fidelity of a load-bearing dependency reference does not resolve against the ratified authority at the referenced locus.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72.1 'existence-constraint requirement fixed at DDR-002 \u00a76' vs DDR-002 \u00a77 (DB-enforced existence constraints) / \u00a71 (provenance group) in substrate"
+      },
+      "id": "70f6d839d3a06d58",
+      "classification": "resolvable",
+      "authority_locus": "DDR-002 \u00a77 (DB-enforced existence constraints on the provenance group) + \u00a71 (provenance group) \u2014 the ratified loci that carry the constraint ADR-004 miscites as \u00a76",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a73 Rationale / \u00a75.1 \u2014 'Neo4j Community Edition' as the enforcing store",
+      "claim": "ADR-004 grounds its enforceable-at-the-database-layer guarantee on 'Neo4j Community Edition', but the ratified ADR-002 \u00a72.2/\u00a74.1 commit Neo4j Enterprise precisely because property-existence constraints are Enterprise-only per the vendor Cypher Manual \u2014 Community cannot enforce them. The ADR's stated enforcement mechanism contradicts the ratified system-of-record edition commitment it depends on.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a73 'The graph store is Neo4j Community Edition, whose existence-constraint capability makes the mandatory-property guarantee enforceable' vs ADR-002 \u00a72.2/\u00a74.1 (Enterprise edition; property-existence constraints Enterprise-only)"
+      },
+      "id": "49da3b471e695ff5",
+      "classification": "resolvable",
+      "authority_locus": "ADR-002 \u00a72.2/\u00a74.1 \u2014 Neo4j Enterprise edition; property-existence constraints are Enterprise-only per the vendor Cypher Manual (DDR-002 \u00a77; Substitution-Contract Capability Bar item 6, DDR-001)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.2 \u2014 'the graph gateway... the write-authority principle at ADR-002 \u00a72.4'",
+      "claim": "ADR-004 attributes the sole-write-boundary provenance-stamping to 'the graph gateway' citing ADR-002 \u00a72.4, but ADR-002's single-graph-access-boundary principle is \u00a72.5 (knowledge-service sole-owner gateway); \u00a72.6 is write authority (author/executor/authorizer). The gateway that would stamp provenance is knowledge-service (\u00a72.5), not the \u00a72.4 referent \u2014 the load-bearing dependency is mis-anchored against the ratified substrate.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72.2 'sole executor of graph writes per the write-authority principle at ADR-002 \u00a72.4' vs ADR-002 \u00a72.5 (graph access authority \u2014 sole-owner gateway) / \u00a72.6 (write authority)"
+      },
+      "id": "dd1e6044c3f55542",
+      "classification": "resolvable",
+      "authority_locus": "ADR-002 \u00a72.5 (graph access authority \u2014 knowledge-service sole-owner gateway) and \u00a72.6 (write authority principle); author-decision-record SKILL 'Section citations are facts \u2014 fetch-verify them'",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "Whole record \u2014 timing / does this deserve to stand as its own ADR now",
+      "claim": "ADR-004 declares 'This ADR states the invariant as a platform principle; it introduces no new schema' and \u00a72.1 declares it merely 'elevates' an already-fixed DDR-002 constraint. A record that commits no new decision and only restates a ratified downstream constraint at a higher altitude, while the KG-entry-governance ADR (which the triage substrate ratified as the pending authority over mutation of enterprise ground truth) is unauthored, is premature against unsettled upstream governance and risks committing a position that the pending governance ADR deserves to settle first.",
+      "cited_authority": {
+        "kind": "design-intent",
+        "ref": "Triage-001 record \u00a7T-02 / \u00a7T-05 Leg 4 / Appendix A \u2014 KG-entry-governance ADR owns mutation of enterprise ground truth (entry AND un-promotion), forthcoming/unauthored; ADR-004 \u00a71 'introduces no new schema' + \u00a72.1 'elevates it to a platform principle'"
+      },
+      "id": "a6fb1e1686ca28f7",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a74.1 Alternative A \u2014 'This is obviously wrong and nobody would defend it'",
+      "claim": "The alternative is dismissed as 'obviously wrong and nobody would defend it' \u2014 a strawman rather than a described-as-its-proponents-would then rejected-with-specific-rationale alternative. The record's own template and authoring discipline require the affirmative case for each alternative before rejection; a strawman weakens the posture the ADR asks reviewers to ratify and becomes a liability if the position is ever revisited.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "adr-template \u00a74 'Describe each as its proponents would, then give a specific rejection rationale' / author-decision-record-SKILL deliberation gate ('A strawman is worse than a gap')"
+      },
+      "id": "0587b149f823025f",
+      "classification": "resolvable",
+      "authority_locus": "adr-template \u00a74 ('Describe each as its proponents would, then give a specific rejection rationale'); author-decision-record-SKILL deliberation gate ('A strawman is worse than a gap')",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "COSMETIC",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a76 Compliance / Metadata Status DRAFT",
+      "claim": "The record is Status DRAFT / v0.1.0 and \u00a76 states compliance is aspirational, tracked at RBT-67, yet \u00a72 asserts the invariant in definitive present-tense platform-principle voice ('No KG node is exempt', 'no node can enter without provenance'). For an unratified draft whose enforcing mechanism is by its own account not yet landed, the earned-tense discipline would phrase enforcement-dependent guarantees conditionally.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "author-decision-record-SKILL Body integrity 'Tense is earned by enforcement' \u2014 property whose enforcing mechanism is forthcoming stated in the conditional"
+      },
+      "id": "0357bf9fe00af51c",
+      "classification": "resolvable",
+      "authority_locus": "author-decision-record-SKILL Body integrity \u2014 'Tense is earned by enforcement' (property whose enforcing mechanism is forthcoming stated in the conditional; conditions apparatus carries present truth)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.3 / \u00a75.2 \u2014 immutability posture against ADR-001 and DDR-002 versioning",
+      "claim": "Attacked the immutability commitment ('provenance never mutated; corrections via versioning and never-delete') for conflict with the ratified never-delete/supersession model \u2014 it held: ADR-001's capture invariant, DDR-002 \u00a76 Option A supersession (retained version nodes, never-delete) and \u00a75 retraction-as-append-only all treat corrections as new records rather than in-place mutation, so ADR-004's immutability posture integrates with rather than pulls against the ratified substrate.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72.3 vs DDR-002 \u00a76 (Option A supersession, never-delete) / \u00a75 (retraction append-only) / ADR-001 \u00a72.2 (capture invariant)"
+      },
+      "id": "5d3a30ebbc7c52ac",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.2 / \u00a75.3 \u2014 sole-write-boundary integration with ADR-002 access authority",
+      "claim": "Attacked the claim that no node can enter unstamped because all writes route through one boundary, for conflict with the ratified access-authority principle \u2014 it held: ADR-002 \u00a72.5 commits knowledge-service as sole Neo4j-driver holder and single graph-access boundary, and DDR-001's gateway pattern enforces provenance at that boundary, so ADR-004's fail-closed-at-the-gateway posture is consistent with the ratified system-of-record gateway commitment (the defect is only the \u00a72.4 mis-citation, raised separately, not the substance).",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72.2/\u00a75.3 vs ADR-002 \u00a72.5 (sole-owner gateway) / DDR-001 Graph-Gateway Pattern (provenance enforced at boundary)"
+      },
+      "id": "d2036e81d7beab54",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a73 Rationale \u2014 'The graph store is Neo4j Community Edition' vs \u00a72.1 / \u00a76 mandatory-property enforcement claim",
+      "claim": "ADR-004 \u00a73 states the graph store is Neo4j Community Edition and rests its enforceability claim on Community's existence-constraint capability ('whose existence-constraint capability makes the mandatory-property guarantee enforceable at the database layer'). ADR-002 \u00a72.2/\u00a74.1 and DDR-001 Substitution-Contract Capability Bar item 6 both hold that DB-enforced property-existence constraints are Neo4j-Enterprise-only per the vendor Cypher Manual and that Community cannot enforce them \u2014 ADR-002 \u00a74.1 rejects Community precisely because it 'cannot enforce the schema's DB-enforced property-existence constraints.' ADR-004's edition claim and its database-enforceability rationale cannot both be true alongside the ratified substrate.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a73 ('Neo4j Community Edition, whose existence-constraint capability makes the mandatory-property guarantee enforceable at the database layer') in conflict with ADR-002 \u00a72.2/\u00a74.1 and DDR-001 Substitution-Contract Capability Bar item 6 (property-existence constraints Enterprise-only; Community rejected)"
+      },
+      "id": "dd3c2fce745c7e73",
+      "classification": "resolvable",
+      "authority_locus": "ADR-002 \u00a72.2/\u00a74.1 + DDR-001 Substitution-Contract Capability Bar item 6 (property-existence constraints Enterprise-only; Community rejected)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.2 / \u00a75.2 \u2014 provenance stamped by 'the graph gateway' vs ADR-002 \u00a72.5 sole gateway named 'knowledge-service'",
+      "claim": "ADR-004 \u00a72.2 attributes provenance-stamping to 'the graph gateway \u2014 the sole executor of graph writes per the write-authority principle at ADR-002 \u00a72.4'. ADR-002 fixes the sole-owner gateway as knowledge-service (\u00a72.5), and the general author/executor/authorizer write-authority principle is at \u00a72.6, not \u00a72.4 (\u00a72.4 is the persistence-backbone / three-store decision). ADR-004's cited section (\u00a72.4) does not carry the write-authority principle it invokes; the section pointer is to a decision about a different subject.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72.2 ('the sole executor of graph writes per the write-authority principle at ADR-002 \u00a72.4') in conflict with ADR-002 \u00a72.4 (persistence backbone \u2014 three stores) and \u00a72.6 (write authority \u2014 author/executor/authorizer principle) and \u00a72.5 (knowledge-service as sole gateway)"
+      },
+      "id": "2f663de4cc6c0ed9",
+      "classification": "resolvable",
+      "authority_locus": "ADR-002 \u00a72.6 (author/executor/authorizer write-authority principle) and \u00a72.5 (knowledge-service as sole-owner gateway)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.1 / \u00a71 \u2014 'Every node in every KG plane carries origin_mechanism and recorded_at' vs DDR-002 \u00a71 provenance-existence scope",
+      "claim": "ADR-004 \u00a72.1 asserts the provenance group (origin_mechanism + recorded_at) is mandatory on 'every node in every KG plane', framing the invariant as KG-node-scoped and citing DDR-002 \u00a76 as the existence-constraint source. DDR-002 owns the provenance existence constraint and locates it at \u00a77 (not \u00a76), and DDR-002 \u00a71/\u00a74 scope the existence constraint beyond KG nodes to also include the three authored RG types, the derived ProvenanceSummary, and the Artifact family \u2014 while excluding Evidence (the sole surrogate-only RG type, which carries no provenance group). ADR-004's citation section is wrong (\u00a76 vs \u00a77) and its 'every KG node' framing does not match the owning document's actual constraint scope.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72.1 ('This is the existence-constraint requirement fixed at DDR-002 \u00a76') in conflict with DDR-002 \u00a77 (existence constraints) and DDR-002 \u00a71/\u00a74 provenance-existence scope (KG nodes + three authored RG types + ProvenanceSummary + Artifact family; Evidence exempt)"
+      },
+      "id": "dd5f4dd9826b0e51",
+      "classification": "resolvable",
+      "authority_locus": "DDR-002 \u00a77 (existence constraints) + \u00a71/\u00a74 provenance-existence scope (KG nodes + three authored RG types + ProvenanceSummary + Artifact family; Evidence exempt)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "COSMETIC",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a77 Cross-References vs metadata Supersedes / DDR-001 dependency direction",
+      "claim": "ADR-004 \u00a77 lists DDR-001 as a cross-reference ('DDR-001 (data architecture)') on equal footing with DDR-002 and ADR-002, but the ratified substrate makes ADR-004's provenance invariant a downstream elevation of DDR-002 \u00a77's existence constraint (DDR-002 depends on DDR-001, and both are upstream of any node-level provenance principle). The cross-reference set does not itself state an authority direction, leaving a reader to infer ADR-004's altitude relative to DDR-001/DDR-002 rather than reading it stated.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a77 Cross-References in conflict with DDR-002 \u00a77 (owns the provenance existence constraint ADR-004 \u00a72.1 elevates) and DDR-001 one-way dependency direction (DDR-002 depends on DDR-001)"
+      },
+      "id": "50d6d677c7127df8",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.3 immutability vs substrate never-delete / supersession mechanisms",
+      "claim": "Checked ADR-004 \u00a72.3's immutability claim ('corrections are made by the schema's versioning and never-delete mechanisms, not by overwriting provenance in place') against DDR-002 \u00a76 (Option A supersession \u2014 retained version nodes, never-delete) and DDR-001's version-pinned / never-delete posture. The claim is consistent: the substrate does provide versioning and never-delete correction paths, so ADR-004's 'correct by versioning, not overwrite' framing holds against the owning documents. Attack on immutability-vs-correction contradiction failed.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72.3 checked against DDR-002 \u00a76 (Option A supersession / never-delete) and DDR-001 Versioning & Temporal Model"
+      },
+      "id": "e173216d5eb8af0d",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.2 sole-write-boundary posture vs ADR-002 sole-owner gateway commitment",
+      "claim": "Checked ADR-004's core structural claim ('no service writes to the graph outside the gateway, so no node can enter without provenance') against ADR-002 \u00a72.5 (knowledge-service sole holder of the Neo4j driver / single graph-access boundary) and \u00a72.6 (gateway sole executor of all graph writes). The single-write-boundary premise ADR-004 leans on is genuinely committed upstream, so the 'no unstamped node can enter' argument is load-bearing-consistent with the substrate \u2014 independent of the misattributed \u00a72.4 section cite (reported separately).",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72.2 sole-write-boundary claim checked against ADR-002 \u00a72.5 (sole-owner gateway) and \u00a72.6 (gateway sole executor of graph writes)"
+      },
+      "id": "a48f55b98b59fbef",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    }
+  ],
+  "passes": [
+    {
+      "pass_number": 1,
+      "open_cbm_count": 17,
+      "agents_run": [
+        "antagonist-LAA",
+        "antagonist-SA",
+        "antagonist-EA",
+        "coherence",
+        "arbiter"
+      ],
+      "timestamp": "2026-07-17T11:49:50.847094+00:00"
+    }
+  ],
+  "doc_changes": []
+}

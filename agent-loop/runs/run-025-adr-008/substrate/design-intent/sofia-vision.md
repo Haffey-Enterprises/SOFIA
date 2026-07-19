@@ -1,0 +1,13 @@
+# SOFIA — Vision (frozen substrate copy, run-008)
+
+> Source: Notion SOFIA page (`370caeea-1325-8069-893f-c829d0f01551`), vision block only — above the Roadmap divider. Content as of 2026-07-03T21:32:38Z, retrieved via claude.ai Notion connector.
+
+**SOFIA — Semantic Orchestration for Intelligent Architecture / Applications**
+
+The reasoning-capture layer for the enterprise SDLC. It applies enterprise context consistently and automatically at every lifecycle stage, with all decisions explainable and auditable. Its distinguishing commitment is the **reasoning-capture invariant**: whoever does the reasoning — encoded SOFIA logic, a specialized agent, an LLM, or a human — SOFIA captures that reasoning in a **Reasoning Graph (RG)** alongside the **Knowledge Graph (KG)**. This ensures the *why* behind architecture decisions accumulates as a durable, queryable asset rather than living transiently in a prompt. The platform operates with hybrid reasoning (LLM and SOFIA) within encoded boundaries, on a trajectory toward SOFIA-as-reasoner, LLM-as-tool.
+
+The authoritative statement of purpose and core behaviors is the spine ADR: **ADR-001 (Reasoning Architecture.)**
+
+**Operating-environment constraints (initial build):** no PHI by design — enforced via data classification at intake/ingestion, with compensating controls as a backstop; **no CMEK** in the initial build (a future PHI scope change is its own ADR).
+
+**Anti-simplification:** The reasoning-capture invariant (KG + RG) is the platform's reason to exist. Do not remove, simplify, or short-circuit it into an LLM-wrapping pattern. That regression is the specific failure mode this architecture exists to prevent.

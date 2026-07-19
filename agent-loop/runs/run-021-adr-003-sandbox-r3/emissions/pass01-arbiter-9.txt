@@ -1,0 +1,7 @@
+{
+  "finding_id": "58d3481e6cfd2678",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The ADR-template's Compliance section explicitly sanctions the aspirational-with-tracking-pointer posture the finding attacks, so authority does not dictate that enumerated checks must exist now; and enumerating checkable conformance criteria for the newly-designed substantive-review, verification-weight, and un-promotion-accountability checkpoints requires authoring content (which checks, at what altitude, keyed to what) that no ratified authority determines.",
+  "confidence": "medium"
+}

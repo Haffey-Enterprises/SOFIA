@@ -1,0 +1,72 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.3 / §5.2 / Cross-References — DDR-003 dependency direction and blocking posture",
+    "claim": "ADR-003 asserts authority flows to a forthcoming, unauthored DDR-003 that owns the remedy-boundary policy (§2.3), and simultaneously names DDR-003 as blocked on this ADR (§1). The record commits ratified rulings (Rulings 1 and 2, §2.2/§2.5) and a decision-bearing un-promotion authority (§2.3) whose only downstream discharge — the remedy-boundary policy distinguishing supersession from retraction — resides in a document that does not yet exist. Whether un-promotion authority can stand at this altitude before its remedy policy is authored is a timing/reversibility posture question: the ADR commits the project to un-promotion as a governed act while the governing remedy policy is deferred to an unwritten record.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.3 (this ADR is un-promotion's upstream authority; remedy boundary is DDR-003's policy) vs §1 (DDR-003 blocked on this ADR) vs Cross-References (DDR-003 forthcoming, unauthored)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.2 / §2.5 — reliance on 'KG-Entry-Governance Rulings' as ratified substrate for a DRAFT ADR",
+    "claim": "The two load-bearing calibrations — Environment-plane confidence-weighting (§2.2) and distillation substantive-review scope (§2.5) — are each stamped '(Ratified — KG-Entry-Governance Rulings, Ruling 1 / Ruling 2)' and the rulings artifact declares itself ratified 2026-07-17, the same date as this DRAFT ADR (v0.1.0). A DRAFT record embedding already-ratified sub-decisions as settled inverts the normal posture: the ADR that is supposed to establish the checkpoint principle presents its two central calibrations as pre-decided by a separate rulings artifact that closes the charter items this very ADR was chartered to rule (triage-001 Appendix A #4, #5). This commits the ADR to positions ratified outside the ADR's own review, at the moment of its first draft.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.2/§2.5 ('Ratified — KG-Entry-Governance Rulings') + metadata Status DRAFT/v0.1.0 vs kg-entry-rulings (self-dated ratified 2026-07-17, closing triage-001 charter Appendix A #4/#5)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.4 — graph gateway as authoring authority for checkpoint approval",
+    "claim": "§2.4 states 'the graph gateway is the authoring authority for each checkpoint approval: the approval is recorded as the gateway's own act at the write boundary.' This pulls against the ratified write-authority posture that the sole-owner gateway is the sole executor and enforcement boundary and is NEVER itself the authoring authority; for gated materializations the authoring authority is the approving decision (the human EA's gate). Naming the gateway as the authoring authority for a human-accountable checkpoint approval integrates against that platform-direction commitment and against ADR-003's own §3 rationale that every ground-truth mutation carries a named accountable party.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-002 §2.6 (general write-authority principle: gateway is sole executor, never the authoring authority; EA-gated materialization authority is the approving decision)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.5 / §6 — distillation checkpoint designed as a graph write-time gate vs Operational plane as derived-not-authored",
+    "claim": "§2.5 designs a substantive-review checkpoint that governs a distillation write producing a `derived` `ObservedPattern` in the Operational plane before entry, and §6 characterizes it as a gateway-behavioral contract with a required-flip reserved to the gateway build. This commits the platform to a per-write human-accountable gate on `origin_mechanism: derived` Operational writes. DDR-002 §2.3 explicitly left the distillation-write checkpoint posture un-decided and routed it here, but the DDR also frames distillation as update-in-place bounded by distinctness and Operational as staying writable; whether a substantive-review gate on the distinct durable lesson is reconcilable with the update-in-place, no-bottleneck constraint R30 imposed is a posture the ADR asserts without demonstrating it clears the very bottleneck constraint §2.2 cites as the reason the Environment plane was NOT gated.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.5/§6 (substantive-review checkpoint on distillation write, gateway-behavioral) vs §2.2 (per-write review of continuous volume is the bottleneck R30 declined) + DDR-002 §2.3 (distillation update-in-place, Operational stays writable)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-003"],
+    "locus": "§7 Cross-References — reliance on ADR-001 §2.5 scope",
+    "claim": "§1 and §2.3 rest the un-promotion authority gap on the claim that ADR-001 §2.5 authorizes promotion only and does not stretch to un-promotion. ADR-001 §2.5 commits an EA-gated promotion mechanism and states SOFIA does not self-modify its encoded reasoning without EA approval; it is silent on un-promotion, which is consistent with the ADR-003 reading but the ADR presents the scope-limit as a positive textual fact ('authorizes promotion only') rather than as an absence — a citation asserting what an authority does not say deserves the weaker framing.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-001 §2.5 (EA-gated encoding-density promotion mechanism; silent on un-promotion/retraction)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-003"],
+    "locus": "§1 / §2.3 — routing of named canonical gaps and the authority-vs-policy split",
+    "claim": "Checked whether the ADR's claim to resolve two routed canonical gaps (DDR-002 §2.3 distillation checkpoint, §2.4 un-promotion authority) is a genuine seam-fit or a circular dependency against DDR-003. The routing holds at the authority level: DDR-002 §2.3 and §2.4 do route these gaps forward by name, and §2.3's authority-flows-to-DDR-003 / DDR-003-owns-remedy-policy split is a coherent non-circular division (authority downward, policy at the delegate). The attack on the split as circular failed — the two roles are distinct.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.3 (authority/remedy-policy split) vs DDR-002 §2.3/§2.4 (gaps routed to KG-entry-governance ADR by name)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-003"],
+    "locus": "§2.1 / §2.2 — per-source-class calibration against the platform's declined uniform-gate posture",
+    "claim": "Checked the calibrated-not-uniform checkpoint decision against the platform's ratified posture that per-write review of CMDB-volume ingestion is the bottleneck R30 declined and that Environment ages via freshness. The Environment-plane confidence-weighting-at-retrieval choice (§2.2) integrates with DDR-002 §2.2's freshness/aging model and ADR-002's deterministic-retrieval ethos rather than pulling against them; the attack that the ADR over-gates the high-volume path failed for the Environment plane specifically.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §2.2 (Environment aging via freshness) + kg-entry-rulings Ruling 1 (Environment confidence-weighting, R30 bottleneck rationale)"
+    }
+  }
+]

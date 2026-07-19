@@ -1,0 +1,7 @@
+{
+  "finding_id": "5218db9a4455341e",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record SKILL — 'The cold read' / body-integrity: a dangling hinge (a cross-reference that resolves to nothing in the artifact set) must be repaired, and ticket/substrate provenance belongs in the conditions apparatus or as a subject-named pointer, not as a bare citation implying presence.",
+  "rationale": "The skill's stranger-test and body-integrity rules determine the fix: an unresolvable cross-reference (R30 cited as substrate but reachable only via request) must be marked as a forthcoming/supplied-on-request pointer rather than a bare present-in-set citation — a single conforming remediation, no unratified choice among options.",
+  "confidence": "high"
+}

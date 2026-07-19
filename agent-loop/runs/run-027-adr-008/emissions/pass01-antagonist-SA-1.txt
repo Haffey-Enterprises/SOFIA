@@ -1,0 +1,92 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 table, Environment row — Control-type: 'Per-policy reliability-weighting at retrieval; no per-write gate' / Realization routes to: 'Built — the inherited-confidence derivation ruling's aging basis'",
+    "claim": "The ADR states the Environment control is reliability-weighting 'at retrieval'. The ratified authority it cites for this control, DDR-004, fixes the mechanism as capture-time-frozen, not at retrieval: DDR-004 §3 states confidence 'is computed once at capture and frozen onto Evidence.confidence; it is never recomputed at read', and DDR-004 §1's Environment branch derives base × exp(−Δt/τ) at Evidence capture. The design's stated control-type deviates from the mechanism in its own cited realization authority.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-004 §3 (frozen: 'computed once at capture and frozen ... never recomputed at read'); DDR-004 §1 (branch (ii) Environment aging derived at capture)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 table, Environment row — Realization: 'Built — the inherited-confidence derivation ruling's aging basis'",
+    "claim": "The Environment control is asserted 'Built', but the cited authority substantiates only that the control's form is built while its constants are contested and unvalidated: DDR-004 §2 flags base (0.9) and τ (90 days) as *(contested)* tunables with 'Empirical floor: zero capture traffic to date; these values are unvalidated', and DDR-004 §6 states 'no calibration is possible until the platform runs'. The unqualified 'Built' label is unsubstantiated against its own cited realization record; the ADR's own §5.3 Risk concedes the constants are provisional, contradicting the flat 'Built' claim in §2.2.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 Environment 'Built' vs ADR-008 §5.3 'Empirical floor ... calibration constants ... held contested'; DDR-004 §2/§6 (constants unvalidated, n=0)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 (Environment control: 'no per-write gate') vs §2.5 (cross-class precedence: 'the mutation is blocked and surfaced')",
+    "claim": "§2.2 fixes the Environment class as carrying no per-write gate on the observation stream, while §2.5 states that any mutation conflicting with another class's control 'withholds and escalates' — 'the mutation is blocked and surfaced'. As written, a routine Environment observation that structurally collides with an EA-set governance scope is subject to a per-write block, which the design does not reconcile against §2.2's 'no per-write gate' commitment. The record is silent on whether the §2.5 withhold is a mechanical gateway-level conflict detection (firing only on collision) or a human gate, leaving the two sections in unresolved tension at the point where an Environment write meets a promoted-knowledge scope.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 Environment 'no per-write gate' in conflict with ADR-008 §2.5 'the mutation is blocked and surfaced'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 table, Operational distillation row — Realization routes to: 'The forthcoming feedback-loop governance design; the detection-promotion service design' / §5.2 Constraints: 'realized through a candidate-ObservedPattern shape excluded from ground-truth traversal until approved — a downstream governance design and an additive schema shape'",
+    "claim": "The design presents the candidate-ObservedPattern shape as the realization of the distillation control, but its cited schema authority does not contain this shape and explicitly leaves the question open: DDR-002 §2.3 records the distillation-write checkpoint posture as 'explicitly un-decided', routing it to the forthcoming KG-entry-governance ADR. The candidate-ObservedPattern is therefore a forthcoming/additive shape, not an existing schema constraint; §5.2 states it in present-realization voice ('realized through a candidate-ObservedPattern shape excluded from ground-truth traversal until approved') without marking it as not-yet-existing, and the promotion-boundary CandidatePromotion class (DDR-002 §5) does not cover derived ObservedPattern distillation.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §2.3 (distillation-write checkpoint 'explicitly un-decided', routed to forthcoming KG-entry-governance ADR); DDR-002 §5 (CandidatePromotion scope)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.3 Un-promotion authority — 'governed by the same per-write, EA-gated, human-accountable control as promotion itself'",
+    "claim": "§2.3 claims un-promotion is governed by 'the same ... control as promotion itself' and names the built retraction shape as its instance, but the cited built instance does not supply promotion's governing-verdict guarantee: DDR-002 §7 #21 traces a RETRACTS edge to *an* approving PromotionDecision, whereas the promotion control's #15 keys off the *governing* (latest-decided_at) approving edge, and DDR-002 §2.4 explicitly names the executed-retraction re-decision detection analogue as unruled and routed to DDR-003. The 'same control' claim is therefore not substantiated by the instance the section itself cites; the design's own §5.3 Risk ('Executed-retraction re-decision detection ... no standing detection analogue yet') concedes the gap the §2.3 claim overstates.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §7 #21 (retraction traces to *an* approving decision) vs DDR-002 §7 #15 (promotion keyed to *governing* edge); DDR-002 §2.4 (executed-retraction re-decision analogue deferred)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References — 'ADR-004 (file-driven ingestion, forthcoming)' and 'DDR-003 (Feedback Loop Governance, forthcoming)'",
+    "claim": "The record cites forthcoming, unauthored records by concrete document identifier (ADR-004, DDR-003). The governing authoring discipline requires forward references to unauthored records to be subject-named only, with concrete identifiers binding at the downstream record's landing; the ADR-004 identifier additionally collides in namespace with the existing DDR-004 the record already depends on, creating a resolution hazard. This is a cross-reference-integrity deviation from the body-integrity forward-reference rule.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "author-decision-record SKILL, body integrity: 'a forward reference in the body is subject-named only ... The record stays standalone-buildable'"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References, DDR-003 entry — 'the obligation to resolve DDR-003's pointer to this record's concrete document identifier lives in DDR-003's definition of done'",
+    "claim": "The Supersedes field reads 'None — establishes new platform principle', consistent with a new-principle ADR; however the record simultaneously asserts it homes and supersedes authority that ADR-001 §2.5 does not reach without an explicit 'Relationship to ADR-001 §2.5' statement recording generalization/subsumption. The §2 and §2.2 prose assert §2.5 'is cited, not superseded' but the position is stated in passing rather than as a discrete recorded relationship, leaving a reader to reconstruct the subsumption from scattered clauses.",
+    "cited_authority": {
+      "kind": "soundness",
+      "ref": "ADR-008 §2.2 Promotion bullet ('§2.5 is cited, not superseded') and §2.3 ('ADR-001 §2.5 authorizes promotion only') — subsumption relationship asserted in passing, not recorded as a discrete cross-reference resolution"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.4 Withdrawal posture — 'Provenance survives mutation' vs DDR-002 §4 Evidence pinning",
+    "claim": "Attacked the provenance-survival commitment for consistency with the ratified schema's retention mechanics. It holds for promoted facts: DDR-002 §4 freezes Evidence.fact_summary + source_node_version, SOURCED_FROM is rebind:pinned (never re-pointed on supersession), and the ProvenanceSummary is materialized at-promotion (DDR-002 §7 #20). The ADR also correctly and explicitly discloses the residual gap in §5.3 ('decision-consumed evidence ... could age out') rather than overclaiming — the commitment is scoped to what the schema substantiates.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §4 (Evidence version-pinning, rebind:pinned SOURCED_FROM), §7 #20 (at-promotion ProvenanceSummary completeness); ADR-008 §5.3 (retention-gap disclosure)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.5 Cross-class precedence — 'withholds and escalates ... fail-safe direction is to withhold, not admit' vs SDD-001 §3.5.2 SCOPE_CONFLICT",
+    "claim": "Attacked the cross-class precedence principle for whether its named interim instance actually exists and behaves as claimed. It holds: SDD-001 §3.5.2 defines the SCOPE_CONFLICT block — an ingested successor colliding with an EA-set conditional scope is blocked and surfaced as a governance-significant event, never silently admitted, with remediation routed through the promotion boundary — matching the ADR's withhold-not-admit direction and its escalation-to-human-resolution claim.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "SDD-001 §3.5.2 (SCOPE_CONFLICT cross-origin block, disclosed governance-significant event); DDR-002 Named Gaps ('surface-to-EA as a scope-conflict, never silent auto-composition')"
+    }
+  }
+]

@@ -1,0 +1,7 @@
+{
+  "finding_id": "9175fc9a4ecbb0fa",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record-SKILL, body-integrity discipline: \"An amendment that adds a ruling updates the Decision enumeration\" — the Decision block is the contract's index, and a ruling it doesn't enumerate is invisible to readers who treat the enumeration as complete.",
+  "rationale": "The finding is that a mechanization commitment surfaces in \u00a76 without being enumerated in \u00a72/\u00a75; the governing skill's amendment-discipline convention directly dictates the fix (surface the ruling in the Decision enumeration), and it is a documentation-conformance defect, not a choice among conforming options.",
+  "confidence": "high"
+}

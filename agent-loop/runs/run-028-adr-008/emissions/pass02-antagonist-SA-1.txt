@@ -1,0 +1,82 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Per-source-class calibration table — Environment row control-type ('Per-policy capture-time-frozen aging of confidence') vs the same row's realization cell wording",
+    "claim": "The Environment control-type is now stated as 'Per-policy capture-time-frozen aging of confidence (derived at capture, never recomputed at read)' and its realization is 'Form built (DDR-004); constants contested/unvalidated (n=0).' This conforms to DDR-004 §1/§3 (aging factor base × exp(−Δt/τ) derived at Evidence capture and frozen, 'never recomputed at read'). Checked the mechanism claim against DDR-004 §1/§3 as its named realization: it holds — the record no longer asserts a retrieval-time weighting. This is a held check, not a defect.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-004 §1/§3 (derived-at-capture, frozen, never recomputed at read) — ADR-008 §2.2 Environment control-type now conforms"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.3 Un-promotion authority — 'traces to an approving decision, not the governing one, so it does not yet supply promotion's governing-verdict guarantee'",
+    "claim": "§2.3 now qualifies the 'same control' claim: the built retraction shape (DDR-002 §7 #21) is 'the instance of this authority' but 'traces to an approving decision, not the governing one, so it does not yet supply promotion's governing-verdict guarantee; the governing-verdict detection analogue for executed retractions is a named follow-up (§5.3).' Verified against DDR-002 §7 #21 (retraction-gated, traces to an approving PromotionDecision) vs #15 (promotion traces to the governing DECIDED_ON edge, latest decided_at). The record's qualification is accurate to the substrate and internally consistent with its own §5.3 concession. The claim no longer overstates parity — it held under attack.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §7 #21 (retraction traces to an approving decision) vs #15 (promotion traces to the governing edge) — ADR-008 §2.3 qualification conforms"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.3 Un-promotion authority — 'ADR-001 §2.5 authorizes promotion only and does not stretch to its reversal'; §2 Decision / metadata Relationship-to-ADR-001-§2.5 framing",
+    "claim": "§2.3 asserts ADR-001 §2.5 'authorizes promotion only and does not stretch to its reversal,' homing un-promotion authority in this ADR. Verified against ADR-001 §2.5, which authorizes only 'every promotion into encoded knowledge passes a human (EA) approval gate' — its scope is consolidation of SOFIA's own reasoning into encoded knowledge, with no reversal/retraction clause. The reversal-not-reached claim is substantiated by the cited locus. The Promotion-class authority citation in §2.2 correctly points to ADR-001 §2.5 for its narrow sub-case plus DDR-002 §5/§7 #15 for the built gate. The cross-reference chain resolves against the named authorities and does not misattribute §2.5's scope.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-001 §2.5 (EA-gated promotion of SOFIA's own reasoning; no reversal clause) — ADR-008 §2.3 un-promotion-authority homing conforms"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Operational distillation row 'Realization routes to' + §5.2 candidate-ObservedPattern shape",
+    "claim": "§5.2 now states the distillation control is 'to be realized through a forthcoming candidate-`ObservedPattern` shape — introduced downstream, excluded from ground-truth traversal until approved,' and §2.2 routes it to 'the forthcoming feedback-loop governance design; the detection-promotion service design.' However, §2.2's Operational-distillation 'Realization routes to' cell names 'the detection-promotion service design' by a concrete-looking descriptor while §7 and the rest of the body render forthcoming records subject-named. The 'detection-promotion service design' descriptor is a subject-name form and resolves consistently, but the reader must reconcile that this service design (unauthored) is the same route the substrate elsewhere calls the detection-promotion SDD — a minor cross-reference-consistency wrinkle, not a resolution failure. The earned-tense correction itself (candidate-ObservedPattern as forthcoming/additive) conforms to DDR-002 §2.3's 'explicitly un-decided' checkpoint posture.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 Operational 'Realization routes to' descriptor ('the detection-promotion service design') vs §5.2/§7 subject-name conventions for the same forthcoming design"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.5 Cross-class precedence vs §2.2 Environment 'no per-write gate'",
+    "claim": "§2.5 now states the cross-class withhold is 'a gateway-mechanical conflict-detection at the sole-owner graph gateway (ADR-002 §2.6), firing only on a structural collision with an EA-set governance scope — not a per-write human gate on the routine, ungated Environment observation stream (§2.2).' Checked this reconciliation against the built interim instance it names (the knowledge-service cross-origin scope-conflict block, SDD-001 §3.5.2 SCOPE_CONFLICT): SDD-001 §3.5.2 realizes exactly a gateway-mechanical block on cross-origin scope collision, disclosed and logged, with the routine observation stream ungated. The §2.2/§2.5 tension is resolved consistently with the cited built instance; the reconciliation holds.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "SDD-001 §3.5.2 (SCOPE_CONFLICT — gateway-mechanical cross-origin block, disclosed/logged, routine stream ungated) — ADR-008 §2.5/§2.2 reconciliation conforms"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References — 'DDR-002 (Graph Schema) ... §2.4 / §5 (`PromotionDecision`, the retraction shape, remedy boundary routed to the governance design)'",
+    "claim": "§7 cites DDR-002 loci for the retraction shape and remedy boundary at '§2.4 / §5.' Fetch-verified: DDR-002 §2.4 (PromotionDecision, Retraction paragraph — EA-gated reversing CandidatePromotion + RETRACTS, remedy boundary routed to DDR-003) and §5 (retraction shape, RETRACTS edge, remedy-boundary governance → DDR-003) both carry the cited content. The §-cites resolve to the correct loci. §7 also cites 'the graph-schema ruling's §5 and its retraction-gated invariant' for the retraction shape in §2.3 — the retraction-gated invariant is DDR-002 §7 #21, which §2.3 also names; the cross-reference chain is internally consistent. Verified as accurate.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §7 DDR-002 §2.4/§5 citations fetch-verified against DDR-002 §2.4 (retraction paragraph) and §5 (retraction shape / RETRACTS / remedy boundary → DDR-003)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.1 scope exclusion of Reasoning-Graph capture + gateway executor-not-author claim, cross-checked against ADR-001 §2.2 and ADR-002 §2.6",
+    "claim": "Attacked the scope boundary and the gateway-executor characterization for conformance defects — whether the invariant over-reaches into Reasoning-Graph capture or mis-states the gateway's authority. Both held: §2.1 confines the invariant to KG authoritative ground truth, correctly cites ADR-001 §2.2 (reasoning-capture invariant) and ADR-002 §2.6 (RG write authority) as the governing authorities for RG capture, and the 'gateway is the executor ... never the authoring authority' claim is a faithful application of ADR-002 §2.6's verbatim author/executor/authorizer principle ('the sole-owner gateway ... is never itself the authoring authority; ... the authoring authority is the approving decision'). Named dependencies resolve to existing loci with the stated content; no unsupported extension.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-001 §2.2 (reasoning-capture invariant) + ADR-002 §2.6 (author/executor/authorizer separation) — ADR-008 §2.1 scope exclusion and gateway-executor claim conform"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.3 / §2.4 never-a-bare-delete withdrawal posture, cross-checked against DDR-002 §2.3, §5, §6",
+    "claim": "Attacked the withdrawal posture ('never a bare delete — read-excluded from ground-truth synthesis and retained, fully traceable, for audit') as a possible over-claim against the ratified schema. It held: DDR-002 §2.3 ('`archived` is retention-tier demotion, never hard-deletion'), §5 (retracted node 'retained and fully traceable ... never hard-deleted,' gateway-enforced read-exclusion keyed on the EA-approved RETRACTS edge), and §6 (never-delete via retained versions) all substantiate the claim in the same terms. The provenance-survival commitment in §2.4 is also honestly bounded — §5.3 concedes the frozen-provenance guarantee is promotion-scoped and flags the decision-consumed-but-unpromoted retention gap as a named follow-up rather than asserting coverage it lacks. The withdrawal and provenance claims conform to and do not exceed the schema authority.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §2.3 (archived = retention-demotion), §5 (retracted-node retained/traceable, read-exclusion on EA-approved RETRACTS), §6 (never-delete) — ADR-008 §2.3/§2.4 withdrawal posture conforms"
+    }
+  }
+]

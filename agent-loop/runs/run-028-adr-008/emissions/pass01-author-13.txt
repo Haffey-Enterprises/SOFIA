@@ -1,0 +1,10 @@
+{
+  "action": "edit",
+  "finding_id": "d53d1ac764216a01",
+  "target": "ADR-008",
+  "old_string": "Under such a conflict the fail-safe direction is to **withhold, not admit** — the mutation is blocked and surfaced as a governance-significant event, and a human resolves which reality governs.",
+  "new_string": "The cross-class withhold is a **gateway-mechanical conflict-detection** at the sole-owner graph gateway (ADR-002 §2.6), firing only on a structural collision with an EA-set governance scope — not a per-write human gate on the routine, ungated Environment observation stream (§2.2). Under such a conflict the fail-safe direction is to **withhold, not admit** — the colliding write is blocked and surfaced as a governance-significant event, and a human is accountable at the **resolution** step for which reality governs.",
+  "authority_conformed": "ADR-008-run-025-operator-rulings Ruling C (Environment cross-class precedence reconciliation)",
+  "rationale": "Ruling C determines that the §2.5 withhold is gateway-mechanical on structural collision with human accountability at resolution, while routine Environment observation stays ungated per §2.2.",
+  "confidence": "high"
+}

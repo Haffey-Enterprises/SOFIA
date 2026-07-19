@@ -1,0 +1,7 @@
+{
+  "finding_id": "ea24bf9eec981d50",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record SKILL body-integrity forward-reference rule (subject-named forms) + Ruling G's subject-name conformance, applied to the 'service design'/'SDD' consistency wrinkle",
+  "rationale": "Fix is a determined cross-reference-consistency edit to subject-name wording; no choice among conforming options, both descriptors already resolve to the same forthcoming detection-promotion SDD.",
+  "confidence": "high"
+}

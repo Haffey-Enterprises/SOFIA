@@ -1,0 +1,7 @@
+{
+  "finding_id": "8bdd5866a960cf6f",
+  "classification": "resolvable",
+  "authority_locus": "Operator Ruling C (ADR-008-run-025 dispositions) + SDD-001 §3.5.2 SCOPE_CONFLICT",
+  "rationale": "Finding self-reports the reconciliation already holds against the cited built instance; Ruling C ratifies exactly this gateway-mechanical-on-collision, human-at-resolution, routine-ungated shape as the required conformance.",
+  "confidence": "high"
+}

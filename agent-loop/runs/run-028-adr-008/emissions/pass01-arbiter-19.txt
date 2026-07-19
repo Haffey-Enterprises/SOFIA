@@ -1,0 +1,1 @@
+{"finding_id":"b492081a7028ab12","classification":"resolvable","authority_locus":"ADR-008-run-025-operator-rulings Ruling D (relabel \u00a72.2 Environment status to 'form built (DDR-004); constants contested/unvalidated (n=0)')","rationale":"Operator Ruling D determines the exact status relabel, converting this from decision-bearing to authority-dictated.","confidence":"high"}

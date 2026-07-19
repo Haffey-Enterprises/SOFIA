@@ -1,0 +1,62 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 table, Environment row — 'Per-policy reliability-weighting at retrieval' + 'Built — the inherited-confidence derivation ruling's aging basis'",
+    "claim": "ADR-008 states the Environment control is a reliability-weighting applied 'at retrieval' and marks it 'Built'. The cited realizing authority (DDR-004) describes a capture-time mechanism, not a retrieval-time one: DDR-004 §1/§3 fix the aging confidence 'base × exp(−Δt/τ)' as 'computed once at capture and frozen ... never recomputed at read.' The ADR's own §2.2 Environment bullet then repeats 'a per-policy reliability weighting' consumed at retrieval. The narrative-vs-substrate claim ('at retrieval') and the cited substrate (capture-time-frozen) cannot both be true. Additionally the 'Built' label overstates DDR-004's status: DDR-004 §2/§6 hold the Environment base and τ as contested, POC-asserted, unvalidated at n=0 — the form is built, the constants are not.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 Environment row 'reliability-weighting at retrieval'/'Built' vs DDR-004 §1/§3 (capture-time-frozen derivation, 'never recomputed at read') and DDR-004 §2/§6 (base/τ contested, unvalidated, n=0)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 table, Operational distillation row + §5.2 — 'realized through a candidate-`ObservedPattern` shape excluded from ground-truth traversal until approved'",
+    "claim": "ADR-008 §5.2 (Constraints Imposed) asserts operational distillation review is 'realized through a candidate-`ObservedPattern` shape excluded from ground-truth traversal until approved — a downstream governance design and an additive schema shape.' The owning schema (DDR-002) does not supply this shape as present: DDR-002 §2.3 records the distillation-write checkpoint posture as 'explicitly un-decided' and routes it to the forthcoming KG-entry-governance ADR, and the `CandidatePromotion` proposal class (§2.4/§5) governs promotion into Catalog/Standards, not distillation entry into the Operational plane. Asserting a concrete 'candidate-ObservedPattern shape' as a realization while the owning schema leaves it un-decided asserts a property the owning definition does not supply — the present-tense 'realized through' outruns the substrate, which holds only that the shape is forthcoming/additive.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §5.2 'realized through a candidate-ObservedPattern shape excluded from ground-truth traversal until approved' vs DDR-002 §2.3 (distillation-write checkpoint posture 'explicitly un-decided', routed to forthcoming KG-entry-governance ADR) and §2.4/§5 (CandidatePromotion scoped to promotion, not distillation entry)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.3 Un-promotion authority — 'governed by the same per-write, EA-gated, human-accountable control as promotion itself'",
+    "claim": "§2.3 claims un-promotion is governed by 'the same' control as promotion and names the built retraction shape (DDR-002 §5 / §7 #21) as its instance. But the built retraction instance does not supply the same guarantee promotion carries: DDR-002 §7 #21 traces a `RETRACTS` edge to *an* approving PromotionDecision, whereas promotion's #15 keys off the *governing* (latest decided_at) approving edge — DDR-002 §2.4 states plainly that for executed retractions 'a standing detection analogue of #15 ... is not authored here (#21 traces to an approving decision, not the governing one).' ADR-008's own §5.3 concedes exactly this gap. The §2.3 'same control' claim therefore overstates the substrate: the authority is homed, but the governing-verdict guarantee is not the same as promotion's.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.3 'the same per-write, EA-gated, human-accountable control as promotion itself' vs DDR-002 §7 #21 (traces to an approving, not the governing, decision) / §2.4 (executed-retraction detection analogue 'not authored here') and ADR-008 §5.3 (self-conceding the gap)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References — 'DDR-003 (Feedback Loop Governance, forthcoming)' and 'ADR-004 (file-driven ingestion, forthcoming)'",
+    "claim": "§7 lists ADR-004 as 'file-driven ingestion, forthcoming' owning the authoritative-source ingestion mechanics, while the substrate uses the ADR-004 number for a different, already-ACCEPTED document: DDR-004 (Inherited-Confidence Derivation) is the aging-basis authority ADR-008 §2.2 relies on, and no 'ADR-004 file-driven ingestion' exists in the fetched set. The ingestion authority ADR-008 §2.2 routes to ('the forthcoming ingestion decision record') is elsewhere referred to by DDR-002/DDR-001 as the KG-entry-governance ADR (which ADR-008 is itself), leaving the 'ADR-004 (file-driven ingestion)' pointer ambiguous against the ratified numbering — the ADR-003–007 ladder is reserved per the triage record with ADR-004 unallocated to ingestion in any fetched authority.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §7 'ADR-004 (file-driven ingestion, forthcoming)' vs substrate DDR-004 (Inherited-Confidence Derivation, ACCEPTED) occupying the -004 slot and triage-001 charter ADR ladder allocation (ADR-003–007 reserved by RBT tickets, none named 'file-driven ingestion')"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.1 / §2.4 — scope exclusion of Reasoning-Graph capture and the provenance-survives-mutation commitment",
+    "claim": "Checked ADR-008's boundary claim that Reasoning-Graph capture is out of scope ('captured judgment, not ground truth') and its provenance-survives-mutation commitment against the substrate. The RG-vs-KG-ground-truth line holds against ADR-001 §2.2 (reasoning-capture invariant) and ADR-002 §2.1/§2.6; the provenance-survival requirement is consistent with DDR-002 §4/§5 (Evidence version-pinning, SOURCED_FROM rebind:pinned, never-delete, ProvenanceSummary at-promotion materialization). ADR-008 also honestly flags in §5.3 that the frozen-provenance guarantee is currently promotion-scoped and that decision-consumed-but-unpromoted facts rely on bounded RG retention — the concession matches DDR-002/DDR-001 retention posture rather than overclaiming. The attack (that ADR-008 asserts a survival guarantee the schema does not support) failed: the requirement is committed, the mechanism gap is disclosed, not hidden.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.1/§2.4/§5.3 vs ADR-001 §2.2, ADR-002 §2.1/§2.6, DDR-002 §4/§5 (Evidence pinning, ProvenanceSummary at-promotion, never-delete) and DDR-001 Versioning & Temporal Model"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Promotion row + §2.3 — Promotion-class authority citation chain and relationship to ADR-001 §2.5",
+    "claim": "Checked ADR-008's load-bearing claim to be the general upstream authority for ground-truth-mutation while ADR-001 §2.5 remains the cited (not superseded) sub-case, and its citation of the built promotion gate. ADR-001 §2.5 does authorize only 'consolidating SOFIA's own reasoning into encoded knowledge' under an EA gate — narrower than the general mutation class ADR-008 claims — so the generalization-plus-subsumption framing is accurate, and 'Supersedes: None' is consistent with §2.5 remaining valid. The built promotion instance ADR-008 points to (DDR-002 §5 PromotionDecision gate, §7 #15 governing-verdict invariant) exists as described. The attack (that ADR-008 overreaches or contradicts §2.5) failed: the subsumption is faithful to §2.5's actual scope and the built-instance citation resolves.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 Promotion row / §2.3 vs ADR-001 §2.5 (EA gate scoped to SOFIA's own reasoning) and DDR-002 §5 / §7 #15 (built PromotionDecision gate + governing-verdict invariant)"
+    }
+  }
+]

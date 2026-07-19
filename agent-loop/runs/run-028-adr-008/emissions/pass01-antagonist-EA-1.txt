@@ -1,0 +1,62 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["ADR-008"],
+"locus": "§1 Context / §2.6 / §7 — dependency on the forthcoming feedback-loop governance design and forthcoming ingestion decision record",
+"claim": "ADR-008 is being ratified into the platform posture as the upstream authority that multiple accepted records were 'routed to await,' yet its own realization depends on records that do not exist (the forthcoming feedback-loop governance design and the forthcoming ingestion decision record), and it names the feedback-loop governance design as 'blocked on this record.' The set thereby stands up a keystone authority whose control-forms (ingestion fidelity gate, distillation review, revalidation obligation) are explicitly aspirational-pending-downstream — the posture question is whether the general authority should be fixed in this shape before any of the three new per-class controls it commits has a realizing design to confirm the control-type is instantiable as stated.",
+"cited_authority": {
+"kind": "design-intent",
+"ref": "RBT-59 deliberation record Item 5 / ADR-008-run-025 Ruling E: 'candidate-ObservedPattern shape does not exist in the ratified schema ... it is the additive shape the downstream design introduces'; ADR-008 §1 'the forthcoming feedback-loop governance design is blocked on this record'"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-008"],
+"locus": "§2.3 Un-promotion authority — 'governed by the same per-write, EA-gated, human-accountable control as promotion itself'",
+"claim": "The record homes un-promotion authority as a hard-to-reverse platform commitment ('the withdrawal-leg of the promotion class') while conceding in §5.3 that the built retraction instance (DDR-002 §7 #21) traces only to an approving decision, not the governing one, so the governing-verdict guarantee that makes forward promotion accountable (#15) does not hold for retraction. Committing un-promotion to 'the same control as promotion' overstates the reversibility/accountability parity that actually exists at the substrate; the posture is asserted stronger than the ratified schema can currently discharge, and the gap is a named-follow-up rather than a satisfied dependency.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-008 §2.3 ('the same per-write, EA-gated, human-accountable control as promotion itself') in tension with ADR-008 §5.3 ('the retraction invariant traces to an approving decision, not the governing one, so a re-decided executed retraction has no standing detection analogue yet')"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-008"],
+"locus": "§2.2 Environment row — 'Per-policy reliability-weighting at retrieval'",
+"claim": "The Environment control-type is stated as reliability-weighting 'at retrieval,' but the ratified substrate that realizes it (DDR-004 §1/§3) computes the aging confidence at Evidence capture and freezes it — 'never recomputed at read.' The ADR pulls against the ratified DDR-004 mechanism it cites as the realization route; a posture record that mis-locates the control it homes integrates against, not with, the prior ratified decision it depends on.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-008 §2.2 Environment 'per-policy reliability-weighting at retrieval' vs DDR-004 §1/§3 'derived at Evidence capture and frozen ... never recomputed at read'"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["ADR-008"],
+"locus": "§7 Cross-References — 'ADR-004 (file-driven ingestion, forthcoming)' and 'DDR-003 (Feedback Loop Governance, forthcoming)'",
+"claim": "The record references two unauthored downstream records by concrete document identifier (ADR-004, DDR-003) while elsewhere committing to the standalone-ADR / subject-name-only forward-reference discipline. Naming a not-yet-allocated number binds a posture pointer that the platform has not yet fixed, and (per the operator rulings substrate) introduces an ADR-004 numbering ambiguity — a premature commitment relative to the downstream record's landing.",
+"cited_authority": {
+"kind": "design-intent",
+"ref": "author-decision-record SKILL body-integrity: 'A forward reference in the body is subject-named only ... concrete identifiers bind only at the downstream record's landing'; RBT-59 Item 1 flags the ADR-003–007 ladder as reserved by standing tickets"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-008"],
+"locus": "§2.5 / §5.2 Cross-class precedence — withhold-and-escalate",
+"claim": "I attacked the cross-class precedence rule as a premature or unsupported commitment — a rule that could pull against the Environment 'no per-write gate' posture or foreclose the forthcoming governance design's disposition space. It held: the rule is scoped to structural collision with an EA-set governance scope (not the routine observation stream), fixes only the fail-safe direction (withhold, not admit), explicitly routes the richer resolution disposition to the forthcoming governance policy, and rests on a built interim instance (SDD-001 §3.5.2 SCOPE_CONFLICT). The commitment is proportionate to its reversibility and does not over-reach into downstream policy.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "SDD-001 §3.5.2 SCOPE_CONFLICT (built interim instance); ADR-008 §2.6 routing of richer disposition to the forthcoming feedback-loop governance design"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-008"],
+"locus": "§2 / §2.6 Governance boundary — invariant vs control-form altitude split",
+"claim": "I attacked the record for committing the project to a position that deserved its own decision first — specifically whether fixing per-class control-TYPES commits remedy-boundary or governance-policy that belongs downstream. It held: the ADR fixes invariant + accountability + control-type per class and explicitly disclaims policy, threshold, cadence, mechanism, and the supersede-vs-retract remedy boundary, routing all of them to the forthcoming governance design with the citation direction correct (downstream cites this ADR, not the reverse). The altitude line is drawn consistently with the ratified deliberation frame (RBT-59 Items 2 and 5).",
+"cited_authority": {
+"kind": "design-intent",
+"ref": "RBT-59 deliberation record Item 2 ('ADR fixes invariant + accountability + control-type per class; downstream fixes control form + mechanics') and Item 5 (remedy-boundary and governance policy → DDR-003)"
+}
+}
+]
