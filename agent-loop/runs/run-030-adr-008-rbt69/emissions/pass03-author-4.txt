@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "f10615f773f71477",
+  "reason": "The tense-earned-by-status discipline flags the mismatch but does not uniquely determine the conforming edit: the finding could be conformed by re-tensing §1's claims to conditional/prospective ('will home', 'once accepted'), by adding a status caveat, or by other rewordings — each a distinct authorial choice the coherence authority does not adjudicate among, and the specific replacement wording is not entailed.",
+  "confidence": "high"
+}

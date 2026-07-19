@@ -1,0 +1,8 @@
+The finding targets §2.2, but Ruling D conformance point (1) says "drop 'reliability-weighting at retrieval'; state capture-time-frozen aging + §6 governance." The table row already conforms. The prose bullet contains "Its control is a per-policy reliability weighting". Ruling D says drop "reliability-weighting at retrieval" — the exact phrase "at retrieval" appears nowhere; the prose says "reliability weighting" without "at retrieval". The locus phrase 'reliability-weighting at retrieval' is not present verbatim, and the ratified authority conformance is ambiguous about which prose to change and how, given the table already states capture-time-frozen aging.
+
+{
+  "action": "refuse",
+  "finding_id": "9024fba245cbf6ca",
+  "reason": "The verbatim phrase 'reliability-weighting at retrieval' the finding and Ruling D target does not appear in the current document — the §2.2 table row already states 'capture-time-frozen aging ... calibration-governed under its §6', and the prose bullet says 'per-policy reliability weighting' with no 'at retrieval'. The document appears already conformed to Ruling D; no exact anchor for the offending text exists, so the ruling does not determine a further edit.",
+  "confidence": "high"
+}

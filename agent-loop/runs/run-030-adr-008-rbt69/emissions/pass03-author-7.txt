@@ -1,0 +1,8 @@
+The finding names two conforming edits per Ruling D part (2): relabel the §2.2 table "Built" status and disclose the unperformable-calibration status. The table already shows the Environment row's realization as "The inherited-confidence derivation ruling's aging basis (DDR-004) and its §6 calibration governance" — not "Built." The word "Built" appears only in the Promotion row. Ruling D's relabel target ("§2.2 'Built' status") does not match a locatable Environment-row anchor; the Environment row has no "Built" label to relabel.
+
+{
+  "action": "refuse",
+  "finding_id": "66ef5ab4eb01cae2",
+  "reason": "Ruling D's conformance directs relabeling the §2.2 'Built' status to 'form built (DDR-004); constants contested/unvalidated (n=0)', but the Environment row's Realization cell contains no 'Built' label to relabel — the only 'Built' in §2.2 is the Promotion row. No unique anchor matches the directed edit, and the ruling does not otherwise specify where the disclosure text is inserted or how the existing prose ('its constants are contested and unvalidated at zero capture traffic') is amended, admitting more than one conforming edit.",
+  "confidence": "medium"
+}

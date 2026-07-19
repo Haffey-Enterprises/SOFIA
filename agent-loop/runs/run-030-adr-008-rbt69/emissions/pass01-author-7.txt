@@ -1,0 +1,10 @@
+Ruling D directs two changes: drop "reliability-weighting at retrieval" (§2.2 bullet + §5.1), and the §2.2 table row was already relabeled. The finding names §2.2 bullet and §5.1. The §2.2 table already reads "capture-time-frozen aging." The §2.2 bullet says "per-policy reliability weighting" and §5.1 says "per-policy weighting" — neither contains "at retrieval" verbatim, but the ruling directs stating capture-time-frozen aging. However, Ruling D admits more than one conforming rephrasing of the bullet/§5.1 prose. Let me check each locus for a determinate edit.
+
+§5.1: "their control is per-policy weighting, not a per-write gate" — the ruling says drop the retrieval framing; the determinate correction is to capture-time-frozen aging.
+
+{
+  "action": "refuse",
+  "finding_id": "144d1f3e51b25557",
+  "reason": "Ruling D directs dropping the 'at retrieval' framing and stating capture-time-frozen aging, but the current §2.2 table already reads 'capture-time-frozen aging'; the remaining loci (§2.2 bullet 'per-policy reliability weighting', §5.1 'per-policy weighting') contain no 'at retrieval' string to drop, and rewording their prose to state capture-time-frozen aging admits multiple conforming phrasings the ruling does not fix, so no single verbatim-anchored minimal edit is determined.",
+  "confidence": "medium"
+}

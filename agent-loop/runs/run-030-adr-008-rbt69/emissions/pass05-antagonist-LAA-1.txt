@@ -1,0 +1,92 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["ADR-008"],
+"locus": "§7 Cross-References + §2.2 table + §5.2 — subject-name for the forthcoming ingestion decision record",
+"claim": "The authoritative-source ingestion control's realization target is named non-identically across the loci that cite it: §2.2 table ('Realization routes to') and §5.2 name 'the forthcoming ingestion decision record'; §2.2 Environment/ingestion prose and §7 name 'the forthcoming file-driven ingestion decision record'. A reader resolving the record's own cross-references cannot verify these denote one artifact or two (a general ingestion record vs a file-driven-specific one). The named artifact this control's realization is routed to is not identified by a stable subject-name, so which forthcoming record this control depends on is not decided unambiguously.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-008 §2.2 table + §5.2 ('the forthcoming ingestion decision record') vs §2.2 prose + §7 ('the forthcoming file-driven ingestion decision record') — same routing target named non-identically across loci"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["ADR-008"],
+"locus": "§2.2 Per-source-class calibration table — Environment row 'Realization routes to' cell vs the four sibling rows",
+"claim": "The 'Realization routes to' column names, per row, where each control's realization is routed — every other row names a destination record or port (the graph-schema ruling / DDR-002 §5, §7 #15; the forthcoming ingestion decision record + ingestion port; the forthcoming feedback-loop governance design + detection-promotion service design). The Environment row's cell instead carries a build-status/substantiation label ('form built (DDR-004); constants contested/unvalidated (n=0)'), conflating the column's stated function (routing destination) with a status claim. The record's own table-column contract is not honored uniformly across the rows it commits.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-008 §2.2 table Environment 'Realization routes to' cell (status label) vs the other four rows' 'Realization routes to' cells (destination records/ports) — intra-table column-contract inconsistency"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["ADR-008"],
+"locus": "§2.2 Promotion row 'Per-write (EA)' / §2.3 'the same per-write … control class as promotion itself' vs the built PromotionDecision batch form",
+"claim": "§2.2 labels the Promotion control 'Per-write (EA)' and §2.3 characterizes un-promotion as 'the same per-write, EA-gated, human-accountable control class', deliberately contrasting with the Environment 'per-policy' class. The built instance the record cites as this control's realization (DDR-002 §2.4/§5) is batch-capable: a single PromotionDecision may decide multiple candidates via a 1:many DECIDED_ON edge, one human decision act deciding N candidate materializations with a per-candidate verdict on each edge. 'Per-write' as §2.2 uses it for ingestion (one human confirmation per captured representation) does not describe the promotion instance's accountability granularity, which is per-decision-act-over-a-batch. The record's own named realization qualifies the 'per-write' label it applies to Promotion; the side effect of the cited built instance is not surfaced.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-008 §2.2 Promotion 'Per-write (EA)' / §2.3 'same per-write … control' vs DDR-002 §2.4 (PromotionDecision DECIDED_ON → CandidatePromotion, 1:many batch; per-candidate verdict on each edge)"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["ADR-008"],
+"locus": "§2.1 'a named human is answerable' + §6 check 1 (per-policy branch) vs §2.2 Environment / §2.5 resolution step",
+"claim": "§2.1 requires that a named human be answerable for every control (per-write or per-policy), and §6 check 1 mechanizes 'names the human accountable for it (per-write or per-policy).' For the Promotion, ingestion, and distillation classes the record names EA or a distinct human reviewer; for the Environment per-policy control it states only 'A human is answerable for the weighting policy', and for the §2.5 cross-class resolution step only that 'a human resolves', without fixing which role holds that per-policy accountability. The decision the record claims to make — that a named human is accountable for every class — is under-specified for the per-policy branch it introduces, so §6 check 1's own conformance criterion for that branch is under-determined against §2.1's 'named human' requirement.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-008 §2.1 ('a named human is answerable') + §6 check 1 ('names the human accountable … per-policy') vs §2.2 Environment / §2.5 resolution — the per-policy accountable role is not fixed"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-008"],
+"locus": "§1 Context — 'the forthcoming feedback-loop governance design is blocked on this record' / 'Authority that multiple accepted records depend on does not yet exist' vs metadata Status: PROPOSED",
+"claim": "§1 states downstream work is blocked on this record and that accepted records depend on the authority it homes, framing the ADR as the load-bearing dependency the corpus awaits ('routed to await' this record). The record's own metadata carries Status: PROPOSED (v0.1.0). A PROPOSED, unratified record has not yet decided anything the corpus can bind to — the authority it purports to home is not established until acceptance. The Context asserts a present-standing dependency relationship in a tense the record's own status has not earned: what this record supplies to the corpus is stated as already discharging blockage rather than pending its own acceptance.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-008 metadata (Status: PROPOSED) vs §1 Context ('the forthcoming feedback-loop governance design is blocked on this record'; 'Authority that multiple accepted records depend on does not yet exist')"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["ADR-008"],
+"locus": "§2.4 Withdrawal and expiry posture — provenance-survival requirement vs §5.3 gap",
+"claim": "§2.4 commits provenance-survives-mutation as a platform requirement ('a decision that consumed a ground-truth fact must survive that fact's later mutation'), while §5.3 concedes the built survival guarantee is scoped to promoted facts only, leaving decision-consumed-but-unpromoted facts on bounded-retention RG evidence that could age out. The consequence of the withdrawal decision — that the committed requirement is not yet mechanizable for the general case, with an enforcement path that is a named follow-up homed against no landing — is disclosed as a risk, but the requirement is stated at principle altitude as a present platform commitment while its enforcement for the general case does not exist. The declared commitment outruns the mechanism that would make it true for the general case.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-008 §2.4 ('a decision that consumed a ground-truth fact must survive that fact's later mutation', committed requirement) vs §5.3 (survival guarantee scoped to promoted facts only; extension to decision-consumed evidence a named follow-up, no homed record)"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-008"],
+"locus": "§7 Cross-References — DDR-002 entry listing 'conditional-scope carry-forward' among 'the schema instances of this ADR's controls'",
+"claim": "§7's DDR-002 entry lists 'conditional-scope carry-forward' flatly among the constraint set presented as 'the schema instances of this ADR's controls.' Conditional-scope carry-forward (DDR-002 §7 #22) guards applicability-state over-admission on promoted-knowledge supersession — it is not one of the four source-class mutation-accountability controls §2.2 calibrates, and is not a control this ADR homes. The cross-reference attributes to this ADR a schema invariant outside its own control set; the listing claims more instance-coverage than the ADR's decision content supports.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-008 §7 DDR-002 entry ('conditional-scope carry-forward' listed among 'the schema instances of this ADR's controls') vs DDR-002 §7 #22 (conditional-scope carry-forward guards applicability-state over-admission on supersession) and ADR-008 §2.2 (the four source-class mutation controls)"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-008"],
+"locus": "§2 Decision, §2.6 Governance boundary, §6 check 5 — scope claim vs governance-policy content",
+"claim": "I attacked the Decision from LAA altitude for scope creep — a smuggled remedy-boundary or governance-policy ruling riding under the principle-only frame, which is a claim-fidelity/scope defect regardless of the ruling's merit. It held: §2 states it fixes invariant, accountability, and control-type only and 'fixes no policy, threshold, cadence, or mechanism'; §2.6 enumerates the remedy boundary, criteria, thresholds, cadence, retention windows, reviewer-role assignments, and multi-condition composition as NOT ruled and routes them to the forthcoming feedback-loop governance design; §2.5 defers the richer resolution disposition while fixing only the withhold-and-escalate direction; §6 check 5 mechanizes the non-leakage. Cross-read §2.2/§2.3/§2.5 for a policy ruling stated under the principle layer — none found. What the record claims to decide matches what its body decides.",
+"cited_authority": {
+"kind": "design-intent",
+"ref": "RBT-59 deliberation record Item 5 (ADR owns invariant + accountability + control-type + lifecycle; remedy-boundary and governance policy → the forthcoming feedback-loop governance design); ADR-008 §2 / §2.6 / §6 check 5"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-008"],
+"locus": "Metadata 'Supersedes: None' + §2.1/§2.2/§2.3 + §7 ADR-001 cross-reference — relationship to ADR-001 §2.5",
+"claim": "I attacked the record's own standing claim — that it generalizes and subsumes ADR-001 §2.5 as a sub-case and extends to un-promotion without a supersession relationship — for a quiet retraction of §2.5's authority a scope defect would surface. It held: §2.2 and §7 state §2.5 is 'cited, not superseded' for its narrow sub-case; §2.1 scopes this record to ground-truth mutation while excluding RG capture (§2.5's separate authority regime); §2.3 homes un-promotion as an extension §2.5 does not reach. 'Supersedes: None' is consistent with establishing a new principle that subsumes a sub-case rather than replacing a record, and the dependency on ADR-001 §2.5 is declared and named at each locus. No authority is silently overridden or retracted.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-008 §2.1/§2.2/§2.3 + metadata (Supersedes: None) + §7 ADR-001 entry checked against ADR-001 §2.5 — generalization/subsumption/un-promotion-extension declared, no silent supersession"
+}
+}
+]

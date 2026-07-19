@@ -1,0 +1,102 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References — 'ADR-004 (file-driven ingestion, forthcoming)' and 'DDR-003 (Feedback Loop Governance, forthcoming)'",
+    "claim": "The body and cross-references reference two unauthored records by concrete identifier (ADR-004, DDR-003) rather than subject-name. Operator ruling G (ADR-008-run-025-operator-rulings) requires forthcoming-record references to be subject-named only, never numbered, until the downstream record lands — replacing 'ADR-004 (file-driven ingestion, forthcoming)' with 'the forthcoming file-driven ingestion decision record' and 'DDR-003 (Feedback Loop Governance, forthcoming)' with 'the forthcoming feedback-loop governance design.' The body already uses subject-name form ('the forthcoming feedback-loop governance design', §2.6; 'the forthcoming ingestion decision record', §2.2 table) but §7 reverts to concrete identifiers, contradicting itself and the ruling.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "ADR-008-run-025-operator-rulings, Ruling G: 'replace \"ADR-004 (file-driven ingestion, forthcoming)\" and \"DDR-003 (Feedback Loop Governance, forthcoming)\" with subject-name forms ... This removes the ADR-004 / DDR-004 numbering ambiguity entirely'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Environment row + §2.2 Environment bullet ('reliability-weighting at retrieval')",
+    "claim": "The Environment control is described as 'per-policy reliability-weighting at retrieval', but its actual mechanism is capture-time-frozen: DDR-004 derives the freshness-decayed confidence at Evidence capture and freezes it, never recomputed at read (DDR-004 §1/§3). Operator ruling D directs dropping 'reliability-weighting at retrieval' and stating capture-time-frozen aging plus §6 governance. The §2.2 table's 'reliability-weighting at retrieval' wording (Control-type column) contradicts the built mechanism.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 'Per-policy reliability-weighting at retrieval' vs DDR-004 §3 'Confidence is computed once at capture and frozen onto Evidence.confidence; it is never recomputed at read' — reconciled by operator ruling D (capture-time-frozen aging, not retrieval-time weighting)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Environment row, 'Realization routes to' column — 'Built'",
+    "claim": "The Environment control's realization is marked 'Built — the inherited-confidence derivation ruling's aging basis' unqualified, but DDR-004 states the aging derivation's form is built (ACCEPTED) while its constants (base, τ) are contested and empirically unvalidated at n=0 (DDR-004 §2/§6). Operator ruling D directs relabeling this status to 'form built (DDR-004); constants contested/unvalidated (n=0)'. The bare 'Built' overclaims against DDR-004's own contested-constants posture.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 Environment 'Built' vs DDR-004 §2 'Empirical floor: zero capture traffic to date; these values are unvalidated' and §6 two-tier calibration governance — per operator ruling D"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§5.2 Constraints Imposed — 'realized through a candidate-ObservedPattern shape excluded from ground-truth traversal until approved'",
+    "claim": "The candidate-ObservedPattern shape is stated as the realizing mechanism of the distillation control without earned tense marking it as forthcoming/additive. DDR-002 §2.3 leaves the distillation checkpoint 'explicitly un-decided' and the CandidatePromotion class does not cover candidate-ObservedPattern; the shape is the additive shape a downstream design introduces, not a present schema constraint. Operator ruling E requires earned tense — stating it as forthcoming/additive, not as present. §5.2's phrasing reads as an existing realization.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "ADR-008-run-025-operator-rulings, Ruling E: 'the candidate-ObservedPattern shape does not exist in the ratified schema ... state as forthcoming / additive (introduced downstream), not as a present schema constraint'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "Relationship to ADR-001 §2.5 (absent as a distinct statement)",
+    "claim": "ADR-008 asserts throughout (§2.2, §2.3, Context) that it generalizes ADR-001 §2.5, subsumes it as a sub-case, and extends to un-promotion — but it carries no explicit 'Relationship to ADR-001 §2.5' statement recording generalization + subsumption + un-promotion extension as a discrete position. Operator ruling B directs adding such a statement so the position is recorded, not asserted in passing.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "ADR-008-run-025-operator-rulings, Ruling B: 'add an explicit \"Relationship to ADR-001 §2.5\" statement recording the generalization + subsumption + un-promotion extension, so the position is recorded, not asserted in passing'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Promotion row + §2.2 Promotion bullet, authority citation",
+    "claim": "The Promotion-class control cites ADR-001 §2.5 and 'the graph-schema ruling's PromotionDecision gate and its promoted-origin invariant' but does not fix the citation to the full durable chain operator ruling B requires: ADR-001 §2.5 (EA-gated-promotion principle) + DDR-002 §5 / §7 #15 (the built PromotionDecision gate into Catalog/Standards). §2.5's authority reaches only SOFIA's own reasoning; the general promotion authority for the Catalog/Standards materialization rests on the DDR-002 §5 / §7 #15 chain, which the ADR does not name here.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "ADR-008-run-025-operator-rulings, Ruling B: 'fix the Promotion-class authority citation to the durable chain — ADR-001 §2.5 (EA-gated-promotion principle) + DDR-002 §5 / §7 #15 (the built PromotionDecision gate into Catalog/Standards)'"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References — DDR-002 §7 constraint names ('promoted-origin, retraction-gated, conditional-scope carry-forward, never-delete')",
+    "claim": "The retraction control instance is cited without the qualification that DDR-002 §7 #21 (retraction-gated) traces to *an* approving decision, not the *governing* one, and so does not yet supply promotion's governing-verdict guarantee (#15). §5.3 concedes this for the standing detection gap, but §2.3's 'governed by the same per-write, EA-gated, human-accountable control as promotion itself' and the §7 flat listing read as full parity. Operator ruling F directs qualifying the 'same control' claim to match the §5.3 concession — the authority is homed, the governing-verdict detection analogue is a named follow-up.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "ADR-008-run-025-operator-rulings, Ruling F: 'qualify §2.3's \"same control\" claim to match the §5.3 concession — the authority is homed; the governing-verdict detection analogue for executed retractions is the named follow-up'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.5 Cross-class precedence vs §2.2 Environment 'no per-write gate'",
+    "claim": "§2.5 states observational/ingested reality 'never silently takes precedence over an EA-set governance scope' and that a conflicting mutation 'is blocked and surfaced as a governance-significant event, and a human resolves.' §2.2 states the Environment class carries 'no per-write gate' and per-policy accountability. These can both hold only if the cross-class withhold is a gateway-mechanical conflict-detection firing on structural collision with an EA-set scope (escalating that write to resolution), not a per-write human gate on the observation stream. The ADR does not disambiguate: as written, a reader can take §2.5's per-write block as contradicting §2.2's no-per-write-gate, since the routine observation stream and the collision case are not distinguished. Operator ruling C directs clarifying §2.2/§2.5 so both hold — gateway-mechanical withhold on structural collision, human accountability at resolution, routine observation ungated.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 Environment 'no per-write gate' vs §2.5 'the mutation is blocked and surfaced ... a human resolves' — reconciliation per operator ruling C (gateway-mechanical collision-detection, not per-write gate on the observation stream)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.1 scope boundary (KG ground truth in; Reasoning-Graph capture out)",
+    "claim": "Checked the scope claim that RG capture is excluded from this ADR's ground-truth-mutation invariant against ADR-001 §2.2 and ADR-002 §2.6. It holds: ADR-001 §2.2 frames RG content as captured reasoning governed by the reasoning-capture invariant and its per-reasoner authoritative flag, and ADR-002 §2.6 assigns RG write authority (ASA authors ReasoningProgress; AOE owns ReasoningSession lifecycle) — a distinct authority regime from ground-truth mutation. DDR-002 §4's accountability-boundary note ('RG content is captured judgment, not held to the KG determinism invariant') corroborates the line. The exclusion is consistent with the cited substrate.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.1 RG-exclusion vs ADR-001 §2.2 (reasoning-capture invariant) + ADR-002 §2.6 (RG write authority) + DDR-002 §4 accountability boundary — consistent"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.3 un-promotion authority — retraction shape citation",
+    "claim": "Checked the claim that the built retraction shape (EA-gated reversing CandidatePromotion + RETRACTS edge) is the instance of un-promotion authority against DDR-002 §5 and §7 #21. It holds: DDR-002 §5 defines the reversing CandidatePromotion (proposal_kind: retraction) + RETRACTS edge through the same EA gate, and §7 #21 (retraction-gated invariant) requires a RETRACTS edge to trace to an approving PromotionDecision. The 'never a bare delete / retained, traceable' claim matches DDR-002 §5's 'retracted node is retained and fully traceable — never hard-deleted.' The instance citation is accurate (with the governing-verdict qualification flagged separately per ruling F).",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.3 retraction shape vs DDR-002 §5 (reversing CandidatePromotion + RETRACTS) + §7 #21 (retraction-gated) — consistent"
+    }
+  }
+]

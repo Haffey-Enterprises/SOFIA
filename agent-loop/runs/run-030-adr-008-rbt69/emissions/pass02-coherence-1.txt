@@ -1,0 +1,52 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Environment row 'Realization routes to' column — inline status text 'form built (DDR-004)'",
+    "claim": "The §2.2 table Environment row's 'Realization routes to' cell reads 'form built (DDR-004); constants contested/unvalidated (n=0) — the inherited-confidence derivation ruling's aging basis'. DDR-004 §2 states the aging constants (base 0.9, τ 90 days) and the DeploymentEnvironment flat base are all *(contested)* tunables, and additionally §4 discloses that citation reachability is unverified for the basis-2 Environment class DeploymentEnvironment and the non-citability of the cost inputs. The ADR's control-type frame rests on the derivation form being sound, which DDR-004 supports; the finding is a residual coherence check on whether the ADR's 'form built' anchor and the DDR-004 substrate remain aligned — they do. No further defect on this cell.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 Environment row vs DDR-004 §2/§4 (aging constants contested; DeploymentEnvironment/cost-input reachability unverified) — aligned"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Promotion-class control-type / accountability and §2.3 un-promotion — 'per-write (EA)' vs the built PromotionDecision batch form",
+    "claim": "§2.2 characterizes the Promotion control as 'Per-write (EA)' and §2.3 characterizes un-promotion as governed by 'the same per-write, EA-gated' control. The built instance the ADR cites (DDR-002 §2.4 / §5) is a batch-capable gate: a single PromotionDecision may decide multiple candidates with a per-candidate DECIDED_ON {outcome} edge (1:many). A single human decision act deciding N candidates is not literally 'per-write' in the sense §2.2 uses the term for ingestion (one human confirmation per captured representation); the accountability granularity of the built promotion instance is per-decision-act-over-a-batch, not per-materialized-node. The ADR's 'per-write' label for Promotion does not disclose the batch semantics of the very instance it names as built, creating a granularity claim the cited substrate qualifies.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 Promotion 'Per-write (EA)' / §2.3 'same per-write ... control' vs DDR-002 §2.4 (PromotionDecision DECIDED_ON 1:many batch — one decision decides multiple candidates, per-candidate verdict on each edge)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References — DDR-002 entry: '§2.4 / §5 (PromotionDecision, the retraction shape, remedy boundary routed to the governance design)'",
+    "claim": "The §7 DDR-002 cross-reference lists the retraction shape's constraint set flatly ('promoted-origin, retraction-gated, conditional-scope carry-forward, never-delete') without carrying forward the qualification stated at §5.3 and §2.3 that the built retraction-gated invariant (DDR-002 §7 #21) traces to *an* approving decision, not the *governing* one. A reader reconciling ADR-008 against DDR-002 from §7 alone reads full parity between the retraction and promotion instances, which the ADR's own §5.3 concession contradicts. The flat §7 listing is not aligned with the qualified body claim.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §7 (flat 'retraction-gated' listing) vs ADR-008 §5.3 (retraction invariant traces to an approving, not the governing, decision — detection analogue is a named follow-up) and DDR-002 §7 #21"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.1 scope boundary (KG ground truth in; Reasoning-Graph capture out)",
+    "claim": "Attacked the scope claim that Reasoning-Graph capture is excluded from this ADR's ground-truth-mutation invariant, testing whether the exclusion drops a class of ground-truth-affecting writes. It held: ADR-001 §2.2 frames RG content as captured reasoning under the reasoning-capture invariant with its own per-reasoner authoritative flag, ADR-002 §2.6 assigns RG write authority (ASA authors ReasoningProgress; AOE owns ReasoningSession lifecycle) as a distinct regime, and DDR-002 §4's accountability-boundary note ('RG content is captured judgment, not held to the KG determinism invariant; the EA gate ... restores accountability and authoritativeness') confirms RG capture is not enterprise ground truth and its promotion into ground truth is exactly the Promotion class §2.2 governs. The boundary is drawn consistent with the cited substrate and leaves no ground-truth mutation path ungoverned.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.1 RG-exclusion checked against ADR-001 §2.2 + ADR-002 §2.6 + DDR-002 §4 accountability boundary — consistent, no ungoverned ground-truth path"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2 Decision + §2.6 Governance boundary — control-type-only frame vs downstream governance policy",
+    "claim": "Attacked the Decision for altitude leakage — a policy or remedy ruling smuggled under the principle-only frame. It held across every substantive section: §2 states it fixes invariant, accountability, and control-type only ('fixes no policy, threshold, cadence, or mechanism'); §2.6 explicitly withholds the remedy boundary (supersede vs. retract), criteria, thresholds, cadence, retention windows, reviewer-role assignments, and multi-condition composition, routing them to the forthcoming feedback-loop governance design; §2.5 defers the richer resolution disposition while fixing only the withhold-and-escalate direction; §2.2 fixes control-types not calibrations. Checked against the downstream substrate (DDR-002 §2.4 already routes the remedy boundary to governance) — the altitude line is drawn consistently and no policy decision is pre-empted at the principle layer.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2 / §2.6 (control-type only; remedy boundary and policy routed to the forthcoming feedback-loop governance design) checked against §2.2/§2.5 and DDR-002 §2.4 — no smuggled policy ruling"
+    }
+  }
+]

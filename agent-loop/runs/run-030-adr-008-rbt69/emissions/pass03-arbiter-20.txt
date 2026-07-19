@@ -1,0 +1,7 @@
+{
+  "finding_id": "875a7ed223f27345",
+  "classification": "resolvable",
+  "authority_locus": "DDR-004 §6 two-tier calibration governance (the human ratifies base/τ by amendment), cited by ADR-008 Ruling D as the Environment per-policy accountability locus; ADR-002 §2.6 gateway-as-sole-executor + Ruling C (human accountable at the resolution step)",
+  "rationale": "Ruling D names DDR-004 §6's amendment-ratification act as the Environment per-policy accountable act, and Ruling C fixes cross-class accountability at the resolution step; the naming fix is determined, not chosen.",
+  "confidence": "high"
+}

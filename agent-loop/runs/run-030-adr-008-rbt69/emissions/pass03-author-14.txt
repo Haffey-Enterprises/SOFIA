@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "f6824f889db47582",
+  "reason": "The stable-subject-name rule requires one consistent name but does not determine which of the two variants ('the forthcoming ingestion decision record' vs 'the forthcoming file-driven ingestion decision record') is the correct canonical name; choosing which to conform to — and whether 'file-driven' is a load-bearing qualifier to keep or drop — is an unratified choice. The cited authority establishes the defect but not the unique fix.",
+  "confidence": "medium"
+}

@@ -1,0 +1,52 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References — 'The forthcoming file-driven ingestion decision record' cross-ref vs §5.2 / §2.2 ingestion routing",
+    "claim": "§2.2 routes the authoritative-source ingestion control's realization to 'the forthcoming ingestion decision record; the knowledge-service ingestion port'; §5.2 states 'a new commitment for the ingestion decision record and the knowledge-service ingestion port'; §7 names 'the forthcoming file-driven ingestion decision record'. The named artifact appears under three distinct labels — 'the forthcoming ingestion decision record' (§2.2 table, §5.2) and 'the forthcoming file-driven ingestion decision record' (§7, §6-adjacent). A reader resolving cross-references cannot verify these denote one artifact versus two (a general ingestion record vs a file-driven-specific one); the subject-name is not stable across the loci that cite it.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 table + §5.2 ('the ingestion decision record') vs ADR-008 §7 ('the forthcoming file-driven ingestion decision record') — same referent named non-identically across loci"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Environment row 'Realization routes to' cell",
+    "claim": "The Environment row's 'Realization routes to' cell reads 'form built (DDR-004); constants contested/unvalidated (n=0) — the inherited-confidence derivation ruling's aging basis' — a status/substantiation statement, not a realization route. Every other row's 'Realization routes to' cell names a destination record or port (the graph-schema ruling; the forthcoming ingestion decision record + ingestion port; the forthcoming feedback-loop governance design + detection-promotion service design). The Environment cell conflates the column's function (where realization is routed) with a build-status label, so the table's own column contract is not honored uniformly; the record where the constants' calibration governance actually lives (DDR-004 §6, the human-accountable act for this class) is named in the §2.2 prose bullet but not surfaced in the routing cell.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 table Environment 'Realization routes to' cell (status label) vs the other four rows' 'Realization routes to' cells (destination records/ports) — column-contract inconsistency; DDR-004 §6 is the calibration-governance home the accountability attaches to"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Environment row + §6 check 1 (accountability-and-type check) — traceability of a per-policy withhold to an accountable human",
+    "claim": "§2.1 requires that a named human be answerable for every control (per-write or per-policy), and §6 check 1 mechanizes 'names the human accountable for it (per-write or per-policy).' For the Environment class the accountable act is a DDR-004 §6 calibration ratification, and for the cross-class withhold (§2.5) the accountable act is at the 'resolution step.' The ADR states that a human is answerable but nowhere fixes which role holds that per-policy Environment accountability (EA? the platform's config/governance owner?), whereas the other three classes name EA or a distinct human reviewer. §6 check 1 as written could pass a design that asserts a nameless 'per-policy' accountability for Environment without identifying the role — the check's own conformance criterion for the per-policy branch is under-specified against §2.1's 'named human' requirement.",
+    "cited_authority": {
+      "kind": "soundness",
+      "ref": "ADR-008 §2.1 ('a named human is answerable') + §6 check 1 ('names the human accountable ... per-policy') vs §2.2 Environment / §2.5 resolution — the per-policy accountable role is not fixed, leaving the check's per-policy branch under-determined"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.5 Cross-class precedence vs §2.2 Environment 'no per-write gate'",
+    "claim": "I attacked §2.5 for internal contradiction with §2.2 — a §2.5 per-write 'blocked and surfaced' claim standing against §2.2's 'no per-write gate' for the Environment class. It holds: §2.5 explicitly distinguishes the routine (ungated) observation stream from the gateway-mechanical conflict-detection that fires only on structural collision with an EA-set governance scope, escalating that write to human resolution, and locates human accountability at the resolution step rather than at each observation. The two loci are reconcilable exactly as written — the collision case and the routine stream are named and separated. Checked for internal correctness against the SDD-001 §3.5.2 SCOPE_CONFLICT mechanical-block instance the ADR authorizes.",
+    "cited_authority": {
+      "kind": "soundness",
+      "ref": "ADR-008 §2.5 (gateway-mechanical collision-detection, accountability at resolution, routine stream ungated) checked against §2.2 Environment 'no per-write gate' and SDD-001 §3.5.2 (SCOPE_CONFLICT mechanical block) — no contradiction"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.3 un-promotion authority + §5.3 vs the built retraction instance (DDR-002 §5 / §7 #21, #15)",
+    "claim": "I attacked §2.3's 'same per-write, EA-gated, human-accountable control class as promotion' for over-claiming parity with the built retraction instance. It holds as written: §2.3 qualifies the claim to the control *class* and its own text states the built retraction invariant traces to *an* approving decision, not the *governing* one, and 'does not yet supply promotion's governing-verdict guarantee — that governing-verdict detection analogue for executed retractions is the named follow-up (§5.3)'; §5.3 records the gap as a tracked risk. The parity is homed at the authority-principle level without asserting the built detection analogue exists. Verified the retraction shape citation resolves — DDR-002 §5 defines the reversing CandidatePromotion + RETRACTS edge and §7 #21 gates it — and the 'never a bare delete / retained, traceable' claim matches DDR-002 §5.",
+    "cited_authority": {
+      "kind": "soundness",
+      "ref": "ADR-008 §2.3 (qualified to control class; governing-verdict gap disclosed) + §5.3 (named follow-up) checked against DDR-002 §5 (reversing CandidatePromotion + RETRACTS) and §7 #21/#15 — no over-claim; cited loci resolve"
+    }
+  }
+]

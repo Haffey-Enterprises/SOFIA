@@ -1,0 +1,1 @@
+{"action": "refuse", "reason": "The authority requires a single subject-name form but does not determine which of the two ('the forthcoming ingestion decision record' vs 'the forthcoming file-driven ingestion decision record') is the ratified subject-name; choosing between them is an unratified decision.", "confidence": "medium"}

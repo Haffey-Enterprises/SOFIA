@@ -1,0 +1,8 @@
+Ruling G explicitly names the two verbatim strings to replace and their subject-name forms, but two separate loci require two edits; I emit the DDR-003 bullet, the finding's primary locus, in one minimal edit — but both must be conformed. Ruling G gives exact replacements for each, so I edit the one that yields a unique anchor covering both is not possible; I choose the DDR-003 line since it and the ADR-004 line are distinct loci.
+
+{
+  "action": "refuse",
+  "finding_id": "60f8dfe4b75fbed5",
+  "reason": "Ruling G determines two distinct edits at two separate loci (the DDR-003 bullet and the ADR-004 bullet in §7), plus 'anywhere in the body'; a single minimal find-replace scoped to one locus cannot conform both, and each is a separate exact anchor. This is escalated so both can be applied rather than silently conforming only one.",
+  "confidence": "medium"
+}

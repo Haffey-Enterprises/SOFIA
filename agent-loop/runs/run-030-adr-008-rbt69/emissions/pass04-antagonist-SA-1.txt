@@ -1,0 +1,72 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References vs §2.2 table / §5.2 — subject-name of the forthcoming ingestion record",
+    "claim": "The authoritative-source ingestion control's realization target is named non-identically across the loci that cite it: §2.2 table ('Realization routes to') and §5.2 name 'the forthcoming ingestion decision record'; §7 names 'the forthcoming file-driven ingestion decision record.' A reader resolving the record's own cross-references cannot determine whether these denote one artifact or two (a general ingestion record vs. a file-driven-specific one). The cross-reference does not resolve to a single referent — a named artifact the record depends on is cited under two forms.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 table + §5.2 ('the forthcoming ingestion decision record') vs §7 ('The forthcoming file-driven ingestion decision record') — same routing target named non-identically across loci"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Environment control-type ('per-policy capture-time-frozen aging') + §2.2 Environment bullet vs the accountability invariant §2.1",
+    "claim": "The Environment control's per-policy accountability (§2.1: a named human answerable) is stated as discharged by 'DDR-004 §6's two-tier calibration governance' (§2.2 Environment bullet). DDR-004 §6 states plainly that calibration cannot be performed until capture traffic exists ('n=0 capture traffic and n=0 re-observations; no calibration is possible until the platform runs'). The record therefore names a discharging mechanism for this class's accountability that its own cited authority declares cannot yet be exercised; the claim that this control satisfies the invariant substantiates only the control's form, not a performed accountable act, and the record does not disclose that the per-policy accountable act is presently unperformable.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-004 §6 ('n=0 capture traffic and n=0 re-observations; no calibration is possible until the platform runs') vs ADR-008 §2.2 Environment bullet (accountability discharged by DDR-004 §6 calibration governance) + §2.1 (a named human is answerable)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Promotion row 'Per-write (EA)' + §2.3 'the same per-write ... control' vs the built PromotionDecision batch form",
+    "claim": "§2.2 labels the Promotion control 'Per-write (EA)' and §2.3 characterizes un-promotion as governed by 'the same per-write' control, in deliberate contrast with the Environment 'per-policy' class. The built instance the ADR cites as this control's realization (DDR-002 §2.4/§5) is batch-capable: a single PromotionDecision may decide multiple candidates via a 1:many DECIDED_ON edge, one human decision act deciding N candidate materializations, with a per-candidate verdict on each edge. 'Per-write' as §2.2 uses it for ingestion ('one human confirmation per captured representation') does not describe the promotion instance's accountability granularity, which is per-decision-act-over-a-batch. The record's own named realization qualifies the 'per-write' label it applies to Promotion.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §2.4 (PromotionDecision DECIDED_ON → CandidatePromotion, 1:many; a single batch decision decides multiple candidates, per-candidate verdict on each edge) vs ADR-008 §2.2 Promotion 'Per-write (EA)' / §2.3 'same per-write ... control'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.3 Un-promotion authority — 'the same per-write, EA-gated, human-accountable control class as promotion itself'",
+    "claim": "§2.3's opening clause asserts un-promotion is governed by 'the same per-write, EA-gated, human-accountable control class as promotion itself' and cites the built retraction shape as its instance. Its own trailing clause, and §5.3, concede the built retraction invariant (DDR-002 §7 #21) traces to *an* approving decision, not the *governing* one, and 'does not yet supply promotion's governing-verdict guarantee.' The parenthetical qualifier inserted after 'control class' ('the authority is homed on the same footing; the built retraction instance does not yet supply promotion's governing-verdict guarantee') reads as a self-contradiction within a single sentence: it simultaneously claims 'the same ... control class' and that the built instance does not deliver what promotion's control delivers. What the built instance delivers is stated at two incompatible strengths within the same subsection.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.3 ('the same per-write, EA-gated, human-accountable control class as promotion itself') vs the same subsection's trailing clause + §5.3 (retraction traces to an approving, not the governing, decision) and DDR-002 §7 #21 vs #15"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References — 'DDR-002 ... §2.3, §2.4 / §5, §6, and the constraint set' — verified section citations",
+    "claim": "The §7 DDR-002 cross-reference cites multiple §-loci as facts (§2.3 Operational distillation, §2.4/§5 PromotionDecision/retraction, §6 version pinning/never-delete). §2.3 is Operational, §2.4 is Governance, §5 is cross-graph linkage + feedback loop, §6 is versioning — all resolve as cited. This is emitted as a defect-adjacent check: the ADR relies on these being fetch-verified, and one adjacent citation does not resolve as stated — §7 lists 'conditional-scope carry-forward' among the DDR-002 §7 constraint set as an instance of *this ADR's controls*, but conditional-scope carry-forward (DDR-002 §7 #22) governs applicability-state scope on promoted-knowledge supersession, not a mutation-accountability control this ADR homes; it is listed flatly as a control instance without the qualification that it is a distinct schema invariant not among the four source-class controls §2.2 calibrates.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §7 DDR-002 entry (lists 'conditional-scope carry-forward' among 'the schema instances of this ADR's controls') vs DDR-002 §7 #22 (conditional-scope carry-forward guards applicability-state over-admission on supersession — not one of the four source-class mutation controls in ADR-008 §2.2)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.3 un-promotion authority + §5.3 checked against the built retraction instance (DDR-002 §5 / §7 #21)",
+    "claim": "I attacked §2.3's retraction-shape citation for a dangling reference and for over-claiming the built mechanism. It held: DDR-002 §5 defines the reversing CandidatePromotion (proposal_kind: retraction) + RETRACTS edge through the same EA gate, and §7 #21 (retraction-gated invariant) requires a RETRACTS edge to trace to an approving PromotionDecision — both cited loci exist and carry the content §2.3 attributes to them. The 'never a bare delete / retained, fully traceable' claim matches DDR-002 §5's retained-and-traceable node. The cross-references resolve and the built-instance description is accurate at that layer; the residual over-claim on control-*class* parity is reported separately as a defect.",
+    "cited_authority": {
+      "kind": "soundness",
+      "ref": "ADR-008 §2.3 retraction-shape citation checked against DDR-002 §5 (reversing CandidatePromotion + RETRACTS) + §7 #21 (retraction-gated) — cited loci exist and resolve"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.5 Cross-class precedence vs §2.2 Environment 'no per-write gate'",
+    "claim": "I attacked §2.5 for internal contradiction with §2.2 — a §2.5 'blocked and surfaced' per-write claim standing against §2.2's 'no per-write gate' for the Environment class, which would be a specified behavior that could not hold if implemented as written. It held: §2.5 explicitly distinguishes the routine ungated observation stream from a gateway-mechanical conflict-detection (ADR-002 §2.6 sole executor) firing only on structural collision with an EA-set governance scope, escalating that write to human resolution, with human accountability located at the resolution step. The two loci are jointly satisfiable exactly as written, and the shape matches the cited built interim instance (SDD-001 §3.5.2 SCOPE_CONFLICT mechanical block). No internal contradiction; cited instance resolves.",
+    "cited_authority": {
+      "kind": "soundness",
+      "ref": "ADR-008 §2.5 (gateway-mechanical collision-detection, accountability at resolution, routine stream ungated) checked against §2.2 Environment 'no per-write gate' and SDD-001 §3.5.2 (SCOPE_CONFLICT mechanical block) — jointly satisfiable"
+    }
+  }
+]

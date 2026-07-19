@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "fa7b5013eb418401",
+  "reason": "Ruling G fixes a stable subject-name form only where numbered identifiers appeared, and Ruling E's conformance for §5.2 uses the general form 'the ingestion decision record'; the authority does not pick which of the two extant subject-names ('the forthcoming ingestion decision record' vs 'the forthcoming file-driven ingestion decision record') is canonical, nor whether they denote one artifact — so which text conforms the other is an unratified choice across four loci.",
+  "confidence": "medium"
+}

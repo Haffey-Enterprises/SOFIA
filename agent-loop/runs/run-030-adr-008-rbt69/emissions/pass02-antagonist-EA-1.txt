@@ -1,0 +1,52 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Environment row — 'Realization routes to' status vs. §2.2 Promotion row status",
+    "claim": "The Environment control's realization is marked 'form built (DDR-004); constants contested/unvalidated (n=0)', but the accountability the row assigns to Environment (per-policy: a human answerable for the weighting policy) is discharged specifically by DDR-004 §6's two-tier calibration, which by DDR-004's own account cannot occur until capture traffic exists (n=0). The record therefore commits, at ADR altitude, to a source-class control whose accountability act has never been performed and cannot yet be performed — the human-accountable weighting *policy* the invariant requires does not yet exist for this class. Whether a platform principle should stand while one of its four calibrated controls has no discharged accountable act at this time is a posture judgment the record does not confront: it presents the Environment control as satisfying the invariant now, when what is satisfied now is only its form.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "ADR-008 §2.1 (accountability invariant requires a named human answerable per-policy) vs. §2.2 Environment (accountability discharged by DDR-004 §6 calibration, which §5.3 concedes cannot run at n=0)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References — forthcoming records vs. §1 Context dependency claim",
+    "claim": "The record states in §1 that 'the forthcoming feedback-loop governance design is blocked on this record' and that 'authority that multiple accepted records depend on does not yet exist' — a strong posture claim that this ADR is the unblocking dependency for a chain of accepted records. But this ADR is itself PROPOSED (v0.1.0, metadata). A PROPOSED record cannot yet discharge a dependency that accepted records rest on; until this ADR reaches ACCEPTED, the blocked downstream work remains blocked and the accepted records' interim routings remain unresolved. The Context frames the record as already load-bearing for the corpus while its own status is not yet the authority those records can bind to. This is a timing/posture question: should a record be relied upon by the corpus as the homing authority for un-promotion and entry checkpoints while it stands PROPOSED and unratified?",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 metadata (Status: PROPOSED) vs. §1 Context ('the forthcoming feedback-loop governance design is blocked on this record'; 'authority that multiple accepted records depend on does not yet exist')"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "§2.6 Governance boundary + §5.3 decision-provenance retention gap",
+    "claim": "§2.4 commits the provenance-survival requirement ('a decision that consumed a ground-truth fact must survive that fact's later mutation'), and §5.3 concedes the built survival guarantee is scoped to *promoted* facts, leaving decision-consumed-but-unpromoted facts reliant on bounded-retention RG evidence that could age out. This is a substantive gap between what §2.4 commits as principle and what any built mechanism delivers — the record commits a requirement it knows is not yet mechanizable for the general case. The posture is honestly disclosed as a named follow-up, but the ADR commits the requirement at principle altitude while its enforcement is deferred to a schema/governance follow-up not yet scheduled against any record with a landing date. Whether the requirement should stand as committed principle before its enforcement path is homed is a reversibility-proportionality question the record does not weigh.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "ADR-008 §2.4 (provenance-survives-mutation committed as requirement) vs. §5.3 (survival guarantee scoped to promoted facts only; extension to decision-consumed evidence is a named follow-up with no homed record)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2 Decision + §2.6 Governance boundary — altitude discipline against premature policy commitment",
+    "claim": "I attacked the Decision for committing policy that deserves its own record first — the reversibility-proportionality failure of an ADR foreclosing DDR-003's design space. It held: §2 declares the record fixes invariant, accountability, and control-type only and 'fixes no policy, threshold, cadence, or mechanism'; §2.6 explicitly withholds the remedy boundary, criteria, thresholds, cadence, retention windows, role assignments, and multi-condition composition, routing them to the forthcoming feedback-loop governance design and arguing correctly that the accountability principle holds identically whichever remedy applies. The record commits control-*types*, not calibrations, and does not lock any downstream policy shape. Checked against the ADR-vs-DDR altitude line the deliberation set fixes.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "RBT-59 record Item 5 (ADR owns invariant + accountability + control-type + lifecycle; remedy-boundary and governance policy → the forthcoming governance design) vs. ADR-008 §2 / §2.6"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "Metadata 'Supersedes: None' + §2.2 Promotion / §2.3 — integration with ADR-001 §2.5",
+    "claim": "I attacked the integration posture — whether this ADR pulls against ADR-001 §2.5 by silently overriding it while claiming no supersession, a hard-to-reverse authority conflict if the two records disagree on the promotion gate. It held: §2.2 and §2.3 frame §2.5 as the narrow sub-case ADR-008 generalizes and homes ('cited, not superseded'), §2.1 scopes this record to ground-truth mutation while excluding RG capture (which §2.5's authority regime governs separately), and §2.3 homes un-promotion as an extension §2.5 does not reach. 'Supersedes: None' is the correct posture for a new principle that subsumes a sub-case rather than replacing a record, and the dependency direction (downstream records cite this ADR) is coherent. No dual-authority conflict with the prior ratified decision.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "ADR-008 §2.1/§2.2/§2.3 + metadata (Supersedes: None) checked against ADR-001 §2.5 (EA-gated promotion of SOFIA's own reasoning) — generalization/subsumption/extension consistent, no authority conflict"
+    }
+  }
+]

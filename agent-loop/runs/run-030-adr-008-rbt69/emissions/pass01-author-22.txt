@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "316458c47d9af59e",
+  "reason": "Ruling B directs adding an explicit 'Relationship to ADR-001 §2.5' statement recording generalization + subsumption + un-promotion extension, but neither the ruling nor ADR-008 fixes where the statement is placed or its exact wording; composing a new discrete statement requires authorial drafting the authority does not uniquely determine, and no exact anchor exists for inserting it.",
+  "confidence": "medium"
+}

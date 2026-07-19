@@ -1,0 +1,1 @@
+{"finding_id":"bf732a838a76082b","classification":"decision-bearing","authority_locus":null,"rationale":"Whether Promotion's accountability granularity is labeled 'per-write' or 'per-decision-act-over-batch' is a characterization choice no ratified authority resolves; operator rulings A-G address other findings, not this taxonomy fit.","confidence":"medium"}

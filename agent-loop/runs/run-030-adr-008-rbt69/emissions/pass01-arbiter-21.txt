@@ -1,0 +1,1 @@
+{"finding_id":"57d066621b23d9f6","classification":"resolvable","authority_locus":"ADR-008-run-025-operator-rulings Ruling B (durable chain: ADR-001 §2.5 + DDR-002 §5 / §7 #15)","rationale":"Operator ruling B names the exact citation chain the fix must adopt; the correction is determined, no choice remains.","confidence":"high"}

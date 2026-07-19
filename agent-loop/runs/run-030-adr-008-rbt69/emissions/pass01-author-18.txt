@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "80b9808b87c5d223",
+  "reason": "The finding's locus and Ruling G presuppose §7 contains 'ADR-004 (file-driven ingestion, forthcoming)' and 'DDR-003 (Feedback Loop Governance, forthcoming)', but the current document already uses the subject-name forms ('The forthcoming feedback-loop governance design', 'The forthcoming file-driven ingestion decision record'). No numbered-identifier anchor exists to find-replace; the ruling's specified fix is already present.",
+  "confidence": "high"
+}
