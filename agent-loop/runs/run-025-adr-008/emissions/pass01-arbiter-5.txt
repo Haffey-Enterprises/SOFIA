@@ -1,0 +1,1 @@
+{"finding_id":"db343ac9a2897a67","classification":"decision-bearing","authority_locus":null,"rationale":"DDR-004 §4 fixes an Evidence-capture aging derivation, not a retrieval-time reliability-weighting policy; no ratified authority supplies the Environment control-type ADR-008 asserts, so the fix requires a choice.","confidence":"high"}

@@ -1,0 +1,62 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.4 Revalidation obligation (distillation) + §5.2 Constraints Imposed",
+    "claim": "The record commits a new standing obligation — 'A distilled lesson may not persist as authoritative track-record indefinitely without re-grounding' with a mandated accountability mechanism to surface stale lessons — but this commitment is surfaced as a §2.4 posture paragraph and a §5.2 constraint, not as an enumerated component of the §2 Decision. The Decision (§2) states it fixes 'the invariant, the accountability, and the control-type per class' and enumerates §2.1–§2.5 by title; the revalidation obligation is a distinct decided commitment (it imposes a required mechanism downstream) that the Decision's own enumeration does not carry, so a reader treating the Decision block as the contract index misses a ruling the record in fact makes.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2 Decision (enumeration of what the record fixes) vs §2.4 revalidation obligation + §5.2 'Distilled lessons carry a revalidation obligation'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "Title / metadata summary vs §2.1–§2.4 scope",
+    "claim": "The title and the Description/summary claim the record establishes 'a human-accountable control on every mutation of enterprise ground truth,' and §2.1 asserts 'No class is exempt from the invariant.' But the Environment class is explicitly assigned 'no per-write gate' and per-policy weighting only (§2.2), and §2.4's provenance-survival and withdrawal commitments are the decided content of the withdrawal leg — the record decides a *calibrated* control regime in which one class carries no gate at all. The 'every mutation … human-accountable control' claim in the title/summary overstates what the body decides for the Environment class, where the human is answerable only for a policy, not for the mutation; the title's 'every mutation' and the body's per-policy carve-out are in tension as claim-fidelity.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 title + Description header ('a human-accountable control on every mutation') vs §2.2 Environment row ('no per-write gate') and §2.1 per-policy accountability"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References — DDR-004, ADR-004, DDR-003 version/existence status",
+    "claim": "The record declares dependencies on named artifacts without stating the pinned versions or resolution obligations its own house convention requires, and mixes existent and forthcoming referents without uniform status markers. DDR-004 (inherited-confidence derivation) is cited as the 'Environment aging basis' realizing the per-policy weighting control (§2.2, §5.3) but carries no version pin; ADR-004 (file-driven ingestion) is cited as 'forthcoming' and as owning the ingestion mechanics the §2.2 ingestion control routes to, yet the record's ingestion control is stated as a present commitment resting on that forthcoming artifact; DDR-003 is cited as downstream consumer. The consequence is a set of declared dependencies whose existence/version status is not uniformly named, so a reader cannot determine which of the record's control realizations rest on ratified vs unauthored substrate.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §7 Cross-References (DDR-004 unpinned; ADR-004/DDR-003 forthcoming) vs §2.2 realization-routes table asserting present control-types resting on those referents"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Realization-routes column — 'Built' claims",
+    "claim": "The §2.2 table marks the Promotion and Environment rows 'Built' (the graph-schema ruling's PromotionDecision gate; the inherited-confidence derivation ruling's aging basis). Per the record's own §5.3 Empirical floor, 'No promotion, ingestion, or capture traffic has run,' and the cited DDR-004 substrate holds its constants as contested and unvalidated at n=0 capture traffic. Labeling the Environment weighting control 'Built' as a realization consequence, while its enforcing constants are unvalidated and its harness mechanization is follow-tier per the cited schema ruling, is a status claim stronger than the substrate the record itself cites supports.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 'Built' realization labels vs §5.3 Empirical floor ('No promotion, ingestion, or capture traffic has run')"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.3 Un-promotion authority + §2.6 Governance boundary",
+    "claim": "I attacked the un-promotion section for scope creep — testing whether it smuggles a remedy-boundary or governance-policy decision (retract-vs-supersede, thresholds, cadence) into the principle layer. It held: §2.3 decides only that un-promotion is the withdrawal-leg of the promotion class under the same control-type and homes the upstream authority, and §2.6 explicitly withholds the remedy boundary and all policy to the forthcoming feedback-loop governance design. The record decides exactly its stated altitude (authority-homing) and no more; the claim, summary, and body agree on this scope.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "R30 derive/promote authority seam + triage-001 Appendix A KG-entry-governance charter scope (entry AND un-promotion; principle homed in ADR, policy to DDR-003)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.1 scope exclusion of Reasoning-Graph capture",
+    "claim": "I attacked the scope boundary for over-reach — whether the record's 'every mutation of enterprise ground truth' claim silently pulls Reasoning-Graph capture into its jurisdiction, which would collide with ADR-001's reasoning-capture invariant and ADR-002's write-authority assignment. It held: §2.1 explicitly names RG capture as captured judgment governed by ADR-001 §2.2 / ADR-002 §2.6 and out of this record's scope, and §2.1 restates the gateway executor/author separation consistently with ADR-002 §2.6. The record's decided scope is bounded to KG authoritative ground truth as its title and summary claim.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.1 scope exclusion vs ADR-001 §2.2 reasoning-capture invariant + ADR-002 §2.6 author/executor/authorizer separation"
+    }
+  }
+]

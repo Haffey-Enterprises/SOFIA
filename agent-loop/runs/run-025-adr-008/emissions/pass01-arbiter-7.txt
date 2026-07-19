@@ -1,0 +1,1 @@
+{"finding_id": "3f8adee8602ea02e", "classification": "decision-bearing", "authority_locus": null, "rationale": "DDR-002 §2.3 records the distillation checkpoint posture as explicitly un-decided and defines no candidate-ObservedPattern class; naming a specific realization requires a choice no ratified authority makes.", "confidence": "high"}

@@ -1,0 +1,14 @@
+The finding's locus is the §2.2 table Environment row. Ruling D directs two edits: drop "reliability-weighting at retrieval" from the control-type, state capture-time-frozen aging + §6 governance; and relabel the "Built" status. The finding's specific locus names the "Realization routes to" cell / status relabel. The control-type cell edit and the status relabel are both determined by Ruling D. But the status relabel target ("form built (DDR-004); constants contested/unvalidated (n=0)") and the control-type rewording are both explicitly given.
+
+The finding's claim centers on the control-type/realization mismatch. Ruling D determines both cells. However, applying both requires two separate non-contiguous cell edits within one row; the row is a single line I can anchor uniquely.
+
+{
+  "action": "edit",
+  "finding_id": "c2711f5868a6d6ee",
+  "target": "ADR-008",
+  "old_string": "| **Environment** — CMDB-observed deployed reality | Per-policy reliability-**weighting** at retrieval; **no** per-write gate | Per-policy | Built — the inherited-confidence derivation ruling's aging basis |",
+  "new_string": "| **Environment** — CMDB-observed deployed reality | Per-policy capture-time-frozen aging of confidence (derived at capture, never recomputed at read), governed by the inherited-confidence derivation ruling's two-tier calibration governance; **no** per-write gate | Per-policy | Form built (DDR-004); constants contested/unvalidated (n=0) — the inherited-confidence derivation ruling's aging basis |",
+  "authority_conformed": "ADR-008-run-025-operator-rulings Ruling D (Conformance (1) drop 'reliability-weighting at retrieval', state capture-time-frozen aging + §6 governance; (2) relabel 'Built' status)",
+  "rationale": "Ruling D verbatim directs dropping 'reliability-weighting at retrieval' for capture-time-frozen aging + §6 governance and relabeling the 'Built' status to the exact given form.",
+  "confidence": "high"
+}

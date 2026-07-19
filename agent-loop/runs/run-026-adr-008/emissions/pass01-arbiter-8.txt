@@ -1,0 +1,1 @@
+{"finding_id": "0d5b71abcfd4dc5f", "classification": "resolvable", "authority_locus": "ADR-008-run-025-operator-rulings, Ruling E (candidate-ObservedPattern shape is forthcoming/additive, not present; earned tense)", "rationale": "Ratified operator ruling directly dictates the fix: state the shape as forthcoming/additive rather than present-constraint.", "confidence": "high"}

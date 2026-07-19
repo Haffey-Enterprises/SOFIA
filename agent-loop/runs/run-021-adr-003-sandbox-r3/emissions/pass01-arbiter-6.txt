@@ -1,0 +1,7 @@
+{
+  "finding_id": "e67d4cb430344c56",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding asks for a declared conformance surface that verifies §2.1's differential per-source-class checkpoint weights, but no ratified authority specifies how those calibrated weights are to be verified — the KG-entry-governance ADR is itself forthcoming/unauthored, and the author-decision-record skill's compliance guidance permits an aspirational-until-enforcement posture without dictating what the calibration-specific verification mechanism must be. Designing that conformance surface (and whether to name the ticket by identifier) requires a choice authority has not made.",
+  "confidence": "medium"
+}

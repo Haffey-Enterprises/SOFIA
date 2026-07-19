@@ -1,0 +1,7 @@
+{
+  "finding_id": "166eda4cda161c1a",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding targets ADR-003, a document not present in the ratified authority set — the ratified intent supplies only Rulings 1 and 2 (Environment-plane and distillation checkpoints); no authority in the corpus resolves whether un-promotion authority may be committed at the ADR altitude while its remedy-boundary policy is deferred to the unwritten DDR-003. This is a timing/reversibility posture choice the substrate has not made; the deferral-vs-block tension it names is a gap in existing authority, not something any named locus determines.",
+  "confidence": "high"
+}

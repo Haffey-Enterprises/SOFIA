@@ -1,0 +1,7 @@
+{
+  "finding_id": "d443a985ddabce4d",
+  "classification": "resolvable",
+  "authority_locus": "ADR-001 §2.5 (Encoding-density growth mechanism — the EA-gated promotion mechanism); the skill author-decision-record 'Section citations are facts — fetch-verify them'; corroborated by ADR-003's own §1/§2.3/§7 citing §2.5",
+  "rationale": "A §-cite typo: ADR-001's EA-gated promotion mechanism is at §2.5 and ADR-001 has no §2.6; the correct locus is fetch-verifiable and the same record already cites §2.5 everywhere else, so the fix is determined with no choice introduced.",
+  "confidence": "high"
+}

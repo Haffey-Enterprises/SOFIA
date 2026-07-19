@@ -1,0 +1,7 @@
+{
+  "finding_id": "3a92193eb519bd04",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §2.3 — Operational plane confidence-derivation basis declared native_confidence (basis 1) at the plane level, plane-level declaration governs every node-label absent a per-label override (DDR-002 §2 preamble resolution rule)",
+  "rationale": "DDR-002 §2.3 ratifies the Operational plane's ObservedPattern basis as native_confidence explicitly and at plane level; ADR-003's flat_base assignment conforms by adopting the already-ratified basis. The fix is dictated by named authority with no unmade choice.",
+  "confidence": "high"
+}

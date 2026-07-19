@@ -1,0 +1,8 @@
+The finding's claim quotes text ("per-policy reliability-weighting at retrieval") that does not appear in the current document; the §2.2 table row and Environment prose already read "capture-time-frozen aging ... derived at capture, never recomputed at read." The document already conforms to Ruling D; no anchor exists to edit.
+
+{
+  "action": "refuse",
+  "finding_id": "f1aefd8187a6d51a",
+  "reason": "The 'reliability-weighting at retrieval' text the finding names does not exist in the current document — §2.2's Environment row and prose already state 'capture-time-frozen aging ... derived at capture, never recomputed at read' and the 'form built (DDR-004); constants contested/unvalidated (n=0)' status. Ruling D is already conformed; there is no verbatim anchor to edit.",
+  "confidence": "high"
+}

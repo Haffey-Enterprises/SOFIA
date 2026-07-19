@@ -1,0 +1,7 @@
+{
+  "finding_id": "eff36f22e764f3e1",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record SKILL, body-integrity discipline — 'Point, don't mirror' and the forthcoming/unauthored status-marker convention (as ratified in triage-001-charter T-05 Leg 2: forthcoming cross-references carry a status marker, not a §-level citation into an unauthored document)",
+  "rationale": "The fix is determined by an existing, ratified convention: a citation into a forthcoming/unauthored document must be a subject-named forward reference carrying a forthcoming marker, not a §-level pointer asserting content that does not yet exist — exactly the T-05 Leg 2 pattern already applied across DDR-001, DDR-002, and ADR-001 for DDR-003. Conforming ADR-003's §7 (and its circular §1 dependency phrasing) to that established marker discipline introduces no new choice.",
+  "confidence": "high"
+}

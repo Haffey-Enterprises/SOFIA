@@ -1,0 +1,7 @@
+{
+  "finding_id": "f027334a7fdd571f",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §2.3 (Operational plane; 'Confidence-derivation basis: native_confidence (basis 1), plane-level')",
+  "rationale": "The owning schema authority (DDR-002 §2.3) already fixes the Operational-plane ObservedPattern confidence basis as native_confidence; ADR-003's flat_base assertion contradicts it, and conformance to the ratified schema determines the fix without any new choice.",
+  "confidence": "high"
+}

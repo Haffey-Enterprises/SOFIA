@@ -1,0 +1,7 @@
+{
+  "finding_id": "ec72b03c266582b5",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record SKILL — body-integrity discipline: forward references to forthcoming/unauthored artifacts carry a status marker (as ADR-001 §7, DDR-001 and DDR-002 Cross-References do for DDR-003); the fix is to mark DDR-003 forthcoming/unauthored, matching the established corpus convention",
+  "rationale": "The finding is that a cross-reference to DDR-003 asserts a live dependency without the forthcoming/unauthored status marker the rest of the corpus uses for that same artifact; the skill's status-marker convention and the existing DDR-001/DDR-002 precedent determine the fix without any new choice.",
+  "confidence": "high"
+}

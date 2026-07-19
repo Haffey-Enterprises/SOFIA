@@ -1,0 +1,7 @@
+{
+  "finding_id": "bc8521b60a3252c6",
+  "classification": "resolvable",
+  "authority_locus": "ADR-008-run-025-operator-rulings, Ruling D (relabel §2.2 Environment status to 'form built (DDR-004); constants contested/unvalidated (n=0)')",
+  "rationale": "Ruling D directly dictates the exact relabeling this finding demands; no unmade choice remains.",
+  "confidence": "high"
+}

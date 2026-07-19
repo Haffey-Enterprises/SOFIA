@@ -1,0 +1,7 @@
+{
+  "finding_id": "7f6a2bbd9b7fb98a",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 Decision.7 (retraction-shape enumeration) and DDR-002 §5 / §7 #21 (retraction shape), plus the author-decision-record SKILL body-integrity rule 'Section citations are facts — fetch-verify them' and 'point, don't mirror'",
+  "rationale": "The fix is a citation-completeness correction determined entirely by existing ratified authority: DDR-002 already enumerates the retraction shape at Decision.7 and defines it at §5/§7 #21, and the skill's cross-reference/citation discipline dictates pointing to the strongest enumerated locus; adding the Decision.7 cite introduces no new choice.",
+  "confidence": "high"
+}

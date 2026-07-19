@@ -1,0 +1,7 @@
+{
+  "finding_id": "c92fa30a4cafdcaa",
+  "classification": "resolvable",
+  "authority_locus": "ADR-008-run-025-operator-rulings Ruling C (cross-class precedence reconciliation: gateway-mechanical withhold on structural collision, human accountability at resolution, routine observation ungated; instance SDD-001 §3.5.2 SCOPE_CONFLICT)",
+  "rationale": "Operator Ruling C dictates the exact reconciliation for the §2.2/§2.5 Environment tension, converting this finding to resolvable.",
+  "confidence": "high"
+}

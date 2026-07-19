@@ -1,0 +1,9 @@
+```json
+{
+  "finding_id": "ce9cfb3e94276a19",
+  "classification": "resolvable",
+  "authority_locus": "ADR-008-run-025-operator-rulings Ruling D: relabel \u00a72.2 'Built' to 'form built (DDR-004); constants contested/unvalidated (n=0)'",
+  "rationale": "Ruling D fixes the exact relabel and its rationale; the fix is determined, no choice remains.",
+  "confidence": "high"
+}
+```

@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "3921aaa2622d50ff",
+  "reason": "The cited authority (RBT-59 Item 2 frame: invariant = general accountability, un-promotion a sub-case) establishes that the broad framing is primary, but it does not uniquely determine how to conform the Description/§1-closing tension — whether to delete the un-promotion clause, subordinate it, or reword it. Multiple conforming edits exist, and choosing among them (and whether the co-emphasis is even a defect the authority forbids rather than a defensible dual mention) is an unratified authorial choice.",
+  "confidence": "high"
+}

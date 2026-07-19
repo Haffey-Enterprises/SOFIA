@@ -1,0 +1,152 @@
+{
+  "files": [
+    {
+      "logical_id": "ADR-001",
+      "category": "authorities",
+      "origin": {
+        "source": "sofia-repo",
+        "path": "docs/adr/ADR-001-reasoning-architecture.md"
+      },
+      "retrieved": "2026-07-17",
+      "sha256": "ecbea69ce4396ce7edc5f5196c794790edb3ead32b2c999ec5506616aca102dd"
+    },
+    {
+      "logical_id": "ADR-002",
+      "category": "authorities",
+      "origin": {
+        "source": "sofia-repo",
+        "path": "docs/adr/ADR-002-graph-system-of-record.md"
+      },
+      "retrieved": "2026-07-17",
+      "sha256": "22c9e0b09b2d67555dc1f649c09ba9f5ef3d5a273445d9dc4497805a493b8de6"
+    },
+    {
+      "logical_id": "DDR-001",
+      "category": "authorities",
+      "origin": {
+        "source": "sofia-repo",
+        "path": "docs/ddr/DDR-001-data-architecture.md"
+      },
+      "retrieved": "2026-07-17",
+      "sha256": "814eda5237623b379b5ae40a4eaf58aea7d687d7719f2a107112aba927119545"
+    },
+    {
+      "logical_id": "DDR-002",
+      "category": "authorities",
+      "origin": {
+        "source": "sofia-repo",
+        "path": "docs/ddr/DDR-002-graph-schema.md"
+      },
+      "retrieved": "2026-07-17",
+      "sha256": "2fdd403b6b5ee0477ffa2f9ab8cc7f4ef43601e413c38ed08202e9e74deaa32e"
+    },
+    {
+      "logical_id": "adr-template",
+      "category": "authorities",
+      "origin": {
+        "source": "bedrock",
+        "path": "plugins/bedrock/skills/author-decision-record/templates/adr-template.md"
+      },
+      "retrieved": "2026-07-17",
+      "sha256": "1540825bc9fe86c9c07b647e37b44446d8f5997966110d046c6182ae3d5cb607",
+      "verified_against": {
+        "path": "plugins/bedrock/skills/author-decision-record/templates/adr-template.md",
+        "sha256": "1540825bc9fe86c9c07b647e37b44446d8f5997966110d046c6182ae3d5cb607",
+        "source": "installed-cache",
+        "verified_at": "2026-07-17"
+      }
+    },
+    {
+      "logical_id": "author-decision-record-SKILL",
+      "category": "authorities",
+      "origin": {
+        "source": "bedrock",
+        "path": "plugins/bedrock/skills/author-decision-record/SKILL.md"
+      },
+      "retrieved": "2026-07-17",
+      "sha256": "d3fb4499b8d3ff899ae3f822e8873300c1f5330cc9ee55f193fc4f9eaf9da966",
+      "verified_against": {
+        "path": "plugins/bedrock/skills/author-decision-record/SKILL.md",
+        "sha256": "d3fb4499b8d3ff899ae3f822e8873300c1f5330cc9ee55f193fc4f9eaf9da966",
+        "source": "installed-cache",
+        "verified_at": "2026-07-17"
+      }
+    },
+    {
+      "logical_id": "triage-001-charter",
+      "category": "design-intent",
+      "origin": {
+        "source": "sofia-repo",
+        "path": "agent-loop/triage/triage-001-distilled-set/record.md"
+      },
+      "retrieved": "2026-07-17",
+      "sha256": "ed7c0cf534ae409109a2958fdbc94eda93a8c9625b16d088fff3d06a9bdcd226"
+    },
+    {
+      "logical_id": "sofia-vision",
+      "category": "design-intent",
+      "origin": {
+        "source": "notion",
+        "page_title": "SOFIA",
+        "page_id": "370caeea-1325-8069-893f-c829d0f01551",
+        "url": "https://app.notion.com/p/370caeea13258069893fc829d0f01551",
+        "content_as_of": "2026-07-03T21:32:38Z",
+        "scope": "vision block only (above the Roadmap divider)",
+        "snapshotted_from": "agent-loop/runs/run-012-sdd-001/substrate/design-intent/sofia-vision.md",
+        "note": "Current ratified vision (b499614d\u2026, runs 008-012). Runs 004-007 carried a superseded copy (0cd7fd84\u2026) \u2014 excluded to avoid drift."
+      },
+      "retrieved": "2026-07-17",
+      "sha256": "b499614d51fc30aba7d6f7d264b49dfe612c0ee67df82f2bcea87c08b5bf05bc"
+    },
+    {
+      "logical_id": "DDR-004",
+      "category": "authorities",
+      "origin": {
+        "source": "sofia-repo",
+        "path": "docs/ddr/DDR-004-inherited-confidence-derivation.md"
+      },
+      "retrieved": "2026-07-17",
+      "sha256": "a7fb9540378c460988f3ffec2cffc6321e00c23b5fc06f3de1191bce5bff3e2f"
+    },
+    {
+      "logical_id": "SDD-001",
+      "category": "authorities",
+      "origin": {
+        "source": "sofia-repo",
+        "path": "docs/sdd/SDD-001-knowledge-service.md"
+      },
+      "retrieved": "2026-07-17",
+      "sha256": "30cc3a8e6cc671ccebb19c45cb1e5baac81ac80018e1ba63b64145fbe41a1a7e"
+    },
+    {
+      "logical_id": "RBT-59-ADR-008-deliberation-record",
+      "category": "design-intent",
+      "origin": {
+        "source": "sandbox",
+        "path": "design-intent/RBT-59-ADR-008-deliberation-record.md"
+      },
+      "retrieved": "2026-07-17",
+      "sha256": "75580db60e21899f811e4fa8d7b78a78ca5a2a0950d3fce5b26ce8f1208265fd"
+    },
+    {
+      "logical_id": "R30-reboot-decision-ledger",
+      "category": "design-intent",
+      "origin": {
+        "source": "sandbox",
+        "path": "design-intent/R30-reboot-decision-ledger.md"
+      },
+      "retrieved": "2026-07-17",
+      "sha256": "882349310f3272045b779fcde9bedac6909dc232450eee2d25d4bd539be72921"
+    },
+    {
+      "logical_id": "ADR-008-run-025-operator-rulings",
+      "category": "design-intent",
+      "origin": {
+        "source": "sandbox",
+        "path": "design-intent/ADR-008-run-025-operator-rulings.md"
+      },
+      "retrieved": "2026-07-17",
+      "sha256": "35de440540c0fd4f4974488446198670a771c3ba1d05928aeb4a5a027f58d51b"
+    }
+  ]
+}

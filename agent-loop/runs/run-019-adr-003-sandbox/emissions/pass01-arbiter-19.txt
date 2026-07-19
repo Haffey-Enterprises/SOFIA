@@ -1,0 +1,7 @@
+{
+  "finding_id": "0f169c7fdb9ce193",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "ADR-003 is not in the ratified authority set and its actual §7 text cannot be verified; more fundamentally, resolving the reliance-direction between a governing ADR and a forthcoming DDR-003 requires an authorship choice (invert the citation to point-only, restate the reliance in the tense the facts support, or defer the ADR) that no ratified authority disambiguates — the triage T-05 material establishes DDR-003 is unauthored and downstream but does not dictate how a PROPOSED ADR-003 should phrase its dependency.",
+  "confidence": "high"
+}

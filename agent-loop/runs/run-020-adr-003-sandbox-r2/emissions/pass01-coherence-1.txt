@@ -1,0 +1,72 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.1 Per-source-class calibration, Promotion bullet",
+    "claim": "The Promotion bullet states the existing EA gate was 'committed at ADR-001 §2.6', but ADR-001's EA-gated promotion mechanism is committed at §2.5 (Encoding-density growth mechanism); ADR-001 has no §2.6. The same ADR-003 cites the promotion mechanism as ADR-001 §2.5 in §1 Context, §2.3, and §7 Cross-References, so §2.1 internally contradicts the rest of the record on the section it points to.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.1 ('the existing EA gate committed at ADR-001 §2.6') in conflict with ADR-003 §1/§2.3/§7 ('ADR-001 §2.5') and ADR-001 §2.5"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§7 Cross-References, first bullet",
+    "claim": "§7 cites 'ADR-002 §2.6 (write authority)' but §2.4 The checkpoint executor asserts 'the graph gateway is the authoring authority for each checkpoint approval.' ADR-002 §2.6's general principle states the gateway 'is the sole executor and enforcement boundary of all graph writes; it is never itself the authoring authority,' and for EA-gated materializations the authoring authority is the approving decision. ADR-003 §2.4 assigns to the gateway exactly the authoring-authority role ADR-002 §2.6 forbids it.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-002 §2.6 (General principle — author/executor/authorizer: the sole-owner gateway 'is never itself the authoring authority')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.5 Distillation entry",
+    "claim": "§2.5 asserts a distillation write 'produces an ObservedPattern in the Operational plane carrying a flat_base confidence.' DDR-002 §2.3 declares the Operational plane confidence-derivation basis as native_confidence (the plane's authority measure is the node's own confidence / lesson reliability), not flat_base. The owning schema definition does not supply the flat_base property ADR-003 asserts of ObservedPattern.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §2.3 (Operational plane; 'Confidence-derivation basis: native_confidence (basis 1), plane-level')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.3 Un-promotion authority",
+    "claim": "§2.3 states the un-promotion mechanism is 'an EA-gated reversing CandidatePromotion whose approving PromotionDecision carries origin_mechanism: ingested.' Per DDR-002 §2.4, a PromotionDecision is a SOFIA-issued feedback-loop EA approval and carries origin_mechanism: authored (with no source_record_ref); origin_mechanism: ingested is the mirrored-external GateDecision case. ADR-003 assigns the retraction's approving decision a provenance value the owning schema does not supply for PromotionDecision.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §2.4 ('(:Governance:Decision:PromotionDecision) … origin_mechanism: authored … therefore no source_record_ref')"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-003"],
+    "locus": "§7 Cross-References / §1 Context — DDR-003 status",
+    "claim": "§1 and §7 describe DDR-003 as 'forthcoming, blocked on this ADR' and blocked on its promotion-gate criteria. The substrate consistently marks DDR-003 as 'forthcoming, unauthored' (DDR-001 Cross-References; DDR-002 Cross-References); ADR-003 does not carry the 'unauthored' marker its own set uses for the same referent, a drift in the shared status vocabulary for DDR-003.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §1/§7 ('DDR-003 forthcoming, blocked on this ADR') vs DDR-001/DDR-002 Cross-References ('DDR-003 — forthcoming, unauthored')"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-003"],
+    "locus": "§2.3 / §1 Context — un-promotion upstream-authority routing",
+    "claim": "Checked ADR-003's claim to be the upstream authority for un-promotion against the routing it inherits. DDR-002 §2.4/§5 and the triage-001 charter (Appendix A, T-05 Leg 4) route un-promotion's upstream authority to the forthcoming KG-entry-governance ADR precisely because ADR-001 §2.5 authorizes promotion only. ADR-003 §2.3 supplies exactly that authority and correctly scopes ADR-001 §2.5 as promotion-only. The routing target and the record's claimed role are consistent; the attack that ADR-003 usurps or duplicates an already-owned authority failed.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-002 §2.4/§5 (retraction upstream authority → KG-entry-governance ADR) and triage-001 Appendix A / T-05 Leg 4, aligned with ADR-003 §2.3"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-003"],
+    "locus": "§2.2 Environment plane / §7 Named follow-up",
+    "claim": "Checked whether ADR-003 over-claims by deciding the Environment-plane checkpoint posture. §2.2 explicitly defers it to a named follow-up pending the volume/bottleneck constraint, matching the KG-entry-governance charter's stated open question (triage-001 Appendix A item 5: Environment plane posture, per-write review vs confidence-weighting, is an open question the ADR must rule). The prose claims a deferral, not a decision, and the substrate confirms the deferral is genuinely open — narrative and substrate agree.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "triage-001 charter Appendix A item 5 (Environment plane posture is an open question) matching ADR-003 §2.2's explicit deferral"
+    }
+  }
+]

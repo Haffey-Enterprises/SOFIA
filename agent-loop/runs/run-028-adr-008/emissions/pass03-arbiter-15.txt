@@ -1,0 +1,1 @@
+{"finding_id":"adf251cd6287f191","classification":"decision-bearing","authority_locus":null,"rationale":"Ruling D form-qualified only the Environment row; whether the Promotion row's 'Built' needs an equivalent n=0 qualification is a labeling choice no operator ruling or authority dictates.","confidence":"medium"}

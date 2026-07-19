@@ -1,0 +1,7 @@
+{
+  "finding_id": "91a4383704344201",
+  "classification": "resolvable",
+  "authority_locus": "ADR-001 §2.5 (Encoding-density growth mechanism — EA-gated promotion); ADR-001 §2 subsections run §2.1–§2.5, no §2.6 exists",
+  "rationale": "The correct locus is fixed by the ratified authority itself: ADR-001's EA-gated promotion mechanism lives at §2.5 (verifiable in the fetched ADR-001 text), ADR-001 has no §2.6, and the record's own §7 cross-reference already cites §2.5 — so the fix is a determined section-cite correction with no choice among options.",
+  "confidence": "high"
+}

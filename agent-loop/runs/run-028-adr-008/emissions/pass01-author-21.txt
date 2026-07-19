@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "bfe39d2897fef552",
+  "reason": "The body-integrity rule requires forward references to unauthored records to be subject-named only, but conforming to it requires stripping the concrete identifiers from numerous scattered loci throughout the document — the §2.2 table 'realization routes to' cells, five §2 body paragraphs, §2.6, §5.2, §5.3, and both §7 cross-reference bullets — and rewriting each with subject-named phrasing. That is not one minimal edit scoped to a single named locus; each rewrite involves author choices (what subject-name to use, how to phrase 'forthcoming X'), and the rule does not uniquely determine those phrasings. The finding's locus names only the two §7 bullets, but the concrete identifiers pervade the body, so a locus-scoped edit would not conform the document and a document-wide conforming rewrite exceeds one minimal edit and requires unratified phrasing choices.",
+  "confidence": "medium"
+}

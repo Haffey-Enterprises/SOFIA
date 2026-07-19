@@ -1,0 +1,7 @@
+{
+  "finding_id": "f4d89405622870b6",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The charter (Appendix A items 3-5) states the checkpoint must be calibrated per source class and must satisfy the R30 bottleneck constraint (Operational must not become unwritable), but explicitly leaves the calibration mechanism open ('the calibration must answer this without abandoning the checkpoint'; the Environment/Operational per-write-vs-confidence-weighting posture is named as an 'open question the ADR must rule'). No ratified authority determines how a substantive-review checkpoint reconciles with the bottleneck constraint against real distillation volume; resolving this requires the very calibration decision the substrate defers.",
+  "confidence": "high"
+}

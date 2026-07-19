@@ -1,0 +1,92 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.5 Distillation entry today",
+    "claim": "§2.5 asserts distillation writes are 'already EA-gated today via the feedback loop' and that this ADR 'formalizes the existing gate rather than introducing a new one.' This is claimed as decided fact, but the ratified substrate it depends on states the opposite: DDR-002 §2.3 leaves the distillation write's checkpoint posture 'explicitly un-decided,' routed to this very ADR, and DDR-001 Decision.5's EA-gate is scoped only to ADR-001 §2.5's object (SOFIA's own reasoning entering encoded knowledge), not to distillation writes into the Operational plane. The prose claims an existing gate the substrate does not support.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.5 asserts distillation 'already EA-gated today' vs DDR-002 §2.3 'checkpoint posture explicitly un-decided, routed to KG-entry-governance ADR' and DDR-001 Decision.5 (EA-gate scoped to SOFIA's own reasoning, not distillation writes)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.1 vs §2.5 (distillation checkpoint content)",
+    "claim": "The record's own decision content is internally inconsistent about what the distillation checkpoint is. §2.1 rules operational distillation gets 'a substantive review of the distilled judgment before entry' — a newly-decided review mechanism — while §2.5 rules the same distillation path is 'already EA-gated today' and this ADR 'formalizes the existing gate rather than introducing a new one.' A substantive pre-entry review and an already-existing formalized EA gate are two different decisions; the title and summary claim a single calibrated checkpoint decision, but the body decides the distillation path twice, incompatibly.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.1 (distillation → 'substantive review ... before entry') vs §2.5 (distillation 'already EA-gated today ... formalizes the existing gate rather than introducing a new one')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.3 Un-promotion authority",
+    "claim": "§2.3 decides that un-promotion's upstream authority 'is ADR-001 §2.5, which governs the promotion mechanism and therefore its reversal.' This directly contradicts the substrate this ADR names as its forcing function: DDR-002 §2.4 states 'ADR-001 §2.5 authorizes promotion only and does not stretch to un-promotion,' and DDR-002 §2.4 / §5 route un-promotion's upstream authority to this KG-entry-governance ADR precisely because §2.5 does not cover it. The record asserts §2.5 as the authority it was routed here to supply, then claims §2.5 already provides it.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.3 ('upstream authority is ADR-001 §2.5 ... therefore its reversal') vs DDR-002 §2.4 ('ADR-001 §2.5 authorizes promotion only and does not stretch to un-promotion; upstream authority for un-promotion routes to the forthcoming KG-entry-governance ADR')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.4 The checkpoint executor",
+    "claim": "§2.4 decides the graph gateway 'both decides and executes the admission' and is 'the authoring authority for each checkpoint approval.' This is a decision the title/summary ('a human-accountable checkpoint') never surfaces and that contradicts the ratified write-authority principle: ADR-002 §2.6 rules the sole-owner gateway 'is the sole executor and enforcement boundary ... it is never itself the authoring authority,' and for gated materializations 'the authoring authority is the approving decision.' Making the gateway the deciding/authoring authority for a human-accountable checkpoint is a smuggled decision that inverts the substrate's author/executor separation.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.4 ('graph gateway is the authoring authority ... both decides and executes') vs ADR-002 §2.6 ('the sole-owner gateway is the sole executor ... never itself the authoring authority; authoring authority is the approving decision')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "Title / Status / §2.2 Environment plane",
+    "claim": "The title claims the ADR decides that 'a human-accountable checkpoint governs mutation of enterprise ground truth' and §2 opens with 'Every write to the knowledge graph passes a human-accountable checkpoint before it takes effect.' But §2.2 defers the Environment plane's checkpoint posture entirely to a follow-up. Since Environment-plane facts are a KG write path, the universal 'every write' claim in the title and decision statement overstates what the body actually decides — the record does not decide what it claims to decide for at least one named entry path.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 title + §2 ('Every write to the knowledge graph passes a human-accountable checkpoint') vs §2.2 ('checkpoint posture for the Environment plane ... is deferred to a named follow-up ... this ADR does not rule it here')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§7 Cross-References — DDR-003 §4",
+    "claim": "§1 and §5.1 state that DDR-003 is blocked on this ADR and 'gains the promotion-gate authority it is blocked on' — i.e. this ADR is upstream of DDR-003. Yet §7 lists 'DDR-003 §4 — defines the promotion-gate criteria this ADR relies on for the promotion-path checkpoint,' making this ADR depend on DDR-003. This is a circular/contradicted dependency declaration: the record cannot both supply DDR-003's blocking authority and rely on DDR-003 §4 for its own promotion-path checkpoint. The dependency this decision rests on is mis-declared.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §1/§5.1 ('DDR-003 is blocked on this ADR ... gains the promotion-gate authority it is blocked on') vs §7 ('DDR-003 §4 — defines the promotion-gate criteria this ADR relies on')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§6 Compliance",
+    "claim": "The ADR-template requires that when a compliance mechanism is not built, the record point at a tracking item ('tracked at {{ticket}}'). §6 states 'Compliance is currently aspirational, tracked at the KG-entry-governance implementation ticket' — a subject-named placeholder, not a resolvable tracking reference. As a consequence, the enforceability the decision claims ('conformance is checked at design-review time against this ADR') has no declared, resolvable home; the consequence/side-effect of the aspirational-compliance status is under-declared.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "adr-template §6 Compliance ('point at a tracking item ... tracked at {{ticket}}') vs ADR-003 §6 ('tracked at the KG-entry-governance implementation ticket')"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-003"],
+    "locus": "§2.3 Un-promotion authority — DDR-002 citation",
+    "claim": "§2.3 cites 'DDR-002 §5, §7 #21' as the retraction shape and §7 cites 'DDR-002 §2.3 ... §2.4 / §5 / §7 #21 (retraction shape and un-promotion routing).' These section citations are load-bearing dependency pointers whose correctness the record asserts but does not evidence; §2.3's stated authority (ADR-001 §2.5) is separately contradicted by those same DDR-002 loci (see the un-promotion authority finding), leaving the citation cluster self-undermining rather than substantiating.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.3/§7 citations to DDR-002 §5/§7 #21 vs DDR-002 §2.4 routing of un-promotion authority away from ADR-001 §2.5 to this ADR"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-003"],
+    "locus": "§2.2 Environment plane deferral scope",
+    "claim": "I attacked the Environment-plane deferral as a possible smuggled or under-declared decision — checking whether §2.2 quietly rules the Environment posture while claiming to defer. It holds: §2.2 explicitly names the deferral, states the constraint driving it (volume/bottleneck), routes it to a named follow-up (§7), and §5.3 surfaces the throughput-bottleneck risk with a revisit signal. The deferral is a declared non-decision, consistent with the risk/consequence disclosures, and does not decide more than it claims for that plane.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "Triage-001 Appendix A item 5 (Environment plane posture — 'per-write review vs confidence-weighting; volume/bottleneck is a real design constraint' — the open question the ADR must rule, matched by ADR-003 §2.2 deferral + §5.3 risk)"
+    }
+  }
+]

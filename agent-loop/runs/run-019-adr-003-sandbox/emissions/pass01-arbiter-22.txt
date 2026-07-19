@@ -1,0 +1,7 @@
+{
+  "finding_id": "5e67368e9a6f3ef4",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding is an internal contradiction within a single unratified document (ADR-003, still being authored) about whether the distillation checkpoint exists today, is newly ruled here, or already exists via the feedback loop. Resolving it requires deciding which factual/normative account is correct \u2014 a substantive authoring choice about the distillation-write checkpoint posture, which upstream authority (DDR-002 \u00a72.3, ADR-001 \u00a72.5) leaves 'explicitly un-decided' and routes to this very ADR. No ratified authority disambiguates the three conflicting claims.",
+  "confidence": "high"
+}

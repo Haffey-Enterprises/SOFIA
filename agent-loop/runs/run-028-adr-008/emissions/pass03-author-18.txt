@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "17703eb8eee86411",
+  "reason": "The named authority establishes that revalidation cadence/trigger routes to DDR-003 (which §2.4 already states), but it does not determine how §2.6's routing enumeration or §2.2's Operational row should be conformed to carry that route; whether to add the item to §2.6's list, to §2.2's realization column, or both, and in what wording, is an unratified authorial choice among conforming options.",
+  "confidence": "medium"
+}

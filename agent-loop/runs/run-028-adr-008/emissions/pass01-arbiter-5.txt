@@ -1,0 +1,7 @@
+{
+  "finding_id": "d503dc6187fdd771",
+  "classification": "resolvable",
+  "authority_locus": "ADR-008-run-025-operator-rulings Ruling E (§2.2/§5.2) + author-decision-record SKILL 'earned tense' body-integrity rule",
+  "rationale": "Operator Ruling E directly dictates the fix: state the candidate-ObservedPattern shape as forthcoming/additive, not a present schema constraint; no new choice remains.",
+  "confidence": "high"
+}

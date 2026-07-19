@@ -1,0 +1,7 @@
+{
+  "finding_id": "43633b068a0089c7",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "Resolving the contradiction requires either ruling the Environment-plane checkpoint posture (per-write review vs. confidence-weighting) or re-scoping the universal Decision/§5.2 claim to exempt it — and the KG-entry-governance charter (Appendix A item 5) explicitly names the Environment plane posture as an open question the ADR must rule, with a real volume/bottleneck design constraint and no authority disambiguating the two conforming options.",
+  "confidence": "high"
+}

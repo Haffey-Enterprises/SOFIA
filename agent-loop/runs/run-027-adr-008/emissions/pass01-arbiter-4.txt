@@ -1,0 +1,7 @@
+{
+  "finding_id": "5cf7a34c1e758df3",
+  "classification": "resolvable",
+  "authority_locus": "ADR-008-run-025-operator-rulings, Ruling E (candidate-ObservedPattern shape forthcoming/additive) + author-decision-record SKILL body-integrity earned-tense rule",
+  "rationale": "Ruling E dictates the fix: state the candidate-ObservedPattern shape as forthcoming/additive, not a present schema constraint; no new choice.",
+  "confidence": "high"
+}

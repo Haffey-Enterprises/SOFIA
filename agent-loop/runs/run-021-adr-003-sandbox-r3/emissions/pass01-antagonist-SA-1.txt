@@ -1,0 +1,82 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.3 Un-promotion authority — retraction shape citation",
+    "claim": "§2.3 states the retraction mechanism is 'an EA-gated reversing CandidatePromotion whose approving PromotionDecision carries origin_mechanism: ingested'. DDR-002 §2.4 (PromotionDecision) fixes PromotionDecision as origin_mechanism: authored (SOFIA is the issuing authority, human EA), explicitly not ingested, and the triage-001 T-22 ruling ratifies authored. The ADR attributes origin_mechanism to the approving PromotionDecision as 'ingested', which contradicts the cited canonical schema at DDR-002 §2.4.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §2.4 (:Governance:Decision:PromotionDecision) — origin_mechanism: authored, no source_record_ref"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.4 The checkpoint executor — graph gateway as authoring authority",
+    "claim": "§2.4 states 'the graph gateway is the authoring authority for each checkpoint approval: the approval is recorded as the gateway's own act at the write boundary.' ADR-002 §2.6 fixes the general write-authority principle that the sole-owner gateway is the sole executor and enforcement boundary of all graph writes and is never itself the authoring authority; for EA-gated materializations the authoring authority is the approving decision. Naming the gateway the authoring authority for checkpoint approvals directly deviates from ADR-002 §2.6.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-002 §2.6 — 'The sole-owner gateway (§2.5) is the sole executor and enforcement boundary of all graph writes; it is never itself the authoring authority.'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§6 Compliance / §2 Decision — no conformance check for the newly-designed distillation checkpoint",
+    "claim": "The ADR designs a new substantive-review checkpoint on distillation entry (§2.1, §2.5) and states it is not a pre-existing gate. Both ADR-001 §6 and ADR-002 §6 require every new ADR/DDR/design pass to be verified by named conformance checks at three-hat review, yet §6 states compliance is 'aspirational, tracked at the KG-entry-governance implementation ticket' and supplies no per-check conformance surface for the substantive-review, verification-weight, or un-promotion-accountability checkpoints the Decision introduces. The ADR claims conformance is 'checked at design-review time against this ADR' but enumerates no checkable criteria to check against.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-002 §6 / ADR-001 §6 — mandatory conformance checks verified at three-hat review for every new DDR/design pass"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.5 Distillation entry — R30 bottleneck-constraint claim substantiation",
+    "claim": "§2.5 asserts the checkpoint 'satisfies the R30 bottleneck constraint (Operational stays writable)' by reviewing the small set of distinct ObservedPatterns rather than raw writes. R30 is cited only as 'Deliberation substrate: triage-001 record Appendix A, R30' (§7); the ADR does not reproduce or state the R30 constraint it claims to satisfy, so the satisfaction claim is unsubstantiated within the record — a reader cannot verify that reviewing distinct durable lessons discharges the specific declined-option bottleneck R30 names.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "adr-template §6 Compliance — 'don't claim a mitigation that doesn't exist' / substantiation of a satisfied-gate claim within the record"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§1 Context / §7 Cross-References — DDR-002 §5 and §7 #21 loci resolution",
+    "claim": "§2.3 and §7 cite 'DDR-002 §5, §7 #21' for the retraction shape and 'DDR-002 §7 #25' is implicit in the retraction scoping. DDR-002 §7 #21 (retraction-gated) requires the reversing CandidatePromotion to trace to an approving PromotionDecision with outcome in {approved, approved_conditional} — it does not carry the origin_mechanism attribution the ADR §2.3 ascribes to the approving decision. The cited locus therefore does not support the specific claim made at §2.3 about the approving PromotionDecision's origin_mechanism.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.3 vs DDR-002 §7 #21 — cited locus does not substantiate the origin_mechanism attribution"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-003"],
+    "locus": "§1 Context — DDR-003 blocked-on claim resolution",
+    "claim": "§1 states 'DDR-003 (Feedback Loop Governance) is blocked on this ADR for its promotion-gate criteria.' DDR-003 is forthcoming/unauthored (per DDR-001 and DDR-002 Cross-References); the named artifact does not exist in the set or substrate, so the cross-reference resolves only to a forthcoming marker, not a verifiable dependency asserting the block.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §1 vs DDR-002 Cross-References — DDR-003 forthcoming/unauthored"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-003"],
+    "locus": "§2.3 / §5.1 — un-promotion routing against ADR-001 §2.5 scope",
+    "claim": "I attacked the claim that this ADR supplies the upstream authority for un-promotion that ADR-001 §2.5 does not provide. ADR-001 §2.5 does commit only the promotion mechanism (EA-gated consolidation into encoded knowledge) and does not extend to retraction; DDR-002 §2.4 and triage-001 T-05 Leg 4 independently route un-promotion's upstream authority to this forthcoming ADR. The claim that ADR-001 §2.5 does not stretch to un-promotion, and that this ADR is the routed home, held against the cited authorities.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-001 §2.5 (promotion only, EA-gated) + DDR-002 §2.4 retraction upstream-authority routing"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-003"],
+    "locus": "§2.2 Environment plane deferral",
+    "claim": "I attacked the Environment-plane deferral as a potential silent gap. The deferral is scoped, named to a follow-up (§7 tracking ticket), tied to the specific volume/bottleneck constraint, and explicitly states the ADR does not rule the posture here — consistent with the adr-template discipline of naming deferred scope rather than fabricating a ruling. The deferral held as an honest scope boundary rather than a coverage claim.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "adr-template §5.2/§7 — deferred scope named with tracking pointer, not asserted"
+    }
+  }
+]

@@ -1,0 +1,1 @@
+{"finding_id":"bdb95fe82ae1d147","classification":"resolvable","authority_locus":"Ruling F (RBT-59/ADR-008 operator rulings) + DDR-002 §7 #21 vs #15","rationale":"Finding confirms §2.3's qualification already conforms to the substrate and Ruling F; it validates rather than requires a choice, so any residual fix is dictated authority.","confidence":"high"}

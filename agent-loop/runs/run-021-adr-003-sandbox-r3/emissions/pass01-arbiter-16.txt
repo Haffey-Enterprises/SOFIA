@@ -1,0 +1,7 @@
+{
+  "finding_id": "5ef82b9d27271a17",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding alleges a mutual-blocking / timing posture between ADR-003 and an unauthored DDR-003 where ADR-003 both resolves DDR-003's block and depends on DDR-003 for the un-promotion remedy boundary. No ratified authority disambiguates the correct authoring sequence or resolves the circular dependency; the triage charter (Appendix C) states DDR-003 cites the KG-entry ADR as authority but does not settle how ADR-003 may defer load-bearing remedy-boundary content back to an unauthored downstream doc. Resolving this requires a sequencing/reversibility choice not yet made.",
+  "confidence": "high"
+}

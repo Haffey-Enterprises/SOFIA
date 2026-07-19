@@ -1,0 +1,7 @@
+{
+  "finding_id": "d3aaa46d9514dc77",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §2.4 (PromotionDecision: origin_mechanism: authored, approving Actor = human EA; no source_record_ref) and §1 provenance matrix (authored → primary, the SOFIA-recorded-human-decision case)",
+  "rationale": "The finding names an unsubstantiated 'ingested' provenance value ascribed to the approving PromotionDecision; the ratified schema fixes PromotionDecision as origin_mechanism: authored (DDR-002 §2.4), so the correction is determined by existing authority, and the citation-locus repair to the retraction shape's actual homes (§2.4/§5) is a fetch-verifiable pointer fix, not a new choice.",
+  "confidence": "high"
+}

@@ -1,0 +1,7 @@
+{
+  "finding_id": "745020870eec6e2b",
+  "classification": "resolvable",
+  "authority_locus": "RBT-59 deliberation record, Item 3 'Revalidation obligation' + Standing to-dos #2(c) ('revalidation cadence/trigger → DDR-003'), and ADR-008-run-025 Ruling E's routing pattern (candidate-shape → forthcoming governance design)",
+  "rationale": "The revalidation mechanism's route is already fixed by ratified intent: the obligation is committed at ADR altitude and its realization routes by subject-name to the forthcoming feedback-loop governance design; fix is enumerating the already-named route.",
+  "confidence": "high"
+}

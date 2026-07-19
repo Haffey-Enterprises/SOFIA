@@ -1,0 +1,7 @@
+{
+  "finding_id": "4afd9fed4f4ee4ff",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding targets ADR-003, a document not present in the ratified authority set or design intent supplied; the arbiter cannot fetch or verify ADR-003's actual §2.1/§2.6/§2.5 citations, so cannot name the authority + locus that determines the fix. Compounding this, the finding alleges a genuine internal citation conflict (§2.1 cites 'ADR-001 §2.6' for promotion while §7 cites 'ADR-001 §2.5'), and resolving which is the true promotion-mechanism authority requires confirming ADR-001's actual promotion locus and deciding the corrected citation — a determination the supplied materials do not settle for an unfetched document.",
+  "confidence": "high"
+}

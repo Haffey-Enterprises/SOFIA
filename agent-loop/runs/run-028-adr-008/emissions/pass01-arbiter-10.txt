@@ -1,0 +1,7 @@
+{
+  "finding_id": "dac3257bbb284596",
+  "classification": "resolvable",
+  "authority_locus": "ADR-008-run-025-operator-rulings Ruling F (finding ef3f60e2): qualify §2.3 'same control' to the §5.3 concession; authority principle homed, governing-verdict detection analogue is the named DDR-002 §7 / DDR-003 follow-up",
+  "rationale": "Ruling F directly dictates the fix for this §2.3 same-control-vs-§5.3-concession contradiction, converting it to resolvable.",
+  "confidence": "high"
+}

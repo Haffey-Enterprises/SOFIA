@@ -1,0 +1,7 @@
+{
+  "finding_id": "057cbcfd64cd5aa0",
+  "classification": "resolvable",
+  "authority_locus": "RBT-59 deliberation record Item 2 (frame: invariant = human accountability over ground-truth mutation, calibrated per source class) + Item 4 (un-promotion is the withdrawal-leg sub-case); author-decision-record body-integrity 'point-not-mirror'/summary-alignment discipline",
+  "rationale": "Ratified deliberation fixes the general four-class invariant as the decision and un-promotion as a sub-case; author aligns the summary surfaces to that settled frame — no new choice.",
+  "confidence": "high"
+}

@@ -1,0 +1,7 @@
+{
+  "finding_id": "0d43721c5682de2e",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §2.4 (PromotionDecision — `origin_mechanism: authored`, SOFIA-issued feedback-loop EA approval, therefore no `source_record_ref`); reinforced by DDR-002 §5 / §7 #21 (reversing CandidatePromotion goes through the same PromotionDecision gate as forward promotion)",
+  "rationale": "A ratified authority already fixes the value: PromotionDecision carries `origin_mechanism: authored`, and the retraction uses the same PromotionDecision gate, so ADR-003's `ingested` claim is determinedly contradicted and the fix (align to `authored`) is dictated by DDR-002 §2.4 with no open choice.",
+  "confidence": "high"
+}

@@ -1,0 +1,12 @@
+The finding's locus §2.2 Environment row already reads "capture-time-frozen aging of confidence (derived at capture, never recomputed at read)" — the table row is already conformed. The remaining "at retrieval" language named by the finding is in the §2.2 Environment prose bullet.
+
+{
+  "action": "edit",
+  "finding_id": "2b6ac1f55eab5573",
+  "target": "ADR-008",
+  "old_string": "Its control is a per-policy reliability weighting: the plane ages by construction (its aging confidence basis is fixed in the inherited-confidence derivation ruling), and it is never consumed as authoritative *selection* knowledge.",
+  "new_string": "Its control is a per-policy capture-time-frozen aging of confidence, derived at Evidence capture and never recomputed at read: the plane ages by construction (its aging confidence basis is fixed in the inherited-confidence derivation ruling), and it is never consumed as authoritative *selection* knowledge.",
+  "authority_conformed": "Ruling D + DDR-004 §1/§3 — 'derived at Evidence capture and frozen ... never recomputed at read'; drop reliability-weighting/retrieval framing, state capture-time-frozen aging",
+  "rationale": "Ruling D directs dropping the retrieval-time reliability-weighting framing and stating DDR-004's capture-time-frozen aging; the §2.2 prose bullet still carries the mis-located control.",
+  "confidence": "high"
+}

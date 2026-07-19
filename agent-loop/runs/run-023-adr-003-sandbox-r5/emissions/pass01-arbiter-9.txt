@@ -1,0 +1,7 @@
+{
+  "finding_id": "1b5290ae283c106e",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding correctly identifies that ADR-003 §6 asserts a harness-mechanization that no cited authority carries: DDR-002 §7's 28-check set contains no distillation-checkpoint check, and DDR-002 §2.3 leaves the distillation-write checkpoint posture un-decided. Removing a false substantiation claim is not enough — ADR-003 must state how the distillation checkpoint is actually enforced (or that enforcement is forthcoming/aspirational), and no ratified authority determines which: the KG-entry rulings ratify the checkpoint's scope (distinct durable lesson) but are silent on its mechanization, DDR-002 commits none, and choosing between 'aspirational/forthcoming', 'new §7 check', or another mechanism is an unratified selection.",
+  "confidence": "high"
+}

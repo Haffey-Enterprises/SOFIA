@@ -1,0 +1,7 @@
+{
+  "finding_id": "9bd3a7e340d5445c",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "ADR-003 is not in the ratified authority set, so its correct dependency direction with DDR-003 (also unauthored/forthcoming per the corpus) is not fixed by any available authority; the finding exposes an unratified inversion between two claims within a document whose upstream authorities are silent on which way the DDR-003↔ADR-003 dependency runs. Resolving it requires choosing the intended direction, which no fetched authority disambiguates.",
+  "confidence": "medium"
+}

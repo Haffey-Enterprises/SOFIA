@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "92bdd933b7eb0f0f",
+  "reason": "The finding names three loci diverging in nouns ('weighting policy' §2.2 bullet, 'weighting parameters' §5.3, and the corrected 'aging' cell) but neither DDR-004 nor the cited coherence authority uniquely fixes which noun the record must standardize on, nor exactly which of two-plus phrasings each locus should adopt; conforming would require choosing the term and rewording multiple loci — an unratified choice across more than one edit site, outside a single minimal locus.",
+  "confidence": "high"
+}

@@ -1,0 +1,7 @@
+{
+  "finding_id": "8758009bdb7ddcd3",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §2.3 (Operational plane) — 'Confidence-derivation basis: native_confidence (basis 1), plane-level', the canonical owner of the ObservedPattern confidence-derivation basis per DDR-002 §2 preamble and Decision.11",
+  "rationale": "DDR-002 owns the ObservedPattern definition and unambiguously assigns native_confidence as its per-class basis; ADR-003's flat_base claim contradicts that owning authority, so the fix is determined — conform ADR-003 to the ratified basis. No new choice is introduced.",
+  "confidence": "high"
+}

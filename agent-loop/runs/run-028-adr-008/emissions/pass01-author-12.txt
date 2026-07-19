@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "816072aae85ce836",
+  "reason": "The §7 DDR-003 bullet is internally self-referential: it names 'DDR-003' precisely to commit that DDR-003's own definition of done owns resolving its pointer to this record's concrete identifier — and ADR-004 is likewise cited by number in the very next bullet. Stripping the number to subject-name-only would delete the referent of the sentence's own obligation clause and require rewriting it, which the cited forward-reference rule does not uniquely determine; the arbiter's authority does not resolve this tension between the rule and the bullet's self-referential content.",
+  "confidence": "medium"
+}

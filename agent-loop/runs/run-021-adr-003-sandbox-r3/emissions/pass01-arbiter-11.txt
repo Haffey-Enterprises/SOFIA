@@ -1,0 +1,9 @@
+Note: ADR-003 is not present in the fetched authority set — I cannot read its §2.3 or §7 text directly. But the classification question does not require it. The finding is a citation-substantiation defect: a §-cite (DDR-002 §7 #21) is claimed not to carry the entailment the citing text (ADR-003 §2.3) ascribes to it. The correct §-cite for a PromotionDecision's `origin_mechanism: authored` attribution is nameable in the fetched authorities.
+
+{
+  "finding_id": "aff07e08735faa87",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §2.4 — the `(:Governance:Decision:PromotionDecision)` schema, which fixes `origin_mechanism: authored` (human EA is the approving Actor; SOFIA is the issuing authority; no `source_record_ref`), re-grounded on the §1 provenance matrix's `authored → primary` SOFIA-recorded-human-decision case",
+  "rationale": "The finding asserts only that the cited locus (DDR-002 §7 #21) does not carry the origin_mechanism entailment; the correct locus that does carry it is a named, ratified authority (DDR-002 §2.4), so the fix is a determined citation repair (re-point the §-cite) introducing no new choice. Per the skill's 'section citations are facts — fetch-verify them' discipline, this is a pointer-off-substance-right correction, not a decision.",
+  "confidence": "high"
+}

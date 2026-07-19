@@ -1,0 +1,72 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References — DDR-001 entry / §2.2 table Environment row",
+    "claim": "ADR-008 §2.2 and §7 cite 'the inherited-confidence derivation ruling' by role only and attribute to it 'the Environment aging basis' and 'two-tier calibration governance' as realizing the per-policy weighting control, but the named canonical authority (DDR-004) fixes a confidence-*derivation* function that inherits Evidence.confidence from a cited node's authority class at capture; DDR-004 §4 explicitly assigns the Environment plane basis 3 (aging) as an Evidence-capture derivation, not a retrieval-time reliability-weighting policy over CMDB observations. The ADR claims a substantiating authority for its Environment control-type that the cited authority does not supply.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-004 §4 (per-class declared-basis totality; Environment DeployedService/ConfigurationItem = basis 3 aging, an Evidence-capture derivation) vs ADR-008 §2.2 Environment row 'Realization routes to: the inherited-confidence derivation ruling's aging basis' and §2.6 Environment '(its aging confidence basis is fixed in the inherited-confidence derivation ruling)'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 table 'Realization routes to' — Promotion row + §2.3",
+    "claim": "The Promotion row and §2.3 assert the built retraction shape (EA-gated reversing CandidatePromotion + RETRACTS edge) as the discharging instance of this ADR's un-promotion authority, but DDR-002 §7 #21's retraction gate traces to *an* approving PromotionDecision, not the *governing* one — a gap the substrate itself names (DDR-002 §2.4 'a standing detection analogue of #15 for executed retractions ... is not authored here'). §2.3 states 'The built retraction shape ... is the instance of this authority' without qualifying that the built instance does not yet detect a re-decided executed retraction, while §5.3 separately concedes exactly that gap — an internal tension between the unqualified §2.3 substantiation claim and the §5.3 risk admission.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.3 ('The built retraction shape ... is the instance of this authority') in tension with ADR-008 §5.3 ('the retraction invariant traces to an approving decision, not the governing one, so a re-decided executed retraction has no standing detection analogue yet')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Operational distillation row + §5.2 Constraints Imposed",
+    "claim": "The distillation control's realization is routed to 'the forthcoming feedback-loop governance design; the detection-promotion service design' and §5.2 asserts it is 'realized through a candidate-ObservedPattern shape excluded from ground-truth traversal until approved — a downstream governance design and an additive schema shape.' No such candidate-ObservedPattern shape exists in the ratified schema: DDR-002 §2.3 records the distillation-write checkpoint posture as 'explicitly un-decided' and defines no candidate/proposal class for ObservedPattern (the CandidatePromotion proposal class is promotion-boundary only, DDR-002 §5). The ADR names a specific realization mechanism as though it constrains an existing artifact, but the cited schema authority neither carries it nor commits to it.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §2.3 ('The distillation write's checkpoint posture is explicitly un-decided ... routed to the forthcoming KG-entry-governance ADR ... not asserted here') — no candidate-ObservedPattern proposal class defined"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§1 Context / §7 Cross-References DDR-003 entry",
+    "claim": "§1 states 'The forthcoming feedback-loop governance design is blocked on this record' and §7 identifies that design as DDR-003, but the ratified substrate (DDR-002 Cross-References boundary routing map, DDR-001 Decision.5) routes the distillation checkpoint posture and un-promotion upstream authority to a 'forthcoming KG-entry-governance ADR' — a distinct forthcoming artifact from DDR-003 (feedback-loop governance). ADR-008 claims to be the record those pointers await, yet the substrate's pointers name the KG-entry-governance ADR, not this record's self-identification as the un-promotion/entry authority, without establishing that ADR-008 *is* that named artifact. The cross-reference resolves only by assertion, not by the substrate's own naming.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §7 (DDR-002 '§2.3 ... checkpoint posture routed here', §2.4/§5 retraction authority 'routed here') vs DDR-002 Cross-References '→ KG-entry-governance ADR (forthcoming, unauthored)' and DDR-001 Decision.5 'routed to the forthcoming KG-entry-governance ADR'"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "§2.1 / cross-references to ADR-002 §2.6",
+    "claim": "§2.1 cites 'ADR-002 §2.6' for the sole-owner graph gateway as executor-never-author, but ADR-002 §2.5 is the sole-owner gateway (graph access authority) section and §2.6 is the write-authority (author/executor/authorizer) section. The claim conflates the two loci; the gateway-as-sole-executor property spans both §2.5 (gateway is the access boundary) and §2.6 (gateway is executor never author), and §2.1's parenthetical attributes the whole to §2.6 alone.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-002 §2.5 (sole-owner gateway / graph access authority) vs ADR-002 §2.6 (write authority — author/executor/authorizer); ADR-008 §2.1 cites '§2.6' for 'The sole-owner graph gateway is the executor of every mutation'"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.4 Provenance survives mutation + §2 altitude boundary",
+    "claim": "Attacked the provenance-survival commitment for an overreach into schema territory it does not own: §2.4 commits that a decision's traceable rationale survives the mutation of a consumed fact, and §5.3 explicitly and honestly bounds this — the frozen-provenance survival guarantee is promotion-scoped (DDR-002 §7 #20 ProvenanceSummary), a decision-consumed-but-unpromoted fact relies on bounded-retention RG Evidence and could age out — and routes the extension as a named DDR-002/DDR-003 follow-up rather than asserting coverage. The ADR commits the requirement at principle altitude without asserting a mechanism it lacks; the claim held against DDR-002 §7 #20's actual scope.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §7 #20 (at-promotion ProvenanceSummary materialization + completeness, promotion-kind scoped) — ADR-008 §2.4 commits the survival requirement, §5.3 correctly bounds it to promoted facts and names the gap"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2 Decision / §2.6 Governance boundary",
+    "claim": "Attacked the invariant-vs-policy altitude line for smuggling a decision the ADR disclaims: §2 states it fixes the invariant, accountability, and control-type per class and 'fixes no policy, threshold, cadence, or mechanism,' and §2.6 consistently routes the remedy boundary (supersede vs retract), thresholds, cadence, retention windows, and multi-condition semantics to the forthcoming feedback-loop governance design. Probed §2.2–§2.5 for a smuggled threshold or mechanism ruling; none found — each class fixes only control-*type* and accountability locus (per-write/per-policy), with mechanics consistently routed downstream. The boundary claim held.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §2.4 (remedy boundary is DDR-003 governance, 'not authored here') and DDR-003 boundary routing map — ADR-008 §2.6 routes the same boundary and policy set downstream without ruling it"
+    }
+  }
+]

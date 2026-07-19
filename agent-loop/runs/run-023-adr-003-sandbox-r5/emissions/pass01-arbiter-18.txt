@@ -1,0 +1,7 @@
+{
+  "finding_id": "2ca84a19d2e3a6a4",
+  "classification": "resolvable",
+  "authority_locus": "ADR-001 §2.5 (text: commits EA-gated promotion mechanism, silent on un-promotion) + author-decision-record SKILL, 'Body integrity' — status/claim discipline: assertions must be earned by the text they cite",
+  "rationale": "The fix is determined: ADR-001 §2.5's text authorizes promotion and is silent on un-promotion, and the authoring convention already requires a citation to claim only what the cited text carries; reframing 'authorizes promotion only' as an absence-of-authority is dictated by that discipline against the fetched §2.5 text, introducing no new choice.",
+  "confidence": "high"
+}

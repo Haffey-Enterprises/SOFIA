@@ -1,0 +1,92 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§7 Cross-References — DDR-003 §4",
+    "claim": "The record states 'DDR-003 §4 — defines the promotion-gate criteria this ADR relies on for the promotion-path checkpoint' and §1 states 'DDR-003 (Feedback Loop Governance) is blocked on this ADR.' These two statements make ADR-003 rely on DDR-003 §4 for its promotion-path checkpoint criteria while DDR-003 is simultaneously blocked on ADR-003 — a circular dependency for a load-bearing citation. Moreover DDR-003 is recorded across the substrate (DDR-001, DDR-002 Cross-References, triage-001) as 'forthcoming, unauthored'; the cited §4 does not exist in the artifact set, so the promotion-path checkpoint's stated authority does not resolve.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §7 (DDR-003 §4 cross-reference) + §1 (DDR-003 blocked on this ADR) in conflict; DDR-001 Cross-References marks DDR-003 forthcoming/unauthored"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.3 / §2.5 vs DDR-001 Decision.5 and ADR-001 §2.5",
+    "claim": "§2.3 asserts 'Its upstream authority is ADR-001 §2.5, which governs the promotion mechanism and therefore its reversal.' This directly contradicts the routed gap ADR-003 itself claims to close: DDR-001 Decision.5 and DDR-002 §2.4 state that ADR-001 §2.5 authorizes promotion only and does NOT stretch to un-promotion, which is precisely why un-promotion authority was routed to this ADR (§1 cites DDR-002 §2.4 for that routing). The record simultaneously claims §2.5 both does and does not extend to reversal.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-001 §2.5 (promotion mechanism, EA-gated); DDR-001 Decision.5 / DDR-002 §2.4 (ADR-001 §2.5 authorizes promotion only, does not stretch to un-promotion)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.5 Distillation entry today",
+    "claim": "§2.5 claims distillation writes are 'already EA-gated today via the feedback loop; this ADR formalizes the existing gate.' This is unsubstantiated and contradicts the ratified substrate: DDR-002 §2.3 states the distillation-write checkpoint posture is 'explicitly un-decided,' routed to this very ADR, and that Weakness/strength entry is EA-gated via the feedback loop while the distillation WRITE checkpoint is separate and undecided. DDR-001 Decision.5 scopes 'SOFIA does not self-modify' to SOFIA's own reasoning entering encoded knowledge, not to distillation writes. The record asserts an existing gate the cited authorities say does not exist.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §2.3 (distillation-write checkpoint posture explicitly un-decided, routed here); DDR-001 Decision.5 (self-modify scoped to encoded reasoning only)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.4 The checkpoint executor",
+    "claim": "§2.4 states 'the graph gateway is the authoring authority for each checkpoint approval... the gateway both decides and executes the admission.' This contradicts ADR-002 §2.6's ratified author/executor/authorizer separation, which states the sole-owner gateway 'is the sole executor and enforcement boundary of all graph writes; it is never itself the authoring authority,' and that for EA-gated materializations the authoring authority is the approving decision. Naming the gateway as authoring authority is exactly the assignment ADR-002 §2.6 and its §6 write-authorship check prohibit.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-002 §2.6 (general write-authority principle: gateway is sole executor, never authoring authority) + §6 check 7"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.5 vs §2.1 — distillation write origin classification",
+    "claim": "§2.5 characterizes distillation writes as origin_mechanism: derived / derivation_class: distilled into the Operational plane and calls them a formalized existing gate, while §2.1 assigns operational distillation a 'substantive review' checkpoint 'before entry.' Whether the checkpoint is on the derived ObservedPattern write itself, or on the EA-gated feedback-loop promotion of weakness/strength into the KG (DDR-002 §2.3 distinguishes these), is left internally ambiguous — §2.1 places a pre-entry substantive review that §2.5 then says already exists as the feedback-loop gate, conflating two distinct write boundaries the schema separates.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §2.3 (ObservedPattern derived-write vs EA-gated weakness/strength promotion are distinct boundaries); ADR-003 §2.1 vs §2.5 internal conflict"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-003"],
+    "locus": "Metadata / template conformance",
+    "claim": "The ADR uses the adr-template but §4 Alternatives Considered enumerates only two alternatives (A: no governance, B: uniform checkpoint), and Alternative A is characterized as 'obviously wrong... nobody would defend ungoverned writes' — the strawman shape the adr-template and author-decision-record skill explicitly warn against ('Describe each as its proponents would'; 'A strawman is worse than a gap'). Alternative A as written is not a real considered alternative.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "adr-template §4 ('Describe each as its proponents would, then give a specific rejection rationale'); author-decision-record SKILL deliberation gate ('A strawman is worse than a gap')"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-003"],
+    "locus": "§7 Cross-References — triage-001 Appendix A, R30",
+    "claim": "§7 cites 'Deliberation substrate: triage-001 record Appendix A (charter), R30.' Appendix A resolves (present in substrate). R30 is cited as bare deliberation substrate but is not present in the artifact set — triage-001 records R30 as recovered/supplied in-session by Tad and reachable only via request, never included. The cited locus does not resolve within the reviewable set.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §7 (R30 citation) unresolved against artifact set; triage-001 Appendix A item 10 (R30 full text is mandatory substrate 'to be supplied')"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-003"],
+    "locus": "§2.1 per-source-class calibration vs charter",
+    "claim": "I attacked the per-source-class calibration for conformance drift against the KG-entry-governance charter (triage-001 Appendix A item 3): the charter specifies authoritative-source ingestion → verification-weight checkpoint, operational distillation → substantive review (pollution the driving risk), promotion → existing EA gate as already-built instance. §2.1 reproduces all three calibrations faithfully and §2.2 correctly defers the Environment-plane posture (charter item 5) as a named follow-up rather than ruling it. The calibration conforms to its chartered scope.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "triage-001 Appendix A item 3 (per-source-class calibration intent) + item 5 (Environment plane open question to defer)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-003"],
+    "locus": "§2.3 retraction remedy vs DDR-002 §2.4",
+    "claim": "I attacked §2.3's ruling that 'retraction, not supersession, is the remedy for an incorrect promoted fact' as a possible overreach into schema territory. It held on conformance: the retraction SHAPE (reversing CandidatePromotion + RETRACTS edge, EA-gated) is DDR-002 §5/§7 #21 schema which §2.3 cites rather than re-authors, and DDR-002 §2.4 explicitly routes the supersession-vs-retraction remedy-boundary to DDR-003 governance/the KG-entry ADR — so ADR-003 ruling the remedy at platform-principle altitude is within its cited authority, not a schema re-opening.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §2.4 (remedy boundary supersession-vs-retraction routed to KG-entry-governance ADR / DDR-003); DDR-002 §5 / §7 #21 (retraction shape, cited not re-authored)"
+    }
+  }
+]

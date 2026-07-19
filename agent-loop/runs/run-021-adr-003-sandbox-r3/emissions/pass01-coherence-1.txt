@@ -1,0 +1,72 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.3 Un-promotion authority",
+    "claim": "§2.3 asserts the un-promotion mechanism is 'an EA-gated reversing CandidatePromotion whose approving PromotionDecision carries origin_mechanism: ingested'. DDR-002 §2.4, the owning definition of PromotionDecision, fixes PromotionDecision as origin_mechanism: authored (the approving Actor is a human EA; SOFIA is the issuing authority) and states 'therefore no source_record_ref'. The ADR asserts an origin_mechanism value the owning schema does not supply and directly contradicts.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.3 ('PromotionDecision carries origin_mechanism: ingested') in conflict with DDR-002 §2.4 PromotionDecision definition ('origin_mechanism: authored ... no source_record_ref')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.5 Distillation entry",
+    "claim": "§2.5 asserts 'A distillation write produces an ObservedPattern in the Operational plane carrying a flat_base confidence'. DDR-002 §2.3, the owning definition of (:Operational:ObservedPattern), declares its confidence-derivation basis as native_confidence (basis 1) — 'the plane's authority measure is the node's own confidence (lesson reliability)'. flat_base is the basis DDR-002 assigns to Catalog/Standards/Governance/Environment-identity, not to Operational ObservedPattern. The ADR asserts a confidence-basis the owning schema contradicts.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.5 ('ObservedPattern ... carrying a flat_base confidence') in conflict with DDR-002 §2.3 ObservedPattern confidence-derivation basis ('native_confidence (basis 1), plane-level')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.3 Un-promotion authority / §2.4 The checkpoint executor",
+    "claim": "§2.3 cites 'DDR-002 §5, §7 #21' for the retraction shape and §2.4 states 'the graph gateway is the authoring authority for each checkpoint approval'. This conflicts with the ratified author/executor/authorizer separation that DDR-002 and ADR-002 §2.6 own: for EA-gated materializations the authoring authority is the approving PromotionDecision, and the gateway is the sole EXECUTOR and 'is never itself the authoring authority.' Naming the gateway as the authoring authority for approval acts contradicts the upstream principle the ADR relies on.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.4 ('the graph gateway is the authoring authority for each checkpoint approval') in conflict with ADR-002 §2.6 general write-authority principle ('the sole-owner gateway ... is never itself the authoring authority; ... the authoring authority is the approving decision')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§1 Context / §2.3 Un-promotion authority (cited authority claim)",
+    "claim": "§1 and §2.3 claim 'DDR-002 §2.4 routes un-promotion's upstream authority here' and 'this ADR is its upstream authority'. DDR-002 §2.4 routes un-promotion/retraction upstream authority to 'the forthcoming KG-entry-governance ADR' by name — an unauthored, ACCEPTED-status-less forthcoming record. ADR-003 is itself in DRAFT / Status DRAFT, Version 0.1.0. The ADR asserts it discharges an authority obligation that the routing target has not been ratified to satisfy; the cited routing does not name ADR-003 and ADR-003 is not yet accepted.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.3 ('this ADR is its upstream authority') against DDR-002 §2.4 ('upstream authority for un-promotion routes to the forthcoming KG-entry-governance ADR') + ADR-003 metadata Status DRAFT"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-003"],
+    "locus": "§2.1 / §2.5 cross-reference to R30",
+    "claim": "§2.1, §2.5, and §7 cite 'R30' and 'the R30 bottleneck constraint' as deliberation substrate, sourced to 'triage-001 record Appendix A' and 'triage-001 record Appendix A (charter), R30'. The triage-001 charter (Appendix A item 4, item 10) narrates R30 as a retired-ledger ruling supplied in-session and states its full text is 'to be supplied' / mandatory substrate; R30 does not appear as a resolvable artifact in the set. The citation resolves to a narrated-but-absent artifact.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §7 ('Deliberation substrate: triage-001 record Appendix A (charter), R30') against triage-001 charter Appendix A item 10 ('Mandatory substrate: R30 full text' — not present in the set)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-003"],
+    "locus": "§2.3 Un-promotion authority — retraction shape",
+    "claim": "Checked the retraction-shape description ('an EA-gated reversing CandidatePromotion' + the deferral of the remedy boundary to DDR-003) against the owning schema. The reversing-CandidatePromotion + RETRACTS + same-EA-gate shape and the supersession-vs-retraction remedy-boundary deferral to DDR-003 held: DDR-002 §2.4/§5 and §7 #21 supply exactly this shape and route the remedy boundary to DDR-003. Only the origin_mechanism value clashed (reported separately); the retraction-shape and remedy-boundary deferral are consistent.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.3 retraction shape vs DDR-002 §2.4/§5/§7 #21 ('EA-gated reversing CandidatePromotion + RETRACTS edge ... remedy boundary is DDR-003 governance')"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-003"],
+    "locus": "§2.2 Environment plane / §5.2 Constraints",
+    "claim": "Checked the Environment-plane deferral against the substrate for a masked contradiction with the promotion-gate and calibration commitments. The deferral of Environment-plane checkpoint posture (per-write vs confidence-weighting at retrieval) held consistently: DDR-001's Environment plane carries confidence on edges and is CMDB-observed high-volume ground truth, so a retrieval-time confidence posture is a coherent open option; the ADR ruling it un-decided does not contradict any ratified Environment-plane commitment in DDR-001/DDR-002.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.2 Environment-plane deferral vs DDR-001 Environment plane ('deployed reality; environment edges carry confidence') — no ratified checkpoint posture in conflict"
+    }
+  }
+]

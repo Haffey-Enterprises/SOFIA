@@ -1,0 +1,92 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.3 Un-promotion authority / §5.1",
+    "claim": "ADR-003 asserts that un-promotion's upstream authority IS ADR-001 §2.5, but DDR-002 §2.4 (ACCEPTED) and the triage record (T-05 Leg 4, ratified) both state the opposite premise — that ADR-001 §2.5 authorizes promotion only and does NOT stretch to un-promotion, which is precisely why un-promotion was routed to a new record. ADR-003 §2.3 attempts to derive un-promotion authority from a §2.5 that the very forcing function (§1, quoting DDR-002 §2.4) says lacks it, so the record founds the retraction remedy on an authority its own substrate denies.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.3 ('Its upstream authority is ADR-001 §2.5, which governs the promotion mechanism and therefore its reversal') in conflict with DDR-002 §2.4 ('ADR-001 §2.5 authorizes promotion only and does not stretch to un-promotion') and triage-001 §T-05 Leg 4"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2 Decision / §1 Context",
+    "claim": "The chartered scope for this ADR (triage-001 Appendix A) is a human-accountable checkpoint on mutation of enterprise ground truth calibrated per source class AND the un-promotion upstream authority — the record is chartered to SUPPLY the un-promotion authority DDR-002 lacks. ADR-003 §2.3 instead defers that authority back to ADR-001 §2.5 rather than establishing it as this record's own principle, leaving the routed gap (DDR-002 §7 #21's missing upstream authority) unclosed by the very record commissioned to close it.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "triage-001 Appendix A item 2 ('Supplies retraction the upstream authority DDR-002 §7 #21 currently lacks') vs ADR-003 §2.3"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.5 Distillation entry today",
+    "claim": "ADR-003 §2.5 states distillation writes are 'already EA-gated today via the feedback loop; this ADR formalizes the existing gate rather than introducing a new one.' This pulls against ratified substrate: DDR-002 §2.3 (ACCEPTED) rules the distillation-write checkpoint posture 'explicitly un-decided,' and triage-001 §T-02 explicitly struck the 'non-EA-gated' characterization and routed the posture to THIS ADR as undecided. ADR-003 §2.5 now asserts distillation entry is already-EA-gated as settled fact — a position that contradicts the un-decided posture the substrate committed and that §2.1 itself treats as an open decision ('substantive review').",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.5 ('already EA-gated today ... formalizes the existing gate') in conflict with DDR-002 §2.3 ('checkpoint posture is explicitly un-decided') and ADR-003 §2.1 (distillation → substantive review, presented as a new calibration)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.4 The checkpoint executor",
+    "claim": "ADR-003 §2.4 rules the graph gateway 'both decides and executes the admission' and is 'the authoring authority for each checkpoint approval.' This pulls directly against ADR-002 §2.6's ratified author/executor/authorizer separation — 'the sole-owner gateway (§2.5) is the sole executor and enforcement boundary of all graph writes; it is never itself the authoring authority' — and against ADR-002 §2.6's rule that for EA-gated materializations the authoring authority is the approving decision, not the gateway. A human-accountable checkpoint whose accountable party is a gateway component contradicts the record's own §3 claim that every mutation 'carries a named accountable party.'",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.4 ('the graph gateway is the authoring authority ... both decides and executes') in conflict with ADR-002 §2.6 ('the sole-owner gateway ... is never itself the authoring authority')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§7 Cross-References / DDR-003 dependency",
+    "claim": "ADR-003 §7 cites 'DDR-003 §4 — defines the promotion-gate criteria this ADR relies on for the promotion-path checkpoint,' and §1 states DDR-003 is blocked on this ADR. This is a circular timing dependency against unsettled substrate: DDR-003 is forthcoming/unauthored (per DDR-001, DDR-002, and triage-001 §T-05), so ADR-003 relies on §4 criteria of a document that does not yet exist and is itself downstream of ADR-003. A PROPOSED record committing a load-bearing reliance on an unauthored downstream artifact's specific section is premature.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §7 ('DDR-003 §4 ... this ADR relies on') vs DDR-002/DDR-001 Cross-References ('DDR-003 — forthcoming, unauthored') and ADR-003 §1 ('DDR-003 ... is blocked on this ADR')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.2 Environment plane",
+    "claim": "ADR-003 §2 opens 'Every write to the knowledge graph passes a human-accountable checkpoint before it takes effect' — a universal quantifier over all KG writes — while §2.2 defers the Environment-plane checkpoint posture entirely to a follow-up. The Environment plane (DDR-001) is a full KG plane entering continuously at high volume, so the headline decision commits a position ('every write') that a whole plane's posture is admittedly not yet decided. The record commits the project to a universal principle whose applicability to a major entry path deserves settling before the principle stands, or the universal claim must be scoped.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2 ('Every write to the knowledge graph passes a human-accountable checkpoint') in conflict with ADR-003 §2.2 ('checkpoint posture for the Environment plane ... is deferred')"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-003"],
+    "locus": "§4.1 Alternative A",
+    "claim": "Alternative A ('No governance — trust the pipelines') is described as 'obviously wrong ... nobody would defend ungoverned writes' — a strawman rejection rather than a specific rejection rationale. Per the ADR template's own guidance, describing an alternative only to dismiss it as indefensible is the padding pattern the template warns against ('A strawman is worse than a gap').",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "adr-template §4 ('Describe each as its proponents would, then give a specific rejection rationale') and author-decision-record deliberation gate"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-003"],
+    "locus": "§2.1 Per-source-class calibration",
+    "claim": "I attacked the per-source-class calibration for integration with the R30 inherited constraint (triage-001 Appendix A item 4: 'gate all KG writes' was declined for bottleneck reasons; per-pattern EA action must not make Operational unwritable). The calibration holds: it does not gate uniformly, sets promotion to the existing EA gate (already-paid), keeps distillation to substantive review, and §2.2 explicitly defers the high-volume Environment path pending the volume/bottleneck deliberation — so it answers the inherited constraint rather than abandoning the checkpoint. The posture integrates with the chartered intent.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "triage-001 Appendix A item 4 (R30 declined-option: per-pattern EA action must not make Operational unwritable) — ADR-003 §2.1/§2.2 calibration checked against it and held"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-003"],
+    "locus": "§2.3 / §5 retraction-vs-supersession remedy",
+    "claim": "I attacked §2.3's ruling that 'retraction, not supersession, is the remedy for an incorrect promoted fact' as an over-reach into DDR-003's remedy-boundary governance. It holds against the schema substrate: DDR-002 §2.4 places the supersession-vs-retraction remedy boundary with DDR-003 but owns the retraction shape (EA-gated reversing CandidatePromotion + RETRACTS) as schema, and ADR-003 §2.3 rules only that a human-accountable retraction shape governs an incorrect promoted fact — consistent with the schema shape already ratified. The claim does not usurp the DDR-003 remedy-boundary policy.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.3 (retraction remedy) checked against DDR-002 §2.4 (retraction shape owned as schema; remedy-boundary routed to DDR-003) — no conflict found"
+    }
+  }
+]

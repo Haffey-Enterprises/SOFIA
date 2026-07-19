@@ -1,0 +1,7 @@
+{
+  "finding_id": "ffdfbdc6f968f284",
+  "classification": "resolvable",
+  "authority_locus": "ADR-008 operator ruling E (run-025 dispositions): candidate-ObservedPattern shape stated as forthcoming/additive, not present schema constraint",
+  "rationale": "Operator Ruling E fixes the conformance directly \u2014 earned tense, state the shape as forthcoming/additive introduced downstream, matching DDR-002 \u00a72.3's 'explicitly un-decided'.",
+  "confidence": "high"
+}

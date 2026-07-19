@@ -1,0 +1,7 @@
+{
+  "finding_id": "161d1d6eac6da876",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The internal contradiction between ADR-003's universal 'every write' commitment (§2/§3) and its explicit deferral of the Environment-plane checkpoint posture (§2.2) can be resolved two conforming ways — narrow the universal claim to exclude/qualify Environment, or commit an Environment checkpoint now — and no ratified authority disambiguates; the KG-entry-governance ADR charter (Appendix A item 5) itself flags the Environment plane posture as an open question the ADR must rule, so authority is silent where the choice is needed.",
+  "confidence": "high"
+}

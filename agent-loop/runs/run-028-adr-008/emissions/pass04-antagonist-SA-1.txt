@@ -1,0 +1,72 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Environment row control-type cell ('per-policy capture-time-frozen aging of confidence (derived at capture, never recomputed at read)') vs the §2.2 Environment bullet ('a human is answerable for the weighting policy') and §5.3 Risks ('the Environment weighting parameters')",
+    "claim": "The §2.2 control-type cell describes the Environment control as 'capture-time-frozen aging of confidence,' matching DDR-004 §1/§3 (aging derivation base × exp(−Δt/τ), computed at capture, never recomputed at read). But the §2.2 Environment bullet still names the accountable human as 'answerable for the weighting policy,' and §5.3 still cites 'the Environment weighting parameters' as the example contested constant. The record describes one and the same DDR-004 mechanism with two divergent nouns — 'aging' in the control-type cell versus 'weighting' in the bullet and §5.3 — leaving unresolved whether the accountable human answers for an aging basis or a weighting policy; DDR-004 terms the control an aging derivation, not a retrieval-time weighting.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-004 §1/§3 (aging derivation base × exp(−Δt/τ), derived at capture, never recomputed at read) vs ADR-008 §2.2 Environment bullet ('the weighting policy') and §5.3 ('the Environment weighting parameters')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Environment row bullet — 'A human is answerable for the weighting policy (its calibration is a ratified act under that ruling's governance)'",
+    "claim": "The record substantiates the Environment per-policy accountability by asserting the calibration is 'a ratified act under that ruling's governance.' The cited realizing authority DDR-004 §6 states 'This section defines the process, not a result' and 'no calibration is possible until the platform runs' (n=0 capture traffic, n=0 re-observations); DDR-004 §2 states the constants are POC-asserted and unvalidated. The claim that the control's accountability is discharged by a 'ratified act' is not substantiated in the record: the named accountability act — a human ratifying base/τ by amendment under DDR-004 §6 — has never occurred and, per the cited authority, cannot until traffic exists. The record cites DDR-004 §6 as the governance that discharges the invariant, but §6 supplies only an unexercised procedure.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-004 §6 ('This section defines the process, not a result ... no calibration is possible until the platform runs') and §2 ('Empirical floor: zero capture traffic to date; these values are unvalidated') vs ADR-008 §2.2 Environment bullet ('its calibration is a ratified act under that ruling's governance')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.3 Un-promotion authority — opening 'governed by the same per-write, EA-gated, human-accountable control as promotion itself' vs the same paragraph's qualifier",
+    "claim": "The head of §2.3 asserts un-promotion is governed by 'the same per-write, EA-gated, human-accountable control as promotion itself,' then the same paragraph concedes the built retraction shape (DDR-002 §7 #21) 'traces to an approving decision, not the governing one, so it does not yet supply promotion's governing-verdict guarantee.' Verified against the schema: DDR-002 §7 #21 gates a RETRACTS edge on an approving PromotionDecision, while #15 keys promotion off the governing DECIDED_ON edge (latest decided_at). The two controls are not identical — the retraction instance lacks the governing-verdict property that #15 supplies for promotion. The head assertion of control identity is contradicted by its own qualifier before the sentence ends; a reader taking 'the same ... control' at face value is misinformed as to the parity the substrate delivers.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.3 head ('the same per-write, EA-gated, human-accountable control as promotion itself') in conflict with the same section's qualifier ('does not yet supply promotion's governing-verdict guarantee') and DDR-002 §7 #21 vs #15"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Operational distillation row 'Realization routes to' + §5.2 Constraints ('to be realized through a forthcoming candidate-`ObservedPattern` shape — introduced downstream, excluded from ground-truth traversal until approved')",
+    "claim": "The distillation control's realization is stated via a candidate-`ObservedPattern` shape. The cited schema authority does not supply this shape: DDR-002 §2.3 records the distillation-write checkpoint posture as 'explicitly un-decided' and routes it to the forthcoming KG-entry-governance ADR, and the promotion-boundary class DDR-002 §5 provides is `CandidatePromotion` (promotion/retraction of already-promoted KG facts), which does not cover distillation entry into the Operational plane. §5.2 phrases the shape as 'forthcoming / introduced downstream,' which is the correct earned tense for a not-yet-existing shape; verified as such. This finding records the resolution of the cross-reference: the candidate-`ObservedPattern` shape is a named artifact that does not exist in the ratified schema and is correctly stated as forthcoming — the substantiation holds only because of the forthcoming framing, which must not regress to a present-schema claim.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §2.3 (distillation-write checkpoint 'explicitly un-decided'; no candidate-ObservedPattern node class) + DDR-002 §5 (CandidatePromotion covers promotion/retraction, not distillation entry) vs ADR-008 §5.2 candidate-ObservedPattern realization"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References + §2.2 Operational distillation 'Realization routes to' ('the detection-promotion service design') vs elsewhere-named 'detection-promotion service design' / SDD vocabulary",
+    "claim": "§2.2 names 'the detection-promotion service design' as a subject-name descriptor for a forthcoming, unauthored service design. The descriptor resolves and is subject-named (conforming to the forward-reference discipline), but the substrate elsewhere refers to the same forthcoming record as the detection-promotion SDD; the 'service design' vs 'SDD' rendering is a minor cross-reference-vocabulary inconsistency for one and the same unauthored artifact. This does not fail to resolve — it is a naming-consistency wrinkle at the record's cross-reference surface.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 Operational 'Realization routes to' descriptor ('the detection-promotion service design') vs the substrate's 'detection-promotion SDD' naming for the same forthcoming design"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.1 scope exclusion of Reasoning-Graph capture + gateway executor-not-author claim, cross-checked against ADR-001 §2.2 and ADR-002 §2.6",
+    "claim": "I attacked the scope boundary for conformance defects — whether the accountability invariant over-reaches into Reasoning-Graph capture, or mis-states the gateway's authority against its cited upstream authorities. It held. §2.1 confines the invariant to KG authoritative ground truth, declares RG capture out of scope as captured judgment, and cites governing loci that carry the stated content: ADR-001 §2.2 owns the reasoning-capture invariant, ADR-002 §2.6 owns RG write authority (ASA authors ReasoningProgress; AOE owns ReasoningSession lifecycle). The 'gateway is the executor of every mutation and never the authoring authority' claim is a faithful application of ADR-002 §2.6's verbatim author/executor/authorizer principle, not an unsupported extension. The named dependencies resolve to existing loci with the stated content.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-001 §2.2 (reasoning-capture invariant) + ADR-002 §2.6 (author/executor/authorizer separation; gateway never the authoring authority) — ADR-008 §2.1 scope exclusion and gateway-executor claim conform"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.3 / §2.4 never-a-bare-delete withdrawal posture, cross-checked against DDR-002 §2.3, §5, §6",
+    "claim": "I attacked the withdrawal posture ('never a bare delete — read-excluded from ground-truth synthesis and retained, fully traceable, for audit') as a possible over-claim against the ratified schema. It held. DDR-002 §2.3 ('archived is retention-tier demotion, never hard-deletion'), §5 (retracted node retained and fully traceable, gateway-enforced read-exclusion keyed on the EA-approved RETRACTS edge), and §6 (never-delete via retained versions) substantiate the claim in the same terms. The provenance-survival commitment in §2.4 is honestly bounded — §5.3 concedes the frozen-provenance guarantee is promotion-scoped and flags the decision-consumed-but-unpromoted retention gap as a named follow-up rather than asserting coverage it lacks. The withdrawal and provenance claims conform to and do not exceed the schema authority.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §2.3 (archived = retention-demotion), §5 (retracted-node retained/traceable, read-exclusion on EA-approved RETRACTS), §6 (never-delete) — ADR-008 §2.3/§2.4 withdrawal posture conforms"
+    }
+  }
+]

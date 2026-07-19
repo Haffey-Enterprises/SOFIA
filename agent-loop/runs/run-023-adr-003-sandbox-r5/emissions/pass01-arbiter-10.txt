@@ -1,0 +1,7 @@
+{
+  "finding_id": "87cab78deba7f21d",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding exposes an internal inconsistency in ADR-003 between §2.1's three source-class checkpoint forms (including the undefined term 'verification-weight' for ingestion) and §5.2's two-bucket restatement that miscategorizes ingestion as 'authored.' The ratified rulings settle only the Environment plane (retrieval weighting) and the distillation scope (distinct durable lesson); no ratified authority defines what 'verification-weight' means for authoritative-source ingestion or how ingestion maps into the per-write/retrieval-weight taxonomy, so resolving the inconsistency requires a choice not yet made.",
+  "confidence": "high"
+}

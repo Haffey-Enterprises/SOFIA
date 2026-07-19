@@ -1,0 +1,7 @@
+{
+  "finding_id": "1eb8bccdf5ad6b29",
+  "classification": "resolvable",
+  "authority_locus": "ADR-008-run-025-operator-rulings, Ruling F ('qualify \u00a72.3's \"same control\" claim to match the \u00a75.3 concession \u2014 the authority is homed; the governing-verdict detection analogue for executed retractions is the named follow-up')",
+  "rationale": "Operator Ruling F directly dictates the fix: qualify \u00a72.3 to match the \u00a75.3 concession, homing authority while naming the governing-verdict gap as follow-up.",
+  "confidence": "high"
+}

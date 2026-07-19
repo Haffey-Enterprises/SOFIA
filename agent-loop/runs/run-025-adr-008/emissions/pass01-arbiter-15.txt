@@ -1,0 +1,1 @@
+{"finding_id":"dc8308337567f561","classification":"decision-bearing","authority_locus":null,"rationale":"Reconciling an ungated per-policy Environment write with the cross-class withhold-and-block requires a choice no ratified authority disambiguates; SDD-001 SCOPE_CONFLICT is one interim instance, not a governing rule.","confidence":"high"}

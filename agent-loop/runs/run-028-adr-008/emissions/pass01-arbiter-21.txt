@@ -1,0 +1,7 @@
+{
+  "finding_id": "bfe39d2897fef552",
+  "classification": "resolvable",
+  "authority_locus": "ADR-008 operator Ruling G (run-025 rulings) + author-decision-record SKILL body-integrity forward-reference rule",
+  "rationale": "Ruling G directly mandates replacing the numbered forthcoming-record references with subject-name forms; the fix is determined, no choice remains.",
+  "confidence": "high"
+}

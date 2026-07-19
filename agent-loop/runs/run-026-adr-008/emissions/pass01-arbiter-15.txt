@@ -1,0 +1,1 @@
+{"finding_id": "7c1fac57abf88a95", "classification": "resolvable", "authority_locus": "ADR-008-run-025-operator-rulings Ruling D: relabel §2.2 Environment status to 'form built (DDR-004); constants contested/unvalidated (n=0)'", "rationale": "Operator Ruling D determines this exact relabel and the capture-time-frozen correction; no unmade choice remains.", "confidence": "high"}

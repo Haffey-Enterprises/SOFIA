@@ -1,0 +1,1 @@
+{"action": "refuse", "finding_id": "8bdd5866a960cf6f", "reason": "The finding's own claim is that the reconciliation holds and conforms to the cited authority — it identifies no defect and prescribes no change; the named authority thus determines no edit to make.", "confidence": "high"}

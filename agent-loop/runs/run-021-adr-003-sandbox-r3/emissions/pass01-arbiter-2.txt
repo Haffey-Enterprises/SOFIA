@@ -1,0 +1,7 @@
+{
+  "finding_id": "18d9d02719697f1c",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "Resolving the scope/body mismatch requires either deciding the Environment-plane checkpoint posture (which ADR-003 itself defers and Triage Appendix A item 5 lists as an open question the ADR must rule, with volume/bottleneck a real design constraint) or narrowing the title/summary scope claim — and no ratified authority dictates which of these two conforming fixes to take. Appendix A item 5 flags Environment posture as unresolved, so authority is silent on the very choice needed.",
+  "confidence": "high"
+}

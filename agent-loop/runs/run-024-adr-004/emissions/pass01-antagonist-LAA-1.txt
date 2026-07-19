@@ -1,0 +1,72 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "Title / §1 Context / §2 Decision — the 'platform principle, no new schema' claim vs. what the body actually decides",
+    "claim": "The record's own framing states it 'introduces no new schema' and merely 'elevates' the existence-constraint fixed at DDR-002 §6 to a platform principle — but §2.1 cites 'DDR-002 §6' as the existence-constraint home while the ratified DDR-002 places the provenance existence constraint at §7 (§6 is the versioning/temporal model). The record decides its central invariant by pointing at a locus that does not carry it, so what the ADR claims to be elevating and what it actually names diverge.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.1 'existence-constraint requirement fixed at DDR-002 §6' vs. DDR-002 §7 (Constraints, indexes & conformance — 'Existence constraints on the provenance group ... on every KG node') and DDR-002 §6 (Versioning & temporal model)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2.2 'Provenance is written at the sole write boundary' / §2.3 immutability",
+    "claim": "The Decision (§2.2, §2.3) commits provenance to every KG node universally — stamped at the sole gateway, never mutated. But the substrate ADR-004 elevates (DDR-002 §7 provenance scope) does NOT scope the provenance existence constraint to KG nodes alone: it scopes it to KG nodes PLUS the three authored RG types PLUS the derived ProvenanceSummary PLUS the Artifact family, and expressly exempts Evidence as surrogate-only. The ADR's title and decision content assert coverage of 'every knowledge-graph node' while the constraint set it claims to restate covers a materially different node population — the ADR decides less than DDR-002 fixed while presenting itself as the faithful platform-principle statement of it.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.1/§2.2 ('every node in every KG plane', 'no node can enter without provenance') vs. DDR-002 §4 RG-provenance posture and §7 'Provenance scope' (KG nodes + three authored RG types + ProvenanceSummary + Artifact family; Evidence sole surrogate-only)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2.2 / §3 Rationale — write-boundary and edition claims",
+    "claim": "§2.2 asserts the gateway is 'the sole executor of graph writes per the write-authority principle at ADR-002 §2.4', but ADR-002's sole-owner/single-graph-access-boundary principle is fixed at §2.5 (§2.4 is the persistence-backbone / three-store division). Separately, §3 Rationale states 'The graph store is Neo4j Community Edition' — this directly contradicts ADR-002 §2.2/§4.1, which commit Neo4j Enterprise precisely because the property-existence constraint the ADR relies on is Enterprise-only. The ADR's rationale rests its enforceability claim on an edition the substrate rejects; the decision's stated dependency is unsupported by the substrate it cites.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §3 'Neo4j Community Edition' and §2.2 'ADR-002 §2.4' vs. ADR-002 §2.2/§4.1 (Enterprise committed; property-existence constraints Enterprise-only) and ADR-002 §2.5 (sole-owner gateway / graph-access authority)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§4.1 Alternative A / §4.2 Alternative B — Alternatives Considered",
+    "claim": "Both alternatives are presented as strawmen the record itself concedes: §4.1 opens 'This is obviously wrong and nobody would defend it', and §4.2 characterizes the alternative only through what 'its proponents would argue' before rejecting it on the platform's already-committed posture. Per the record's own doctype discipline (adr-template §4: 'Describe each as its proponents would, then give a specific rejection rationale ... A strawman is worse than a gap'), these do not constitute a real alternatives evaluation — the decision claims deliberative grounding its Alternatives section does not provide.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "adr-template.md §4 Alternatives Considered ('one means it wasn't a real choice ... A strawman is worse than a gap') and author-decision-record-SKILL 'The deliberation gate' (fabricated/strawman alternatives)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-004"],
+    "locus": "§7 Cross-References — dependency declaration",
+    "claim": "§7 lists ADR-002, DDR-002, DDR-001 as cross-references but does not declare which artifact is the actual authority for the existence constraint the ADR elevates, nor name the deliberation substrate grounding the decision. The record depends on DDR-002's provenance-scope ruling for its entire content yet surfaces that dependency only as a generic parenthetical, leaving the load-bearing dependency named imprecisely (compounding the §6-vs-§7 locus error).",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "adr-template.md §7 Cross-References ('the deliberation artifact that grounds the decision') and author-decision-record-SKILL 'Section citations are facts — fetch-verify them'"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-004"],
+    "locus": "§2.3 immutability vs. DDR-002 correction mechanisms",
+    "claim": "I attacked §2.3's claim that corrections are made 'by the schema's versioning and never-delete mechanisms, not by overwriting provenance in place' for smuggling a decision the ADR is not entitled to make about DDR-002's schema. It held: DDR-002 §6 (Option A supersession, never-delete via retained versions) and §7 (#8 never-delete) already carry exactly this mechanism, so §2.3 restates a ratified downstream commitment rather than deciding new schema — the scope claim is faithful.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.3 vs. DDR-002 §6 (Supersession — Option A, never-delete) and §7 #8 (never-delete)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-004"],
+    "locus": "§5 Consequences — scope of declared consequences",
+    "claim": "I checked whether §5 surfaces the decision's side effects at the ADR's own altitude or lets commitments ride along undeclared. It held: §5.2 names the imposed constraints (no write path bypasses the gateway; no code mutates written provenance) and §5.3 names the fail-closed behavior and the rejected-write-volume signal to watch — the consequences declared match the decision content of §2.1–§2.3 without smuggling additional commitments.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "adr-template.md §5 Consequences (positive / constraints imposed / risks with signal) vs. ADR-004 §2 decision content"
+    }
+  }
+]

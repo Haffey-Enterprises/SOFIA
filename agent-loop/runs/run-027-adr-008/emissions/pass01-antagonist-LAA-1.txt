@@ -1,0 +1,82 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Per-source-class calibration table — Environment row 'Realization routes to: Built — the inherited-confidence derivation ruling's aging basis' and 'Control-type: Per-policy reliability-weighting at retrieval'",
+    "claim": "The Environment control is described as reliability-weighting realized 'at retrieval', but the named realizing authority (DDR-004) fixes the aging derivation as computed at Evidence capture and frozen — DDR-004 §1/§3 state confidence is derived-at-creation and 'never recomputed at read'. The record claims a mechanism its own cited realization contradicts: the control is capture-time-frozen, not at-retrieval.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 (Environment row) vs DDR-004 §1/§3 (derived-at-creation, frozen, never recomputed at read)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Per-source-class calibration table — Environment row 'Realization routes to: Built' and §5.3 Risks 'Empirical floor'",
+    "claim": "The Environment control is labeled 'Built' in the calibration table, yet §5.3 concedes calibration constants are held contested and unvalidated at zero traffic, and the realizing ruling (DDR-004) holds base/τ as contested tunables. The 'Built' status claim is not what the record's own risk section and cited realization support — the form is built, the control-as-calibrated is not — and the table asserts a completeness the body retracts.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 (Environment 'Built') vs §5.3 Risks (constants contested/unvalidated, n=0) and DDR-004 §2/§6 (contested tunables)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.3 Un-promotion authority — 'governed by the same per-write, EA-gated, human-accountable control as promotion itself'",
+    "claim": "§2.3 claims un-promotion is governed by the same control as promotion, but the built retraction instance it cites (graph-schema ruling §5, retraction-gated invariant #21) traces to *an* approving decision, not the *governing* one, and therefore does not supply promotion's governing-verdict guarantee (#15). §5.3 concedes exactly this gap. The 'same control' claim overstates fidelity relative to what the cited retraction shape delivers.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.3 ('same control') vs §5.3 Risks (executed-retraction re-decision detection gap; #21 traces to approving not governing decision) and DDR-002 §7 #15/#21"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Operational distillation row — 'Realization routes to: The forthcoming feedback-loop governance design; the detection-promotion service design' and §5.2 Constraints Imposed",
+    "claim": "The record decides a per-distinct-lesson human review control for operational distillation and states it is realized through a candidate-`ObservedPattern` shape (§5.2). DDR-002 §2.3 leaves the distillation-write checkpoint posture 'explicitly un-decided' and defines no candidate-`ObservedPattern` class; §2.2/§5.2 present a forthcoming, additive downstream shape as if it were the settled realization route. The decision's declared realization artifact does not yet exist in the substrate it points to.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2/§5.2 (candidate-ObservedPattern realization) vs DDR-002 §2.3 (distillation checkpoint explicitly un-decided; no candidate-ObservedPattern class defined)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References — 'ADR-004 (file-driven ingestion, forthcoming)' and 'DDR-003 (Feedback Loop Governance, forthcoming)'",
+    "claim": "Forward references to unauthored downstream records are stated with concrete identifiers (ADR-004, DDR-003) rather than subject-name. The record's own body elsewhere routes to 'the forthcoming ingestion decision record' and 'the forthcoming feedback-loop governance design' by subject-name; the §7 concrete-identifier form commits an identifier binding that the referenced records have not yet earned, and the ADR-004 number collides with the ADR-numbering already in play. This is a scope-declaration defect: the record names a dependency by an identifier it cannot yet own.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "author-decision-record SKILL, Body integrity — 'A forward reference in the body is subject-named only … Concrete identifiers bind only at the downstream record's landing'"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Promotion row — 'Realization routes to: Built — the graph-schema ruling's PromotionDecision gate and its promoted-origin invariant'",
+    "claim": "The promotion control's realization citation is stated as a subject-named reference ('the graph-schema ruling') rather than resolving to whether ADR-008 depends on it as a named artifact-plus-locus. The record depends on DDR-002 §5/§7 #15 for the built promotion instance but the §2.2 table cell names it only descriptively, leaving the dependency's citable artifact+locus implicit where §7 must carry it explicitly.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 (Promotion 'graph-schema ruling') vs §7 Cross-References (DDR-002 §5/§7 #15 named) — dependency-naming consistency"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2 Decision + §2.6 Governance boundary — the invariant/control-type/policy altitude split",
+    "claim": "Checked whether the record claims to decide more than it declares: §2 fixes the invariant, accountability, and control-type per class, and §2.6 explicitly disclaims the remedy boundary, thresholds, cadence, retention, and reviewer-role assignments, routing them to the forthcoming feedback-loop governance design. Attacked for a smuggled policy decision riding under the principle; the boundary held — no threshold, cadence, or remedy ruling is decided in the body, consistent with the deliberation record's ratified ADR↔DDR-003 boundary (Item 5).",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "RBT-59 deliberation record Item 5 — 'ADR owns invariant + accountability + control-type + lifecycle; remedy-boundary and all governance policy → DDR-003; ADR does not rule the remedy-boundary'"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.1 scope — 'Reasoning-Graph capture is not ground truth … outside this record's scope'",
+    "claim": "Checked whether the record's title/summary scope (mutation of enterprise ground truth) matches its decision content: §2.1 explicitly excludes Reasoning-Graph capture as captured judgment governed by ADR-001 §2.2/ADR-002 §2.6, and confines the invariant to KG authoritative ground truth. Attacked for scope creep into RG capture governance; the exclusion held and is consistent with the cited authorities — the decision content stays within the declared ground-truth-mutation scope.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.1 scope exclusion vs ADR-001 §2.2 (reasoning-capture invariant) and ADR-002 §2.6 (author/executor separation)"
+    }
+  }
+]

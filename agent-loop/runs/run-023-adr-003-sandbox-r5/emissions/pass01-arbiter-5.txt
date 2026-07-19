@@ -1,0 +1,7 @@
+{
+  "finding_id": "b995bcccc50afa22",
+  "classification": "resolvable",
+  "authority_locus": "adr-template.md §4 Alternatives Considered ('Describe each as its proponents would, then give a specific rejection rationale') and the author-decision-record SKILL deliberation-gate / authoring-discipline ('a strawman is worse than a gap'; 'Describe each as its proponents would')",
+  "rationale": "The template and skill dictate the required form for an alternative's treatment: proponent framing followed by specific rejection. The fix (reframe the strawman into proponent-stated form with a specific rejection rationale) is determined by that named authority; no unmade choice is introduced.",
+  "confidence": "high"
+}

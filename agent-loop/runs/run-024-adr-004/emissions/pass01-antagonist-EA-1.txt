@@ -1,0 +1,82 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2.1 / §1 — relationship to DDR-002 §6 and the ratified substrate",
+    "claim": "ADR-004 states it 'elevates to a platform principle' the provenance existence-constraint 'fixed at DDR-002 §6', but the ratified DDR-002 in the substrate carries no §6 that fixes this constraint — the provenance existence-constraint lives at DDR-002 §7 (DB-enforced existence constraints) and §1 (provenance group). Cited-section fidelity of a load-bearing dependency reference does not resolve against the ratified authority at the referenced locus.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.1 'existence-constraint requirement fixed at DDR-002 §6' vs DDR-002 §7 (DB-enforced existence constraints) / §1 (provenance group) in substrate"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§3 Rationale / §5.1 — 'Neo4j Community Edition' as the enforcing store",
+    "claim": "ADR-004 grounds its enforceable-at-the-database-layer guarantee on 'Neo4j Community Edition', but the ratified ADR-002 §2.2/§4.1 commit Neo4j Enterprise precisely because property-existence constraints are Enterprise-only per the vendor Cypher Manual — Community cannot enforce them. The ADR's stated enforcement mechanism contradicts the ratified system-of-record edition commitment it depends on.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §3 'The graph store is Neo4j Community Edition, whose existence-constraint capability makes the mandatory-property guarantee enforceable' vs ADR-002 §2.2/§4.1 (Enterprise edition; property-existence constraints Enterprise-only)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2.2 — 'the graph gateway... the write-authority principle at ADR-002 §2.4'",
+    "claim": "ADR-004 attributes the sole-write-boundary provenance-stamping to 'the graph gateway' citing ADR-002 §2.4, but ADR-002's single-graph-access-boundary principle is §2.5 (knowledge-service sole-owner gateway); §2.6 is write authority (author/executor/authorizer). The gateway that would stamp provenance is knowledge-service (§2.5), not the §2.4 referent — the load-bearing dependency is mis-anchored against the ratified substrate.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.2 'sole executor of graph writes per the write-authority principle at ADR-002 §2.4' vs ADR-002 §2.5 (graph access authority — sole-owner gateway) / §2.6 (write authority)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "Whole record — timing / does this deserve to stand as its own ADR now",
+    "claim": "ADR-004 declares 'This ADR states the invariant as a platform principle; it introduces no new schema' and §2.1 declares it merely 'elevates' an already-fixed DDR-002 constraint. A record that commits no new decision and only restates a ratified downstream constraint at a higher altitude, while the KG-entry-governance ADR (which the triage substrate ratified as the pending authority over mutation of enterprise ground truth) is unauthored, is premature against unsettled upstream governance and risks committing a position that the pending governance ADR deserves to settle first.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "Triage-001 record §T-02 / §T-05 Leg 4 / Appendix A — KG-entry-governance ADR owns mutation of enterprise ground truth (entry AND un-promotion), forthcoming/unauthored; ADR-004 §1 'introduces no new schema' + §2.1 'elevates it to a platform principle'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§4.1 Alternative A — 'This is obviously wrong and nobody would defend it'",
+    "claim": "The alternative is dismissed as 'obviously wrong and nobody would defend it' — a strawman rather than a described-as-its-proponents-would then rejected-with-specific-rationale alternative. The record's own template and authoring discipline require the affirmative case for each alternative before rejection; a strawman weakens the posture the ADR asks reviewers to ratify and becomes a liability if the position is ever revisited.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "adr-template §4 'Describe each as its proponents would, then give a specific rejection rationale' / author-decision-record-SKILL deliberation gate ('A strawman is worse than a gap')"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-004"],
+    "locus": "§6 Compliance / Metadata Status DRAFT",
+    "claim": "The record is Status DRAFT / v0.1.0 and §6 states compliance is aspirational, tracked at RBT-67, yet §2 asserts the invariant in definitive present-tense platform-principle voice ('No KG node is exempt', 'no node can enter without provenance'). For an unratified draft whose enforcing mechanism is by its own account not yet landed, the earned-tense discipline would phrase enforcement-dependent guarantees conditionally.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "author-decision-record-SKILL Body integrity 'Tense is earned by enforcement' — property whose enforcing mechanism is forthcoming stated in the conditional"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-004"],
+    "locus": "§2.3 / §5.2 — immutability posture against ADR-001 and DDR-002 versioning",
+    "claim": "Attacked the immutability commitment ('provenance never mutated; corrections via versioning and never-delete') for conflict with the ratified never-delete/supersession model — it held: ADR-001's capture invariant, DDR-002 §6 Option A supersession (retained version nodes, never-delete) and §5 retraction-as-append-only all treat corrections as new records rather than in-place mutation, so ADR-004's immutability posture integrates with rather than pulls against the ratified substrate.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.3 vs DDR-002 §6 (Option A supersession, never-delete) / §5 (retraction append-only) / ADR-001 §2.2 (capture invariant)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-004"],
+    "locus": "§2.2 / §5.3 — sole-write-boundary integration with ADR-002 access authority",
+    "claim": "Attacked the claim that no node can enter unstamped because all writes route through one boundary, for conflict with the ratified access-authority principle — it held: ADR-002 §2.5 commits knowledge-service as sole Neo4j-driver holder and single graph-access boundary, and DDR-001's gateway pattern enforces provenance at that boundary, so ADR-004's fail-closed-at-the-gateway posture is consistent with the ratified system-of-record gateway commitment (the defect is only the §2.4 mis-citation, raised separately, not the substance).",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.2/§5.3 vs ADR-002 §2.5 (sole-owner gateway) / DDR-001 Graph-Gateway Pattern (provenance enforced at boundary)"
+    }
+  }
+]

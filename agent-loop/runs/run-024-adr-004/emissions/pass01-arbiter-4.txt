@@ -1,0 +1,1 @@
+{"finding_id":"77a15807be9136a3","classification":"decision-bearing","authority_locus":null,"rationale":"Authority names strawmen as a defect but cannot supply the missing real alternatives; genuine deliberation substrate must be produced or the ADR left in draft — a choice not made.","confidence":"high"}

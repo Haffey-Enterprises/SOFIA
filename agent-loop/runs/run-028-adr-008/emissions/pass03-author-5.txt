@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "8237f946e76c24e8",
+  "reason": "The finding identifies a coherence tension (the record names a ratified calibration act as discharging accountability, while DDR-004 §6 supplies only an unexercised n=0 governance procedure), but the named authorities do not uniquely determine a conforming rewording — DDR-004 §6 establishes the governing-policy accountability exists as a two-tier governance process regardless of whether a calibration has run, so whether the fix is to strike the parenthetical, requalify it (e.g., 'answerable under the two-tier governance, calibration pending traffic'), or leave it is a choice among multiple conforming edits, an unratified decision belonging to the operator.",
+  "confidence": "high"
+}

@@ -1,0 +1,1 @@
+{"finding_id":"47aa7054606a9103","classification":"decision-bearing","authority_locus":null,"rationale":"Whether ADR-008 may enlarge promotion/un-promotion authority beyond ADR-001 §2.5's narrow scope is the exact platform-principle choice this ADR exists to make; no ratified authority disambiguates the scope conflict.","confidence":"high"}

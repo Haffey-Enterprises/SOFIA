@@ -1,0 +1,7 @@
+{
+  "finding_id": "b408d1964d495366",
+  "classification": "resolvable",
+  "authority_locus": "ADR-008-run-025-operator-rulings Ruling G (and author-decision-record SKILL body-integrity forward-reference rule): replace numbered forthcoming references with subject-name forms in \u00a77",
+  "rationale": "Ruling G directly dictates the exact fix, converting the identical decision-bearing finding to resolvable by naming the conforming subject-name forms.",
+  "confidence": "high"
+}

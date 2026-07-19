@@ -1,0 +1,7 @@
+{
+  "finding_id": "e78d0b881a7feb5b",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record SKILL, 'Body integrity' — the forthcoming-status-marker convention (T-05 Leg 2 / T-14 pattern ratified in triage-001), realized as the shared 'forthcoming, unauthored' marker in DDR-001 and DDR-002 Cross-References for the same DDR-003 referent",
+  "rationale": "The correct marker vocabulary for a forthcoming/unauthored referent is already fixed by ratified convention and by the two sibling documents' consistent treatment of DDR-003; conforming ADR-003's §1/§7 to 'forthcoming, unauthored' introduces no new choice.",
+  "confidence": "high"
+}

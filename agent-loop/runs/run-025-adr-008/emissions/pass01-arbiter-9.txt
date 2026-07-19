@@ -1,0 +1,1 @@
+{"finding_id": "d03240cb615763c6", "classification": "resolvable", "authority_locus": "ADR-002 §2.5 (sole-owner gateway / graph access authority) and §2.6 (write authority — author/executor/authorizer)", "rationale": "Section citations are verifiable facts; ADR-002 §2.5/§2.6 dictate the correct loci, no choice introduced.", "confidence": "high"}

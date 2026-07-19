@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "c0234967935fc20d",
+  "reason": "DDR-004 §6 establishes that calibration is a process whose ratifying act (amendment) is impossible at n=0, but it does not dictate any single verbatim replacement text for ADR-008's §2.2 bullet — the conforming edit could take multiple forms (delete 'is a ratified act', qualify to 'would be a ratified act', add an n=0 caveat, etc.), each a distinct authorial choice the authority does not uniquely fix. Choosing among them is unratified.",
+  "confidence": "medium"
+}

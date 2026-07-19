@@ -1,0 +1,82 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.5 Distillation entry — R30 constraint claim",
+    "claim": "The record claims the substantive-review checkpoint 'satisfies the R30 bottleneck constraint (Operational stays writable)' — a load-bearing consequence-and-dependency claim resting on R30, whose authoritative text is not in the substrate (the retired ledger is described as reachable-via-Tad in triage-001 but not fetched here). The decision asserts satisfaction of a constraint whose content this record does not surface, so the consequence claim (that the checkpoint does not make Operational unwritable) cannot be seen to hold from the decision substrate present.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.5 claim 'satisfies the R30 bottleneck constraint' vs triage-001 Appendix A #4 (R30 is a declined-option constraint whose full text is owed, not present) and §7 Cross-References listing only 'triage-001 record Appendix A (charter), R30' without R30 content"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2 Decision + Title/Summary vs §2.2 Environment plane",
+    "claim": "The title and §2 summary claim the record decides that 'mutation of enterprise ground truth is subject to a human-accountable checkpoint calibrated to the source class of the write.' But §2.2 defers the Environment plane's checkpoint posture entirely to a follow-up. Environment is enumerated as a KG plane carrying deployed reality (DDR-001 Two-Graph Model) — i.e. enterprise ground truth. The decision therefore does not decide the checkpoint for one named source class of ground-truth mutation, so the claimed scope ('mutation of enterprise ground truth') overstates what the body decides.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 title + §2 ('Mutation of enterprise ground truth ... is subject to a human-accountable checkpoint') vs §2.2 ('The checkpoint posture for the Environment plane ... is deferred'); DDR-001 Two-Graph Model — Environment plane is CMDB-sourced KG ground truth"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.3 Un-promotion authority + §5.1 Consequences",
+    "claim": "§2.3 states 'this ADR is its upstream authority' for un-promotion and §5.1 claims un-promotion 'becomes a governed act.' But the same section defers the remedy boundary (supersession vs retraction) to DDR-003 and states this ADR 'governs only the accountability of the un-promotion act.' The consequence 'un-promotion stops being an ungoverned back door' (§3) and 'becomes a governed act' (§5.1) claims more than the decision content supplies: the record supplies accountability authority only, while the actual governance of when/how un-promotion occurs is deferred elsewhere. The prose claims a completeness of governance the decision does not deliver.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §3 ('un-promotion stops being an ungoverned back door') and §5.1 ('un-promotion becomes a governed act') vs §2.3 ('this ADR governs only the accountability of the un-promotion act' and remedy boundary 'deferred there, not ruled here')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.4 The checkpoint executor",
+    "claim": "§2.4 rules that 'the graph gateway is the authoring authority for each checkpoint approval: the approval is recorded as the gateway's own act at the write boundary.' This is a decision surfaced in the Decision section, but it contradicts the write-authority principle it depends on: ADR-002 §2.6 (as amended) fixes that the gateway 'is never itself the authoring authority' — it is the sole executor. Naming the gateway as authoring authority for checkpoint approvals is a decision whose dependency (ADR-002 §2.6) is not declared in §2.4 and which appears to invert that dependency. Whether intended as an override or a slip, the record decides something about authoring authority without declaring or reconciling the authority it rides on.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.4 ('the graph gateway is the authoring authority for each checkpoint approval') vs ADR-002 §2.6 ('The sole-owner gateway (§2.5) is the sole executor ... it is never itself the authoring authority')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§7 Cross-References + §1 Context — DDR-003 dependency claim",
+    "claim": "§1 states 'DDR-003 (Feedback Loop Governance) is blocked on this ADR for its promotion-gate criteria' and §7 states DDR-003 'will cite this ADR as authority for its promotion-gate criteria.' The DDR-002 substrate routes promotion's checkpoint to 'the existing EA gate committed at ADR-001 §2.5' (§2.1 of this ADR itself confirms 'no new mechanism is introduced for the promotion path'). The claim that DDR-003's promotion-gate criteria are blocked on / authorized by this ADR is not supported by this ADR's own decision content, which introduces no new promotion-gate mechanism — the promotion path authority remains ADR-001 §2.5. The dependency asserted in §1/§7 is not the dependency the decision creates.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §1 ('DDR-003 ... is blocked on this ADR for its promotion-gate criteria') and §7 vs ADR-003 §2.1 ('the existing EA gate committed at ADR-001 §2.5 is the already-built instance ... no new mechanism is introduced for the promotion path')"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-003"],
+    "locus": "§6 Compliance",
+    "claim": "§6 states 'Compliance is currently aspirational, tracked at the KG-entry-governance implementation ticket.' The referenced ticket is named only by subject, not identifier, and no consequence declares how this checkpoint calibration is verified against the calibrated per-source-class weights of §2.1 (verification-weight vs substantive review). The enforcement mechanism named is generic ('checked at design-review time') and does not surface the calibration distinctions as verifiable, leaving §2.1's central decision (differential checkpoint weight) without a declared conformance surface.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §6 (generic design-review-time conformance) vs §2.1 (per-source-class differential checkpoint weights) — calibration decision lacks a declared verification consequence"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-003"],
+    "locus": "§2.5 Distillation entry — checkpoint scope vs volume",
+    "claim": "I attacked the distillation checkpoint as a smuggled per-write gate over high-volume telemetry (a scope/consequence overreach). It held: §2.5 explicitly scopes the substantive review to 'the distinct durable lesson at distillation — not the per-event telemetry stream,' grounded in DDR-002 §2.3's update-in-place / bounded-by-distinctness model, so the review set is the small distinct-ObservedPattern set. The decision's claimed scope matches its cited substrate — the checkpoint governs distinct lessons, not raw writes.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.5 vs DDR-002 §2.3 ('Distillation is update-in-place ... bounded by the number of distinct durable lessons, not a node-per-observation')"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-003"],
+    "locus": "§2.3 Un-promotion mechanism shape",
+    "claim": "I attacked the un-promotion mechanism as an undeclared or invented shape. It held: §2.3 names its mechanism precisely as DDR-002's ratified retraction shape (§5, §7 #21) — 'an EA-gated reversing CandidatePromotion whose approving PromotionDecision carries origin_mechanism: ingested' — and the dependent artifact is declared and named. The decision does not invent a new schema shape; it rides the existing one, with the dependency surfaced.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.3 vs DDR-002 §5 / §7 #21 (retraction shape: EA-gated reversing CandidatePromotion + RETRACTS edge)"
+    }
+  }
+]

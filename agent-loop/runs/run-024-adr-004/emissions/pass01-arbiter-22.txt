@@ -1,0 +1,1 @@
+{"finding_id": "50d6d677c7127df8", "classification": "decision-bearing", "authority_locus": null, "rationale": "ADR-004 is not in the ratified authority set; its altitude relative to DDR-001/DDR-002 and whether an ADR-level provenance principle sits above or below the schema constraint is an unmade choice.", "confidence": "medium"}

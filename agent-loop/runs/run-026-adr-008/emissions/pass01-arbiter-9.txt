@@ -1,0 +1,1 @@
+{"finding_id": "28a43203d334a714", "classification": "resolvable", "authority_locus": "ADR-008-run-025-operator-rulings Ruling F", "rationale": "Ruling F directs qualifying \u00a72.3's 'same control' to match the \u00a75.3 concession \u2014 authority homed, governing-verdict analogue named as follow-up; the fix is determined.", "confidence": "high"}

@@ -1,0 +1,72 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.1 and §2.3 (internal cross-references to ADR-001 §2.6) vs §1, §7",
+    "claim": "The record cites 'ADR-001 §2.6' as the home of the EA-gated promotion mechanism / existing EA gate in §2.1 and §2.3, while §1 and §7 cite 'ADR-001 §2.5' for the same mechanism. ADR-001 has no §2.6; the promotion mechanism is committed at ADR-001 §2.5. The self-inconsistent internal citation targets a section that does not exist in the ratified upstream authority this ADR depends on.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.1/§2.3 cite ADR-001 §2.6 vs ADR-003 §1/§7 cite ADR-001 §2.5; ADR-001 promotion mechanism is at §2.5 (no §2.6 exists)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§7 Cross-References — 'ADR-002 §2.6 (write authority)' vs §2.4 'graph gateway is the authoring authority'",
+    "claim": "§2.4 makes the graph gateway the authoring authority for each checkpoint approval. This pulls directly against the ratified write-authority principle in ADR-002 §2.6, which states the sole-owner gateway is the sole executor and enforcement boundary and is NEVER the authoring authority (for EA-gated materializations the authoring authority is the approving decision). This ADR names the gateway as authoring authority for the checkpoint, contradicting a ratified prior decision the ADR itself cross-references.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-002 §2.6 — 'The sole-owner gateway (§2.5) is the sole executor and enforcement boundary of all graph writes; it is never itself the authoring authority'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.5 and §5.2 — distillation checkpoint imposed on Operational-plane write",
+    "claim": "ADR-003 commits a mandatory 'substantive review' checkpoint on every distillation write into the Operational plane before admission (§2.5, §5.2 'every ground-truth-mutating path must route through the checkpoint before admission'). The triage charter (Appendix A item 4) records the R30 declined-option constraint — 'gate all KG writes' was declined for bottleneck reasons, and per-pattern EA action must not make Operational unwritable — as an inherited constraint the calibration must answer without abandoning the checkpoint. The ADR asserts the substantive-review checkpoint on distillation without demonstrating how it satisfies that ratified bottleneck constraint, committing to a posture whose reversibility against real distillation volume is not established.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "triage-001 Appendix A item 4 — 'gate all KG writes was declined for bottleneck reasons — per-pattern EA action must not make Operational unwritable. The calibration must answer this without abandoning the checkpoint.'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.2 Environment plane deferral vs §5.2 Constraints imposed",
+    "claim": "§2.2 defers the Environment-plane checkpoint posture (per-write review vs confidence-weighting at retrieval) to a named follow-up, explicitly not ruled here. §5.2 then states as a committed constraint that 'every ground-truth-mutating path must route through the checkpoint before admission.' Environment-plane facts are ground-truth-mutating writes (CMDB-observed deployed reality), so the §5.2 constraint asserts a checkpoint on exactly the path §2.2 declares un-decided — the decision commits a position it also defers.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.2 (Environment checkpoint deferred, 'this ADR does not rule it here') vs §5.2 ('every ground-truth-mutating path must route through the checkpoint before admission')"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-003"],
+    "locus": "§7 Cross-References — DDR-003 dependency direction",
+    "claim": "ADR-003 §1 states DDR-003 is blocked on this ADR, and §7 states DDR-003 will cite this ADR as authority and owns the remedy-boundary governance deferred at §2.3. Meanwhile this ADR is DRAFT v0.1.0. Committing un-promotion remedy-boundary governance to a forthcoming, unauthored DDR-003 while DDR-003 is simultaneously blocked on this DRAFT record creates a timing posture where a hard-to-reverse authority claim (this ADR as un-promotion's upstream authority, §2.3) is asserted before the governance that consumes it exists.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §1 (DDR-003 blocked on this ADR) and §7 (remedy-boundary deferred to forthcoming DDR-003) vs §2.3 (this ADR is un-promotion's upstream authority), record Status DRAFT"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-003"],
+    "locus": "§2.3 Un-promotion authority — integration with ADR-001 §2.5 scope boundary",
+    "claim": "Attacked the claim that this ADR is the correct home for un-promotion's upstream authority as a premature or misplaced commitment. It held: ADR-001 §2.5 authorizes promotion only and does not stretch to un-promotion, DDR-002 §7 #21 (retraction-gated) and DDR-001 both explicitly route un-promotion's upstream authority to a forthcoming KG-entry-governance ADR, and the triage charter (Appendix A item 2, T-05 Leg 4) confirms this record is chartered to supply exactly that authority. The integration with prior ratified decisions is sound.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-001 §2.5 (promotion only); DDR-002 §7 #21 and §2.4 (un-promotion authority routes to KG-entry-governance ADR); triage-001 Appendix A item 2 / T-05 Leg 4"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-003"],
+    "locus": "§2.1 per-source-class calibration vs uniform-checkpoint alternative",
+    "claim": "Attacked the source-class calibration as an under-justified posture that pulls against the platform's proportionality direction. It held: the calibration (verification-weight on faithful capture, substantive review on distilled judgment, existing EA gate on promotion) integrates with the ratified reversibility-proportionate-to-risk posture and directly answers the §4.2 uniform-checkpoint rejection on the R30 bottleneck grounds carried in the substrate. The proportionality of checkpoint weight to source-class risk is coherently argued.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "triage-001 Appendix A item 3 (per-source-class calibration intent) and item 8 (Operational vs authoritative-selection distinction survives); ADR-003 §4.2 rejection of uniform checkpoint on R30 bottleneck grounds"
+    }
+  }
+]

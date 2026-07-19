@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "c31ec78f6f0f60ba",
+  "reason": "RBT-59 Item 2 fixes the general four-class invariant as the frame and Item 4 makes un-promotion a sub-case, which tells me the un-promotion emphasis is subordinate — but it does not determine which surface text (metadata Description, §1 closing) to alter, what wording to use, or whether to trim the un-promotion clause versus recast it. Multiple conforming edits exist; the authority does not uniquely fix one.",
+  "confidence": "high"
+}

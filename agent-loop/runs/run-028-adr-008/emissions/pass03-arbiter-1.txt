@@ -1,0 +1,7 @@
+{
+  "finding_id": "2559526a500c4ab8",
+  "classification": "resolvable",
+  "authority_locus": "Ruling D (run-025 operator rulings) — 'form built vs constants contested/unvalidated (n=0)' qualification distinguishes DDR-004's built-form-but-unvalidated-constants case; the Promotion row rests on built-and-enforced mechanisms (DDR-002 §5 / §7 #15), not contested constants.",
+  "rationale": "Ruling D fixes exactly which realization claims carry the n=0-constants qualifier; the two rows differ in kind (contested constants vs enforced schema gate), so the discipline is determined, not inconsistent.",
+  "confidence": "high"
+}

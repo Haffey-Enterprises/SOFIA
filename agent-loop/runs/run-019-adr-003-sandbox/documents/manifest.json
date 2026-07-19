@@ -1,0 +1,16 @@
+{
+  "run_id": "run-019-adr-003-sandbox",
+  "sofia_head_sha": "4e5d88fa49d1cea916a0b365f8976d839be893d7",
+  "files": [
+    {
+      "doc_id": "ADR-003",
+      "snapshot_path": "documents/ADR-003-kg-entry-governance.md",
+      "origin": {
+        "source": "sofia-repo",
+        "canonical_path": "agent-loop/sandbox/adr-003-fixture/docs/adr/ADR-003-kg-entry-governance.md"
+      },
+      "retrieved": "2026-07-16",
+      "sha256": "aab402c651964ced19924ed7218e033ef09add2cf33a63c06a93cb538cba2ffe"
+    }
+  ]
+}

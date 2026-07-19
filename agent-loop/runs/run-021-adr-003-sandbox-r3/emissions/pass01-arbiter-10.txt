@@ -1,0 +1,7 @@
+{
+  "finding_id": "617a9ef69f0656a8",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record SKILL — cold-read / stranger-test gate ('an unsupported normative claim — a rule stated without the reasoning that justifies it') and 'point, don't mirror' pointer discipline; triage-001-charter Appendix A item 4 carries the R30 declined-option content the ADR must reference",
+  "rationale": "The finding is that a satisfaction claim is unsubstantiated within the record because the R30 constraint it claims to discharge is only pointer-cited, not stated. The cold-read gate determines the fix (make the normative claim self-supporting), and Appendix A item 4 already names the specific R30 constraint content available to reference; no unmade choice is required.",
+  "confidence": "medium"
+}

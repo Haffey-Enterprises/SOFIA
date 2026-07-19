@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "6b69353f4421ac92",
+  "reason": "The named forward-reference rule requires subject-named forthcoming references, but nowhere in the document is the 'detection-promotion service design' assigned a concrete subject-name/document-identifier (unlike DDR-003/ADR-004 which carry IDs). The authority does not supply the correct subject-name, so it cannot uniquely determine what to substitute; choosing one would be an unratified fill.",
+  "confidence": "medium"
+}

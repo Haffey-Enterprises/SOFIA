@@ -1,0 +1,7 @@
+{
+  "finding_id": "aff07e08735faa87",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §2.4 (PromotionDecision entry) — 'origin_mechanism: authored (the approving Actor is a human EA; SOFIA is the issuing authority)'; and DDR-002 §7 #21 (retraction-gated, the un-promotion authority contract). The origin_mechanism attribution the finding says is unsupported by #21 is carried by §2.4, the PromotionDecision's defining locus.",
+  "rationale": "The finding is a citation-locus mismatch: #21 governs the approving-decision trace, and §2.4 already fixes PromotionDecision origin_mechanism as `authored`. The fix — re-point the ADR's §2.3/§7 citation for the origin_mechanism claim to DDR-002 §2.4 — is determined by existing ratified authority, introducing no new choice.",
+  "confidence": "medium"
+}

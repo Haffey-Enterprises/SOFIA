@@ -1,0 +1,7 @@
+{
+  "finding_id": "1b80b183c35028fc",
+  "classification": "resolvable",
+  "authority_locus": "adr-template §6 Compliance — 'If the mechanism isn't built yet (common for new ADRs), say so honestly and point at a tracking item' / 'Compliance is currently aspirational, tracked at {{ticket}}. Until enforcement lands, conformance is checked at design-review time.'",
+  "rationale": "The ADR template supplies the exact conforming form for an unbuilt compliance mechanism (honest aspirational-plus-tracking-item phrasing), and ADR-001 §6 / ADR-002 §6 establish the ratified three-hat (LAA/SA/EA) review as the named design-time gate; the finding is a conformance defect against an existing template requirement with a determined fix, introducing no new choice.",
+  "confidence": "high"
+}

@@ -1,0 +1,1 @@
+{"action": "refuse", "finding_id": "bdb95fe82ae1d147", "reason": "The finding verifies §2.3 as accurate and internally consistent — it 'held under attack' and 'no longer overstates parity.' No conforming edit is entailed; the named authority determines that the current text already conforms, so there is nothing to change.", "confidence": "high"}

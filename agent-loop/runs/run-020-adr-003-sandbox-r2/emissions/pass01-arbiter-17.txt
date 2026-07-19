@@ -1,0 +1,7 @@
+{
+  "finding_id": "e40562d73e23826c",
+  "classification": "resolvable",
+  "authority_locus": "ADR-001 §2.5 (the EA-gated encoding-density promotion mechanism is committed at §2.5; ADR-001 has no §2.6) — the correct citation is a fetch-verifiable fact against the ratified upstream authority",
+  "rationale": "ADR-001's promotion mechanism is committed at §2.5 and no §2.6 exists in the ratified text; the author-decision-record skill's 'section citations are facts — fetch-verify them' discipline determines the fix (correct §2.6 to §2.5), with the record's own §1/§7 already citing §2.5 as the internal disambiguator. No new choice is introduced.",
+  "confidence": "high"
+}

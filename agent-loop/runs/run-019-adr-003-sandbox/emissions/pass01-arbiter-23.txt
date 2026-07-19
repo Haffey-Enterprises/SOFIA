@@ -1,0 +1,7 @@
+{
+  "finding_id": "e26abc22a50953a5",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "DDR-002 §2.3 explicitly routes the distillation-write checkpoint posture to the forthcoming KG-entry-governance ADR (this ADR-003) as un-decided, and the triage charter (Appendix A) states this ADR must rule per-source-class calibration including the operational distillation gate — so whether distillation is EA-gated is precisely the choice this ADR exists to make, not one any ratified authority already determines; resolving the conflict requires either making that gating decision or striking the unsubstantiated claim, both of which turn on the very ruling that is still open.",
+  "confidence": "high"
+}
