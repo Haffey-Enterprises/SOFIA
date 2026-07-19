@@ -1,0 +1,1 @@
+{"finding_id":"8ffdc5e37fdba09c","classification":"decision-bearing","authority_locus":null,"rationale":"Three records each defer the same schema amendment; no ratified authority assigns canonical ownership of the deferred work, and picking an owner is an unmade choice.","confidence":"high"}

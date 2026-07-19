@@ -1,0 +1,7 @@
+{
+  "finding_id": "0ee5bd09fd2f281e",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The retention-parameter cardinality and the class-2 exemption's status as parameter-vs-fixed-interim are not fixed by any ratified authority; the deliberation defers window values and leaves scope unstated, so resolving requires a choice.",
+  "confidence": "medium"
+}

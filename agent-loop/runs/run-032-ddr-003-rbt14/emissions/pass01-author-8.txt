@@ -1,0 +1,8 @@
+The finding says §8 item 1 labels the cited DDR-001 check 4 as "mechanized," but DDR-001's own conformance checks are marked aspirational/unmechanized. The determining authority is DDR-001's header/closing line, which establishes the checks are not mechanized. But the fix — how to correct DDR-003's "*(safety-relevant; mechanized)*" label — is not uniquely determined: item 1 cites both DDR-002 §7 invariants AND DDR-001 check 4, and the "mechanized" claim may rest on the DDR-002 invariants (which could be independently mechanized) rather than DDR-001 check 4. Conforming requires deciding whether to drop the DDR-001 citation, re-label the whole item, or qualify it — an unratified choice.
+
+{
+  "action": "refuse",
+  "finding_id": "5cc8f344e75567b0",
+  "reason": "DDR-001's aspirational-checks authority establishes that check 4 is not mechanized, but item 1 also cites DDR-002 §7 #9/#15/#21/#22 as basis for 'mechanized' — the authority does not determine whether the fix is to drop the DDR-001 citation, re-label the item's enforcement state, or qualify it, since the 'mechanized' claim may rest on the DDR-002 invariants. That is an unratified choice among conforming edits.",
+  "confidence": "high"
+}

@@ -1,0 +1,7 @@
+{
+  "finding_id": "796e0e3670293968",
+  "classification": "resolvable",
+  "authority_locus": "DDR-001 'Conformance Checks (aspirational; mechanization deferred)' header + closing italic line",
+  "rationale": "Authority states DDR-001 check 4 is aspirational, not CI-enforced at authoring; conforming to its cited text determines the fix (drop or correct the 'mechanized' label).",
+  "confidence": "high"
+}

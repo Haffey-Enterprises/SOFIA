@@ -1,0 +1,7 @@
+{
+  "finding_id": "3c350da89b79307a",
+  "classification": "resolvable",
+  "authority_locus": "DDR-003 own §2.2 / §8 item 6 / §9 (structured per-dimension capture deferred; interim carrier is unstructured decision rationale) — determines that §7.3's per-dimension traversal-reachability claim must be conditioned to the earned interim tense",
+  "rationale": "The record's own settled interim posture contradicts §7.3's present-tense reachability claim; conforming §7.3 to that already-ratified interim state is determined, not a new choice.",
+  "confidence": "high"
+}

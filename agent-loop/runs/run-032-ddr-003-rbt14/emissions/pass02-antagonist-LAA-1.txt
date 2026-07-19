@@ -1,0 +1,102 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "Decision.10 vs §7.1 class (4)",
+    "claim": "Decision.10 states retention is a 'four-class, role-based model (§7.1)', but §7.1's own class (4) reads 'Operational track-record — not an RG class; its posture is §5.4's archival demotion.' The Decision enumerates a four-class Reasoning-Graph retention model; the body it points to supports only three RG retention classes plus a fourth explicitly declared not an RG class. The decision as stated does not decide what §7.1 supports — the count overstates the RG model.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 Decision.10 ('four-class, role-based model') vs §7.1 class (4) ('not an RG class')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "§5.1 interim posture ('no conforming distillation write path exists') vs Decision block / Consequences",
+    "claim": "§5.1 states 'until that shape and the review surface land, no conforming distillation write path into the Operational plane exists — a distillation writer designed before then fails ADR-008 §6's accountability check at design review.' This is a decision with a load-bearing foreclosure consequence — it bars all Operational-plane distillation writes until forthcoming, unauthored work lands. The record's title, summary, and Decision block frame DDR-003 as governance policy; the foreclosure rides in a body section and is not surfaced as a declared decision component or consequence. Decision.6 says a distilled lesson 'is a candidate until the distillation-reviewer approves it' but does not surface that no conforming write path exists at all in the interim state.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §5.1 (interim write-path foreclosure) vs Decision.6 / Decision block (no declared foreclosure consequence)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "Decision.3 flat claim vs §1.3 carve-out",
+    "claim": "Decision.3 states 'the holder set of each role is a role-assignment act under the platform's access model (§1.3), not an amendment to this record.' §1.3 then qualifies: 'ADR-008 §2.2 fixes both controls as *human* review with a named human answerable; any future non-human role-holder is therefore an amendment question for that upstream authority.' The Decision line asserts flatly that holder-set changes are non-amendment acts, while the section it cites carves an unbounded exception. The decision as enumerated does not decide what its own body supports — the qualifier is decision content absent from the enumeration.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 Decision.3 vs §1.3 (non-human-holder amendment carve-out)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "§4.4 / Decision.5 — parameter-store placement ruling",
+    "claim": "§4.4 decides 'The parameter store homes with the detection-promotion mechanism (the component that consumes it) — ownership follows consumption.' This is a concrete design ruling about a component's ownership of state. Decision.5 fixes 'one EA-owned, data-configured, audit-logged, fresh-read parameter mechanism' but does not surface the placement ruling — where the store homes is decision content present in the body and absent from the Decision enumeration.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §4.4 (parameter-store placement) vs Decision.5 (parameter mechanism enumeration)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "§7.3 traversal-reachability claim vs §2.2 / §8 check 6 / §9",
+    "claim": "§7.3 asserts the per-dimension verdicts (§2.2) are part of 'the record of who ruled what, on which candidate, on what basis ... reachable by traversal from the governed fact itself.' But §2.2 states 'a structured queryable capture shape is a named gap realized by a future additive graph-schema amendment at first real use,' §8 check 6 marks per-dimension capture 'design-review-enforced, interim' with 'mechanized capture arrives with the structured-capture gap (§9),' and §9 carries 'Structured diagnosis capture' as a named gap. The interim carrier for per-dimension verdicts is unstructured decision rationale, which is not traversable-by-dimension. §7.3's traversal-reachability claim about the per-dimension record is not supported for the interim state the record occupies.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §7.3 (per-dimension verdicts reachable by traversal) vs §2.2 / §8 check 6 / §9 (structured capture deferred)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "§4 parameter enumeration vs §7.1 / §7.2 working-tier scoping",
+    "claim": "§4 lists 'working-tier retention windows (§7.1)' as a single named calibration parameter and §4.3 validates 'every §7.1 working-tier retention window' against lookbacks, implying multiple windows. §7.1 class (3) states 'bounded retention windows, values deferred (§4)' — plural — while §4 names one parameter. Additionally §7.2 states class-2 Evidence 'is exempt from expiry until a survival mechanism ... lands' — whether that exemption is itself a §4 parameter or a fixed interim is not consistently declared between §4's parameter set and §7.2. The retention-parameter decision is stated at differing cardinality and scope across §4 and §7, so a reader cannot determine what the §4 mechanism actually governs.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §4 (single 'working-tier retention windows' parameter) vs §7.1/§7.2 (plural class-3 windows; class-2 exemption scope undeclared)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["DDR-003"],
+    "locus": "Cross-References — DDR-002 invariant list vs body",
+    "claim": "The Cross-References DDR-002 entry lists 'the cited invariant set: #9, #15, #19, #20, #21, #22, #25.' The body cites #9 (§2.1, §5.1), #15 (§2.1, §6.2), #19 (§6.3), #21 (§6.1), and #22 (§6.1, §6.3) — but #20 (at-promotion ProvenanceSummary materialization + completeness) and #25 (proposal_kind ↔ RETRACTS consistency) are cited nowhere in the body by number or subject. The Cross-References enumeration overstates the set the record actually leans on; per the point-don't-mirror convention, the list should reflect what the record cites.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 Cross-References DDR-002 invariant list (#20, #25 enumerated) vs body (#20, #25 uncited)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["DDR-003"],
+    "locus": "§9 named gap 'Executed-retraction detection analogue' vs Decision block",
+    "claim": "§9 names the 'Executed-retraction detection analogue' as a DDR-003 named gap ('a future additive graph-schema amendment plus conformance-harness entry, at first real retraction instance'). Decision.7 surfaces the forward-act re-admission rule but does not surface that a standing detection dependency is carried open — a reader treating the Decision enumeration as the contract's index would not learn from Decision.7 that re-admission's structural completeness rests on an unbuilt, unowned amendment. Enumeration-completeness drift, not a contradiction: the gap is fully stated in §6.2/§9, only not indexed at Decision.7.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 Decision.7 vs §6.2 / §9 (executed-retraction detection gap not indexed at Decision.7)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-003"],
+    "locus": "§6.1 / §6.2 — remedy boundary and re-admission",
+    "claim": "Attacked the remedy-boundary decision from the LAA altitude for scope overreach — whether it smuggles supersession/retraction mechanics that belong to the schema or upstream. It held: §6.1 decides only the replaceability-first / conjunctive-retraction *policy test*, records the defect-at-promotion-vs-world-moved axis as informing-only ('never decides the remedy'), and explicitly cites the landed mechanics (DDR-002 §7 #21/#22; SDD-001 §3.5.3–§3.5.4) as executing, not re-authored; §6.2 decides the re-admission *policy* (forward-act only) and keys read-exclusion on the executed RETRACTS edge 'exactly as landed' per DDR-002 §5. The decision stays at policy altitude, names its dependencies, and declares its durable-determination consequences.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §6.1/§6.2 vs ADR-008 §2.6 (remedy boundary routed here) + DDR-002 §5 / §7 #21/#22 (executing mechanics cited, not re-authored)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-003"],
+    "locus": "§9 — named gaps and routed forward dependencies",
+    "claim": "Attacked the record for smuggled commitments — decisions riding along without being surfaced as gaps. It held for the deferral surface: §9 declares each in-scope-but-unlocked item (candidate-ObservedPattern shape, structured diagnosis capture, decision-consumed survival mechanism, multi-condition composition, calibration values, access-model surface) with a named owner and reversal path, and each is consistent with a body reference (§5.1, §2.2, §7.2, §6.3, §4). Dependencies are named and routed rather than quietly assumed decided — the record does not claim to have settled what it defers.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §9 vs §5.1/§2.2/§6.3/§7.2 body references (each deferral named with owner and reversal path)"
+    }
+  }
+]

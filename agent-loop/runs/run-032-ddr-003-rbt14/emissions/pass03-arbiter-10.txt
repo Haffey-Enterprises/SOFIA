@@ -1,0 +1,7 @@
+{
+  "finding_id": "dc3ea36f08508190",
+  "classification": "resolvable",
+  "authority_locus": "DDR-003 §2.2 / §8 item 6 / §9 (structured-capture named gap; per-dimension capture interim carrier = unstructured decision rationale)",
+  "rationale": "Internal-consistency fix: §7.3's traversal-reachability claim must conform to the record's own already-ratified interim posture (unstructured rationale, structured capture deferred); the record dictates the correction.",
+  "confidence": "high"
+}

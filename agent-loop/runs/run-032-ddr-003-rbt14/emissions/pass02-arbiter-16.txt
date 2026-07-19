@@ -1,0 +1,1 @@
+{"finding_id":"45f3682dafee4d74","classification":"decision-bearing","authority_locus":null,"rationale":"No ratified authority dictates whether a new record pins the current-latest ADR-002 v1.2.0 or awaits the cross-record RBT-66 cascade; two conforming options, none disambiguated.","confidence":"high"}

@@ -1,0 +1,1 @@
+{"finding_id":"70f37765c22f9c02","classification":"decision-bearing","authority_locus":null,"rationale":"ADR-008 §2.2 requires the distillation control but does not dictate whether the interim posture forecloses the write path now versus deferring the gate; that posture choice is unratified.","confidence":"high"}

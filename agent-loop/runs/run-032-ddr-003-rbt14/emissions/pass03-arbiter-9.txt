@@ -1,0 +1,7 @@
+{
+  "finding_id": "203bd35121678397",
+  "classification": "resolvable",
+  "authority_locus": "DDR-003 §8 item 4 vs §6.2/§9 (internal claim-vs-body consistency); Obligation 7 ratified rule (read-exclusion keys on executed RETRACTS edge; re-admission always a forward EA-gated act)",
+  "rationale": "Finding is a wording overclaim: the ratified rule keys read-exclusion on the RETRACTS edge, so 'holds by construction' must be re-scoped to name its behavioral/deferred parts per the record's own §6.2/§9 text.",
+  "confidence": "high"
+}

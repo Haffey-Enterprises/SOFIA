@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "268d4624661cefec",
+  "reason": "The named authority (DDR-002 §7 #9 / §5 + DDR-001 check 4) establishes the no-leak invariant's enforcement locus for proposal-visibility, but the finding's actual complaint is that a safety-relevant control is left aspirational without its consequence surfaced as a risk — and that authority does not determine how, or whether, to re-label check 5's enforcement marker or add a consequence statement. Multiple conforming edits exist (re-tier, re-cite, add risk note); the authority uniquely determines none, so it is an unratified choice belonging to escalation.",
+  "confidence": "high"
+}

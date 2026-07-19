@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "d2143b46294477c2",
+  "reason": "The named authority (body-integrity: 'an amendment that adds a ruling updates the Decision enumeration') governs amendments that ADD a ruling; it does not uniquely determine how to surface the §5.1 interim foreclosure in the existing Decision block. Decision.6 already enumerates §5.1's distillation governance, so whether a new sub-decision is warranted, and its exact wording, is an authoring choice the authority does not fix; the deliberation Obligation 5 is not quoted verbatim and its ratified text is not before me to derive an exact conforming clause.",
+  "confidence": "high"
+}

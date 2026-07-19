@@ -1,0 +1,1 @@
+{"finding_id":"244cf71fbb90190b","classification":"decision-bearing","authority_locus":null,"rationale":"Retention-window cardinality and whether the class-2 exemption is a §4 parameter are unruled config values (n=0, values deferred); no authority disambiguates what the mechanism governs.","confidence":"high"}

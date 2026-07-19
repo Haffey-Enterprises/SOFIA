@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "f0a9b46fc0f60dca",
+  "reason": "The named authority (internal consistency across §2.2/§8-6/§9) establishes that structured per-dimension capture is deferred and the interim carrier is unstructured rationale, but it does not uniquely determine how to conform §7.3's traversal-reachability claim: one could qualify it ('the decision act is reachable; per-dimension structured capture arrives with the gap'), drop the per-dimension clause, or restate it as content-bound-only — multiple conforming edits, an unratified choice among them.",
+  "confidence": "medium"
+}

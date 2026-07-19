@@ -1,0 +1,1 @@
+{"finding_id":"9f22f39b371c84bc","classification":"decision-bearing","authority_locus":null,"rationale":"Reconciling the 'holds by construction' claim against the conceded detection gap requires an unmade choice: correct the wording, add a schema check, or ratify reviewed-discipline as sufficient \u2014 no authority disambiguates.","confidence":"high"}

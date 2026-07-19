@@ -1,0 +1,11 @@
+The current DDR-003 Cross-References DDR-002 entry reads "#9, #15, #19, #21, #22" — #20 and #25 do not appear. The finding describes a text ("#9, #15, #19, #20, #21, #22, #25") that is not in the current document; the offending strings #20 and #25 are absent from the enumeration.
+
+{
+  "action": "close_satisfied",
+  "finding_id": "8ec60612872309df",
+  "evidence_present": "§7 (the cited invariant set: #9, #15, #19, #21, #22)",
+  "evidence_absent": "#9, #15, #19, #20, #21, #22, #25",
+  "authority_satisfied": "author-decision-record SKILL, body-integrity: section-citations-are-facts — DDR-003 Cross-References DDR-002 invariant list",
+  "rationale": "The current enumeration already lists only #9, #15, #19, #21, #22; the finding's overstated '#20, #25' string does not appear in the fetched document.",
+  "confidence": "high"
+}

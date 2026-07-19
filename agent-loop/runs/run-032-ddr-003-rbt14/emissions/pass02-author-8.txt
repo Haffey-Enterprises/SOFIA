@@ -1,0 +1,10 @@
+{
+  "action": "edit",
+  "finding_id": "796e0e3670293968",
+  "target": "DDR-003",
+  "old_string": "1. **Non-bypassable gates** *(safety-relevant; mechanized)* — promotion and un-promotion ride the landed gate invariants (DDR-002 §7 #9, #15, #21, #22; DDR-001 conformance check 4)",
+  "new_string": "1. **Non-bypassable gates** *(safety-relevant; aspirational — mechanization deferred per DDR-001)* — promotion and un-promotion ride the landed gate invariants (DDR-002 §7 #9, #15, #21, #22; DDR-001 conformance check 4)",
+  "authority_conformed": "DDR-001 'Conformance Checks (aspirational; mechanization deferred)' section header + closing italic line ('Aspirational checkpoints — mechanized enforcement is deferred, not CI-enforced at authoring.')",
+  "rationale": "The cited DDR-001 authority heads its check set aspirational and states mechanization is deferred, contradicting the 'mechanized' label; conforming the status word to that authority is determined.",
+  "confidence": "medium"
+}

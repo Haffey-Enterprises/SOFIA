@@ -1,0 +1,7 @@
+{
+  "finding_id": "c9005cb660ff5dfb",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "ADR-008 §2.2 fixes distillation's control-type (human review) but routes the checkpoint's realization to DDR-003; whether that mandates an interim bar on distillation writes is the very policy DDR-003 is authoring, not a settled choice.",
+  "confidence": "medium"
+}

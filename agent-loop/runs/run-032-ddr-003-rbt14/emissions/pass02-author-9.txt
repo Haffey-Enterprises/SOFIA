@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "3e6f5ca5fe1bc87c",
+  "reason": "The named authority (§2.2/§8.6/§9) establishes that structured per-dimension capture is deferred and the interim carrier is unstructured rationale, but it does not uniquely determine how §7.3 should be reworded — whether to delete the per-dimension clause, add an interim qualifier, downgrade 'reachable by traversal' to 'recorded on the decision act,' or scope the claim to the landed-schema portion. Multiple conforming edits exist; choosing among them is an unratified authoring decision, not a mechanical conformance.",
+  "confidence": "medium"
+}
