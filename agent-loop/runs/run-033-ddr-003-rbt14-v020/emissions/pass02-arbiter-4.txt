@@ -1,0 +1,1 @@
+{"finding_id":"785aa69f930a188b","classification":"decision-bearing","authority_locus":null,"rationale":"How retention >= lookback binds across a multi-role joined read is a choice no ruled authority (D7, D4, Obligation 4, or DDR-002 span rules) disambiguates.","confidence":"medium"}

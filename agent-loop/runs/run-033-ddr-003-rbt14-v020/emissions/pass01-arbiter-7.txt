@@ -1,0 +1,1 @@
+{"finding_id":"25b618be8125208a","classification":"decision-bearing","authority_locus":null,"rationale":"Whether non-selected candidates' Evidence is class-2 or class-3 is an unratified choice the record's own \u00a79 defers with the survival-mechanism gap; no authority disambiguates.","confidence":"high"}

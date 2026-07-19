@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "97c19cf0989593ce",
+  "reason": "The named authority (ADR-008 §2.2 Environment row + §2.1) fixes per-policy accountability only for the Environment class; it neither fixes nor holds-contested an accountability mode for §5.4 distillation-plane archival, and the deliberation-record ruling it invokes is not in evidence. The finding asks that the per-policy assignment be re-cast as provisionally-held under the mechanism-now/values-held cut, but the authority does not determine whether §5.4's mode is form-fixed or a held constant, nor supply the conforming re-wording — that is an unratified choice, so I cannot derive a unique edit.",
+  "confidence": "high"
+}

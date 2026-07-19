@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "8ac5cb566011be22",
+  "reason": "The named authority (run-032 D2 + Obligation 5, and ADR-001 §2.4) ratifies the §5.1 interim posture and its ADR-008 §6 enforcement locus as design intent — it affirms the current text rather than determining a change. It fixes no scheduling/proportionality language, so no unique edit conforming §5.1/§8 to a 'timing is proportionate' requirement is derivable; supplying one would author an unratified schedule commitment.",
+  "confidence": "high"
+}

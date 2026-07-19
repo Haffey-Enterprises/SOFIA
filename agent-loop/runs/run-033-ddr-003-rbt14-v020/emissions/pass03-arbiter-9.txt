@@ -1,0 +1,1 @@
+{"finding_id": "5bdc30dabc063f05", "classification": "decision-bearing", "authority_locus": null, "rationale": "Which role's window governs a cross-role lookback read is a choice no ratified authority or docket ruling disambiguates; D7 fixed per-role windows but did not resolve the cross-role floor.", "confidence": "high"}

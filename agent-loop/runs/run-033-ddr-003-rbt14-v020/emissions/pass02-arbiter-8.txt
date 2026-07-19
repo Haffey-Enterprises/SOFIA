@@ -1,0 +1,1 @@
+{"finding_id":"a51a58e84608a1b8","classification":"decision-bearing","authority_locus":null,"rationale":"Non-selected-candidate Evidence disposition into a retention class is silent in authority; the record itself defers it to the survival-mechanism gap, so no ratified authority partitions the space.","confidence":"high"}

@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "26f1d85f29fe8396",
+  "reason": "D4/D7 restate Decision.10 as three RG classes + Operational posture and fix class 3 as per-role windows; neither ruling decides where non-selected candidates' Evidence lands. The finding's own coherence claim is that class-3's 'outside classes 1–2' catch-all conflicts with §7.1's explicit deferral of that same case to §9 — resolving it requires deciding whether non-selected Evidence falls into class 3 or the gap, a choice no named authority makes.",
+  "confidence": "high"
+}

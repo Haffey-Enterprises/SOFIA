@@ -1,0 +1,7 @@
+{
+  "finding_id": "f79965597de1b5f2",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "Assigning non-selected-candidate Evidence to a retention class is an unmade choice; D4/Obligation-4 defined class 2 by selected-trail closure and no authority disambiguates the non-selected case.",
+  "confidence": "high"
+}

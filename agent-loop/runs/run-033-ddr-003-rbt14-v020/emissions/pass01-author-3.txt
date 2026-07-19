@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "27b7fb914c7e8438",
+  "reason": "The finding identifies an under-declared consequence (whether detection-mechanism candidate-surfacing to the distillation-reviewer is bound by the human-review fence) but the named authority — ADR-008 §2.2 (control is on the distinct distilled judgment), §2.1 (gateway executes, control is on the judgment), and docket 3H-M3 (detection deterministic, diagnosis human) — establishes only that judgment stays human and detection may be deterministic; it does not dictate a unique sentence, locus, or wording to add. Conforming would require authoring a new reconciling clause and choosing where and how to place it, which is design, not derivation.",
+  "confidence": "high"
+}

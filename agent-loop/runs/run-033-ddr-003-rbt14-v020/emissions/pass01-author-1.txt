@@ -1,0 +1,10 @@
+{
+  "action": "edit",
+  "finding_id": "20a11134e68551c9",
+  "target": "DDR-003",
+  "old_string": "- **Decision.7 — Remedy boundary.** A promoted fact found wrong is remediated on a **replaceability-first** test: **supersession** (the default) when a correct replacement exists; **retraction** (the exception) only when the fact should never have been promoted **and** no correct replacement exists (§6.1).",
+  "new_string": "- **Decision.7 — Remedy boundary.** A promoted fact found wrong is remediated on a **replaceability-first** test: **supersession** (the default) when a correct replacement exists; **retraction** (the exception) only when the fact should never have been promoted **and** no correct replacement exists — the determination records durably a **defect-at-promotion versus world-moved** classification that informs the record but never decides the remedy (§6.1).",
+  "authority_conformed": "run-032-docket-rulings D4 (Decision-enumeration completeness) + DDR-003 §6.1's committed defect-at-promotion/world-moved recording obligation",
+  "rationale": "D4 requires the Decision enumeration surface what the body rules; §6.1 commits the defect-at-promotion/world-moved recording axis, absent from Decision.7 — this surfaces it verbatim to §6.1's own framing.",
+  "confidence": "medium"
+}

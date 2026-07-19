@@ -1,0 +1,1 @@
+{"finding_id":"2d7aae7d855bffd3","classification":"decision-bearing","authority_locus":null,"rationale":"DDR-003 §9 itself defers whether non-selected-candidate trails warrant class-2 survival to the survival-mechanism gap; no ratified authority partitions this live case, so completing the total function requires an unmade choice.","confidence":"high"}

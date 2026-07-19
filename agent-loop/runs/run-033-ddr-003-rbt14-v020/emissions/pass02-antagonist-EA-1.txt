@@ -1,0 +1,62 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "§5.1 interim posture + §8 conformance item 2 — the Operational plane's indefinite non-conformance",
+    "claim": "§5.1 rules that 'until that shape and the review surface land, no distillation write into the Operational plane is conforming,' enforced only at 'ADR-008 §6's review checkpoint pending mechanization in the detection-promotion service design (forthcoming).' This commits the platform to a position — an entire committed lifecycle-spanning KG plane (ADR-001 §2.4: the invariant binds 'from idea capture through solutioning to operational onboarding') is unwritable in any conforming way — whose reversibility depends on two forthcoming, unauthored designs (the candidate shape via a future graph-schema amendment; the review surface via the detection-promotion service design) with no stated dependency timing. The 'no distillation traffic runs' justification establishes the cost is currently zero but not that the timing is proportionate: a hard-to-reverse foreclosure of a committed lifecycle stage gated on unscheduled work deserves justification proportionate to the cost of the foreclosure, which the record does not supply.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "ADR-001 §2.4 — 'The reasoning-capture invariant binds across the full enterprise SDLC ... plus an always-on operational feedback substrate'; the Operational plane and its distillation are a committed lifecycle stage, and DDR-003 §5.1 renders it non-conforming-by-default with no scoped exit"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "§7.2 survival exemptions + §4 parameter mechanism — interim exemptions with no defined exit event",
+    "claim": "§7.2 commits two interim survival exemptions (decision-consumed Evidence; promotion-consumed substrate) 'held until their deferred survival mechanism lands,' and §7.1 defers every class-3 retention window and every §4 lookback value to operational-onboarding calibration. The decision-consumed survival mechanism is itself a named-but-unscheduled graph-schema gap (§9). The record states the exemptions are 'reversible at zero traffic' but names no event that forces them to resolve into a real mechanism — the interim is therefore a standing commitment with no defined exit rather than a bounded bridge. A hard-to-reverse commitment (an accumulating never-expiring retention exemption that grows with every gated promotion once traffic begins) requires justification proportionate to the cost of undoing it; the record supplies only 'non-load-bearing meanwhile' and the zero-traffic floor, neither of which bounds the interim's duration.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-008 §2.4 — 'the traceable rationale of a decision that consumed a ground-truth fact must survive that fact's later mutation'; DDR-003 §7.2 discharges this via an exemption whose resolution trigger is unstated"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "§6.2 + §9 executed-retraction detection analogue vs ADR-008 §5.3",
+    "claim": "DDR-003 §6.2/§9 rules the executed-retraction detection analogue (the retraction-side mirror of the promoted-origin invariant) as deferred-with-trigger, justifying the deferral as safe because §6.2's forward-act-only rule makes the missing detection 'an audit-reconciliation concern rather than a consumption defect.' But ADR-008 §5.3 already named this exact gap as a standing *Risk* requiring tracking ('a re-decided executed retraction has no standing detection analogue yet ... the detection mechanics are a named schema / governance follow-up'). DDR-003, as the governance authority ADR-008 routes this to, accepts the deferral without re-weighing the ledger-reconciliation cost the upstream risk names — an unreconcilable governance ledger for the entire pre-first-retraction lifecycle. A deferral of an audit-integrity property that an upstream authority flagged as a risk deserves justification proportionate to that cost; 'non-load-bearing meanwhile' asserts the read-path is safe but does not address the audit-integrity dimension ADR-008 §5.3 raised.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-008 §5.3 Risks — 'Executed-retraction re-decision detection ... a re-decided executed retraction has no standing detection analogue yet'; DDR-003 §6.2/§9 defers without re-weighing the ledger-reconciliation cost"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["DDR-003"],
+    "locus": "§5.4 archival accountability-mode assertion vs the mechanism-now/values-held cut",
+    "claim": "§5.4 states archival after a reviewed terminal transition is 'a policy-scheduled act under per-policy accountability.' The per-policy (rather than per-write) accountability-mode assignment for archival is stated definitively, under the same n=0 empirical floor (n=0 distillations, n=0 archivals) at which §4 explicitly holds its constants as contested. The Rationale commits that 'everything reversibility-expensive or upstream-anchored is ruled now; every calibration value ... is held.' Whether archival is per-policy or per-write is an accountability-mode calibration whose driving instance is absent; the record does not mark it as a form-fixed/mode-held distinction the way §4 handles its parameters, so a mode assignment lacking a driving instance reads as settled rather than provisionally posture-fixed.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "DDR-003 Rationale — the mechanism-now/values-at-onboarding cut ('Form is fixed; constants are held') applied to §5.4's per-policy archival accountability mode, asserted rather than held under the same n=0 floor"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-003", "ADR-008"],
+    "locus": "Decision block + §1.1 authority chain — altitude integration",
+    "claim": "Checked whether DDR-003 pulls against ADR-008's ratified principle layer by re-deciding what ADR-008 already fixed, or authors above its altitude. It held: the record consistently cites ADR-008 §2.2/§2.3/§2.4/§2.5/§2.6 as upstream authority, authors only the policy layer ADR-008 §2.6 explicitly routes to the feedback-loop governance design (remedy boundary, diagnosis dimensions, roles, calibration, retention, audit), converts landed schema commitments (the gate invariants, the retraction shape, the supersession model) to citations rather than re-rulings, and states the one premise ADR-008 superseded (the formerly-ungated distillation write becoming the reviewed distillation class) as an applied learning rather than a silent re-decision. It does not re-litigate the entry-checkpoint principle or the promotion-class control-type; it instantiates them. The integration with the prior ratified decisions is sound at this altitude.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-008 §2.6 governance boundary — 'the remedy boundary ... together with promotion and review criteria ... is owned by the forthcoming feedback-loop governance design, which cites this ADR as authority'; DDR-003 fills exactly that boundary without altitude leakage"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-003"],
+    "locus": "§6.1 remedy boundary + §6.2 re-admission — reversibility-proportionality",
+    "claim": "Attacked the remedy boundary for reversibility-proportionality — whether the retraction/supersession split commits a hard-to-reverse position without proportionate justification. It held: supersession is the default (reversible by lineage retention), retraction is the conjunctive narrow exception (should-never-have-been-promoted AND no correct replacement) carrying a durable why-no-replacement record, and re-admission is ruled as always a forward EA-gated act so no ledger side-effect can silently re-admit ground truth — un-retraction has a defined forward path via re-promotion. The irreversible-feeling act (retraction) is the narrow, well-documented exception, and its reversal path is explicit. The reversibility posture is proportionate to risk and correctly grounded in ADR-008 §2.6's replaceable-vs-retracted boundary.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-008 §2.6 remedy boundary + §2.3 un-promotion authority; DDR-003 §6.1/§6.2 instantiates the boundary with a proportionate reversibility posture"
+    }
+  }
+]

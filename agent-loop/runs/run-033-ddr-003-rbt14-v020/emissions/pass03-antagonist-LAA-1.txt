@@ -1,0 +1,92 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "§6.2 re-admission vs §6.1 retraction prong",
+    "claim": "§6.1's retraction prong fires only when 'no correct replacement exists.' §6.2 then rules 'Un-retraction executes as re-promotion: a fresh forward candidate through the full EA gate, materializing a new active version via the supersession path (DDR-002 §6) — the replaceability-first test applied to the retraction itself (the valid fact is its own correct replacement).' The record decides a re-admission consequence its own remedy-boundary premise does not support: retraction presupposes no replacement exists, yet re-admission asserts 'the valid fact is its own correct replacement' and routes 'via the supersession path,' which per DDR-002 §6 Option A requires a retained predecessor version node to mark superseded — but the retracted node was read-excluded via a RETRACTS edge, not left as a live version. The consequence of the re-admission decision on the standing RETRACTS edge is not declared.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §6.2 ('via the supersession path', 'the valid fact is its own correct replacement') in conflict with §6.1 retraction prong ('no correct replacement exists') and DDR-002 §6 supersession requiring a superseded predecessor version"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "§7.1 retention class 2 vs §9 non-selected-candidate deferral",
+    "claim": "§7.1 decides retention class 2 as 'Evidence in the SUPPORTED_BY closure of the reasoning trail of a session that PRODUCED a Solution which reached the selection-constituting `approved` gate outcome,' then in the same section concedes 'Whether non-selected candidates' reasoning trails warrant class-2 survival resolves with the survival-mechanism gap (§9).' Decision.10 states the retention model as a decided three-class RG partition, but the class-2 boundary is not total: a session PRODUCEs multiple candidate Solutions (DDR-002 §5, PRODUCED 0..*), and the Evidence of non-selected candidates is assigned to neither class 2 nor class 3. The record commits a retention-class partition whose membership is undecided for a live case — a scope gap in what Decision.10 claims to decide.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 Decision.10 / §7.1 class-2 definition in conflict with §7.1's own §9 deferral of non-selected-candidate survival; the retention-class partition is left non-total"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "§4.3 retention ≥ lookback / Decision.5 vs §7.1 class-3 per-role windows and §3.1 signals",
+    "claim": "Decision.5 and §4.3 commit a binding coherence rule: 'Every §7.1 working-tier retention window must be greater than or equal to every detection lookback window that reads the retained data,' validated at configuration time. §7.1 class 3 decides 'per-role retention windows (one per RG role).' §3.1 decides signals — override-recurrence — that traverse a joined multi-role trail (ReasoningProgress conclusions, their RejectedAlternative overrides, and per DDR-002 §5 PROPOSED_FROM potentially Evidence). When one lookback reads across roles carrying different windows, the effective retention floor is the shortest window among the roles traversed; §4.3 states the rule per-window against 'every detection lookback window that reads the retained data' but does not decide which role's window governs the cross-role read. The record decides both per-role windows and a per-window coherence rule without reconciling the multi-role read case §3.1 commits, leaving §4.3's binding validation undecided for exactly those signals.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §4.3 / Decision.5 (retention ≥ lookback, per-window) vs §7.1 class-3 per-role windows and §3.1 signals traversing multiple RG roles"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "§9 'discharging the graph schema's §2.4 routing at the policy layer' vs DDR-002 §2.4",
+    "claim": "§9's executed-retraction gap entry states its ruling is 'discharging the graph schema's §2.4 routing at the policy layer.' DDR-002 §2.4's retraction re-decision text routes two items to DDR-003: the un-retraction remedy AND 'a standing detection analogue of #15 for executed retractions.' §6.2 rules the remedy (forward-act re-promotion) but §9 explicitly re-defers the detection analogue to a named gap. The record's claim that it discharges the §2.4 routing overstates what it decides: one of two routed items is discharged, the other re-deferred — the routed obligation is partially met, and the prose asserts a discharge the record's own §9 deferral contradicts.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §9 'discharging the graph schema's §2.4 routing at the policy layer' in conflict with DDR-002 §2.4 (routes both the un-retraction remedy AND a standing detection analogue) — §6.2/§9 defer the detection analogue"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "Decision.3 / §1.3 human-review fence vs §3.4 / §5.1 automation surface",
+    "claim": "Decision.3 and §1.3 decide that a non-human role-holder is an ADR-008 §2.2 amendment question while role-holder widening is a routine access-model act. §3.4 decides detection as 'deterministic encoded logic over captured graph state' and §5.1 requires a distillation candidate excluded from traversal until the distillation-reviewer approves. The record does not declare whether the detection mechanism surfacing a candidate to the reviewer, and the candidate-review-surface automation, sit inside or outside the ADR-008 human-review fence the record itself asserts. The consequence of the human-only fence on the loop's automation surface — where the assignment-vs-amendment line falls for automating the review workflow as distinct from the judgment — is a side effect of the role/detection decisions that the record leaves undeclared.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 Decision.3/§1.3 (human-only fence; automation of detection permitted at §3.4) vs §5.1 candidate-surfacing — the fence's scope over the detection/candidate-surfacing automation is under-declared"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["DDR-003"],
+    "locus": "§2.2 diagnosis dimension 5 forward reference '(§6.3)'",
+    "claim": "§2.2 dimension 5 reads 'Conditional-vs-unconditional applicability — whether the knowledge is universally safe or scope-bounded; this dimension drives `approved_conditional` (§6.3).' §6.3, titled 'Conditional-scope governance,' decides the re-scope deliberation obligation and the multi-condition interim posture — the governance of existing conditional facts — not how dimension-5 diagnosis produces an `approved_conditional` verdict or authors the initial `Condition` predicate at the gate (stated only glancingly as 'the predicate is EA-authored in the approval act'). A reader following the '(§6.3)' pointer for the mechanism the sentence promises lands on re-scope/multi-condition content; the cross-reference target does not carry the gate-time authoring it is cited for.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §2.2 dimension-5 forward reference '(§6.3)' vs §6.3 content scope (re-scope obligation + multi-condition interim, not gate-time Condition authoring)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["DDR-003"],
+    "locus": "§5.4 archival accountability-mode assertion vs Rationale mechanism-now/values-held cut",
+    "claim": "§5.4 decides archival after a reviewed terminal transition is 'a policy-scheduled act under per-policy accountability.' The Rationale commits the record's own cut: 'everything reversibility-expensive or upstream-anchored ... is ruled now; every calibration value ... is held,' under a stated n=0 floor (n=0 distillations, n=0 archivals). Whether archival carries per-policy versus per-write accountability is an accountability-mode assignment whose driving instance is absent; §4 marks its comparable calibration parameters as form-fixed/values-held, but §5.4's per-policy characterization is asserted as settled rather than surfaced as a form-fixed/instance-absent distinction consistent with the record's own declared discipline.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §5.4 (per-policy archival accountability, asserted) vs the Rationale's mechanism-now/values-held cut applied to §4's constants under the stated n=0 floor"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-003"],
+    "locus": "§9 named gaps + Pre-Acceptance Conditions vs the body's declared deferrals",
+    "claim": "Attacked the record for smuggled deferrals — commitments made in body prose that ride along without being surfaced as a decision or a named gap (a scope defect from this altitude regardless of merit). Traced every body deferral to §9: candidate-ObservedPattern shape (§5.1→§9), executed-retraction detection analogue (§6.2→§9), structured diagnosis capture (§2.2→§9), decision-consumed survival mechanism (§7.2→§9), multi-condition composition (§6.3→§9), all §4 calibration values (§4→§9), batch guardrails (§2.3→§9), access-model surface (§1.3→§9), retrieval affordance (§7.2→§9). Each has a matching §9 entry with a named owner and a reversal path, and Pre-Acceptance Conditions correctly states every deferral is a named gap, not an acceptance condition. The deferral-declaration discipline held under attack.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §9 + Pre-Acceptance Conditions ↔ body deferrals — every deferral surfaced as a named gap with owner and reversal path, none smuggled"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-003"],
+    "locus": "Decision block (Decisions 1–10) vs the decided rulings in §§1–7",
+    "claim": "Attacked the Decision-block-as-contract-index discipline — whether load-bearing rulings ride in the body without appearing in the enumeration. Traced the centerpiece rulings and back: two-controls seam (Decision.1/§1.2), five diagnosis dimensions (Decision.2/§2.2), role split with human-review amendment boundary (Decision.3/§1.3), no-leak invariant (Decision.4/§3.2), parameter mechanism (Decision.5/§4), distillation candidate/lifecycle/revalidation/archival (Decision.6/§5), remedy boundary (Decision.7/§6.1), conditional-scope (Decision.8/§6.3), cross-class four-outcome resolution (Decision.9/§6.4), retention-class model and audit posture (Decision.10/§7). Each traces to its body section and back. The load-bearing decisions all resolve in the enumeration; the index discipline held, with only under-surfaced components (the §6.1 classification axis, the §4.3 coherence rule) reported as defects.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 Decision block ↔ §§1–7 — enumeration traced against decided rulings; load-bearing decisions all surfaced"
+    }
+  }
+]

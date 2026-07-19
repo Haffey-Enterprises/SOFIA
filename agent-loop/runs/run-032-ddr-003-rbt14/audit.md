@@ -46,6 +46,10 @@ Recomputed from the `llm_call` stream at Opus-class list pricing: uncached input
 
 D1 References-pin currency (6 + 1 unresolved) · D2 §5.1 interim-posture wording vs DDR-002 §2.3's defined write shape (8) · D3 §7.3 per-dimension traversal-reachability tense vs deferred structured capture (4) · D4 Decision-enumeration completeness (Decision.3/.7/.10 vs body nuances) (7) · D5 §8 enforcement-state labels (split mechanized/aspirational; "holds by construction" qualification; safety-relevant-but-aspirational tiering) (7, incl. oscillation `796e0e36`) · D6 executed-retraction detection-analogue ownership wording vs DDR-002 §2.4's routing (6) · D7 §4 "working-tier retention windows" plurality (3) · D8 Position-4 trajectory note request (1) · D9 Cross-References invariant-list cite-vs-trim (2, incl. reopen `1450d89d`). Member finding-ids and per-decision recommendations in the session docket presentation; rulings are the operator's.
 
+## 8a. Correction addendum (2026-07-19, post-run-033; registry pattern)
+
+§6's $69.7 recompute and the envelope-breach finding are **corrected**: the arithmetic used legacy Opus per-token rates; at the run's actual model (`claude-opus-4-8`) list rates ($5/$25/$10/$0.50 per M), run-032 recomputes to **≈$23.2** — inside the $30–50 envelope, and consistent with the live figure. What survives of §6: the four-line-item reporting convention (adopted; honored by run-033's RAW-RESULT) and the cost-structure observation (cache-read volume at the arbiter/author sites as the dominant line — cost-architecture substrate). The §3e "watch was blind" claim is withdrawn. The audit's error, not the runner's — logged per the correction-registry discipline.
+
 ## 9. Empirical floor
 
 One run, one fresh document, n=1 for every fresh-document observation. The 0-RELIT and 0-arbiter-born observations are single-run measurements on a target whose deliberation record was in substrate — the favorable conditions are part of the result. No isolation run recommended; the docket rulings + amendment cycle are the next natural data.

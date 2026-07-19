@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "ddf026d7b2e43d75",
+  "reason": "The named authority (docket ruling D6) affirms DDR-003 is terminus of DDR-002 §2.4 routing with governance ruled and realization deferred — which supports the current 'discharging' phrasing rather than uniquely determining a corrective edit. The finding asks to soften 'discharges' to 'partially discharges,' but D6's ratified language treats the routing as discharged at the policy layer (both the remedy AND the detection-analogue governance are ruled here; only realization defers), so the authority does not determine that the prose overstates — it arguably ratifies it. No unique conforming edit follows.",
+  "confidence": "medium"
+}

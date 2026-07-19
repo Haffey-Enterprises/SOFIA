@@ -1,0 +1,1 @@
+{"finding_id":"7f2f5899176921d2","classification":"decision-bearing","authority_locus":null,"rationale":"No ratified authority fixes the exit trigger or duration bound for the retention-exemption interim; ADR-008 §2.4 mandates survival but not the exemption's resolution event, leaving a gap.","confidence":"high"}

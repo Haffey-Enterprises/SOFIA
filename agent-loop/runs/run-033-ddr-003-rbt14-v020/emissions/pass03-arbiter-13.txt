@@ -1,0 +1,1 @@
+{"finding_id":"31f38b8607243870","classification":"decision-bearing","authority_locus":null,"rationale":"ADR-008 §2.5 commits withhold-and-escalate to human resolution but sets no held-out duration bound; whether to add a staleness bound, escalation, or forced-disposition trigger is an unmade choice.","confidence":"high"}

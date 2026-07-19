@@ -1,0 +1,1 @@
+{"finding_id":"e00565412291f487","classification":"decision-bearing","authority_locus":null,"rationale":"Re-admission mechanics against a RETRACTS-excluded (not superseded) node are unspecified; no ratified authority determines what re-promotion supersedes or how it interacts with the standing RETRACTS edge.","confidence":"high"}

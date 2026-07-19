@@ -1,0 +1,9 @@
+{
+  "action": "close_satisfied",
+  "finding_id": "21df85787a799e93",
+  "evidence_present": "ADR-008 §2.2 fixes both controls as *human* review with a named human answerable; any future non-human role-holder is therefore an amendment question for that upstream authority, not an assignment act under this record.",
+  "evidence_absent": null,
+  "authority_satisfied": "ADR-008 §2.2 (both controls fixed as human review) — the assignment/amendment line is exactly the human/non-human boundary, which §1.3 already states verbatim.",
+  "rationale": "The named authority sets the boundary at human/non-human; §1.3 already fixes precisely that line (widening the human holder set = assignment; any non-human holder = amendment), so the text already conforms.",
+  "confidence": "high"
+}

@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "81be1a7569d1314d",
+  "reason": "The named authorities do not uniquely determine an edit. ADR-008 §2.2 assigns per-policy vs per-write by source class but does not address the archival accountability-mode of a distillation lesson's terminal-state retention demotion; the cited run-032 docket ruling (a) — that archival is a policy-scheduled retention demotion, not a reviewed judgment — actually supports the document's current per-policy framing rather than requiring a held-constant re-marking. The finding wants the mode re-cast as provisionally-held (like §4's constants), but neither authority prescribes that wording or determines whether/how to mark it as held; choosing that treatment is an unratified design choice.",
+  "confidence": "high"
+}

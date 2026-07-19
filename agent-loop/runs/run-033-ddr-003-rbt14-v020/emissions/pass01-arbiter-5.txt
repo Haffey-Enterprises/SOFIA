@@ -1,0 +1,7 @@
+{
+  "finding_id": "1d0c940d05ddb6b1",
+  "classification": "resolvable",
+  "authority_locus": "run-032-docket-rulings D8 (declining forward-speculation body narrative) applied by analogy is not the driver; the operative authority is the RBT-14 self-review addendum Leg 3, where §5.4's per-policy archival-demotion posture was ruled (a) by Tad",
+  "rationale": "The §5.4 accountability-mode was explicitly surfaced and operator-ratified (a) in the RBT-14 Leg-3 self-review; the archival mode is a settled ruling, not an unmade choice.",
+  "confidence": "high"
+}

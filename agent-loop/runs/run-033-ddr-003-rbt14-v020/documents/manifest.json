@@ -1,0 +1,17 @@
+{
+  "run_id": "run-033-ddr-003-rbt14-v020",
+  "sofia_head_sha": "ca410614a30919e39c25807550ccbb5e5499de73",
+  "files": [
+    {
+      "doc_id": "DDR-003",
+      "snapshot_path": "documents/DDR-003-feedback-loop-governance.md",
+      "origin": {
+        "source": "sofia-repo",
+        "canonical_path": "docs/ddr/DDR-003-feedback-loop-governance.md",
+        "version": "0.2.0"
+      },
+      "retrieved": "2026-07-19",
+      "sha256": "117258731cb807ac994b6a05e4fb7054e4ba80e8a8c66a131516eb33682e34f0"
+    }
+  ]
+}

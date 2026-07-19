@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "5128be5e146b77d9",
+  "reason": "The coherence authority establishes the '(§6.3)' pointer is imprecise but does not uniquely determine the fix: options include re-pointing (to nothing else authoring gate-time Condition, since §6.3 is the closest), deleting the pointer, or rewording the sentence — each a distinct edit requiring an unratified choice among conforming alternatives.",
+  "confidence": "high"
+}

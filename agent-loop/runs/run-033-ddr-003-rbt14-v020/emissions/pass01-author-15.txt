@@ -1,0 +1,9 @@
+{
+  "action": "close_satisfied",
+  "finding_id": "26989312ea338ee1",
+  "evidence_present": "(4) **Operational track-record** — not an RG class; its posture is §5.4's archival demotion.",
+  "evidence_absent": null,
+  "authority_satisfied": "DDR-003 run-032 docket ruling D4 (Decision.10 restated as three RG retention classes + the Operational archival posture); §7.1 already flags item (4) 'not an RG class'; DDR-002 §2.3 'No in-graph TTL'",
+  "rationale": "§7.1 already labels item (4) 'not an RG class' with its posture routed to §5.4 archival demotion — the D4-conforming framing the finding seeks is present verbatim.",
+  "confidence": "medium"
+}

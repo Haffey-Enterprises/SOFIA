@@ -1,0 +1,1 @@
+{"finding_id":"c1e3204c505300ee","classification":"decision-bearing","authority_locus":null,"rationale":"No authority fixes the exit event for the interim survival exemptions; naming a resolution trigger is an unmade choice, and ADR-008 §2.4 mandates survival without dictating when the exemption resolves.","confidence":"high"}

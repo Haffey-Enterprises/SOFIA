@@ -1,0 +1,10 @@
+{
+  "action": "edit",
+  "finding_id": "0675f97e4a78e094",
+  "target": "DDR-003",
+  "old_string": "One EA-owned, data-configured, audit-logged, fresh-read parameter mechanism governs every tunable value of the loop (§4); the parameter store homes with the detection-promotion mechanism that consumes it (§4.4). **Every value is deferred to operational-onboarding calibration; this record asserts none.**",
+  "new_string": "One EA-owned, data-configured, audit-logged, fresh-read parameter mechanism governs every tunable value of the loop (§4); the parameter store homes with the detection-promotion mechanism that consumes it (§4.4). A **binding retention≥lookback coherence rule** is validated at configuration time — incoherent {window, lookback} pairs are rejected, not recorded (§4.3). **Every value is deferred to operational-onboarding calibration; this record asserts none.**",
+  "authority_conformed": "author-decision-record SKILL body-integrity rule (an amendment that adds a ruling updates the Decision enumeration); Obligation 4's ratified binding invariant 'retention ≥ lookback, config-validation enforced' + run-032 D7",
+  "rationale": "The retention≥lookback constraint is a ratified binding invariant (Obligation 4) present at §4.3/§8-item-8; the body-integrity rule requires the Decision.5 enumeration to carry it.",
+  "confidence": "high"
+}

@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/thaffey/Documents/GitHub/SOFIA/agent-loop/agent_loop/run_real.py", line 658, in <module>
+    main()
+  File "/Users/thaffey/Documents/GitHub/SOFIA/agent-loop/agent_loop/run_real.py", line 644, in main
+    result = run_real(
+             ^^^^^^^^^
+  File "/Users/thaffey/Documents/GitHub/SOFIA/agent-loop/agent_loop/run_real.py", line 582, in run_real
+    result = run_loop(
+             ^^^^^^^^^
+  File "/Users/thaffey/Documents/GitHub/SOFIA/agent-loop/agent_loop/runner.py", line 244, in run_loop
+    raise LoopBoundExceeded(
+agent_loop.runner.LoopBoundExceeded: run-033-ddr-003-rbt14-v020 did not terminate within 3 passes

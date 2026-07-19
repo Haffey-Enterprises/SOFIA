@@ -1,0 +1,9 @@
+{
+  "action": "close_satisfied",
+  "finding_id": "d529d8cd5b26e8c5",
+  "evidence_present": "**Re-admission forward-act-only** *(safety-relevant; holds by construction on the read path)* — landed read-discipline keys exclusion on the executed `RETRACTS` edge and no consumption path evaluates governing verdicts at read time (§6.2); by-construction is a read-path claim, not an audit-completeness claim — audit-side detection of a contested executed retraction is the named gap (§9).",
+  "evidence_absent": null,
+  "authority_satisfied": "run-032 docket ruling D5 — Item 4's 'holds by construction' scoped to the read path, not an audit-completeness claim",
+  "rationale": "D5 requires the label scoped to the read path with the audit gap conceded; the current text already reads '(safety-relevant; holds by construction on the read path)' plus the exact audit-completeness carve-out.",
+  "confidence": "high"
+}

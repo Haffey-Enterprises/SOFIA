@@ -1,0 +1,1 @@
+{"finding_id":"a9e32ac13aa568e6","classification":"decision-bearing","authority_locus":null,"rationale":"Re-promotion's interaction with the standing RETRACTS edge and the supersession-chain mechanics is unspecified; no ratified authority determines whether it supersedes the retracted node, promotes fresh, or clears the edge.","confidence":"high"}
