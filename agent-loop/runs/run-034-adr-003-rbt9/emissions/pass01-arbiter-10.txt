@@ -1,0 +1,1 @@
+{"finding_id":"db01b15726be4a52","classification":"decision-bearing","authority_locus":null,"rationale":"Whether ADR-003's enterprise-constraint predicate evaluation homes with the constraint-validator design, a new locus, or is left unrouted is an unmade choice; DDR-003's routing scopes a different object and no authority disambiguates.","confidence":"high"}

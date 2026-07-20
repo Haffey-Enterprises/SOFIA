@@ -1,0 +1,10 @@
+{
+  "action": "edit",
+  "finding_id": "ca5e9dec97226017",
+  "target": "ADR-003",
+  "old_string": "predicate-evaluation semantics are routed to the forthcoming constraint-validator service design (per DDR-003's routing)",
+  "new_string": "predicate-evaluation semantics are routed to the forthcoming constraint-validator service design (per DDR-002 §3's obligation-closure assignment)",
+  "authority_conformed": "DDR-002 §3 (obligation-closure and rule_definition/dependency_manifest evaluation assigned to constraint-validator SDD)",
+  "rationale": "DDR-002 §3 assigns §2.4's constraint/PolicyRule predicate evaluation to the constraint-validator SDD; DDR-003 §9 routes only the distinct promotion-scoped Condition vocabulary, so the routing authority is DDR-002 §3.",
+  "confidence": "medium"
+}

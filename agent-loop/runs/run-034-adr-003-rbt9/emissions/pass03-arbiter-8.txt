@@ -1,0 +1,1 @@
+{"finding_id": "103f66d50cd570e3", "classification": "decision-bearing", "authority_locus": null, "rationale": "No upstream record commits a model-access gateway component; whether SOFIA has a distinct such substrate versus folding model access into agents is an unmade component-posture choice, not resolvable by citing existing authority.", "confidence": "high"}

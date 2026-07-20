@@ -1,0 +1,62 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.4 Constraints from the graph — routing clause",
+    "claim": "§2.4 routes predicate-evaluation semantics with the parenthetical '(per DDR-003's routing)', but this record depends on DDR-003 for a routing it does not perform: DDR-003 §9 routes 'Condition predicate vocabulary' onward to 'the constraint-validator service design (forthcoming), the single source of predicate semantics per the knowledge-service design's routing' — a governance-scope condition-predicate grammar for promotion applicability, not the enterprise-constraint (standards/directives/policy) evaluation §2.4 governs. §2.4's constraint-binding pattern is a new platform surface DDR-003 does not scope; leaning its predicate-evaluation deferral on DDR-003's routing attaches this record's forcing dependency to a routing about a different object. The timing risk is that ADR-003 commits a constraint-binding pattern whose enforcement locus it names by borrowing an upstream routing that does not reach the pattern's object.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.4 'predicate-evaluation semantics are routed to the forthcoming constraint-validator service design (per DDR-003's routing)' vs DDR-003 §9 'Condition predicate vocabulary — the predicate grammar for scope conditions (§6.3 owns the authoring accountability, not the grammar): routed onward to the constraint-validator service design'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.6 Component taxonomy — model-access gateway / ai-gateway-service",
+    "claim": "§2.6 names 'the model-access gateway' as a canonical substrate-service instance ('the model-access gateway is of this class (infrastructure facade — model access, no judgment of record)'), and §7 cross-references 'ai-gateway-service' as a forthcoming design implementing this record. No upstream record in the ratified substrate establishes a model-access gateway / ai-gateway-service as a committed platform component: ADR-001 §2.3 commits LLM use as renderer but names no gateway service, and SDD-001 §1/§2.2 explicitly states 'no model client exists in this service' and 'LLM access and prompt assembly — no model client exists in this service' without pointing to a model-access gateway. Naming an unauthored, upstream-uncommitted service as a canonical taxonomy instance commits the platform to a component whose own decision record does not yet exist — the record introduces a component posture that deserves its own decision first, or at least an upstream commitment to cite.",
+    "cited_authority": {
+      "kind": "soundness",
+      "ref": "ADR-003 §2.6 names 'the model-access gateway' as canonical substrate-service instance with no citation; SDD-001 §2.2 'LLM access and prompt assembly — no model client exists in this service' — no upstream record establishes the ai-gateway-service as a committed component"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.6 recursion clause vs §2.5 durable-record invariant",
+    "claim": "§2.6 states 'A sub-run is a run: the §2.5 anatomy invariants apply at every level' and §2.5 property 1 requires 'the run's ReasoningSession' for every run. But ADR-002 §2.6 assigns ReasoningSession lifecycle ownership solely to the AOE, and DDR-002 §4 fixes ReasoningSession as AOE-owned with no sub-session or nested-session shape. A recursively-composed sub-run whose composing agent (not AOE) acts as orchestrator (§2.6: 'with the composing agent as orchestrator of its sub-run') would require either a ReasoningSession authored/owned by a non-AOE agent — contradicting ADR-002 §2.6 — or a session-nesting shape the schema does not carry. §2.7's trajectory clause acknowledges that widening run-lifecycle authorship beyond the AOE 'arrives as a named, additive authority assignment under the owning record's own amendment process,' yet §2.6's recursion clause commits sub-runs-are-runs (carrying the ReasoningSession invariant) now, ahead of that assignment — the record commits a position (non-AOE run records) that its own §2.7 says requires an upstream amendment first.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.5 'the run's ReasoningSession' + §2.6 'A sub-run is a run ... with the composing agent as orchestrator of its sub-run' vs ADR-002 §2.6 'AOE ... owns the ReasoningSession lifecycle only' and ADR-003 §2.7's own rule that run-lifecycle-authorship widening 'arrives as a named, additive authority assignment under the owning record's own amendment process'"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-003"],
+    "locus": "§7 Cross-References — forthcoming file-driven ingestion decision record",
+    "claim": "§2.4's enforcement staging and §5.3's mitigation both depend on 'the forthcoming file-driven ingestion decision record' for the Standards-plane entry path, cross-referenced in §7 as an unresolved forthcoming record. This is a real forcing dependency for §2.4's committed constraint-binding pattern: the pattern binds now, but the ingestion path that populates the Standards plane it binds from is unauthored. The record states this in earned tense (§5.3), which is proportionate — flagged as a timing observation that the load-bearing §2.4 commitment rests on two unauthored downstream records (the ingestion record and the constraint-validator design), neither of which is ACCEPTED, leaving the pattern review-enforceable-only for an open-ended interval.",
+    "cited_authority": {
+      "kind": "soundness",
+      "ref": "ADR-003 §5.3 'The Standards plane has no ingestion path until the forthcoming file-driven ingestion decision record and its port land, and predicate evaluation awaits the forthcoming constraint-validator service design'"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-003"],
+    "locus": "§2.7 Coordination trajectory + §2.9 Boundary",
+    "claim": "Attacked the coordination-trajectory commitment for pulling against the ratified write-authority posture: whether committing 'increasing direct agent-to-agent interaction' pre-empts ADR-002 §2.6's named-author / sole-executor / gateway-mediated write discipline, which a peer-to-peer regime could erode by creating alternate graph paths. Held: §2.3 pins every route to the sole-owner gateway ('no interaction route creates a second path to the graph'), §2.7 explicitly advances 'through the upstream authority structure, never around it' and routes any authority-widening back to the owning record's amendment process, and §2.9 disclaims re-authoring ADR-002 §2.5/§2.6. The trajectory changes coordination density, not the graph-access invariant — the posture integrates with ADR-002 rather than pulling against it.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-002 §2.5 (sole-owner gateway) / §2.6 (write-authority principle) vs ADR-003 §2.3, §2.7, §2.9"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-003"],
+    "locus": "§4.3 Alternative C — transport-carried directive propagation (RBT-11 fold)",
+    "claim": "Attacked the fold of RBT-11 (the prior directives-bridge) into this record for reversibility proportionality: whether dissolving a prior integrity-machinery pattern into a rejected-alternative entry, with no standalone record, under-commits a decision that deserved its own. Held: the fold is proportionate — §4.3 relocates constraint authority to the graph (§2.4) rather than deleting a live mechanism, the surviving residues (correlation propagation, constraint rendering, surfaced-constraint audit) are each routed to a named owning layer, and the deliberation substrate records the fold-not-standalone disposition as ratified. The decision is reversible by amendment here and homes the rejected alternative canonically; no orphaned commitment results.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-003 §4.3 + §2.4; deliberation record Item 7 (RBT-11 fold, ratified 2026-07-20) — supersession-by-principle with routed residues"
+    }
+  }
+]

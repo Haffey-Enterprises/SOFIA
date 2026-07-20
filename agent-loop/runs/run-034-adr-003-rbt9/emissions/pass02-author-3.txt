@@ -1,0 +1,10 @@
+{
+  "action": "edit",
+  "finding_id": "efac49fd2de6ccde",
+  "target": "ADR-003",
+  "old_string": "- **The forthcoming file-driven ingestion decision record** — the Standards-plane entry path on which §2.4's enforcement stages depend.",
+  "new_string": "- **The forthcoming file-driven ingestion decision record (unauthored)** — the Standards-plane entry path on which §2.4's enforcement stages depend.",
+  "authority_conformed": "author-decision-record-SKILL body-integrity: 'A forward reference in the body is subject-named only... real, planned, unauthored referent' — status marker required; ADR-008 §7 confirms the referent is forthcoming/unauthored",
+  "rationale": "The skill requires a forward reference to a real, planned, unauthored referent to carry a status marker; adding '(unauthored)' conforms the §7 entry to earned-tense discipline.",
+  "confidence": "medium"
+}

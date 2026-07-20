@@ -1,0 +1,1 @@
+{"finding_id":"850868c4961af4e9","classification":"decision-bearing","authority_locus":null,"rationale":"ADR-003's own §2.7 defers run-lifecycle-authorship widening beyond AOE to an upstream amendment; whether a composing agent may own a sub-run record is that unresolved choice, not a determined fix.","confidence":"high"}

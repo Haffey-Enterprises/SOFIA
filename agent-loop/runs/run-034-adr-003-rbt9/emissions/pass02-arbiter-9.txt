@@ -1,0 +1,1 @@
+{"finding_id":"a30820bf4733ac57","classification":"decision-bearing","authority_locus":null,"rationale":"Whether a composing agent may own a sub-run's ReasoningSession lifecycle collides with ADR-002 §2.6's AOE-only assignment; no authority disambiguates, and ADR-003's own §2.7 says such widening needs an upstream amendment first.","confidence":"high"}

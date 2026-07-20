@@ -1,0 +1,72 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.6 Component taxonomy — model-access gateway classification",
+    "claim": "§2.6 classes 'the model-access gateway' as a substrate service ('infrastructure facade — model access, no judgment of record'), and the metadata Description and §5.1 name it as a service the record unblocks ('the model-access gateway design'). No cited authority in the artifact set names or establishes a model-access gateway / ai-gateway-service: ADR-001 §2.3 speaks of LLM invocation without naming a gateway component, and SDD-001 §2.2 states 'no model client exists in this service' and 'LLM access and prompt assembly' is out of scope without naming a downstream gateway. The Cross-References §7 lists 'ai-gateway-service' only as forthcoming. The record therefore asserts a component's existence and class where the referenced authority does not establish it.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.6 / §5.1 vs SDD-001 §2.2 (LLM access out of scope, no downstream gateway named) and ADR-001 §2.3 (LLM invocation, no gateway component)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.4 Constraints from the graph — DDR-003 routing citation",
+    "claim": "§2.4 states predicate-evaluation semantics are 'routed to the forthcoming constraint-validator service design (per DDR-003's routing)', and §7 repeats 'the routing of predicate-evaluation semantics onward to the forthcoming constraint-validator service design.' DDR-003 §9 (Named gaps) routes 'Condition predicate vocabulary — the predicate grammar for scope conditions ... routed onward to the constraint-validator service design.' The ADR conflates two things DDR-002/DDR-003 keep distinct: DDR-002 §3 assigns obligation-closure and rule_definition/dependency_manifest evaluation (the constraint/PolicyRule binding this section is about) to the constraint-validator SDD, whereas DDR-003's routed item is the promotion-scoped Condition predicate vocabulary. §2.4 governs enterprise standards/directives binding agents, not promotion Conditions — so the load-bearing routing authority for §2.4's predicate evaluation is DDR-002 §3, not 'DDR-003's routing.'",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.4 / §7 (predicate-eval routed 'per DDR-003's routing') vs DDR-002 §3 (constraint-validator owns rule_definition/obligation closure) and DDR-003 §9 (routed item is Condition predicate vocabulary, promotion-scoped)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-003"],
+    "locus": "§7 Cross-References — 'file-driven ingestion decision record' referent",
+    "claim": "§2.4's risk mitigation (§5.3) and §7 both name 'the forthcoming file-driven ingestion decision record' as the Standards-plane entry path on which §2.4's enforcement depends. ADR-008 §7 cross-references 'The forthcoming file-driven ingestion decision record — owns the ingestion mechanics realizing the authoritative-source ingestion control (§2.2)', so the referent resolves within the set. The reference is a named, forthcoming-and-unauthored artifact carrying no status marker at its §5.3 use ('the forthcoming file-driven ingestion decision record and its port land'); it resolves to an unauthored record, which is a live-but-unenforceable dependency rather than a dangling one.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §5.3 / §7 vs ADR-008 §7 (file-driven ingestion decision record, forthcoming, owns authoritative-source ingestion mechanics)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.3 Governance anchors to the graph — checkpoint-gate invariant self-consistency",
+    "claim": "§2.3 asserts checkpoint gates 'anchor to checkpoints in the run and the graph, not to positions in a call graph; no routing choice can bypass a gate.' The record supplies no mechanism internal to itself by which a route-agnostic gate is actually unbypassable — it names the property as an invariant and cites 'the ADR-008 family' generically. ADR-008 §6 enforces its controls 'at three-hat review at design time' and its runtime instances are gateway-mediated; but a direct agent-to-agent route (permitted by §2.2, with no permission machinery per §2.8) that performs no graph write reaches no gateway and no graph-anchored gate. The claim 'no routing choice can bypass a gate' is stated as a load-bearing governance guarantee but is unsubstantiated for the direct-route, no-graph-write interaction the same record makes first-class — the gate anchors to graph checkpoints, and an interaction touching no graph checkpoint has no gate to anchor to.",
+    "cited_authority": {
+      "kind": "soundness",
+      "ref": "ADR-003 §2.3 (no routing choice can bypass a gate) unsubstantiated against §2.2 (first-class direct agent-to-agent routes) + §2.8 (no permission machinery); gates anchor to graph checkpoints, direct no-write routes reach none"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-003"],
+    "locus": "§2.6 — orchestrator-capture routing to ADR-001 §2.4",
+    "claim": "§2.6 routes the question of whether the orchestrator's composition decisions constitute captured reasoning to 'the forthcoming agent-orchestration-engine service design under ADR-001 §2.4's per-stage provision.' ADR-001 §2.4 is titled 'Lifecycle scope and design-maturity honesty' and provides that per-stage reasoning-capture mechanics are specified in service and data designs as authored. The cited locus supports per-stage deferral of capture mechanics, so the citation resolves; but the orchestrator is not a lifecycle stage — the per-stage provision is about SDLC lifecycle stages, and applying it to an intra-run coordination component is an extension of §2.4's scope the cited text does not directly cover.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-001 §2.4 (Lifecycle scope — per-stage capture mechanics deferred to service/data designs) vs ADR-003 §2.6 (orchestrator composition-decision capture routed there)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-003"],
+    "locus": "§2.6 taxonomy — 'ASA is the canon-named instance' and 'knowledge-service is the canonical substrate-service instance'",
+    "claim": "Checked every canon-named component instance in §2.6 against its establishing authority: ASA as a reasoning-bearing agent authoring ReasoningProgress (ADR-002 §2.6; DDR-002 §4), knowledge-service / the sole-owner gateway as sole executor authoring nothing (ADR-002 §2.5/§2.6; SDD-001 §1/§2.1), and AOE as owner of ReasoningSession lifecycle / run composition (ADR-002 §2.6; SDD-001 §3.4.1). Each named instance's class assignment holds against its cited authority — the taxonomy names only components existing canon already establishes, exactly as §2.6 claims. The attack (that a named instance is misclassed or unestablished) failed for all three.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-002 §2.5/§2.6 + SDD-001 §1/§2.1/§3.4.1 + DDR-002 §4 (ASA, knowledge-service, AOE establishment and roles)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-003"],
+    "locus": "§4.3 — transport-carried directive propagation rejected as Alternative C (RBT-11 fold)",
+    "claim": "Attacked the claim that §2.4's constraints-from-graph model dissolves the prior directive-bridge machinery — that the fold is real, not asserted. §2.4 commits constraints as graph-resident, gateway-consulted (ADR-002 §2.5), version-pinned at consultation (DDR-001 version-pinning model), evidence-linked in the RG (ADR-001 §2.2). Each of these upstream mechanisms exists and is cited correctly, so the rejection rationale's core claim — that constraint authority relocates to the system of record and no transport envelope survives — is substantiated by standing canon rather than by argument alone. The residue routing (correlation → orchestration/observability designs; rendering → per-agent designs under ADR-001 §2.3) points to real owning loci. The attack that the fold left an unhomed integrity concern failed.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §4.3 / §2.4 vs ADR-002 §2.5 (sole-owner gateway) + DDR-001 (version-pinning) + ADR-001 §2.2/§2.3 (capture, renderer discipline) — each relocation mechanism established upstream"
+    }
+  }
+]

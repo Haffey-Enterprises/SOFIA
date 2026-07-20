@@ -1,0 +1,1 @@
+{"finding_id":"c750b13cc79111be","classification":"decision-bearing","authority_locus":null,"rationale":"No ratified authority establishes a model-access gateway/ai-gateway-service as a committed component; whether ADR-003 may canonize it, cite it as forthcoming, or drop it is an unmade choice.","confidence":"high"}

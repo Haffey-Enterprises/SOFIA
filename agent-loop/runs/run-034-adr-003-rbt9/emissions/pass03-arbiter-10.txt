@@ -1,0 +1,1 @@
+{"finding_id":"bc37ba821ed20337","classification":"decision-bearing","authority_locus":null,"rationale":"No ratified authority states how a graph-anchored gate binds a direct no-write agent-to-agent route; closing the gap requires an unmade scoping or mechanism choice.","confidence":"high"}

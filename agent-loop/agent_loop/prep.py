@@ -704,8 +704,10 @@ def assemble_substrate(
     Each spec's file lands at `<category>/<logical_id>.md` (lesson #1), sourced
     from its repo-canonical path, carried forward from `--from-run`, or (RBT-54
     F4) from the installed bedrock plugin cache; hashed validator-method (lesson
-    #2); and, where a prior pin exists (`--from-run`), asserted against it (act
-    c). Bedrock-cache specs are verified pin-vs-installed against the injected
+    #2); and, for CARRY-FORWARD specs where a prior pin exists (`--from-run`),
+    asserted against it (act c — carry-forward only, RBT-9; repo-canonical specs
+    are taken fresh at the pre-run HEAD and are not pinned to any prior draw).
+    Bedrock-cache specs are verified pin-vs-installed against the injected
     `bedrock_cache_root` and record entry-level `verified_against` (and, on a
     sanctioned `accept_stale` override, `currency_override`) beside `origin`.
     Emits the substrate manifest in the existing §3 schema (act d) and
@@ -779,12 +781,22 @@ def assemble_substrate(
         dest.write_text(content, encoding="utf-8")  # copy, never move
         digest = sha256_text(content)  # lesson #2
 
-        prior = prior_entries.get(spec.logical_id)
-        if prior is not None and prior["sha256"] != digest:
-            raise PrepError(
-                f"substrate {spec.logical_id!r} sha256 differs from prior pin: "
-                f"prior {prior['sha256']}, now {digest}"
-            )
+        # Act (c) — the prior-pin assertion is scoped to CARRY-FORWARD specs only
+        # (RBT-9, ratified 2026-07-20). --from-run exists to carry substrate the
+        # runner cannot re-fetch (the non-forward-verifiable Notion vision block)
+        # and to assert each CARRIED file against its prior pin. Repo-canonical
+        # specs are taken fresh from $SOFIA_ROOT at the pre-run HEAD; their
+        # integrity rests on git + gate 8 + the source-survival assert, not on a
+        # prior draw's snapshot — so pinning them to the prior draw wrongly blocks
+        # every run prepped after a canon landing that legitimately moved an
+        # authority. prior_entries is consulted for carry-forward specs only.
+        if spec.carry_forward:
+            prior = prior_entries.get(spec.logical_id)
+            if prior is not None and prior["sha256"] != digest:
+                raise PrepError(
+                    f"substrate {spec.logical_id!r} sha256 differs from prior pin: "
+                    f"prior {prior['sha256']}, now {digest}"
+                )
 
         entries.append(
             {

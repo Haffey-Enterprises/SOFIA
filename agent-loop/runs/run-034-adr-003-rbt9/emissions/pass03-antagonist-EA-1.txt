@@ -1,0 +1,72 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.6 Component taxonomy — 'the model-access gateway (the forthcoming ai-gateway-service, §7) is of this class' + §5.1 + metadata Description",
+    "claim": "§2.6 fixes the class of a component the platform has not yet decided to build: 'the model-access gateway (the forthcoming ai-gateway-service, §7) is of this class (infrastructure facade — model access, no judgment of record).' §5.1 lists 'the model-access gateway design' among the designs this record unblocks. §2.6's own governing rule immediately follows: 'This record enumerates no agent roster ... Components are named above only where existing canon already names them.' No upstream record in the set commits a model-access gateway / ai-gateway-service as a platform component; it appears only as forthcoming in §7. Whether SOFIA has a distinct model-access gateway substrate service — versus folding model access into agent designs — is a component-posture decision that deserves its own decision record, or an upstream commitment to cite, before this ADR fixes it as a canonical taxonomy instance and predicates §5.1's unblocking claim on its existence. Committing a not-yet-decided component's existence and class at platform-principle altitude is a position taken ahead of the decision it depends on.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.6 self-imposed rule ('Components are named above only where existing canon already names them') in conflict with the same section fixing the class of 'the model-access gateway (the forthcoming ai-gateway-service)', with no upstream record in the set establishing that component"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.6 recursion clause ('A sub-run is a run: the §2.5 anatomy invariants apply at every level') vs §2.5 property 1 and §2.7's own amendment rule",
+    "claim": "§2.6 commits 'A sub-run is a run: the §2.5 anatomy invariants apply at every level' with 'the composing agent as orchestrator of its sub-run,' and §2.5 property 1 requires for every run 'the run's ReasoningSession.' §2.7's own trajectory rule states that widening run-lifecycle authorship beyond the AOE 'arrives as a named, additive authority assignment under the owning record's own amendment process.' The recursion clause commits, now and as a standing invariant at every composition level, a position that §2.7 declares requires an upstream amendment first: a sub-run orchestrated by a composing agent (not the AOE) that must carry a ReasoningSession is a non-AOE-owned run record — the very run-lifecycle-authorship widening §2.7 defers. This is a decision-bearing position taken ahead of the upstream resolution it depends on; whether a composing agent may own a sub-run's run-lifecycle record deserves its own decision (an upstream amendment or an explicit deferral) before this record binds it as an every-level invariant. That the record commits it here and defers it there is a self-inconsistency the ADR does not reconcile.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.5 property 1 ('the run's ReasoningSession') + §2.6 ('A sub-run is a run ... with the composing agent as orchestrator of its sub-run') vs §2.7's own rule that run-lifecycle-authorship widening arrives as an additive assignment under the owning record's amendment process"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.2 Specialized agents and collaboration — 'no architectural mechanism may exist whose function depends on preventing it'",
+    "claim": "§2.2 commits an absolute foreclosure — 'no architectural mechanism may exist whose function depends on preventing it' — restated in §5.2 as a hard constraint on all future designs ('or introduce a mechanism whose function depends on preventing it'). This is a broader, harder-to-reverse commitment than the never-preclude posture the §2 Decision statement carries (agents that 'collaborate on any route'), and it forecloses design space across every downstream SDD/DDR for the platform's life. A commitment of this reversibility cost — walkable back only by amending a platform principle — that constrains all future designs is surfaced only in §2.2/§5.2 prose and never as a first-class sub-decision in §2, where its foreclosing scope would be visible. Per the record's own governing discipline the Decision block is the contract's index; a standing constraint of this weight that the enumeration does not carry is invisible to a reader who treats the enumeration as complete.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2 Decision ('collaborate on any route') vs §2.2 / §5.2, which commit the strictly broader absolute 'no architectural mechanism may exist whose function depends on preventing it' as a standing constraint on all designs, not surfaced in the Decision enumeration"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.3 Governance anchors to the graph — 'no routing choice can bypass a gate'",
+    "claim": "§2.3 asserts, as the load-bearing invariant that makes route freedom safe, that checkpoint gates 'anchor to checkpoints in the run and the graph, not to positions in a call graph; no routing choice can bypass a gate.' §2.2 makes direct agent-to-agent communication first-class, and §2.8 commits that 'opening a direct agent-to-agent route requires no ratification act; the §2.3 invariants are the entire control.' The record supplies no mechanism internal to itself — and cites none upstream — by which a gate anchored to a graph checkpoint binds a direct interaction that touches no graph checkpoint. A direct agent-to-agent interaction performing no graph write reaches neither the sole-owner gateway (ADR-002 §2.5) nor a graph-anchored gate. The unbypassability guarantee is therefore unsubstantiated for exactly the direct-route, no-graph-write interaction this record makes first-class and un-permissioned — and that guarantee is the whole basis of §3's Rationale that route freedom carries no governance loss. A load-bearing platform-principle claim resting on an unstated mechanism is a posture defect at this altitude: the record should stand only if the guarantee it leans on holds in the shape stated.",
+    "cited_authority": {
+      "kind": "soundness",
+      "ref": "ADR-003 §2.3 ('no routing choice can bypass a gate') unsubstantiated against §2.2 (first-class direct agent-to-agent routes) + §2.8 ('opening a direct agent-to-agent route requires no ratification act; the §2.3 invariants are the entire control'); gates anchor to graph checkpoints, a direct no-write route reaches none"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-003"],
+    "locus": "§2.4 / §5.3 / §7 — 'the forthcoming file-driven ingestion decision record'",
+    "claim": "§2.4's central new commitment (constraints-from-graph) rests its enforceability on 'the forthcoming file-driven ingestion decision record' (§5.3: 'The Standards plane has no ingestion path until [it] and its port land') plus the forthcoming constraint-validator design — two unauthored, not-ACCEPTED records. §5.3 states the dependency in earned tense, which is proportionate for the risk; but the §7 cross-reference entry carries only 'forthcoming' with no status marker distinguishing an unauthored record from an authored-but-unfetched one, and no resolution locus at the altitude a consequence should be declared. The record commits the pattern now while both its populating substrate and its evaluation locus are unauthored, leaving §2.4 review-enforceable-only for an open-ended interval — a timing observation on a load-bearing new commitment that depends on two unauthored downstream records at once.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "ADR-003 §5.3 ('The Standards plane has no ingestion path until the forthcoming file-driven ingestion decision record and its port land, and predicate evaluation awaits the forthcoming constraint-validator service design'); deliberation record Item 4 (ratified): 'committed now, enforced in stages; earned tense mandatory'"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-003"],
+    "locus": "§2.7 Coordination trajectory + §2.9 Boundary vs ADR-002 §2.5/§2.6",
+    "claim": "Attacked the coordination-trajectory commitment for pulling against the ratified graph-access and write-authority posture — whether committing 'increasing direct agent-to-agent interaction' erodes the sole-owner-gateway / named-write-authority discipline by legitimizing alternate graph paths as coordination density falls. It held: §2.3 pins every route to the sole-owner gateway ('no interaction route creates a second path to the graph'), §2.7 advances 'through the upstream authority structure, never around it' and routes any authority-widening back to the owning record's amendment process (naming run-lifecycle authorship beyond the AOE as the exemplar), and §2.9 disclaims re-authoring ADR-002 §2.5/§2.6. The trajectory moves coordination density, not the graph-access invariant — it integrates with the platform posture and defers to the upstream amendment process rather than carving out an upstream invariant by downstream qualifier.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-002 §2.5 (sole-owner gateway) / §2.6 (write-authority general principle; AOE run-lifecycle assignment) vs ADR-003 §2.3, §2.7, §2.9"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-003"],
+    "locus": "§4.3 Alternative C — RBT-11 directives-bridge fold; reversibility proportionality",
+    "claim": "Attacked the fold of the prior directives-propagation bridge into this record as a rejected alternative for reversibility proportionality — whether dissolving a prior integrity-machinery pattern into a §4 alternative entry, with no standalone record, under-commits a decision that deserved its own. It held: §4.3 relocates constraint authority to the graph (§2.4) rather than deleting a live mechanism, the surviving residues (correlation propagation, constraint rendering, surfaced-constraint audit) are each routed to a named owning layer, the fold is reversible by amendment here, and it homes the rejected alternative canonically. The disposition is proportionate to the decision's cost and integrates with the platform's supersession posture; no orphaned or under-committed position results.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-003 §4.3 + §2.4; deliberation record Item 7 (RBT-11 fold, ratified 2026-07-20) — supersession-by-principle with routed residues"
+    }
+  }
+]

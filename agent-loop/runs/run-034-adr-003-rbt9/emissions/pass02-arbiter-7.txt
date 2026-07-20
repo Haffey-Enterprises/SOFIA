@@ -1,0 +1,1 @@
+{"finding_id":"21817b3c6d9f8d3b","classification":"decision-bearing","authority_locus":null,"rationale":"Whether a gate can bind a no-graph-touch direct interaction, and how, is an unresolved design choice no cited authority determines; ADR-008's gates anchor only to graph writes and design-time review.","confidence":"high"}

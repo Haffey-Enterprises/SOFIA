@@ -1,0 +1,62 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["ADR-003"],
+"locus": "§2.2 Specialized agents and collaboration — 'no architectural mechanism may exist whose function depends on preventing it'",
+"claim": "The prohibition on any mechanism 'whose function depends on preventing' agent-to-agent communication is a decision this ADR does not surface in its Decision statement (§2, which commits agents that 'collaborate on any route') and rides only in prose. It is stated as absolute — 'no architectural mechanism may exist' — and as a foreclosing commitment on all future designs. The deliberation record (Item 2, self-review LAA note) itself flags this exact clause as a 'conformance-shaped operationalization' rather than the ratified never-preclude commitment, which the ratified text was 'agent-to-agent communication is first-class and never precluded.' The absolute never-a-preventing-mechanism form is a broader smuggled commitment than the ratified never-preclude; §5.2 then re-states it as a hard constraint on all designs.",
+"cited_authority": {
+"kind": "design-intent",
+"ref": "Deliberation record, Item 2 ratified commitment: 'agent-to-agent communication is first-class and never precluded'; self-review note flags §2.2's 'no mechanism whose function depends on preventing it' as conformance-shaped operationalization of that commitment"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-003"],
+"locus": "§2.6 Component taxonomy — 'the model-access gateway is of this class'",
+"claim": "The record decides that a model-access gateway ('ai-gateway') is a substrate service and names it as an instance ('the model-access gateway is of this class (infrastructure facade — model access, no judgment of record)'). This is a component-existence and classification decision — asserting that a model-access gateway component exists and fixing its class — riding in the taxonomy prose. §2.6's own rule is that 'This record enumerates no agent roster ... Components are named above only where existing canon already names them.' No cited upstream canon (ADR-001, ADR-002, DDR-001, DDR-002, SDD-001, ADR-008) names a model-access gateway / ai-gateway component; SDD-001 §2.2 states 'no model client exists in this service' and names no such gateway. The record thus names a not-yet-canonical component while claiming to name only canon-named ones — a scope defect against its own stated rule.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-003 §2.6 self-imposed rule ('Components are named above only where existing canon already names them') in conflict with the same section naming 'the model-access gateway' as a class instance, with no upstream canon in the set naming that component"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-003"],
+"locus": "§7 Cross-References — 'The forthcoming file-driven ingestion decision record'",
+"claim": "§2.4's enforcement staging (§5.3 risk: 'The Standards plane has no ingestion path until the forthcoming file-driven ingestion decision record and its port land') depends on a named artifact — 'The forthcoming file-driven ingestion decision record' — that is declared load-bearing for the constraint-binding commitment's enforceability but is not present in the artifact set and is cited only as forthcoming. The record's central new commitment (§2.4 constraints-from-graph) rests its enforcement on this unauthored dependency; the dependency is named as a bare cross-reference with no locus, ticket-home, or status marker beyond 'forthcoming,' leaving the consequence (when/whether §2.4 becomes enforceable) undeclared at the altitude a consequence should be declared.",
+"cited_authority": {
+"kind": "design-intent",
+"ref": "ADR-003 §2.4 / §5.3 / §7: the constraint-binding commitment's enforcement is declared to depend on 'the forthcoming file-driven ingestion decision record,' an artifact absent from the set and undeclared as to resolution locus"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["ADR-003"],
+"locus": "§2.4 Constraints from the graph — 'predicate-evaluation semantics are routed to the forthcoming constraint-validator service design (per DDR-003's routing)'",
+"claim": "The routing citation attributes the constraint-validator routing to 'DDR-003's routing.' DDR-003 §9 routes 'Condition predicate vocabulary ... onward to the constraint-validator service design (forthcoming), the single source of predicate semantics per the knowledge-service design's routing' — i.e., DDR-003 routes the predicate *vocabulary/semantics for promotion Conditions*, and the single-source-of-predicate-semantics designation traces through SDD-001. ADR-003 §2.4 generalizes this to all enterprise-constraint predicate evaluation binding agents from the Standards plane, which is a broader scope than the promotion-Condition predicate DDR-003 actually routes. The cross-reference reads as if DDR-003 already routes the general constraint-validator concern; the claimed routing is narrower at its source than the citing text implies.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-003 §2.4 cites 'per DDR-003's routing' for general constraint-predicate evaluation; DDR-003 §9 / §Cross-References scopes its constraint-validator routing to Condition predicate vocabulary (promotion-scope), narrower than ADR-003's general Standards-plane constraint binding"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-003"],
+"locus": "§2 Decision and §2.1–§2.8 sub-decisions vs. deliberation record Items 2–8",
+"claim": "Attacked the record for claim-fidelity between its Decision statement and body: whether the single-sentence §2 decision and its sub-decisions decide exactly what the ratified deliberation authorized — no smuggled commitments, no ratified commitments dropped. Traced each of the eight ratified items (orchestration model, run anatomy incl. isolation and honest-halt, constraints-from-graph, four-class taxonomy with recursion, non-ruling boundary, RBT-11 fold as Alternative C, interleave/trajectory-through-upstream). The body decides each ratified item at matching altitude, and the RBT-11 fold correctly lands as a rejected alternative (§4.3) rather than a smuggled standalone decision; the trajectory clause correctly advances 'through' upstream amendment (§2.7) rather than pre-empting ADR-002 §2.6. The attack held except for the two §2.2/§2.6 scope defects reported separately.",
+"cited_authority": {
+"kind": "design-intent",
+"ref": "Deliberation record Items 2–8, ratified per item 2026-07-20; ADR-003 §2.1–§2.8 and §4.3 decide each ratified item at matching altitude"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-003"],
+"locus": "§2.7 / §2.6 coordination trajectory and additive extensibility vs ADR-002 §2.6 write-authority principle",
+"claim": "Attacked §2.7 for quietly widening or retracting the ADR-002 §2.6 write-authority assignments (AOE owns run/ReasoningSession lifecycle; the general author/executor/authorizer principle) via the coordination trajectory. The record does not: §2.7 explicitly advances 'through the upstream authority structure, never around it,' names run-lifecycle-authorship widening beyond the AOE as a future item requiring the owning record's own amendment, and §2.6 restates agent-addition as additive with the orchestrator retained as a distinct class (not collapsed into 'just another agent'), preserving ADR-002 §2.6 lifecycle clarity. The consequence and deferral are declared; no unsupported retraction of upstream authority was found.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-002 §2.6 (write-authority general principle; AOE ReasoningSession-lifecycle assignment) vs ADR-003 §2.6/§2.7, which route any coordination-authority widening through the owning record's amendment process"
+}
+}
+]

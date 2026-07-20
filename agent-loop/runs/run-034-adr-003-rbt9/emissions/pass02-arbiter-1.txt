@@ -1,0 +1,1 @@
+{"finding_id":"617d622c7bf0f7f0","classification":"decision-bearing","authority_locus":null,"rationale":"The self-imposed rule bars naming non-canon components, but no authority disambiguates whether to drop the ai-gateway reference or ratify/relax the rule; the fix is an unratified choice.","confidence":"high"}

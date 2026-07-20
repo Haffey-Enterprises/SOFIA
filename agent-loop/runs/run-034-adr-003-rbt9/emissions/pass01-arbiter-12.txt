@@ -1,0 +1,1 @@
+{"finding_id":"7ff5add0aaecce8c","classification":"decision-bearing","authority_locus":null,"rationale":"Resolving the sub-run/ReasoningSession collision needs a choice among conforming options (non-AOE session ownership, a nesting shape, or narrowing the recursion clause) that no ratified authority disambiguates.","confidence":"high"}

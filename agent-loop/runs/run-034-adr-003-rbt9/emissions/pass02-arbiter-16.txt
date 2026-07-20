@@ -1,0 +1,1 @@
+{"finding_id":"210ac6cbf39b2860","classification":"decision-bearing","authority_locus":null,"rationale":"Recursion clause implies non-AOE-owned ReasoningSessions, which ADR-002 §2.6/DDR-002 §4 restrict to AOE and §2.7 defers to upstream amendment; resolving requires an unratified authority choice.","confidence":"high"}

@@ -1,0 +1,1 @@
+{"finding_id":"e04d4dae13379ded","classification":"decision-bearing","authority_locus":null,"rationale":"Resolving the recursion clause's sub-run ReasoningSession invariant against AOE-only lifecycle ownership requires choosing among conforming fixes (scope clause, non-AOE owner, nested-session shape) that no ratified authority disambiguates.","confidence":"high"}

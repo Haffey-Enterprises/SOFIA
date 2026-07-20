@@ -1,0 +1,1 @@
+{"finding_id":"631b7810ad3051e1","classification":"decision-bearing","authority_locus":null,"rationale":"Whether ADR-001 §2.4's SDLC-stage deferral device extends to an intra-run coordination component is a choice no authority resolves; picking a conforming re-citation is a judgment.","confidence":"medium"}

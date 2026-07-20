@@ -1,0 +1,62 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["ADR-003"],
+"locus": "§2.6 Component taxonomy — orchestrator-capture routing",
+"claim": "§2.6 states 'Whether the orchestrator's own composition decisions constitute captured reasoning, and in what shape, is specified in the forthcoming agent-orchestration-engine service design under ADR-001 §2.4's per-stage provision — routed, not ruled here.' But §2.5 property 1 rules unconditionally that 'Every run leaves a durable, traversable record — the run's ReasoningSession and its captured reasoning' and that 'No run is unrecorded.' The AOE composes every run (§2.1). Whether the orchestrator's composition decisions are captured reasoning is therefore either decided by §2.5 (captured, no run unrecorded) or left open by §2.6 — the record decides both and its two decisions are not reconciled, so what the record actually commits about orchestrator-composition capture is indeterminate.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-003 §2.5 property 1 ('No run is unrecorded') in conflict with ADR-003 §2.6 final paragraph (orchestrator composition-capture 'routed, not ruled here')"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-003"],
+"locus": "§2 Decision / title / summary vs §2.6 (ai-gateway) and §2.4 (constraint-validator)",
+"claim": "The Decision sentence and title commit an orchestration model 'over specialized, reasoning-bearing agents.' The body then rules on components that are not agents: §2.6 classes the model-access gateway as a substrate service ('the model-access gateway is of this class') and §2.4 routes predicate-evaluation semantics to a constraint-validator service. These are substantive content decisions (assigning named forthcoming components to a taxonomy class, and asserting the ai-gateway holds 'no judgment of record') that the Decision statement, summary, and title do not surface — the record decides more about the component landscape than it claims to decide.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-003 §2 Decision sentence + File-header Description (agents-only framing) vs §2.6 ('the model-access gateway is of this class') and §2.4 (constraint-validator routing)"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-003"],
+"locus": "§7 Cross-References — dependency on an unnamed forthcoming record",
+"claim": "§2.4's enforcement (Risk 5.3 and §7) depends on 'the forthcoming file-driven ingestion decision record' for the Standards-plane entry path, listed in Cross-References as a bare descriptor with no document ID and no locus in the artifact set. This is a load-bearing dependency of §2.4 (the section is stated 'enforceable only at design review' until that record and its port land), yet the depended-on artifact is not a named, resolvable record — a decision this ADR rests on is declared but not named as a citable artifact.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-003 §2.4 / §5.3 Risk 3 dependency on 'the forthcoming file-driven ingestion decision record' — §7 lists it with no document ID resolvable in the set (contrast DDR-003 / SDD-001, which are ID-named)"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["ADR-003"],
+"locus": "§2.4 vs the corpus routing of the constraint-validator",
+"claim": "§2.4 states predicate-evaluation semantics are 'routed to the forthcoming constraint-validator service design (per DDR-003's routing).' The consequence of §2.4 (a graph-bound constraint pattern with a named forthcoming evaluator) is declared, but the record does not surface as a stated consequence that it thereby creates a new hard design-review gate — checks 2 and 3 of §6 — binding on every downstream SDD/DDR before that evaluator exists; the enforcement-vs-existence gap is named only in §5.3 Risk 3 as a risk, not as an imposed constraint in §5.2, though it functions as one.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-003 §6 checks 2–3 (new binding design-review gates) vs §5.2 Constraints Imposed (does not enumerate the review-gate obligation §6 creates) / §5.3 Risk 3"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-003"],
+"locus": "§2.8 Deliberate deferrals + §5.2 Constraints Imposed",
+"claim": "I attacked §2.8 for the classic ADR scope defect — smuggled decisions riding along as 'deferrals' that actually foreclose downstream choices without surfacing as decisions. Each deferral (transport, bus, call-graph, permission machinery) names its resolution locus AND its own foreclosure is surfaced as an explicit imposed constraint in §5.2 ('No downstream design may commit platform-level static structure … absent this record's amendment'). The deferral and the prohibition-it-implies are both declared; the attack held.",
+"cited_authority": {
+"kind": "scope",
+"ref": "ADR-003 §2.8 deferrals each carry a resolution locus; §5.2 surfaces the correlative prohibition — no smuggled foreclosure"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-003"],
+"locus": "§2.2 non-preclusion commitment vs §4.1 Alternative A",
+"claim": "I attacked the §2.2 claim 'no architectural mechanism may exist whose function depends on preventing [agent-to-agent communication]' as a possible over-reach beyond the ratified 'never preclude' commitment — a decision claiming more than deliberation supports. §4.1 supplies the load-bearing argument (governance moved off topology to the graph, §2.3, so the prohibition's protective function is discharged), and the deliberation substrate records this as the ratified analytical keystone. The prose claims exactly what the substrate supports and its rationale is declared, not smuggled; the attack held.",
+"cited_authority": {
+"kind": "design-intent",
+"ref": "Deliberation record Item 2 analytical keystone ('governance anchored to the graph … routing topology stops being load-bearing for governability') — §2.2's non-preclusion prose is supported, not over-claimed"
+}
+}
+]

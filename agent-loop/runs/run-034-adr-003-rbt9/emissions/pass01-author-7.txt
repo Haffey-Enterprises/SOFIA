@@ -1,0 +1,10 @@
+{
+  "action": "edit",
+  "finding_id": "dad60b2e0c765262",
+  "target": "ADR-003",
+  "old_string": "the model-access gateway is of this class (infrastructure facade — model access, no judgment of record).",
+  "new_string": "the model-access gateway (the forthcoming ai-gateway-service, §7) is of this class (infrastructure facade — model access, no judgment of record).",
+  "authority_conformed": "body-integrity 'cold read' rule: tie identifier at first use; canonical 'ai-gateway-service' already carried in ADR-003 §7",
+  "rationale": "The cold-read rule uniquely determines tying the descriptive name to the canonical §7 identifier at its first-use introduction in §2.6.",
+  "confidence": "high"
+}

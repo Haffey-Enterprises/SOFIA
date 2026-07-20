@@ -1,0 +1,1 @@
+{"finding_id":"5854508b760f266b","classification":"decision-bearing","authority_locus":null,"rationale":"No cited authority establishes ai-gateway-service; fixing the internal inconsistency requires choosing whether to drop the naming or to elevate/scope the component's canonical status, an unmade choice.","confidence":"high"}
