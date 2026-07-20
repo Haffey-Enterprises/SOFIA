@@ -324,17 +324,59 @@ def test_assemble_substrate_carry_forward_source_missing_raises(tmp_path) -> Non
         )
 
 
-def test_assemble_substrate_pin_mismatch_raises(tmp_path) -> None:
-    # A repo source whose bytes differ from the prior pin trips act (c).
-    sofia_root = _sofia_tree(tmp_path, [])
+def test_assemble_substrate_repo_source_drift_is_taken_fresh_not_pinned(tmp_path) -> None:
+    # RBT-9 (ratified 2026-07-20): the act-(c) prior-pin is scoped to
+    # carry-forward specs only. A REPO-canonical authority whose bytes have moved
+    # since the --from-run draw (a canon landing between runs) is taken FRESH at
+    # the pre-run HEAD and recorded at its current hash — it does NOT trip act (c).
+    # This reproduces today's blocker (run-034: ADR-001 et al. drifted vs run-033)
+    # and pins the fix: repo drift proceeds, the carry-forward file is still pinned.
+    sofia_root = _sofia_tree(tmp_path, [])  # docs/adr-template.md == "AUTHORITY BODY"
     runs_root = tmp_path / "runs"
     prior = _build_prior_draw(
         runs_root, "run-099",
-        substrate={"authorities": {"adr-template": "OLD BYTES"}, "design-intent": {"vision": "V"}},
+        # Prior pinned the authority at OLD BYTES (X); the repo now holds
+        # "AUTHORITY BODY" (Y). Carry-forward vision is byte-stable across draws.
+        substrate={"authorities": {"adr-template": "OLD BYTES"}, "design-intent": {"vision": "V-BODY"}},
+    )
+    run_dir = runs_root / "run-100"
+    assemble_substrate(  # must NOT raise
+        _cf_recipe(from_run="run-099"), run_dir=run_dir, sofia_root=sofia_root,
+        retrieved="2026-07-06", from_run_dir=prior,
+    )
+    manifest = {e["logical_id"]: e for e in json.loads(
+        (run_dir / "substrate" / "manifest.json").read_text())["files"]}
+    # The drifted repo authority is recorded FRESH (Y), not blocked, not pinned to X.
+    assert manifest["adr-template"]["sha256"] == sha256_text("AUTHORITY BODY")
+    assert manifest["adr-template"]["sha256"] != sha256_text("OLD BYTES")
+    assert (run_dir / "substrate" / "authorities" / "adr-template.md").read_text() == "AUTHORITY BODY"
+    # The carry-forward file is still carried and its pin still held (matches prior).
+    assert (run_dir / "substrate" / "design-intent" / "vision.md").read_text() == "V-BODY"
+    assert manifest["vision"]["sha256"] == sha256_text("V-BODY")
+
+
+def test_assemble_substrate_carried_file_pin_mismatch_still_raises(tmp_path) -> None:
+    # The carry-forward pin remains load-bearing: a carried file whose on-disk
+    # bytes no longer match the prior draw's recorded sha256 (a corrupted or
+    # tampered non-re-fetchable block) fails loud — act (c) is scoped, not removed.
+    sofia_root = _sofia_tree(tmp_path, [])
+    runs_root = tmp_path / "runs"
+    prior = runs_root / "run-099"
+    (prior / "substrate" / "authorities").mkdir(parents=True)
+    (prior / "substrate" / "design-intent").mkdir(parents=True)
+    # On-disk carried bytes ("V-CORRUPTED") diverge from the manifest's recorded
+    # pin (sha256 of "V-ORIGINAL"): the integrity check the carry-forward exists for.
+    (prior / "substrate" / "design-intent" / "vision.md").write_text("V-CORRUPTED", encoding="utf-8")
+    (prior / "substrate" / "manifest.json").write_text(
+        json.dumps({"files": [
+            {"logical_id": "vision", "category": "design-intent",
+             "origin": {"source": "hand", "note": "vision"},
+             "retrieved": "t", "sha256": sha256_text("V-ORIGINAL")},
+        ]}), encoding="utf-8",
     )
     with pytest.raises(PrepError):
         assemble_substrate(
-            _mini_recipe(from_run="run-099"), run_dir=runs_root / "run-100",
+            _cf_recipe(from_run="run-099"), run_dir=runs_root / "run-100",
             sofia_root=sofia_root, retrieved="t", from_run_dir=prior,
         )
 
