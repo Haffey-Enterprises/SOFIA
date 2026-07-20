@@ -1,0 +1,1 @@
+{"finding_id":"49bad287e5b044cb","classification":"decision-bearing","authority_locus":null,"rationale":"No cited authority establishes a model-access gateway component or fixes its class; whether to name/classify it or route it to a forthcoming SDD is an unratified choice.","confidence":"high"}

@@ -1,0 +1,10 @@
+{
+  "action": "edit",
+  "finding_id": "36a68d63fe5653ea",
+  "target": "ADR-003",
+  "old_string": "**DDR-003 (Feedback Loop Governance)** — governance policy for the promotion path; the routing of predicate-evaluation semantics onward to the forthcoming constraint-validator service design.",
+  "new_string": "**DDR-003 (Feedback Loop Governance)** — governance policy for the promotion path; the routing of the Condition predicate vocabulary (the predicate grammar for scope conditions) onward to the forthcoming constraint-validator service design.",
+  "authority_conformed": "DDR-003 §9 (routed item scoped to 'Condition predicate vocabulary — the predicate grammar for scope conditions')",
+  "rationale": "DDR-003 §9 routes only the Condition predicate vocabulary, not general predicate-evaluation semantics; the cross-ref is conformed to the actual routed object.",
+  "confidence": "high"
+}

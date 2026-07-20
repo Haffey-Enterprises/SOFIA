@@ -1,0 +1,1 @@
+{"finding_id":"0965653f0f2fe9d2","classification":"decision-bearing","authority_locus":null,"rationale":"Recursive sub-runs invoke the ReasoningSession invariant, but ADR-002 §2.6/DDR-002 §4 fix AOE-only session ownership with no non-AOE-orchestrator or nesting shape; resolving requires an unratified authorship/nesting choice.","confidence":"high"}

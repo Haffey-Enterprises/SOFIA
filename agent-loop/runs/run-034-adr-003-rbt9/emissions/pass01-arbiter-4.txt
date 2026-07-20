@@ -1,0 +1,1 @@
+{"finding_id":"ab975421a61116ae","classification":"decision-bearing","authority_locus":null,"rationale":"Whether ADR-003's general Standards-plane constraint predicate evaluation routes to the same constraint-validator design DDR-003 scopes narrowly (promotion Conditions) is a scoping choice no cited authority resolves.","confidence":"medium"}

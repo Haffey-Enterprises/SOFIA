@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "b8c81ed4fb8085de",
+  "reason": "The SKILL body-integrity discipline requires a status marker and named resolution locus, but the ADR-003 §7 entry already carries the status marker '(unauthored)'. What remains — restating the enforcement-gating consequence and/or supplying a named resolution locus (ticket-home / definition-of-done pointer) — is not uniquely determined: the authority does not fix which locus text to use, and ADR-008's parallel entry ('owns the ingestion mechanics realizing the authoritative-source ingestion control (§2.2)') supplies a role clause, not a resolution-locus pointer, so no single conforming edit is entailed.",
+  "confidence": "medium"
+}

@@ -1,0 +1,1 @@
+{"finding_id":"7541a348ad9b9c31","classification":"decision-bearing","authority_locus":null,"rationale":"Fixing the contradiction requires choosing whether to remove the ai-gateway naming or amend the self-imposed rule to admit it — a choice no cited authority disambiguates.","confidence":"high"}

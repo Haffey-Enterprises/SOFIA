@@ -1,0 +1,1 @@
+{"finding_id":"5863b4a71f5f8e06","classification":"decision-bearing","authority_locus":null,"rationale":"Recursion clause requires a per-sub-run ReasoningSession, but ADR-002 §2.6 fixes AOE-only lifecycle and DDR-002 §4 carries no nesting shape; no authority disambiguates whether to reassign lifecycle or add a session-nesting schema.","confidence":"high"}

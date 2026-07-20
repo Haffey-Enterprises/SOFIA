@@ -1,0 +1,1 @@
+{"finding_id":"e77a9fba2997cbf3","classification":"decision-bearing","authority_locus":null,"rationale":"Whether/how a gate binds a no-graph-write direct route is a governance choice ADR-003 leaves silent and no upstream authority resolves; multiple conforming fixes exist.","confidence":"high"}

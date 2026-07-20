@@ -1,0 +1,1 @@
+{"finding_id":"97991fb731d1b51c","classification":"decision-bearing","authority_locus":null,"rationale":"Whether a gate must bind a no-graph-write direct route, and by what mechanism, is a governance-scope choice ADR-003's ratified items and cited authorities do not settle.","confidence":"high"}

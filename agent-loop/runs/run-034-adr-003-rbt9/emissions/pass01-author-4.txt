@@ -1,0 +1,9 @@
+{
+  "action": "close_satisfied",
+  "finding_id": "d6b5d16e6e1914ff",
+  "evidence_present": "The Standards plane has no ingestion path until the forthcoming file-driven ingestion decision record and its port land, and predicate evaluation awaits the forthcoming constraint-validator service design — until then, §2.4 is enforceable only at design review. *Mitigation:* stated in earned tense here; the enforcement trail is those two records' and follows the platform's aspirational-until-mechanized compliance posture (ADR-002 §6).",
+  "evidence_absent": null,
+  "authority_satisfied": "ADR-003 §5.3 + Item 4 (constraints-from-graph, ratified): 'committed now, enforced in stages; earned tense mandatory'",
+  "rationale": "The determining authority requires the dependency be stated in earned tense; §5.3 already states it verbatim in earned tense with named loci, so the record conforms.",
+  "confidence": "high"
+}

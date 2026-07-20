@@ -1,0 +1,1 @@
+{"finding_id": "7b4e749596c952e6", "classification": "decision-bearing", "authority_locus": null, "rationale": "Reconciling the universal gate-unbypassability claim against first-class no-write direct routes requires ruling how governance binds interactions that touch no graph checkpoint \u2014 a choice no cited authority makes.", "confidence": "high"}

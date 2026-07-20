@@ -1,0 +1,1 @@
+{"finding_id":"2cf2c33910b17bbe","classification":"decision-bearing","authority_locus":null,"rationale":"No cited authority establishes ai-gateway-service; resolving requires choosing whether to commit the component or delete the references \u2014 an unratified choice.","confidence":"high"}

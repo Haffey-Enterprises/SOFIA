@@ -1,0 +1,1 @@
+{"finding_id":"eea7e14c1fdcada4","classification":"decision-bearing","authority_locus":null,"rationale":"Correct citation-scope authority is not determined: ADR-001 §2.4 covers SDLC stages not intra-run coordination, and no authority fixes which provision homes the orchestrator's capture routing.","confidence":"medium"}
