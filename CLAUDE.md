@@ -23,7 +23,7 @@ The platform operates with **hybrid reasoning** (LLM and SOFIA) within encoded b
 - **Persistence backbone:** Neo4j (architecture + reasoning state), PostgreSQL (workflow/audit/staging), Firestore (immutable snapshots) — no vector store
 - **Cloud / host:** GCP / GitHub
 
-A materially different choice on any axis is a **rebind**, not a substitution — re-derive the conventions for that stack and capture it as an ADR (see the `application-code` skill). The `bedrock:` skills assume the stack above.
+The `bedrock:` corpus is multi-stack: each skill declares its own binding, and that declaration — not this list — governs what it assumes. The service-side skills bind to the stack above; others bind to their own, and some are stack-independent. Wherever a skill's binding is the stack above, a materially different choice on any axis is a **rebind**, not a substitution — re-derive the conventions for that stack and capture it as an ADR.
 
 ## Branch model
 
