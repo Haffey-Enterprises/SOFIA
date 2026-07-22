@@ -1,0 +1,1 @@
+{"finding_id":"7728c4d8c05e9870","classification":"decision-bearing","authority_locus":null,"rationale":"The target ADR-004 is not in the ratified authority set; no ratified authority determines how schema provisioning orders against SDD-001's readiness contract, so resolving the seam requires an unmade choice.","confidence":"high"}

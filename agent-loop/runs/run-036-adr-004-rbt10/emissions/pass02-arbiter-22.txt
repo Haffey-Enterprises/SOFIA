@@ -1,0 +1,1 @@
+{"finding_id":"85a52a2bddbb7ece","classification":"decision-bearing","authority_locus":null,"rationale":"The constraint-versioning policy is an unmade decision with real blast radius; no ratified authority determines how a live instance's constraints evolve, so it is an incomplete decision, not a locatable fix.","confidence":"high"}

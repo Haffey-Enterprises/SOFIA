@@ -1,0 +1,1 @@
+{"finding_id": "1367ad48d12aef29", "classification": "decision-bearing", "authority_locus": null, "rationale": "ADR-004 is not in the ratified authority set provided; no ratified authority disambiguates whether the new schema-provisioning obligation belongs in SDD-001 or how, so this is an unratified choice.", "confidence": "medium"}

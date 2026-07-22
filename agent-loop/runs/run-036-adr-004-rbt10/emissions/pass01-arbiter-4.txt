@@ -1,0 +1,1 @@
+{"finding_id":"30eee3448560b641","classification":"decision-bearing","authority_locus":null,"rationale":"The finding concerns ADR-004's own internal scope claims; no ratified authority disambiguates what ADR-004 decides versus disclaims, and ADR-004 is not in the provided authority set.","confidence":"high"}

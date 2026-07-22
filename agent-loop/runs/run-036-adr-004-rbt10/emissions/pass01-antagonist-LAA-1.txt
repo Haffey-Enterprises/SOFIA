@@ -1,0 +1,72 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2.7 Authoritative-source fidelity control / title & summary claim",
+    "claim": "The record's title and §1 forcing-function frame it as instantiation/ingestion architecture, but §2.7 decides a substantive read-discipline invariant beyond instantiation: 'read-exclusion of provisional ground truth is committed as a schema-level invariant — a provisional authoritative-source node is excluded from ground-truth synthesis until officially entered.' This commits a standing steady-state read-discipline invariant (excluding provisional nodes from ALL synthesis, not merely at instantiation) that is not surfaced in the §2 decision-sentence, which scopes the decision to greenfield instantiation ('The SOFIA graph is instantiated greenfield...'). A standing schema invariant governing steady-state synthesis rides along inside an instantiation ADR without being enumerated as a decision it claims to make.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2 (decision sentence, instantiation-scoped) vs ADR-004 §2.7 (schema-level read-exclusion invariant governing all ground-truth synthesis)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2.2 Schema provisioning / §2 decision sentence",
+    "claim": "§2.2 decides that knowledge-service gains a new schema-provisioning capability — 'which is committed here to expose a schema-provisioning capability — an addition its service design does not yet enumerate, gained as a named obligation of this decision.' This is a distinct decision (adding an administrative DDL operation to a specific service) beyond the record's stated decision of 'instantiation is file-driven ingestion through the gateway.' The §2 decision sentence names 'a driver-less loader utility that leverages knowledge-service's ports' and 'sole holder of the graph driver' but does not surface that a new service capability is being mandated into existence — the capability commitment is a smuggled sub-decision not stated at the decision altitude.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2 (decision sentence) vs ADR-004 §2.2 ('committed here to expose a schema-provisioning capability')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2.7 dependency on a forthcoming schema amendment",
+    "claim": "§2.7 states the read-exclusion invariant 'is a *forthcoming* addition to the schema's read-discipline invariant set (a named amendment obligation), not one the schema already carries.' The record thus decides a schema invariant it does not itself own and that does not yet exist in the authority it cites (DDR-002 §7), while §2.6 and §6 present the fidelity gate as a committed compliance check. The record depends on an as-yet-unauthored DDR-002 amendment to make its own §2.7 commitment enforceable, but names that dependency only as a downstream obligation rather than declaring the record CONDITIONAL/blocked on it — a consequence (the commitment is inoperative until DDR-002 is amended) that is under-declared at decision altitude.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.7 (forthcoming DDR-002 read-discipline invariant addition) vs DDR-002 §7 (current read-discipline invariant set, which does not carry it)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2.7 — routing-home claim vs ADR-008's named home",
+    "claim": "§2.7 claims 'this ADR ... is the record the governance record names as the home of the ingestion-mechanics authority.' ADR-008 §7 names 'The forthcoming file-driven ingestion decision record — owns the ingestion mechanics realizing the authoritative-source ingestion control (§2.2)' and §2.2's realization-routes column routes the ingestion control to 'The forthcoming ingestion decision record; the knowledge-service ingestion port.' ADR-004 §2.7 asserts it owns the ingestion-mechanics *authority* while simultaneously routing the port-level mechanics away ('The port-level mechanics ... are the knowledge-service design's'). The claimed decision content — that this record decides ingestion mechanics authority — is contradicted within §2.7 itself, which decides the locus/existence but explicitly does not decide the mechanics; the record claims to home an authority it then disclaims.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.7 ('home of the ingestion-mechanics authority' vs 'port-level mechanics ... are the knowledge-service design's') and ADR-008 §7 / §2.2 (forthcoming ingestion decision record ownership)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-004"],
+    "locus": "§2.2 constraint-versioning forward item",
+    "claim": "§2.2 defers constraint-versioning ownership ('a forward question ... tracked as a forward item against the schema-provisioning capability's design') but names no ticket, decision record, or firing trigger for it, and §5.3 restates it as a 'named forward question, not a silent gap' without a home. The consequence of a deferred sub-decision is declared, but the deferral is homed only to an unnamed 'capability's design,' leaving the forward obligation without a locatable home.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.2 (constraint-versioning deferred to 'the schema-provisioning capability's design') and §5.3 (restated with no named home or trigger)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-004"],
+    "locus": "§2.5 KG-scoped / RG preserved by construction",
+    "claim": "Attacked whether §2.5 overclaims RG safety relative to what the decision content supports. It does not: the record carefully qualifies the guarantee to instantiation-caused loss ('neither written, reconstructed, nor discarded by instantiation'), explicitly states the RG 'is not source-recoverable and must not be presumed so,' and separates instance-loss durability onto backup/restore (§5.3 risk) rather than claiming the instantiation path secures it. §5.1 further scopes the positive consequence to 'safe *from instantiation-caused loss* by construction.' The prose claims exactly what the decision supports and no more — the scope of the RG guarantee is honestly bounded.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.5 and §5.1 (RG guarantee bounded to instantiation-caused loss; instance-loss durability routed to §5.3 backup/restore) — consistent, not overclaimed"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-004"],
+    "locus": "§2.4 Additive by supersession",
+    "claim": "Attacked whether §2.4 claims to decide destructive-reset behavior it does not actually foreclose, or contradicts the additive claim. It holds: the record states the behavior is 'selected per node by the graph's current state, not by a loader mode,' forecloses in-place overwrite ('requires an explicit version increment ... there is no in-place overwrite'), and states plainly 'The instantiation path exposes no destructive-reset operation.' Alternative C (§4.3) records the rejected wipe-and-reload with a specific rationale grounding it in the schema's never-delete discipline. The decision-content, its rejected alternative, and the §5.2 constraint all agree — the additive-not-destructive commitment is stated at a testable, non-contradictory grain.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.4, §4.3 (Alternative C rejection), §5.2 (no destructive-reset constraint) — mutually consistent"
+    }
+  }
+]

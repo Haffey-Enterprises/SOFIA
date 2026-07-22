@@ -1,0 +1,7 @@
+{
+  "finding_id": "36b1b7ecf6071693",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record SKILL, 'Tense is earned by enforcement' + 'the conditions apparatus carrying the present truth'; ADR/DDR earned-tense and conditions-apparatus conventions",
+  "rationale": "Fix is dictated: state the forthcoming-enforcement commitment in conditional tense and surface the amendment dependency in the conditions apparatus per the ratified body-integrity discipline.",
+  "confidence": "high"
+}

@@ -1,0 +1,9 @@
+{
+  "action": "close_satisfied",
+  "finding_id": "818989043a5d9abe",
+  "evidence_present": "Instantiation of authoritative-source ground truth (the Catalog and Standards planes)",
+  "evidence_absent": "selection-catalog and standards planes",
+  "authority_satisfied": "DDR-002 §2.1 canonical plane label 'Catalog'; ADR-008 §2.2 'Catalog / Standards'",
+  "rationale": "§2.7 already reads 'the Catalog and Standards planes' — the canonical name; the offending 'selection-catalog' string does not appear in the document.",
+  "confidence": "high"
+}

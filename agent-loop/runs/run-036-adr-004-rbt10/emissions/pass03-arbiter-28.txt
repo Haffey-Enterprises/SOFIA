@@ -1,0 +1,7 @@
+{
+  "finding_id": "dbad933633392115",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record SKILL, 'The amendment lifecycle' — 'Every deferred obligation gets a home with a firing trigger' (route each deferral to a backlog item whose body names the re-surfacing event)",
+  "rationale": "The house convention dictates the fix directly: a deferred obligation must be homed to a tracker item naming its firing trigger; no unmade choice.",
+  "confidence": "high"
+}

@@ -1,0 +1,1 @@
+{"finding_id": "ea75d36a134fbd1f", "classification": "decision-bearing", "authority_locus": null, "rationale": "Whether the ingestion-mechanics ownership splits authority-here / port-mechanics-to-SDD, and how that reconciles with ADR-008's forward reference, is an unratified ownership-boundary choice no cited authority disambiguates.", "confidence": "high"}

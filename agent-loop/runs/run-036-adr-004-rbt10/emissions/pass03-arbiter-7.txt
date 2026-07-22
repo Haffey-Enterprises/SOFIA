@@ -1,0 +1,7 @@
+{
+  "finding_id": "335eee1b9f6630d2",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding names an ADR-004 not present in the ratified authority set, so no fetched authority determines whether the fix is ADR text, an SDD operation addition, or a routing change.",
+  "confidence": "high"
+}

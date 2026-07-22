@@ -1,0 +1,7 @@
+{
+  "finding_id": "66d4c0b416f29b9d",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "Whether to gate this ADR's acceptance on the downstream schema amendment landing, or accept it with the obligation named as a gap, is a sequencing choice no cited authority resolves.",
+  "confidence": "medium"
+}

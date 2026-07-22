@@ -1,0 +1,9 @@
+The finding targets ADR-004, which does not exist in the provided corpus. The finding quotes §2.7 and §6 text from ADR-004, but no such record is present in the ratified authorities. Its cited authority (DDR-002 §7 invariant set, PROPOSED-vs-ACCEPTED timing) is real, but the target record's content cannot be verified against the corpus — and the finding raises a timing/sequencing question (accept this ADR before the downstream schema amendment lands, or gate acceptance on it) that no ratified authority resolves. Whether a PROPOSED ADR may self-discharge a forthcoming downstream schema obligation, or must gate its own acceptance, is a choice not settled by any cited authority. Escalate.
+
+{
+  "finding_id": "66d4c0b416f29b9d",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "Target ADR-004 absent from corpus; the accept-now-vs-gate-on-amendment sequencing is a choice no ratified authority resolves.",
+  "confidence": "medium"
+}

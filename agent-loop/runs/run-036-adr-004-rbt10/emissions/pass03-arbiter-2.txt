@@ -1,0 +1,1 @@
+{"finding_id": "5041152469207d96", "classification": "decision-bearing", "authority_locus": null, "rationale": "ADR-004 is not in the provided authority set, so the finding sits on an unratified record whose scope split (owns authority vs disclaims mechanics) is the choice under contest; no higher authority disambiguates.", "confidence": "medium"}

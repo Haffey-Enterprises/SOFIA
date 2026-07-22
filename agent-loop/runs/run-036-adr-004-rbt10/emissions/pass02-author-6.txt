@@ -1,0 +1,10 @@
+{
+  "action": "edit",
+  "finding_id": "ad93f7d43c1589bb",
+  "target": "ADR-004",
+  "old_string": "**DDR-004 (Inherited Confidence Derivation)**",
+  "new_string": "**DDR-004 (Inherited-Confidence Derivation)**",
+  "authority_conformed": "DDR-004 document title 'DDR-004 — Inherited-Confidence Derivation' (fetched)",
+  "rationale": "The owning record's title hyphenates the compound; the citation must match it, so 'Inherited Confidence' becomes 'Inherited-Confidence'.",
+  "confidence": "high"
+}

@@ -1,0 +1,92 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2 Decision sentence vs §2.7 schema-level read-exclusion invariant",
+    "claim": "The §2 decision sentence scopes the record to greenfield instantiation ('The SOFIA graph is instantiated greenfield from declared source artifacts, and instantiation ... is orchestrated by a driver-less loader'). §2.7 commits a standing steady-state read-discipline invariant that is not surfaced at the decision altitude: 'read-exclusion of provisional ground truth is committed as a schema-level invariant — a provisional authoritative-source node is excluded from ground-truth synthesis until officially entered.' Exclusion from ALL ground-truth synthesis governs every synthesis read, not merely instantiation — a standing platform-wide consumption rule riding inside a record framed and titled as instantiation architecture. A commitment that constrains steady-state platform read-discipline is a position that deserves its own decision surface, or at minimum its own enumerated sub-decision; here it stands only in a sub-section of an instantiation ADR.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2 (instantiation-scoped decision sentence) vs §2.7 (schema-level read-exclusion invariant governing all ground-truth synthesis)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2.7 / §6 check 6 — load-bearing safety commitment resting on an unauthored downstream schema amendment; acceptance timing",
+    "claim": "§2.7 commits read-exclusion of provisional ground truth 'as a schema-level invariant' while conceding it 'is a *forthcoming* addition to the schema's read-discipline invariant set (a named amendment obligation), not one the schema already carries.' §6 check 6 presents the fidelity gate as verifiable conformance. A PROPOSED ADR thus commits an ACCEPTED downstream schema record (DDR-002 §7, whose read-discipline set #9/#19/#21 carries no such invariant) to a forthcoming safety-critical invariant that does not yet exist — a hard-to-reverse cross-record obligation the record asserts as self-discharging rather than gating its own acceptance on the amendment landing. Whether this ADR should stand ACCEPTED before DDR-002 carries (or at least names as a gap) the amendment is a timing question left unresolved: the record commits the guarantee in present voice while its enforcement locus is not yet built.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.7 ('forthcoming addition ... not one the schema already carries') / §6 check 6 vs DDR-002 §7 read-discipline invariant set (#9/#19/#21) and Named Gaps, neither carrying nor tracking the amendment"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2.2 — new capability obligation imposed on an already-ratified service design",
+    "claim": "§2.2 commits knowledge-service 'to expose a schema-provisioning capability — an addition its service design does not yet enumerate, gained as a named obligation of this decision.' SDD-001 is ACCEPTED (v1.6.0); its §3.6 ingestion port enumerates ingest / register-plane / mirror-gate-decision with no DDL-provisioning operation, §2.1 enumerates the service's sole-authorised acts with none, and §3.1 treats 'schema metadata loaded' as a readiness precondition. A PROPOSED upstream ADR mandating a new capability into an already-settled downstream design pulls against the ratified posture; the receiving ACCEPTED record deserves the amendment homed as at least a named forward item on its own side, not asserted one-directionally from this record with no confirmation the settled design has a place to land it.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.2 (schema-provisioning capability obligation) vs SDD-001 §2.1 / §3.1 / §3.6 (ACCEPTED; no provisioning operation enumerated; schema-present treated as readiness precondition)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2 Decision / §2.5 / §5.3 — a structural safety guarantee resting on an unsettled production-runtime decision",
+    "claim": "The Decision's RG-durability posture depends on a decision the platform has not yet taken. §2.5 rests RG durability-across-instance-loss on 'instance-level backup and restore,' assigned in dev to the managed provider and for production 'deferred (see §5.3),' and commits 'the RG is not source-recoverable and must not be presumed so.' ADR-002 §2.2/§5.2 leave the production deployment runtime — and therefore its backup posture — deferred. The record commits a no-destructive-reset structural guarantee and a §5.1 positive claim of RG safety whose sole RG-durability backstop is an as-yet-undecided production backup posture: a load-bearing durability property leaning on a decision that is stale-against-nothing because it has not been made. This is a premature-timing exposure the record acknowledges but does not resolve.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.5 / §5.3 (RG durability rests on backup/restore; production backup posture deferred) vs ADR-002 §2.2 / §5.2 (production deployment runtime deferred; burden 'returns for production ... weighed at the production-environment build')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2.7 — self-identification as ADR-008's named ingestion-mechanics home vs disclaimed mechanics",
+    "claim": "§2.7 asserts this ADR 'is the record the governance record names as the home of the ingestion-mechanics authority' and §7 restates 'this record is the \"forthcoming file-driven ingestion decision record\" that governance record names.' ADR-008 §7 names that forthcoming record as one that 'owns the ingestion mechanics realizing the authoritative-source ingestion control (§2.2),' and ADR-008 §2.2 routes the control to 'The forthcoming ingestion decision record; the knowledge-service ingestion port.' ADR-008 assigned that home ownership of ingestion *mechanics realization*; ADR-004 §2.7 claims to own bare 'authority/locus' only while disclaiming the mechanics ('the port-level mechanics ... how the official-entry transition is enforced ... are the knowledge-service design's'). The record self-identifies as the discharge of ADR-008's forward reference while narrowing its ownership below what that reference assigned — the authority/mechanics distinction §2.7 rests on is not a distinction ADR-008's cited loci draw.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.7 ('home of the ingestion-mechanics authority' + 'port-level mechanics ... are the knowledge-service design's') and §7 vs ADR-008 §2.2 / §7 (forthcoming ingestion record owns ingestion mechanics realization)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2.7 / §5.2 — 'externally-decided mirrored records' exclusion category not recognized by the cited governance record",
+    "claim": "§2.7 and §5.2 exempt 'externally-decided mirrored records' from the fidelity gate ('it is not applied to ... externally-decided mirrored records'; §5.2: 'mirrored externally-decided records are not gated'). ADR-008 §2.2's four calibrated source classes are Promotion, Authoritative-source ingestion, Operational distillation, and Environment — no 'mirrored externally-decided records' KG-ground-truth mutation class exists there. The corpus's mirrored external record (DDR-002 §2.4 GateDecision, origin_mechanism: ingested) is scoped to produced-Solution SDLC gates, not KG ground-truth entry. The record scopes its control 'per the governance record' while carving an exemption category that record does not enumerate as a mutation class — the exemption cites an authority (ADR-008 §2.2) that does not resolve to it.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.7 / §5.2 ('externally-decided mirrored records' exempt) against ADR-008 §2.2 four-class calibration table (no mirrored-external-record ingestion class)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-004"],
+    "locus": "§2.2 / §5.3 — constraint-versioning forward item has no locatable home or firing trigger",
+    "claim": "§2.2 defers constraint-versioning ownership ('a forward question ... tracked as a forward item against the schema-provisioning capability's design') and §5.3 restates it as 'a named forward question, not a silent gap.' Neither names a ticket, decision record, or event that re-surfaces the obligation, and the sole home offered ('the schema-provisioning capability's design') is itself an unauthored, un-enumerated design. Constraint evolution over a live populated instance carries real blast radius (it alters what the gateway validates every write against); leaving it deferred without a locatable home and firing trigger is a posture that calcifies — the obligation has nowhere concrete to land.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.2 (constraint-versioning deferred to 'the schema-provisioning capability's design') and §5.3 (restated with no named home or trigger)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-004"],
+    "locus": "§2.1 / §2.2 / §4.1 / §4.2 — sole-driver line preserved for instantiation",
+    "claim": "I attacked the decision at its most tempting failure posture: carving a first-load exception into ADR-002's sole-owner-of-the-driver principle — the classic instantiation-bypass that would erode the ratified system-of-record commitment. It held. The record routes instantiation data through the ingestion port (§2.1), holds schema provisioning inside knowledge-service over the driver it already owns rather than sanctioning a second driver (§2.2), and explicitly rejects both the privileged-bulk-load (§4.1) and separate-provisioning-tool-with-own-driver (§4.2) alternatives on grounds tracing to ADR-002's diffuse-driver hazard. The posture integrates with prior ratified platform direction rather than pulling against it; no standing exception is created, so reversibility is proportionate.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-002 §2.5 (sole-holder-of-the-driver principle) — ADR-004 §2.1/§2.2/§4.1/§4.2 preserve it for instantiation"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-004"],
+    "locus": "§2.3 / §2.4 / §2.5 / §4.3 — 'fresh / no migration' bounded to origin; RG-loss hazard structurally closed",
+    "claim": "I attacked 'fresh / no migration' as the likely license to reset a live graph — the reading that would endanger the never-delete and supersession disciplines and silently discard reasoning state, the platform's reason to exist. The record forecloses it: §2.3 binds 'fresh' to origin only, §2.4 makes the load additive-by-supersession with no destructive-reset mode, §2.5 scopes instantiation to the KG and forbids writing/reconstructing/discarding the RG, and §4.3 rejects destructive re-instantiation on exactly the never-delete/supersession grounds. The commitment integrates with prior decisions (ADR-002 §2.1, DDR-002 §6) and the RG-loss hazard is structurally, not aspirationally, closed. This posture should stand in this shape.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-001 §2.2 (reasoning-capture invariant), DDR-002 §6 (Option A supersession) / §7 #8 (never-delete) — ADR-004 §2.3/§2.4/§2.5/§4.3 conform"
+    }
+  }
+]

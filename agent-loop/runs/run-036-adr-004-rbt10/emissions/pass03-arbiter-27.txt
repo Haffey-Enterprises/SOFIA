@@ -1,0 +1,1 @@
+{"finding_id":"818989043a5d9abe","classification":"resolvable","authority_locus":"DDR-002 §2.1 canonical plane label 'Catalog' (and ADR-008 §2.2 'Catalog / Standards'); pointer-not-mirror per author-decision-record body-integrity","rationale":"Canonical plane name 'Catalog' is fixed by the owning schema; conforming to it determines the fix, no new choice.","confidence":"high"}

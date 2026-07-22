@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "d75f0d04e6359f91",
+  "reason": "The authority ('an amendment that adds a ruling updates the Decision enumeration') fixes that a ruling must be surfaced, but the §2 paragraph is prose, not an enumerated list — there is no existing enumeration slot to add to, and the authority does not determine the wording, placement, or scope-caveat of the surfacing sentence; that requires an unratified authoring choice.",
+  "confidence": "medium"
+}

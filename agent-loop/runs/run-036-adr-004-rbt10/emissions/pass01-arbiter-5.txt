@@ -1,0 +1,7 @@
+{
+  "finding_id": "3d7f1f5fad3d5790",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record SKILL, 'The amendment lifecycle' — 'Every deferred obligation gets a home with a firing trigger' + body-integrity 'explicit TODO gap-markers' as a sanctioned ticket home",
+  "rationale": "The skill dictates the fix: a deferred obligation must be routed to a named backlog item whose body names the re-surfacing trigger; no new choice is introduced.",
+  "confidence": "high"
+}

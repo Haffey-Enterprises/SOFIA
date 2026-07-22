@@ -1,0 +1,1 @@
+{"finding_id":"38c4ae886e2372c4","classification":"decision-bearing","authority_locus":null,"rationale":"ADR-008 §2.2 enumerates four mutation classes with no 'mirrored externally-decided records' class; whether such records are a governed class or exempt is an unresolved gap no cited authority settles.","confidence":"high"}

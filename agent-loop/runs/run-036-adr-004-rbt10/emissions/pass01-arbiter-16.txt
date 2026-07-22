@@ -1,0 +1,1 @@
+{"finding_id": "33a3dc7291d53f00", "classification": "decision-bearing", "authority_locus": null, "rationale": "New provisioning capability contradicts SDD-001 readiness-gated write posture and no-degraded-mode; how to reconcile provisioning-before-schema is unruled by any authority.", "confidence": "high"}

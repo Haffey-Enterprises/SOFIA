@@ -1,0 +1,9 @@
+{
+  "action": "close_satisfied",
+  "finding_id": "5c7482ecb6164516",
+  "evidence_present": "knowledge-service is committed here to expose a schema-provisioning capability it does not yet enumerate (§2.2)",
+  "evidence_absent": null,
+  "authority_satisfied": "ADR-004 §2 (decision sentence) — the schema-provisioning capability commitment is already surfaced at decision altitude with cross-reference to §2.2",
+  "rationale": "The §2 decision sentence already enumerates the new schema-provisioning-capability commitment and points to §2.2, so the ruling is present at decision altitude; the coherence gap the finding alleges does not exist.",
+  "confidence": "high"
+}
