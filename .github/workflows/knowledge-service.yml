@@ -22,6 +22,12 @@ on:
   # So: fire on every PR, then let the `changes` job decide what actually runs.
   pull_request:
     branches: [develop, main]
+    # `labeled`/`unlabeled` are additions to the default set
+    # (opened/synchronize/reopened), which must therefore be restated here.
+    # Without them the semver-label gate cannot be satisfied by the very action
+    # it demands: applying the missing label would not re-run the check that
+    # asked for it, leaving the PR permanently blocked on a fixed problem.
+    types: [opened, synchronize, reopened, labeled, unlabeled]
   # The push trigger KEEPS its path filters. Nothing downstream of a merge is a
   # required check, so a skipped workflow strands nothing here — and not
   # rebuilding an image for a docs-only merge is the point of the filter.
@@ -102,12 +108,25 @@ jobs:
     name: gates
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read # Reading the PR's live labels; escalated here only.
     steps:
       - name: Exactly one semver label
+        # Labels are read LIVE from the API, never from
+        # github.event.pull_request.labels — that payload is a snapshot frozen
+        # at event time, and `gh pr create --label` labels the PR a beat AFTER
+        # creating it. The `opened` event therefore races label application:
+        # PR #46 saw `labels: []` and failed; PR #45 ran the same command and
+        # passed. A gate whose verdict depends on that timing is worse than a
+        # broken one, because it passes often enough to be trusted.
         env:
-          LABELS: ${{ toJSON(github.event.pull_request.labels.*.name) }}
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           set -euo pipefail
+          LABELS=$(gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/labels" --jq '[.[].name]')
+          echo "Labels on PR #${PR_NUMBER} at check time: ${LABELS}"
           count=$(jq '[.[] | select(startswith("semver: "))] | length' <<<"$LABELS")
           if [ "$count" -ne 1 ]; then
             echo "::error::Expected exactly one 'semver:' label, found $count."
