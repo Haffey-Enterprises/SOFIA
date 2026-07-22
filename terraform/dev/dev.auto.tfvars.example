@@ -1,15 +1,14 @@
 # File: terraform/dev/dev.auto.tfvars.example
-# Copy to dev.auto.tfvars and fill in. dev.auto.tfvars is git-ignored if it
-# ever carries anything sensitive; these values are not secrets, but keep the
-# real file out of version control if your project treats project_id as private.
+# Copy to dev.auto.tfvars and fill in. dev.auto.tfvars is git-ignored (repo
+# .gitignore: *.auto.tfvars). None of these values is a secret — the only
+# credential in this environment lives in Secret Manager and is never a
+# Terraform input.
 
 project_id = "haffey-sofia-dev" # REPLACE with the real dev project id
 
-region = "us-east4"
+region = "us-central1"
 
-zone = "us-east4-a" # dev cluster is zonal (single node); regional HA is a deferred prod topology
-
-master_authorized_cidrs = [
-  # REPLACE with the CIDR(s) you administer the cluster from (e.g. your VPN egress).
-  { cidr_block = "203.0.113.0/32", display_name = "operator-workstation" },
-]
+# The owner/repo allowed to federate into this project. Bound into the OIDC
+# provider's attribute condition, so only this repository's workflows can mint
+# credentials against the pool.
+github_repository = "Haffey-Enterprises/SOFIA"

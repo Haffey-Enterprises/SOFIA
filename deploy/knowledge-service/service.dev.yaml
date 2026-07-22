@@ -1,0 +1,108 @@
+##############################################################################
+# File: deploy/knowledge-service/service.dev.yaml
+# Service: knowledge-service (dev)
+# Author: Haffey Enterprises LLC
+# Created: 2026-07-22
+# Revised: 2026-07-22
+# Description: Declarative Cloud Run service definition for knowledge-service in
+#   dev. This manifest is the source of truth for the service's configuration:
+#   the pipeline renders it with the built image and applies it, and nothing
+#   mutates the live service outside it.
+#
+#   __IMAGE_URI__ is a load-bearing placeholder, not a stray token. The deploy
+#   job in .github/workflows/knowledge-service.yml substitutes the SHA-tagged
+#   image into it before apply, and FAILS the deploy if it is missing —
+#   `deploy-cloudrun` treats `metadata:` and `image:` as mutually exclusive, so
+#   render-then-apply is how the built image reaches a declarative manifest.
+#
+#   Every environment variable name below is bound to a field on
+#   knowledge_service/app/config.py's Settings class (env_prefix "KS_"). A
+#   rename on either side breaks the binding silently — the service would fall
+#   back to a default rather than fail — so the two are changed together.
+##############################################################################
+
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: knowledge-service
+  labels:
+    environment: dev
+    managed_by: terraform
+  annotations:
+    # Internal-only: the gateway is reached by platform services, never from
+    # the public internet (02 §7 — public ingress is the deliberate exception,
+    # and this is not one).
+    run.googleapis.com/ingress: internal
+spec:
+  template:
+    metadata:
+      annotations:
+        # Dev cost posture: scale to zero when idle, one instance ceiling.
+        autoscaling.knative.dev/minScale: "0"
+        autoscaling.knative.dev/maxScale: "1"
+    spec:
+      # Provisioned by terraform/modules/delivery (iam.tf). The revision runs as
+      # this identity, whose only grant is read on the Aura secret below.
+      serviceAccountName: knowledge-service-runtime@sofia-dev-he.iam.gserviceaccount.com
+      containers:
+        - image: __IMAGE_URI__
+          ports:
+            # Cloud Run injects PORT to match this value; Settings.port reads it
+            # from the bare `PORT` variable. PORT is therefore deliberately NOT
+            # declared as an env var below — Cloud Run reserves it and rejects a
+            # service that sets it explicitly.
+            - name: http1
+              containerPort: 8080
+          env:
+            # --- Service identity (Settings.service_name/service_version/app_env)
+            - name: KS_SERVICE_NAME
+              value: "knowledge-service"
+            - name: KS_SERVICE_VERSION
+              value: "0.1.0"
+            - name: KS_APP_ENV
+              value: "dev"
+
+            # --- Logging (Settings.log_level)
+            - name: KS_LOG_LEVEL
+              value: "INFO"
+
+            # --- Graph: managed Neo4j Aura (ADR-002 §2.2)
+            # AuraDB instance endpoint. neo4j+s:// is TLS with full certificate
+            # verification — never neo4j:// or bolt:// to a managed endpoint.
+            # An identifier, not a credential: the password is the secret below.
+            - name: KS_NEO4J_URI
+              value: "neo4j+s://5850aedf.databases.neo4j.io"
+            - name: KS_NEO4J_DATABASE
+              value: "neo4j"
+            - name: KS_NEO4J_USERNAME
+              value: "neo4j"
+            - name: KS_NEO4J_MAX_CONNECTION_POOL_SIZE
+              value: "50"
+            - name: KS_NEO4J_CONNECTION_ACQUISITION_TIMEOUT_SECONDS
+              value: "60.0"
+
+            # The credential is referenced, never carried. The secret container
+            # is provisioned by terraform; its value is added out-of-band by the
+            # operator and appears in no repository, no state file, and no log.
+            - name: KS_NEO4J_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: neo4j-aura-dev
+                  key: latest
+
+          # Probes on /healthz, never /readyz. Liveness must not track the graph:
+          # /readyz goes 503 whenever Aura is unreachable, and a liveness probe
+          # on it would kill containers that are healthy and would have
+          # recovered. Readiness is consulted by the platform for traffic
+          # routing, not for deciding whether the process is alive.
+          startupProbe:
+            httpGet:
+              path: /healthz
+            initialDelaySeconds: 2
+            periodSeconds: 3
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
+            periodSeconds: 30
+            failureThreshold: 3

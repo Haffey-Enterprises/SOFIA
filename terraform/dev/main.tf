@@ -3,37 +3,44 @@
 # Config: dev environment root
 # Author: Thaddeus Haffey — Executive Architect, Haffey Enterprises LLC
 # Created: 2026-07-14
-# Revised: 2026-07-14
-# Description: Instantiates the neo4j_graph module for dev — the RBT-58 threshold
-#   instance. Single-node graph pool (max 1), scale-to-zero floor (min 0).
+# Revised: 2026-07-22
+# Description: Instantiates the delivery module for dev — the substrate the
+#   knowledge-service pipeline runs on: keyless CI federation, the service image
+#   registry, the runtime identity, and the Aura credential container. No graph
+#   compute is provisioned here: the dev graph is managed Neo4j Aura (ADR-002
+#   §2.2), external to this project.
 ##############################################################################
 
-module "neo4j_graph" {
-  source = "../modules/neo4j_graph"
+module "delivery" {
+  source = "../modules/delivery"
 
-  project_id              = var.project_id
-  region                  = var.region
-  zone                    = var.zone
-  environment             = "dev"
-  master_authorized_cidrs = var.master_authorized_cidrs
-
-  # Dev threshold sizing — single node, scale-to-zero. Topology deferred (ADR-002 §5.2).
-  graph_node_min_count = 0
-  graph_node_max_count = 1
-  data_disk_size_gb    = 32
+  project_id        = var.project_id
+  region            = var.region
+  environment       = "dev"
+  github_repository = var.github_repository
 }
 
-output "cluster_name" {
-  description = "Dev GKE cluster name (re-exported)."
-  value       = module.neo4j_graph.cluster_name
+output "artifact_registry_path" {
+  description = "Docker repository path (re-exported) — the GCP_AR_REPO workflow variable."
+  value       = module.delivery.artifact_registry_path
 }
 
-output "neo4j_gsa_email" {
-  description = "Neo4j workload GSA email (re-exported) — for the KSA WI annotation."
-  value       = module.neo4j_graph.neo4j_gsa_email
+output "ci_service_account_email" {
+  description = "CI delivery SA email (re-exported) — the GCP_CI_SA workflow variable."
+  value       = module.delivery.ci_service_account_email
 }
 
-output "artifact_registry_repo" {
-  description = "Artifact Registry repo path (re-exported)."
-  value       = module.neo4j_graph.artifact_registry_repo
+output "neo4j_aura_secret_id" {
+  description = "Aura credential secret ID (re-exported). Container only — the value is added out-of-band."
+  value       = module.delivery.neo4j_aura_secret_id
+}
+
+output "runtime_service_account_email" {
+  description = "knowledge-service runtime SA email (re-exported) — named in the Cloud Run manifest."
+  value       = module.delivery.runtime_service_account_email
+}
+
+output "workload_identity_provider" {
+  description = "GitHub OIDC provider resource name (re-exported) — the GCP_WIF_PROVIDER workflow variable."
+  value       = module.delivery.workload_identity_provider
 }
