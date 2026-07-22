@@ -29,10 +29,27 @@ metadata:
     environment: dev
     managed_by: terraform
   annotations:
-    # Internal-only: the gateway is reached by platform services, never from
-    # the public internet (02 §7 — public ingress is the deliberate exception,
-    # and this is not one).
-    run.googleapis.com/ingress: internal
+    # Ratified dev posture: security is enforced by IAM, not by network reach.
+    #
+    # `all` admits requests from outside the VPC, but admits nothing
+    # unauthenticated: no invoker binding is granted to allUsers or
+    # allAuthenticatedUsers anywhere in this repo or in
+    # terraform/modules/delivery, so every request must present a valid
+    # identity token for a principal holding roles/run.invoker. An
+    # unauthenticated caller gets 403 at the platform edge, before the
+    # container is reached.
+    #
+    # Why not `internal`: internal ingress is reachable only from the VPC, so
+    # the pipeline's rollout verification — and any operator curl of /healthz
+    # and /readyz — could not reach the service at all. The choice is between
+    # verifiable-and-IAM-guarded and unreachable-and-unverified; dev takes the
+    # former.
+    #
+    # The PRODUCTION posture is deliberately NOT decided here. It is an ADR
+    # act, and the likely shape (internal ingress plus a VPC connector, or
+    # internal-and-cloud-load-balancing) is a different topology, not a
+    # different annotation value.
+    run.googleapis.com/ingress: all
 spec:
   template:
     metadata:

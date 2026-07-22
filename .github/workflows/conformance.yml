@@ -17,14 +17,15 @@
 name: conformance
 
 on:
+  # Unfiltered by path, for the same reason as the service workflow: a job
+  # skipped by `if:` reports success and satisfies a required check, but a
+  # workflow that never fires reports nothing and leaves the required check
+  # Pending forever. conformance-1a and conformance-coverage are required
+  # checks, so they must have a run on every PR — even one that only touches
+  # knowledge_service/ or docs.
   pull_request:
     branches: [develop, main]
-    paths:
-      - "conformance/**"
-      - "pyproject.toml"
-      - "requirements*.txt"
-      - "requirements*.in"
-      - ".github/workflows/conformance.yml"
+  # Push keeps its path filters — nothing post-merge is a required check.
   push:
     branches: [develop, main]
     paths:
@@ -42,9 +43,53 @@ permissions:
   contents: read
 
 jobs:
+  # --- Did this change touch the conformance surface? ----------------------
+  # Plain git; no third-party action. The path set mirrors the push trigger's
+  # filter above — the harness depends on the root pyproject.toml (its addopts
+  # and coverage config) and the root lockfiles, not just conformance/ itself.
+  changes:
+    name: changes
+    runs-on: ubuntu-latest
+    outputs:
+      conformance: ${{ steps.detect.outputs.conformance }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Detect touched paths
+        id: detect
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+
+          if [ "$EVENT_NAME" = "push" ]; then
+            echo "conformance=true" >> "$GITHUB_OUTPUT"
+            echo "push event: conformance surface assumed changed (trigger is path-filtered)."
+            exit 0
+          fi
+
+          merge_base=$(git merge-base "$BASE_SHA" "$HEAD_SHA")
+          changed=$(git diff --name-only "$merge_base" "$HEAD_SHA")
+          echo "Changed files vs merge-base ${merge_base}:"
+          printf '%s\n' "$changed" | sed 's/^/  /'
+
+          if printf '%s\n' "$changed" | grep -qE '^(conformance/|pyproject\.toml$|requirements[^/]*\.(txt|in)$|\.github/workflows/conformance\.yml$)'; then
+            echo "conformance=true" >> "$GITHUB_OUTPUT"
+            echo "=> conformance surface touched: the harness will run."
+          else
+            echo "conformance=false" >> "$GITHUB_OUTPUT"
+            echo "=> conformance surface untouched: jobs skip (and report success)."
+          fi
+
   # --- 1a — graph-state assertions. Enforce on landing. --------------------
   conformance-1a:
     name: conformance-1a
+    needs: [changes]
+    if: needs.changes.outputs.conformance == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -79,6 +124,8 @@ jobs:
   # --- 1b — gateway-behavioral contracts. xfail until the gateway lands. ---
   conformance-1b:
     name: conformance-1b
+    needs: [changes]
+    if: needs.changes.outputs.conformance == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -113,7 +160,8 @@ jobs:
   # --- The gate: >=90 across the union of both suites, never either half. --
   conformance-coverage:
     name: conformance-coverage
-    needs: [conformance-1a, conformance-1b]
+    needs: [changes, conformance-1a, conformance-1b]
+    if: needs.changes.outputs.conformance == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

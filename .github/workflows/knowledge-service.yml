@@ -14,11 +14,17 @@
 name: knowledge-service
 
 on:
+  # The pull_request trigger is deliberately UNFILTERED by path. GitHub reports
+  # a job skipped by `if:` as success — which satisfies a required status check
+  # — but a workflow that never fires because of a trigger path filter reports
+  # nothing at all, and a required check with no run sits Pending forever. In a
+  # multi-surface repo that strands every PR touching only the other surfaces.
+  # So: fire on every PR, then let the `changes` job decide what actually runs.
   pull_request:
     branches: [develop, main]
-    paths:
-      - "knowledge_service/**"
-      - ".github/workflows/knowledge-service.yml"
+  # The push trigger KEEPS its path filters. Nothing downstream of a merge is a
+  # required check, so a skipped workflow strands nothing here — and not
+  # rebuilding an image for a docs-only merge is the point of the filter.
   push:
     branches: [develop, main]
     paths:
@@ -41,7 +47,57 @@ env:
   SERVICE_NAME: knowledge-service
 
 jobs:
+  # --- Which surfaces did this change touch? -------------------------------
+  # Plain git, no third-party action: the detection is three lines of diff and
+  # a grep, and a marketplace action here would be one more supply-chain edge
+  # to SHA-pin for no gain.
+  changes:
+    name: changes
+    runs-on: ubuntu-latest
+    outputs:
+      service: ${{ steps.detect.outputs.service }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # Full history: the merge-base with the target branch has to be
+          # reachable, and the default shallow clone does not reach it.
+          fetch-depth: 0
+
+      - name: Detect touched paths
+        id: detect
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+
+          # On push the trigger's own path filter already established that this
+          # surface changed — the workflow would not be running otherwise.
+          if [ "$EVENT_NAME" = "push" ]; then
+            echo "service=true" >> "$GITHUB_OUTPUT"
+            echo "push event: service surface assumed changed (trigger is path-filtered)."
+            exit 0
+          fi
+
+          merge_base=$(git merge-base "$BASE_SHA" "$HEAD_SHA")
+          changed=$(git diff --name-only "$merge_base" "$HEAD_SHA")
+          echo "Changed files vs merge-base ${merge_base}:"
+          printf '%s\n' "$changed" | sed 's/^/  /'
+
+          if printf '%s\n' "$changed" \
+            | grep -qE '^(knowledge_service/|\.github/workflows/knowledge-service\.yml$)'; then
+            echo "service=true" >> "$GITHUB_OUTPUT"
+            echo "=> service surface touched: verify will run."
+          else
+            echo "service=false" >> "$GITHUB_OUTPUT"
+            echo "=> service surface untouched: verify will skip (and report success)."
+          fi
+
   # --- Shared org-level gates (spine §3): cheap, first, fail fast. ----------
+  # Repo-wide by design: these run on EVERY pull request regardless of which
+  # surface it touches, which is what spine §3 means by org-level. They are not
+  # gated on `changes`.
   gates:
     name: gates
     if: github.event_name == 'pull_request'
@@ -83,6 +139,11 @@ jobs:
   # pyproject.toml and is deliberately NOT restated here.
   verify:
     name: verify
+    # Skipped when the service surface is untouched. A skipped job reports
+    # success, so this still satisfies the required check on develop/main
+    # without burning a runner on an unrelated PR.
+    needs: [changes]
+    if: needs.changes.outputs.service == 'true'
     runs-on: ubuntu-latest
     defaults:
       run:
