@@ -1,0 +1,141 @@
+# Conformance harness (RBT-77 CI wiring) — the ADR-002 §6 / DDR-001 /
+# DDR-002 §7 graph data-layer contract tests, run as the ratified three-job
+# shape.
+#
+# Why split, and why coverage is a third job: the two suites measure ONE
+# surface between them. 1a covers the graph-state assertions, 1b covers the
+# gateway-behavioral contract bodies, and the >=90 gate belongs to their union
+# — never to either half. Running each with `coverage run --parallel-mode` and
+# combining in a third job is exactly what the root pyproject.toml's
+# [tool.coverage.run] block pre-wires (`source`, `relative_files = true`).
+# `--no-cov` on each pytest call is load-bearing: the root addopts would
+# otherwise apply the 90 gate to a partial surface and fail it spuriously.
+#
+# Job names are load-bearing — they become required status checks under branch
+# protection (spine §4), and SDD-001 §7.2 makes the 1b required-flip the
+# knowledge-service build's own act. Renaming a job silently un-requires it.
+name: conformance
+
+on:
+  pull_request:
+    branches: [develop, main]
+    paths:
+      - "conformance/**"
+      - "pyproject.toml"
+      - "requirements*.txt"
+      - "requirements*.in"
+      - ".github/workflows/conformance.yml"
+  push:
+    branches: [develop, main]
+    paths:
+      - "conformance/**"
+      - "pyproject.toml"
+      - "requirements*.txt"
+      - "requirements*.in"
+      - ".github/workflows/conformance.yml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  # --- 1a — graph-state assertions. Enforce on landing. --------------------
+  conformance-1a:
+    name: conformance-1a
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+          pip install -e .
+
+      - name: Graph-state assertions (ephemeral Neo4j via testcontainers)
+        # The ubuntu-latest runner ships a running Docker daemon, which is what
+        # the session-scoped testcontainers fixture needs to start
+        # neo4j:5.26-community. No external database is contacted.
+        run: coverage run --parallel-mode -m pytest conformance/tests --no-cov -rxX
+
+      - name: Upload coverage data
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: coverage-1a
+          path: .coverage.*
+          # `--parallel-mode` writes dotfiles, which this action excludes by
+          # default — without this the combine job would silently find nothing.
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 1
+
+  # --- 1b — gateway-behavioral contracts. xfail until the gateway lands. ---
+  conformance-1b:
+    name: conformance-1b
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+          pip install -e .
+
+      - name: Gateway-behavioral contracts (xfail against the GraphGateway seam)
+        # `-rxX` makes both xfailed and xpassed VISIBLE in the log summary
+        # rather than collapsing to a bare dot. These contracts are xfail by
+        # ruling until RBT-15 implements the seam; the README's do-not-un-skip
+        # rule binds, so an XPASS here is a finding to REPORT, never something
+        # to mark, unmark, or "fix" in passing.
+        run: coverage run --parallel-mode -m pytest conformance/contracts --no-cov -rxX
+
+      - name: Upload coverage data
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: coverage-1b
+          path: .coverage.*
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 1
+
+  # --- The gate: >=90 across the union of both suites, never either half. --
+  conformance-coverage:
+    name: conformance-coverage
+    needs: [conformance-1a, conformance-1b]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+          pip install -e .
+
+      - name: Download both coverage data files
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: coverage-*
+          merge-multiple: true
+
+      - name: Combine and enforce the gate
+        run: |
+          set -euo pipefail
+          coverage combine
+          coverage report --show-missing --fail-under=90

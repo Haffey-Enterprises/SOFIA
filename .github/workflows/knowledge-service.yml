@@ -1,0 +1,251 @@
+# knowledge-service delivery pipeline (RBT-77) — the Python service leg on the
+# app-delivery-pipeline spine: verify gates → image build + scan → SHA-tagged
+# push to Artifact Registry → declarative Cloud Run deploy → rollout
+# verification from the action's own ready output.
+#
+# Third-party actions are pinned to a full commit SHA with the resolved tag in a
+# trailing comment (infrastructure-code delivery-pipeline §4): a re-tagged
+# malicious release cannot enter the pipeline silently.
+#
+# The `build` and `deploy-dev` jobs are guarded on `vars.GCP_WIF_PROVIDER`. The
+# repository variables are provisioned in RBT-77 Relay 3; until then these jobs
+# SKIP VISIBLY rather than failing red — a skipped job reads as "not yet wired",
+# a red one is indistinguishable from a broken pipeline.
+name: knowledge-service
+
+on:
+  pull_request:
+    branches: [develop, main]
+    paths:
+      - "knowledge_service/**"
+      - ".github/workflows/knowledge-service.yml"
+  push:
+    branches: [develop, main]
+    paths:
+      - "knowledge_service/**"
+      - ".github/workflows/knowledge-service.yml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# Least privilege at the top; jobs escalate only for themselves.
+permissions:
+  contents: read
+
+env:
+  # Artifact Registry is us-central1 (the RBT-58 module's region). Relay 1's
+  # us-east4 premise was wrong — verified against terraform state and a live
+  # repository listing.
+  GAR_LOCATION: us-central1
+  SERVICE_NAME: knowledge-service
+
+jobs:
+  # --- Shared org-level gates (spine §3): cheap, first, fail fast. ----------
+  gates:
+    name: gates
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Exactly one semver label
+        env:
+          LABELS: ${{ toJSON(github.event.pull_request.labels.*.name) }}
+        run: |
+          set -euo pipefail
+          count=$(jq '[.[] | select(startswith("semver: "))] | length' <<<"$LABELS")
+          if [ "$count" -ne 1 ]; then
+            echo "::error::Expected exactly one 'semver:' label, found $count."
+            echo "Apply one of: 'semver: major', 'semver: minor', 'semver: patch'."
+            exit 1
+          fi
+          label=$(jq -r '[.[] | select(startswith("semver: "))][0]' <<<"$LABELS")
+          case "$label" in
+            "semver: major"|"semver: minor"|"semver: patch") echo "OK: $label" ;;
+            *) echo "::error::Unrecognised semver label: $label"; exit 1 ;;
+          esac
+
+      - name: Branch name matches the house model
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+        run: |
+          set -euo pipefail
+          case "$HEAD_REF" in
+            feature/*|hotfix/*|release/*) echo "OK: $HEAD_REF" ;;
+            *)
+              echo "::error::Head branch '$HEAD_REF' must match feature/*, hotfix/* or release/*."
+              exit 1
+              ;;
+          esac
+
+  # --- Verify: the authoring skills' gates, in ascending cost order. --------
+  # What each gate checks is owned by application-code/testing; this job homes
+  # where they run. The coverage threshold lives in knowledge_service/
+  # pyproject.toml and is deliberately NOT restated here.
+  verify:
+    name: verify
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: knowledge_service
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+
+      - name: Install (hash-verified, from the compiled lockfiles)
+        run: |
+          python -m pip install --upgrade pip
+          pip install --require-hashes -r requirements.txt -r requirements-dev.txt
+
+      - name: Lint
+        run: ruff check .
+
+      - name: Format
+        run: ruff format --check .
+
+      - name: Types
+        run: mypy
+
+      - name: Tests + coverage
+        run: pytest
+
+  # --- Build: post-merge only; an image no one can deploy from a PR is ------
+  # --- CI minutes spent on ceremony. ---------------------------------------
+  build:
+    name: build
+    if: github.event_name == 'push' && vars.GCP_WIF_PROVIDER != ''
+    needs: [verify]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # WIF only; escalated on this job alone.
+    outputs:
+      image: ${{ steps.image-uri.outputs.uri }}
+      digest: ${{ steps.push.outputs.digest }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Authenticate to GCP (Workload Identity Federation)
+        id: auth
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3.0.0
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_CI_SA }}
+          token_format: access_token
+
+      - name: Docker login to Artifact Registry
+        # Short-lived WIF access token; no registry-scoped long-lived secret
+        # exists anywhere in this pipeline.
+        env:
+          ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
+        run: |
+          set -euo pipefail
+          echo "$ACCESS_TOKEN" | docker login -u oauth2accesstoken \
+            --password-stdin "https://${GAR_LOCATION}-docker.pkg.dev"
+
+      - name: Compose the image URI (the full commit SHA is the only tag)
+        id: image-uri
+        run: |
+          set -euo pipefail
+          echo "uri=${{ vars.GCP_AR_REPO }}/${SERVICE_NAME}:${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
+
+      - name: Build image (loaded locally, NOT pushed — the scan gates the push)
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
+        with:
+          context: ./knowledge_service
+          file: ./knowledge_service/Dockerfile
+          push: false
+          load: true
+          tags: ${{ steps.image-uri.outputs.uri }}
+
+      - name: Scan image (Trivy) — blocking, before push
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          image-ref: ${{ steps.image-uri.outputs.uri }}
+          format: table
+          exit-code: "1"
+          ignore-unfixed: true
+          severity: CRITICAL,HIGH
+
+      - name: Push the scanned image and emit its digest
+        id: push
+        # Plain `docker push` of the artifact the scan just cleared. Re-invoking
+        # the build action with push:true would build a second time — the pushed
+        # bytes must be the scanned bytes, not a rebuild of the same source.
+        run: |
+          set -euo pipefail
+          docker push "${{ steps.image-uri.outputs.uri }}"
+          digest=$(docker inspect --format='{{index .RepoDigests 0}}' \
+            "${{ steps.image-uri.outputs.uri }}" | cut -d@ -f2)
+          echo "digest=${digest}" >> "$GITHUB_OUTPUT"
+          echo "Pushed ${{ steps.image-uri.outputs.uri }} @ ${digest}"
+
+  # --- Deploy: develop only, declarative, rollout verified by the action. ---
+  deploy-dev:
+    name: deploy-dev
+    if: |
+      github.event_name == 'push'
+      && github.ref == 'refs/heads/develop'
+      && vars.GCP_WIF_PROVIDER != ''
+    needs: [build]
+    runs-on: ubuntu-latest
+    environment:
+      name: dev
+      url: ${{ steps.deploy.outputs.url }}
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Authenticate to GCP (Workload Identity Federation)
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3.0.0
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_CI_SA }}
+
+      - name: Render the service manifest with the built image
+        # `deploy-cloudrun` treats `metadata:` and `image:` as MUTUALLY
+        # EXCLUSIVE, so the image cannot simply be passed alongside the YAML.
+        # The conforming shape is render-then-apply (service leg §5: "the deploy
+        # step renders them with the new image tag and applies"). Contract for
+        # the manifest landing in Relay 3: it carries the literal placeholder
+        # __IMAGE_URI__ wherever the container image belongs.
+        env:
+          IMAGE_URI: ${{ needs.build.outputs.image }}
+        run: |
+          set -euo pipefail
+          manifest=deploy/knowledge-service/service.dev.yaml
+          test -f "$manifest" || {
+            echo "::error::Missing $manifest — the declarative service manifest is its source of truth."
+            exit 1
+          }
+          grep -q '__IMAGE_URI__' "$manifest" || {
+            echo "::error::$manifest carries no __IMAGE_URI__ placeholder to render."
+            exit 1
+          }
+          sed -i "s|__IMAGE_URI__|${IMAGE_URI}|g" "$manifest"
+          echo "Rendered $manifest with ${IMAGE_URI}"
+
+      - name: Deploy to Cloud Run (the manifest is the source of truth)
+        id: deploy
+        uses: google-github-actions/deploy-cloudrun@2028e2d7d30a78c6910e0632e48dd561b064884d # v3.0.1
+        with:
+          metadata: deploy/knowledge-service/service.dev.yaml
+
+      - name: Rollout verification
+        # The action resolves only once the revision is serving; its `url`
+        # output is the readiness signal. No hand-rolled sleep-and-curl:
+        # readiness is the platform's job, consulting the container's own
+        # /healthz and /readyz probes.
+        env:
+          SERVICE_URL: ${{ steps.deploy.outputs.url }}
+        run: |
+          set -euo pipefail
+          if [ -z "$SERVICE_URL" ]; then
+            echo "::error::Deploy produced no service URL — the revision is not serving."
+            exit 1
+          fi
+          echo "Revision serving at ${SERVICE_URL}"

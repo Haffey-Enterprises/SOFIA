@@ -21,6 +21,11 @@ from app.adapters.neo4j_adapter import Neo4jAdapter
 from app.config import Settings
 from app.ports.graph_store import GraphStoragePort
 
+# mypy note: pydantic-settings accepts `_env_file` at runtime, but the model's
+# generated __init__ signature does not declare it, so `--strict` flags every
+# call. The argument is load-bearing here: it isolates the suite from a
+# developer's local .env. Hence the narrow, coded ignores below.
+
 
 @pytest.fixture
 def settings(monkeypatch: pytest.MonkeyPatch) -> Iterator[Settings]:
@@ -31,7 +36,7 @@ def settings(monkeypatch: pytest.MonkeyPatch) -> Iterator[Settings]:
     monkeypatch.setenv("KS_NEO4J_PASSWORD", "unit-test-secret")
     monkeypatch.setenv("KS_NEO4J_MAX_CONNECTION_POOL_SIZE", "23")
     monkeypatch.setenv("KS_NEO4J_CONNECTION_ACQUISITION_TIMEOUT_SECONDS", "12.5")
-    yield Settings(_env_file=None)
+    yield Settings(_env_file=None)  # type: ignore[call-arg]
 
 
 @pytest.fixture
@@ -135,7 +140,9 @@ class TestNeo4jAdapterCheckConnectivity:
         self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
     ) -> None:
         # Arrange
-        driver.verify_connectivity.side_effect = ServiceUnavailable("no route to host")
+        # neo4j ships no annotations on its exception constructors.
+        unreachable = ServiceUnavailable("no route to host")  # type: ignore[no-untyped-call]
+        driver.verify_connectivity.side_effect = unreachable
         adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
         await adapter.connect()
 

@@ -15,6 +15,11 @@ from pydantic import ValidationError
 
 from app.config import Settings, get_settings
 
+# mypy note: pydantic-settings accepts `_env_file` at runtime, but the model's
+# generated __init__ signature does not declare it, so `--strict` flags every
+# call. The argument is load-bearing here: it isolates the suite from a
+# developer's local .env. Hence the narrow, coded ignores below.
+
 
 class TestSettingsDefaults:
     """The defaults a developer gets with an empty environment."""
@@ -26,7 +31,7 @@ class TestSettingsDefaults:
         monkeypatch.delenv("PORT", raising=False)
 
         # Act
-        settings = Settings(_env_file=None)
+        settings = Settings(_env_file=None)  # type: ignore[call-arg]
 
         # Assert
         assert settings.service_name == "knowledge-service"
@@ -51,7 +56,7 @@ class TestSettingsEnvironmentBinding:
         monkeypatch.setenv("KS_NEO4J_MAX_CONNECTION_POOL_SIZE", "17")
 
         # Act
-        settings = Settings(_env_file=None)
+        settings = Settings(_env_file=None)  # type: ignore[call-arg]
 
         # Assert
         assert settings.service_name == "knowledge-service-canary"
@@ -67,7 +72,7 @@ class TestSettingsEnvironmentBinding:
         monkeypatch.setenv("PORT", "9091")
 
         # Act
-        settings = Settings(_env_file=None)
+        settings = Settings(_env_file=None)  # type: ignore[call-arg]
 
         # Assert
         assert settings.port == 9091
@@ -80,7 +85,7 @@ class TestSettingsEnvironmentBinding:
 
         # Act / Assert
         with pytest.raises(ValidationError):
-            Settings(_env_file=None)
+            Settings(_env_file=None)  # type: ignore[call-arg]
 
     def test_settings_with_unrecognised_log_level_raises_validation_error(
         self, monkeypatch: pytest.MonkeyPatch
@@ -90,7 +95,7 @@ class TestSettingsEnvironmentBinding:
 
         # Act / Assert
         with pytest.raises(ValidationError):
-            Settings(_env_file=None)
+            Settings(_env_file=None)  # type: ignore[call-arg]
 
 
 class TestSettingsCredentialDiscipline:
@@ -103,7 +108,7 @@ class TestSettingsCredentialDiscipline:
         monkeypatch.setenv("KS_NEO4J_PASSWORD", "super-secret-value")
 
         # Act
-        settings = Settings(_env_file=None)
+        settings = Settings(_env_file=None)  # type: ignore[call-arg]
 
         # Assert
         assert "super-secret-value" not in repr(settings)
