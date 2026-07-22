@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "bef4aa669a3045ae",
+  "reason": "ADR-008 §2.2/§7 route ingestion 'mechanics realization' to the forthcoming record and 'port mechanics' to knowledge-service, but nowhere use or license the 'authority-vs-mechanics' distinction §2.7 invokes to name itself 'home of the ingestion-mechanics authority'; conforming would require deciding how to reconcile ADR-004's authority/mechanics split with ADR-008's mechanics/port-mechanics split — an unratified choice among rewordings, not a fix the cited loci uniquely determine.",
+  "confidence": "medium"
+}

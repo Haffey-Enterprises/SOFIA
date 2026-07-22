@@ -1,0 +1,1 @@
+{"finding_id":"9b73cee83ae39677","classification":"resolvable","authority_locus":"DDR-002 §2.1 (:Catalog:...) / DDR-001 Decision.2 canonical plane name 'Catalog'","rationale":"Canonical plane name is fixed by the owning schema records; conforming to it determines the rename with no new choice.","confidence":"high"}

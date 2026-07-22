@@ -1,0 +1,10 @@
+{
+  "action": "edit",
+  "finding_id": "4a5af7688d694e4c",
+  "target": "ADR-004",
+  "old_string": "6. **Fidelity gate.** Authoritative-source ground truth reaches official, consumable state only through a human fidelity verification, and provisional nodes are read-excluded from synthesis until then; the ungated Environment observation stream and mirrored externally-decided records are not gated.",
+  "new_string": "6. **Fidelity gate.** Once the forthcoming read-discipline invariant and port mechanics land (§5.3), authoritative-source ground truth reaches official, consumable state only through a human fidelity verification, and provisional nodes are read-excluded from synthesis until then; the ungated Environment observation stream and mirrored externally-decided records are not gated.",
+  "authority_conformed": "author-decision-record-SKILL, 'Body integrity' — 'Tense is earned by enforcement': a property whose enforcing mechanism is forthcoming is stated in the conditional",
+  "rationale": "§5.3 already conditions the gate ('until it lands ... stated conditionally on that enforcement'); check 6's present-tense claim is conformed to that conditional per the earned-tense rule.",
+  "confidence": "medium"
+}

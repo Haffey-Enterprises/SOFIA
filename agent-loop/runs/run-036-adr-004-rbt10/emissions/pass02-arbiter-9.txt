@@ -1,0 +1,1 @@
+{"finding_id":"6ff050ca7bf7b2ce","classification":"decision-bearing","authority_locus":null,"rationale":"ADR-004 introduces a schema-provisioning obligation SDD-001's ACCEPTED operation set does not enumerate; whether the ADR is realigned, SDD-001 amended, or the operation added is an unratified choice no authority disambiguates.","confidence":"high"}

@@ -1,0 +1,1 @@
+{"finding_id":"cae70c9e80ed731e","classification":"decision-bearing","authority_locus":null,"rationale":"Whether the forthcoming provisional-exclusion invariant is homed in DDR-002's schema and Named Gaps requires a tracking/amendment decision not settled by any ratified authority.","confidence":"high"}

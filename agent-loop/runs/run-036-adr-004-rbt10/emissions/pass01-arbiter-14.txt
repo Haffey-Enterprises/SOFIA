@@ -1,0 +1,1 @@
+{"finding_id":"fbc8883b8c24be72","classification":"decision-bearing","authority_locus":null,"rationale":"ADR-004 is not in the ratified authority set and ADR-008 §2.2/§7 opens a forward reference without fixing whether authority-only discharges it; resolving requires a scope decision not yet made.","confidence":"medium"}

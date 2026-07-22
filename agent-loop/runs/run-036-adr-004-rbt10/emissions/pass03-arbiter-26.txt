@@ -1,0 +1,1 @@
+{"finding_id": "f0db91021949dc3a", "classification": "decision-bearing", "authority_locus": null, "rationale": "The RG durability backstop rests on a production backup posture ADR-002 leaves deferred to the production-environment build; no ratified authority resolves it.", "confidence": "high"}

@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "80c28c05a43907e9",
+  "reason": "The named authority ('an amendment that adds a ruling updates the Decision enumeration') fixes only that a ruling must appear in the Decision block; it does not determine the exact conforming wording of the surfaced read-exclusion clause, its placement within §2, or how to scope it — multiple conforming edits exist, so the author would be deciding, not conforming.",
+  "confidence": "medium"
+}

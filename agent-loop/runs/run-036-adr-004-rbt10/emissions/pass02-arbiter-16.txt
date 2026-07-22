@@ -1,0 +1,13 @@
+The finding targets ADR-004, which is not present in the fetched authority set — I cannot verify its §2, §2.7, title, or scope. But the classification question is independent of that: whether resolving this finding requires an unmade decision.
+
+The finding raises a placement/altitude question — whether a standing read-discipline invariant belongs in an instantiation-framed ADR or warrants its own record/enumerated decision. Existing authority governs read-discipline (DDR-002 §5 retracted/conditional read-discipline; DDR-001 check 4 proposal-visibility) and the enumeration discipline (author-decision-record: "an amendment that adds a ruling updates the Decision enumeration"). But whether ADR-004's provisional-entry exclusion is a genuinely new standing invariant needing its own home, or an already-covered instance to be re-enumerated within ADR-004, requires a scoping judgment no cited authority disambiguates — and the remedy choice (own record vs. enumerated decision vs. leave as-is) is itself unresolved by any authority.
+
+```json
+{
+  "finding_id": "9298a104cef145a6",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "Whether the standing exclusion invariant warrants its own record, an enumerated decision, or stays as-is is a scoping choice no cited authority disambiguates.",
+  "confidence": "medium"
+}
+```

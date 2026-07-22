@@ -1,0 +1,1 @@
+{"finding_id":"4c0c39d9322b3fc1","classification":"decision-bearing","authority_locus":null,"rationale":"The finding turns on ADR-004's own unauthored content and a production backup posture ADR-002 explicitly defers; no ratified authority determines how to resolve the load-bearing durability lean.","confidence":"high"}

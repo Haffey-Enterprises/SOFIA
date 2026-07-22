@@ -1,0 +1,9 @@
+The finding targets ADR-004, which is not in the provided authority set — I cannot fetch its §2.2 text. But the finding's substance is a coordination gap: a PROPOSED ADR imposes a new capability obligation on an ACCEPTED SDD-001 with no home for it on the receiving side. Whether the SDD-001 side gets a forward-item amendment, or the obligation is restated, or the ADR defers to the SDD's own enumeration path — that is a choice among conforming options that no ratified authority disambiguates. The corpus discipline says amendments that add a ruling update the affected record's enumeration and route pin/coordination cascades, but it does not fix *which* remedy applies here, and the ADR itself is not yet ratified.
+
+{
+  "finding_id": "1367ad48d12aef29",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "PROPOSED ADR-004 imposes a new capability on ACCEPTED SDD-001 with no enumerated home; no ratified authority fixes which coordination remedy applies.",
+  "confidence": "high"
+}

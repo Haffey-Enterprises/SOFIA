@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "36b1b7ecf6071693",
+  "reason": "The earned-tense/conditions-apparatus convention flags that check 6's mechanized half is presented in unconditional present tense while its enforcement locus is forthcoming, but §5.3's fourth risk and §6's closing sentence ('checks 5–7 are review-judgment until the fidelity-gate ... mechanics land') already carry the conditional truth; whether the residual under-declaration is cured by re-tensing §2.7, qualifying §6 check 6, or amending §5.3 admits more than one conforming edit and requires an unratified choice of locus and wording.",
+  "confidence": "medium"
+}

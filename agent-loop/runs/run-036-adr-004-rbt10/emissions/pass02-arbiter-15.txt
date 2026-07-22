@@ -1,0 +1,1 @@
+{"finding_id":"ad93f7d43c1589bb","classification":"resolvable","authority_locus":"DDR-004 document title 'DDR-004 — Inherited-Confidence Derivation' (fetched); citation must match owning record's title","rationale":"Fix is determined: the cited title must conform to the owning record's actual hyphenated title; no choice introduced.","confidence":"high"}

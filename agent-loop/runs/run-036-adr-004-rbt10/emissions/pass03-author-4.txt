@@ -1,0 +1,10 @@
+{
+  "action": "edit",
+  "finding_id": "8b5d56c2099e43ce",
+  "target": "ADR-004",
+  "old_string": "Instantiation of authoritative-source ground truth (the selection-catalog and standards planes)",
+  "new_string": "Instantiation of authoritative-source ground truth (the Catalog and Standards planes)",
+  "authority_conformed": "DDR-002 §2.1 / DDR-001 Decision.2 — canonical plane name 'Catalog' (Standards likewise canonically capitalized; ADR-008 §2.2 'Catalog / Standards')",
+  "rationale": "DDR-001 Decision.2 and DDR-002 §2 fix the canonical plane names 'Catalog' and 'Standards'; 'selection-catalog' resolves to no plane, so conform to canonical names.",
+  "confidence": "high"
+}

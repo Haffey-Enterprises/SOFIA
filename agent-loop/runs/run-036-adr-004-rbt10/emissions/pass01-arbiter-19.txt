@@ -1,0 +1,9 @@
+The finding targets ADR-004 §2.5 and §5.3, but no ADR-004 exists in the fetched authorities (the fetched ADR-004 is DDR-004, and there is no ADR-004). The finding's own claim states it found no contradiction — consistent with ADR-002 §5.2, recorded only for completeness. Nothing to fix.
+
+{
+  "finding_id": "d5a165060ccda597",
+  "classification": "resolvable",
+  "authority_locus": "ADR-002 §5.2 (managed-Aura runtime retires self-managed backup/restore burden to the managed provider)",
+  "rationale": "Finding itself confirms no contradiction; the backup-responsibility claim is already determined by and consistent with ADR-002 §5.2, no choice introduced.",
+  "confidence": "high"
+}

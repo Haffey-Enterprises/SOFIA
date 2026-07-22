@@ -1,0 +1,1 @@
+{"action": "refuse", "finding_id": "f44f6b2eae012859", "reason": "The authority requires a home with a firing trigger and (for a body forward reference) a subject-named pointer, but it does not determine what that home is — no ticket identifier, backlog item, or firing event is supplied in the document or authority; selecting one is an unratified choice.", "confidence": "high"}

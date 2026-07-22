@@ -1,0 +1,1 @@
+{"finding_id":"5e7d83ae43a57b27","classification":"decision-bearing","authority_locus":null,"rationale":"How knowledge-service provisions schema before readiness (new port operation vs bootstrap mode vs SDD-001 amendment) is unspecified by any authority; multiple conforming options, none disambiguated.","confidence":"high"}

@@ -1,0 +1,1 @@
+{"finding_id":"d059747127e3989a","classification":"decision-bearing","authority_locus":null,"rationale":"The invariant ADR-004 §2.7 states as committed exists in neither DDR-002 §7 nor its Named Gaps; realizing it requires a new schema amendment the corpus has not ratified.","confidence":"high"}

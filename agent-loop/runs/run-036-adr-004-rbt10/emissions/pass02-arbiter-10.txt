@@ -1,0 +1,1 @@
+{"finding_id":"34cb38c33c381821","classification":"decision-bearing","authority_locus":null,"rationale":"The claimed schema invariant does not exist in DDR-002 §7; authoring the amendment and its provisional-state schema shape is an unmade schema decision, not a conformance fix.","confidence":"high"}

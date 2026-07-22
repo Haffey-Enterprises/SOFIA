@@ -1,0 +1,1 @@
+{"finding_id": "afa739934083596c", "classification": "decision-bearing", "authority_locus": null, "rationale": "The finding targets ADR-004, which is not in the provided authority set; the provisioning-vs-readiness ordering it flags is an unratified design choice no fetched authority disambiguates.", "confidence": "high"}

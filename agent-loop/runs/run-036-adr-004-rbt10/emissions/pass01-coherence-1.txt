@@ -1,0 +1,72 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["ADR-004"],
+"locus": "§2.2 Schema provisioning holds the sole-driver line vs §6 check 2 and §2 Decision",
+"claim": "§2.2 commits knowledge-service to 'expose a schema-provisioning capability — an addition its service design does not yet enumerate' and asserts it is 'ordered ahead of the readiness schema-present check rather than passing through the validated write path that check guards.' SDD-001 §3.1 as fetched enumerates readiness as '(1) Neo4j connectivity ... (2) schema metadata loaded — the PlaneDefinition registry and constraint/validation metadata the write paths enforce against — critical, fails readiness (the gateway must not execute writes it cannot validate). There is no degraded mode.' SDD-001 §3.1 gives no provisioning operation and states the gateway must not execute writes it cannot validate; ADR-004 requires knowledge-service to run DDL provisioning writes before the schema is present, i.e. before readiness reports green — a mode SDD-001 §3.1's 'no degraded mode' and readiness-gated write posture does not supply.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-004 §2.2 (provisioning ordered ahead of readiness, capability not yet enumerated) in conflict with SDD-001 §3.1 (readiness fails until schema metadata loaded; no degraded mode; gateway must not execute writes it cannot validate)"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-004", "DDR-002"],
+"locus": "§2.7 / §2 fidelity-gate read-exclusion invariant vs DDR-002 §7 read-discipline invariant set",
+"claim": "ADR-004 §2.7 asserts 'read-exclusion of provisional ground truth is committed as a schema-level invariant ... That invariant is a *forthcoming* addition to the schema's read-discipline invariant set (a named amendment obligation), not one the schema already carries.' DDR-002 §7 as fetched enumerates the CI-only invariant set (#1–#28) and the read-discipline invariants #9, #19, #21; no provisional-versus-official read-exclusion invariant appears in DDR-002 §7 or in its read-discipline list, and DDR-002's Decision block, §2.6 declaration model, and §5 read-discipline invariants carry no provisional-state concept. The ADR names an amendment obligation against DDR-002 that DDR-002's current text does not carry and does not reference, leaving the committed schema-level invariant with no home in the owning schema document.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-004 §2.7 (provisional read-exclusion as a forthcoming schema read-discipline invariant) against DDR-002 §7 read-discipline invariant set (#9/#19/#21) and §2/§5, which carry no provisional-versus-official state or its read-exclusion"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-004", "ADR-008"],
+"locus": "§2.7 authoritative-source ingestion control fidelity-gate scope vs ADR-008 §2.2",
+"claim": "ADR-004 §2.7 states the fidelity control it realizes is 'scoped to the authoritative-source class — it is not applied to ... the Operational distillation class carries its own review control and is out of scope here.' ADR-008 §2.2 defines the authoritative-source-ingestion control as 'Pre-entry human fidelity verification of the captured representation, gating official (consumable) entry ... Per-write ... The forthcoming ingestion decision record; the knowledge-service ingestion port.' ADR-008 §2.2's ingestion class is 'Catalog / Standards'; ADR-004 §2.7 renders this as 'the selection-catalog and standards planes' — a term ('selection-catalog') that does not match the owning record's plane name (Catalog), a drift in the shared entity ADR-008 owns.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-004 §2.7 'selection-catalog and standards planes' vs ADR-008 §2.2 authoritative-source-ingestion row 'Catalog / Standards' and DDR-001 Decision.2 / DDR-002 §2.1 canonical plane name 'Catalog'"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["ADR-004"],
+"locus": "§2.5 vs §5.3 Risks — development-runtime backup responsibility",
+"claim": "§2.5 states RG durability across instance loss 'rests on instance-level backup and restore. In the current development runtime that responsibility sits with the managed graph provider.' §5.3 restates 'In the development runtime this is the managed provider's responsibility.' ADR-002 §5.2 (cited by ADR-004 §7) states the development managed-Aura runtime 'retires the self-managed operational burden — backup/restore, upgrade lifecycle, and cluster-health monitoring are the managed provider's responsibility' — consistent; no internal contradiction, recorded for completeness of the backup-responsibility claim.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-004 §2.5 / §5.3 managed-provider backup responsibility against ADR-002 §5.2 (managed-Aura runtime retires self-managed backup burden)"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-004"],
+"locus": "§2.7 / §5.2 fidelity-gate scope exclusion of 'mirrored externally-decided records' vs ADR-008 §2.2",
+"claim": "ADR-004 §2.7 and §5.2 exclude 'externally-decided mirrored records' from the fidelity gate alongside the Environment stream, stating 'it is not applied to ... externally-decided mirrored records.' ADR-008 §2.2's four source classes are Promotion, Authoritative-source ingestion, Operational distillation, and Environment — no 'mirrored externally-decided records' class exists there; the mirrored external record ADR-004 invokes is DDR-002 §2.4's GateDecision (origin_mechanism: ingested), which DDR-002 §2.4 scopes to produced-Solution SDLC gates, not KG ground-truth instantiation. ADR-004 introduces a scope-exclusion category ('mirrored externally-decided records') that the ground-truth-mutation governance record it cites does not enumerate as a mutation class subject to (or exempt from) the ingestion control.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-004 §2.7 / §5.2 ('externally-decided mirrored records' exempt from the fidelity gate) against ADR-008 §2.2 four-class calibration table, which contains no mirrored-external-record ingestion class"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-004", "ADR-002"],
+"locus": "§2.1–§2.2 sole-driver line vs ADR-002 §2.5",
+"claim": "Checked ADR-004's central claim that instantiation preserves ADR-002's sole-owner-of-the-driver principle for both data and schema provisioning against ADR-002 §2.5 ('knowledge-service is the sole holder of the Neo4j driver and the single graph-access boundary'). ADR-004 §2.1/§2.2 route both the data load and DDL provisioning through knowledge-service and hold the loader driver-less, and the §2.2 circularity argument (provisioning is an administrative operation distinct from the schema-on-write data path) is internally consistent with ADR-002's boundary. The claim of no exception carved holds against the cited authority.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-004 §2.1/§2.2 (data and schema through the sole driver; loader driver-less) against ADR-002 §2.5 (knowledge-service sole Neo4j-driver holder)"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-004", "DDR-002"],
+"locus": "§2.4 additive-by-supersession vs DDR-002 §6",
+"claim": "Attacked §2.4's 'additive by supersession, never destructive' claim for consistency with the schema's supersession discipline. DDR-002 §6 (Supersession — Option A) commits retained version nodes + effective-dating + superseded_by with never-delete, and §2.3/§2.2 give per-plane disciplines for aging (Environment) and distilling (Operational) planes. ADR-004 §2.4's per-node state-selected behavior (new key created, changed versioned-ground-truth node superseded on version increment, unchanged key adds no version, age/distill planes follow their own discipline) maps to DDR-002 §6's versioned-ground-truth scoping without asserting a supersession behavior the schema does not carry. The attack failed.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-004 §2.4 (additive-by-supersession, version-increment requirement, per-plane discipline) against DDR-002 §6 (Option A supersession, never-delete) and §2.2/§2.3 (per-plane aging/distillation)"
+}
+}
+]

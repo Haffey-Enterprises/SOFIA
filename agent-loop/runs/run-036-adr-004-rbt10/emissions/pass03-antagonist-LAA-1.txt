@@ -1,0 +1,92 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2 Decision sentence vs §2.7 schema-level read-exclusion invariant",
+    "claim": "The §2 decision sentence scopes the record to greenfield instantiation ('The SOFIA graph is instantiated greenfield from declared source artifacts, and instantiation ... is orchestrated by a driver-less loader utility'). §2.7 then decides a standing steady-state read-discipline invariant not surfaced at the decision altitude: 'read-exclusion of provisional ground truth is committed as a schema-level invariant — a provisional authoritative-source node is excluded from ground-truth synthesis until officially entered.' Exclusion from ALL ground-truth synthesis is a steady-state consumption rule, not an instantiation act; a standing schema invariant governing synthesis rides inside an instantiation-scoped ADR without being enumerated as a decision the record claims to make.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2 (decision sentence, instantiation-scoped) vs §2.7 (schema-level read-exclusion invariant governing all ground-truth synthesis)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2.7 / §7 — self-identification as ADR-008's named home vs disclaimed mechanics",
+    "claim": "§2.7 claims 'this ADR ... is the record the governance record names as the home of the ingestion-mechanics authority' and §7 restates 'this record is the \"forthcoming file-driven ingestion decision record\" that governance record names.' ADR-008 §7 names that forthcoming record as one that 'owns the ingestion mechanics realizing the authoritative-source ingestion control (§2.2)', and ADR-008 §2.2 routes the control to 'The forthcoming ingestion decision record; the knowledge-service ingestion port.' ADR-008 assigns that home ingestion *mechanics realization*. ADR-004 §2.7 disclaims owning port mechanics ('the port-level mechanics — how provisional state is represented and how the official-entry transition is enforced — are the knowledge-service design's') and narrows its own decision content to 'authority' only — the decision it claims to make (be ADR-008's named home) is not the decision its own §2.7 body supports.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.7 ('home of the ingestion-mechanics authority' + 'port-level mechanics ... are the knowledge-service design's') and §7 vs ADR-008 §2.2 / §7 (forthcoming ingestion record owns ingestion mechanics realization)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2.6 / §6 check 6 / §2.7 — fidelity gate presented as committed compliance check while its enforcement locus does not yet exist",
+    "claim": "§6 check 6 presents the fidelity gate as a mandatory conformance check ('Authoritative-source ground truth reaches official, consumable state only through a human fidelity verification, and provisional nodes are read-excluded from synthesis until then'), and §2.7 states the read-exclusion 'is committed as a schema-level invariant.' Yet §2.7 also concedes that invariant 'is a *forthcoming* addition to the schema's read-discipline invariant set (a named amendment obligation), not one the schema already carries.' The consequence — that the §2.7 read-exclusion commitment is inoperative until DDR-002 is amended, so §6 check 6's mechanized half does not yet exist — is a side effect of the decision under-declared at decision altitude; the record does not surface that a load-bearing safety commitment is conditional on an unauthored downstream amendment.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.7 ('forthcoming addition ... not one the schema already carries') vs §2.6 / §6 check 6 (fidelity gate presented as committed) — consequence under-declared"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2.2 schema-provisioning capability vs §2 decision sentence",
+    "claim": "§2.2 decides that knowledge-service gains a new schema-provisioning capability — 'which is committed here to expose a schema-provisioning capability — an addition its service design does not yet enumerate, gained as a named obligation of this decision.' This is a distinct decision (mandating a new administrative DDL operation into a specific, already-ACCEPTED service design) beyond the record's stated instantiation decision. The §2 decision sentence names 'a driver-less loader utility that leverages knowledge-service's ports' and 'sole holder of the graph driver' but does not surface at decision altitude that a new service capability is being mandated into existence — the capability commitment rides in §2.2 without being enumerated as a decision the record claims to make.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2 (decision sentence) vs §2.2 ('committed here to expose a schema-provisioning capability')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2.7 / §5.2 — 'externally-decided mirrored records' exclusion category not owned by the cited authority",
+    "claim": "§2.7 and §5.2 exclude 'externally-decided mirrored records' from the fidelity gate ('it is not applied to the ungated Environment observation stream or to externally-decided mirrored records'; §5.2: 'mirrored externally-decided records are not gated'). The record cites ADR-008 as the authority for scoping this control per source class, but ADR-008 §2.2's four calibrated source classes are Promotion, Authoritative-source ingestion, Operational distillation, and Environment — no 'mirrored externally-decided records' KG-ground-truth mutation class exists there. The record introduces a scope-exclusion category the governance record it cites does not enumerate as a mutation class — a dependency/consequence the record does not declare.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.7 / §5.2 ('externally-decided mirrored records' exempt) vs ADR-008 §2.2 four-class calibration table (no mirrored-external-record class)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-004"],
+    "locus": "§2.7 'selection-catalog and standards planes' vs canonical plane name",
+    "claim": "§2.7 names the authoritative-source planes as 'the selection-catalog and standards planes.' The canonical plane name owned by the schema is 'Catalog' (DDR-002 §2.1 titles it 'Catalog — the selection graph'; DDR-001 Decision.2 enumerates 'Catalog'), and ADR-008 §2.2's ingestion row reads 'Catalog / Standards.' 'Selection-catalog' is not the plane name the owning records carry; the record renders a shared entity name in a form the authority does not use, drifting a term this ADR does not own.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.7 'selection-catalog' vs DDR-002 §2.1 / DDR-001 Decision.2 canonical plane name 'Catalog' (ADR-008 §2.2 'Catalog / Standards')"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-004"],
+    "locus": "§2.2 / §5.3 — constraint-versioning forward item has no locatable home or firing trigger",
+    "claim": "§2.2 defers constraint-versioning ownership: 'Ownership of constraint *versioning* over the platform's life ... is a forward question, governed by construction ... but with its policy not settled here — tracked as a forward item against the schema-provisioning capability's design.' §5.3 restates it as 'a named forward question, not a silent gap.' Neither names a ticket, decision record, or event that re-surfaces the obligation; the deferral is homed only to an unnamed 'capability's design' — itself an unauthored, un-enumerated capability — leaving the forward obligation without a locatable home or firing trigger.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.2 (constraint-versioning deferred to 'the schema-provisioning capability's design') and §5.3 (restated, no named home or trigger)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-004"],
+    "locus": "§2.5 / §5.1 — RG-preservation guarantee scope",
+    "claim": "I attacked §2.5 for overclaiming RG safety beyond what the decision content supports — the classic instantiation ADR that promises the reasoning record is 'safe' when it only controls one path. The claim holds honestly: §2.5 bounds the guarantee to instantiation-caused loss ('neither written, reconstructed, nor discarded by instantiation'), explicitly states the RG 'is not source-recoverable and must not be presumed so,' routes instance-loss durability onto backup/restore (§5.3 risk), and §5.1 scopes the positive consequence to 'safe *from instantiation-caused loss* by construction.' The prose claims exactly what the decision supports and no more; the side effect (RG not source-recoverable) is surfaced as a declared consequence, not buried.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.5 and §5.1 (RG guarantee bounded to instantiation-caused loss; instance-loss durability routed to §5.3) — consistent, not overclaimed"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-004"],
+    "locus": "§2.4 / §4.3 / §5.2 — additive-by-supersession decision grain",
+    "claim": "I attacked §2.4 for claiming to decide destructive-reset behavior it does not actually foreclose, or for contradicting its additive claim across Decision, Alternatives, and Consequences. It holds: §2.4 selects behavior per node by graph state ('not by a loader mode'), forecloses in-place overwrite ('requires an explicit version increment ... there is no in-place overwrite'), and states 'The instantiation path exposes no destructive-reset operation.' Alternative C (§4.3) records the rejected wipe-and-reload with a specific rationale, and the §5.2 constraint restates the no-reset commitment. The decision content, its rejected alternative, and its declared consequence agree at a testable, non-contradictory grain — the additive-not-destructive commitment decides exactly what it claims, no more.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.4, §4.3 (Alternative C rejection), §5.2 (no destructive-reset constraint) — mutually consistent decision content"
+    }
+  }
+]

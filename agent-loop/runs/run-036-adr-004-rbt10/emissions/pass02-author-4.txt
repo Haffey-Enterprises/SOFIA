@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "bc6532111468301c",
+  "reason": "The cited authority (amendment-lifecycle rule 'every deferred obligation gets a home with a firing trigger') requires that a home and firing trigger exist, but does not itself name which ticket, decision record, or event is that home/trigger for constraint-versioning — supplying one would be an unratified authorial choice, not a derivation.",
+  "confidence": "high"
+}

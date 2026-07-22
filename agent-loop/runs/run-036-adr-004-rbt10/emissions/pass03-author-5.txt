@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "52b2f728bbb7741b",
+  "reason": "The named authority (Decision-enumeration body-integrity rule) says the Decision block must index every ruling, but the §2 opening paragraph is a prose summary that already references §2.7; conforming would require deciding whether to add a new sub-decision clause, rewrite the opening sentence, or add a Decision bullet — the authority determines that the read-exclusion invariant must be surfaced but not which of several conforming edits does so, and the exact insertion wording is not entailed.",
+  "confidence": "medium"
+}

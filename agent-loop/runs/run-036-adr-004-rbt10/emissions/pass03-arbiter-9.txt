@@ -1,0 +1,1 @@
+{"finding_id":"4e496c441eb10bd7","classification":"decision-bearing","authority_locus":null,"rationale":"ADR-008 §2.2/§7 assign the forthcoming record ownership of ingestion mechanics; no authority draws the authority-vs-mechanics split ADR-004 uses to discharge that reference, so aligning them requires an unratified choice.","confidence":"high"}
