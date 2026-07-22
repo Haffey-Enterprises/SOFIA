@@ -243,7 +243,7 @@ def ddr_substrate_specs(
             {"source": "bedrock",
              "path": "plugins/bedrock/skills/author-decision-record/SKILL.md"},
             bedrock_cache=True,
-            expected_sha256="d3fb4499b8d3ff899ae3f822e8873300c1f5330cc9ee55f193fc4f9eaf9da966",
+            expected_sha256="67e83fb7f0917a5237df3c7983d5d1ad75a97075de74984ac210f07fd8680f3c",
         ),
         # Design-intent lineage: the target DDR's deliberation record, by convention.
         SubstrateSpec(
@@ -332,7 +332,7 @@ def adr_substrate_specs(*, from_run: str | None) -> list[SubstrateSpec]:
             {"source": "bedrock",
              "path": "plugins/bedrock/skills/author-decision-record/SKILL.md"},
             bedrock_cache=True,
-            expected_sha256="d3fb4499b8d3ff899ae3f822e8873300c1f5330cc9ee55f193fc4f9eaf9da966",
+            expected_sha256="67e83fb7f0917a5237df3c7983d5d1ad75a97075de74984ac210f07fd8680f3c",
         ),
         # Design-intent: the charter carrier — fixed, not resolved per target.
         SubstrateSpec(
