@@ -1,0 +1,30 @@
+# File: knowledge_service/requirements-dev.in
+# Service: knowledge-service
+# Author: Haffey Enterprises LLC
+# Created: 2026-07-21
+# Revised: 2026-07-21
+# Description: Development and test dependency floors for knowledge-service —
+#   the runtime set plus the gate toolchain (pytest + coverage, ruff, mypy).
+#
+#   Deliberate exclusion: `testcontainers`. SDD-001 §6 requires that all domain
+#   tests run against the in-memory port doubles and that no service test depend
+#   on live Neo4j; a container fixture in this service's suite would contradict
+#   that. The containerized graph belongs to the conformance harness
+#   (`conformance/`), which is a distinct verification surface (SDD-001 §6).
+#   `respx` is likewise absent — no outbound HTTP exists to contract-test yet.
+
+-r requirements.in
+
+pytest
+pytest-asyncio
+pytest-cov
+ruff>=0.4.0
+mypy>=1.9.0
+
+# Test client only. The house testing standard's stack binding names httpx as
+# part of the assumed pytest stack, and its contract/integration patterns drive
+# the real FastAPI app over httpx.AsyncClient + ASGITransport — the endpoint
+# contract tests SDD-001 §3.1 requires cannot be written without an ASGI
+# client. This is a *test* dependency: it is deliberately absent from
+# requirements.in, because the service makes no outbound HTTP call.
+httpx>=0.26.0
