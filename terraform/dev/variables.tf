@@ -3,10 +3,18 @@
 # Config: dev environment root
 # Author: Thaddeus Haffey — Executive Architect, Haffey Enterprises LLC
 # Created: 2026-07-14
-# Revised: 2026-07-14
+# Revised: 2026-07-22
 # Description: Env-specific inputs for the dev root — no defaults; supplied via
-#   dev.auto.tfvars (01 §5, 03 §3).
+#   dev.auto.tfvars (01 §5, 03 §3). The cluster-era inputs (zone,
+#   master_authorized_cidrs) were dropped at RBT-77 with the graph module: a
+#   serverless delivery substrate is regional and has no control plane to
+#   authorize CIDRs against.
 ##############################################################################
+
+variable "github_repository" {
+  type        = string
+  description = "The owner/repo permitted to federate into this project via Workload Identity Federation."
+}
 
 variable "project_id" {
   type        = string
@@ -15,15 +23,5 @@ variable "project_id" {
 
 variable "region" {
   type        = string
-  description = "GCP region for the dev environment (Artifact Registry, Secret Manager)."
-}
-
-variable "zone" {
-  type        = string
-  description = "GCP zone for the dev (zonal) cluster + zonal PD."
-}
-
-variable "master_authorized_cidrs" {
-  type        = list(object({ cidr_block = string, display_name = string }))
-  description = "CIDRs permitted to reach the dev cluster control plane."
+  description = "GCP region for the dev environment (Artifact Registry, Secret Manager, Cloud Run)."
 }

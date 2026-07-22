@@ -1,0 +1,43 @@
+# File: knowledge_service/pyproject.toml
+# Service: knowledge-service
+# Author: Haffey Enterprises LLC
+# Created: 2026-07-21
+# Revised: 2026-07-21
+# Description: Toolchain and coverage-gate configuration for knowledge-service
+#   per the house application-code standard (01-code-structure §10): pytest
+#   asyncio auto-mode with the 90% line-coverage hard gate, ruff lint/format,
+#   and mypy --strict over the application package.
+
+[build-system]
+requires = ["setuptools>=69.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "knowledge_service"
+version = "0.1.0"
+description = "KG/RG graph gateway — the platform's sole graph-access boundary (SDD-001)."
+requires-python = ">=3.11"
+dynamic = ["dependencies"]
+
+[tool.setuptools]
+packages = ["app"]
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.in"] }
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+addopts = "--cov=app --cov-report=term-missing --cov-fail-under=90"
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "C4", "UP", "RUF"]
+
+[tool.mypy]
+strict = true
+files = ["app", "tests"]
+python_version = "3.11"

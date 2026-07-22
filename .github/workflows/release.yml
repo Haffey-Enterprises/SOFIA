@@ -1,0 +1,164 @@
+# Release automation (RBT-77) — app-delivery-pipeline spine §5.
+#
+# On push to main: read the merged PR's `semver:` label (the PR gate guarantees
+# exactly one exists), bump from the latest v-tag, create an annotated tag and a
+# GitHub Release, then apply the semantic version tag to the ALREADY-BUILT,
+# already-scanned image. The image is never rebuilt: the SHA is the machine
+# identity, the semver tag is the human-facing name for those same bytes.
+#
+# Runs on the job-scoped GITHUB_TOKEN with `contents: write` escalated on the
+# release job alone. No personal access token exists in this pipeline — the
+# legacy SOFIA_RELEASE_TOKEN pattern does not carry forward (spine §2).
+name: release
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false # Never cancel a half-published release.
+
+permissions:
+  contents: read
+
+env:
+  GAR_LOCATION: us-central1
+  SERVICE_NAME: knowledge-service
+
+jobs:
+  # --- Compute the next version from the merged PR's label. ----------------
+  version:
+    name: version
+    runs-on: ubuntu-latest
+    outputs:
+      bump: ${{ steps.label.outputs.bump }}
+      version: ${{ steps.next.outputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # Tags are the version source; a shallow clone has none.
+
+      - name: Read the semver label from the merged PR
+        id: label
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          # Resolve the PR from the commit directly. `gh pr list --search <sha>`
+          # goes through the search index, which lags merges by seconds to
+          # minutes — exactly the window this job runs in.
+          labels=$(gh api "repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}/pulls" \
+            --jq '.[0].labels[].name' || true)
+          bump=$(printf '%s\n' "$labels" | sed -n 's/^semver: //p' | head -1)
+          if [ -z "$bump" ]; then
+            echo "::error::No 'semver:' label found on the PR merged as ${GITHUB_SHA}."
+            echo "The PR gate enforces exactly one; a direct push to main bypasses it."
+            exit 1
+          fi
+          echo "bump=${bump}" >> "$GITHUB_OUTPUT"
+          echo "Bump: ${bump}"
+
+      - name: Compute the next version
+        id: next
+        run: |
+          set -euo pipefail
+          latest=$(git tag -l 'v*.*.*' --sort=-v:refname | head -1)
+          if [ -z "$latest" ]; then
+            latest="v0.0.0"
+            echo "No existing v-tag; starting from ${latest}."
+          fi
+          core=${latest#v}
+          major=${core%%.*}; rest=${core#*.}; minor=${rest%%.*}; patch=${rest#*.}
+          case "${{ steps.label.outputs.bump }}" in
+            major) major=$((major + 1)); minor=0; patch=0 ;;
+            minor) minor=$((minor + 1)); patch=0 ;;
+            patch) patch=$((patch + 1)) ;;
+            *) echo "::error::Unrecognised bump '${{ steps.label.outputs.bump }}'."; exit 1 ;;
+          esac
+          echo "version=v${major}.${minor}.${patch}" >> "$GITHUB_OUTPUT"
+          echo "${latest} --(${{ steps.label.outputs.bump }})--> v${major}.${minor}.${patch}"
+
+  # --- A major release passes a human gate first (spine §5/§6). ------------
+  # The protected environment IS the gate: required reviewers on
+  # `release-major`, with approval evidence in the deployment log rather than an
+  # issue thread. Creating that environment is an operator admin act — recorded
+  # for the Relay 4 admin command set, deliberately not attempted here. Until it
+  # exists, an unprotected environment of this name lets majors through
+  # ungated: creating it with reviewers is what arms this gate.
+  approve-major:
+    name: approve-major
+    if: needs.version.outputs.bump == 'major'
+    needs: [version]
+    runs-on: ubuntu-latest
+    environment: release-major
+    steps:
+      - name: Approval recorded
+        run: echo "Major release ${{ needs.version.outputs.version }} approved."
+
+  # --- Tag + Release, then retag the existing image. -----------------------
+  publish:
+    name: publish
+    needs: [version, approve-major]
+    # approve-major is skipped for minor/patch; `always()` plus an explicit
+    # failure/cancellation check lets those proceed while a rejected major
+    # still blocks.
+    if: |
+      always()
+      && needs.version.result == 'success'
+      && needs.approve-major.result != 'failure'
+      && needs.approve-major.result != 'cancelled'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Tag + Release creation, on this job only. No PAT.
+      id-token: write # WIF for the retag step.
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Create the annotated tag
+        env:
+          VERSION: ${{ needs.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          if git rev-parse -q --verify "refs/tags/${VERSION}" >/dev/null; then
+            echo "::error::Tag ${VERSION} already exists — tags are immutable."
+            exit 1
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "${VERSION}" -m "Release ${VERSION}"
+          git push origin "${VERSION}"
+
+      - name: Create the GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          gh release create "${VERSION}" --title "${VERSION}" --generate-notes --verify-tag
+
+      - name: Authenticate to GCP (Workload Identity Federation)
+        if: vars.GCP_WIF_PROVIDER != ''
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3.0.0
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_CI_SA }}
+
+      - name: Set up gcloud
+        if: vars.GCP_WIF_PROVIDER != ''
+        uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3.0.1
+
+      - name: Apply the semver tag to the already-built image
+        # Retag, never rebuild: the release names the exact bytes that were
+        # built and scanned at the SHA. A rebuild would produce a different
+        # artifact under a name that claims to be the tested one.
+        if: vars.GCP_WIF_PROVIDER != ''
+        env:
+          VERSION: ${{ needs.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          image="${{ vars.GCP_AR_REPO }}/${SERVICE_NAME}"
+          gcloud artifacts docker tags add "${image}:${GITHUB_SHA}" "${image}:${VERSION}"
+          echo "Tagged ${image}:${GITHUB_SHA} as ${VERSION}"
