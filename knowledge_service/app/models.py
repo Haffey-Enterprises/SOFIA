@@ -5,13 +5,16 @@
 # Created: 2026-07-21
 # Revised: 2026-07-23
 # Description: Request/response contracts for knowledge-service (SDD-001
-#   §4.1). At RBT-77 the surface was the §3.1 health and readiness shapes;
-#   RBT-78 adds the §3.2 error contract — the typed-error taxonomy (ErrorType,
-#   the whole ratified §3.2 vocabulary) and the ErrorResponse envelope the
-#   gateway's exception handler renders. The operation-shaped request/response
-#   contracts and the result envelope of §3.3-§3.6 land with the operations
-#   themselves. These typed models are the source of truth for the contract
-#   tests — when an implementation and a contract diverge, the contract wins.
+#   §4.1). At RBT-77 the surface was the §3.1 health and readiness shapes; the
+#   R1 legs of RBT-78 added the §3.2 error contract (ErrorType, ErrorResponse).
+#   This leg (R2) adds the §3.2 RESULT envelope — the applicability block, the
+#   disclosure channel (+ its three reasons), the per-node ResultEnvelope, and
+#   the ReadResult that bundles admitted envelopes with disclosures. These are
+#   assembled by app.domain.shared.envelope from the read-discipline core's
+#   verdicts (app.domain.retrieval); the nine §3.3 operation-shaped
+#   request/response contracts land with the operations themselves (R3+).
+#   These typed models are the source of truth for the contract tests — when
+#   an implementation and a contract diverge, the contract wins.
 ##############################################################################
 
 from enum import StrEnum
@@ -115,3 +118,93 @@ class ErrorResponse(BaseModel):
     detail: str | None = None
     correlation_id: str | None = None
     fault_class: FaultClass | None = None
+
+
+class ConditionalAdmissionStatus(StrEnum):
+    """The applicability block's conditional-admission verdict (SDD-001 §3.2).
+
+    Only meaningful on an ADMITTED envelope: an excluded conditional node
+    produces a disclosure entry instead, never a `ResultEnvelope`. A node with
+    no `HAS_CONDITION` path is `UNCONDITIONAL`; a node admitted because its
+    single condition's predicate evaluated true is `CONDITIONALLY_ADMITTED`.
+    """
+
+    UNCONDITIONAL = "unconditional"
+    CONDITIONALLY_ADMITTED = "conditionally_admitted"
+
+
+class ApplicabilityBlock(BaseModel):
+    """The §3.2 applicability block carried on every admitted result.
+
+    `catalog_eligibility` is a **named-forward slot**: SDD-001 §4.4 runs
+    Catalog-eligibility evaluation alongside conditional admission, as
+    annotation only (never exclusion), but that computation is R3's, built
+    with its catalog-read consumers. It is always `None` at R2 — no fit-rule
+    is invented here to fill it early.
+    """
+
+    conditional_admission: ConditionalAdmissionStatus
+    catalog_eligibility: None = None
+
+
+class DisclosureReason(StrEnum):
+    """The §3.2 disclosure channel's closed reason vocabulary.
+
+    The three reasons an excluded *conditional* node is disclosed (never a
+    fourth): its predicate evaluated false, its predicate could not be
+    evaluated at all (fail-closed), or it carries more than one `HAS_CONDITION`
+    path (the DDR-002 multi-condition named gap, surfaced rather than
+    silently composed). Un-approved proposals and retracted nodes are excluded
+    WITHOUT disclosure (SDD-001 §3.2) — they never produce a `DisclosureEntry`.
+    """
+
+    CONDITION_UNSATISFIED = "condition_unsatisfied"
+    CONDITION_UNEVALUABLE = "condition_unevaluable"
+    MULTI_CONDITION_SCOPE_CONFLICT = "multi_condition_scope_conflict"
+
+
+class DisclosureEntry(BaseModel):
+    """One excluded-conditional disclosure (SDD-001 §3.2) — no content payload.
+
+    Deliberately carries nothing beyond identity and reason: the excluded
+    node's content is never disclosed, only the fact and reason of exclusion.
+    """
+
+    node_id: str
+    reason: DisclosureReason
+
+
+class ResultEnvelope(BaseModel):
+    """The §3.2 result envelope carried by every admitted retrieval result.
+
+    `node_id` + `node_kind` are the identity/discriminator pair RBT-80's
+    binding adapter projects onto the conformance seam's `{id, node_kind}`
+    shape. `confidences` holds node confidence first, then any composed edge
+    confidences (DDR-002 §3/§4 semantics) — plural because a traversal may
+    compose more than one.
+    """
+
+    node_id: str
+    node_kind: str
+    plane_labels: list[str]
+    origin_mechanism: str
+    derivation_class: str | None = None
+    version: str
+    effective_from: str | None = None
+    effective_to: str | None = None
+    version_pin: str
+    confidences: list[float]
+    applicability: ApplicabilityBlock
+
+
+class ReadResult(BaseModel):
+    """The read-discipline core's output: admitted envelopes + disclosures.
+
+    What a §3.3 operation returns once read-discipline (SDD-001 §4.4) has run
+    over its candidate nodes — admitted results carry a full `ResultEnvelope`;
+    excluded-conditional nodes surface only as a `DisclosureEntry`. Silent
+    exclusions (un-approved proposals, retracted nodes) appear in neither list.
+    """
+
+    admitted: list[ResultEnvelope]
+    disclosures: list[DisclosureEntry]
