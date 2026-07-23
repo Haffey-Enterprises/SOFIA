@@ -1,0 +1,1 @@
+{"finding_id":"75776bff9775dd96","classification":"decision-bearing","authority_locus":null,"rationale":"How provisioning reaches a not-ready gateway is unspecified across ADR-004 and SDD-001 §3.1; no authority disambiguates the loader-reachability seam, so resolution requires a new choice.","confidence":"medium"}

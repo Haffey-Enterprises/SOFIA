@@ -1,0 +1,1 @@
+{"finding_id":"834eef90b97c01a9","classification":"resolvable","authority_locus":"ADR-004 §2.7 (the complete exclusion enumeration — Environment, mirrored, Operational distillation)","rationale":"Both loci describe one gate scope; §2.7's fuller enumeration governs and §5.2 conforms by restating it — an internal-coherence fix, no unratified choice.","confidence":"high"}

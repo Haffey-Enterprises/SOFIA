@@ -1,0 +1,72 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["ADR-004"],
+"locus": "§2 Decision — schema-provisioning capability committed onto knowledge-service but not enumerated as a Decision sub-decision",
+"claim": "§2 Decision states 'knowledge-service is committed here to expose a schema-provisioning capability it does not yet enumerate (§2.2)' — an authoritative commitment that a downstream service acquire a new capability. But the Decision block carries no numbered or discrete sub-decision surfacing this commitment; it rides inside the sole-driver prose (§2.2) as a rationale clause. §5.2 Constraints Imposed lists 'No component other than knowledge-service holds a graph driver' but does not carry the affirmative provisioning-capability-must-exist obligation as a distinct constraint, and §6 check 2 tests only that provisioning 'runs through knowledge-service's driver' — not that the capability is committed to exist. A commitment on another component's design that is never surfaced as an enumerated decision is a claim-fidelity/scope defect: the record decides more than its Decision index reveals.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-004 §2 / §2.2 ('committed here to expose a schema-provisioning capability it does not yet enumerate') vs. ADR-004 §2 Decision (unstructured, no provisioning sub-decision) and §5.2 Constraints Imposed (provisioning-capability obligation absent as a named commitment)"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-004"],
+"locus": "§2.7 / §5.2 / §6 check 6 — mirrored-records exclusion asserted as a fidelity-gate scope boundary attributed to the governance record",
+"claim": "§2.7 states the gate 'is not applied to the ungated Environment observation stream or to externally-decided mirrored records' and identifies its authority thus: 'That control's existence, its provisional-to-official shape, and its scope (the authoritative-source class, per-write) are the governance record's.' §6 check 6 and §5.2 repeat the mirrored-records carve-out. But the cited authority ADR-008 §2.2 enumerates exactly four source classes — Promotion, Authoritative-source ingestion, Operational distillation, Environment — and 'externally-decided mirrored records' is not among them; ADR-008 §2.1 states 'No class is exempt from the invariant; only the control's form varies.' The 'mirrored records' concept is a DDR-002 §2.4 schema construct (GateDecision as the enterprise-SDLC-gate mirror), not an ADR-008 source-class boundary. ADR-004 therefore claims a scope carve-out and attributes it to the governance record without the governance record naming that class — the prose claims a boundary the cited substrate does not support at that locus, reading as an implied fifth class.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-004 §2.7 / §6 check 6 ('mirrored externally-decided records are not gated') in conflict with ADR-008 §2.2 four-class calibration table and §2.1 'No class is exempt from the invariant'"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-004"],
+"locus": "§2.2 — constraint-versioning deferral stated in body prose but not surfaced in the Decision enumeration",
+"claim": "§2.2 states 'Ownership of constraint *versioning* over the platform's life — how the provisioning capability evolves a live instance's constraints — is a forward question, governed by construction ... but with its policy not settled here — tracked as a forward item against the schema-provisioning capability's design.' This deferral is a decided scope boundary (the record decides NOT to rule constraint-versioning) yet the §2 Decision block does not enumerate it, and §5.3 Risks carries a separate 'Constraint-versioning ownership over the platform's life is deferred' row. The deferral's home is split between body prose and a risk row with no Decision-level anchor, so a reader treating the Decision block as the contract's complete index cannot see that this scope was consciously deferred rather than overlooked.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-004 §2.2 ('tracked as a forward item ... policy not settled here') and §5.3 Risks (constraint-versioning deferral) in relation to §2 Decision enumeration, which does not surface the deferral as a decided boundary"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["ADR-004"],
+"locus": "§2.7 vs §5.2 — fidelity-gate exclusion set enumerated differently between the Decision body and Constraints Imposed",
+"claim": "§2.7 states the gate 'is not applied to the ungated Environment observation stream or to externally-decided mirrored records (the Operational distillation class carries its own review control and is out of scope here)' — naming three excluded classes (Environment, mirrored, Operational distillation). §5.2 Constraints Imposed restates the exclusion as 'the ungated Environment observation stream and mirrored externally-decided records are not gated' — omitting the Operational distillation class. The two loci enumerate different exclusion sets for the same gate scope; a reader reconciling the contract against its constraints finds the Operational distillation carve-out present in one and absent in the other.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-004 §2.7 (exclusion set: Environment, mirrored, Operational distillation) vs §5.2 (exclusion set: Environment, mirrored — Operational distillation omitted)"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["ADR-004"],
+"locus": "§2 Decision summary vs §2.7 / §5.2 — read-exclusion scope carve-outs not surfaced in the Decision index",
+"claim": "The §2 Decision summary sentence names only 'Read-exclusion of provisional authoritative-source ground truth from ground-truth synthesis until officially entered' and does not surface the Environment / mirrored-records / Operational-distillation exclusions the fidelity gate carries (§2.7), while §5.2 restates two of them. The Decision block — the contract's index — under-states the class scope carve-outs the body carries, so the enumerated decision reads as broader (all authoritative-source ground truth gated uniformly) than the body's actually-scoped ruling.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-004 §2 Decision (provisional authoritative-source read-exclusion, no class carve-outs) vs §2.7 / §5.2 (Environment, mirrored-records, Operational exclusions stated in body)"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-004"],
+"locus": "§2.5 / §2.4 / §5.1 / §5.3 — 'RG preserved by construction' claim scope",
+"claim": "Attacked the 'Reasoning Graph preserved by construction' claim for overreach — testing whether the record claims durability it cannot deliver. It holds and does not decide more than it can: §2.5 explicitly narrows the guarantee to instantiation-caused loss ('neither written, reconstructed, nor discarded by instantiation'), separates it from durability-against-instance-loss ('the RG is not source-recoverable and must not be presumed so'), routes that latter durability to backup/restore with the production half conditioned on the deferred production runtime, and §5.1 restates the positive consequence as 'safe *from instantiation-caused loss*' with the scope italicized, while §5.3 carries the not-source-recoverable and deferred-backup risk. The decision claims exactly what its structure supports — no more.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-004 §2.5 (KG-scoped, RG preserved by construction) consistent with §5.1 positive consequence (scoped to instantiation-caused loss) and §5.3 RG-not-source-recoverable / deferred-backup risk"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-004"],
+"locus": "§4 Alternatives Considered — each alternative rejected against a named substrate commitment, not preference",
+"claim": "Attacked the Alternatives section for the deliberation-gate failure mode — strawman rejections dressed as authority. It holds: A rejects the gateway bypass on the highest-stakes-write / diffuse-second-boundary grounds ADR-002's system-of-record posture names; B rejects the second-driver tool on the same sole-owner principle and states it as considered-and-rejected rather than a foil; C rejects destructive re-instantiation on the schema's never-delete/supersession disciplines and the RG-has-no-source-artifact fact; D rejects format-in-ADR on altitude and drift-surface grounds. Each rejection cites a specific substrate commitment or structural consequence, describes the alternative in its proponent's terms first, and none is a one-alternative non-choice — the section decides what §2 claims via a real comparison.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-004 §4.1–§4.4 rejection rationales traced to the ADR-002 sole-owner / diffuse-access posture, DDR-002 §6/§7 supersession-and-never-delete disciplines, and the ADR-001 RG-invariant / RG-no-source-artifact fact"
+}
+}
+]

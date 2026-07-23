@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "1e83816777bb5b5d",
+  "reason": "The ruling directs re-wording to ADR-008's actual scope-boundary language, but ADR-008 has no deliberated language covering 'externally-decided mirrored records' — the concept is absent from its four-class table and its scope prose, so the authority does not supply replacement text; whether to drop the phrase, requalify it, or re-anchor it to another authority is an unratified choice.",
+  "confidence": "high"
+}

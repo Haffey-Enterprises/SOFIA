@@ -1,0 +1,1 @@
+{"finding_id":"edbeae66485c2f0d","classification":"resolvable","authority_locus":"ADR-004 §2.7 (canonical exclusion enumeration: Environment stream, mirrored records, Operational distillation class)","rationale":"§2.7 fixes the complete exclusion set; §5.2 omission is a restatement drift correctable by conforming to §2.7's enumeration, no choice introduced.","confidence":"high"}

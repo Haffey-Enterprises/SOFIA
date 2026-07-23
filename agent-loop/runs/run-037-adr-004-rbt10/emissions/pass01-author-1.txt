@@ -1,0 +1,10 @@
+{
+  "action": "edit",
+  "finding_id": "12842fdf4ef73152",
+  "target": "ADR-004",
+  "old_string": "Read-exclusion of provisional authoritative-source ground truth from ground-truth synthesis until officially entered is committed as a schema-level read-discipline invariant (§2.7).",
+  "new_string": "Read-exclusion of provisional authoritative-source ground truth from ground-truth synthesis until officially entered is committed as a forthcoming additive amendment to the schema record's read-discipline invariant set, firing with the fidelity-gate implementation (§2.7).",
+  "authority_conformed": "run-036 Docket Rulings D3 — name the schema-record additive amendment as the invariant's home, firing with the fidelity-gate implementation",
+  "rationale": "D3 ratifies surfacing §2.7's commitment into the §2 Decision sentence; conforming it to §2.7's 'forthcoming addition' framing resolves the committed-here vs. deferred contradiction.",
+  "confidence": "high"
+}

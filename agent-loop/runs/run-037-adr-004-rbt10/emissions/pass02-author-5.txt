@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "b8709bf502ce3857",
+  "reason": "The named authority ('an amendment that adds a ruling updates the Decision enumeration') governs amendments that add rulings; this finding concerns an existing scoping already in §2.7/§5.2, not a newly-added ruling. The authority does not dictate whether or how to surface the carve-outs in §2 — any conforming edit (add all three, add a summary clause, cross-reference) is an unratified drafting choice.",
+  "confidence": "medium"
+}

@@ -1,0 +1,7 @@
+{
+  "finding_id": "66e82bb43a3a2cdc",
+  "classification": "resolvable",
+  "authority_locus": "run-036 Docket Ruling D3 (RATIFIED) — read-exclusion as forthcoming schema invariant, homed on the schema-record additive amendment firing with the fidelity-gate implementation",
+  "rationale": "D3 ratifies the invariant as forthcoming and names its home (schema-record additive amendment) and firing trigger (fidelity-gate implementation); the fix is to state that home per D3.",
+  "confidence": "high"
+}

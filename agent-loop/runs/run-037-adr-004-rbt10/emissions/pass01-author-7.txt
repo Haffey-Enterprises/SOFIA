@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "0726dc76b1b0d266",
+  "reason": "The named authority (§2.2 per-source-class calibration table) is not present in the current document text — §2.2 concerns schema provisioning and the sole-driver line, containing no per-source-class calibration table naming an Operational distillation review control; the cited authority does not exist to determine how §5.2 should enumerate the exclusion set, and reconciling §2.7 vs §5.2 (whether to add Operational distillation to §5.2 or its parenthetical treatment) is an unratified choice.",
+  "confidence": "high"
+}

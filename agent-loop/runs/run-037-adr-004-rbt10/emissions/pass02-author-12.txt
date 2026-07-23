@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "2281c8143584984e",
+  "reason": "The authority establishes that ADR-008 enumerates no 'mirrored records' source class, but naming the correct replacement wording requires deciding what ADR-004 should say about mirrored records — drop the carve-out, re-attribute it to DDR-002 §2.4 (GateDecision), or re-scope it — a choice ADR-008's boundary language does not uniquely determine; both §2.7 and §6 check 6 loci are affected.",
+  "confidence": "high"
+}

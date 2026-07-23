@@ -1,0 +1,7 @@
+{
+  "finding_id": "0726dc76b1b0d266",
+  "classification": "resolvable",
+  "authority_locus": "ADR-004 §2.2 per-source-class calibration table — Operational distillation carries its own per-distinct-lesson review control, distinct from the authoritative-source ingestion gate",
+  "rationale": "The record's own §2.2 calibration fixes each class's control; aligning §5.2's exclusion set to §2.7 conforms to that ratified per-class scheme, no new choice.",
+  "confidence": "high"
+}

@@ -1,0 +1,72 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["ADR-004"],
+"locus": "§2.7 + §6 check 6 vs ADR-008 §2.2",
+"claim": "ADR-004 §2.7 asserts the fidelity gate 'is not applied to ... externally-decided mirrored records', and §6 check 6 repeats 'the ... mirrored externally-decided records are not gated', citing ADR-008 as the source of the control's scope. But ADR-008 §2.2's per-source-class table enumerates only four source classes — Promotion, Authoritative-source ingestion, Operational distillation, Environment — and none is 'externally-decided mirrored records'; ADR-008 §2.1 states 'No class is exempt from the invariant; only the control's form varies.' ADR-004 attributes to ADR-008 a scope carve-out (a mirrored-records exemption) that ADR-008's own text does not carry as an enumerated class.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-004 §2.7 / §6 check 6 ('mirrored externally-decided records are not gated') in conflict with ADR-008 §2.2 four-class calibration table and §2.1 'No class is exempt from the invariant'"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-004", "DDR-002"],
+"locus": "ADR-004 §2.7 read-exclusion invariant vs DDR-002 §7 invariant set",
+"claim": "ADR-004 §2.7 commits 'read-exclusion of provisional ground truth ... as a schema-level invariant' and names it 'a *forthcoming* addition to the schema's read-discipline invariant set (a named amendment obligation), not one the schema already carries'. DDR-002 §7 enumerates the CI-only conformance-invariant set (28 checks) and DDR-002 owns the read-discipline invariants (#9, #19, retracted-node exclusion); the provisional-node read-exclusion invariant ADR-004 declares does not appear anywhere in DDR-002 §7 or §5's read-discipline invariants. ADR-004 asserts a schema-level invariant against a schema record that does not currently supply it, resting the property's realization on an amendment obligation that DDR-002 does not yet carry.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-004 §2.7 ('read-exclusion of provisional ground truth ... committed as a schema-level invariant') in conflict with DDR-002 §7 invariant set (#1–#28) and §5 read-discipline invariants, which do not enumerate a provisional-source read-exclusion"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-004", "SDD-001"],
+"locus": "ADR-004 §2.2 schema-provisioning capability vs SDD-001 §2.1/§3.6",
+"claim": "ADR-004 §2.2 commits knowledge-service 'to expose a schema-provisioning capability it does not yet enumerate' and §2 states knowledge-service 'is committed here to expose a schema-provisioning capability it does not yet enumerate'. SDD-001 §2.1 (Owned) and §3.6 (Ingestion port: `ingest`, `register-plane`, `mirror-gate-decision`) enumerate no schema-provisioning / constraint-DDL operation, and SDD-001 §3.1 readiness treats 'schema metadata loaded' as a precondition the service validates against rather than a schema it provisions. ADR-004 asserts a capability of knowledge-service that the owning service design does not supply; the property ADR-004 relies on (provisioning ordered ahead of the readiness schema-present check) has no corresponding operation in SDD-001's contract.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-004 §2.2 (knowledge-service exposes schema-provisioning over the driver, ordered ahead of readiness) in conflict with SDD-001 §2.1 / §3.6 operation set, which enumerates no schema-provisioning operation"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-004"],
+"locus": "§2.2 circularity / ordering claim",
+"claim": "§2.2 asserts provisioning 'is ordered ahead of the readiness schema-present check rather than passing through the validated write path that check guards' and that 'the service process can start and connect to an empty instance, so provisioning runs before readiness reports green'. SDD-001 §3.1 defines readiness as failing unless '(2) schema metadata loaded — the `PlaneDefinition` registry and constraint/validation metadata the write paths enforce against — critical, fails readiness (the gateway must not execute writes it cannot validate)' and states 'There is no degraded mode'. If the service fails readiness until schema metadata is loaded, ADR-004's claim that a driver-less loader 'invokes this [provisioning] capability' over the running service before readiness green is internally under-specified against SDD-001's own gate: the loader reaching the provisioning capability presupposes an API surface reachable on a not-ready service, which SDD-001 §3.1 does not describe.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-004 §2.2 (provisioning runs before readiness green; loader invokes it) in conflict with SDD-001 §3.1 ('schema metadata loaded ... fails readiness'; 'There is no degraded mode')"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["ADR-004"],
+"locus": "§2.7 vs §2 Decision — scope of gated classes",
+"claim": "§2.7 states the fidelity gate 'is scoped to the authoritative-source class — it is not applied to the ungated Environment observation stream or to externally-decided mirrored records (the Operational distillation class carries its own review control and is out of scope here)'. §2 Decision's summary sentence names only 'provisional authoritative-source ground truth ... until officially entered' and does not surface the mirrored-records / Environment / Operational exclusions, while §5.2 Constraints does restate them; the Decision block (the contract's index) under-states the scope carve-outs the body carries, an internal enumeration gap.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-004 §2 Decision (provisional authoritative-source read-exclusion) vs §2.7 / §5.2 (Environment, mirrored-records, Operational exclusions) — Decision enumeration does not surface the class carve-outs stated in the body"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-004"],
+"locus": "§2.5 KG-scoped / RG-preserved-by-construction vs ADR-001 §2.2 and ADR-002 §2.1",
+"claim": "Checked whether the load-bearing 'RG preserved by construction' claim holds against the reasoning-capture invariant and the system-of-record commitment: §2.5 correctly scopes instantiation to KG-only, states the RG is written solely by the reasoning-capture path, explicitly declines to presume the RG source-recoverable, and routes RG durability-against-instance-loss to backup/restore and the deferred production runtime (§5.3) rather than overclaiming. The claim is consistent with ADR-001 §2.2 (capture invariant) and ADR-002 §2.1 (graph as SoR for both KG and RG) and does not overstate the guarantee — it holds.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-004 §2.5 / §5.3 checked against ADR-001 §2.2 (reasoning-capture invariant) and ADR-002 §2.1 (graph SoR for KG+RG) — the RG-preservation and its scope-to-instantiation held"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-004"],
+"locus": "§2.4 additive-by-supersession vs DDR-002 §6 supersession discipline",
+"claim": "Attacked the 'additive by supersession, never destructive' commitment for conflict with the schema's supersession model: §2.4 correctly describes per-node state-selected behavior (new business key created; changed versioned-ground-truth node supersedes on explicit version increment and retains the predecessor; unchanged introduces no new version; age/distill planes follow their own per-plane discipline) — this aligns with DDR-002 §6 Option A supersession (retained version nodes + effective-dating + `superseded_by`) and the never-delete posture, and does not assert an in-place overwrite the schema forbids. The commitment held against DDR-002's supersession and never-delete disciplines.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-004 §2.4 checked against DDR-002 §6 (Option A supersession) and §7 #8 (never-delete) — the additive-by-supersession claim held"
+}
+}
+]

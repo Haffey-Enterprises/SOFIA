@@ -1,0 +1,9 @@
+{
+  "action": "close_satisfied",
+  "finding_id": "cb41f9b344d23a4c",
+  "evidence_present": "the production runtime, and therefore its backup posture, is deferred to the production-environment build (see §5.3), so for production this recovery path is not yet committed.",
+  "evidence_absent": null,
+  "authority_satisfied": "run-036 D6 (add earned-tense qualifying clause in ADR-004 §2.5 tying durability's production half to ADR-002 §2.2/§5.2 runtime deferral); ADR-002 §2.2/§5.2 production runtime deferral",
+  "rationale": "§2.5 already carries the earned-tense clause the ruling requires — tying the production backup posture to the deferred production-environment build and stating the recovery path is not yet committed.",
+  "confidence": "high"
+}

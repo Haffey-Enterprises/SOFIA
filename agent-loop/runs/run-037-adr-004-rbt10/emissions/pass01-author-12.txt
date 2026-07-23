@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "cfe7a002f499439f",
+  "reason": "The ratified ruling D5 says 're-word to cite ADR-008's actual boundary language,' but ADR-008 §2.2's table enumerates only four classes (Promotion, Authoritative-source ingestion, Operational distillation, Environment) and no boundary language about 'externally-decided mirrored records'; conforming would require deciding whether to drop the clause, remap it to Environment, or re-attribute it to DDR-002 §2.4 — an unratified choice among multiple conforming edits.",
+  "confidence": "high"
+}

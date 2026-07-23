@@ -1,0 +1,1 @@
+{"finding_id":"766a07d67775d12e","classification":"resolvable","authority_locus":"run-036 docket ruling D6 (RATIFIED) + ADR-002 §2.2/§5.2 deferred production runtime","rationale":"D6 already ruled this exact tense defect: affirm durability with an earned-tense clause in §2.5 tying the production half to the runtime deferral's resolution.","confidence":"high"}

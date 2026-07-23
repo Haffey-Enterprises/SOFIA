@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "840111a96469a47c",
+  "reason": "The named authority (run-036 Docket Ruling D2) is not present in the fetched materials; I cannot read its ratified text to derive the exact obligation-home language, firing trigger, or subject-name it mandates. §2.2/§5.3 already carry forward-item language, so whether the ruling requires an added SDD-001-design amendment clause, a §5.3 risk edit, or naming a specific ingestion-port story cannot be determined without the ruling's verbatim terms — leaving more than one conforming edit.",
+  "confidence": "high"
+}

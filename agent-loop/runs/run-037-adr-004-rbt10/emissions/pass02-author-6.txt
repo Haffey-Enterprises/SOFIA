@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "9e403aba826f9d22",
+  "reason": "The named authority (run-036 D2) prescribes an edit shape — 'name schema-provisioning home/trigger in §2.2/§5.3 as a knowledge-service-design additive amendment, subject-named' — but the ruling text supplied does not give the determinate conforming wording, and the current §2.2 already frames the capability as 'an addition its service design does not yet enumerate, gained as a named obligation'; whether that satisfies D2 or must be re-cast into a §5.3 forward-item plus §2.2 amendment-obligation phrasing admits more than one conforming edit and requires composing the amendment language the ruling only characterizes. Determining the exact conformed text is an unratified drafting choice.",
+  "confidence": "medium"
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2.2 Schema provisioning holds the sole-driver line / §7 Cross-References",
+    "claim": "§2.2 commits knowledge-service to 'expose a schema-provisioning capability it does not yet enumerate ... gained as a named obligation of this decision.' ADR-002 §2.5 fixes knowledge-service as the sole graph-access boundary whose 'gateway's API shape — its operations, contracts' is the Data Architecture design's (DDR-001), not an ADR's; SDD-001 §1 enumerates the operation set and states no schema-provisioning operation. This ADR at platform-principle altitude commits a new gateway operation into a downstream service whose API contract is owned elsewhere, without the ratified downstream design record that would carry it — a commitment that arguably deserves its own decision record (or a DDR-001/SDD-001 amendment) before it can stand.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-002 §2.5 ('The gateway's API shape — its operations, contracts, and the read/write paths through it — is the Data Architecture design's graph-gateway pattern (DDR-001), not this ADR's')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2.7 Authoritative-source fidelity control",
+    "claim": "§2.7 states 'read-exclusion of provisional ground truth is committed as a schema-level invariant ... That invariant is a *forthcoming* addition to the schema's read-discipline invariant set (a named amendment obligation), not one the schema already carries.' This ADR commits a schema-level read-discipline invariant whose home is DDR-002 §7 (owned there, per DDR-002's own authority split), and does so before that amendment exists. An ADR committing a specific schema invariant into a downstream ruling that has not ratified it pins DDR-002 to a decision it has not made; the timing question — does this stand in this shape, at this time, ahead of the schema amendment — is unsettled.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §7 (the schema's conformance-checked invariant set is DDR-002's; ADR-004 §2.7 asserts a 'forthcoming addition' to it as a named amendment obligation)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2.5 / §5.3 Reasoning-Graph durability posture",
+    "claim": "§2.5 rests RG durability across instance loss on 'instance-level backup and restore,' stating 'In the current development runtime that responsibility sits with the managed graph provider; the production runtime, and therefore its backup posture, is deferred.' ADR-002 §2.2/§5.2 defers the production deployment runtime entirely — no production backup/restore posture is committed anywhere in the ratified substrate. ADR-004 thereby makes the reasoning-capture invariant's only recovery path (RG is not source-recoverable, §2.5) depend on a posture that does not yet exist for production. This is a hard-to-reverse commitment (the RG accumulates irreplaceable institutional memory) whose sole safeguard is deferred, and the ADR proceeds on it rather than gating on it.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-002 §5.2 / §2.2 (production deployment runtime and its operational/backup posture are deferred to the production-environment build; ADR-004 §2.5 rests RG durability on an undecided production backup posture)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-004"],
+    "locus": "§2.7 / §5.2 scope of fidelity gate — mirrored-records exclusion",
+    "claim": "§2.7 carves 'externally-decided mirrored records' out of the fidelity gate's scope alongside the Environment stream. ADR-008 §2.2's calibration table enumerates four source classes (Promotion, Authoritative-source ingestion, Operational distillation, Environment) and does not name a 'mirrored records' class as an ingestion-fidelity exclusion; the mirrored-decision concept lives in DDR-002 §2.4 (GateDecision as the enterprise SDLC gate mirror), a schema construct, not an ADR-008 source-class boundary. ADR-004 attributes a scope boundary to the governance record's own deliberated scope but names a category the governance record does not enumerate as such — the alignment reads as an implied fifth class rather than a fetch-verified citation of ADR-008's actual boundary language.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.7 vs ADR-008 §2.2 (per-source-class calibration table names no mirrored-records ingestion class; the exclusion cites a boundary not stated in the governance record's enumerated scope)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-004"],
+    "locus": "§2.1–§2.2 / §4.1–§4.2 sole-driver preservation for instantiation",
+    "claim": "Attacked the core posture — routing the first, highest-stakes graph load and the schema-provisioning DDL through knowledge-service — as a candidate for pulling against ADR-002's system-posture. It holds: ADR-002 §2.5 concentrates all graph access in a single sole-owner gateway, and §4.5 rejects diffuse direct-driver access; ADR-004 §2.1/§2.2 extends exactly that line to instantiation and data-definition rather than carving the privileged-bulk-load or second-driver exceptions its §4.1/§4.2 consider and reject. The decision integrates with, rather than pulls against, the ratified system-of-record posture.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-002 §2.5 (single sole-owner gateway) and §4.5 (diffuse direct-driver access rejected) — ADR-004 preserves the sole-driver principle for instantiation and schema provisioning"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-004"],
+    "locus": "§2.3–§2.4 fresh-not-migrated reversibility posture",
+    "claim": "Attacked 'fresh, not migrated' and 'additive, never destructive' as a possibly-premature or hard-to-reverse origin commitment. It holds proportionately: DDR-002 §6 commits retained-version supersession and never-delete, and the ledger's R2/R12 (cross-referenced) ratify the fresh-product/no-migration origin; ADR-004 §2.4's additive-by-supersession-selected-per-node-state, with no destructive-reset operation, is reversibility-consistent with the schema's own discipline and forecloses no future population path — re-running the loader accretes rather than resets. The commitment is proportionate to its cost of undoing.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §6 (retained-version supersession, never-delete) — ADR-004 §2.4 additive-by-supersession is consistent with the ratified schema temporal model"
+    }
+  }
+]
