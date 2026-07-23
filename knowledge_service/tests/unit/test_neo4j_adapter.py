@@ -7,9 +7,10 @@
 # Description: Unit tests for Neo4jAdapter's driver lifecycle (SDD-001 §4.2,
 #   §4.7) — construction from Settings, connect/verify/close, and translation
 #   of driver-level failure into the port's boolean verdict — plus (RBT-78/R3a)
-#   find_track_record: the one-Cypher-call track-record-lookup traversal
-#   (SDD-001 §3.3.3, ADR-002 §6 check 4). The driver is mocked at the adapter
-#   boundary; no test here touches a live Neo4j — the real graph behavior is
+#   find_track_record and (R3b) resolve_technology_options: the one-Cypher-call
+#   traversals per operation (ADR-002 §6 check 4). The driver is mocked at the
+#   adapter boundary; no test here touches a live Neo4j — the real graph
+#   behavior (including the R3b flag-determination Cypher's correctness) is
 #   conformance's (RBT-80).
 ##############################################################################
 
@@ -425,3 +426,352 @@ class TestNeo4jAdapterFindTrackRecord:
             await adapter.find_track_record(
                 [TargetEntityRef(entity_kind="Technology", entity_id="t")]
             )
+
+
+class TestNeo4jAdapterResolveTechnologyOptions:
+    """The resolve-technology traversal (SDD-001 §3.3.2) — one Cypher call."""
+
+    async def test_resolve_technology_options_queries_with_the_capability_id(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(records=[])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        await adapter.resolve_technology_options("cap-1")
+
+        # Assert
+        params = driver.execute_query.call_args.args[1]
+        assert params == {"capability_id": "cap-1"}
+
+    async def test_resolve_technology_options_routes_read_and_targets_the_database(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(records=[])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        await adapter.resolve_technology_options("cap-1")
+
+        # Assert
+        kwargs = driver.execute_query.call_args.kwargs
+        assert kwargs["routing_"] is RoutingControl.READ
+        assert kwargs["database_"] == "sofia"
+
+    async def test_resolve_technology_options_query_matches_approved_option_for(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(records=[])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        await adapter.resolve_technology_options("cap-1")
+
+        # Assert — the single-store traversal (ADR-002 §6 check 4): Technology
+        # APPROVED_OPTION_FOR Capability, plus the real read-discipline
+        # structure (RETRACTS/DECIDED_ON for retraction, PROMOTES_TO_KNOWLEDGE/
+        # HAS_CONDITION for the resolved Condition set).
+        query = driver.execute_query.call_args.args[0]
+        assert "APPROVED_OPTION_FOR" in query
+        assert "RETRACTS" in query
+        assert "PROMOTES_TO_KNOWLEDGE" in query
+        assert "HAS_CONDITION" in query
+
+    async def test_retraction_is_existence_based_not_governance_based(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange — review Fix A: DDR-002 §2.4 states #21 "traces to an
+        # approving decision, not the governing one" — the opposite of #15's
+        # promoted-origin rule. retracted must be an existence check over ANY
+        # approving DECIDED_ON on a retraction candidate, never a
+        # latest-decided_at "governing decision" selection — the prior
+        # ORDER BY/collect[0] form for retraction is gone entirely.
+        driver.execute_query.return_value = SimpleNamespace(records=[])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        await adapter.resolve_technology_options("cap-1")
+
+        # Assert
+        query = driver.execute_query.call_args.args[0]
+        assert "EXISTS {" in query
+        assert "governing_retraction_decision" not in query
+
+    async def test_verdict_flip_a_later_non_approving_redecision_still_yields_retracted_true(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange — review Fix A verdict-flip scenario: a retraction with an
+        # approving DECIDED_ON followed by a LATER non-approving re-decision.
+        # The Cypher's EXISTS{} existence check (verified structurally above)
+        # is what makes this graph state resolve to retracted=true rather than
+        # false; at the mocked-driver layer, the boundary this test can prove
+        # is the mapping — the driver returns exactly the boolean such a graph
+        # would produce, and the adapter must carry it through unchanged
+        # rather than re-deriving or overriding it. The Cypher's real
+        # existence-vs-governance behavior against a live graph is
+        # conformance's to verify (RBT-80 #21).
+        driver.execute_query.return_value = SimpleNamespace(
+            records=[
+                {
+                    "node_id": "tech-flip",
+                    "version": "1",
+                    "origin_mechanism": "promoted",
+                    "derivation_class": None,
+                    "tier_applicability": [],
+                    "approved_data_classifications": [],
+                    "applicability_state": "unconditional",
+                    "retracted": True,
+                    "conditions": [],
+                    "deprecation_date": None,
+                }
+            ]
+        )
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        results = await adapter.resolve_technology_options("cap-1")
+
+        # Assert
+        assert results[0].retracted is True
+
+    async def test_resolve_technology_options_returns_one_record_per_technology(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange — review Fix B: a technology with multiple retraction
+        # proposals and/or decisions must not multiply rows. EXISTS{} is a
+        # boolean subquery (cannot expand outer cardinality) and the
+        # conditions CALL{} subquery resolves to exactly one aggregate row per
+        # tech by construction — both verified structurally; here the driver
+        # returns the single row the fixed query would produce for such a
+        # tech, and the adapter must map it to exactly one candidate record,
+        # never one per underlying retraction/decision.
+        driver.execute_query.return_value = SimpleNamespace(
+            records=[
+                {
+                    "node_id": "tech-multi-retraction",
+                    "version": "1",
+                    "origin_mechanism": "promoted",
+                    "derivation_class": None,
+                    "tier_applicability": [],
+                    "approved_data_classifications": [],
+                    "applicability_state": "unconditional",
+                    "retracted": True,
+                    "conditions": [],
+                    "deprecation_date": None,
+                }
+            ]
+        )
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        results = await adapter.resolve_technology_options("cap-1")
+
+        # Assert
+        assert len(results) == 1
+
+    async def test_conditions_are_scoped_to_the_governing_approving_decision(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange — review Fix C: conditions must be collected only from the
+        # decision that is both approving AND governing (latest decided_at
+        # among approving decisions), never from any approving-or-not decision
+        # unscoped. The CALL{} subquery filters to approving outcomes first,
+        # then takes the single latest by decided_at, then collects only ITS
+        # HAS_CONDITION set.
+        driver.execute_query.return_value = SimpleNamespace(records=[])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        await adapter.resolve_technology_options("cap-1")
+
+        # Assert
+        query = driver.execute_query.call_args.args[0]
+        assert "decided.outcome IN ['approved', 'approved_conditional']" in query
+        assert "ORDER BY decision.decided_at DESC" in query
+        assert "LIMIT 1" in query
+
+    async def test_superseded_condition_does_not_leak_when_governing_decision_is_unconditional(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange — review Fix C(a): an earlier approving decision carried a
+        # condition; a later approving (governing) decision carries none. The
+        # driver returns what the fixed query would compute for that graph
+        # state — conditions=[] — and the adapter must map it through as an
+        # empty tuple, not resurrect the superseded condition.
+        driver.execute_query.return_value = SimpleNamespace(
+            records=[
+                {
+                    "node_id": "tech-resuperseded",
+                    "version": "1",
+                    "origin_mechanism": "promoted",
+                    "derivation_class": None,
+                    "tier_applicability": [],
+                    "approved_data_classifications": [],
+                    "applicability_state": "unconditional",
+                    "retracted": False,
+                    "conditions": [],
+                    "deprecation_date": None,
+                }
+            ]
+        )
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        results = await adapter.resolve_technology_options("cap-1")
+
+        # Assert
+        assert results[0].conditions == ()
+
+    async def test_re_scoped_condition_reflects_only_the_new_governing_set(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange — review Fix C(b): a later governing approving decision
+        # carries a NEW condition set distinct from any earlier one. The
+        # driver returns what the fixed query would compute — only the new
+        # set — and the adapter must map exactly that through, nothing more.
+        driver.execute_query.return_value = SimpleNamespace(
+            records=[
+                {
+                    "node_id": "tech-rescoped",
+                    "version": "1",
+                    "origin_mechanism": "promoted",
+                    "derivation_class": None,
+                    "tier_applicability": [],
+                    "approved_data_classifications": [],
+                    "applicability_state": "conditional",
+                    "retracted": False,
+                    "conditions": [
+                        {
+                            "predicate": {"op": "eq", "field": "new_tier"},
+                            "dependency_manifest": ["new_tier"],
+                        }
+                    ],
+                    "deprecation_date": None,
+                }
+            ]
+        )
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        results = await adapter.resolve_technology_options("cap-1")
+
+        # Assert
+        assert len(results[0].conditions) == 1
+        assert results[0].conditions[0].predicate == {"op": "eq", "field": "new_tier"}
+        assert results[0].conditions[0].required_context_fields == frozenset({"new_tier"})
+
+    async def test_resolve_technology_options_maps_an_unconditional_unretracted_record(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(
+            records=[
+                {
+                    "node_id": "tech-1",
+                    "version": "2",
+                    "origin_mechanism": "ingested",
+                    "derivation_class": "primary",
+                    "tier_applicability": ["production", "staging"],
+                    "approved_data_classifications": ["internal"],
+                    "applicability_state": None,
+                    "retracted": False,
+                    "conditions": [],
+                    "deprecation_date": None,
+                }
+            ]
+        )
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        results = await adapter.resolve_technology_options("cap-1")
+
+        # Assert — a null applicability_state maps to the schema's own default.
+        assert len(results) == 1
+        record = results[0]
+        assert record.node_id == "tech-1"
+        assert record.version == "2"
+        assert record.origin_mechanism == "ingested"
+        assert record.derivation_class == "primary"
+        assert record.tier_applicability == ("production", "staging")
+        assert record.approved_data_classifications == ("internal",)
+        assert record.applicability_state == "unconditional"
+        assert record.retracted is False
+        assert record.conditions == ()
+        assert record.deprecation_date is None
+
+    async def test_resolve_technology_options_maps_a_retracted_conditional_record(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(
+            records=[
+                {
+                    "node_id": "tech-2",
+                    "version": "1",
+                    "origin_mechanism": "promoted",
+                    "derivation_class": None,
+                    "tier_applicability": [],
+                    "approved_data_classifications": [],
+                    "applicability_state": "conditional",
+                    "retracted": True,
+                    "conditions": [
+                        {
+                            "predicate": {"op": "eq", "field": "tier"},
+                            "dependency_manifest": ["tier"],
+                        }
+                    ],
+                    "deprecation_date": "2026-01-01",
+                }
+            ]
+        )
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        results = await adapter.resolve_technology_options("cap-1")
+
+        # Assert
+        record = results[0]
+        assert record.applicability_state == "conditional"
+        assert record.retracted is True
+        assert len(record.conditions) == 1
+        assert record.conditions[0].predicate == {"op": "eq", "field": "tier"}
+        assert record.conditions[0].required_context_fields == frozenset({"tier"})
+        assert record.deprecation_date == "2026-01-01"
+
+    async def test_resolve_technology_options_with_no_matches_returns_empty(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(records=[])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        results = await adapter.resolve_technology_options("cap-1")
+
+        # Assert
+        assert results == []
+
+    async def test_resolve_technology_options_before_connect_raises_runtime_error(
+        self, settings: Settings, driver_factory: MagicMock
+    ) -> None:
+        # Arrange
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+
+        # Act / Assert
+        with pytest.raises(RuntimeError, match="driver"):
+            await adapter.resolve_technology_options("cap-1")

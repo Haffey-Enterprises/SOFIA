@@ -8,13 +8,18 @@
 #   every service test runs against (SDD-001 §6, no test depends on live
 #   Neo4j). The double is real behavior and is covered as such: its
 #   controllable connectivity verdict is what makes the §3.1 readiness check
-#   testable in both directions, and (RBT-78/R3a) its controllable
-#   track-record candidate list is what makes read-discipline exercisable
-#   without modelling graph internals (§4.2 A3).
+#   testable in both directions, and its controllable candidate-record lists
+#   (RBT-78/R3a track-record, R3b resolve-technology) are what make
+#   read-discipline exercisable without modelling graph internals (§4.2 A3).
 ##############################################################################
 
 from app.adapters.in_memory_graph import InMemoryGraphStore
-from app.ports.graph_store import GraphStoragePort, TargetEntityRef, TrackRecordCandidateRecord
+from app.ports.graph_store import (
+    GraphStoragePort,
+    ResolveTechnologyCandidateRecord,
+    TargetEntityRef,
+    TrackRecordCandidateRecord,
+)
 
 
 class TestInMemoryGraphStoreSubstitutability:
@@ -126,3 +131,56 @@ class TestInMemoryGraphStoreFindTrackRecord:
         # Assert — lets a test prove the operation forwarded the caller's
         # target entities rather than dropping or substituting them.
         assert store.find_track_record_calls == [refs]
+
+
+class TestInMemoryGraphStoreResolveTechnologyOptions:
+    """The controllable candidate-record store (§4.2 A3)."""
+
+    async def test_resolve_technology_options_with_no_candidates_set_returns_empty(
+        self,
+    ) -> None:
+        # Arrange
+        store = InMemoryGraphStore()
+
+        # Act
+        result = await store.resolve_technology_options("cap-1")
+
+        # Assert
+        assert result == []
+
+    async def test_resolve_technology_options_returns_the_configured_candidates(
+        self,
+    ) -> None:
+        # Arrange
+        store = InMemoryGraphStore()
+        candidate = ResolveTechnologyCandidateRecord(
+            node_id="tech-1",
+            version="1",
+            origin_mechanism="ingested",
+            derivation_class="primary",
+            tier_applicability=("production",),
+            approved_data_classifications=("internal",),
+            applicability_state="unconditional",
+            retracted=False,
+            conditions=(),
+        )
+        store.set_technology_option_candidates([candidate])
+
+        # Act
+        result = await store.resolve_technology_options("cap-1")
+
+        # Assert
+        assert result == [candidate]
+
+    async def test_resolve_technology_options_records_the_requested_capability_id(
+        self,
+    ) -> None:
+        # Arrange
+        store = InMemoryGraphStore()
+
+        # Act
+        await store.resolve_technology_options("cap-42")
+
+        # Assert — lets a test prove the operation forwarded the caller's
+        # capability id rather than dropping or substituting it.
+        assert store.resolve_technology_options_calls == ["cap-42"]

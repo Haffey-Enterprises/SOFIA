@@ -8,11 +8,12 @@
 #   construction, lifespan-owned driver wiring, the in-process schema-metadata
 #   registry, correlation-ID middleware, the graph-store/schema-registry/
 #   predicate-evaluator dependencies, the SDD-001 §3.2 typed-error handler, the
-#   §3.1 health and readiness routes, and (RBT-78/R3a) the first §3.3 read
-#   route, track-record-lookup. Per SDD-001 §4.1 this module homes the routes
-#   directly; this service's tree has no separate api/ layer. The lifespan is
-#   the single place a Neo4j driver is opened in this platform (ADR-002 §2.5)
-#   and the place the schema-metadata registry is loaded (SDD-001 §3.1 check 2).
+#   §3.1 health and readiness routes, and the §3.3 read routes (RBT-78/R3a
+#   track-record-lookup, R3b resolve-technology). Per SDD-001 §4.1 this module
+#   homes the routes directly; this service's tree has no separate api/ layer.
+#   The lifespan is the single place a Neo4j driver is opened in this platform
+#   (ADR-002 §2.5) and the place the schema-metadata registry is loaded
+#   (SDD-001 §3.1 check 2).
 ##############################################################################
 
 from collections.abc import AsyncIterator
@@ -27,6 +28,7 @@ from starlette.requests import Request
 from app.adapters.neo4j_adapter import Neo4jAdapter
 from app.config import Settings, get_settings
 from app.domain.exceptions import GatewayError, resolve_http_status
+from app.domain.retrieval.resolve_technology import resolve_technology
 from app.domain.retrieval.track_record_lookup import track_record_lookup
 from app.domain.retrieval.types import ConsumingContext
 from app.domain.shared.predicate_evaluators import FailClosedPredicateEvaluator
@@ -37,6 +39,7 @@ from app.models import (
     HealthResponse,
     ReadinessResponse,
     ReadResult,
+    ResolveTechnologyRequest,
     TrackRecordLookupRequest,
 )
 from app.observability.correlation_id import CorrelationIdMiddleware
@@ -288,3 +291,39 @@ async def track_record_lookup_endpoint(
         declared_fields=request.consuming_context.declared_fields,
     )
     return await track_record_lookup(target_refs, context, graph_store, predicate_evaluator)
+
+
+@app.post(
+    "/api/v1/resolve-technology",
+    response_model=ReadResult,
+    tags=["retrieval"],
+)
+async def resolve_technology_endpoint(
+    request: ResolveTechnologyRequest,
+    graph_store: GraphStoreDep,
+    predicate_evaluator: PredicateEvaluatorDep,
+) -> ReadResult:
+    """Approved Technology options for a Capability (SDD-001 §3.3.2).
+
+    Eligibility verdicts are disclosed per option (annotation, never
+    exclusion, SDD-001 §4.4) — an ineligible Technology is still returned. No
+    recommended pick is returned; the schema-metadata registry is not
+    consulted here (this operation performs no write-path validation).
+
+    Args:
+        request: The Capability and the §3.2 consuming-context payload.
+        graph_store: The graph port.
+        predicate_evaluator: The predicate port (production: fail-closed).
+
+    Returns:
+        The admitted envelopes (each carrying its Catalog-eligibility verdict)
+        and disclosed exclusions.
+    """
+    context = ConsumingContext(
+        environment_class=request.consuming_context.environment_class,
+        data_classification=request.consuming_context.data_classification,
+        declared_fields=request.consuming_context.declared_fields,
+    )
+    return await resolve_technology(
+        request.capability_id, context, graph_store, predicate_evaluator
+    )

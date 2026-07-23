@@ -10,13 +10,18 @@
 #   Neo4jAdapter is the sole production implementation, InMemoryGraphStore
 #   serves the tests, and a substitute must satisfy the DDR-001
 #   Substitution-Contract Capability Bar (a port swap in code, an ADR-002
-#   amendment in governance). RBT-78/R3a adds the first §3.3 read method,
-#   `find_track_record` — one named, single-store traversal per operation
-#   (ADR-002 §6 check 4: no application-layer join), never a generic/raw query
-#   surface (SDD-001 §3.2 "No raw access").
+#   amendment in governance). RBT-78/R3a added the first §3.3 read method,
+#   `find_track_record`. R3b adds `resolve_technology_options` — the first
+#   method whose candidates carry REAL read-discipline structure (a `Technology`
+#   can be promoted-conditional or retracted, unlike `ObservedPattern`'s fixed
+#   constants): the retraction status, `applicability_state`, and the resolved
+#   `Condition` set travel on its record, for the R2 core to enforce. Both are
+#   one named, single-store traversal per operation (ADR-002 §6 check 4: no
+#   application-layer join), never a generic/raw query surface (SDD-001 §3.2
+#   "No raw access").
 ##############################################################################
 
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from typing import Literal, Protocol, runtime_checkable
 
@@ -78,6 +83,65 @@ class TrackRecordCandidateRecord:
     last_observed_at: str | None
 
 
+@dataclass(frozen=True)
+class ResolvedConditionRecord:
+    """One resolved `HAS_CONDITION` path for a candidate node (port-level).
+
+    Structurally identical to `app.domain.retrieval.types.ConditionRef`, but
+    declared separately here so the port stays domain-agnostic (adapters must
+    not import from `domain/retrieval`). `predicate` is opaque — DDR-003's
+    grammar, not interpreted here or by any operation; `required_context_fields`
+    is read directly off the `Condition.dependency_manifest` property, assumed
+    to already be a flat list of field names (DDR-002 names it "declared-
+    introspectable" but does not fix an internal shape beyond that).
+    """
+
+    predicate: Mapping[str, object]
+    required_context_fields: frozenset[str]
+
+
+@dataclass(frozen=True)
+class ResolveTechnologyCandidateRecord:
+    """One `Technology` APPROVED_OPTION_FOR the requested `Capability` (SDD-001
+    §3.3.2).
+
+    The raw structural facts `resolve_technology_options` resolves per
+    candidate — port-level data, not a `CandidateNode` (same separation as
+    `TrackRecordCandidateRecord`). Unlike track-record-lookup's fixed constants,
+    `retracted`/`applicability_state`/`conditions` here are REAL, traversal-
+    determined values (R3b D1): a `Technology` can genuinely be promoted-
+    conditional or retracted, so the traversal must resolve them from the graph
+    rather than assume a fixed answer.
+
+    `tier_applicability`/`approved_data_classifications` are the raw DDR-002
+    §2.1 Catalog-eligibility fields — the operation computes the eligibility
+    verdict from them (app.domain.shared.catalog_eligibility); this record
+    carries the inputs, not the verdict.
+
+    `applicability_state` defaults to `"unconditional"` at the adapter when the
+    graph property is absent — DDR-002 §5 states `unconditional` is the
+    schema's own default for a node with no promotion-conditional history.
+
+    `deprecation_date` (SDD-001 §3.2 v1.7.0) is the raw `deprecation_date`
+    property (ISO date string, or `None` when absent) — the operation derives
+    the `deprecated` marker from its mere presence, never from a comparison
+    against the read clock. `approval_status` is deliberately not read at all:
+    its value-set is unratified in DDR-002, so keying on it would encode an
+    unpinned literal.
+    """
+
+    node_id: str
+    version: str
+    origin_mechanism: str
+    derivation_class: str | None
+    tier_applicability: tuple[str, ...]
+    approved_data_classifications: tuple[str, ...]
+    applicability_state: Literal["unconditional", "conditional"]
+    retracted: bool
+    conditions: tuple[ResolvedConditionRecord, ...]
+    deprecation_date: str | None = None
+
+
 @runtime_checkable
 class GraphStoragePort(Protocol):
     """The graph system-of-record seam the gateway's domain code depends on.
@@ -124,5 +188,27 @@ class GraphStoragePort(Protocol):
         Returns:
             One `TrackRecordCandidateRecord` per matching `ObservedPattern` x
             target pair.
+        """
+        ...
+
+    async def resolve_technology_options(
+        self, capability_id: str
+    ) -> Sequence[ResolveTechnologyCandidateRecord]:
+        """Resolve approved Technology options for the given Capability.
+
+        One single-store traversal (ADR-002 §6 check 4): every `Technology`
+        APPROVED_OPTION_FOR the requested `Capability`, with its real
+        read-discipline structure (retraction status, `applicability_state`,
+        resolved `Condition` set) resolved alongside — never pre-excluded here.
+        Performs no read-discipline exclusion and no eligibility computation
+        itself; both are the operation's job (the R2 core, and
+        app.domain.shared.catalog_eligibility, respectively).
+
+        Args:
+            capability_id: The Capability to resolve approved options for.
+
+        Returns:
+            One `ResolveTechnologyCandidateRecord` per approved Technology
+            option.
         """
         ...

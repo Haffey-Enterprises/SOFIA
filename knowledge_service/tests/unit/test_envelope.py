@@ -6,8 +6,9 @@
 # Revised: 2026-07-23
 # Description: Unit tests for the §3.2 envelope assembler (app/domain/shared/
 #   envelope.py) — assemble_envelope populating every ResultEnvelope field
-#   from an EnvelopeAttribution, the catalog_eligibility named-forward slot
-#   staying None, and build_disclosure_entry carrying only identity + reason.
+#   from an EnvelopeAttribution, catalog_eligibility carrying through from the
+#   attribution (None when the supplying op doesn't compute it, R3b's value
+#   when it does), and build_disclosure_entry carrying only identity + reason.
 ##############################################################################
 
 from app.domain.shared.envelope import (
@@ -15,7 +16,7 @@ from app.domain.shared.envelope import (
     assemble_envelope,
     build_disclosure_entry,
 )
-from app.models import ConditionalAdmissionStatus, DisclosureReason
+from app.models import CatalogEligibility, ConditionalAdmissionStatus, DisclosureReason
 
 _ATTRIBUTION = EnvelopeAttribution(
     node_id="node-1",
@@ -65,14 +66,39 @@ class TestAssembleEnvelope:
             == ConditionalAdmissionStatus.CONDITIONALLY_ADMITTED
         )
 
-    def test_assemble_envelope_leaves_catalog_eligibility_as_the_forward_slot(self) -> None:
-        # Act — R2 computes no catalog-eligibility fit-rule; R3's slot.
+    def test_assemble_envelope_leaves_catalog_eligibility_none_when_unset(self) -> None:
+        # Act — a non-Catalog op (e.g. track-record-lookup) never sets it.
         envelope = assemble_envelope(
             _ATTRIBUTION, conditional_admission=ConditionalAdmissionStatus.UNCONDITIONAL
         )
 
         # Assert
         assert envelope.applicability.catalog_eligibility is None
+
+    def test_assemble_envelope_carries_catalog_eligibility_when_set(self) -> None:
+        # Arrange — a Catalog op (e.g. resolve-technology) computed a verdict.
+        eligibility = CatalogEligibility(eligible=False, failing_fields=["tier_applicability"])
+        attribution = EnvelopeAttribution(
+            node_id="node-3",
+            node_kind="Technology",
+            plane_labels=("Catalog",),
+            origin_mechanism="ingested",
+            derivation_class="primary",
+            version="1",
+            effective_from=None,
+            effective_to=None,
+            version_pin="1",
+            confidences=(),
+            catalog_eligibility=eligibility,
+        )
+
+        # Act
+        envelope = assemble_envelope(
+            attribution, conditional_admission=ConditionalAdmissionStatus.UNCONDITIONAL
+        )
+
+        # Assert — assembled unchanged, not recomputed or dropped.
+        assert envelope.applicability.catalog_eligibility == eligibility
 
     def test_assemble_envelope_carries_multiple_composed_confidences(self) -> None:
         # Arrange — node confidence + composed edge confidence (DDR-002 §3/§4).

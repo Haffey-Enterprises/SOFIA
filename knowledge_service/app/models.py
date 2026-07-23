@@ -13,6 +13,10 @@
 #   assembled by app.domain.shared.envelope from the read-discipline core's
 #   verdicts (app.domain.retrieval); the nine §3.3 operation-shaped
 #   request/response contracts land with the operations themselves (R3+).
+#   SDD-001 v1.7.0 adds the applicability block's deprecation notice
+#   (DeprecationNotice) — marker-presence only (set iff the resolved Catalog
+#   node carries a deprecation_date), on the same annotation-never-exclusion
+#   footing as CatalogEligibility.
 #   These typed models are the source of truth for the contract tests — when
 #   an implementation and a contract diverge, the contract wins.
 ##############################################################################
@@ -20,7 +24,7 @@
 from enum import StrEnum
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class CheckStatus(StrEnum):
@@ -133,18 +137,59 @@ class ConditionalAdmissionStatus(StrEnum):
     CONDITIONALLY_ADMITTED = "conditionally_admitted"
 
 
+class CatalogEligibility(BaseModel):
+    """The Catalog-eligibility verdict (SDD-001 §4.4; DDR-002 §2.1/§5).
+
+    Computed per DDR-002 §2.1's two Technology fields: tier fit
+    (`context.environment_class ∈ tier_applicability[]`) and classification
+    fit (`context.data_classification ∈ approved_data_classifications[]`).
+    `failing_fields` names which check(s) failed — `"tier_applicability"` and/
+    or `"approved_data_classifications"` — empty when `eligible` is true.
+    Annotation only: an ineligible Technology is still returned (SDD-001 §4.4
+    "annotation, never exclusion") — silently filtering it would erase the
+    gap-vs-ineligible distinction the reasoning capture depends on.
+    """
+
+    eligible: bool
+    failing_fields: list[str]
+
+
+class DeprecationNotice(BaseModel):
+    """The deprecation notice (SDD-001 §3.2 v1.7.0; DDR-002 §2.1).
+
+    `deprecated` is **marker-presence, not a temporal evaluation against the
+    read clock**: it is set iff the resolved Catalog node carries a
+    `deprecation_date`, never by comparing that date to "now." On the same
+    annotation-never-exclusion footing as `CatalogEligibility` — a deprecated
+    Technology is disclosed, never read-excluded; whether to admit it is the
+    approver's decision, not the gateway's. `approval_status` is deliberately
+    not surfaced here — its value-set is unratified in DDR-002.
+    """
+
+    model_config = ConfigDict(frozen=True)
+
+    deprecated: bool
+    deprecation_date: str | None = None
+
+
 class ApplicabilityBlock(BaseModel):
     """The §3.2 applicability block carried on every admitted result.
 
-    `catalog_eligibility` is a **named-forward slot**: SDD-001 §4.4 runs
-    Catalog-eligibility evaluation alongside conditional admission, as
-    annotation only (never exclusion), but that computation is R3's, built
-    with its catalog-read consumers. It is always `None` at R2 — no fit-rule
-    is invented here to fill it early.
+    `catalog_eligibility` and `conditional_admission` are two DISTINCT
+    applicability surfaces (DDR-002 §5 "two-surface applicability... both
+    bind") — the gateway annotates both but composes NEITHER into a single
+    "may I use this here?" verdict; that composition is the consuming SDD's
+    call (solutioning-agent), not this gateway's to make (§4.4). Non-Catalog
+    operations (e.g. track-record-lookup) carry `catalog_eligibility=None` —
+    the surface simply does not apply to their candidates. `deprecation`
+    (v1.7.0) is the same kind of annotation-only surface, additive across
+    every §3.3 read port resolving a deprecatable Catalog node; `None` where
+    no resolved node is deprecatable.
     """
 
     conditional_admission: ConditionalAdmissionStatus
-    catalog_eligibility: None = None
+    catalog_eligibility: CatalogEligibility | None = None
+    deprecation: DeprecationNotice | None = None
 
 
 class DisclosureReason(StrEnum):
@@ -257,4 +302,11 @@ class TrackRecordLookupRequest(BaseModel):
     """The track-record-lookup request body (SDD-001 §3.3.3)."""
 
     target_refs: list[TrackRecordTargetRef]
+    consuming_context: ConsumingContextPayload
+
+
+class ResolveTechnologyRequest(BaseModel):
+    """The resolve-technology request body (SDD-001 §3.3.2)."""
+
+    capability_id: str
     consuming_context: ConsumingContextPayload

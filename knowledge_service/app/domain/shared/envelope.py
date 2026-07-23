@@ -26,13 +26,24 @@
 #   from (e.g. `ObservedPattern.confidence`, `OBSERVED_IN.confidence`) with no
 #   CI check guaranteeing presence — unlike `Evidence.confidence` (check #28).
 #   A null confidence is carried honestly rather than crashing or defaulting.
+#   `catalog_eligibility` (R3b): carried through from the attribution rather
+#   than hardcoded `None` — computed by a Catalog operation (app.domain.shared.
+#   catalog_eligibility) and attached to the attribution before assembly; a
+#   non-Catalog operation (e.g. track-record-lookup) simply leaves it at its
+#   `None` default. `deprecation` (SDD-001 §3.2 v1.7.0) is the same pattern:
+#   carried through unchanged, never computed here — the operation builds the
+#   `DeprecationNotice` (marker-presence from `deprecation_date`, never a
+#   read-clock comparison) and attaches it to the attribution before assembly.
+#   This module still computes nothing itself — assembly only.
 ##############################################################################
 
 from dataclasses import dataclass
 
 from app.models import (
     ApplicabilityBlock,
+    CatalogEligibility,
     ConditionalAdmissionStatus,
+    DeprecationNotice,
     DisclosureEntry,
     DisclosureReason,
     ResultEnvelope,
@@ -50,7 +61,12 @@ class EnvelopeAttribution:
     absent — not guaranteed present by any DDR-002 constraint or CI check for
     every surface that carries one. `version`/`version_pin` are `None` for a
     non-versioned node type (e.g. an Operational `ObservedPattern`, which
-    distills update-in-place).
+    distills update-in-place). `catalog_eligibility` is `None` unless the
+    supplying operation computed it (Catalog reads only, e.g.
+    resolve-technology) — the two-surface applicability distinction (DDR-002
+    §5) means it is simply inapplicable to non-Catalog candidates.
+    `deprecation` (SDD-001 §3.2 v1.7.0) is `None` unless the supplying
+    operation built it — populated only for a deprecatable Catalog candidate.
     """
 
     node_id: str
@@ -63,6 +79,8 @@ class EnvelopeAttribution:
     effective_to: str | None
     version_pin: str | None
     confidences: tuple[float | None, ...]
+    catalog_eligibility: CatalogEligibility | None = None
+    deprecation: DeprecationNotice | None = None
 
 
 def assemble_envelope(
@@ -80,9 +98,9 @@ def assemble_envelope(
             single condition's predicate evaluated true.
 
     Returns:
-        The assembled `ResultEnvelope`. `catalog_eligibility` is always `None`
-        — R2's named-forward slot; R3 computes it alongside its catalog-read
-        consumers.
+        The assembled `ResultEnvelope`. `catalog_eligibility` and `deprecation`
+        carry through from `attribution` unchanged — this function computes
+        neither surface, it only assembles what it is given.
     """
     return ResultEnvelope(
         node_id=attribution.node_id,
@@ -97,7 +115,8 @@ def assemble_envelope(
         confidences=list(attribution.confidences),
         applicability=ApplicabilityBlock(
             conditional_admission=conditional_admission,
-            catalog_eligibility=None,
+            catalog_eligibility=attribution.catalog_eligibility,
+            deprecation=attribution.deprecation,
         ),
     )
 
