@@ -8,8 +8,8 @@
 | Field | Value |
 |---|---|
 | **Document ID** | ADR-004 |
-| **Status** | PROPOSED |
-| **Version** | 0.2.0 |
+| **Status** | ACCEPTED |
+| **Version** | 1.0.0 |
 | **Date** | 2026-07-22 |
 | **Authors** | Thaddeus Haffey (Executive Architect) |
 | **Supersedes** | None — establishes new platform principle. |
@@ -177,3 +177,4 @@ Checks 1–4 and 8 are largely mechanizable and map onto the schema-conformance 
 |---|---|---|---|
 | 0.1.0 | 2026-07-22 | RBT-10 | Original authoring; PROPOSED. Greenfield graph instantiation as file-driven ingestion through the sole-owner gateway, with schema provisioning held inside knowledge-service (sole graph-driver holder for data-definition and data alike) and orchestrated by a driver-less loader utility; no migration (prior corpora reference-only); additive-by-supersession with no destructive-reset; KG-scoped with the RG preserved by construction; the four source-artifact principle-properties; the authoritative-source provisional-to-official fidelity control with read-exclusion homed as a schema read-discipline invariant (discharging the ground-truth-mutation governance record's forward-reference); and named write-authorship for instantiation. |
 | 0.2.0 | 2026-07-22 | RBT-10 | Review amendment (runs 036/037 docket + residual micro-docket, ruled per item): partial discharge of the governance record's forward reference made explicit (authority here, mechanics at the knowledge-service ingestion port; §2.7/§7); mirrored-records carve-out re-attributed to the schema record's externally-decided `GateDecision` construct (DDR-002 §2.4, fetch-verified) with Operational distillation distinguished as separately governed (§2.7/§5.2/§6); schema-provisioning and constraint-versioning deferrals homed on a single forthcoming knowledge-service-design amendment firing with the ingestion-port implementation, enumerated in the Decision block (§2/§2.2/§5.3); prior-run read-exclusion and RG-durability edits retained. PROPOSED. |
+| 1.0.0 | 2026-07-22 | RBT-10 | ACCEPTED — ratified acceptance with review of record (runs 036/037: dense-record draw + rulings-as-authority draw; six-decision docket and four-decision residual micro-docket ruled per item; amendment hash-verified; zero open decision-bearing members). |
