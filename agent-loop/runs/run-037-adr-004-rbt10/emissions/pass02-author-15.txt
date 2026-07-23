@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "11ce211991210411",
+  "reason": "The ruling D4 directs homing the constraint-versioning deferral on the same knowledge-service-design amendment as D2 and that the body subject-name it, but does not specify surfacing it in the §2 Decision block; the finding's own remedy (adding it to the Decision enumeration) is not what the named authority determines, and the exact wording/placement of any Decision-block addition is not fixed by the ruling.",
+  "confidence": "medium"
+}

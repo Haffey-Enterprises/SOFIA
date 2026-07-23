@@ -1,0 +1,62 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2.7 and §2 Decision — read-exclusion invariant claimed committed here vs. deferred to a forthcoming schema amendment",
+    "claim": "The §2 Decision sentence states 'Read-exclusion of provisional authoritative-source ground truth from ground-truth synthesis until officially entered is committed as a schema-level read-discipline invariant (§2.7).' but §2.7 then states the invariant 'is a *forthcoming* addition to the schema's read-discipline invariant set (a named amendment obligation), not one the schema already carries.' The Decision block claims to commit a schema-level invariant this ADR has no authority to add — DDR-002 owns the read-discipline invariant set (§7) — so the record decides more than it can deliver at its altitude, or else the two statements contradict on whether the invariant is committed-here or deferred-elsewhere.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2 Decision ('committed as a schema-level read-discipline invariant') in conflict with ADR-004 §2.7 ('a *forthcoming* addition ... not one the schema already carries')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2.2 — schema-provisioning capability committed onto knowledge-service without surfacing the obligation as its own Decision sub-decision",
+    "claim": "§2.2 commits knowledge-service to 'expose a schema-provisioning capability it does not yet enumerate ... gained as a named obligation of this decision' — an authoritative commitment that a second service acquire a new capability. This is a decision that rides inside the sole-driver rationale prose rather than being surfaced as an enumerated sub-decision, and the §5.2 Constraints list and §6 Compliance both omit the provisioning-capability obligation as a distinct commitment (§6 check 2 tests only that provisioning runs through the driver, not that the capability is committed to exist). A commitment on another component's design that is not itself surfaced as a decision is a scope defect from this altitude.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.2 ('committed here to expose a schema-provisioning capability') vs. ADR-004 §2 Decision enumeration and §5.2 Constraints Imposed, which do not carry the provisioning-capability commitment as a named sub-decision"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2.7 — the mirrored-records exclusion asserted as a scope boundary of the fidelity gate",
+    "claim": "§2.7 states the gate 'is not applied to ... externally-decided mirrored records' as if this were a settled scope boundary this ADR carries, and §5.2 / §6 check 6 repeat it. But the cited authority ADR-008 §2.2 enumerates four source classes (promotion, authoritative-source ingestion, operational distillation, environment); 'mirrored records' is not among the enumerated source classes there. The record decides an exclusion whose authority-of-record it attributes to ADR-008 without ADR-008 naming a 'mirrored records' class — the prose claims a boundary the cited substrate does not, at that locus, support.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "run-036-docket-rulings D5: 'the externally-decided mirrored-records exclusion is real ... but is not an enumerated source class; re-word to cite that record's actual boundary language, fetch-verified at amendment time, not as an implied fifth class'"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-004"],
+    "locus": "§2.2 — constraint-versioning forward question declared but not carried in the Decision or Consequences as a decided deferral",
+    "claim": "§2.2 states 'Ownership of constraint *versioning* over the platform's life ... is a forward question ... with its policy not settled here — tracked as a forward item against the schema-provisioning capability's design.' The deferral is stated in-body but §5.3 Risks carries it separately as 'Constraint-versioning ownership over the platform's life is deferred' while the §2 Decision block does not enumerate the deferral as a component of the decision, leaving the forward-question's home split between body prose and a risk row without a Decision-level anchor.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.2 ('tracked as a forward item') and §5.3 Risks (constraint-versioning deferral) in relation to ADR-004 §2 Decision enumeration, which does not surface the deferral"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-004"],
+    "locus": "§2.5 and §2.4 — RG preserved by construction claim",
+    "claim": "Attacked the claim that the Reasoning Graph is 'preserved by construction' for overreach — testing whether the record claims durability it cannot deliver. It holds: §2.5 explicitly narrows the guarantee to instantiation-caused loss ('neither written, reconstructed, nor discarded by instantiation'), separates it from durability-against-instance-loss ('must not be presumed source-recoverable'), routes that latter durability to backup/restore, and §5.1 restates the guarantee as 'safe *from instantiation-caused loss*' with the italicized scope. The decision claims exactly what its structure supports — no more.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.5 (KG-scoped, RG preserved by construction) consistent with §5.1 positive consequence and §5.3 RG-not-source-recoverable risk"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-004"],
+    "locus": "§4 Alternatives Considered — each alternative rejected against a named substrate authority, not preference",
+    "claim": "Attacked the Alternatives section for strawman rejections dressed as authority (the deliberation-gate failure mode). It holds: Alternative A rejects the gateway bypass on ADR-002's diffuse-access hazard; B rejects the second-driver tool on the same sole-owner principle and names it as considered-and-rejected; C rejects destructive re-instantiation on the schema's never-delete/supersession disciplines and the RG-no-source-artifact fact; D rejects format-in-ADR on altitude grounds. Each rejection cites a specific substrate commitment rather than a preference, and each describes the alternative in its proponent's terms first.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §4.1–§4.4 rejection rationales traced to ADR-002 §2.5 (sole-owner), DDR-002 §6/§7 (supersession/never-delete), and ADR-001 §2.2 (RG invariant)"
+    }
+  }
+]

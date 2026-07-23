@@ -1,0 +1,1 @@
+{"finding_id":"2373e50eea6d3243","classification":"decision-bearing","authority_locus":null,"rationale":"The finding targets ADR-004, a document absent from the fetched authority set; its actual §2.7 text cannot be verified, so no authority determines the fix.","confidence":"medium"}

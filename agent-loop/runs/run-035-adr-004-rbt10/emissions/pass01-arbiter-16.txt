@@ -1,0 +1,1 @@
+{"finding_id":"012615aa7df5fd48","classification":"decision-bearing","authority_locus":null,"rationale":"Finding targets ADR-004, which does not exist in the ratified authority set; no authority determines a fix, and whether the alleged ADR-004 loci exist or how they map is unresolved.","confidence":"medium"}

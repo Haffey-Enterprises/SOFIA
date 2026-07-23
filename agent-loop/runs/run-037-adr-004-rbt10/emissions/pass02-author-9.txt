@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "67f2d551bfafe58c",
+  "reason": "§2.7 does not exclude Operational distillation from the gate the way it excludes Environment and mirrored records; it states the distillation class 'carries its own review control and is out of scope here' — a distinct parenthetical status, not a member of the 'not gated' exclusion set. Whether §5.2's 'not gated' list should add distillation, or with what phrasing (its own-review-control status differs), is not uniquely determined by §2.7; conforming requires choosing how to represent a materially different exclusion rationale.",
+  "confidence": "medium"
+}

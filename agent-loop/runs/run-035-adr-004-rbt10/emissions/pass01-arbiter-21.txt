@@ -1,0 +1,1 @@
+{"finding_id":"c9d9fad3f51663a5","classification":"resolvable","authority_locus":"ADR-002 §5.2 (managed-Aura backup/restore = development runtime only; production deferred) + ADR-004 §5.3 (own hedge)","rationale":"Both cited authorities agree development-only/production-deferred; §2.5's flatter phrasing is aligned to §5.3's hedge with no new choice.","confidence":"high"}

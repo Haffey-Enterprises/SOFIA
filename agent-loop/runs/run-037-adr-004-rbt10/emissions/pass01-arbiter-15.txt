@@ -1,0 +1,7 @@
+{
+  "finding_id": "1488c877b8716b38",
+  "classification": "resolvable",
+  "authority_locus": "run-036 D5 ruling (RATIFIED): re-word to cite ADR-008's actual deliberated scope-boundary language, fetch-verified, not as an implied fifth class",
+  "rationale": "Stated design intent D5 already determines the fix: re-word the exemption to cite ADR-008's own boundary language rather than imply a fifth source class.",
+  "confidence": "high"
+}

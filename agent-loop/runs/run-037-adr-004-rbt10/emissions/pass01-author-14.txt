@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "e37a5bc61a5ec921",
+  "reason": "The body-integrity authority requires the Decision enumeration surface rulings carried in the body, but it does not uniquely determine how — which carve-outs to name, at what granularity, or in what phrasing — leaving multiple conforming edits; choosing among them is an unratified authoring decision.",
+  "confidence": "medium"
+}

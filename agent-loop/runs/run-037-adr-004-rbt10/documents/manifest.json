@@ -1,0 +1,16 @@
+{
+  "run_id": "run-037-adr-004-rbt10",
+  "sofia_head_sha": "54c9702f4be36b3176f9ccf57aed2e576299cd47",
+  "files": [
+    {
+      "doc_id": "ADR-004",
+      "snapshot_path": "documents/ADR-004-graph-fresh-schema-file-driven-ingestion.md",
+      "origin": {
+        "source": "sofia-repo",
+        "canonical_path": "agent-loop/runs/run-036-adr-004-rbt10/documents/ADR-004-graph-fresh-schema-file-driven-ingestion.md"
+      },
+      "retrieved": "2026-07-22",
+      "sha256": "c231482ab821d413e2bd03f24842fc420b9107851f541d067ff9441bab934ef8"
+    }
+  ]
+}

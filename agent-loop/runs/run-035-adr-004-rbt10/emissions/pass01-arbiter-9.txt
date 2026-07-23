@@ -1,0 +1,7 @@
+{
+  "finding_id": "c90c1503a29e705d",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "Per-plane instantiation semantics for the non-versioned planes are unruled; DDR-002 §6 confines supersession to versioned types and §2.2/§2.3 name distinct temporal modes, but no authority fixes ADR-004's uniform-instantiation phrasing against them.",
+  "confidence": "high"
+}

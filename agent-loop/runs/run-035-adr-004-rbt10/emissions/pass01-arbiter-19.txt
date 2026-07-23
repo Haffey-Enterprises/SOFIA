@@ -1,0 +1,7 @@
+{
+  "finding_id": "7e1d780436cded04",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "ADR-004 is not in the ratified authority set; resolving whether its 'superseded practice' claim is factually grounded requires authoring/amendment choices no fetched authority determines.",
+  "confidence": "high"
+}

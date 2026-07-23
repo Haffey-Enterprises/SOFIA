@@ -1,0 +1,1 @@
+{"finding_id":"30ad54fc1e63132f","classification":"decision-bearing","authority_locus":null,"rationale":"Provisioning-before-readiness window is unsanctioned by SDD-001 §3.1's hard readiness gate; reconciling requires a new carve-out choice, and run-036 D2 defers the readiness-ordering to a forthcoming amendment.","confidence":"high"}

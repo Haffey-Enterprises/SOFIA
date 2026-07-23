@@ -1,0 +1,9 @@
+ADR-004 is not in the provided authority set; I cannot verify its §2.7/§7 text, and the finding turns on distinguishing "owns the ingestion mechanics" from "defers port-level mechanics downstream" — a scope-line drawing that authority does not adjudicate.
+
+{
+  "finding_id": "19982c877157a262",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The mechanics-ownership vs port-mechanics-deferral boundary ADR-004 must draw is unruled by ADR-008 §2.2 (which routes to both this record and the knowledge-service port); resolving it requires an unmade scope choice.",
+  "confidence": "medium"
+}

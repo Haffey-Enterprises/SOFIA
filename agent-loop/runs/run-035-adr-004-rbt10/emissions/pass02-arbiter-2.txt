@@ -1,0 +1,7 @@
+{
+  "finding_id": "9fa53e38d0f702df",
+  "classification": "resolvable",
+  "authority_locus": "ADR-004 §5.1 vs §2.5/§5.3 (internal-coherence: the §5.1 claim must be scoped to the §2.5/§5.3 qualifier the same record already states)",
+  "rationale": "Fix is determined by the record's own stated §2.5/§5.3 scope qualifier; §5.1 must be narrowed to match, no new choice introduced.",
+  "confidence": "high"
+}

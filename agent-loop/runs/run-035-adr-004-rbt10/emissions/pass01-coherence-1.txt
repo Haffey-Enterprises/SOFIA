@@ -1,0 +1,62 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2.7 Authoritative-source fidelity control — 'read-exclusion of provisional ground truth is a schema-level invariant … homed in the schema's read-discipline invariant set'",
+    "claim": "ADR-004 §2.7 asserts that provisional-node read-exclusion is 'a schema-level invariant … homed in the schema's read-discipline invariant set and mirrored by the port's behavioral contract.' DDR-002 §7 (the read-discipline invariant set) supplies read-discipline invariants only for un-approved `CandidatePromotion` (#9), `applicability_state: conditional` nodes (#19), and EA-approved `RETRACTS`-edge-carrying nodes (retracted-node read-discipline). No invariant governing a provisional-versus-official authoritative-source node, and no `applicability_state`/status value or marker for 'provisional' authoritative-source ground truth, exists in the DDR-002 §7 invariant set or in the §5 `applicability_state` enumeration (`unconditional` / `conditional`). The ADR states the invariant is 'homed' in a set that does not currently supply it.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.7 vs DDR-002 §7 (read-discipline invariant set: #9, #19, retracted-node exclusion) and §5 (`applicability_state` ∈ {`unconditional`, `conditional`})"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2.2 Schema provisioning — 'knowledge-service … owns a schema-provisioning capability exercised over the graph driver it already holds … the service process can start and connect to an empty instance, so provisioning runs before readiness reports green (which checks that the schema is present)'",
+    "claim": "ADR-004 §2.2 asserts provisioning runs while the service is started but before readiness reports green, characterizing readyz as gating only on 'the schema is present.' SDD-001 §3.1 states `readyz` checks, ordered: '(1) Neo4j connectivity and authentication — critical, fails readiness … (2) schema metadata loaded — the `PlaneDefinition` registry and constraint/validation metadata the write paths enforce against — critical, fails readiness (the gateway must not execute writes it cannot validate).' If provisioning writes constraints/registers planes through knowledge-service's own ports before schema is present, the service is by SDD-001 §3.1 not-ready and its write paths (the ingestion/register-plane ports the loader invokes per §2.1/§2.6) are those the readiness gate protects — the ADR does not reconcile that the provisioning capability must operate on a service that its own readiness contract reports as not-ready.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.2 vs SDD-001 §3.1 (readyz ordered checks 1–2, both critical, 'the gateway must not execute writes it cannot validate')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2.2 Schema provisioning — 'the earlier practice of applying constraints from a deploy-time script is superseded' (also §3 Rationale) vs §2.2 'no service is yet deployed' context and DDR-002 §7 harness state",
+    "claim": "ADR-004 §2.2/§3 assert 'the earlier practice of applying constraints from a deploy-time script is superseded,' presupposing a deploy-time-script constraint-application practice that this ADR replaces. DDR-002 §7 'Current state (marker-level)' describes the constraint set as carried by 'the graph conformance harness … built (`conformance/`)' with tiered CI mechanization and gateway-behavioral flips — it names no deploy-time constraint-application script as the incumbent mechanism. ADR-002 §2.2 and the substrate establish the graph as at initial design; SDD-001 does not describe knowledge-service applying constraints from a deploy-time script. The 'superseded practice' the ADR claims to replace is not evidenced as an established practice in the substrate it supersedes.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.2/§3 'deploy-time script … superseded' vs DDR-002 §7 Current-state (conformance harness as constraint carrier; no deploy-time constraint-application script named) and SDD-001 (no deploy-time constraint script)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-004"],
+    "locus": "§2.5 KG-scoped — 'In the current development runtime that responsibility sits with the managed graph provider' + §7 Cross-References 'ADR-002 §5.2'",
+    "claim": "ADR-004 §2.5 and §5.3 pin RG-durability backup/restore to 'the managed graph provider' in 'the current development runtime,' citing ADR-002 §5.2. ADR-002 §5.2 states the development managed-Aura runtime '**retires** the self-managed operational burden — backup/restore, upgrade lifecycle, and cluster-health monitoring are the managed provider's responsibility' — consistent. But ADR-004 §7 cites this as 'the managed-runtime backup/restore responsibility on which RG recovery rests (ADR-002 §5.2)' while ADR-002 §2.2 states the development runtime is 'AuraDB Professional'; ADR-004 nowhere names the edition, and the claim that backup/restore is the provider's responsibility is edition-general in ADR-002 §5.2 — the citation holds. Minor: ADR-004 §2.5 states RG durability 'rests on instance-level backup and restore' as though a committed mechanism, but ADR-002 §5.2 assigns it only for the development runtime and defers production; ADR-004 §5.3 correctly hedges ('production runtime and its backup posture are deferred'), so §2.5's flatter phrasing is a mild internal tension with §5.3's hedge.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.5 ('rests on instance-level backup and restore') vs ADR-004 §5.3 ('production runtime and its backup posture are deferred') and ADR-002 §5.2 (backup/restore managed-provider responsibility, development only; production deferred)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-004"],
+    "locus": "§2.1–§2.2 sole-driver-line preservation for instantiation vs ADR-002 §2.5 / DDR-001 gateway pattern",
+    "claim": "Checked ADR-004's central claim that instantiation (schema provisioning + data load) preserves ADR-002 §2.5's sole-holder-of-the-driver principle against the load-bearing upstream: ADR-002 §2.5 fixes knowledge-service as 'the sole holder of the Neo4j driver and the single graph-access boundary,' and DDR-001's gateway pattern prohibits 'any other direct driver.' ADR-004 §2.1/§2.2/§5.2 route both data and data-definition through knowledge-service and explicitly deny any other component a driver ('the loader utility holds none'). The construction is coherent with the upstream — the loader is a relay to the gateway's ports, not a second driver holder — and Alternative B is rejected on exactly the diffuse-driver hazard ADR-002 §4.5 names. The attack (that provisioning-inside-the-service smuggles a second write boundary) failed: the ADR anchors provisioning as a distinct administrative operation over the driver already held, not a new path.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.1/§2.2/§5.2 vs ADR-002 §2.5 (sole-driver) / §4.5 (diffuse-access rejection); DDR-001 Graph-Gateway Pattern ('Prohibited: any other direct driver')"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-004"],
+    "locus": "§2.8 write authorship vs ADR-002 §2.6 author/executor/authorizer principle",
+    "claim": "Checked §2.8's instantiation write-authorship against ADR-002 §2.6's general write-authority principle. ADR-002 §2.6 fixes that 'every authoritative graph write has a named, component-scoped author,' the gateway 'is the sole executor … it is never itself the authoring authority,' and 'the accountable human or component authors the mutation; the gateway executes it.' ADR-004 §2.8 conforms exactly: the author is 'the accountable authority declared by the source artifact' (human curator / fidelity verifier), 'the gateway … is the sole executor and never the author,' and the loader 'is neither author nor executor.' The attack (that a file-driven loader would default authorship onto the gateway or leave the write diffuse, contradicting ADR-002 §2.6) failed — the ADR names a non-gateway author and holds the executor line. Aligns with ADR-008 §2.1's restatement that the gateway is executor, never authoring authority.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.8 vs ADR-002 §2.6 (author/executor/authorizer separation); ADR-008 §2.1 (gateway executor-never-author)"
+    }
+  }
+]

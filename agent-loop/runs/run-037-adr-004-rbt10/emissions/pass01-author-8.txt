@@ -1,0 +1,10 @@
+{
+  "action": "edit",
+  "finding_id": "766a07d67775d12e",
+  "target": "ADR-004",
+  "old_string": "its durability across instance loss rests on instance-level backup and restore. In the current development runtime that responsibility sits with the managed graph provider; the production runtime, and therefore its backup posture, is deferred (see §5.3).",
+  "new_string": "its durability across instance loss rests on instance-level backup and restore. In the current development runtime that responsibility sits with the managed graph provider; the production runtime, and therefore its backup posture, is deferred to the production-environment build (see §5.3), so for production this recovery path is not yet committed.",
+  "authority_conformed": "ADR-002 §2.2/§5.2 — production deployment runtime and its backup posture deferred to the production-environment build",
+  "rationale": "ADR-002 defers the production runtime and backup posture; the edit conforms §2.5's present-tense durability claim to that deferred, not-yet-committed production state.",
+  "confidence": "medium"
+}

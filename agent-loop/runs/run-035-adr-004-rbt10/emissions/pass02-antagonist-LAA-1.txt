@@ -1,0 +1,92 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["ADR-004"],
+"locus": "§2.7 Authoritative-source fidelity control",
+"claim": "§2.7 states 'read-exclusion of provisional ground truth is a schema-level invariant — a provisional authoritative-source node is excluded from ground-truth synthesis until officially entered, homed in the schema's read-discipline invariant set and mirrored by the port's behavioral contract.' The DDR-002 §7 read-discipline invariant set contains only #9 (proposal-visibility), #19 (conditional-consumption), and the retracted-node read-discipline — none of which govern a provisional-versus-official authoritative-source node, and DDR-002 §5's applicability_state enumeration is {unconditional, conditional} with no provisional value or marker. The consequence of this decision — a new DDR-002 read-discipline invariant and a new provisional state — is committed by cross-reference as an existing home, but the substrate does not carry it; the decision commits DDR-002 to a new invariant it has not itself ruled, and the ADR does not surface that DDR-002 must be amended to carry it.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-004 §2.7 'homed in the schema's read-discipline invariant set' vs DDR-002 §7 (invariants #9/#19/retracted-node exclusion — no provisional-source invariant) and DDR-002 §5 (applicability_state ∈ {unconditional, conditional})"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-004"],
+"locus": "§2.2 Schema provisioning holds the sole-driver line + §3 Rationale",
+"claim": "The record's title and Decision statement (§2) scope this ADR to greenfield/file-driven instantiation orchestrated by a driver-less loader, but §2.2 additionally commits a distinct new capability — 'knowledge-service ... owns a schema-provisioning capability exercised over the graph driver it already holds' — and §3 retires a prior practice: 'the earlier practice of applying constraints from a deploy-time script is superseded.' Neither the addition of a schema-provisioning operation to knowledge-service nor the supersession of the deploy-time constraint script is surfaced in the Decision statement's own commitment list; they ride along inside a supporting subsection. A commitment that adds a service capability and retires an incumbent practice is a decision that must be surfaced in the Decision enumeration, not carried implicitly under a sub-heading about preserving the sole-driver line.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-004 §2 Decision statement (loader/leverages-ports scope) vs §2.2 (new provisioning capability) + §3 ('deploy-time script ... is superseded')"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-004"],
+"locus": "§2.7 / §7 Cross-References",
+"claim": "§2.7 declares 'this ADR realizes that control for instantiation and is the record the governance record names as the home of the ingestion mechanics,' and §7 states this record 'is the \"forthcoming file-driven ingestion decision record\" that governance record names.' Yet §2.7's final sentence explicitly defers the mechanics — 'The port-level mechanics — how provisional state is represented and how the official-entry transition is enforced — are the knowledge-service design's.' The record both claims to be the home of the ingestion mechanics and routes those mechanics downstream in the same section, so the decision does not decide what its own claim-to-be-that-home asserts it decides; the authority ADR-008 routed here is only partially discharged.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-004 §2.7 'home of the ingestion mechanics' vs §2.7 final sentence 'The port-level mechanics ... are the knowledge-service design's'"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-004"],
+"locus": "§5.1 Positive Consequences vs §2.5 / §5.3",
+"claim": "§5.1 declares as a positive consequence 'The Reasoning Graph is safe by construction — no data-load operation can write, reconstruct, or discard it.' §2.5 and §5.3, however, concede that the RG 'is not source-recoverable and must not be presumed so — its durability across instance loss rests on instance-level backup and restore,' whose production posture is deferred. The 'safe by construction' consequence covers only the instantiation write path, not RG durability across instance loss — which the same record admits has no established recovery mechanism. The declared consequence, stated without that scope qualifier at §5.1, overstates the durability the decision substrate supports for the platform's defining reasoning-capture invariant.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-004 §5.1 'The Reasoning Graph is safe by construction' vs §2.5/§5.3 'the RG is not source-recoverable ... durability ... rests on instance-level backup and restore ... production runtime ... deferred'"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-004"],
+"locus": "§2.4 Additive by supersession",
+"claim": "§2.4 states instantiation 'is one operation whose behavior is selected per node by the graph's current state ... a changed business key supersedes its predecessor under the schema's supersession discipline, an unchanged business key introduces no new version.' The decision claims uniform supersession behavior across the KG, but the supersession discipline it invokes is not KG-uniform: DDR-002 §6 scopes Option A supersession to versioned-ground-truth types only (Catalog, Standards, RateCard, CostFactor, PlaneDefinition), while Environment ages via observed_at freshness and Operational ObservedPatterns distill update-in-place. The record commits a supersession-for-all-changed-business-keys behavior that its cited schema does not support for the non-versioned planes, and it names no carve-out for them — a decision stated more broadly than the substrate the decision depends on supports.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-004 §2.4 'a changed business key supersedes its predecessor under the schema's supersession discipline' vs DDR-002 §6 (supersession scoped to versioned-ground-truth types) / §2.2 (Environment ages) / §2.3 (Operational distills update-in-place)"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["ADR-004"],
+"locus": "§2.2 constraint-versioning forward question",
+"claim": "§2.2 states 'Ownership of constraint versioning over the platform's life — how the provisioning capability evolves a live instance's constraints — is a forward question, governed by construction ... but with its policy not settled here.' This is an undecided sub-decision left inside the Decision section; §5.3 restates it as a risk asserting it is 'a named forward question, not a silent gap,' but neither locus declares a tracking home or a firing trigger for when this sub-decision is decided. A forward question carried in the Decision body without a declared resolution path is a scope-hygiene gap at this altitude.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-004 §2.2 'constraint versioning ... policy not settled here' vs §5.3 'named forward question, not a silent gap' — no tracking home or firing trigger declared"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["ADR-004"],
+"locus": "§2.7 'ungated observational stream'",
+"claim": "§2.7 states the fidelity gate 'is not applied to the ungated observational stream or to externally-decided mirrored records.' The governance record it cites, ADR-008 §2.2, calibrates four source classes and gives Operational distillation a 'Substantive, evidence-visible human review' control — not 'ungated.' The ADR's binary framing (fidelity-gated authoritative-source vs 'ungated observational stream') characterizes as ungated a class the cited authority explicitly gives a human-review control, without reconciling that distillation-review control; the term 'ungated' as applied to the observational stream is in tension with the governance record's own class calibration.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-004 §2.7 'ungated observational stream' vs ADR-008 §2.2 (Operational distillation carries a substantive, evidence-visible human review control)"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-004"],
+"locus": "§2.8 Write authorship of instantiation",
+"claim": "Attacked whether §2.8 smuggles a write-authorship decision beyond this record's claim or leaves the loader's role ambiguous against ADR-002 §2.6's author/executor principle. It holds: the author is declared as the source artifact's accountable authority (curator / fidelity verifier), the gateway is named sole executor and never author, and the loader is explicitly placed as 'neither author nor executor ... the relay.' The decision decides exactly the authorship assignment it claims — a clean instantiation-case realization of ADR-002 §2.6, without relocating authorship onto gateway or loader.",
+"cited_authority": {
+"kind": "design-intent",
+"ref": "ADR-002 §2.6 author/executor/authorizer separation — ADR-004 §2.8 realizes it for instantiation without relocating authorship"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-004"],
+"locus": "§2.3–§2.4 fresh-not-migrated / additive-by-supersession",
+"claim": "Attacked for the exact scope-creep the substrate's own conventions warn against — whether 'fresh, not migrated' silently licenses a destructive reset, conflating origin-binding with loader behavior. It holds: §2.3 binds 'fresh/no migration' explicitly to the graph's origin and states it 'is not a license to reset or rebuild a populated instance (§2.4),' and §2.4 separately commits additive-by-supersession with 'no destructive-reset operation.' The two decisions are cleanly separated, each surfaced in §2, §5.2, and §6 checks 3 and 8, neither over-claiming.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-004 §2.3 origin-binding vs §2.4 loader-behavior — decisions kept distinct and each surfaced across §2/§5.2/§6"
+}
+}
+]

@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "c9d9fad3f51663a5",
+  "reason": "The finding names a mild internal-tension between §2.5's flat phrasing and §5.3's hedge but neither ADR-002 §5.2 nor §5.3 dictates a unique replacement wording; conforming would require choosing among several hedge phrasings — an unratified authorial choice.",
+  "confidence": "high"
+}

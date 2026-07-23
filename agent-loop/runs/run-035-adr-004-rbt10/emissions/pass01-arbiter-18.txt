@@ -1,0 +1,1 @@
+{"finding_id":"8f0349b762d27f6c","classification":"decision-bearing","authority_locus":null,"rationale":"Reconciling provisioning-before-readiness against SDD-001's not-ready-blocks-writes contract requires a new sequencing/bootstrap choice no cited authority disambiguates.","confidence":"high"}

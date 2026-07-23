@@ -1,0 +1,9 @@
+ADR-004 is not in the fetched authority set; I cannot verify the cited §2.7/§5.2 loci against actual text, and ADR-008 already establishes the calibrated-per-class control model that would govern which exclusion enumeration is correct.
+
+{
+  "finding_id": "0726dc76b1b0d266",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "ADR-004 text is not in the fetched set, so I cannot name the locus that determines which exclusion enumeration is authoritative; unverifiable and unsure means escalate.",
+  "confidence": "medium"
+}

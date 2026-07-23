@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "547f04e8a5209ae6",
+  "reason": "D5 directs re-wording to cite ADR-008's ACTUAL boundary language, fetch-verified — but the fetched ADR-008 contains no 'mirrored records' / 'externally-decided records' boundary language anywhere; its §2.2 Environment row names 'CMDB-observed deployed reality' with no mirrored-records exclusion. With no source boundary language to cite, the authority does not uniquely determine the replacement wording; supplying one would be authoring an unratified boundary.",
+  "confidence": "high"
+}

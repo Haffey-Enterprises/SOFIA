@@ -1,0 +1,1 @@
+{"finding_id":"4037b0858f672891","classification":"decision-bearing","authority_locus":null,"rationale":"RG-durability posture for the load-bearing invariant is pinned to a production-runtime backup decision that ADR-002 §2.2/§5.2 deliberately defers; no ratified authority settles it.","confidence":"high"}

@@ -1,0 +1,1 @@
+{"finding_id":"7e64a80ad29ad0ca","classification":"decision-bearing","authority_locus":null,"rationale":"ADR-004 asserts a provisional/official read-discipline invariant and applicability_state marker that DDR-002's ratified §5/§7 set does not yet contain; the new schema invariant is an unmade decision.","confidence":"high"}

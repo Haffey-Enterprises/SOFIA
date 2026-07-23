@@ -1,0 +1,72 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["ADR-004"],
+"locus": "§2.2 — schema provisioning ordered ahead of the readiness schema-present check vs SDD-001's readiness contract",
+"claim": "§2.2 states 'it is ordered ahead of the readiness schema-present check rather than passing through the validated write path that check guards' and 'the service process can start and connect to an empty instance, so provisioning runs before readiness reports green (which checks that the schema is present).' SDD-001 §3.1 states readiness check (2) is 'schema metadata loaded — the PlaneDefinition registry and constraint/validation metadata the write paths enforce against — critical, fails readiness (the gateway must not execute writes it cannot validate)' and 'There is no degraded mode: this service has exactly one backing store, and every operation requires it.' ADR-004 relies on the driver-less loader reaching a schema-provisioning API surface on a service that has not reported ready; SDD-001 §3.1 as written describes a hard readiness gate with no carve-out for a provisioning operation reachable pre-readiness — the not-ready-but-operating window ADR-004 presumes is not sanctioned by the cited readiness contract.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "SDD-001 §3.1 ('schema metadata loaded ... critical, fails readiness (the gateway must not execute writes it cannot validate)'; 'There is no degraded mode ... every operation requires it')"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-004"],
+"locus": "§2.2 and §2 Decision — schema-provisioning capability committed onto knowledge-service whose API contract is owned by DDR-001",
+"claim": "§2.2 commits knowledge-service 'to expose a schema-provisioning capability — an addition its service design does not yet enumerate, gained as a named obligation of this decision.' ADR-002 §2.5 fixes that 'The gateway's API shape — its operations, contracts, and the read/write paths through it — is the Data Architecture design's graph-gateway pattern (DDR-001), not this ADR's.' SDD-001 §2.1 (Owned) and §3.6 (ingestion port: `ingest`, `register-plane`, `mirror-gate-decision`) enumerate no schema-provisioning / constraint-DDL operation. The ADR relies on a knowledge-service capability that neither the owning gateway-pattern authority (DDR-001) nor the service design (SDD-001) currently supplies; the operation the property depends on does not exist in the cited downstream contract.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "ADR-002 §2.5 ('The gateway's API shape ... is the Data Architecture design's graph-gateway pattern (DDR-001), not this ADR's') + SDD-001 §2.1/§3.6 (no schema-provisioning operation enumerated)"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-004"],
+"locus": "§2.7 and §6 check 6 — mirrored-records exclusion attributed to ADR-008 that ADR-008's enumerated scope does not carry",
+"claim": "§2.7 states the gate 'is not applied to the ungated Environment observation stream or to externally-decided mirrored records', and §6 check 6 repeats 'the ungated Environment observation stream and mirrored externally-decided records are not gated', citing the ground-truth-mutation governance record as the source of the control's scope. ADR-008 §2.2's per-source-class calibration table enumerates exactly four source classes — Promotion, Authoritative-source ingestion, Operational distillation, Environment — and none is 'externally-decided mirrored records'; ADR-008 §2.1 states 'No class is exempt from the invariant; only the control's form varies.' The ADR attributes to ADR-008 a scope carve-out for a 'mirrored records' class that ADR-008's cited text does not enumerate as a source class — the cited authority does not, at that locus, support the boundary the prose claims.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "ADR-008 §2.2 (four-class calibration table: Promotion, Authoritative-source ingestion, Operational distillation, Environment) + §2.1 ('No class is exempt from the invariant; only the control's form varies') vs ADR-004 §2.7 / §6 check 6"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-004"],
+"locus": "§2.7 read-exclusion invariant vs DDR-002 §7 read-discipline invariant set",
+"claim": "§2.7 commits 'read-exclusion of provisional ground truth is committed as a schema-level invariant' and names it 'a *forthcoming* addition to the schema's read-discipline invariant set (a named amendment obligation), not one the schema already carries.' DDR-002 §7's conformance-checked invariant set (#1–#28) and its read-discipline invariants (#9 proposal-visibility, #19 conditional-consumption, retracted-node exclusion) carry no provisional-authoritative-source read-exclusion invariant. The ADR asserts a specific schema-level invariant into DDR-002 that DDR-002 does not currently supply; §7 Cross-References states DDR-002 'is to gain the fidelity-gate read-exclusion invariant' but locates no home carrying the obligation to resolve — the amendment obligation is asserted without a firing trigger against the schema record.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-004 §2.7 ('read-exclusion of provisional ground truth ... committed as a schema-level invariant ... a forthcoming addition to the schema's read-discipline invariant set') in conflict with DDR-002 §7 invariant set (#1–#28) and §5 read-discipline invariants, which enumerate no provisional-source read-exclusion"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["ADR-004"],
+"locus": "§2.7 vs §5.2 Constraints Imposed — divergent exclusion sets for the same gate scope",
+"claim": "§2.7 states the gate 'is not applied to the ungated Environment observation stream or to externally-decided mirrored records (the Operational distillation class carries its own review control and is out of scope here)' — enumerating three excluded classes (Environment, mirrored, Operational distillation). §5.2 Constraints Imposed states only 'the ungated Environment observation stream and mirrored externally-decided records are not gated' — omitting the Operational distillation class §2.7 names. The constraint statement and the decision-body statement enumerate different exclusion sets for the same fidelity-gate scope.",
+"cited_authority": {
+"kind": "soundness",
+"ref": "ADR-004 §2.7 (exclusion set: Environment, mirrored, Operational distillation) vs §5.2 (exclusion set: Environment, mirrored — Operational distillation omitted)"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-004"],
+"locus": "§2.1–§2.2 and §2.8 — sole-driver-line conformance to ADR-002 §2.5/§2.6",
+"claim": "Attacked the schema-provisioning decision as a candidate violation of ADR-002 §2.5's sole-holder-of-the-driver principle. It holds on conformance grounds: §2.2 routes DDL provisioning through knowledge-service's existing driver rather than granting a second component a driver, §2.1/§2.8 commit the loader utility driver-less, and §2.8 discharges ADR-002 §2.6's author/executor separation (accountable declared author authors; gateway sole executor, never author). The sole-owner-of-the-driver line and the author/executor split are preserved and correctly cited. Checked against ADR-002 §2.5, §2.6, §4.5 — held.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "ADR-002 §2.5 (sole-owner gateway, sole driver holder) + §2.6 (author/executor/authorizer separation) + §4.5 (diffuse direct-driver access rejected); ADR-004 §2.1/§2.2/§2.8 conform"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-004"],
+"locus": "§2.4 / §2.5 — additive-by-supersession and RG-preserved-by-construction conformance to DDR-002 §6 and ADR-001 §2.2",
+"claim": "Attacked 'additive by supersession, never destructive' (§2.4) and the KG-scoped/RG-preserving claim (§2.5) for conflict with the schema's supersession/never-delete disciplines and for overreach of the durability guarantee. Both hold: §2.4 binds to DDR-002 §6's Option-A supersession (retained version nodes + effective-dating + superseded_by) and never-delete, asserting no in-place overwrite the schema forbids; §2.5 narrows the RG guarantee precisely to instantiation-caused loss ('neither written, reconstructed, nor discarded by instantiation'), separates it from durability-against-instance-loss ('must not be presumed source-recoverable'), and routes the latter to backup/restore — consistent with ADR-001 §2.2's capture invariant and DDR-002 §4's Evidence version-pinning. The decision claims exactly what its structure supports. Checked against DDR-002 §6, DDR-002 §4, ADR-001 §2.2 — held.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "DDR-002 §6 (Option-A supersession, never-delete) + §4 (Evidence version-pinning, point-in-time fidelity) + ADR-001 §2.2 (reasoning-capture invariant); ADR-004 §2.4/§2.5 conform"
+}
+}
+]

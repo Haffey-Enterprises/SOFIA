@@ -1,0 +1,7 @@
+{
+  "finding_id": "22e292c6afcbb8eb",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record-SKILL, 'An amendment that adds a ruling updates the Decision enumeration' (body-integrity discipline); ADR template §2 (Decision as testable sub-decisions)",
+  "rationale": "A ratified house convention dictates the fix: the §2.2 provisioning sub-decision and §3 supersession must be surfaced in the Decision enumeration; no new choice is introduced.",
+  "confidence": "high"
+}

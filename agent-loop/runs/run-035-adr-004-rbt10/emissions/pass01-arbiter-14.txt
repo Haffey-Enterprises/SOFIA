@@ -1,0 +1,1 @@
+{"finding_id":"4ad091636e8b0261","classification":"decision-bearing","authority_locus":null,"rationale":"Finding targets ADR-004, which does not exist in the ratified corpus; classifying its authority-discharge coherence requires a document not yet authored.","confidence":"high"}

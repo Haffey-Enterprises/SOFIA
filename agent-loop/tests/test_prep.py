@@ -808,10 +808,10 @@ def test_prep_run_ddr_emits_substrate_without_sdd_leakage(tmp_path) -> None:
     # verified_against record (pin-vs-installed matched) and no prose note.
     manifest = json.loads((substrate / "manifest.json").read_text(encoding="utf-8"))
     skill = next(e for e in manifest["files"] if e["logical_id"] == "author-decision-record-SKILL")
-    assert skill["sha256"] == "d3fb4499b8d3ff899ae3f822e8873300c1f5330cc9ee55f193fc4f9eaf9da966"
+    assert skill["sha256"] == "67e83fb7f0917a5237df3c7983d5d1ad75a97075de74984ac210f07fd8680f3c"
     assert skill["verified_against"] == {
         "path": "plugins/bedrock/skills/author-decision-record/SKILL.md",
-        "sha256": "d3fb4499b8d3ff899ae3f822e8873300c1f5330cc9ee55f193fc4f9eaf9da966",
+        "sha256": "67e83fb7f0917a5237df3c7983d5d1ad75a97075de74984ac210f07fd8680f3c",
         "source": "installed-cache",
         "verified_at": "2026-07-11",
     }
@@ -959,7 +959,7 @@ def test_sdd_recipe_byte_regression_reproduces_run_011(tmp_path) -> None:
 
 # The DDR recipe's ratified bedrock 1.4.0 pins (move only by explicit operator ratification).
 _DDR_TEMPLATE_PIN = "59068b3a2741f497e92bff240da238d4f8b6b57471c8ff7a76ab8c09ba9668f9"
-_ADR_SKILL_PIN = "d3fb4499b8d3ff899ae3f822e8873300c1f5330cc9ee55f193fc4f9eaf9da966"
+_ADR_SKILL_PIN = "67e83fb7f0917a5237df3c7983d5d1ad75a97075de74984ac210f07fd8680f3c"
 _SKILL_CACHE_RELPATH = "skills/author-decision-record/SKILL.md"
 _SKILL_ORIGIN_PATH = f"plugins/bedrock/{_SKILL_CACHE_RELPATH}"
 

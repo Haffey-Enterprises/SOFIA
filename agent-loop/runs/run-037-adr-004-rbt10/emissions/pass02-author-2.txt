@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "1e7d1db6904705b4",
+  "reason": "The ruling directs re-wording to cite ADR-008's actual deliberated boundary language, but ADR-008 §2.2/§2.1 contain no 'mirrored externally-decided records' concept or boundary at all — it is a DDR-002 construct. The authority thus does not supply substitute language; deciding how to re-scope the carve-out (drop it, re-attribute to DDR-002, or reword) is an unratified choice among conforming options.",
+  "confidence": "high"
+}

@@ -1,0 +1,7 @@
+{
+  "finding_id": "f061c8e848d4101b",
+  "classification": "resolvable",
+  "authority_locus": "ADR-004 §1 (schema data-definition half 'has not yet been applied') + DDR-002 §7 Current-state (conformance harness as constraint carrier; no deploy-time constraint-application script named)",
+  "rationale": "The false supersession claim is contradicted by the record's own §1 and the substrate names no incumbent practice; removing the unfounded claim is dictated, not chosen.",
+  "confidence": "high"
+}

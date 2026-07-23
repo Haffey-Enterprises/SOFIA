@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "1534871a419cc143",
+  "reason": "The named authority (run-036 D4/D2) fixes the deferral's single home (the knowledge-service-design amendment) and requires the body to subject-name it — which §2.2 already does ('tracked as a forward item against the schema-provisioning capability's design'). It does not require, or determine the wording of, a new enumeration in the §2 Decision block; adding a Decision-level anchor would be designing an unratified addition among multiple conforming phrasings.",
+  "confidence": "medium"
+}

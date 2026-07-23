@@ -1,0 +1,1 @@
+{"finding_id":"540251b0a7818e02","classification":"decision-bearing","authority_locus":null,"rationale":"DDR-002 §7's invariant set (#1–#28) carries no provisional-vs-official authoritative-source read-discipline invariant; whether to add one is an unmade DDR-002 amendment decision, not dictated by existing authority.","confidence":"high"}

@@ -1,0 +1,1 @@
+{"finding_id":"35574ad3c1054fb4","classification":"decision-bearing","authority_locus":null,"rationale":"No ratified authority reconciles schema provisioning against SDD-001 §3.1's write-path readiness gate; how provisioning relates to the not-ready service is an unmade choice.","confidence":"high"}
