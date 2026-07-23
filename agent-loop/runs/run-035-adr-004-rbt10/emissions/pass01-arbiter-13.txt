@@ -1,0 +1,7 @@
+{
+  "finding_id": "2723dd4ddee0941e",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The provisional/official read-discipline invariant and the provisional-vs-official ingested-node state are absent from DDR-002 §2 and §7; ADR-004 asserts an unratified downstream home, a gap no cited authority fills.",
+  "confidence": "high"
+}

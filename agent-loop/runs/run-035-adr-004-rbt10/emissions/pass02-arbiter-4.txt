@@ -1,0 +1,1 @@
+{"finding_id": "5d05c0e330c7d527", "classification": "decision-bearing", "authority_locus": null, "rationale": "ADR-004 is not in the fetched authority set; its text and §2.7 cannot be verified, and the reconciliation between 'ungated' and ADR-008's four-class calibration is not determined by any nameable locus.", "confidence": "medium"}

@@ -1,0 +1,7 @@
+{
+  "finding_id": "808e75f185a955a0",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record SKILL, 'Body integrity' — 'An amendment that adds a ruling updates the Decision enumeration'; ADR template §2 (Decision as testable sub-decisions)",
+  "rationale": "House convention dictates that a sub-decision (knowledge-service gains provisioning; deploy-time script superseded) be surfaced in the Decision enumeration; the fix is enumeration, no new choice.",
+  "confidence": "high"
+}

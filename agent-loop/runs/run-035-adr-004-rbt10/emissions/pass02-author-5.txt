@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "22e292c6afcbb8eb",
+  "reason": "The cited discipline ('an amendment that adds a ruling updates the Decision enumeration') governs amendments; this is original authoring (v0.1.0, no prior enumeration to update). Whether the provisioning capability and script supersession are distinct sub-decisions warranting new §2 enumeration lines, and what their wording would be, is an authorial design choice the authority does not uniquely determine — the §2 sentence already names 'schema provisioning and data load alike' and provisioning is elaborated in §2.2.",
+  "confidence": "high"
+}

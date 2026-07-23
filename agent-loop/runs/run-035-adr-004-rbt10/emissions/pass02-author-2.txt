@@ -1,0 +1,10 @@
+{
+  "action": "edit",
+  "finding_id": "9fa53e38d0f702df",
+  "target": "ADR-004",
+  "old_string": "- The Reasoning Graph is safe by construction — no data-load operation can write, reconstruct, or discard it.",
+  "new_string": "- The Reasoning Graph is safe by construction against the instantiation path — no data-load operation can write, reconstruct, or discard it (its durability across instance loss rests on instance-level backup and restore, whose production posture is deferred — §2.5, §5.3).",
+  "authority_conformed": "ADR-004 §2.5/§5.3 — 'the RG is not source-recoverable and must not be presumed so — its durability across instance loss rests on instance-level backup and restore ... deferred (see §5.3)'",
+  "rationale": "§2.5/§5.3 already state the RG's durability-across-instance-loss qualifier the §5.1 consequence must be scoped to; the edit imports that same-record scope verbatim.",
+  "confidence": "high"
+}

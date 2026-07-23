@@ -1,0 +1,9 @@
+The finding targets ADR-004, which does not exist in the fetched authority set — the fetched DDR-004 is "Inherited-Confidence Derivation," not an ADR-004, and contains no §2.5 or §5.3 about RG durability or backup/restore. The finding cites text ("rests on instance-level backup and restore," "production runtime and its backup posture are deferred") that appears in no fetched authority.
+
+{
+  "finding_id": "c9d9fad3f51663a5",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "Finding targets an ADR-004 absent from the fetched authorities; the cited loci and quoted text exist in no ratified document, so no authority can be named to determine the fix.",
+  "confidence": "medium"
+}

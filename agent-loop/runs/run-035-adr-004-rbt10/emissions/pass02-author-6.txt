@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "15cea119502be5a5",
+  "reason": "The named authority requires a deferred obligation to get 'a home with a firing trigger,' but neither the SKILL nor the ADR template determines which specific home (which owning design/decision record) or which trigger fires this sub-decision — that is an unratified choice the authority does not uniquely supply.",
+  "confidence": "high"
+}

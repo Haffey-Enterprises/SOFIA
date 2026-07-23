@@ -1,0 +1,1141 @@
+{
+  "header": {
+    "set": [
+      "ADR-004"
+    ],
+    "counted_severities": [
+      "BLOCKING",
+      "MATERIAL"
+    ],
+    "plateau_N": 3,
+    "mode": "dry"
+  },
+  "findings": [
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.2 Schema provisioning holds the sole-driver line",
+      "claim": "The title and summary claim ADR-004 decides greenfield/file-driven instantiation, but \u00a72.2 also commits a distinct new capability \u2014 knowledge-service 'owns a schema-provisioning capability exercised over the graph driver' \u2014 and supersedes a prior practice: 'the earlier practice of applying constraints from a deploy-time script is superseded' (\u00a73). The Decision's one-sentence statement (\u00a72) mentions instantiation being 'orchestrated by a driver-less loader that leverages knowledge-service's ports,' but the addition of a schema-provisioning capability to knowledge-service and the retirement of the deploy-time constraint script are decision content not surfaced in the Decision statement's own commitments \u2014 a scope claim (this ADR decides instantiation) that carries an unsurfaced sub-decision (knowledge-service gains a provisioning operation).",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72 Decision statement vs \u00a72.2 provisioning-capability commitment + \u00a73 'earlier practice ... is superseded'"
+      },
+      "id": "808e75f185a955a0",
+      "classification": "decision-bearing",
+      "authority_locus": "author-decision-record SKILL, 'Body integrity' \u2014 'An amendment that adds a ruling updates the Decision enumeration'; ADR template \u00a72 (Decision as testable sub-decisions)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.7 Authoritative-source fidelity control",
+      "claim": "\u00a72.7 states 'read-exclusion of provisional ground truth is a schema-level invariant \u2014 a provisional authoritative-source node is excluded from ground-truth synthesis until officially entered, homed in the schema's read-discipline invariant set.' This asserts a schema-level invariant as an existing home, but the record cites DDR-002 \u00a77 only generically (\u00a77 Cross-References) and does not name an existing DDR-002 read-discipline invariant covering provisional-vs-official authoritative-source nodes; \u00a76 check 6 concedes the mechanism is 'review-judgment until the fidelity-gate and write-authorship mechanics land, at which point check 6 gains a mechanized read-discipline mirror.' The decision claims a schema-invariant home that the substrate does not yet contain \u2014 the consequence (a new DDR-002 invariant) is a decision this ADR commits without surfacing that DDR-002 must be amended to carry it.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72.7 'homed in the schema's read-discipline invariant set' vs DDR-002 \u00a77 invariant set (#1\u2013#28) \u2014 no provisional-vs-official read-discipline invariant present"
+      },
+      "id": "540251b0a7818e02",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": [
+        "\u00a72.7 states 'read-exclusion of provisional ground truth is a schema-level invariant \u2014 a provisional authoritative-source node is excluded from ground-truth synthesis until officially entered, homed in the schema's read-discipline invariant set and mirrored by the port's behavioral contract.' The DDR-002 \u00a77 read-discipline invariant set contains only #9 (proposal-visibility), #19 (conditional-consumption), and the retracted-node read-discipline \u2014 none of which govern a provisional-versus-official authoritative-source node, and DDR-002 \u00a75's applicability_state enumeration is {unconditional, conditional} with no provisional value or marker. The consequence of this decision \u2014 a new DDR-002 read-discipline invariant and a new provisional state \u2014 is committed by cross-reference as an existing home, but the substrate does not carry it; the decision commits DDR-002 to a new invariant it has not itself ruled, and the ADR does not surface that DDR-002 must be amended to carry it."
+      ]
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.7 / \u00a77 Cross-References",
+      "claim": "\u00a72.7 declares 'this ADR realizes that control for instantiation and is the record the governance record names as the home of the ingestion mechanics,' and \u00a77 states this record 'is the \"forthcoming file-driven ingestion decision record\" that governance record names.' ADR-008 (substrate) names its home as 'The forthcoming file-driven ingestion decision record \u2014 owns the ingestion mechanics realizing the authoritative-source ingestion control (\u00a72.2).' But ADR-008 \u00a72.2's realization route for authoritative-source ingestion reads 'The forthcoming ingestion decision record; the knowledge-service ingestion port' \u2014 the mechanics (provisional-state representation, official-entry transition) are explicitly deferred by ADR-004 \u00a72.7 to 'the knowledge-service design's.' ADR-004 both claims to be the home of the ingestion mechanics and defers those mechanics downstream, so the decision does not decide what its claim to be that home asserts it decides.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72.7 'home of the ingestion mechanics' vs \u00a72.7 'The port-level mechanics ... are the knowledge-service design's' + ADR-008 \u00a72.2 realization route"
+      },
+      "id": "19982c877157a262",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": [
+        "\u00a72.7 declares 'this ADR realizes that control for instantiation and is the record the governance record names as the home of the ingestion mechanics,' and \u00a77 states this record 'is the \"forthcoming file-driven ingestion decision record\" that governance record names.' Yet \u00a72.7's final sentence explicitly defers the mechanics \u2014 'The port-level mechanics \u2014 how provisional state is represented and how the official-entry transition is enforced \u2014 are the knowledge-service design's.' The record both claims to be the home of the ingestion mechanics and routes those mechanics downstream in the same section, so the decision does not decide what its own claim-to-be-that-home asserts it decides; the authority ADR-008 routed here is only partially discharged."
+      ]
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.5 KG-scoped; RG preserved / \u00a75.3 Risks",
+      "claim": "\u00a72.5 asserts RG durability 'rests on instance-level backup and restore. In the current development runtime that responsibility sits with the managed graph provider; the production runtime, and therefore its backup posture, is deferred (see \u00a75.3).' \u00a75.3 restates this as a Risk. This is a consequence the decision depends on (RG recovery has no source path) whose supporting mechanism \u2014 an actual backup/restore discipline \u2014 is declared to not exist yet for production and to be someone else's decision for development. The record commits 'no silent RG loss' as a structural property (\u00a72.5) while its stated recovery path is a deferred/managed-provider responsibility the ADR does not establish \u2014 the declared consequence (RG safe by construction) overstates what the decision substrate supports, since 'safe by construction' covers only the instantiation path, not instance loss, which the same section admits the RG cannot recover from by source.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a75.1 'The Reasoning Graph is safe by construction' vs \u00a72.5/\u00a75.3 'the RG is not source-recoverable ... durability ... rests on instance-level backup and restore ... production runtime ... deferred'"
+      },
+      "id": "0995ff8751917089",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "COSMETIC",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.2 constraint-versioning forward question",
+      "claim": "\u00a72.2 states 'Ownership of constraint versioning over the platform's life ... is a forward question ... with its policy not settled here.' This is an undecided item carried inside the Decision section rather than surfaced as an explicit named gap or deferred sub-decision with a firing trigger; \u00a75.3 restates it as a risk but neither locus routes it to a tracking home. A forward question left in the Decision body without a declared resolution path is a scope-hygiene defect at this altitude \u2014 the record does not declare where or when this sub-decision is decided.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72.2 'constraint versioning ... policy not settled here' vs \u00a75.3 'named forward question, not a silent gap' \u2014 no tracking home or trigger declared"
+      },
+      "id": "616f1dc652c36b5d",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": [
+        "\u00a72.2 states 'Ownership of constraint versioning over the platform's life \u2014 how the provisioning capability evolves a live instance's constraints \u2014 is a forward question, governed by construction ... but with its policy not settled here.' This is an undecided sub-decision left inside the Decision section; \u00a75.3 restates it as a risk asserting it is 'a named forward question, not a silent gap,' but neither locus declares a tracking home or a firing trigger for when this sub-decision is decided. A forward question carried in the Decision body without a declared resolution path is a scope-hygiene gap at this altitude."
+      ]
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.8 Write authorship of instantiation",
+      "claim": "Attacked whether \u00a72.8 smuggles a write-authorship decision beyond its altitude or leaves the loader's role ambiguous against ADR-002's author/executor principle. The section holds: it declares the author as the source artifact's accountable authority (curator / fidelity verifier), names the gateway as sole executor and never author, and explicitly places the loader as 'neither author nor executor ... the relay' \u2014 cleanly instantiating ADR-002 \u00a72.6's principle for the instantiation case without re-deciding it. Claim-fidelity is intact; the decision decides exactly the authorship assignment it claims.",
+      "cited_authority": {
+        "kind": "design-intent",
+        "ref": "ADR-002 \u00a72.6 author/executor/authorizer separation \u2014 ADR-004 \u00a72.8 realizes it for instantiation without relocating authorship onto the gateway or loader"
+      },
+      "id": "4cf4cc5719450c28",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": [
+        "Attacked whether \u00a72.8 smuggles a write-authorship decision beyond this record's claim or leaves the loader's role ambiguous against ADR-002 \u00a72.6's author/executor principle. It holds: the author is declared as the source artifact's accountable authority (curator / fidelity verifier), the gateway is named sole executor and never author, and the loader is explicitly placed as 'neither author nor executor ... the relay.' The decision decides exactly the authorship assignment it claims \u2014 a clean instantiation-case realization of ADR-002 \u00a72.6, without relocating authorship onto gateway or loader."
+      ]
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.3\u2013\u00a72.4 Fresh-not-migrated / additive-by-supersession",
+      "claim": "Attacked for the exact scope-creep the substrate's own conventions warn against \u2014 whether 'fresh, not migrated' silently licenses a destructive reset, and whether the record conflates origin-binding with loader behavior. It holds: \u00a72.3 binds 'fresh/no migration' explicitly to the graph's origin and states it 'is not a license to reset or rebuild a populated instance (\u00a72.4),' and \u00a72.4 separately commits additive-by-supersession selected per-node by current state with 'no destructive-reset operation.' The two decisions are cleanly separated, each surfaced, neither over-claiming; the Consequences and Compliance sections carry both faithfully.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72.3 origin-binding vs \u00a72.4 loader-behavior \u2014 decisions kept distinct and each surfaced in \u00a72, \u00a75.2, \u00a76 checks 3 and 8"
+      },
+      "id": "84a2ecc9a21c34d4",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": [
+        "Attacked for the exact scope-creep the substrate's own conventions warn against \u2014 whether 'fresh, not migrated' silently licenses a destructive reset, conflating origin-binding with loader behavior. It holds: \u00a72.3 binds 'fresh/no migration' explicitly to the graph's origin and states it 'is not a license to reset or rebuild a populated instance (\u00a72.4),' and \u00a72.4 separately commits additive-by-supersession with 'no destructive-reset operation.' The two decisions are cleanly separated, each surfaced in \u00a72, \u00a75.2, and \u00a76 checks 3 and 8, neither over-claiming."
+      ]
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.7 and Cross-References (ADR-008 \u00a72.2, \u00a75.2)",
+      "claim": "\u00a72.7 asserts the fidelity control is one 'the ground-truth-mutation governance record commits' with a 'provisional-versus-official distinction, where captured representations enter provisionally and official, consumable entry is gated behind a human fidelity verification.' ADR-008 \u00a72.2's Authoritative-source ingestion row states the control-type as 'Pre-entry human fidelity verification of the captured representation, gating official (consumable) entry' but its 'Realization routes to' column reads 'The forthcoming ingestion decision record; the knowledge-service ingestion port' \u2014 ADR-008 commits the control-type but does not itself commit a 'provisional-versus-official' representation, which ADR-008 \u00a75.2 phrases only as 'a provisional-versus-official distinction' that 'the ingestion path must introduce.' The claim that read-exclusion of provisional ground truth 'is a schema-level invariant ... homed in the schema's read-discipline invariant set' cites no locus in DDR-002 \u00a77 where such a provisional read-exclusion invariant exists; DDR-002 \u00a77's read-discipline invariants (#9 proposal-visibility, #19 conditional-consumption, retracted-node exclusion) contain no provisional-authoritative-source invariant, so the claimed schema home is unsubstantiated in the current corpus.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "DDR-002 \u00a77 (CI-only conformance-invariant set \u2014 no provisional-source read-exclusion invariant present); ADR-008 \u00a72.2 / \u00a75.2 (control-type committed, provisional-vs-official routed downstream, not committed as a schema invariant)"
+      },
+      "id": "7929a9ae55f19ce7",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.2 Schema provisioning",
+      "claim": "\u00a72.2 states 'knowledge-service ... owns a schema-provisioning capability exercised over the graph driver it already holds' and that the loader 'invokes this capability to bring an instance to schema-ready before it loads data; the service process can start and connect to an empty instance, so provisioning runs before readiness reports green (which checks that the schema is present).' SDD-001 \u00a73.1 defines readiness check (2) as 'schema metadata loaded \u2014 the PlaneDefinition registry and constraint/validation metadata the write paths enforce against \u2014 critical, fails readiness (the gateway must not execute writes it cannot validate).' SDD-001 defines no schema-provisioning operation and no port for laying down DB constraints; \u00a72.1 of SDD-001 enumerates owned responsibilities without a provisioning capability, and DDR-002 \u00a77 states DB constraints are 'DB-enforced (Neo4j Enterprise)' with no cited component owning their application. ADR-004 \u00a72.2 asserts a knowledge-service capability that no current design document establishes, and its cross-reference to SDD-001 \u00a73.1 concedes SDD-001 'is to gain the schema-provisioning operation' \u2014 i.e., the capability the ADR relies on does not yet exist in the cited authority.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "SDD-001 \u00a73.1 (readiness \u2014 schema-present check, no provisioning operation) and \u00a72.1 (owned responsibilities, no schema-provisioning capability enumerated); ADR-004 \u00a77 cross-reference concedes 'to gain the schema-provisioning operation'"
+      },
+      "id": "61d4c5c1a8de5781",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.4 Additive by supersession",
+      "claim": "\u00a72.4 states instantiation 'is one operation whose behavior is selected per node by the graph's current state, not by a loader mode: against an empty instance every business key is new and is created; against a populated instance a changed business key supersedes its predecessor under the schema's supersession discipline.' DDR-002 \u00a76 scopes 'Option A supersession' to 'versioned-ground-truth types (Catalog, Standards, RateCard, CostFactor, PlaneDefinition)' \u2014 not all KG node classes. Environment-plane nodes age via freshness (`observed_at`) and Operational `ObservedPattern`s distill update-in-place (DDR-002 \u00a72.2, \u00a72.3), which are not supersession under \u00a76. The \u00a72.4 claim that a changed business key 'supersedes its predecessor under the schema's supersession discipline' as the uniform instantiation behavior does not hold for the non-versioned planes the schema defines, and the ADR does not carve them out; the design as written would not apply supersession uniformly if implemented exactly against the schema's actual per-plane temporal model.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "DDR-002 \u00a76 (Option A supersession scoped to versioned-ground-truth types only) and \u00a72.2/\u00a72.3 (Environment ages via freshness; Operational distills update-in-place \u2014 neither is supersession)"
+      },
+      "id": "c90c1503a29e705d",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": [
+        "\u00a72.4 states instantiation 'is one operation whose behavior is selected per node by the graph's current state, not by a loader mode: against an empty instance every business key is new and is created; against a populated instance a changed business key supersedes its predecessor under the schema's supersession discipline.' DDR-002 \u00a76 scopes 'Option A supersession' explicitly to 'versioned-ground-truth types (Catalog, Standards, RateCard, CostFactor, PlaneDefinition)' \u2014 not all KG node classes. DDR-002 \u00a72.2 Environment nodes age via freshness (observed_at) and \u00a72.3 Operational ObservedPatterns distill update-in-place, neither of which is supersession under \u00a76. The \u00a72.4 claim that a changed business key uniformly 'supersedes its predecessor under the schema's supersession discipline' would not, if implemented exactly against the schema's per-plane temporal model, hold for the non-versioned planes; the ADR carves no exception."
+      ]
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "COSMETIC",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "Cross-References \u2014 ADR-002 \u00a75.2",
+      "claim": "\u00a72.5 and \u00a75.3 rest RG durability across instance loss on 'instance-level backup and restore' that 'in the current development runtime ... sits with the managed graph provider,' cross-referenced to ADR-002 \u00a75.2. ADR-002 \u00a75.2 states the development managed-Aura runtime 'retires the self-managed operational burden \u2014 backup/restore, upgrade lifecycle, and cluster-health monitoring are the managed provider's responsibility' \u2014 this substantiates the development claim. However \u00a72.5 asserts RG durability 'rests on instance-level backup and restore' as the RG's recovery mechanism without any cited authority establishing that managed-provider backup covers the RG specifically or that a restore preserves point-in-time RG\u2194KG version pinning; ADR-002 \u00a75.2 addresses operational-burden retirement, not a committed RG-recovery guarantee. The dependency is asserted where no authority commits it.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "ADR-002 \u00a75.2 (retires self-managed backup burden to managed provider \u2014 operational-burden scope, no committed RG-recovery / pin-preservation guarantee)"
+      },
+      "id": "cedd5fb84c7f17b2",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "COSMETIC",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.7 / \u00a76 check 6",
+      "claim": "\u00a72.7 states the fidelity gate is 'scoped to the authoritative-source class \u2014 it is not applied to the ungated observational stream or to externally-decided mirrored records.' ADR-008 \u00a72.2's calibration table distinguishes four source classes (Promotion, Authoritative-source ingestion, Operational distillation, Environment), each with its own control-type; ADR-004 \u00a72.7's binary framing (fidelity-gated authoritative-source vs 'ungated observational stream') collapses ADR-008's Operational-distillation class \u2014 which ADR-008 \u00a72.2 gives a 'Substantive, evidence-visible human review' control, not 'ungated' \u2014 into the ungated bucket. For instantiation this may be within scope (distillation is a derived write, not a source-artifact load), but the ADR states the observational stream is 'ungated' without reconciling ADR-008's distillation-review control, leaving an apparent conflict with the cited governance record's own class calibration.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72.7 ('ungated observational stream') in tension with ADR-008 \u00a72.2 (Operational distillation carries a substantive human review control, not ungated)"
+      },
+      "id": "2373e50eea6d3243",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.1 / \u00a72.2 sole-driver preservation",
+      "claim": "Checked whether ADR-004's instantiation path breaches ADR-002 \u00a72.5's sole-owner-of-the-driver principle (knowledge-service as sole Neo4j-driver holder). The design holds: \u00a72.1 routes all instantiation data through the ingestion port with no direct-driver path, \u00a72.2 holds schema provisioning inside knowledge-service over the driver it already holds, \u00a72.8 makes the loader neither author nor executor (relay only), and \u00a74.1/\u00a74.2 explicitly reject the two bypass alternatives. No path in the design grants a second component a graph driver; the sole-driver line is preserved for both data-definition and data. The claimed conformance to ADR-002 \u00a72.5 is substantiated in the text.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "ADR-002 \u00a72.5 (knowledge-service sole holder of the Neo4j driver / single graph-access boundary)"
+      },
+      "id": "eef7f46fe6ad55f4",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.5 / \u00a72.4 RG-preservation by construction",
+      "claim": "Attacked the claim that instantiation cannot silently lose Reasoning-Graph state. The design withstands it: \u00a72.4 removes any destructive-reset mode from the instantiation path, \u00a72.5 scopes instantiation writes to the KG only and forbids the path from writing, reconstructing, or discarding RG state, and it honestly names the RG as not source-recoverable (recovery resting on instance-level backup, not the loader). This is internally consistent with ADR-001 \u00a72.2's reasoning-capture invariant and DDR-002 \u00a74's RG write-authority (ASA-authored, gateway-mediated) \u2014 instantiation asserts no authorship over RG nodes. The no-silent-RG-loss property is a structural consequence of the stated design, not an unsupported assertion.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "ADR-001 \u00a72.2 (reasoning-capture invariant); DDR-002 \u00a74 (RG write-authority \u2014 ASA-authored, not instantiation-written)"
+      },
+      "id": "7bbde33079cb9210",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.2 Schema provisioning holds the sole-driver line",
+      "claim": "The decision commits knowledge-service to owning a schema-provisioning capability that lays down DDL constraints, but this capability is not committed by any decision record knowledge-service implements. SDD-001 \u00a71 states the service's readiness checks presuppose the schema is already present ('schema metadata loaded \u2014 the PlaneDefinition registry and constraint/validation metadata the write paths enforce against') and SDD-001 nowhere assigns knowledge-service authorship of constraint provisioning; \u00a72.2 states 'provisioning runs before readiness reports green' \u2014 a service-shape commitment that deserves its own decision at the service-design altitude before an ADR asserts it as settled platform posture.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72.2 vs SDD-001 \u00a73.1 (readiness checks presume schema present) and \u00a72.2 Not-owned (no provisioning capability assigned)"
+      },
+      "id": "e1413b55d1a05a40",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": [
+        "\u00a72.2 commits knowledge-service to owning a schema-provisioning capability: 'knowledge-service ... owns a schema-provisioning capability exercised over the graph driver it already holds ... The driver-less loader utility invokes this capability.' This is a service-shape commitment that constrains the platform posture, yet SDD-001 \u00a72.1 (Owned) enumerates no provisioning capability, and \u00a77's own cross-reference concedes SDD-001 'is to gain the schema-provisioning operation' \u2014 a commitment that deserves its own decision at the service-design altitude before an ADR asserts it as settled platform posture. This ADR commits a position (knowledge-service gains a DDL-provisioning operation, and readiness-gating is re-characterized to run provisioning before green) that the record it depends on has not yet decided."
+      ]
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.7 Authoritative-source fidelity control; \u00a76 check 6",
+      "claim": "ADR-004 commits 'read-exclusion of provisional ground truth is a schema-level invariant ... homed in the schema's read-discipline invariant set' as though the schema already carries or has ratified that home. DDR-002 \u00a77's ratified read-discipline invariant set (#9, #19, #21) contains no provisional/official read-discipline invariant, and DDR-002 \u00a72 defines no provisional-vs-official state on ingested nodes. This ADR asserts a home in a downstream schema that does not yet exist there, committing DDR-002 to a new invariant by cross-reference rather than by DDR-002's own decision.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72.7 ('homed in the schema's read-discipline invariant set') vs DDR-002 \u00a77 read-discipline invariants (#9/#19/#21 \u2014 no provisional-entry invariant present)"
+      },
+      "id": "2723dd4ddee0941e",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.7 / \u00a77 cross-reference to ADR-008",
+      "claim": "ADR-004 \u00a72.7 claims to be 'the record the governance record names as the home of the ingestion mechanics' and the \u00a77 cross-reference asserts 'this record is the forthcoming file-driven ingestion decision record that governance record names.' ADR-008 \u00a72.2's realization-route for authoritative-source ingestion names 'The forthcoming ingestion decision record; the knowledge-service ingestion port' and \u00a77 names 'The forthcoming file-driven ingestion decision record \u2014 owns the ingestion mechanics.' ADR-008 states the ingestion control is 'aspirational pending downstream design and mechanization' (\u00a76) \u2014 but the fidelity-gate MECHANISM is explicitly deferred by ADR-004 itself to 'the knowledge-service design's' (\u00a72.7 final sentence). ADR-004 thus claims to home a control whose mechanics it then re-routes away, leaving the authority ADR-008 routed here only partially discharged and the actual mechanism unhomed.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72.7 (claims home) vs \u00a72.7 final sentence (mechanics routed to knowledge-service design) and ADR-008 \u00a72.2/\u00a77 (routes mechanics to 'the forthcoming ingestion decision record')"
+      },
+      "id": "4ad091636e8b0261",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.5 KG-scoped / RG preserved; \u00a75.3 Risks",
+      "claim": "ADR-004 rests RG durability across instance loss on 'instance-level backup and restore ... In the current development runtime that responsibility sits with the managed graph provider; the production runtime, and therefore its backup posture, is deferred (see \u00a75.3).' This commits the platform's only stated RG-recovery guarantee to a decision (production runtime + backup posture) that ADR-002 \u00a75.2 explicitly defers ('production deployment runtime is deferred'). A hard-to-reverse durability guarantee for the reasoning-capture invariant \u2014 the platform's reason to exist per ADR-001 \u00a71 \u2014 is thereby pinned to an unsettled downstream decision, i.e. it depends on something not yet decided.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72.5/\u00a75.3 (RG recovery = instance backup, production posture deferred) vs ADR-002 \u00a72.2/\u00a75.2 (production deployment runtime and topology deferred)"
+      },
+      "id": "437da56d27c446c1",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "COSMETIC",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a77 Cross-References \u2014 ADR-008 pin",
+      "claim": "ADR-004 \u00a77 cites ADR-008 \u00a75.2 for the authoritative-source fidelity control ('ADR-008 \u00a72.2, \u00a75.2'). ADR-008 \u00a75.2 (Constraints Imposed) states 'Authoritative-source ingestion is no longer a direct write. The ingestion path must introduce a pre-official-entry human fidelity verification (a provisional-versus-official distinction)' \u2014 the cited locus supports the claim, so the \u00a75.2 pin is accurate; but the provisional-versus-official read-exclusion that \u00a72.7 attributes to the governance record is not stated at ADR-008 \u00a72.2 or \u00a75.2 (ADR-008 commits the control's existence per-write, not a read-exclusion invariant), making the attribution of the read-exclusion invariant to the governance record's authority an overreach at the cited loci.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72.7 (read-exclusion attributed to governance record) vs ADR-008 \u00a72.2/\u00a75.2 (commits fidelity verification, not a read-exclusion invariant)"
+      },
+      "id": "012615aa7df5fd48",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.1 / \u00a72.2 / \u00a74.2 \u2014 sole-driver line for instantiation",
+      "claim": "Attacked the instantiation posture for stance-leakage against ADR-002's sole-owner-of-the-driver principle: whether committing schema provisioning inside knowledge-service and a driver-less loader pulls against ADR-002 \u00a72.5's single-graph-access-boundary. It holds \u2014 \u00a72.2 keeps the driver solely in knowledge-service (provisioning is an operation over the driver it already holds, not a second driver), and \u00a74.2 explicitly rejects the second-driver exception on the same diffuse-access grounds ADR-002 \u00a74.5 used. The posture integrates with, rather than pulls against, the ratified system-of-record commitment.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "ADR-002 \u00a72.5 (sole-owner gateway, single graph-access boundary) and \u00a74.5 (diffuse-access rejection)"
+      },
+      "id": "02e5f5baae3d5983",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.3 / \u00a72.4 \u2014 fresh-not-migrated vs additive-never-destructive",
+      "claim": "Attacked for an internal posture conflict: does 'no migration / fresh schema' license the destructive re-instantiation \u00a72.4 forbids, and is reversibility proportionate? It holds \u2014 \u00a72.3 scopes 'fresh' to the graph's origin and \u00a72.4/\u00a74.3 route change through supersession under DDR-002 \u00a76's never-delete discipline, so re-running the loader accretes rather than resets. The commitment is well-integrated with the ratified supersession/never-delete schema posture and is reversible by per-instance event, not by a standing destructive mode.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "DDR-002 \u00a76 (Option A supersession, never-delete) and \u00a77 #8 (never-delete invariant)"
+      },
+      "id": "044f8100eac390e5",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.7 Authoritative-source fidelity control \u2014 'read-exclusion of provisional ground truth is a schema-level invariant \u2026 homed in the schema's read-discipline invariant set'",
+      "claim": "ADR-004 \u00a72.7 asserts that provisional-node read-exclusion is 'a schema-level invariant \u2026 homed in the schema's read-discipline invariant set and mirrored by the port's behavioral contract.' DDR-002 \u00a77 (the read-discipline invariant set) supplies read-discipline invariants only for un-approved `CandidatePromotion` (#9), `applicability_state: conditional` nodes (#19), and EA-approved `RETRACTS`-edge-carrying nodes (retracted-node read-discipline). No invariant governing a provisional-versus-official authoritative-source node, and no `applicability_state`/status value or marker for 'provisional' authoritative-source ground truth, exists in the DDR-002 \u00a77 invariant set or in the \u00a75 `applicability_state` enumeration (`unconditional` / `conditional`). The ADR states the invariant is 'homed' in a set that does not currently supply it.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72.7 vs DDR-002 \u00a77 (read-discipline invariant set: #9, #19, retracted-node exclusion) and \u00a75 (`applicability_state` \u2208 {`unconditional`, `conditional`})"
+      },
+      "id": "65fe28b66243753d",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.2 Schema provisioning \u2014 'knowledge-service \u2026 owns a schema-provisioning capability exercised over the graph driver it already holds \u2026 the service process can start and connect to an empty instance, so provisioning runs before readiness reports green (which checks that the schema is present)'",
+      "claim": "ADR-004 \u00a72.2 asserts provisioning runs while the service is started but before readiness reports green, characterizing readyz as gating only on 'the schema is present.' SDD-001 \u00a73.1 states `readyz` checks, ordered: '(1) Neo4j connectivity and authentication \u2014 critical, fails readiness \u2026 (2) schema metadata loaded \u2014 the `PlaneDefinition` registry and constraint/validation metadata the write paths enforce against \u2014 critical, fails readiness (the gateway must not execute writes it cannot validate).' If provisioning writes constraints/registers planes through knowledge-service's own ports before schema is present, the service is by SDD-001 \u00a73.1 not-ready and its write paths (the ingestion/register-plane ports the loader invokes per \u00a72.1/\u00a72.6) are those the readiness gate protects \u2014 the ADR does not reconcile that the provisioning capability must operate on a service that its own readiness contract reports as not-ready.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72.2 vs SDD-001 \u00a73.1 (readyz ordered checks 1\u20132, both critical, 'the gateway must not execute writes it cannot validate')"
+      },
+      "id": "8f0349b762d27f6c",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.2 Schema provisioning \u2014 'the earlier practice of applying constraints from a deploy-time script is superseded' (also \u00a73 Rationale) vs \u00a72.2 'no service is yet deployed' context and DDR-002 \u00a77 harness state",
+      "claim": "ADR-004 \u00a72.2/\u00a73 assert 'the earlier practice of applying constraints from a deploy-time script is superseded,' presupposing a deploy-time-script constraint-application practice that this ADR replaces. DDR-002 \u00a77 'Current state (marker-level)' describes the constraint set as carried by 'the graph conformance harness \u2026 built (`conformance/`)' with tiered CI mechanization and gateway-behavioral flips \u2014 it names no deploy-time constraint-application script as the incumbent mechanism. ADR-002 \u00a72.2 and the substrate establish the graph as at initial design; SDD-001 does not describe knowledge-service applying constraints from a deploy-time script. The 'superseded practice' the ADR claims to replace is not evidenced as an established practice in the substrate it supersedes.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72.2/\u00a73 'deploy-time script \u2026 superseded' vs DDR-002 \u00a77 Current-state (conformance harness as constraint carrier; no deploy-time constraint-application script named) and SDD-001 (no deploy-time constraint script)"
+      },
+      "id": "7e1d780436cded04",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "COSMETIC",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.5 KG-scoped \u2014 'In the current development runtime that responsibility sits with the managed graph provider' + \u00a77 Cross-References 'ADR-002 \u00a75.2'",
+      "claim": "ADR-004 \u00a72.5 and \u00a75.3 pin RG-durability backup/restore to 'the managed graph provider' in 'the current development runtime,' citing ADR-002 \u00a75.2. ADR-002 \u00a75.2 states the development managed-Aura runtime '**retires** the self-managed operational burden \u2014 backup/restore, upgrade lifecycle, and cluster-health monitoring are the managed provider's responsibility' \u2014 consistent. But ADR-004 \u00a77 cites this as 'the managed-runtime backup/restore responsibility on which RG recovery rests (ADR-002 \u00a75.2)' while ADR-002 \u00a72.2 states the development runtime is 'AuraDB Professional'; ADR-004 nowhere names the edition, and the claim that backup/restore is the provider's responsibility is edition-general in ADR-002 \u00a75.2 \u2014 the citation holds. Minor: ADR-004 \u00a72.5 states RG durability 'rests on instance-level backup and restore' as though a committed mechanism, but ADR-002 \u00a75.2 assigns it only for the development runtime and defers production; ADR-004 \u00a75.3 correctly hedges ('production runtime and its backup posture are deferred'), so \u00a72.5's flatter phrasing is a mild internal tension with \u00a75.3's hedge.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72.5 ('rests on instance-level backup and restore') vs ADR-004 \u00a75.3 ('production runtime and its backup posture are deferred') and ADR-002 \u00a75.2 (backup/restore managed-provider responsibility, development only; production deferred)"
+      },
+      "id": "c9d9fad3f51663a5",
+      "classification": "decision-bearing",
+      "authority_locus": "ADR-002 \u00a75.2 (managed-Aura backup/restore = development runtime only; production deferred) + ADR-004 \u00a75.3 (own hedge)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.1\u2013\u00a72.2 sole-driver-line preservation for instantiation vs ADR-002 \u00a72.5 / DDR-001 gateway pattern",
+      "claim": "Checked ADR-004's central claim that instantiation (schema provisioning + data load) preserves ADR-002 \u00a72.5's sole-holder-of-the-driver principle against the load-bearing upstream: ADR-002 \u00a72.5 fixes knowledge-service as 'the sole holder of the Neo4j driver and the single graph-access boundary,' and DDR-001's gateway pattern prohibits 'any other direct driver.' ADR-004 \u00a72.1/\u00a72.2/\u00a75.2 route both data and data-definition through knowledge-service and explicitly deny any other component a driver ('the loader utility holds none'). The construction is coherent with the upstream \u2014 the loader is a relay to the gateway's ports, not a second driver holder \u2014 and Alternative B is rejected on exactly the diffuse-driver hazard ADR-002 \u00a74.5 names. The attack (that provisioning-inside-the-service smuggles a second write boundary) failed: the ADR anchors provisioning as a distinct administrative operation over the driver already held, not a new path.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72.1/\u00a72.2/\u00a75.2 vs ADR-002 \u00a72.5 (sole-driver) / \u00a74.5 (diffuse-access rejection); DDR-001 Graph-Gateway Pattern ('Prohibited: any other direct driver')"
+      },
+      "id": "14859b5dea6c3853",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.8 write authorship vs ADR-002 \u00a72.6 author/executor/authorizer principle",
+      "claim": "Checked \u00a72.8's instantiation write-authorship against ADR-002 \u00a72.6's general write-authority principle. ADR-002 \u00a72.6 fixes that 'every authoritative graph write has a named, component-scoped author,' the gateway 'is the sole executor \u2026 it is never itself the authoring authority,' and 'the accountable human or component authors the mutation; the gateway executes it.' ADR-004 \u00a72.8 conforms exactly: the author is 'the accountable authority declared by the source artifact' (human curator / fidelity verifier), 'the gateway \u2026 is the sole executor and never the author,' and the loader 'is neither author nor executor.' The attack (that a file-driven loader would default authorship onto the gateway or leave the write diffuse, contradicting ADR-002 \u00a72.6) failed \u2014 the ADR names a non-gateway author and holds the executor line. Aligns with ADR-008 \u00a72.1's restatement that the gateway is executor, never authoring authority.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72.8 vs ADR-002 \u00a72.6 (author/executor/authorizer separation); ADR-008 \u00a72.1 (gateway executor-never-author)"
+      },
+      "id": "739bf0d543173e1c",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.2 Schema provisioning holds the sole-driver line + \u00a73 Rationale",
+      "claim": "The record's title and Decision statement (\u00a72) scope this ADR to greenfield/file-driven instantiation orchestrated by a driver-less loader, but \u00a72.2 additionally commits a distinct new capability \u2014 'knowledge-service ... owns a schema-provisioning capability exercised over the graph driver it already holds' \u2014 and \u00a73 retires a prior practice: 'the earlier practice of applying constraints from a deploy-time script is superseded.' Neither the addition of a schema-provisioning operation to knowledge-service nor the supersession of the deploy-time constraint script is surfaced in the Decision statement's own commitment list; they ride along inside a supporting subsection. A commitment that adds a service capability and retires an incumbent practice is a decision that must be surfaced in the Decision enumeration, not carried implicitly under a sub-heading about preserving the sole-driver line.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72 Decision statement (loader/leverages-ports scope) vs \u00a72.2 (new provisioning capability) + \u00a73 ('deploy-time script ... is superseded')"
+      },
+      "id": "5df5cd80d6ff2df8",
+      "classification": "decision-bearing",
+      "authority_locus": "author-decision-record SKILL, 'Body integrity' \u2014 'An amendment that adds a ruling updates the Decision enumeration'; the Decision-block-as-contract-index rule",
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a75.1 Positive Consequences vs \u00a72.5 / \u00a75.3",
+      "claim": "\u00a75.1 declares as a positive consequence 'The Reasoning Graph is safe by construction \u2014 no data-load operation can write, reconstruct, or discard it.' \u00a72.5 and \u00a75.3, however, concede that the RG 'is not source-recoverable and must not be presumed so \u2014 its durability across instance loss rests on instance-level backup and restore,' whose production posture is deferred. The 'safe by construction' consequence covers only the instantiation write path, not RG durability across instance loss \u2014 which the same record admits has no established recovery mechanism. The declared consequence, stated without that scope qualifier at \u00a75.1, overstates the durability the decision substrate supports for the platform's defining reasoning-capture invariant.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a75.1 'The Reasoning Graph is safe by construction' vs \u00a72.5/\u00a75.3 'the RG is not source-recoverable ... durability ... rests on instance-level backup and restore ... production runtime ... deferred'"
+      },
+      "id": "9fa53e38d0f702df",
+      "classification": "resolvable",
+      "authority_locus": "ADR-004 \u00a75.1 vs \u00a72.5/\u00a75.3 (internal-coherence: the \u00a75.1 claim must be scoped to the \u00a72.5/\u00a75.3 qualifier the same record already states)",
+      "status": "closed",
+      "pass_raised": 2,
+      "pass_closed": 2,
+      "recurrence_count": 0,
+      "resolution_note": "conformed to ADR-004 \u00a72.5/\u00a75.3 \u2014 'the RG is not source-recoverable and must not be presumed so \u2014 its durability across instance loss rests on instance-level backup and restore ... deferred (see \u00a75.3)'",
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.4 Additive by supersession",
+      "claim": "\u00a72.4 states instantiation 'is one operation whose behavior is selected per node by the graph's current state ... a changed business key supersedes its predecessor under the schema's supersession discipline, an unchanged business key introduces no new version.' The decision claims uniform supersession behavior across the KG, but the supersession discipline it invokes is not KG-uniform: DDR-002 \u00a76 scopes Option A supersession to versioned-ground-truth types only (Catalog, Standards, RateCard, CostFactor, PlaneDefinition), while Environment ages via observed_at freshness and Operational ObservedPatterns distill update-in-place. The record commits a supersession-for-all-changed-business-keys behavior that its cited schema does not support for the non-versioned planes, and it names no carve-out for them \u2014 a decision stated more broadly than the substrate the decision depends on supports.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72.4 'a changed business key supersedes its predecessor under the schema's supersession discipline' vs DDR-002 \u00a76 (supersession scoped to versioned-ground-truth types) / \u00a72.2 (Environment ages) / \u00a72.3 (Operational distills update-in-place)"
+      },
+      "id": "3f9ff61dbd8620ff",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "COSMETIC",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.7 'ungated observational stream'",
+      "claim": "\u00a72.7 states the fidelity gate 'is not applied to the ungated observational stream or to externally-decided mirrored records.' The governance record it cites, ADR-008 \u00a72.2, calibrates four source classes and gives Operational distillation a 'Substantive, evidence-visible human review' control \u2014 not 'ungated.' The ADR's binary framing (fidelity-gated authoritative-source vs 'ungated observational stream') characterizes as ungated a class the cited authority explicitly gives a human-review control, without reconciling that distillation-review control; the term 'ungated' as applied to the observational stream is in tension with the governance record's own class calibration.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72.7 'ungated observational stream' vs ADR-008 \u00a72.2 (Operational distillation carries a substantive, evidence-visible human review control)"
+      },
+      "id": "5d05c0e330c7d527",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.7 Authoritative-source fidelity control / \u00a72 Decision",
+      "claim": "\u00a72.7 states 'read-exclusion of provisional ground truth is a schema-level invariant \u2014 a provisional authoritative-source node is excluded from ground-truth synthesis until officially entered, homed in the schema's read-discipline invariant set.' DDR-002 \u00a77's read-discipline invariant set supplies read-exclusion only for un-approved CandidatePromotion (#9), applicability_state: conditional nodes (#19), and EA-approved RETRACTS-edge-carrying nodes (retracted-node read-discipline, \u00a75). No invariant governing a provisional-versus-official authoritative-source node exists in that set, and DDR-002 \u00a75's applicability_state enumeration is exactly {unconditional, conditional} \u2014 no 'provisional' status or marker. The claimed schema home does not exist in the cited authority; the ADR asserts an existing home for an invariant DDR-002 does not currently carry.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "DDR-002 \u00a77 (read-discipline invariants #9, #19, retracted-node exclusion \u2014 no provisional-source read-exclusion invariant) and \u00a75 (applicability_state \u2208 {unconditional, conditional})"
+      },
+      "id": "734aa05422192243",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.2 Schema provisioning holds the sole-driver line",
+      "claim": "\u00a72.2 states 'knowledge-service ... owns a schema-provisioning capability exercised over the graph driver it already holds' and that 'provisioning runs before readiness reports green (which checks that the schema is present).' SDD-001 \u00a72.1 (Owned) enumerates knowledge-service's responsibilities and names no schema-provisioning / DDL capability; SDD-001 \u00a73.1 defines readiness check (2) as 'schema metadata loaded ... critical, fails readiness (the gateway must not execute writes it cannot validate).' The capability \u00a72.2 asserts as owned by knowledge-service does not exist in SDD-001; the \u00a77 cross-reference itself concedes SDD-001 'is to gain the schema-provisioning operation' \u2014 i.e. the cited authority does not yet establish the capability the decision relies on.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "SDD-001 \u00a72.1 (Owned responsibilities \u2014 no schema-provisioning capability enumerated), \u00a73.1 (readiness \u2014 schema-present check, no provisioning operation); ADR-004 \u00a77 concedes 'to gain the schema-provisioning operation'"
+      },
+      "id": "28c1a26163a267a7",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.7 / \u00a77 Cross-References (claim to be home of ingestion mechanics)",
+      "claim": "\u00a72.7 declares 'this ADR realizes that control for instantiation and is the record the governance record names as the home of the ingestion mechanics,' and its final sentence states 'The port-level mechanics \u2014 how provisional state is represented and how the official-entry transition is enforced \u2014 are the knowledge-service design's.' ADR-008 \u00a72.2's realization route for authoritative-source ingestion reads 'The forthcoming ingestion decision record; the knowledge-service ingestion port' and ADR-008 \u00a77 names 'The forthcoming file-driven ingestion decision record \u2014 owns the ingestion mechanics.' ADR-004 both claims to be that home and re-routes the actual mechanism (provisional-state representation, official-entry transition) downstream, so the record does not itself decide the ingestion mechanics its claim-to-be-home asserts it owns \u2014 the mechanism ADR-008 routed here remains unhomed.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "ADR-004 \u00a72.7 ('home of the ingestion mechanics') vs ADR-004 \u00a72.7 final sentence (mechanics = knowledge-service design's) and ADR-008 \u00a72.2/\u00a77 (routes ingestion mechanics to 'the forthcoming file-driven ingestion decision record')"
+      },
+      "id": "cabe367687140947",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.2 / \u00a73 Rationale \u2014 'the earlier practice of applying constraints from a deploy-time script is superseded'",
+      "claim": "\u00a72.2 and \u00a73 assert 'the earlier practice of applying constraints from a deploy-time script is superseded,' presupposing a deploy-time-script constraint-application practice this ADR replaces. The substrate establishes no such incumbent: DDR-002 \u00a77 'Current state (marker-level)' carries the constraint set via 'the graph conformance harness ... built (conformance/)' and names no deploy-time constraint-application script; SDD-001 defines no such script; ADR-004 \u00a71 itself states the schema's data-definition half 'has not yet been applied to it.' A superseded practice cannot be one the corpus never establishes and \u00a71 says has not yet run; the supersession claim is unsubstantiated.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72.2/\u00a73 'deploy-time script ... superseded' vs ADR-004 \u00a71 ('the schema's data-definition half ... has not yet been applied') and DDR-002 \u00a77 Current-state (conformance harness as constraint carrier; no deploy-time constraint script named)"
+      },
+      "id": "f061c8e848d4101b",
+      "classification": "decision-bearing",
+      "authority_locus": "ADR-004 \u00a71 (schema data-definition half 'has not yet been applied') + DDR-002 \u00a77 Current-state (conformance harness as constraint carrier; no deploy-time constraint-application script named)",
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.2 Schema provisioning \u2014 provisioning-before-readiness vs write-path readiness gate",
+      "claim": "\u00a72.2 states 'the service process can start and connect to an empty instance, so provisioning runs before readiness reports green (which checks that the schema is present).' SDD-001 \u00a73.1 orders readiness checks: '(1) Neo4j connectivity and authentication \u2014 critical, fails readiness; (2) schema metadata loaded ... critical, fails readiness (the gateway must not execute writes it cannot validate).' If provisioning is exercised through knowledge-service's ports before schema is present, the service is by SDD-001 \u00a73.1 not-ready, and the write paths \u00a72.1/\u00a72.6 route instantiation through are the paths the readiness gate protects. The ADR does not reconcile that the provisioning capability operates on a service its own readiness contract reports not-ready; the interaction between the provisioning operation and the write-path readiness gate is unaddressed.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "ADR-004 \u00a72.2 (provisioning runs before readyz green) vs SDD-001 \u00a73.1 (readyz ordered checks 1\u20132, both critical, 'the gateway must not execute writes it cannot validate')"
+      },
+      "id": "35574ad3c1054fb4",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "COSMETIC",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.5 KG-scoped / \u00a75.3 Risks \u2014 RG backup dependency vs ADR-002 \u00a75.2",
+      "claim": "\u00a72.5 states RG durability across instance loss 'rests on instance-level backup and restore. In the current development runtime that responsibility sits with the managed graph provider,' cross-referenced to ADR-002 \u00a75.2. ADR-002 \u00a75.2 substantiates the development claim ('backup/restore ... are the managed provider's responsibility'), but neither ADR-002 \u00a75.2 nor any cited locus commits that managed-provider backup covers RG state specifically or that a restore preserves the RG\u2194KG version-pin fidelity \u00a72.5 relies on. ADR-002 \u00a75.2 addresses operational-burden retirement, not a committed RG-recovery or pin-preservation guarantee; the RG-recovery dependency is asserted where no cited authority commits it at that grain.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "ADR-002 \u00a75.2 (retires self-managed backup burden to managed provider \u2014 operational-burden scope; no committed RG-recovery or version-pin-preservation guarantee)"
+      },
+      "id": "d97457455826cc81",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "COSMETIC",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.7 fidelity-gate scope vs ADR-008 \u00a72.2 source-class calibration",
+      "claim": "\u00a72.7 states the fidelity gate is 'scoped to the authoritative-source class \u2014 it is not applied to the ungated observational stream or to externally-decided mirrored records.' ADR-008 \u00a72.2's calibration table gives Operational distillation a 'Substantive, evidence-visible human review' control \u2014 explicitly not ungated. ADR-004's binary framing ('fidelity-gated authoritative-source vs ungated observational stream') collapses ADR-008's distillation-review class into the ungated bucket without reconciling that ADR-008 assigns distillation its own per-distinct-lesson human review; the cited governance record's own four-class calibration is not faithfully mirrored by the ADR's two-way split.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "ADR-008 \u00a72.2 (four source classes; Operational distillation carries a substantive, evidence-visible human review control \u2014 not ungated)"
+      },
+      "id": "bac8219078aab0d3",
+      "classification": "decision-bearing",
+      "authority_locus": "ADR-008 \u00a72.2 (four-class calibration; Operational distillation carries a per-distinct-lesson substantive human review, not ungated)",
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.1 / \u00a72.2 / \u00a74.2 \u2014 sole-driver preservation for instantiation",
+      "claim": "Attacked whether the instantiation path breaches ADR-002 \u00a72.5's sole-holder-of-the-driver principle (knowledge-service as sole Neo4j-driver holder) and DDR-001's gateway prohibition on 'any other direct driver.' It held: \u00a72.1 routes all instantiation data through the ingestion port with no direct-driver and no direct-Cypher path; \u00a72.2 holds schema provisioning inside knowledge-service as a distinct operation over the driver it already holds (raising no circularity, since provisioning is not the schema-on-write data path); \u00a72.8 makes the loader a driver-less relay; and \u00a74.2 rejects the second-driver exception on exactly the diffuse-access grounds ADR-002 \u00a74.5 named. No path in the design grants a second component a graph driver for data-definition or data. The claimed conformance to ADR-002 \u00a72.5 is substantiated in the text.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "ADR-002 \u00a72.5 (sole holder of the Neo4j driver / single graph-access boundary), \u00a74.5 (diffuse-access rejection); DDR-001 Graph-Gateway Pattern ('Prohibited: any other direct driver')"
+      },
+      "id": "c283fd61f925e9c0",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.5 / \u00a72.4 \u2014 RG-preservation by construction",
+      "claim": "Attacked the claim that instantiation cannot write, reconstruct, or discard Reasoning-Graph state. It held: \u00a72.4 removes any destructive-reset mode from the instantiation path; \u00a72.5 scopes instantiation writes to the KG only and forbids the path from writing, reconstructing, or discarding RG state; captured evidence continues to pin the specific KG versions it read, so supersession does not stale point-in-time fidelity. This is internally consistent with ADR-001 \u00a72.2's reasoning-capture invariant and DDR-002 \u00a74's RG write-authority (ReasoningProgress ASA-authored, ReasoningSession AOE-owned, gateway-mediated) \u2014 instantiation asserts no authorship over any RG node class. The no-silent-RG-loss property is a structural consequence of the stated KG-scoping, not an unsupported assertion (the separate instance-loss recovery gap is addressed by the \u00a75.3 finding above).",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "ADR-001 \u00a72.2 (reasoning-capture invariant); DDR-002 \u00a74 (RG write-authority \u2014 ASA-authored ReasoningProgress, AOE-owned ReasoningSession, gateway-mediated); ADR-004 \u00a72.4/\u00a72.5"
+      },
+      "id": "0545b67a2959f975",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.7 Authoritative-source fidelity control",
+      "claim": "\u00a72.7 commits that 'read-exclusion of provisional ground truth is a schema-level invariant ... homed in the schema's read-discipline invariant set and mirrored by the port's behavioral contract.' The record commits DDR-002 to a new read-discipline invariant by cross-reference. DDR-002 \u00a77's ratified read-discipline invariant set (#9 proposal-visibility, #19 conditional-consumption, retracted-node exclusion) contains no provisional-versus-official authoritative-source invariant, and DDR-002 \u00a75's applicability_state enumeration is only {unconditional, conditional} \u2014 no provisional marker exists. Committing a downstream schema to carry an invariant it does not yet contain is a position that deserves DDR-002's own decision record first, at this time.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72.7 ('homed in the schema's read-discipline invariant set') vs DDR-002 \u00a77 read-discipline invariants (#9/#19/retracted) and \u00a75 applicability_state \u2208 {unconditional, conditional}"
+      },
+      "id": "7e64a80ad29ad0ca",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.5 KG-scoped / RG preserved by construction; \u00a75.1 / \u00a75.3",
+      "claim": "\u00a75.1 lists as a positive consequence 'The Reasoning Graph is safe by construction,' but \u00a72.5 rests RG durability across instance loss on 'instance-level backup and restore. In the current development runtime that responsibility sits with the managed graph provider; the production runtime, and therefore its backup posture, is deferred (see \u00a75.3).' The platform's only stated RG-recovery guarantee for the reasoning-capture invariant \u2014 ADR-001's reason to exist \u2014 is thereby pinned to a production-runtime decision ADR-002 \u00a72.2/\u00a75.2 explicitly defers. A hard-to-reverse durability commitment for the platform's load-bearing invariant depends on something unsettled downstream; the reversibility of that dependency is not proportionate to the stakes of silent reasoning loss.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a75.1 ('safe by construction') / \u00a72.5 / \u00a75.3 (RG recovery = instance backup; production posture deferred) vs ADR-002 \u00a72.2/\u00a75.2 (production deployment runtime and backup posture deferred)"
+      },
+      "id": "4037b0858f672891",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.7 / \u00a77 Cross-References \u2014 claim to home the ingestion mechanics",
+      "claim": "\u00a72.7 states 'this ADR realizes that control for instantiation and is the record the governance record names as the home of the ingestion mechanics,' and \u00a77 asserts this record 'is the \"forthcoming file-driven ingestion decision record\" that governance record names.' But \u00a72.7's final sentence defers the actual mechanics \u2014 'how provisional state is represented and how the official-entry transition is enforced' \u2014 to 'the knowledge-service design's.' ADR-008 \u00a72.2 routes authoritative-source ingestion realization to 'The forthcoming ingestion decision record; the knowledge-service ingestion port.' ADR-004 both claims to be the home of the ingestion mechanics and re-routes those mechanics downstream, so the authority ADR-008 routed here is only partially discharged and the position it claims to settle it does not settle.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72.7 ('home of the ingestion mechanics') vs \u00a72.7 final sentence ('port-level mechanics ... are the knowledge-service design's') + ADR-008 \u00a72.2/\u00a77 realization route"
+      },
+      "id": "dd51402bb1b9f2cf",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72 Decision statement vs \u00a72.2 provisioning capability + \u00a73 superseded practice",
+      "claim": "The \u00a72 one-sentence Decision commits instantiation as file-driven ingestion 'orchestrated by a driver-less loader utility that leverages knowledge-service's ports,' but \u00a72.2 adds a distinct new commitment \u2014 knowledge-service 'owns a schema-provisioning capability' \u2014 and \u00a73 commits a supersession: 'the earlier practice of applying constraints from a deploy-time script is superseded.' The addition of a provisioning operation to knowledge-service and the retirement of the deploy-time constraint script are decision content \u2014 a sub-decision and a supersession \u2014 carried inside \u00a72.2/\u00a73 but not surfaced in the Decision's own enumerated commitments. This ADR's scope claim (it decides instantiation) carries unsurfaced sub-decisions that should appear in the Decision enumeration to stand.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72 Decision statement vs \u00a72.2 provisioning-capability commitment + \u00a73 'earlier practice ... is superseded'"
+      },
+      "id": "22e292c6afcbb8eb",
+      "classification": "decision-bearing",
+      "authority_locus": "author-decision-record-SKILL, 'An amendment that adds a ruling updates the Decision enumeration' (body-integrity discipline); ADR template \u00a72 (Decision as testable sub-decisions)",
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "COSMETIC",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.2 constraint-versioning forward question",
+      "claim": "\u00a72.2 states 'Ownership of constraint versioning over the platform's life \u2014 how the provisioning capability evolves a live instance's constraints \u2014 is a forward question, governed by construction ... but with its policy not settled here.' \u00a75.3 restates it as a risk asserting it is 'a named forward question, not a silent gap,' but neither locus declares a tracking home or a firing trigger \u2014 where or when this sub-decision is decided. An undecided item carried inside the Decision section without a declared resolution path is a timing/scope-hygiene defect: the record commits a capability whose evolution policy it leaves unhomed.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-004 \u00a72.2 ('constraint versioning ... policy not settled here') vs \u00a75.3 ('named forward question, not a silent gap') \u2014 no tracking home or trigger declared"
+      },
+      "id": "15cea119502be5a5",
+      "classification": "decision-bearing",
+      "authority_locus": "author-decision-record SKILL \u2014 'Every deferred obligation gets a home with a firing trigger' (amendment-lifecycle discipline); ADR template \u00a76/\u00a77 conditions-and-tracking apparatus",
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.1 / \u00a72.2 / \u00a74.2 sole-driver-line preservation for instantiation",
+      "claim": "Attacked the central commitment for pulling against the ratified system-of-record posture: whether holding schema provisioning inside knowledge-service and routing all instantiation data through the ingestion port smuggles a second write boundary in conflict with ADR-002 \u00a72.5's sole-holder-of-the-driver principle. It holds: \u00a72.1 routes all instantiation data through the ingestion port with no direct-driver path, \u00a72.2 keeps the driver solely in knowledge-service (provisioning is an operation over the driver it already holds), and \u00a74.2 explicitly rejects the second-driver exception on the same diffuse-access grounds ADR-002 \u00a74.5 used. The posture integrates with, rather than pulls against, the ratified commitment.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "ADR-002 \u00a72.5 (sole-owner gateway, single graph-access boundary) and \u00a74.5 (diffuse-access rejection); ADR-004 \u00a72.1/\u00a72.2/\u00a74.2"
+      },
+      "id": "feff8f7c0eff91c6",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-004"
+      ],
+      "locus": "\u00a72.3 / \u00a72.4 fresh-not-migrated vs additive-never-destructive",
+      "claim": "Attacked for the scope-creep the substrate's own conventions warn against: whether 'fresh, not migrated' silently licenses a destructive reset, and whether reversibility is proportionate. It holds: \u00a72.3 binds 'fresh/no migration' explicitly to the graph's origin and states it 'is not a license to reset or rebuild a populated instance (\u00a72.4)'; \u00a72.4 separately commits additive-by-supersession under DDR-002 \u00a76's never-delete discipline with 'no destructive-reset operation.' The two decisions are kept distinct and each surfaced across \u00a72, \u00a75.2, and \u00a76 checks 3 and 8 \u2014 well-integrated with the ratified supersession/never-delete schema posture, reversible only by per-instance event, not a standing destructive mode.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "DDR-002 \u00a76 (Option A supersession, never-delete) and \u00a77 #8 (never-delete invariant); ADR-004 \u00a72.3 origin-binding vs \u00a72.4 loader-behavior"
+      },
+      "id": "810aa80d8a0e9d40",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 2,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null,
+      "claim_variants": []
+    }
+  ],
+  "passes": [
+    {
+      "pass_number": 1,
+      "open_cbm_count": 14,
+      "agents_run": [
+        "antagonist-LAA",
+        "antagonist-SA",
+        "antagonist-EA",
+        "coherence",
+        "arbiter"
+      ],
+      "timestamp": "2026-07-22T14:14:40.578979+00:00"
+    },
+    {
+      "pass_number": 2,
+      "open_cbm_count": 26,
+      "agents_run": [
+        "antagonist-LAA",
+        "antagonist-SA",
+        "antagonist-EA",
+        "arbiter"
+      ],
+      "timestamp": "2026-07-22T14:18:52.488101+00:00"
+    }
+  ],
+  "doc_changes": [
+    {
+      "doc": "ADR-004",
+      "pass_number": 2
+    }
+  ]
+}

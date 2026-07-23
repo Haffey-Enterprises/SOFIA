@@ -1,0 +1,8 @@
+The finding says ADR-004 §2.7's binary framing collapses ADR-008's four-class calibration, but ADR-004 §2.7 governs only the authoritative-source class realization; ADR-008 §2.2 assigns distillation a distinct control but does not determine that §2.7 must enumerate the distillation class — §2.7's scope statement is about what the fidelity gate does/doesn't apply to, and reconciling ADR-008's distillation-review class into §2.7's text is an unratified authorial choice among options.
+
+{
+  "action": "refuse",
+  "finding_id": "bac8219078aab0d3",
+  "reason": "ADR-008 §2.2 fixes distillation's own review control but does not determine how ADR-004 §2.7 (scoped to the authoritative-source fidelity gate) must phrase its non-application; conforming would require choosing whether/how to enumerate the distillation class — an unratified authorial decision, not a determined edit.",
+  "confidence": "high"
+}

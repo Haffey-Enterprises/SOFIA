@@ -1,0 +1,7 @@
+{
+  "finding_id": "dd51402bb1b9f2cf",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "ADR-004 is not in the ratified authority set; the finding turns on where the ingestion-mechanics/port-mechanics boundary is drawn, a scope allocation no cited authority fixes.",
+  "confidence": "high"
+}

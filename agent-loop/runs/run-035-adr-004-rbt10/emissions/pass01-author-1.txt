@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "808e75f185a955a0",
+  "reason": "The named authority ('an amendment that adds a ruling updates the Decision enumeration' + template §2 testable sub-decisions) does not uniquely determine a fix: §2's Decision statement already commits schema provisioning 'orchestrated by a driver-less loader that leverages knowledge-service's ports' and 'sole holder of the graph driver for data-definition,' and §2.2 is itself an enumerated Decision sub-decision surfacing the provisioning capability. Whether the top-line sentence must additionally name the capability-addition and deploy-time-script retirement, and in what words, is an authoring choice the authority does not entail.",
+  "confidence": "high"
+}

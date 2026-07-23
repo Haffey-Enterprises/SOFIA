@@ -1,0 +1,1 @@
+{"finding_id":"0995ff8751917089","classification":"decision-bearing","authority_locus":null,"rationale":"ADR-004 is not in the ratified authority set; its internal RG-durability tension routes to a deferred production backup posture that no existing authority establishes.","confidence":"high"}

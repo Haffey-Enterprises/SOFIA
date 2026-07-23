@@ -1,0 +1,1 @@
+{"finding_id":"65fe28b66243753d","classification":"decision-bearing","authority_locus":null,"rationale":"ADR-004 claims a provisional-node read-discipline invariant homed in a DDR-002 §7 set that supplies no such invariant, marker, or applicability_state value; closing the gap requires a new schema ruling.","confidence":"high"}

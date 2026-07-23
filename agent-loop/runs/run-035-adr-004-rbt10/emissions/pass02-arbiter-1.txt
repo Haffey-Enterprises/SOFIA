@@ -1,0 +1,7 @@
+{
+  "finding_id": "5df5cd80d6ff2df8",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record SKILL, 'Body integrity' — 'An amendment that adds a ruling updates the Decision enumeration'; the Decision-block-as-contract-index rule",
+  "rationale": "Named house convention dictates the fix: surface the schema-provisioning capability and deploy-time-script supersession in the Decision enumeration; no unratified choice among options.",
+  "confidence": "high"
+}

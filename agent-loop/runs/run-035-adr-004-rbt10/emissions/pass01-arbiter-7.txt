@@ -1,0 +1,1 @@
+{"finding_id":"7929a9ae55f19ce7","classification":"decision-bearing","authority_locus":null,"rationale":"ADR-008 §2.2/§5.2 commit only the control-type and route the provisional-vs-official mechanism and its read-exclusion downstream; no ratified schema invariant exists to determine the claimed home.","confidence":"high"}

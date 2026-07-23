@@ -1,0 +1,7 @@
+{
+  "finding_id": "e1413b55d1a05a40",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "No ratified authority assigns constraint-provisioning ownership; whether knowledge-service owns DDL provisioning is an unmade service-shape choice at the SDD altitude.",
+  "confidence": "high"
+}
