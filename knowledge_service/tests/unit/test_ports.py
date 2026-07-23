@@ -8,12 +8,15 @@
 #   Protocols with no behavior of their own, so what is asserted here is the
 #   seam itself: that each port is structurally checkable, and that an object
 #   missing the contract does not satisfy it. That last point is what stops a
-#   later adapter from being wired in half-implemented.
+#   later adapter from being wired in half-implemented. RBT-78/R3a grows
+#   GraphStoragePort additively (find_track_record) — the minimal fixture below
+#   grows with it, since isinstance() against a runtime_checkable Protocol
+#   checks every declared member, not just the ones a test happens to exercise.
 ##############################################################################
 
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 
-from app.ports.graph_store import GraphStoragePort
+from app.ports.graph_store import GraphStoragePort, TargetEntityRef, TrackRecordCandidateRecord
 from app.ports.predicate_eval import PredicateEvaluationPort
 
 
@@ -28,11 +31,26 @@ class TestGraphStoragePortDeclaration:
         # Act / Assert
         assert not isinstance(NotAGraphStore(), GraphStoragePort)
 
-    def test_object_with_check_connectivity_satisfies_the_port(self) -> None:
+    def test_object_missing_find_track_record_does_not_satisfy_the_port(self) -> None:
+        # Arrange — RBT-78/R3a grew the port; a check_connectivity-only object
+        # no longer suffices.
+        class ConnectivityOnlyGraphStore:
+            async def check_connectivity(self) -> bool:
+                return True
+
+        # Act / Assert
+        assert not isinstance(ConnectivityOnlyGraphStore(), GraphStoragePort)
+
+    def test_object_with_the_full_surface_satisfies_the_port(self) -> None:
         # Arrange
         class MinimalGraphStore:
             async def check_connectivity(self) -> bool:
                 return True
+
+            async def find_track_record(
+                self, target_refs: Sequence[TargetEntityRef]
+            ) -> Sequence[TrackRecordCandidateRecord]:
+                return []
 
         # Act / Assert
         assert isinstance(MinimalGraphStore(), GraphStoragePort)

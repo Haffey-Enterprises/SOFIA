@@ -6,20 +6,25 @@
 # Revised: 2026-07-21
 # Description: Unit tests for Neo4jAdapter's driver lifecycle (SDD-001 §4.2,
 #   §4.7) — construction from Settings, connect/verify/close, and translation
-#   of driver-level failure into the port's boolean verdict. The driver is
-#   mocked at the adapter boundary; no test here touches a live Neo4j.
+#   of driver-level failure into the port's boolean verdict — plus (RBT-78/R3a)
+#   find_track_record: the one-Cypher-call track-record-lookup traversal
+#   (SDD-001 §3.3.3, ADR-002 §6 check 4). The driver is mocked at the adapter
+#   boundary; no test here touches a live Neo4j — the real graph behavior is
+#   conformance's (RBT-80).
 ##############################################################################
 
 from collections.abc import Iterator
+from types import SimpleNamespace
 from typing import Any
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
+from neo4j import RoutingControl
 from neo4j.exceptions import AuthError, ServiceUnavailable
 
 from app.adapters.neo4j_adapter import Neo4jAdapter
 from app.config import Settings
-from app.ports.graph_store import GraphStoragePort
+from app.ports.graph_store import GraphStoragePort, TargetEntityRef
 
 # mypy note: pydantic-settings accepts `_env_file` at runtime, but the model's
 # generated __init__ signature does not declare it, so `--strict` flags every
@@ -255,3 +260,168 @@ class TestNeo4jAdapterDefaultFactory:
 
         # Assert — with no factory injected, the real neo4j builder is used.
         assert recorded["uri"] == "neo4j+s://graph.example.internal:7687"
+
+
+class TestNeo4jAdapterFindTrackRecord:
+    """The track-record-lookup traversal (SDD-001 §3.3.3) — one Cypher call."""
+
+    async def test_find_track_record_resolves_id_properties_per_target_kind(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange — each target kind has its own PK property (DDR-002 §2.1/§2.2).
+        driver.execute_query.return_value = SimpleNamespace(records=[])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+        refs = [
+            TargetEntityRef(entity_kind="Technology", entity_id="tech-1"),
+            TargetEntityRef(entity_kind="Pattern", entity_id="pattern-1"),
+            TargetEntityRef(entity_kind="Capability", entity_id="cap-1"),
+            TargetEntityRef(entity_kind="DeploymentEnvironment", entity_id="env-1"),
+        ]
+
+        # Act
+        await adapter.find_track_record(refs)
+
+        # Assert
+        params = driver.execute_query.call_args.args[1]["target_refs"]
+        assert params == [
+            {"entity_kind": "Technology", "id_property": "technology_id", "entity_id": "tech-1"},
+            {"entity_kind": "Pattern", "id_property": "pattern_id", "entity_id": "pattern-1"},
+            {"entity_kind": "Capability", "id_property": "capability_id", "entity_id": "cap-1"},
+            {
+                "entity_kind": "DeploymentEnvironment",
+                "id_property": "environment_id",
+                "entity_id": "env-1",
+            },
+        ]
+
+    async def test_find_track_record_routes_read_and_targets_the_configured_database(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(records=[])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        await adapter.find_track_record([TargetEntityRef(entity_kind="Technology", entity_id="t")])
+
+        # Assert — a read traversal routes read, not the write default.
+        kwargs = driver.execute_query.call_args.kwargs
+        assert kwargs["routing_"] is RoutingControl.READ
+        assert kwargs["database_"] == "sofia"
+
+    async def test_find_track_record_query_matches_observed_in_on_active_patterns(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(records=[])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        await adapter.find_track_record([TargetEntityRef(entity_kind="Technology", entity_id="t")])
+
+        # Assert — the single-store traversal (ADR-002 §6 check 4): ObservedPattern
+        # OBSERVED_IN the target, active patterns only.
+        query = driver.execute_query.call_args.args[0]
+        assert "ObservedPattern" in query
+        assert "OBSERVED_IN" in query
+        assert "active" in query
+
+    async def test_find_track_record_maps_each_record_to_a_candidate_record(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(
+            records=[
+                {
+                    "node_id": "op-1",
+                    "origin_mechanism": "derived",
+                    "derivation_class": "distilled",
+                    "node_confidence": 0.8,
+                    "edge_confidence": 0.6,
+                    "first_observed_at": "2026-01-01T00:00:00Z",
+                    "last_observed_at": "2026-06-01T00:00:00Z",
+                }
+            ]
+        )
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        results = await adapter.find_track_record(
+            [TargetEntityRef(entity_kind="Technology", entity_id="t")]
+        )
+
+        # Assert — uncomposed: node reliability and edge certainty both carried,
+        # never combined (SDD-001 §3.3.3).
+        assert len(results) == 1
+        record = results[0]
+        assert record.node_id == "op-1"
+        assert record.origin_mechanism == "derived"
+        assert record.derivation_class == "distilled"
+        assert record.node_confidence == 0.8
+        assert record.edge_confidence == 0.6
+        assert record.first_observed_at == "2026-01-01T00:00:00Z"
+        assert record.last_observed_at == "2026-06-01T00:00:00Z"
+
+    async def test_find_track_record_maps_a_null_confidence_through_honestly(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange — confidence is T2 on both surfaces (DDR-002 §7); no DB
+        # constraint or CI check guarantees its presence, so a null must map
+        # through rather than being defaulted or rejected.
+        driver.execute_query.return_value = SimpleNamespace(
+            records=[
+                {
+                    "node_id": "op-1",
+                    "origin_mechanism": "derived",
+                    "derivation_class": "distilled",
+                    "node_confidence": None,
+                    "edge_confidence": None,
+                    "first_observed_at": None,
+                    "last_observed_at": None,
+                }
+            ]
+        )
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        results = await adapter.find_track_record(
+            [TargetEntityRef(entity_kind="Technology", entity_id="t")]
+        )
+
+        # Assert
+        assert results[0].node_confidence is None
+        assert results[0].edge_confidence is None
+
+    async def test_find_track_record_with_no_matches_returns_empty(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(records=[])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        results = await adapter.find_track_record(
+            [TargetEntityRef(entity_kind="Technology", entity_id="t")]
+        )
+
+        # Assert
+        assert results == []
+
+    async def test_find_track_record_before_connect_raises_runtime_error(
+        self, settings: Settings, driver_factory: MagicMock
+    ) -> None:
+        # Arrange — a data operation with no open driver must fail loud, never
+        # silently return an empty (and misleading) track record.
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+
+        # Act / Assert
+        with pytest.raises(RuntimeError, match="driver"):
+            await adapter.find_track_record(
+                [TargetEntityRef(entity_kind="Technology", entity_id="t")]
+            )

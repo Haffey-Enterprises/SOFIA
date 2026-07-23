@@ -6,12 +6,13 @@
 # Revised: 2026-07-23
 # Description: The knowledge-service FastAPI application (SDD-001 §4.1) — app
 #   construction, lifespan-owned driver wiring, the in-process schema-metadata
-#   registry, correlation-ID middleware, the graph-store and schema-registry
-#   dependencies, the SDD-001 §3.2 typed-error handler, and the §3.1 health and
-#   readiness routes. Per SDD-001 §4.1 this module homes the routes directly;
-#   this service's tree has no separate api/ layer. The lifespan is the single
-#   place a Neo4j driver is opened in this platform (ADR-002 §2.5) and the place
-#   the schema-metadata registry is loaded (SDD-001 §3.1 check 2).
+#   registry, correlation-ID middleware, the graph-store/schema-registry/
+#   predicate-evaluator dependencies, the SDD-001 §3.2 typed-error handler, the
+#   §3.1 health and readiness routes, and (RBT-78/R3a) the first §3.3 read
+#   route, track-record-lookup. Per SDD-001 §4.1 this module homes the routes
+#   directly; this service's tree has no separate api/ layer. The lifespan is
+#   the single place a Neo4j driver is opened in this platform (ADR-002 §2.5)
+#   and the place the schema-metadata registry is loaded (SDD-001 §3.1 check 2).
 ##############################################################################
 
 from collections.abc import AsyncIterator
@@ -26,11 +27,22 @@ from starlette.requests import Request
 from app.adapters.neo4j_adapter import Neo4jAdapter
 from app.config import Settings, get_settings
 from app.domain.exceptions import GatewayError, resolve_http_status
+from app.domain.retrieval.track_record_lookup import track_record_lookup
+from app.domain.retrieval.types import ConsumingContext
+from app.domain.shared.predicate_evaluators import FailClosedPredicateEvaluator
 from app.domain.shared.schema_metadata import SchemaRegistry, load_core_registry
-from app.models import CheckStatus, ErrorResponse, HealthResponse, ReadinessResponse
+from app.models import (
+    CheckStatus,
+    ErrorResponse,
+    HealthResponse,
+    ReadinessResponse,
+    ReadResult,
+    TrackRecordLookupRequest,
+)
 from app.observability.correlation_id import CorrelationIdMiddleware
 from app.observability.logging import configure_logging
-from app.ports.graph_store import GraphStoragePort
+from app.ports.graph_store import GraphStoragePort, TargetEntityRef
+from app.ports.predicate_eval import PredicateEvaluationPort
 
 log = structlog.get_logger()
 
@@ -161,11 +173,25 @@ def get_schema_registry(request: Request) -> SchemaRegistry:
     return registry
 
 
+def get_predicate_evaluator() -> PredicateEvaluationPort:
+    """Return the production predicate-evaluation port.
+
+    Stateless and constructed fresh per request — cheap, since
+    `FailClosedPredicateEvaluator` holds no state — and lets a test override
+    this dependency with a controllable double without touching the route.
+
+    Returns:
+        The production fail-closed evaluator.
+    """
+    return FailClosedPredicateEvaluator()
+
+
 # Annotated dependencies rather than call-in-default: same wiring, and it
 # keeps the module clean under ruff's B008 without suppressing the rule.
 SettingsDep = Annotated[Settings, Depends(get_settings)]
 GraphStoreDep = Annotated[GraphStoragePort, Depends(get_graph_store)]
 SchemaRegistryDep = Annotated[SchemaRegistry, Depends(get_schema_registry)]
+PredicateEvaluatorDep = Annotated[PredicateEvaluationPort, Depends(get_predicate_evaluator)]
 
 
 @app.get("/healthz", response_model=HealthResponse, tags=["health"])
@@ -224,3 +250,41 @@ async def readyz(
         checks=checks,
     )
     return JSONResponse(content=body.model_dump(mode="json"), status_code=200 if ready else 503)
+
+
+@app.post(
+    "/api/v1/track-record-lookup",
+    response_model=ReadResult,
+    tags=["retrieval"],
+)
+async def track_record_lookup_endpoint(
+    request: TrackRecordLookupRequest,
+    graph_store: GraphStoreDep,
+    predicate_evaluator: PredicateEvaluatorDep,
+) -> ReadResult:
+    """Operational-plane track-record-lookup (SDD-001 §3.3.3).
+
+    Returns `ObservedPattern` lesson-reliability and `OBSERVED_IN` per-target
+    certainty as uncomposed structural facts on the envelope — composing them
+    is the solutioning-agent SDD's call, not this gateway's to make. The
+    schema-metadata registry is not consulted here: this operation performs no
+    write-path validation.
+
+    Args:
+        request: The target entities and the §3.2 consuming-context payload.
+        graph_store: The graph port.
+        predicate_evaluator: The predicate port (production: fail-closed).
+
+    Returns:
+        The admitted envelopes and disclosed exclusions.
+    """
+    target_refs = [
+        TargetEntityRef(entity_kind=ref.entity_kind, entity_id=ref.entity_id)
+        for ref in request.target_refs
+    ]
+    context = ConsumingContext(
+        environment_class=request.consuming_context.environment_class,
+        data_classification=request.consuming_context.data_classification,
+        declared_fields=request.consuming_context.declared_fields,
+    )
+    return await track_record_lookup(target_refs, context, graph_store, predicate_evaluator)

@@ -181,7 +181,26 @@ class ResultEnvelope(BaseModel):
     binding adapter projects onto the conformance seam's `{id, node_kind}`
     shape. `confidences` holds node confidence first, then any composed edge
     confidences (DDR-002 §3/§4 semantics) — plural because a traversal may
-    compose more than one.
+    compose more than one; an element is `None` when the underlying graph
+    property is absent (R3a review finding) — no DDR-002 constraint or CI
+    check guarantees presence on every confidence-bearing surface (contrast
+    `Evidence.confidence`, which check #28 covers specifically). `version` /
+    `version_pin` are optional (R3a correction): DDR-002 §6 scopes the
+    versioning/supersession model to Catalog/Standards/RateCard/PlaneDefinition
+    only — an Operational-plane `ObservedPattern` (§2.3) distills
+    update-in-place and carries no `version` property at all, so a
+    non-versioned node's envelope carries `None` here rather than a fabricated
+    value.
+
+    `effective_from`/`effective_to` carry **plane-dependent** semantics (R3a
+    review finding) — there is one pair of fields, not one meaning: for a
+    versioned plane (Catalog/Standards/RateCard/PlaneDefinition, DDR-002 §6)
+    they are the effective-dating window (`effective_from`/`superseded_by`-
+    adjacent); for an update-in-place Operational node (e.g. `ObservedPattern`,
+    §2.3) they are the observation window (`first_observed_at`/
+    `last_observed_at`) — there is no version-effective window to report. A
+    consumer cannot tell which from the envelope alone; it is a function of
+    `node_kind` (and, transitively, `plane_labels`).
     """
 
     node_id: str
@@ -189,11 +208,11 @@ class ResultEnvelope(BaseModel):
     plane_labels: list[str]
     origin_mechanism: str
     derivation_class: str | None = None
-    version: str
+    version: str | None = None
     effective_from: str | None = None
     effective_to: str | None = None
-    version_pin: str
-    confidences: list[float]
+    version_pin: str | None = None
+    confidences: list[float | None]
     applicability: ApplicabilityBlock
 
 
@@ -208,3 +227,34 @@ class ReadResult(BaseModel):
 
     admitted: list[ResultEnvelope]
     disclosures: list[DisclosureEntry]
+
+
+class TrackRecordTargetRef(BaseModel):
+    """One target entity in a track-record-lookup request (SDD-001 §3.3.3).
+
+    `entity_kind` is the target's label (also the OBSERVED_IN edge's target
+    type, DDR-002 §3); the four kinds do not share an ID namespace.
+    """
+
+    entity_kind: Literal["Technology", "Pattern", "Capability", "DeploymentEnvironment"]
+    entity_id: str
+
+
+class ConsumingContextPayload(BaseModel):
+    """The §3.2 consuming-context payload, as submitted on a request.
+
+    `declared_fields` carries the manifest-declared fields any applicable
+    `Condition.dependency_manifest` requires — introspected by the caller, not
+    the full graph-wide field superset.
+    """
+
+    environment_class: str
+    data_classification: str
+    declared_fields: dict[str, object] = Field(default_factory=dict)
+
+
+class TrackRecordLookupRequest(BaseModel):
+    """The track-record-lookup request body (SDD-001 §3.3.3)."""
+
+    target_refs: list[TrackRecordTargetRef]
+    consuming_context: ConsumingContextPayload

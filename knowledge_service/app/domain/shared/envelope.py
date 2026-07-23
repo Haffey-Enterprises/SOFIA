@@ -15,6 +15,17 @@
 #   app.domain.retrieval — a shared module must not depend on one specific
 #   consumer's types, or no other domain package (capture/promotion/ingestion)
 #   could reuse it.
+#   `version`/`version_pin` are optional (R3a correction, track-record-lookup):
+#   DDR-002 §6 scopes versioning/supersession to Catalog/Standards/RateCard/
+#   PlaneDefinition; an Operational-plane `ObservedPattern` distills
+#   update-in-place and carries no `version` property, so a non-versioned
+#   node's attribution carries `None` here rather than a fabricated value.
+#   `confidences` elements are individually optional (R3a review finding):
+#   DDR-002 §7's existence constraints cover only the provenance group + T1
+#   properties, and `confidence` is T2 on the surfaces this envelope draws
+#   from (e.g. `ObservedPattern.confidence`, `OBSERVED_IN.confidence`) with no
+#   CI check guaranteeing presence — unlike `Evidence.confidence` (check #28).
+#   A null confidence is carried honestly rather than crashing or defaulting.
 ##############################################################################
 
 from dataclasses import dataclass
@@ -35,6 +46,11 @@ class EnvelopeAttribution:
     `node_id` + `node_kind` are the identity/discriminator pair; `confidences`
     holds node confidence first, then any composed edge confidences (DDR-002
     §3/§4 semantics) — a tuple because a traversal may compose more than one.
+    An individual confidence is `None` when the underlying graph property is
+    absent — not guaranteed present by any DDR-002 constraint or CI check for
+    every surface that carries one. `version`/`version_pin` are `None` for a
+    non-versioned node type (e.g. an Operational `ObservedPattern`, which
+    distills update-in-place).
     """
 
     node_id: str
@@ -42,11 +58,11 @@ class EnvelopeAttribution:
     plane_labels: tuple[str, ...]
     origin_mechanism: str
     derivation_class: str | None
-    version: str
+    version: str | None
     effective_from: str | None
     effective_to: str | None
-    version_pin: str
-    confidences: tuple[float, ...]
+    version_pin: str | None
+    confidences: tuple[float | None, ...]
 
 
 def assemble_envelope(

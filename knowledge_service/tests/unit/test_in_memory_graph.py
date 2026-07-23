@@ -8,11 +8,13 @@
 #   every service test runs against (SDD-001 §6, no test depends on live
 #   Neo4j). The double is real behavior and is covered as such: its
 #   controllable connectivity verdict is what makes the §3.1 readiness check
-#   testable in both directions.
+#   testable in both directions, and (RBT-78/R3a) its controllable
+#   track-record candidate list is what makes read-discipline exercisable
+#   without modelling graph internals (§4.2 A3).
 ##############################################################################
 
 from app.adapters.in_memory_graph import InMemoryGraphStore
-from app.ports.graph_store import GraphStoragePort
+from app.ports.graph_store import GraphStoragePort, TargetEntityRef, TrackRecordCandidateRecord
 
 
 class TestInMemoryGraphStoreSubstitutability:
@@ -74,3 +76,53 @@ class TestInMemoryGraphStoreConnectivity:
         # Assert — lets a readiness test prove the check was exercised, not
         # short-circuited around.
         assert store.check_connectivity_calls == 2
+
+
+class TestInMemoryGraphStoreFindTrackRecord:
+    """The controllable candidate-record store (§4.2 A3)."""
+
+    async def test_find_track_record_with_no_candidates_set_returns_empty(self) -> None:
+        # Arrange
+        store = InMemoryGraphStore()
+
+        # Act
+        result = await store.find_track_record(
+            [TargetEntityRef(entity_kind="Technology", entity_id="t")]
+        )
+
+        # Assert
+        assert result == []
+
+    async def test_find_track_record_returns_the_configured_candidates(self) -> None:
+        # Arrange
+        store = InMemoryGraphStore()
+        candidate = TrackRecordCandidateRecord(
+            node_id="op-1",
+            origin_mechanism="derived",
+            derivation_class="distilled",
+            node_confidence=0.8,
+            edge_confidence=0.6,
+            first_observed_at="2026-01-01T00:00:00Z",
+            last_observed_at="2026-06-01T00:00:00Z",
+        )
+        store.set_track_record_candidates([candidate])
+
+        # Act
+        result = await store.find_track_record(
+            [TargetEntityRef(entity_kind="Technology", entity_id="t")]
+        )
+
+        # Assert
+        assert result == [candidate]
+
+    async def test_find_track_record_records_the_requested_target_refs(self) -> None:
+        # Arrange
+        store = InMemoryGraphStore()
+        refs = [TargetEntityRef(entity_kind="Pattern", entity_id="p-1")]
+
+        # Act
+        await store.find_track_record(refs)
+
+        # Assert — lets a test prove the operation forwarded the caller's
+        # target entities rather than dropping or substituting them.
+        assert store.find_track_record_calls == [refs]
