@@ -1,0 +1,1 @@
+{"finding_id":"8efe3e1b7efa2acf","classification":"decision-bearing","authority_locus":null,"rationale":"The finding targets ADR-004, which is absent from the ratified authority set; no fetched authority determines whether its exclusion category conforms, so the fix cannot be named.","confidence":"medium"}

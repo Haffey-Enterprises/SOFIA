@@ -27,7 +27,7 @@ The `bedrock:` corpus is multi-stack: each skill declares its own binding, and t
 
 ## Branch model
 
-`feature/*` → `develop` → `main`, via PRs; never commit directly to `main`. One exemption on `develop`, by artifact class: deliberation-state commits (`agent-loop/deliberation/`, run audits under `agent-loop/runs/`) may land directly — they are the session's own working record, not product. Everything else stays PR-gated. Confirm the current branch before any git operation.
+`feature/*` → `develop` → `main`, via PRs; never commit directly to `main`. All agent-loop deliberation/run artifacts (`agent-loop/deliberation/`, `agent-loop/runs/`) land via PR to `develop` like every other change — the prior direct-commit exemption is retired (ruled RBT-10 session, 2026-07-22, resolving the RBT-77-named conflict with branch protection). Confirm the current branch before any git operation.
 
 ## Services
 

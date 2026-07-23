@@ -1,0 +1,7 @@
+{
+  "finding_id": "9298a104cef145a6",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "ADR-004 is not in the fetched authority set; whether a standing read-discipline invariant warrants its own record versus enumeration inside this ADR is a placement choice no ratified authority disambiguates.",
+  "confidence": "medium"
+}

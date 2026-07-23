@@ -1,0 +1,9 @@
+ADR-004 is not in the provided authority set, so I cannot verify its text or whether a governing convention determines the fix. But the finding's substance maps onto a ratified convention.
+
+{
+  "finding_id": "ba2fd4e152d96ce2",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record-SKILL, amendment-lifecycle rule 'Every deferred obligation gets a home with a firing trigger' (also cold-read dangling-hinge gate)",
+  "rationale": "A deferred obligation lacking a locatable home and re-surfacing trigger is exactly the defect the skill's named convention prohibits; the fix (route to a named home with a firing trigger) is determined, not chosen.",
+  "confidence": "medium"
+}

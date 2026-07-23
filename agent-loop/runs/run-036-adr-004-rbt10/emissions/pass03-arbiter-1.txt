@@ -1,0 +1,9 @@
+ADR-004 is not in the fetched authorities; the finding turns on whether ADR-008's "ingestion mechanics" home is satisfied by an authority-only record vs one owning port mechanics — a scope-fit judgment no fetched authority disambiguates, and the target document is absent.
+
+{
+  "finding_id": "5041152469207d96",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "Whether ADR-004's authority-only content satisfies ADR-008's 'owns ingestion mechanics realization' home is a scope-fit choice no fetched authority resolves; target ADR-004 is absent.",
+  "confidence": "medium"
+}

@@ -1,0 +1,62 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["ADR-004"],
+"locus": "§2.2 Schema provisioning holds the sole-driver line",
+"claim": "§2.2 states schema provisioning 'is ordered ahead of the readiness schema-present check rather than passing through the validated write path that check guards. ... the service process can start and connect to an empty instance, so provisioning runs before readiness reports green (which checks that the schema is present).' SDD-001 §3.1 (cited by this ADR at §7) specifies readyz returns 503 unless '(2) schema metadata loaded — the PlaneDefinition registry and constraint/validation metadata the write paths enforce against — critical, fails readiness (the gateway must not execute writes it cannot validate)' and states 'There is no degraded mode.' The ADR asserts knowledge-service exposes and executes a schema-provisioning capability over its driver while the service is not-ready by its own cited readiness contract; the cited authority does not substantiate that knowledge-service can serve any operation (including a provisioning operation) before readiness reports green.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-004 §2.2 vs SDD-001 §3.1 (readiness: schema-present check fails readyz, no degraded mode)"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-004"],
+"locus": "§2.7 Authoritative-source fidelity control",
+"claim": "§2.7 claims to realize ADR-008's fidelity control and states 'read-exclusion of provisional ground truth is committed as a schema-level invariant ... That invariant is a forthcoming addition to the schema's read-discipline invariant set (a named amendment obligation), not one the schema already carries.' This ADR is PROPOSED and commits a schema-level invariant that DDR-002 does not carry, yet DDR-002 §7 (cited at §7) enumerates its read-discipline invariants (#9, #19, #21) with none covering provisional-authoritative-source read-exclusion; the ADR names an amendment obligation against DDR-002 without DDR-002 (or any accepted record) carrying it. The claimed schema-level enforcement locus is unsubstantiated in the cited schema authority at the time this record is offered.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "DDR-002 §7 (read-discipline invariant set — #9, #19, #21) — no provisional read-exclusion invariant present, cf. ADR-004 §2.7"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-004"],
+"locus": "§2.7 / §2.2 — routing of ingestion-mechanics authority",
+"claim": "§2.7 states this ADR 'is the record the governance record names as the home of the ingestion-mechanics authority.' ADR-008 §2.2 (cited at §7) routes the authoritative-source ingestion control to 'The forthcoming ingestion decision record; the knowledge-service ingestion port' and ADR-008 §7 names 'The forthcoming file-driven ingestion decision record — owns the ingestion mechanics realizing the authoritative-source ingestion control (§2.2).' ADR-008 routes the ingestion *mechanics realization* to the forthcoming record and separately routes port mechanics to knowledge-service; ADR-004 §2.7 simultaneously claims to be the home of ingestion-mechanics *authority* AND routes 'the port-level mechanics ... how the official-entry transition is enforced' to the knowledge-service design — the split between what this ADR owns and what the port owns is asserted but the cited ADR-008 loci do not distinguish 'authority' from 'mechanics' in the terms §2.7 uses to divide them.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-004 §2.7 vs ADR-008 §2.2 and §7 (ingestion decision record / knowledge-service ingestion port routing)"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["ADR-004"],
+"locus": "§2.5 / §5.3 — RG durability under the deferred production runtime",
+"claim": "§2.5 states RG durability 'rests on instance-level backup and restore. In the current development runtime that responsibility sits with the managed graph provider; the production runtime, and therefore its backup posture, is deferred (see §5.3).' ADR-002 §5.2 (cited at §7 as 'the managed-runtime backup/restore responsibility on which RG recovery rests') states the development managed-Aura runtime 'retires the self-managed operational burden — backup/restore, upgrade lifecycle, and cluster-health monitoring are the managed provider's responsibility.' The cited ADR-002 §5.2 substantiates the development-runtime claim; for production ADR-002 §5.2 states the burden 'returns for production ... weighed at the production-environment build' — the ADR-004 claim that production backup posture is deferred is consistent, but §2.5 asserts RG durability 'must not be presumed' source-recoverable without a cited invariant fixing that no instantiation path reconstructs RG — the guarantee rests only on §2.4's no-reset assertion, which is internal and adequately cross-referenced.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "ADR-002 §5.2 (managed-runtime backup/restore responsibility; production burden deferred to production-environment build)"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-004"],
+"locus": "§2.8 Write authorship of instantiation",
+"claim": "Checked §2.8's author/executor assignment against ADR-002 §2.6's general write-authority principle (every authoritative graph write has a named component-scoped author; the sole-owner gateway is sole executor and never the author). §2.8 conforms: it names the accountable authority declared by the source artifact (human curator / fidelity verifier) as author, the gateway as sole executor never author, and the loader as neither — a clean instance of the ADR-002 §2.6 principle for the instantiation domain. Attack: I sought an author-diffusion or gateway-as-author leak and found none; the loader is explicitly excluded from authorship. Held.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "ADR-002 §2.6 (author/executor/authorizer separation — gateway sole executor, never author)"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-004"],
+"locus": "§2.4 Additive by supersession, never destructive",
+"claim": "Checked §2.4's additive-by-supersession commitment against DDR-002 §6 (Option A supersession — retained version nodes, effective-dating, superseded_by, never-delete) and DDR-002 §7 #8 (never-delete). §2.4 conforms: it selects create/supersede/no-new-version per node by graph state (not by a loader mode), requires a source-artifact version increment to change versioned ground truth, and exposes no destructive-reset operation — an accurate application of the schema's supersession and never-delete disciplines with no overwrite path. Attack: I sought an in-place-overwrite or wipe-and-reload path that would contradict DDR-002 §6/#8; §2.4 explicitly forecloses both. Held.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "DDR-002 §6 (Option A supersession) and §7 #8 (never-delete)"
+}
+}
+]

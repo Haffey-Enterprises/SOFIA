@@ -1,0 +1,1 @@
+{"finding_id":"f089070e090281f0","classification":"decision-bearing","authority_locus":null,"rationale":"ADR-004 names an amendment obligation for a provisional-read-exclusion invariant that DDR-002 §7 does not yet carry; enforcing the fidelity control requires a schema addition no ratified authority supplies.","confidence":"high"}

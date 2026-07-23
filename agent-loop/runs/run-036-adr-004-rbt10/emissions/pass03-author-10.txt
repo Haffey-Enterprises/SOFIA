@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "dbad933633392115",
+  "reason": "The named authority requires a home 'whose body names the re-surfacing event' but neither identifies which existing artifact/ticket should host the deferral nor supplies a firing trigger the ADR text determines; choosing the home (a new ticket vs. SDD-001 §3.6 vs. the unauthored capability design) and inventing the trigger event are unratified decisions.",
+  "confidence": "high"
+}

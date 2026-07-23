@@ -1,0 +1,1 @@
+{"finding_id": "28c1a26163a267a7", "classification": "decision-bearing", "authority_locus": null, "rationale": "The finding exposes an unratified interaction between the provisioning-ordering claim and SDD-001's no-degraded-mode readiness gate; no authority disambiguates how provisioning runs before readiness green.", "confidence": "medium"}

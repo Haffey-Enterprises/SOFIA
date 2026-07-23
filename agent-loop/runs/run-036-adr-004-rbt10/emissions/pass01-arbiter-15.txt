@@ -1,0 +1,1 @@
+{"finding_id":"459c446f017af1d2","classification":"decision-bearing","authority_locus":null,"rationale":"The finding targets ADR-004, absent from the ratified authority set; its cited authorities defer the production runtime/backup posture, so no existing authority determines the fix.","confidence":"high"}

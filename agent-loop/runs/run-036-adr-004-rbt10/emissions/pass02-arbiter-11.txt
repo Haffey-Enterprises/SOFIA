@@ -1,0 +1,1 @@
+{"finding_id":"0793ed8eb06d74f9","classification":"decision-bearing","authority_locus":null,"rationale":"ADR-008 §2.2/§7 route ingestion mechanics to the forthcoming record and draw no authority-vs-mechanics split; resolving whether ADR-004 owns bare authority while disclaiming mechanics requires a scope decision no authority fixes.","confidence":"high"}

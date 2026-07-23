@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "4ec9d57d6ddc0830",
+  "reason": "The rule 'every deferred obligation gets a home with a firing trigger' requires naming a concrete home (ticket/record) and a firing trigger, but the authority does not determine WHICH ticket, record, or trigger event that is — choosing them is an unratified decision belonging to the operator.",
+  "confidence": "high"
+}

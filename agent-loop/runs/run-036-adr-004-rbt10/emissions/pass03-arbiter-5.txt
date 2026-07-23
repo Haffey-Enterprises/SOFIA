@@ -1,0 +1,11 @@
+ADR-004 is not in the provided authority set; I cannot fetch or verify its §2.2 or §7 text, and the finding turns on a coherence conflict between an unfetchable ADR-004 clause and SDD-001 §3.1. Whether the conflict is real, and whether any higher authority disambiguates the provisioning-vs-readiness ordering, cannot be established from what is present — and if real, it is an unresolved conflict between two design loci with no ratified rule on pre-readiness provisioning.
+
+```json
+{
+  "finding_id": "afa739934083596c",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "ADR-004 text is absent from the authority set; the alleged provisioning-vs-readiness conflict cannot be verified or shown resolved by any fetched higher authority, and no ratified rule governs pre-readiness provisioning.",
+  "confidence": "medium"
+}
+```

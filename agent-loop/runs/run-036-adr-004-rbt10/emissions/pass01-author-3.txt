@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "3d7f1f5fad3d5790",
+  "reason": "The cited authority ('every deferred obligation gets a home with a firing trigger') requires supplying a home and a firing trigger, but names neither a specific ticket id, decision record, nor trigger condition — the document supplies none and the authority does not determine which one to write, so any edit would fabricate the choice.",
+  "confidence": "high"
+}

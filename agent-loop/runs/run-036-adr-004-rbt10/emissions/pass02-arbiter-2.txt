@@ -1,0 +1,1 @@
+{"finding_id":"380c6cfeaa53e0d4","classification":"decision-bearing","authority_locus":null,"rationale":"ADR-008 §2.2/§7 assign the forthcoming record the ingestion mechanics; whether ADR-004 owns those mechanics or routes them to knowledge-service is an unratified scope choice no authority disambiguates.","confidence":"medium"}

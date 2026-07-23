@@ -1,0 +1,1 @@
+{"finding_id":"17fe572a6ec7e56e","classification":"decision-bearing","authority_locus":null,"rationale":"ADR-004 is not in the ratified set; whether a standing read-discipline invariant warrants its own decision surface is an authoring judgment no cited authority disambiguates.","confidence":"high"}

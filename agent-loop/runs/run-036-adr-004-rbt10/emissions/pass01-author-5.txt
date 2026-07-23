@@ -1,0 +1,9 @@
+{
+  "action": "close_satisfied",
+  "finding_id": "d5a165060ccda597",
+  "evidence_present": "In the current development runtime that responsibility sits with the managed graph provider; the production runtime, and therefore its backup posture, is deferred (see §5.3).",
+  "evidence_absent": null,
+  "authority_satisfied": "ADR-002 §5.2 (managed-Aura runtime retires self-managed backup/restore burden — managed provider's responsibility)",
+  "rationale": "The finding itself states the ADR-004 text is consistent with ADR-002 §5.2 with no internal contradiction; the conforming state is quotable verbatim.",
+  "confidence": "high"
+}

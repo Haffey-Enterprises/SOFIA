@@ -1,0 +1,1 @@
+{"finding_id":"df712e9e1741d47f","classification":"decision-bearing","authority_locus":null,"rationale":"The cited document ADR-004 is not in the provided authority set, and the deferral-home discipline it implicates requires choosing a concrete ticket/trigger no ratified authority dictates.","confidence":"medium"}
