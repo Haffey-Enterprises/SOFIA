@@ -27,8 +27,10 @@ from neo4j import AsyncDriver, AsyncGraphDatabase, RoutingControl
 
 from app.config import Settings
 from app.ports.graph_store import (
+    CapabilityBlockRecord,
     ResolvedConditionRecord,
     ResolveTechnologyCandidateRecord,
+    SelectPatternsCandidateRecord,
     TargetEntityKind,
     TargetEntityRef,
     TrackRecordCandidateRecord,
@@ -137,6 +139,103 @@ RETURN
   } AS retracted,
   [c IN governing_conditions WHERE c IS NOT NULL |
     {predicate: c.predicate, dependency_manifest: c.dependency_manifest}] AS conditions
+"""
+
+# One traversal (ADR-002 §6 check 4): every Pattern REQUIRES_CAPABILITY any
+# requested Capability, with the Pattern's OWN read-discipline structure
+# resolved via the SAME sub-pattern _RESOLVE_TECHNOLOGY_QUERY uses (governing
+# PromotionDecision -> HAS_CONDITION; EXISTS-based approving-RETRACTS check;
+# see that query's comments for the full rationale — unchanged here), plus,
+# per matched Capability, its taxonomy placement and every Technology
+# APPROVED_OPTION_FOR it, each resolved EXACTLY as _RESOLVE_TECHNOLOGY_QUERY
+# resolves one. No active/version scoping is applied, matching that query: all
+# three traversed edges (REQUIRES_CAPABILITY, APPROVED_OPTION_FOR,
+# PREFERRED_OVER) are declared `rebind:current` (DDR-002 §3) — supersession
+# re-points them, so they structurally target the current version already; no
+# explicit WHERE-status filter is needed or invented.
+#
+# One row per (pattern, matched capability, technology) triple; a capability
+# with no approved Technology (the gap signal, SDD-001 §3.3.1 ruling #6)
+# yields one row with every tech_* field null via the OPTIONAL MATCH — the
+# adapter's mapping treats a null tech_node_id as "no candidate", never a
+# phantom entry. PREFERRED_OVER and the Pattern's own read-discipline fields
+# are resolved once per pattern (in dedicated CALL{} blocks scoped before the
+# capability/technology MATCH), so they repeat identically across every row of
+# the same pattern — the adapter groups by node_id/capability_id in Python
+# rather than nesting the aggregation in Cypher, the same client-side-mapping
+# discipline every adapter method here already uses.
+_SELECT_PATTERNS_QUERY = """
+MATCH (p:Catalog:Pattern)-[:REQUIRES_CAPABILITY]->(c0:Catalog:Capability)
+WHERE c0.capability_id IN $capability_ids
+WITH DISTINCT p
+CALL {
+  WITH p
+  OPTIONAL MATCH (promotion:Reasoning:CandidatePromotion {proposal_kind: 'promotion'})
+    -[:PROMOTES_TO_KNOWLEDGE]->(p)
+  OPTIONAL MATCH (promotion)<-[decided:DECIDED_ON]-(decision:Governance:PromotionDecision)
+  WHERE decided.outcome IN ['approved', 'approved_conditional']
+  WITH decision
+  ORDER BY decision.decided_at DESC
+  LIMIT 1
+  OPTIONAL MATCH (decision)-[:HAS_CONDITION]->(condition:Governance:Condition)
+  RETURN collect(DISTINCT condition) AS pattern_governing_conditions
+}
+CALL {
+  WITH p
+  OPTIONAL MATCH (p)-[:PREFERRED_OVER]->(other:Catalog:Pattern)
+  RETURN collect(DISTINCT other.pattern_id) AS preferred_over
+}
+MATCH (p)-[:REQUIRES_CAPABILITY]->(cap:Catalog:Capability)
+WHERE cap.capability_id IN $capability_ids
+OPTIONAL MATCH (tech:Catalog:Technology)-[:APPROVED_OPTION_FOR]->(cap)
+CALL {
+  WITH tech
+  OPTIONAL MATCH (tpromotion:Reasoning:CandidatePromotion {proposal_kind: 'promotion'})
+    -[:PROMOTES_TO_KNOWLEDGE]->(tech)
+  OPTIONAL MATCH (tpromotion)<-[tdecided:DECIDED_ON]-(tdecision:Governance:PromotionDecision)
+  WHERE tech IS NOT NULL AND tdecided.outcome IN ['approved', 'approved_conditional']
+  WITH tdecision
+  ORDER BY tdecision.decided_at DESC
+  LIMIT 1
+  OPTIONAL MATCH (tdecision)-[:HAS_CONDITION]->(tcondition:Governance:Condition)
+  RETURN collect(DISTINCT tcondition) AS tech_governing_conditions
+}
+RETURN
+  p.pattern_id AS node_id,
+  p.version AS version,
+  p.origin_mechanism AS origin_mechanism,
+  p.derivation_class AS derivation_class,
+  p.applicability_state AS applicability_state,
+  EXISTS {
+    MATCH (retraction:Reasoning:CandidatePromotion {proposal_kind: 'retraction'})
+      -[:RETRACTS]->(p)
+    MATCH (retraction)<-[retraction_decided:DECIDED_ON]-(:Governance:PromotionDecision)
+    WHERE retraction_decided.outcome IN ['approved', 'approved_conditional']
+  } AS retracted,
+  [c IN pattern_governing_conditions WHERE c IS NOT NULL |
+    {predicate: c.predicate, dependency_manifest: c.dependency_manifest}] AS conditions,
+  preferred_over,
+  cap.capability_id AS capability_id,
+  cap.l1_taxonomy AS l1_taxonomy,
+  cap.l2_taxonomy AS l2_taxonomy,
+  cap.l3_taxonomy AS l3_taxonomy,
+  tech.technology_id AS tech_node_id,
+  tech.version AS tech_version,
+  tech.origin_mechanism AS tech_origin_mechanism,
+  tech.derivation_class AS tech_derivation_class,
+  tech.tier_applicability AS tech_tier_applicability,
+  tech.approved_data_classifications AS tech_approved_data_classifications,
+  tech.applicability_state AS tech_applicability_state,
+  tech.deprecation_date AS tech_deprecation_date,
+  (tech IS NOT NULL AND EXISTS {
+    MATCH (tretraction:Reasoning:CandidatePromotion {proposal_kind: 'retraction'})
+      -[:RETRACTS]->(tech)
+    MATCH (tretraction)<-[tretraction_decided:DECIDED_ON]-(:Governance:PromotionDecision)
+    WHERE tretraction_decided.outcome IN ['approved', 'approved_conditional']
+  }) AS tech_retracted,
+  [c IN tech_governing_conditions WHERE c IS NOT NULL |
+    {predicate: c.predicate, dependency_manifest: c.dependency_manifest}] AS tech_conditions
+ORDER BY node_id, capability_id, tech_node_id
 """
 
 
@@ -346,4 +445,120 @@ class Neo4jAdapter:
                 ),
             )
             for record in result.records
+        ]
+
+    async def select_patterns(
+        self, capability_ids: Sequence[str]
+    ) -> Sequence[SelectPatternsCandidateRecord]:
+        """Resolve candidate Patterns for the given required Capabilities.
+
+        One single-store Cypher traversal (ADR-002 §6 check 4). Structural
+        match and read-discipline-structure resolution only — no exclusion and
+        no eligibility computation happen here (SDD-001 §4.4 and
+        app.domain.shared.catalog_eligibility are the operation's job).
+
+        Args:
+            capability_ids: The required Capabilities to resolve candidate
+                Patterns for.
+
+        Returns:
+            One `SelectPatternsCandidateRecord` per candidate Pattern, each
+            with one `CapabilityBlockRecord` per matched requested Capability.
+
+        Raises:
+            RuntimeError: If no driver is open — a data operation with no
+                driver must fail loud, never silently return an empty (and
+                misleading) result.
+        """
+        if self._driver is None:
+            raise RuntimeError("No graph driver is open: application startup did not complete")
+
+        if not capability_ids:
+            return []
+
+        result = await self._driver.execute_query(
+            _SELECT_PATTERNS_QUERY,
+            {"capability_ids": list(capability_ids)},
+            routing_=RoutingControl.READ,
+            database_=self._settings.neo4j_database,
+        )
+
+        patterns: dict[str, dict[str, Any]] = {}
+        for record in result.records:
+            pattern_entry = patterns.setdefault(
+                record["node_id"],
+                {
+                    "version": record["version"],
+                    "origin_mechanism": record["origin_mechanism"],
+                    "derivation_class": record["derivation_class"],
+                    "applicability_state": record["applicability_state"] or "unconditional",
+                    "retracted": record["retracted"],
+                    "conditions": record["conditions"],
+                    "preferred_over": record["preferred_over"],
+                    "capabilities": {},
+                },
+            )
+            cap_entry = pattern_entry["capabilities"].setdefault(
+                record["capability_id"],
+                {
+                    "l1_taxonomy": record["l1_taxonomy"],
+                    "l2_taxonomy": record["l2_taxonomy"],
+                    "l3_taxonomy": record["l3_taxonomy"],
+                    "technology_options": [],
+                },
+            )
+            if record["tech_node_id"] is not None:
+                cap_entry["technology_options"].append(
+                    ResolveTechnologyCandidateRecord(
+                        node_id=record["tech_node_id"],
+                        version=record["tech_version"],
+                        origin_mechanism=record["tech_origin_mechanism"],
+                        derivation_class=record["tech_derivation_class"],
+                        tier_applicability=tuple(record["tech_tier_applicability"] or ()),
+                        approved_data_classifications=tuple(
+                            record["tech_approved_data_classifications"] or ()
+                        ),
+                        applicability_state=record["tech_applicability_state"] or "unconditional",
+                        retracted=record["tech_retracted"],
+                        deprecation_date=record["tech_deprecation_date"],
+                        conditions=tuple(
+                            ResolvedConditionRecord(
+                                predicate=condition["predicate"],
+                                required_context_fields=frozenset(
+                                    condition["dependency_manifest"] or ()
+                                ),
+                            )
+                            for condition in record["tech_conditions"]
+                        ),
+                    )
+                )
+
+        return [
+            SelectPatternsCandidateRecord(
+                node_id=node_id,
+                version=entry["version"],
+                origin_mechanism=entry["origin_mechanism"],
+                derivation_class=entry["derivation_class"],
+                applicability_state=entry["applicability_state"],
+                retracted=entry["retracted"],
+                conditions=tuple(
+                    ResolvedConditionRecord(
+                        predicate=condition["predicate"],
+                        required_context_fields=frozenset(condition["dependency_manifest"] or ()),
+                    )
+                    for condition in entry["conditions"]
+                ),
+                capabilities=tuple(
+                    CapabilityBlockRecord(
+                        capability_id=capability_id,
+                        l1_taxonomy=cap["l1_taxonomy"],
+                        l2_taxonomy=cap["l2_taxonomy"],
+                        l3_taxonomy=cap["l3_taxonomy"],
+                        technology_options=tuple(cap["technology_options"]),
+                    )
+                    for capability_id, cap in entry["capabilities"].items()
+                ),
+                preferred_over=tuple(entry["preferred_over"]),
+            )
+            for node_id, entry in patterns.items()
         ]

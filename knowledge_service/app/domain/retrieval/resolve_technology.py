@@ -39,21 +39,12 @@
 #   value-set, DDR-002 §2.1).
 ##############################################################################
 
-import structlog
-
 from app.domain.retrieval.read_discipline import apply_read_discipline
-from app.domain.retrieval.types import CandidateNode, ConditionRef, ConsumingContext
-from app.domain.shared.catalog_eligibility import compute_catalog_eligibility
-from app.domain.shared.envelope import EnvelopeAttribution
-from app.models import DeprecationNotice, ReadResult
-from app.ports.graph_store import GraphStoragePort, ResolveTechnologyCandidateRecord
+from app.domain.retrieval.technology_candidate import to_technology_candidate
+from app.domain.retrieval.types import ConsumingContext
+from app.models import ReadResult
+from app.ports.graph_store import GraphStoragePort
 from app.ports.predicate_eval import PredicateEvaluationPort
-
-log = structlog.get_logger()
-
-# The one origin_mechanism that may carry applicability_state: conditional or
-# a governing RETRACTS edge (DDR-002 §5 / §7 #21). Checked, not assumed.
-_PROMOTED_ONLY_ORIGIN_MECHANISM = "promoted"
 
 
 async def resolve_technology(
@@ -82,77 +73,7 @@ async def resolve_technology(
     records = await graph_store.resolve_technology_options(capability_id)
     candidates = [
         candidate
-        for candidate in (_to_candidate(record, context) for record in records)
+        for candidate in (to_technology_candidate(record, context) for record in records)
         if candidate is not None
     ]
     return await apply_read_discipline(candidates, context, predicate_evaluator)
-
-
-def _to_candidate(
-    record: ResolveTechnologyCandidateRecord, context: ConsumingContext
-) -> CandidateNode | None:
-    """Map one raw resolve-technology record into a `CandidateNode`.
-
-    Args:
-        record: The port-level structural facts for one approved Technology
-            option.
-        context: The §3.2 consuming-context payload — supplies the fields the
-            Catalog-eligibility fit-rule checks against.
-
-    Returns:
-        The `CandidateNode`, carrying the real retraction/conditional
-        structure the traversal resolved plus the computed Catalog-eligibility
-        verdict and deprecation notice, or `None` if the record's
-        origin_mechanism contradicts a promoted-only surface it claims to
-        carry — excluded, fail-closed, rather than admitted (or silently
-        trusted) on a broken assumption.
-    """
-    claims_promoted_only_state = record.retracted or record.applicability_state == "conditional"
-    if claims_promoted_only_state and record.origin_mechanism != _PROMOTED_ONLY_ORIGIN_MECHANISM:
-        log.warning(
-            "resolve_technology_candidate_excluded",
-            node_id=record.node_id,
-            reason="promoted_only_state_on_non_promoted_origin",
-            origin_mechanism=record.origin_mechanism,
-            retracted=record.retracted,
-            applicability_state=record.applicability_state,
-        )
-        return None
-
-    eligibility = compute_catalog_eligibility(
-        tier_applicability=record.tier_applicability,
-        approved_data_classifications=record.approved_data_classifications,
-        environment_class=context.environment_class,
-        data_classification=context.data_classification,
-    )
-    deprecation = DeprecationNotice(
-        deprecated=record.deprecation_date is not None,
-        deprecation_date=record.deprecation_date,
-    )
-
-    return CandidateNode(
-        attribution=EnvelopeAttribution(
-            node_id=record.node_id,
-            node_kind="Technology",
-            plane_labels=("Catalog",),
-            origin_mechanism=record.origin_mechanism,
-            derivation_class=record.derivation_class,
-            version=record.version,
-            effective_from=None,
-            effective_to=None,
-            version_pin=record.version,
-            confidences=(),
-            catalog_eligibility=eligibility,
-            deprecation=deprecation,
-        ),
-        proposal_pending=False,
-        retracted=record.retracted,
-        applicability_state=record.applicability_state,
-        conditions=tuple(
-            ConditionRef(
-                predicate=condition.predicate,
-                required_context_fields=condition.required_context_fields,
-            )
-            for condition in record.conditions
-        ),
-    )

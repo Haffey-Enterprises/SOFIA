@@ -8,17 +8,18 @@
 #   knowledge-service test runs against (SDD-001 §4.2, §6). It is a first-class
 #   implementation of the port, not a mock: keeping it a true substitute is
 #   what lets the domain suite verify behavior without a live Neo4j, and it is
-#   never omitted from coverage measurement. RBT-78/R3a added find_track_record
-#   and R3b adds resolve_technology_options, both as controllable candidate-
-#   record stores (§4.2 A3): tests set the exact records each returns, so the
-#   operation and read-discipline layers can be exercised without modelling
-#   graph internals.
+#   never omitted from coverage measurement. RBT-78/R3a added find_track_record,
+#   R3b added resolve_technology_options, and R3c adds select_patterns — all
+#   controllable candidate-record stores (§4.2 A3): tests set the exact records
+#   each returns, so the operation and read-discipline layers can be exercised
+#   without modelling graph internals.
 ##############################################################################
 
 from collections.abc import Sequence
 
 from app.ports.graph_store import (
     ResolveTechnologyCandidateRecord,
+    SelectPatternsCandidateRecord,
     TargetEntityRef,
     TrackRecordCandidateRecord,
 )
@@ -50,6 +51,8 @@ class InMemoryGraphStore:
         self._find_track_record_calls: list[Sequence[TargetEntityRef]] = []
         self._technology_option_candidates: list[ResolveTechnologyCandidateRecord] = []
         self._resolve_technology_options_calls: list[str] = []
+        self._pattern_candidates: list[SelectPatternsCandidateRecord] = []
+        self._select_patterns_calls: list[Sequence[str]] = []
 
     @property
     def check_connectivity_calls(self) -> int:
@@ -77,6 +80,15 @@ class InMemoryGraphStore:
         rather than dropping or substituting it.
         """
         return self._resolve_technology_options_calls
+
+    @property
+    def select_patterns_calls(self) -> list[Sequence[str]]:
+        """The `capability_ids` argument of every `select_patterns` call.
+
+        Lets a test assert the operation forwarded the caller's required
+        capabilities rather than dropping or substituting them.
+        """
+        return self._select_patterns_calls
 
     def set_connectivity(self, *, healthy: bool) -> None:
         """Set the verdict subsequent connectivity checks will report.
@@ -108,6 +120,16 @@ class InMemoryGraphStore:
                 store (SDD-001 §4.2 A3), not a graph-internals model.
         """
         self._technology_option_candidates = list(candidates)
+
+    def set_pattern_candidates(self, candidates: Sequence[SelectPatternsCandidateRecord]) -> None:
+        """Set the candidate records subsequent `select_patterns` calls return.
+
+        Args:
+            candidates: The records to return, unconditionally on the
+                requested `capability_ids` — this is a controllable record
+                store (SDD-001 §4.2 A3), not a graph-internals model.
+        """
+        self._pattern_candidates = list(candidates)
 
     async def check_connectivity(self) -> bool:
         """Report the configured connectivity verdict.
@@ -149,3 +171,19 @@ class InMemoryGraphStore:
         """
         self._resolve_technology_options_calls.append(capability_id)
         return list(self._technology_option_candidates)
+
+    async def select_patterns(
+        self, capability_ids: Sequence[str]
+    ) -> Sequence[SelectPatternsCandidateRecord]:
+        """Report the configured candidate Pattern records.
+
+        Args:
+            capability_ids: Recorded for test assertion; does not filter the
+                configured candidates (a faithful port-level substitute per
+                §4.2 need not model graph internals).
+
+        Returns:
+            The candidates currently set on this double.
+        """
+        self._select_patterns_calls.append(capability_ids)
+        return list(self._pattern_candidates)

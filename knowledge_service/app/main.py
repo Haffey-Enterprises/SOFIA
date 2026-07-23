@@ -9,11 +9,11 @@
 #   registry, correlation-ID middleware, the graph-store/schema-registry/
 #   predicate-evaluator dependencies, the SDD-001 §3.2 typed-error handler, the
 #   §3.1 health and readiness routes, and the §3.3 read routes (RBT-78/R3a
-#   track-record-lookup, R3b resolve-technology). Per SDD-001 §4.1 this module
-#   homes the routes directly; this service's tree has no separate api/ layer.
-#   The lifespan is the single place a Neo4j driver is opened in this platform
-#   (ADR-002 §2.5) and the place the schema-metadata registry is loaded
-#   (SDD-001 §3.1 check 2).
+#   track-record-lookup, R3b resolve-technology, R3c select-patterns). Per
+#   SDD-001 §4.1 this module homes the routes directly; this service's tree has
+#   no separate api/ layer. The lifespan is the single place a Neo4j driver is
+#   opened in this platform (ADR-002 §2.5) and the place the schema-metadata
+#   registry is loaded (SDD-001 §3.1 check 2).
 ##############################################################################
 
 from collections.abc import AsyncIterator
@@ -29,6 +29,7 @@ from app.adapters.neo4j_adapter import Neo4jAdapter
 from app.config import Settings, get_settings
 from app.domain.exceptions import GatewayError, resolve_http_status
 from app.domain.retrieval.resolve_technology import resolve_technology
+from app.domain.retrieval.select_patterns import select_patterns
 from app.domain.retrieval.track_record_lookup import track_record_lookup
 from app.domain.retrieval.types import ConsumingContext
 from app.domain.shared.predicate_evaluators import FailClosedPredicateEvaluator
@@ -40,6 +41,8 @@ from app.models import (
     ReadinessResponse,
     ReadResult,
     ResolveTechnologyRequest,
+    SelectPatternsRequest,
+    SelectPatternsResult,
     TrackRecordLookupRequest,
 )
 from app.observability.correlation_id import CorrelationIdMiddleware
@@ -327,3 +330,41 @@ async def resolve_technology_endpoint(
     return await resolve_technology(
         request.capability_id, context, graph_store, predicate_evaluator
     )
+
+
+@app.post(
+    "/api/v1/select-patterns",
+    response_model=SelectPatternsResult,
+    tags=["retrieval"],
+)
+async def select_patterns_endpoint(
+    request: SelectPatternsRequest,
+    graph_store: GraphStoreDep,
+    predicate_evaluator: PredicateEvaluatorDep,
+) -> SelectPatternsResult:
+    """The selection-web read: candidate Patterns for required Capabilities
+    (SDD-001 §3.3.1).
+
+    Read-discipline applies per-node, at both the Pattern and the per-
+    Capability Technology levels; PREFERRED_OVER is returned uncomposed; a
+    Capability with no approved Technology is the gap signal, never an error.
+    The schema-metadata registry is not consulted here (this operation
+    performs no write-path validation), and this route raises no
+    TARGET_NOT_FOUND — select-patterns is not that kind of op.
+
+    Args:
+        request: The required Capabilities and the §3.2 consuming-context
+            payload.
+        graph_store: The graph port.
+        predicate_evaluator: The predicate port (production: fail-closed).
+
+    Returns:
+        The admitted candidate Patterns (with nested capabilities and
+        Technology options) and the top-level pattern-level disclosures.
+    """
+    context = ConsumingContext(
+        environment_class=request.consuming_context.environment_class,
+        data_classification=request.consuming_context.data_classification,
+        declared_fields=request.consuming_context.declared_fields,
+    )
+    return await select_patterns(request.capability_ids, context, graph_store, predicate_evaluator)

@@ -9,10 +9,10 @@
 #   seam itself: that each port is structurally checkable, and that an object
 #   missing the contract does not satisfy it. That last point is what stops a
 #   later adapter from being wired in half-implemented. GraphStoragePort grows
-#   additively (RBT-78/R3a find_track_record, R3b resolve_technology_options) —
-#   the minimal fixture below grows with it, since isinstance() against a
-#   runtime_checkable Protocol checks every declared member, not just the ones
-#   a test happens to exercise.
+#   additively (RBT-78/R3a find_track_record, R3b resolve_technology_options,
+#   R3c select_patterns) — the minimal fixture below grows with it, since
+#   isinstance() against a runtime_checkable Protocol checks every declared
+#   member, not just the ones a test happens to exercise.
 ##############################################################################
 
 from collections.abc import Mapping, Sequence
@@ -20,6 +20,7 @@ from collections.abc import Mapping, Sequence
 from app.ports.graph_store import (
     GraphStoragePort,
     ResolveTechnologyCandidateRecord,
+    SelectPatternsCandidateRecord,
     TargetEntityRef,
     TrackRecordCandidateRecord,
 )
@@ -54,6 +55,26 @@ class TestGraphStoragePortDeclaration:
         # Act / Assert
         assert not isinstance(PartialGraphStore(), GraphStoragePort)
 
+    def test_object_missing_select_patterns_does_not_satisfy_the_port(self) -> None:
+        # Arrange — R3c grew the port again; resolve_technology_options alone
+        # no longer suffices.
+        class PartialGraphStore:
+            async def check_connectivity(self) -> bool:
+                return True
+
+            async def find_track_record(
+                self, target_refs: Sequence[TargetEntityRef]
+            ) -> Sequence[TrackRecordCandidateRecord]:
+                return []
+
+            async def resolve_technology_options(
+                self, capability_id: str
+            ) -> Sequence[ResolveTechnologyCandidateRecord]:
+                return []
+
+        # Act / Assert
+        assert not isinstance(PartialGraphStore(), GraphStoragePort)
+
     def test_object_with_the_full_surface_satisfies_the_port(self) -> None:
         # Arrange
         class MinimalGraphStore:
@@ -68,6 +89,11 @@ class TestGraphStoragePortDeclaration:
             async def resolve_technology_options(
                 self, capability_id: str
             ) -> Sequence[ResolveTechnologyCandidateRecord]:
+                return []
+
+            async def select_patterns(
+                self, capability_ids: Sequence[str]
+            ) -> Sequence[SelectPatternsCandidateRecord]:
                 return []
 
         # Act / Assert

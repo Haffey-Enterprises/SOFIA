@@ -142,6 +142,46 @@ class ResolveTechnologyCandidateRecord:
     deprecation_date: str | None = None
 
 
+@dataclass(frozen=True)
+class CapabilityBlockRecord:
+    """One requested Capability a candidate Pattern REQUIRES_CAPABILITY, with its
+    taxonomy placement (DDR-002 §2.1) and the approved Technology options
+    resolved for it (SDD-001 §3.3.1) — port-level facts, not domain types.
+    Reuses `ResolveTechnologyCandidateRecord`: an approved Technology option here
+    is structurally identical to a resolve-technology candidate, so the operation
+    maps it through the same path (shared guard + catalog_eligibility +
+    deprecation)."""
+
+    capability_id: str
+    l1_taxonomy: str | None
+    l2_taxonomy: str | None
+    l3_taxonomy: str | None
+    technology_options: tuple[ResolveTechnologyCandidateRecord, ...]
+
+
+@dataclass(frozen=True)
+class SelectPatternsCandidateRecord:
+    """One candidate `Pattern` REQUIRES_CAPABILITY at least one requested
+    Capability (SDD-001 §3.3.1). Port-level facts, not a `CandidateNode`. A
+    Pattern is Catalog ground truth — genuinely promotable-conditional or
+    retractable (like Technology, unlike an ObservedPattern), so it carries its
+    OWN real read-discipline structure (`retracted`, `applicability_state`,
+    resolved `conditions`) for the R2 core to enforce; the traversal resolves
+    them, never assumes them. `capabilities` carries one block per requested
+    Capability this Pattern requires; `preferred_over` is the pattern_ids this
+    Pattern is PREFERRED_OVER (uncomposed)."""
+
+    node_id: str
+    version: str
+    origin_mechanism: str
+    derivation_class: str | None
+    applicability_state: Literal["unconditional", "conditional"]
+    retracted: bool
+    conditions: tuple[ResolvedConditionRecord, ...]
+    capabilities: tuple[CapabilityBlockRecord, ...]
+    preferred_over: tuple[str, ...]
+
+
 @runtime_checkable
 class GraphStoragePort(Protocol):
     """The graph system-of-record seam the gateway's domain code depends on.
@@ -210,5 +250,27 @@ class GraphStoragePort(Protocol):
         Returns:
             One `ResolveTechnologyCandidateRecord` per approved Technology
             option.
+        """
+        ...
+
+    async def select_patterns(
+        self, capability_ids: Sequence[str]
+    ) -> Sequence[SelectPatternsCandidateRecord]:
+        """Resolve candidate Patterns for the given required Capabilities.
+
+        One single-store traversal (ADR-002 §6 check 4): every `Pattern`
+        REQUIRES_CAPABILITY any requested Capability, with its own read-discipline
+        structure resolved, and per requested Capability the taxonomy placement
+        plus every `Technology` APPROVED_OPTION_FOR it (each carrying its real
+        read-discipline structure + Catalog-eligibility inputs + deprecation_date),
+        plus the PREFERRED_OVER pattern_ids. Performs no read-discipline exclusion
+        and no eligibility computation itself — both are the operation's job.
+
+        Args:
+            capability_ids: The required Capabilities to resolve candidate
+                Patterns for.
+
+        Returns:
+            One `SelectPatternsCandidateRecord` per candidate Pattern.
         """
         ...

@@ -775,3 +775,343 @@ class TestNeo4jAdapterResolveTechnologyOptions:
         # Act / Assert
         with pytest.raises(RuntimeError, match="driver"):
             await adapter.resolve_technology_options("cap-1")
+
+
+class TestNeo4jAdapterSelectPatterns:
+    """The select-patterns traversal (SDD-001 §3.3.1) — one Cypher call."""
+
+    async def test_select_patterns_queries_with_the_capability_ids(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(records=[])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        await adapter.select_patterns(["cap-1", "cap-2"])
+
+        # Assert
+        params = driver.execute_query.call_args.args[1]
+        assert params == {"capability_ids": ["cap-1", "cap-2"]}
+
+    async def test_select_patterns_routes_read_and_targets_the_database(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(records=[])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        await adapter.select_patterns(["cap-1"])
+
+        # Assert
+        kwargs = driver.execute_query.call_args.kwargs
+        assert kwargs["routing_"] is RoutingControl.READ
+        assert kwargs["database_"] == "sofia"
+
+    async def test_select_patterns_query_matches_the_selection_web_shape(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(records=[])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        await adapter.select_patterns(["cap-1"])
+
+        # Assert — the single-store traversal (ADR-002 §6 check 4): Pattern
+        # REQUIRES_CAPABILITY, Technology APPROVED_OPTION_FOR, PREFERRED_OVER,
+        # plus the read-discipline structure at both the Pattern and Technology
+        # levels (RETRACTS/DECIDED_ON existence, PROMOTES_TO_KNOWLEDGE/
+        # HAS_CONDITION governing-decision resolution).
+        query = driver.execute_query.call_args.args[0]
+        assert "REQUIRES_CAPABILITY" in query
+        assert "APPROVED_OPTION_FOR" in query
+        assert "PREFERRED_OVER" in query
+        assert "RETRACTS" in query
+        assert "PROMOTES_TO_KNOWLEDGE" in query
+        assert "HAS_CONDITION" in query
+        assert "EXISTS {" in query
+
+    async def test_select_patterns_with_empty_capability_ids_returns_empty_without_querying(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        results = await adapter.select_patterns([])
+
+        # Assert — empty-never-error (ruling #6); no wasted round-trip either.
+        assert results == []
+        driver.execute_query.assert_not_awaited()
+
+    async def test_select_patterns_maps_a_single_capability_single_tech_row(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(
+            records=[
+                {
+                    "node_id": "pattern-1",
+                    "version": "2",
+                    "origin_mechanism": "ingested",
+                    "derivation_class": "primary",
+                    "applicability_state": None,
+                    "retracted": False,
+                    "conditions": [],
+                    "preferred_over": ["pattern-2"],
+                    "capability_id": "cap-1",
+                    "l1_taxonomy": "compute",
+                    "l2_taxonomy": "serverless",
+                    "l3_taxonomy": "functions",
+                    "tech_node_id": "tech-1",
+                    "tech_version": "1",
+                    "tech_origin_mechanism": "ingested",
+                    "tech_derivation_class": "primary",
+                    "tech_tier_applicability": ["production"],
+                    "tech_approved_data_classifications": ["internal"],
+                    "tech_applicability_state": None,
+                    "tech_deprecation_date": None,
+                    "tech_retracted": False,
+                    "tech_conditions": [],
+                }
+            ]
+        )
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        results = await adapter.select_patterns(["cap-1"])
+
+        # Assert
+        assert len(results) == 1
+        pattern = results[0]
+        assert pattern.node_id == "pattern-1"
+        assert pattern.version == "2"
+        assert pattern.origin_mechanism == "ingested"
+        assert pattern.derivation_class == "primary"
+        assert pattern.applicability_state == "unconditional"
+        assert pattern.retracted is False
+        assert pattern.conditions == ()
+        assert pattern.preferred_over == ("pattern-2",)
+        assert len(pattern.capabilities) == 1
+        block = pattern.capabilities[0]
+        assert block.capability_id == "cap-1"
+        assert block.l1_taxonomy == "compute"
+        assert block.l2_taxonomy == "serverless"
+        assert block.l3_taxonomy == "functions"
+        assert len(block.technology_options) == 1
+        tech = block.technology_options[0]
+        assert tech.node_id == "tech-1"
+        assert tech.version == "1"
+        assert tech.tier_applicability == ("production",)
+        assert tech.approved_data_classifications == ("internal",)
+        assert tech.applicability_state == "unconditional"
+        assert tech.retracted is False
+        assert tech.deprecation_date is None
+
+    async def test_select_patterns_maps_a_capability_gap_row_as_no_tech_candidate(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange — an OPTIONAL MATCH miss on Technology: every tech_* field is
+        # null. This must map to an empty technology_options tuple, never a
+        # phantom candidate.
+        driver.execute_query.return_value = SimpleNamespace(
+            records=[
+                {
+                    "node_id": "pattern-1",
+                    "version": "1",
+                    "origin_mechanism": "ingested",
+                    "derivation_class": "primary",
+                    "applicability_state": None,
+                    "retracted": False,
+                    "conditions": [],
+                    "preferred_over": [],
+                    "capability_id": "cap-gap",
+                    "l1_taxonomy": None,
+                    "l2_taxonomy": None,
+                    "l3_taxonomy": None,
+                    "tech_node_id": None,
+                    "tech_version": None,
+                    "tech_origin_mechanism": None,
+                    "tech_derivation_class": None,
+                    "tech_tier_applicability": None,
+                    "tech_approved_data_classifications": None,
+                    "tech_applicability_state": None,
+                    "tech_deprecation_date": None,
+                    "tech_retracted": False,
+                    "tech_conditions": [],
+                }
+            ]
+        )
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        results = await adapter.select_patterns(["cap-gap"])
+
+        # Assert
+        assert len(results) == 1
+        assert len(results[0].capabilities) == 1
+        assert results[0].capabilities[0].technology_options == ()
+
+    async def test_select_patterns_groups_multiple_capability_rows_under_one_pattern(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange — two rows, same pattern, different capability.
+        def _row(capability_id: str) -> dict[str, object]:
+            return {
+                "node_id": "pattern-1",
+                "version": "1",
+                "origin_mechanism": "ingested",
+                "derivation_class": "primary",
+                "applicability_state": None,
+                "retracted": False,
+                "conditions": [],
+                "preferred_over": [],
+                "capability_id": capability_id,
+                "l1_taxonomy": None,
+                "l2_taxonomy": None,
+                "l3_taxonomy": None,
+                "tech_node_id": None,
+                "tech_version": None,
+                "tech_origin_mechanism": None,
+                "tech_derivation_class": None,
+                "tech_tier_applicability": None,
+                "tech_approved_data_classifications": None,
+                "tech_applicability_state": None,
+                "tech_deprecation_date": None,
+                "tech_retracted": False,
+                "tech_conditions": [],
+            }
+
+        driver.execute_query.return_value = SimpleNamespace(records=[_row("cap-a"), _row("cap-b")])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        results = await adapter.select_patterns(["cap-a", "cap-b"])
+
+        # Assert — one pattern record, two capability blocks.
+        assert len(results) == 1
+        capability_ids = {block.capability_id for block in results[0].capabilities}
+        assert capability_ids == {"cap-a", "cap-b"}
+
+    async def test_select_patterns_groups_multiple_tech_rows_under_one_capability(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange — two rows, same pattern + capability, different tech.
+        def _row(tech_node_id: str) -> dict[str, object]:
+            return {
+                "node_id": "pattern-1",
+                "version": "1",
+                "origin_mechanism": "ingested",
+                "derivation_class": "primary",
+                "applicability_state": None,
+                "retracted": False,
+                "conditions": [],
+                "preferred_over": [],
+                "capability_id": "cap-1",
+                "l1_taxonomy": None,
+                "l2_taxonomy": None,
+                "l3_taxonomy": None,
+                "tech_node_id": tech_node_id,
+                "tech_version": "1",
+                "tech_origin_mechanism": "ingested",
+                "tech_derivation_class": "primary",
+                "tech_tier_applicability": [],
+                "tech_approved_data_classifications": [],
+                "tech_applicability_state": None,
+                "tech_deprecation_date": None,
+                "tech_retracted": False,
+                "tech_conditions": [],
+            }
+
+        driver.execute_query.return_value = SimpleNamespace(
+            records=[_row("tech-a"), _row("tech-b")]
+        )
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        results = await adapter.select_patterns(["cap-1"])
+
+        # Assert — one pattern, one capability block, two tech options.
+        assert len(results) == 1
+        assert len(results[0].capabilities) == 1
+        tech_ids = {tech.node_id for tech in results[0].capabilities[0].technology_options}
+        assert tech_ids == {"tech-a", "tech-b"}
+
+    async def test_select_patterns_maps_conditional_and_retracted_flags(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(
+            records=[
+                {
+                    "node_id": "pattern-1",
+                    "version": "1",
+                    "origin_mechanism": "promoted",
+                    "derivation_class": None,
+                    "applicability_state": "conditional",
+                    "retracted": True,
+                    "conditions": [{"predicate": {"op": "eq"}, "dependency_manifest": ["tier"]}],
+                    "preferred_over": [],
+                    "capability_id": "cap-1",
+                    "l1_taxonomy": None,
+                    "l2_taxonomy": None,
+                    "l3_taxonomy": None,
+                    "tech_node_id": None,
+                    "tech_version": None,
+                    "tech_origin_mechanism": None,
+                    "tech_derivation_class": None,
+                    "tech_tier_applicability": None,
+                    "tech_approved_data_classifications": None,
+                    "tech_applicability_state": None,
+                    "tech_deprecation_date": None,
+                    "tech_retracted": False,
+                    "tech_conditions": [],
+                }
+            ]
+        )
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        results = await adapter.select_patterns(["cap-1"])
+
+        # Assert
+        pattern = results[0]
+        assert pattern.applicability_state == "conditional"
+        assert pattern.retracted is True
+        assert len(pattern.conditions) == 1
+        assert pattern.conditions[0].required_context_fields == frozenset({"tier"})
+
+    async def test_select_patterns_with_no_matches_returns_empty(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(records=[])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        results = await adapter.select_patterns(["cap-nonexistent"])
+
+        # Assert
+        assert results == []
+
+    async def test_select_patterns_before_connect_raises_runtime_error(
+        self, settings: Settings, driver_factory: MagicMock
+    ) -> None:
+        # Arrange
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+
+        # Act / Assert
+        with pytest.raises(RuntimeError, match="driver"):
+            await adapter.select_patterns(["cap-1"])

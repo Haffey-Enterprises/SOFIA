@@ -9,14 +9,16 @@
 #   Neo4j). The double is real behavior and is covered as such: its
 #   controllable connectivity verdict is what makes the §3.1 readiness check
 #   testable in both directions, and its controllable candidate-record lists
-#   (RBT-78/R3a track-record, R3b resolve-technology) are what make
-#   read-discipline exercisable without modelling graph internals (§4.2 A3).
+#   (RBT-78/R3a track-record, R3b resolve-technology, R3c select-patterns) are
+#   what make read-discipline exercisable without modelling graph internals
+#   (§4.2 A3).
 ##############################################################################
 
 from app.adapters.in_memory_graph import InMemoryGraphStore
 from app.ports.graph_store import (
     GraphStoragePort,
     ResolveTechnologyCandidateRecord,
+    SelectPatternsCandidateRecord,
     TargetEntityRef,
     TrackRecordCandidateRecord,
 )
@@ -184,3 +186,50 @@ class TestInMemoryGraphStoreResolveTechnologyOptions:
         # Assert — lets a test prove the operation forwarded the caller's
         # capability id rather than dropping or substituting it.
         assert store.resolve_technology_options_calls == ["cap-42"]
+
+
+class TestInMemoryGraphStoreSelectPatterns:
+    """The controllable candidate-record store (§4.2 A3)."""
+
+    async def test_select_patterns_with_no_candidates_set_returns_empty(self) -> None:
+        # Arrange
+        store = InMemoryGraphStore()
+
+        # Act
+        result = await store.select_patterns(["cap-1"])
+
+        # Assert
+        assert result == []
+
+    async def test_select_patterns_returns_the_configured_candidates(self) -> None:
+        # Arrange
+        store = InMemoryGraphStore()
+        candidate = SelectPatternsCandidateRecord(
+            node_id="pattern-1",
+            version="1",
+            origin_mechanism="ingested",
+            derivation_class="primary",
+            applicability_state="unconditional",
+            retracted=False,
+            conditions=(),
+            capabilities=(),
+            preferred_over=(),
+        )
+        store.set_pattern_candidates([candidate])
+
+        # Act
+        result = await store.select_patterns(["cap-1"])
+
+        # Assert
+        assert result == [candidate]
+
+    async def test_select_patterns_records_the_requested_capability_ids(self) -> None:
+        # Arrange
+        store = InMemoryGraphStore()
+
+        # Act
+        await store.select_patterns(["cap-a", "cap-b"])
+
+        # Assert — lets a test prove the operation forwarded the caller's
+        # required capabilities rather than dropping or substituting them.
+        assert store.select_patterns_calls == [["cap-a", "cap-b"]]

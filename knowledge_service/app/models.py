@@ -310,3 +310,50 @@ class ResolveTechnologyRequest(BaseModel):
 
     capability_id: str
     consuming_context: ConsumingContextPayload
+
+
+class CapabilityBlock(BaseModel):
+    """One requested Capability under a candidate Pattern (SDD-001 §3.3.1;
+    DDR-002 §2.1): its taxonomy placement and the approved Technology options
+    that realize it. An empty `technology_options` with no `technology_disclosures`
+    IS the gap signal (DDR-001: a required capability with no resolving
+    technology) — never an error. `catalog_eligibility` and `deprecation` live
+    on each Technology envelope's applicability block; a Pattern carries neither
+    (DDR-002 §2.1 — Technology-only surfaces)."""
+
+    capability_id: str
+    l1_taxonomy: str | None = None
+    l2_taxonomy: str | None = None
+    l3_taxonomy: str | None = None
+    technology_options: list[ResultEnvelope]
+    technology_disclosures: list[DisclosureEntry]
+
+
+class PatternCandidate(BaseModel):
+    """One admitted candidate Pattern with its nested selection-web (SDD-001
+    §3.3.1). `envelope` carries node_kind="Pattern" with an applicability block
+    whose conditional_admission is the only populated surface. `preferred_over`
+    is the set of pattern_ids this Pattern is PREFERRED_OVER — an UNCOMPOSED
+    structural fact (§2.2 selection judgment is the reasoning component's, never
+    the gateway's): no ordering, no pick."""
+
+    envelope: ResultEnvelope
+    capabilities: list[CapabilityBlock]
+    preferred_over: list[str]
+
+
+class SelectPatternsResult(BaseModel):
+    """The select-patterns nested result (SDD-001 §3.3.1). `patterns` are the
+    admitted candidates; `pattern_disclosures` are the conditionally-excluded
+    patterns (whole subtree dropped, §4.4). Silently-excluded patterns
+    (un-approved proposals, retracted) appear in neither list (§3.2)."""
+
+    patterns: list[PatternCandidate]
+    pattern_disclosures: list[DisclosureEntry]
+
+
+class SelectPatternsRequest(BaseModel):
+    """The select-patterns request body (SDD-001 §3.3.1)."""
+
+    capability_ids: list[str]
+    consuming_context: ConsumingContextPayload
