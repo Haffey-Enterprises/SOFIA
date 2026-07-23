@@ -3,16 +3,20 @@
 # Service: knowledge-service
 # Author: Haffey Enterprises LLC
 # Created: 2026-07-21
-# Revised: 2026-07-21
+# Revised: 2026-07-23
 # Description: Contract tests for the SDD-001 §3.1 health and readiness
-#   endpoints — the liveness shape, the readiness shape in both directions, and
-#   the rule that readiness genuinely consumes the GraphStoragePort rather than
-#   asserting health it did not check.
+#   endpoints — the liveness shape, the readiness shape in both directions, the
+#   two ordered checks (Neo4j connectivity and schema metadata) each answering
+#   503 on its own failure, and the rule that readiness genuinely consumes the
+#   GraphStoragePort rather than asserting health it did not check. RBT-78 lands
+#   check 2 (schema metadata loaded).
 ##############################################################################
 
 from httpx import AsyncClient
 
 from app.adapters.in_memory_graph import InMemoryGraphStore
+from app.domain.shared.schema_metadata import SchemaRegistry
+from app.main import app, get_schema_registry
 
 
 class TestHealthzContract:
@@ -44,9 +48,9 @@ class TestHealthzContract:
 
 
 class TestReadyzContract:
-    """Readiness: 200 when every check passes, 503 otherwise."""
+    """Readiness: 200 when every check passes, 503 otherwise (SDD-001 §3.1)."""
 
-    async def test_readyz_when_graph_reachable_returns_200_and_ok_checks(
+    async def test_readyz_when_all_checks_pass_returns_200_and_ok_checks(
         self, async_client: AsyncClient
     ) -> None:
         # Act
@@ -58,6 +62,7 @@ class TestReadyzContract:
         assert body["status"] == "ok"
         assert body["service"] == "knowledge-service"
         assert body["checks"]["neo4j_connectivity"] == "ok"
+        assert body["checks"]["schema_metadata"] == "ok"
 
     async def test_readyz_when_graph_unavailable_returns_503_and_names_the_failure(
         self, async_client: AsyncClient, graph_store: InMemoryGraphStore
@@ -73,6 +78,27 @@ class TestReadyzContract:
         body = response.json()
         assert body["status"] == "unavailable"
         assert body["checks"]["neo4j_connectivity"] == "unavailable"
+        # Check 2 is independent and still evaluated (SDD-001 §3.1: each check
+        # runs; any failure answers 503).
+        assert body["checks"]["schema_metadata"] == "ok"
+
+    async def test_readyz_when_schema_metadata_unavailable_returns_503_and_names_it(
+        self, async_client: AsyncClient
+    ) -> None:
+        # Arrange — a not-ready registry (load-verify failed): /readyz must
+        # answer 503 rather than serve writes the gateway cannot validate.
+        not_ready = SchemaRegistry(core_plane_bases={}, authority="unverified", ready=False)
+        app.dependency_overrides[get_schema_registry] = lambda: not_ready
+
+        # Act
+        response = await async_client.get("/readyz")
+
+        # Assert
+        assert response.status_code == 503
+        body = response.json()
+        assert body["status"] == "unavailable"
+        assert body["checks"]["schema_metadata"] == "unavailable"
+        assert body["checks"]["neo4j_connectivity"] == "ok"
 
     async def test_readyz_actually_consumes_the_graph_storage_port(
         self, async_client: AsyncClient, graph_store: InMemoryGraphStore
@@ -83,13 +109,12 @@ class TestReadyzContract:
         # Assert — the check is real, not a hard-coded "ok".
         assert graph_store.check_connectivity_calls == 1
 
-    async def test_readyz_reports_only_the_checks_it_actually_performed(
+    async def test_readyz_reports_exactly_the_two_ordered_checks(
         self, async_client: AsyncClient
     ) -> None:
         # Act
         response = await async_client.get("/readyz")
 
-        # Assert — SDD-001 §3.1 check 2 (schema metadata loaded) lands with
-        # RBT-78. It is staged, not faked: until it exists, readiness must not
-        # claim it. A green /readyz today attests check 1 only.
-        assert set(response.json()["checks"]) == {"neo4j_connectivity"}
+        # Assert — SDD-001 §3.1 fixes exactly two checks; RBT-78 lands check 2,
+        # so readiness now reports both and no others.
+        assert set(response.json()["checks"]) == {"neo4j_connectivity", "schema_metadata"}

@@ -3,13 +3,15 @@
 # Service: knowledge-service
 # Author: Haffey Enterprises LLC
 # Created: 2026-07-21
-# Revised: 2026-07-21
+# Revised: 2026-07-23
 # Description: The knowledge-service FastAPI application (SDD-001 §4.1) — app
-#   construction, lifespan-owned driver wiring, correlation-ID middleware, the
-#   graph-store dependency, and the §3.1 health and readiness routes. Per
-#   SDD-001 §4.1 this module homes the routes directly; this service's tree has
-#   no separate api/ layer. The lifespan is the single place a Neo4j driver is
-#   opened in this platform (ADR-002 §2.5).
+#   construction, lifespan-owned driver wiring, the in-process schema-metadata
+#   registry, correlation-ID middleware, the graph-store and schema-registry
+#   dependencies, the SDD-001 §3.2 typed-error handler, and the §3.1 health and
+#   readiness routes. Per SDD-001 §4.1 this module homes the routes directly;
+#   this service's tree has no separate api/ layer. The lifespan is the single
+#   place a Neo4j driver is opened in this platform (ADR-002 §2.5) and the place
+#   the schema-metadata registry is loaded (SDD-001 §3.1 check 2).
 ##############################################################################
 
 from collections.abc import AsyncIterator
@@ -23,7 +25,9 @@ from starlette.requests import Request
 
 from app.adapters.neo4j_adapter import Neo4jAdapter
 from app.config import Settings, get_settings
-from app.models import CheckStatus, HealthResponse, ReadinessResponse
+from app.domain.exceptions import GatewayError, resolve_http_status
+from app.domain.shared.schema_metadata import SchemaRegistry, load_core_registry
+from app.models import CheckStatus, ErrorResponse, HealthResponse, ReadinessResponse
 from app.observability.correlation_id import CorrelationIdMiddleware
 from app.observability.logging import configure_logging
 from app.ports.graph_store import GraphStoragePort
@@ -31,18 +35,23 @@ from app.ports.graph_store import GraphStoragePort
 log = structlog.get_logger()
 
 NEO4J_CONNECTIVITY_CHECK = "neo4j_connectivity"
+SCHEMA_METADATA_CHECK = "schema_metadata"
 
 
 @asynccontextmanager
 async def lifespan(fastapi_app: FastAPI) -> AsyncIterator[None]:
-    """Configure logging, open the graph driver, and dispose it on shutdown.
+    """Configure logging, open the graph driver, load schema metadata, dispose.
 
     Startup order matters: logging is configured before anything that might
-    log, and the driver is published on application state only after it has
-    been opened, so no request can reach a half-initialised store.
+    log; the driver and the schema-metadata registry are published on
+    application state only after they are ready, so no request can reach a
+    half-initialised service. The registry loads in-process from the declared
+    descriptor and needs no graph, so it is independent of the instance being
+    reachable or populated (ADR-004 §2.2).
 
     Args:
-        fastapi_app: The application whose state carries the graph store.
+        fastapi_app: The application whose state carries the graph store and the
+            schema-metadata registry.
 
     Yields:
         None, for the duration of the serving window.
@@ -53,11 +62,15 @@ async def lifespan(fastapi_app: FastAPI) -> AsyncIterator[None]:
     adapter = Neo4jAdapter(settings)
     await adapter.connect()
     fastapi_app.state.graph_store = adapter
+
+    registry = load_core_registry()
+    fastapi_app.state.schema_registry = registry
     log.info(
         "service_started",
         service=settings.service_name,
         service_version=settings.service_version,
         app_env=settings.app_env,
+        schema_metadata_ready=registry.is_ready(),
     )
 
     try:
@@ -67,6 +80,7 @@ async def lifespan(fastapi_app: FastAPI) -> AsyncIterator[None]:
         # the driver would leak its connection pool with it.
         await adapter.close()
         fastapi_app.state.graph_store = None
+        fastapi_app.state.schema_registry = None
         log.info("service_stopped", service=settings.service_name)
 
 
@@ -74,6 +88,35 @@ app = FastAPI(title="knowledge-service", lifespan=lifespan)
 
 # Registered first so every downstream log line carries the correlation ID.
 app.add_middleware(CorrelationIdMiddleware)
+
+
+@app.exception_handler(GatewayError)
+async def handle_gateway_error(request: Request, exc: GatewayError) -> JSONResponse:
+    """Render a typed gateway rejection as the SDD-001 §3.2 error envelope.
+
+    The single mapping point from the domain exception layer to HTTP (house
+    application-code §5): the taxonomy member becomes `error_code`, its status
+    is resolved from the additive map, and the request's correlation ID ties
+    the response to its log line. No status codes are scattered through route
+    handlers.
+
+    Args:
+        request: The inbound request, carrying the bound correlation ID.
+        exc: The typed gateway rejection.
+
+    Returns:
+        The error envelope at the resolved HTTP status.
+    """
+    body = ErrorResponse(
+        error_code=exc.error_type,
+        message=exc.message,
+        detail=exc.detail,
+        correlation_id=getattr(request.state, "correlation_id", None),
+    )
+    return JSONResponse(
+        content=body.model_dump(mode="json"),
+        status_code=resolve_http_status(exc.error_type),
+    )
 
 
 def get_graph_store(request: Request) -> GraphStoragePort:
@@ -97,10 +140,32 @@ def get_graph_store(request: Request) -> GraphStoragePort:
     return store
 
 
+def get_schema_registry(request: Request) -> SchemaRegistry:
+    """Return the lifespan-owned schema-metadata registry for this request.
+
+    Args:
+        request: The inbound request, carrying application state.
+
+    Returns:
+        The schema-metadata registry published by the lifespan.
+
+    Raises:
+        RuntimeError: If no registry has been published, which means the
+            lifespan did not complete. A readiness check that cannot find the
+            registry is a startup fault, not a not-ready verdict, so this fails
+            loudly rather than reporting 503.
+    """
+    registry: SchemaRegistry | None = getattr(request.app.state, "schema_registry", None)
+    if registry is None:
+        raise RuntimeError("No schema registry is available: application startup did not complete")
+    return registry
+
+
 # Annotated dependencies rather than call-in-default: same wiring, and it
 # keeps the module clean under ruff's B008 without suppressing the rule.
 SettingsDep = Annotated[Settings, Depends(get_settings)]
 GraphStoreDep = Annotated[GraphStoragePort, Depends(get_graph_store)]
+SchemaRegistryDep = Annotated[SchemaRegistry, Depends(get_schema_registry)]
 
 
 @app.get("/healthz", response_model=HealthResponse, tags=["health"])
@@ -121,6 +186,7 @@ async def healthz(settings: SettingsDep) -> HealthResponse:
 async def readyz(
     settings: SettingsDep,
     graph_store: GraphStoreDep,
+    schema_registry: SchemaRegistryDep,
 ) -> JSONResponse:
     """Report whether the service can serve (SDD-001 §3.1).
 
@@ -141,14 +207,15 @@ async def readyz(
         checks[NEO4J_CONNECTIVITY_CHECK] = CheckStatus.UNAVAILABLE
         log.warning("readiness_check_failed", check=NEO4J_CONNECTIVITY_CHECK)
 
-    # Check 2 — schema metadata loaded (the PlaneDefinition registry and the
-    # validation metadata the write paths enforce against) is NOT implemented
-    # here. It lands with RBT-78's app/domain/shared/schema_metadata.py, and is
-    # staged deliberately rather than stubbed: reporting a check this service
-    # cannot yet perform would be the one failure mode §3.1 exists to prevent
-    # ("the gateway must not execute writes it cannot validate"). Until then a
-    # 200 from this endpoint attests check 1 only — and no write path exists
-    # for check 2 to gate.
+    # Check 2 — schema metadata loaded: the PlaneDefinition registry and the
+    # core-plane validation metadata the write paths enforce against. Loaded
+    # in-process from the declared descriptor; the gateway must not report ready
+    # against metadata it could not verify (SDD-001 §3.1).
+    if schema_registry.is_ready():
+        checks[SCHEMA_METADATA_CHECK] = CheckStatus.OK
+    else:
+        checks[SCHEMA_METADATA_CHECK] = CheckStatus.UNAVAILABLE
+        log.warning("readiness_check_failed", check=SCHEMA_METADATA_CHECK)
 
     ready = all(status is CheckStatus.OK for status in checks.values())
     body = ReadinessResponse(
