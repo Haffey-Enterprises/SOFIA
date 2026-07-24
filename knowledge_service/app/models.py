@@ -452,3 +452,29 @@ class FindPrecedentsRequest(BaseModel):
     target_environment: str | None = None
     gate_outcome: str | None = None
     consuming_context: ConsumingContextPayload
+
+
+ReadAsOfNodeKind = Literal[
+    "Pattern",
+    "Technology",
+    "Capability",
+    "IacTemplate",  # Catalog
+    "Standard",
+    "PolicyRule",  # Standards
+]
+
+
+class ReadAsOfRequest(BaseModel):
+    """The read-as-of request body (SDD-001 §3.3.6), pin-mode only.
+
+    Resolves a supplied version pin over versioned ground truth: the exact
+    retained `(node_kind, business_key, version)` node. As-of-by-timestamp
+    resolution and `ComplianceControl` (which carries no `version`) are out
+    of scope for this build (routed to RBT-83). The response is the existing
+    `ReadResult`; a resolution miss is raised as
+    `GatewayError(ErrorType.TARGET_NOT_FOUND)`, not a result field."""
+
+    node_kind: ReadAsOfNodeKind
+    business_key: str
+    version: str
+    consuming_context: ConsumingContextPayload

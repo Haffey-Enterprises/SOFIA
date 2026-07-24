@@ -21,6 +21,8 @@ from app.ports.graph_store import (
     FindPrecedentsCandidateRecord,
     FindPrecedentsCriteria,
     ObligationCandidateRecord,
+    ReadAsOfNodeKind,
+    ReadAsOfResolvedRecord,
     ResolveTechnologyCandidateRecord,
     SelectPatternsCandidateRecord,
     TargetEntityRef,
@@ -60,6 +62,8 @@ class InMemoryGraphStore:
         self._obligation_context_calls: list[str] = []
         self._precedent_candidates: list[FindPrecedentsCandidateRecord] = []
         self._find_precedents_calls: list[FindPrecedentsCriteria] = []
+        self._read_as_of_result: ReadAsOfResolvedRecord | None = None
+        self._read_as_of_calls: list[tuple[ReadAsOfNodeKind, str, str]] = []
 
     @property
     def check_connectivity_calls(self) -> int:
@@ -114,6 +118,16 @@ class InMemoryGraphStore:
         match criteria rather than dropping or substituting them.
         """
         return self._find_precedents_calls
+
+    @property
+    def read_as_of_calls(self) -> list[tuple[ReadAsOfNodeKind, str, str]]:
+        """The `(node_kind, business_key, version)` argument of every
+        `read_as_of` call.
+
+        Lets a test assert the operation forwarded the caller's pin rather
+        than dropping or substituting it.
+        """
+        return self._read_as_of_calls
 
     def set_connectivity(self, *, healthy: bool) -> None:
         """Set the verdict subsequent connectivity checks will report.
@@ -178,6 +192,18 @@ class InMemoryGraphStore:
                 simply reports whatever was configured.
         """
         self._precedent_candidates = list(candidates)
+
+    def set_read_as_of_result(self, record: ReadAsOfResolvedRecord | None) -> None:
+        """Set the record (or resolution miss) subsequent `read_as_of` calls return.
+
+        Args:
+            record: The record to return, unconditionally on the requested
+                `(node_kind, business_key, version)` — this is a controllable
+                record store (SDD-001 §4.2 A3), not a graph-internals model.
+                `None` stands in for a resolution miss (the pin resolves
+                nothing).
+        """
+        self._read_as_of_result = record
 
     async def check_connectivity(self) -> bool:
         """Report the configured connectivity verdict.
@@ -265,3 +291,26 @@ class InMemoryGraphStore:
         """
         self._find_precedents_calls.append(criteria)
         return list(self._precedent_candidates)
+
+    async def read_as_of(
+        self,
+        node_kind: ReadAsOfNodeKind,
+        business_key: str,
+        version: str,
+    ) -> ReadAsOfResolvedRecord | None:
+        """Report the configured record, or None for a resolution miss.
+
+        Args:
+            node_kind: Recorded for test assertion; does not affect the
+                configured result (a faithful port-level substitute per §4.2
+                need not model graph internals).
+            business_key: Recorded for test assertion; does not affect the
+                configured result.
+            version: Recorded for test assertion; does not affect the
+                configured result.
+
+        Returns:
+            The record currently set on this double, or `None`.
+        """
+        self._read_as_of_calls.append((node_kind, business_key, version))
+        return self._read_as_of_result

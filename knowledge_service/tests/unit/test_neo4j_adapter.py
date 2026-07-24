@@ -1591,3 +1591,231 @@ class TestNeo4jAdapterFindPrecedents:
                     gate_outcome=None,
                 )
             )
+
+
+class TestNeo4jAdapterReadAsOf:
+    """The read-as-of traversal (SDD-001 §3.3.6), pin-mode — one Cypher call."""
+
+    async def test_read_as_of_queries_with_business_key_and_version(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(records=[])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        await adapter.read_as_of("Technology", "tech-1", "3")
+
+        # Assert
+        params = driver.execute_query.call_args.args[1]
+        assert params == {"business_key": "tech-1", "version": "3"}
+
+    async def test_read_as_of_routes_read_and_targets_the_database(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(records=[])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        await adapter.read_as_of("Technology", "tech-1", "3")
+
+        # Assert
+        kwargs = driver.execute_query.call_args.kwargs
+        assert kwargs["routing_"] is RoutingControl.READ
+        assert kwargs["database_"] == "sofia"
+
+    @pytest.mark.parametrize(
+        ("node_kind", "label", "pk_property"),
+        [
+            ("Pattern", "Catalog:Pattern", "pattern_id"),
+            ("Technology", "Catalog:Technology", "technology_id"),
+            ("Capability", "Catalog:Capability", "capability_id"),
+            ("IacTemplate", "Catalog:IacTemplate", "iac_template_id"),
+            ("Standard", "Standards:Standard", "standard_id"),
+            ("PolicyRule", "Standards:PolicyRule", "policy_rule_id"),
+        ],
+    )
+    async def test_read_as_of_query_matches_the_per_label_mapping(
+        self,
+        node_kind: str,
+        label: str,
+        pk_property: str,
+        settings: Settings,
+        driver_factory: MagicMock,
+        driver: AsyncMock,
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(records=[])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        await adapter.read_as_of(node_kind, "key-1", "1")  # type: ignore[arg-type]
+
+        # Assert — the single-store traversal (ADR-002 §6 check 4): the
+        # correct label + PK property interpolated, no status/superseded_by
+        # filter (a pin resolves the exact version even if superseded), plus
+        # the read-discipline structure (RETRACTS/DECIDED_ON existence,
+        # PROMOTES_TO_KNOWLEDGE/HAS_CONDITION governing-decision resolution).
+        query = driver.execute_query.call_args.args[0]
+        assert f"MATCH (n:{label} {{{pk_property}: $business_key, version: $version}})" in query
+        assert f"n.{pk_property} AS node_id" in query
+        assert "status" not in query
+        assert "superseded_by" not in query
+        assert "RETRACTS" in query
+        assert "PROMOTES_TO_KNOWLEDGE" in query
+        assert "HAS_CONDITION" in query
+        assert "EXISTS {" in query
+
+    async def test_read_as_of_maps_a_resolved_row(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(
+            records=[
+                {
+                    "node_id": "tech-1",
+                    "version": "3",
+                    "origin_mechanism": "ingested",
+                    "derivation_class": "primary",
+                    "effective_from": None,
+                    "applicability_state": None,
+                    "retracted": False,
+                    "conditions": [],
+                }
+            ]
+        )
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        record = await adapter.read_as_of("Technology", "tech-1", "3")
+
+        # Assert
+        assert record is not None
+        assert record.node_id == "tech-1"
+        assert record.plane_labels == ("Catalog",)
+        assert record.version == "3"
+        assert record.origin_mechanism == "ingested"
+        assert record.derivation_class == "primary"
+        assert record.effective_from is None
+        assert record.effective_to is None
+        assert record.applicability_state == "unconditional"
+        assert record.retracted is False
+        assert record.conditions == ()
+
+    async def test_read_as_of_maps_effective_from_for_pattern(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange — the one label DDR-002 §2.1 declares effective_from on.
+        driver.execute_query.return_value = SimpleNamespace(
+            records=[
+                {
+                    "node_id": "pattern-1",
+                    "version": "1",
+                    "origin_mechanism": "ingested",
+                    "derivation_class": "primary",
+                    "effective_from": "2026-01-01T00:00:00Z",
+                    "applicability_state": None,
+                    "retracted": False,
+                    "conditions": [],
+                }
+            ]
+        )
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        record = await adapter.read_as_of("Pattern", "pattern-1", "1")
+
+        # Assert
+        assert record is not None
+        assert record.effective_from == "2026-01-01T00:00:00Z"
+        assert record.effective_to is None
+        assert record.plane_labels == ("Catalog",)
+
+    async def test_read_as_of_maps_a_standards_node_kind(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(
+            records=[
+                {
+                    "node_id": "rule-1",
+                    "version": "1",
+                    "origin_mechanism": "ingested",
+                    "derivation_class": "primary",
+                    "effective_from": None,
+                    "applicability_state": None,
+                    "retracted": False,
+                    "conditions": [],
+                }
+            ]
+        )
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        record = await adapter.read_as_of("PolicyRule", "rule-1", "1")
+
+        # Assert
+        assert record is not None
+        assert record.plane_labels == ("Standards",)
+
+    async def test_read_as_of_maps_conditional_and_retracted_flags(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(
+            records=[
+                {
+                    "node_id": "tech-1",
+                    "version": "1",
+                    "origin_mechanism": "promoted",
+                    "derivation_class": None,
+                    "effective_from": None,
+                    "applicability_state": "conditional",
+                    "retracted": True,
+                    "conditions": [{"predicate": {"op": "eq"}, "dependency_manifest": ["tier"]}],
+                }
+            ]
+        )
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        record = await adapter.read_as_of("Technology", "tech-1", "1")
+
+        # Assert
+        assert record is not None
+        assert record.applicability_state == "conditional"
+        assert record.retracted is True
+        assert len(record.conditions) == 1
+        assert record.conditions[0].required_context_fields == frozenset({"tier"})
+
+    async def test_read_as_of_with_no_match_returns_none(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(records=[])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        record = await adapter.read_as_of("Technology", "tech-nonexistent", "1")
+
+        # Assert
+        assert record is None
+
+    async def test_read_as_of_before_connect_raises_runtime_error(
+        self, settings: Settings, driver_factory: MagicMock
+    ) -> None:
+        # Arrange
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+
+        # Act / Assert
+        with pytest.raises(RuntimeError, match="driver"):
+            await adapter.read_as_of("Technology", "tech-1", "1")

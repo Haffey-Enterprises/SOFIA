@@ -32,6 +32,8 @@ from app.ports.graph_store import (
     FindPrecedentsCriteria,
     GateDecisionRecord,
     ObligationCandidateRecord,
+    ReadAsOfNodeKind,
+    ReadAsOfResolvedRecord,
     ResolvedConditionRecord,
     ResolveTechnologyCandidateRecord,
     SelectPatternsCandidateRecord,
@@ -415,6 +417,73 @@ RETURN
   sol.target_environment AS target_environment,
   [g IN gate_decision_maps WHERE g IS NOT NULL] AS gate_decisions
 ORDER BY node_id
+"""
+
+# The 6 versioned Catalog+Standards labels read-as-of resolves (SDD-001
+# §3.3.6, pin-mode) -> (Cypher label, PK property, plane label). Verified
+# fresh against DDR-002 §2.1/§2.5. `ComplianceControl` is excluded (no
+# `version` property); Cost/PlaneDefinition remain deferred. This is a fixed
+# internal map, never user input — its values are safe to interpolate
+# directly into Cypher (labels/property names are not parameterizable in
+# Neo4j; business_key/version are the query's actual $params).
+_READ_AS_OF_NODE_KIND_MAP: dict[ReadAsOfNodeKind, tuple[str, str, str]] = {
+    "Pattern": ("Catalog:Pattern", "pattern_id", "Catalog"),
+    "Technology": ("Catalog:Technology", "technology_id", "Catalog"),
+    "Capability": ("Catalog:Capability", "capability_id", "Catalog"),
+    "IacTemplate": ("Catalog:IacTemplate", "iac_template_id", "Catalog"),
+    "Standard": ("Standards:Standard", "standard_id", "Standards"),
+    "PolicyRule": ("Standards:PolicyRule", "policy_rule_id", "Standards"),
+}
+
+# One traversal (ADR-002 §6 check 4): the exact retained version node for
+# (label, pk_property=business_key, version) — a supplied pin, never
+# filtered on status/superseded_by (read-as-of deliberately resolves a
+# specific, possibly-superseded version; filtering here would defeat pin
+# resolution). Resolves 0-or-1 node by the (business_key, version)
+# uniqueness DDR-002 §2.4 names. Read-discipline structure resolved
+# alongside via the SAME sub-pattern _SELECT_PATTERNS_QUERY uses (governing
+# PromotionDecision -> HAS_CONDITION; EXISTS-based approving-RETRACTS check)
+# — never pre-excluded here (SDD-001 §4.4 is the operation's job).
+#
+# `effective_from` is read directly off the node regardless of label:
+# Cypher property access on a label that doesn't declare a property returns
+# null rather than erroring, so this single template correctly yields null
+# for every label except `Pattern` (the one label DDR-002 §2.1 declares it
+# on) without needing a per-label field list. `effective_to` is not read at
+# all — no in-scope label declares it (RBT-83).
+#
+# `__LABEL__`/`__PK__` are plain string-replace tokens, not str.format()
+# placeholders — chosen so the query's own Cypher `{...}` map/list syntax
+# needs no brace-escaping.
+_READ_AS_OF_QUERY_TEMPLATE = """
+MATCH (n:__LABEL__ {__PK__: $business_key, version: $version})
+CALL {
+  WITH n
+  OPTIONAL MATCH (promotion:Reasoning:CandidatePromotion {proposal_kind: 'promotion'})
+    -[:PROMOTES_TO_KNOWLEDGE]->(n)
+  OPTIONAL MATCH (promotion)<-[decided:DECIDED_ON]-(decision:Governance:PromotionDecision)
+  WHERE decided.outcome IN ['approved', 'approved_conditional']
+  WITH decision
+  ORDER BY decision.decided_at DESC
+  LIMIT 1
+  OPTIONAL MATCH (decision)-[:HAS_CONDITION]->(condition:Governance:Condition)
+  RETURN collect(DISTINCT condition) AS governing_conditions
+}
+RETURN
+  n.__PK__ AS node_id,
+  n.version AS version,
+  n.origin_mechanism AS origin_mechanism,
+  n.derivation_class AS derivation_class,
+  n.effective_from AS effective_from,
+  n.applicability_state AS applicability_state,
+  EXISTS {
+    MATCH (retraction:Reasoning:CandidatePromotion {proposal_kind: 'retraction'})
+      -[:RETRACTS]->(n)
+    MATCH (retraction)<-[retraction_decided:DECIDED_ON]-(:Governance:PromotionDecision)
+    WHERE retraction_decided.outcome IN ['approved', 'approved_conditional']
+  } AS retracted,
+  [c IN governing_conditions WHERE c IS NOT NULL |
+    {predicate: c.predicate, dependency_manifest: c.dependency_manifest}] AS conditions
 """
 
 
@@ -848,3 +917,65 @@ class Neo4jAdapter:
             )
             for record in result.records
         ]
+
+    async def read_as_of(
+        self,
+        node_kind: ReadAsOfNodeKind,
+        business_key: str,
+        version: str,
+    ) -> ReadAsOfResolvedRecord | None:
+        """Resolve a supplied version pin over versioned ground truth.
+
+        One single-store Cypher traversal (ADR-002 §6 check 4). Structural
+        match and read-discipline-structure resolution only — no exclusion
+        happens here (SDD-001 §4.4 is the operation's job).
+
+        Args:
+            node_kind: The versioned label to resolve.
+            business_key: The entity's PK value for that label.
+            version: The exact retained version to resolve.
+
+        Returns:
+            The resolved `ReadAsOfResolvedRecord`, or `None` if the pin
+            resolves nothing.
+
+        Raises:
+            RuntimeError: If no driver is open — a data operation with no
+                driver must fail loud, never silently return an empty (and
+                misleading) result.
+        """
+        if self._driver is None:
+            raise RuntimeError("No graph driver is open: application startup did not complete")
+
+        label, pk_property, plane_label = _READ_AS_OF_NODE_KIND_MAP[node_kind]
+        query = _READ_AS_OF_QUERY_TEMPLATE.replace("__LABEL__", label).replace(
+            "__PK__", pk_property
+        )
+        result = await self._driver.execute_query(
+            query,
+            {"business_key": business_key, "version": version},
+            routing_=RoutingControl.READ,
+            database_=self._settings.neo4j_database,
+        )
+        if not result.records:
+            return None
+
+        record = result.records[0]
+        return ReadAsOfResolvedRecord(
+            node_id=record["node_id"],
+            plane_labels=(plane_label,),
+            version=record["version"],
+            origin_mechanism=record["origin_mechanism"],
+            derivation_class=record["derivation_class"],
+            effective_from=record["effective_from"],
+            effective_to=None,
+            applicability_state=record["applicability_state"] or "unconditional",
+            retracted=record["retracted"],
+            conditions=tuple(
+                ResolvedConditionRecord(
+                    predicate=condition["predicate"],
+                    required_context_fields=frozenset(condition["dependency_manifest"] or ()),
+                )
+                for condition in record["conditions"]
+            ),
+        )

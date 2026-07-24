@@ -20,6 +20,7 @@ from app.ports.graph_store import (
     FindPrecedentsCriteria,
     GraphStoragePort,
     ObligationCandidateRecord,
+    ReadAsOfResolvedRecord,
     ResolveTechnologyCandidateRecord,
     SelectPatternsCandidateRecord,
     TargetEntityRef,
@@ -351,3 +352,51 @@ class TestInMemoryGraphStoreFindPrecedents:
         # Assert — lets a test prove the operation forwarded the caller's
         # criteria rather than dropping or substituting them.
         assert store.find_precedents_calls == [criteria]
+
+
+class TestInMemoryGraphStoreReadAsOf:
+    """The controllable single-record store (§4.2 A3)."""
+
+    async def test_read_as_of_with_no_result_set_returns_none(self) -> None:
+        # Arrange — a resolution miss.
+        store = InMemoryGraphStore()
+
+        # Act
+        result = await store.read_as_of("Technology", "tech-1", "1")
+
+        # Assert
+        assert result is None
+
+    async def test_read_as_of_returns_the_configured_record(self) -> None:
+        # Arrange
+        store = InMemoryGraphStore()
+        record = ReadAsOfResolvedRecord(
+            node_id="tech-1",
+            plane_labels=("Catalog",),
+            version="3",
+            origin_mechanism="ingested",
+            derivation_class="primary",
+            effective_from=None,
+            effective_to=None,
+            applicability_state="unconditional",
+            retracted=False,
+            conditions=(),
+        )
+        store.set_read_as_of_result(record)
+
+        # Act
+        result = await store.read_as_of("Technology", "tech-1", "3")
+
+        # Assert
+        assert result == record
+
+    async def test_read_as_of_records_the_requested_pin(self) -> None:
+        # Arrange
+        store = InMemoryGraphStore()
+
+        # Act
+        await store.read_as_of("Technology", "tech-42", "2")
+
+        # Assert — lets a test prove the operation forwarded the caller's
+        # pin rather than dropping or substituting it.
+        assert store.read_as_of_calls == [("Technology", "tech-42", "2")]

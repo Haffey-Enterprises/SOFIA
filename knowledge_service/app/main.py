@@ -30,6 +30,7 @@ from app.config import Settings, get_settings
 from app.domain.exceptions import GatewayError, resolve_http_status
 from app.domain.retrieval.find_precedents import find_precedents
 from app.domain.retrieval.obligation_context import obligation_context
+from app.domain.retrieval.read_as_of import read_as_of
 from app.domain.retrieval.resolve_technology import resolve_technology
 from app.domain.retrieval.select_patterns import select_patterns
 from app.domain.retrieval.track_record_lookup import track_record_lookup
@@ -44,6 +45,7 @@ from app.models import (
     HealthResponse,
     ObligationContextRequest,
     ObligationContextResult,
+    ReadAsOfRequest,
     ReadinessResponse,
     ReadResult,
     ResolveTechnologyRequest,
@@ -455,3 +457,47 @@ async def find_precedents_endpoint(
         declared_fields=request.consuming_context.declared_fields,
     )
     return await find_precedents(criteria, context, graph_store, predicate_evaluator)
+
+
+@app.post(
+    "/api/v1/read-as-of",
+    response_model=ReadResult,
+    tags=["retrieval"],
+)
+async def read_as_of_endpoint(
+    request: ReadAsOfRequest,
+    graph_store: GraphStoreDep,
+    predicate_evaluator: PredicateEvaluatorDep,
+) -> ReadResult:
+    """Resolve a supplied version pin over versioned ground truth (SDD-001 §3.3.6).
+
+    Pin-mode only this build (as-of-by-timestamp is deferred, RBT-83). A
+    resolution miss raises `TARGET_NOT_FOUND` (handled by the existing §3.2
+    exception handler) — unlike the prior read endpoints, this route can
+    raise. A resolution hit still runs the full §4.4 read-discipline trio at
+    read time: a currently-retracted pinned version is excluded even though
+    the pin itself resolves. The schema-metadata registry is not consulted
+    here (this operation performs no write-path validation).
+
+    Args:
+        request: The node_kind, business_key, version, and the §3.2
+            consuming-context payload.
+        graph_store: The graph port.
+        predicate_evaluator: The predicate port (production: fail-closed).
+
+    Returns:
+        The `ReadResult`: 0-or-1 admitted envelope, 0-or-1 disclosures.
+    """
+    context = ConsumingContext(
+        environment_class=request.consuming_context.environment_class,
+        data_classification=request.consuming_context.data_classification,
+        declared_fields=request.consuming_context.declared_fields,
+    )
+    return await read_as_of(
+        request.node_kind,
+        request.business_key,
+        request.version,
+        context,
+        graph_store,
+        predicate_evaluator,
+    )

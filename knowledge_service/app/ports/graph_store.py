@@ -269,6 +269,49 @@ class FindPrecedentsCandidateRecord:
     gate_decisions: tuple[GateDecisionRecord, ...]
 
 
+# The 6 versioned Catalog+Standards labels read-as-of resolves (SDD-001
+# §3.3.6, pin-mode). `ComplianceControl` is excluded — it carries no
+# `version` property (DDR-002 §2.5) — and as-of-by-timestamp resolution is
+# out of scope for this build; both are routed to RBT-83.
+ReadAsOfNodeKind = Literal[
+    "Pattern",
+    "Technology",
+    "Capability",
+    "IacTemplate",
+    "Standard",
+    "PolicyRule",
+]
+
+
+@dataclass(frozen=True)
+class ReadAsOfResolvedRecord:
+    """One versioned-ground-truth node resolved by a supplied version pin
+    (SDD-001 §3.3.6). Port-level facts, not a `CandidateNode`.
+
+    `node_id` is the `business_key` PK value; `version` is the resolved
+    (pinned) version, echoed back rather than re-derived. Like
+    `ResolveTechnologyCandidateRecord`/`SelectPatternsCandidateRecord`/
+    `ObligationCandidateRecord`, `applicability_state`/`retracted`/
+    `conditions` are REAL, traversal-resolved read-discipline structure —
+    read-as-of enforces the trio at read time even though the pin resolves a
+    specific (possibly superseded, possibly retracted) version. `effective_from`
+    is populated only for the one label that declares it (`Pattern`, DDR-002
+    §2.1); `effective_to` is always `None` — no in-scope label declares it
+    (the as-of-by-timestamp window is out of scope this build, RBT-83).
+    """
+
+    node_id: str
+    plane_labels: tuple[str, ...]
+    version: str
+    origin_mechanism: str
+    derivation_class: str | None
+    effective_from: str | None
+    effective_to: str | None
+    applicability_state: Literal["unconditional", "conditional"]
+    retracted: bool
+    conditions: tuple[ResolvedConditionRecord, ...]
+
+
 @runtime_checkable
 class GraphStoragePort(Protocol):
     """The graph system-of-record seam the gateway's domain code depends on.
@@ -404,5 +447,30 @@ class GraphStoragePort(Protocol):
             One `FindPrecedentsCandidateRecord` per matching Solution. No
             matching criteria configured, or no Solution matching the given
             criteria, yields an empty sequence, never an error.
+        """
+        ...
+
+    async def read_as_of(
+        self,
+        node_kind: ReadAsOfNodeKind,
+        business_key: str,
+        version: str,
+    ) -> ReadAsOfResolvedRecord | None:
+        """Resolve a supplied version pin over versioned ground truth.
+
+        One single-store traversal: resolve the node by `(node_kind` label,
+        `business_key` PK, `version)`, with its read-discipline structure
+        resolved alongside. No status/superseded_by filter — a pin resolves
+        the exact retained version, even a superseded one. Performs no
+        read-discipline exclusion itself; that is the operation's job.
+
+        Args:
+            node_kind: The versioned label to resolve.
+            business_key: The entity's PK value for that label.
+            version: The exact retained version to resolve.
+
+        Returns:
+            The resolved record, or `None` if the pin resolves nothing (the
+            operation raises `TARGET_NOT_FOUND`).
         """
         ...
