@@ -1115,3 +1115,207 @@ class TestNeo4jAdapterSelectPatterns:
         # Act / Assert
         with pytest.raises(RuntimeError, match="driver"):
             await adapter.select_patterns(["cap-1"])
+
+
+class TestNeo4jAdapterObligationContext:
+    """The obligation-context traversal (SDD-001 §3.3.4) — one Cypher call."""
+
+    async def test_obligation_context_queries_with_the_solution_id(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(records=[])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        await adapter.obligation_context("sol-1")
+
+        # Assert
+        params = driver.execute_query.call_args.args[1]
+        assert params == {"solution_id": "sol-1"}
+
+    async def test_obligation_context_routes_read_and_targets_the_database(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(records=[])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        await adapter.obligation_context("sol-1")
+
+        # Assert
+        kwargs = driver.execute_query.call_args.kwargs
+        assert kwargs["routing_"] is RoutingControl.READ
+        assert kwargs["database_"] == "sofia"
+
+    async def test_obligation_context_query_matches_the_traversal_shape(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(records=[])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        await adapter.obligation_context("sol-1")
+
+        # Assert — the single-store traversal (ADR-002 §6 check 4): USES/
+        # FOLLOWS entity resolution, GOVERNED_BY (entity to rule) and MANDATES
+        # (rule to Technology, inbound), the current-version filter on the
+        # resolved rule, plus the read-discipline structure (RETRACTS/
+        # DECIDED_ON existence, PROMOTES_TO_KNOWLEDGE/HAS_CONDITION governing-
+        # decision resolution).
+        query = driver.execute_query.call_args.args[0]
+        assert "USES" in query
+        assert "FOLLOWS" in query
+        assert "GOVERNED_BY" in query
+        assert "MANDATES" in query
+        assert "superseded_by IS NULL" in query
+        assert "RETRACTS" in query
+        assert "PROMOTES_TO_KNOWLEDGE" in query
+        assert "HAS_CONDITION" in query
+        assert "EXISTS {" in query
+
+    async def test_obligation_context_maps_a_single_rule_row(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(
+            records=[
+                {
+                    "node_id": "rule-1",
+                    "version": "2",
+                    "origin_mechanism": "ingested",
+                    "derivation_class": "primary",
+                    "applicability_state": None,
+                    "retracted": False,
+                    "conditions": [],
+                    "statement": "Data at rest must be encrypted.",
+                    "rule_definition": "IF classification == 'restricted' THEN require(encryption)",
+                    "dependency_manifest": ["Technology"],
+                    "enforcement_level": "hard",
+                    "enforced_at_gate": "architecture_review",
+                    "domain": "security",
+                }
+            ]
+        )
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        results = await adapter.obligation_context("sol-1")
+
+        # Assert
+        assert len(results) == 1
+        rule = results[0]
+        assert rule.node_id == "rule-1"
+        assert rule.version == "2"
+        assert rule.origin_mechanism == "ingested"
+        assert rule.derivation_class == "primary"
+        assert rule.applicability_state == "unconditional"
+        assert rule.retracted is False
+        assert rule.conditions == ()
+        assert rule.statement == "Data at rest must be encrypted."
+        assert rule.rule_definition == "IF classification == 'restricted' THEN require(encryption)"
+        assert rule.dependency_manifest == ("Technology",)
+        assert rule.enforcement_level == "hard"
+        assert rule.enforced_at_gate == "architecture_review"
+        assert rule.domain == "security"
+
+    async def test_obligation_context_maps_multiple_distinct_rule_rows(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange — one row standing in for a GOVERNED_BY-reached rule, one for
+        # a MANDATES-reached rule.
+        def _row(node_id: str) -> dict[str, object]:
+            return {
+                "node_id": node_id,
+                "version": "1",
+                "origin_mechanism": "ingested",
+                "derivation_class": "primary",
+                "applicability_state": None,
+                "retracted": False,
+                "conditions": [],
+                "statement": None,
+                "rule_definition": None,
+                "dependency_manifest": [],
+                "enforcement_level": None,
+                "enforced_at_gate": None,
+                "domain": None,
+            }
+
+        driver.execute_query.return_value = SimpleNamespace(
+            records=[_row("rule-governed-by"), _row("rule-mandates")]
+        )
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        results = await adapter.obligation_context("sol-1")
+
+        # Assert
+        node_ids = {rule.node_id for rule in results}
+        assert node_ids == {"rule-governed-by", "rule-mandates"}
+
+    async def test_obligation_context_maps_conditional_and_retracted_flags(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(
+            records=[
+                {
+                    "node_id": "rule-1",
+                    "version": "1",
+                    "origin_mechanism": "promoted",
+                    "derivation_class": None,
+                    "applicability_state": "conditional",
+                    "retracted": True,
+                    "conditions": [{"predicate": {"op": "eq"}, "dependency_manifest": ["tier"]}],
+                    "statement": None,
+                    "rule_definition": None,
+                    "dependency_manifest": [],
+                    "enforcement_level": None,
+                    "enforced_at_gate": None,
+                    "domain": None,
+                }
+            ]
+        )
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        results = await adapter.obligation_context("sol-1")
+
+        # Assert
+        rule = results[0]
+        assert rule.applicability_state == "conditional"
+        assert rule.retracted is True
+        assert len(rule.conditions) == 1
+        assert rule.conditions[0].required_context_fields == frozenset({"tier"})
+
+    async def test_obligation_context_with_no_matches_returns_empty(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(records=[])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        results = await adapter.obligation_context("sol-nonexistent")
+
+        # Assert
+        assert results == []
+
+    async def test_obligation_context_before_connect_raises_runtime_error(
+        self, settings: Settings, driver_factory: MagicMock
+    ) -> None:
+        # Arrange
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+
+        # Act / Assert
+        with pytest.raises(RuntimeError, match="driver"):
+            await adapter.obligation_context("sol-1")

@@ -28,6 +28,7 @@ from starlette.requests import Request
 from app.adapters.neo4j_adapter import Neo4jAdapter
 from app.config import Settings, get_settings
 from app.domain.exceptions import GatewayError, resolve_http_status
+from app.domain.retrieval.obligation_context import obligation_context
 from app.domain.retrieval.resolve_technology import resolve_technology
 from app.domain.retrieval.select_patterns import select_patterns
 from app.domain.retrieval.track_record_lookup import track_record_lookup
@@ -38,6 +39,8 @@ from app.models import (
     CheckStatus,
     ErrorResponse,
     HealthResponse,
+    ObligationContextRequest,
+    ObligationContextResult,
     ReadinessResponse,
     ReadResult,
     ResolveTechnologyRequest,
@@ -368,3 +371,40 @@ async def select_patterns_endpoint(
         declared_fields=request.consuming_context.declared_fields,
     )
     return await select_patterns(request.capability_ids, context, graph_store, predicate_evaluator)
+
+
+@app.post(
+    "/api/v1/obligation-context",
+    response_model=ObligationContextResult,
+    tags=["retrieval"],
+)
+async def obligation_context_endpoint(
+    request: ObligationContextRequest,
+    graph_store: GraphStoreDep,
+    predicate_evaluator: PredicateEvaluatorDep,
+) -> ObligationContextResult:
+    """Applicable PolicyRules for a solution's USES/FOLLOWS entity set
+    (SDD-001 §3.3.4).
+
+    Entity-triggered graph half only (GOVERNED_BY/MANDATES traversal);
+    obligation closure (condition-triggered rules, the satisfaction join) is
+    the constraint-validator's. The schema-metadata registry is not consulted
+    here (this operation performs no write-path validation), and this route
+    raises no TARGET_NOT_FOUND — an absent solution or one governed by
+    nothing yields an empty result.
+
+    Args:
+        request: The solution id and the §3.2 consuming-context payload.
+        graph_store: The graph port.
+        predicate_evaluator: The predicate port (production: fail-closed).
+
+    Returns:
+        The admitted obligations (each with its envelope and PolicyRule
+        payload) and the disclosed conditionally-excluded rules.
+    """
+    context = ConsumingContext(
+        environment_class=request.consuming_context.environment_class,
+        data_classification=request.consuming_context.data_classification,
+        declared_fields=request.consuming_context.declared_fields,
+    )
+    return await obligation_context(request.solution_id, context, graph_store, predicate_evaluator)

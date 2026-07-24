@@ -28,6 +28,7 @@ from neo4j import AsyncDriver, AsyncGraphDatabase, RoutingControl
 from app.config import Settings
 from app.ports.graph_store import (
     CapabilityBlockRecord,
+    ObligationCandidateRecord,
     ResolvedConditionRecord,
     ResolveTechnologyCandidateRecord,
     SelectPatternsCandidateRecord,
@@ -236,6 +237,106 @@ RETURN
   [c IN tech_governing_conditions WHERE c IS NOT NULL |
     {predicate: c.predicate, dependency_manifest: c.dependency_manifest}] AS tech_conditions
 ORDER BY node_id, capability_id, tech_node_id
+"""
+
+# One traversal (ADR-002 §6 check 4): from the solution's USES(Technology)/
+# FOLLOWS(Pattern) entity set, every PolicyRule reached via outbound
+# GOVERNED_BY (entity to rule) or inbound MANDATES (rule to Technology only,
+# DDR-002 §3 edge catalog), with the rule's OWN read-discipline structure
+# resolved via the SAME sub-pattern _SELECT_PATTERNS_QUERY uses (governing
+# PromotionDecision -> HAS_CONDITION; EXISTS-based approving-RETRACTS check).
+#
+# Absent solution -> zero rows (the leading MATCH finds nothing; empty-never-
+# error, SDD-001 §3.3.4 O1). A solution governed by nothing (no USES/FOLLOWS,
+# or entities reaching no rule) also falls out to zero rows naturally: each
+# CALL{} aggregation over zero input rows still yields exactly one row with an
+# empty collect() (standard Cypher aggregation semantics — no explicit
+# grouping key), so candidate_rules ends up [] and the final UNWIND produces
+# no rows, never an error.
+#
+# USES/FOLLOWS are traversed unfiltered (RBT-78 R4a Item-4 resolution,
+# operator-ratified): DDR-002 §3's re-bind discipline classifies "a solution's
+# use of a version" as rebind:pinned, so the traversal correctly follows
+# whichever Technology/Pattern version the solution actually pinned at design
+# time — no active-version filter on that side.
+#
+# The resolved PolicyRule itself DOES get an explicit active-version filter
+# (`rule.superseded_by IS NULL`) — same R4a ruling: GOVERNED_BY/MANDATES carry
+# no stated rebind classification in DDR-002 §3 (unlike the Selection
+# sub-graph's explicit `rebind:current` heading), so self-maintaining
+# supersession re-pointing is NOT assumed. PolicyRule is one of §6 Option-A's
+# versioned-ground-truth types ("superseding creates a new retained node and
+# marks the old superseded"), so `superseded_by IS NULL` is the schema-literal
+# current-version test — closes the case where a superseded rule still carries
+# its own outbound MANDATES edge and would otherwise surface as stale.
+#
+# Direct USES/FOLLOWS entities only (O4) — no transitive Pattern ->
+# REQUIRES_CAPABILITY -> Capability governance is traversed.
+#
+# Obligation closure (condition-triggered rules from rule_definition, the
+# satisfaction join) is NOT computed here — the constraint-validator's job
+# (SDD-001 §3.3.4). rule_definition is returned opaque, never parsed.
+_OBLIGATION_CONTEXT_QUERY = """
+MATCH (sol:Artifact:Solution {artifact_id: $solution_id})
+CALL {
+  WITH sol
+  OPTIONAL MATCH (sol)-[:USES]->(tech:Catalog:Technology)
+  RETURN collect(DISTINCT tech) AS used_techs
+}
+CALL {
+  WITH sol
+  OPTIONAL MATCH (sol)-[:FOLLOWS]->(pat:Catalog:Pattern)
+  RETURN collect(DISTINCT pat) AS followed_patterns
+}
+CALL {
+  WITH used_techs, followed_patterns
+  UNWIND used_techs + followed_patterns AS entity
+  MATCH (entity)-[:GOVERNED_BY]->(governed_rule:Standards:PolicyRule)
+  RETURN collect(DISTINCT governed_rule) AS governed_rules
+}
+CALL {
+  WITH used_techs
+  UNWIND used_techs AS tech
+  MATCH (mandated_rule:Standards:PolicyRule)-[:MANDATES]->(tech)
+  RETURN collect(DISTINCT mandated_rule) AS mandated_rules
+}
+WITH governed_rules + mandated_rules AS candidate_rules
+UNWIND candidate_rules AS rule
+WITH DISTINCT rule
+WHERE rule.superseded_by IS NULL
+CALL {
+  WITH rule
+  OPTIONAL MATCH (promotion:Reasoning:CandidatePromotion {proposal_kind: 'promotion'})
+    -[:PROMOTES_TO_KNOWLEDGE]->(rule)
+  OPTIONAL MATCH (promotion)<-[decided:DECIDED_ON]-(decision:Governance:PromotionDecision)
+  WHERE decided.outcome IN ['approved', 'approved_conditional']
+  WITH decision
+  ORDER BY decision.decided_at DESC
+  LIMIT 1
+  OPTIONAL MATCH (decision)-[:HAS_CONDITION]->(condition:Governance:Condition)
+  RETURN collect(DISTINCT condition) AS governing_conditions
+}
+RETURN
+  rule.policy_rule_id AS node_id,
+  rule.version AS version,
+  rule.origin_mechanism AS origin_mechanism,
+  rule.derivation_class AS derivation_class,
+  rule.applicability_state AS applicability_state,
+  EXISTS {
+    MATCH (retraction:Reasoning:CandidatePromotion {proposal_kind: 'retraction'})
+      -[:RETRACTS]->(rule)
+    MATCH (retraction)<-[retraction_decided:DECIDED_ON]-(:Governance:PromotionDecision)
+    WHERE retraction_decided.outcome IN ['approved', 'approved_conditional']
+  } AS retracted,
+  [c IN governing_conditions WHERE c IS NOT NULL |
+    {predicate: c.predicate, dependency_manifest: c.dependency_manifest}] AS conditions,
+  rule.statement AS statement,
+  rule.rule_definition AS rule_definition,
+  rule.dependency_manifest AS dependency_manifest,
+  rule.enforcement_level AS enforcement_level,
+  rule.enforced_at_gate AS enforced_at_gate,
+  rule.domain AS domain
+ORDER BY node_id
 """
 
 
@@ -561,4 +662,58 @@ class Neo4jAdapter:
                 preferred_over=tuple(entry["preferred_over"]),
             )
             for node_id, entry in patterns.items()
+        ]
+
+    async def obligation_context(self, solution_id: str) -> Sequence[ObligationCandidateRecord]:
+        """Resolve applicable PolicyRules for the given solution.
+
+        One single-store Cypher traversal (ADR-002 §6 check 4), resolving the
+        real read-discipline structure alongside — no read-discipline
+        exclusion happens here (SDD-001 §4.4 is the R2 core's job alone).
+
+        Args:
+            solution_id: The solution to resolve applicable PolicyRules for.
+
+        Returns:
+            One `ObligationCandidateRecord` per applicable PolicyRule. An
+            absent solution or a solution governed by nothing yields an
+            empty sequence, never an error.
+
+        Raises:
+            RuntimeError: If no driver is open — a data operation with no
+                driver must fail loud, never silently return an empty (and
+                misleading) result.
+        """
+        if self._driver is None:
+            raise RuntimeError("No graph driver is open: application startup did not complete")
+
+        result = await self._driver.execute_query(
+            _OBLIGATION_CONTEXT_QUERY,
+            {"solution_id": solution_id},
+            routing_=RoutingControl.READ,
+            database_=self._settings.neo4j_database,
+        )
+        return [
+            ObligationCandidateRecord(
+                node_id=record["node_id"],
+                version=record["version"],
+                origin_mechanism=record["origin_mechanism"],
+                derivation_class=record["derivation_class"],
+                applicability_state=record["applicability_state"] or "unconditional",
+                retracted=record["retracted"],
+                conditions=tuple(
+                    ResolvedConditionRecord(
+                        predicate=condition["predicate"],
+                        required_context_fields=frozenset(condition["dependency_manifest"] or ()),
+                    )
+                    for condition in record["conditions"]
+                ),
+                statement=record["statement"],
+                rule_definition=record["rule_definition"],
+                dependency_manifest=tuple(record["dependency_manifest"] or ()),
+                enforcement_level=record["enforcement_level"],
+                enforced_at_gate=record["enforced_at_gate"],
+                domain=record["domain"],
+            )
+            for record in result.records
         ]

@@ -17,6 +17,7 @@
 from app.adapters.in_memory_graph import InMemoryGraphStore
 from app.ports.graph_store import (
     GraphStoragePort,
+    ObligationCandidateRecord,
     ResolveTechnologyCandidateRecord,
     SelectPatternsCandidateRecord,
     TargetEntityRef,
@@ -233,3 +234,54 @@ class TestInMemoryGraphStoreSelectPatterns:
         # Assert — lets a test prove the operation forwarded the caller's
         # required capabilities rather than dropping or substituting them.
         assert store.select_patterns_calls == [["cap-a", "cap-b"]]
+
+
+class TestInMemoryGraphStoreObligationContext:
+    """The controllable candidate-record store (§4.2 A3)."""
+
+    async def test_obligation_context_with_no_candidates_set_returns_empty(self) -> None:
+        # Arrange
+        store = InMemoryGraphStore()
+
+        # Act
+        result = await store.obligation_context("sol-1")
+
+        # Assert
+        assert result == []
+
+    async def test_obligation_context_returns_the_configured_candidates(self) -> None:
+        # Arrange
+        store = InMemoryGraphStore()
+        candidate = ObligationCandidateRecord(
+            node_id="rule-1",
+            version="1",
+            origin_mechanism="ingested",
+            derivation_class="primary",
+            applicability_state="unconditional",
+            retracted=False,
+            conditions=(),
+            statement="Data at rest must be encrypted.",
+            rule_definition="IF classification == 'restricted' THEN require(encryption)",
+            dependency_manifest=("Technology",),
+            enforcement_level="hard",
+            enforced_at_gate="architecture_review",
+            domain="security",
+        )
+        store.set_obligation_candidates([candidate])
+
+        # Act
+        result = await store.obligation_context("sol-1")
+
+        # Assert
+        assert result == [candidate]
+
+    async def test_obligation_context_records_the_requested_solution_id(self) -> None:
+        # Arrange
+        store = InMemoryGraphStore()
+
+        # Act
+        await store.obligation_context("sol-42")
+
+        # Assert — lets a test prove the operation forwarded the caller's
+        # solution id rather than dropping or substituting it.
+        assert store.obligation_context_calls == ["sol-42"]

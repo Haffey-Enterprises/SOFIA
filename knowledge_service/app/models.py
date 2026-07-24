@@ -357,3 +357,49 @@ class SelectPatternsRequest(BaseModel):
 
     capability_ids: list[str]
     consuming_context: ConsumingContextPayload
+
+
+class PolicyRulePayload(BaseModel):
+    """One `PolicyRule`'s content (SDD-001 §3.3.4; DDR-002 §2.5). `statement`
+    is the natural-language requirement; `rule_definition` is the opaque
+    declarative IF/THEN evaluation logic — carried verbatim, never parsed or
+    traversed here (the constraint-validator's job). `dependency_manifest` is
+    the declared, introspectable list of Catalog entity-types/labels the rule
+    reads."""
+
+    statement: str | None = None
+    rule_definition: str | None = None
+    dependency_manifest: list[str]
+    enforcement_level: str | None = None
+    enforced_at_gate: str | None = None
+    domain: str | None = None
+
+
+class ObligationEntry(BaseModel):
+    """One applicable `PolicyRule` reached from a solution's `USES`/`FOLLOWS`
+    entity set via `GOVERNED_BY`/`MANDATES` (SDD-001 §3.3.4). `envelope`
+    carries node_kind="PolicyRule" with plane_labels=("Standards",); the
+    applicability block's conditional_admission is the only populated surface
+    (catalog_eligibility and deprecation are Technology-only, DDR-002 §2.1).
+    `policy_rule` is the rule's content payload."""
+
+    envelope: ResultEnvelope
+    policy_rule: PolicyRulePayload
+
+
+class ObligationContextResult(BaseModel):
+    """The obligation-context result (SDD-001 §3.3.4). `obligations` are the
+    admitted applicable PolicyRules; `disclosures` are the conditionally-
+    excluded ones (§4.4). This is the entity-triggered graph half only —
+    condition-triggered rules and the satisfaction join are obligation
+    closure, out of scope here (the constraint-validator's)."""
+
+    obligations: list[ObligationEntry]
+    disclosures: list[DisclosureEntry]
+
+
+class ObligationContextRequest(BaseModel):
+    """The obligation-context request body (SDD-001 §3.3.4)."""
+
+    solution_id: str
+    consuming_context: ConsumingContextPayload

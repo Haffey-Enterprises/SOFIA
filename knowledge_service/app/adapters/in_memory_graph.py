@@ -18,6 +18,7 @@
 from collections.abc import Sequence
 
 from app.ports.graph_store import (
+    ObligationCandidateRecord,
     ResolveTechnologyCandidateRecord,
     SelectPatternsCandidateRecord,
     TargetEntityRef,
@@ -53,6 +54,8 @@ class InMemoryGraphStore:
         self._resolve_technology_options_calls: list[str] = []
         self._pattern_candidates: list[SelectPatternsCandidateRecord] = []
         self._select_patterns_calls: list[Sequence[str]] = []
+        self._obligation_candidates: list[ObligationCandidateRecord] = []
+        self._obligation_context_calls: list[str] = []
 
     @property
     def check_connectivity_calls(self) -> int:
@@ -89,6 +92,15 @@ class InMemoryGraphStore:
         capabilities rather than dropping or substituting them.
         """
         return self._select_patterns_calls
+
+    @property
+    def obligation_context_calls(self) -> list[str]:
+        """The `solution_id` argument of every `obligation_context` call.
+
+        Lets a test assert the operation forwarded the caller's solution id
+        rather than dropping or substituting it.
+        """
+        return self._obligation_context_calls
 
     def set_connectivity(self, *, healthy: bool) -> None:
         """Set the verdict subsequent connectivity checks will report.
@@ -130,6 +142,16 @@ class InMemoryGraphStore:
                 store (SDD-001 §4.2 A3), not a graph-internals model.
         """
         self._pattern_candidates = list(candidates)
+
+    def set_obligation_candidates(self, candidates: Sequence[ObligationCandidateRecord]) -> None:
+        """Set the candidate records subsequent `obligation_context` calls return.
+
+        Args:
+            candidates: The records to return, unconditionally on the
+                requested `solution_id` — this is a controllable record
+                store (SDD-001 §4.2 A3), not a graph-internals model.
+        """
+        self._obligation_candidates = list(candidates)
 
     async def check_connectivity(self) -> bool:
         """Report the configured connectivity verdict.
@@ -187,3 +209,17 @@ class InMemoryGraphStore:
         """
         self._select_patterns_calls.append(capability_ids)
         return list(self._pattern_candidates)
+
+    async def obligation_context(self, solution_id: str) -> Sequence[ObligationCandidateRecord]:
+        """Report the configured obligation candidate records.
+
+        Args:
+            solution_id: Recorded for test assertion; does not filter the
+                configured candidates (a faithful port-level substitute per
+                §4.2 need not model graph internals).
+
+        Returns:
+            The candidates currently set on this double.
+        """
+        self._obligation_context_calls.append(solution_id)
+        return list(self._obligation_candidates)

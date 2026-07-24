@@ -182,6 +182,37 @@ class SelectPatternsCandidateRecord:
     preferred_over: tuple[str, ...]
 
 
+@dataclass(frozen=True)
+class ObligationCandidateRecord:
+    """One `PolicyRule` applicable to a solution's `USES`/`FOLLOWS` entity set
+    via `GOVERNED_BY`/`MANDATES` (SDD-001 §3.3.4). Port-level facts, not a
+    `CandidateNode`. A `PolicyRule` is Standards ground truth — genuinely
+    promotable-conditional or retractable, so it carries its OWN real
+    read-discipline structure (`retracted`, `applicability_state`, resolved
+    `conditions`) for the R2 core to enforce, resolved by the traversal, never
+    assumed.
+
+    The remaining fields are the rule's content payload: `statement` and
+    `rule_definition` (opaque — never parsed here), `dependency_manifest`
+    (declared, introspectable Catalog entity-type labels), `enforcement_level`,
+    `enforced_at_gate`, and `domain`.
+    """
+
+    node_id: str
+    version: str
+    origin_mechanism: str
+    derivation_class: str | None
+    applicability_state: Literal["unconditional", "conditional"]
+    retracted: bool
+    conditions: tuple[ResolvedConditionRecord, ...]
+    statement: str | None
+    rule_definition: str | None
+    dependency_manifest: tuple[str, ...]
+    enforcement_level: str | None
+    enforced_at_gate: str | None
+    domain: str | None
+
+
 @runtime_checkable
 class GraphStoragePort(Protocol):
     """The graph system-of-record seam the gateway's domain code depends on.
@@ -272,5 +303,27 @@ class GraphStoragePort(Protocol):
 
         Returns:
             One `SelectPatternsCandidateRecord` per candidate Pattern.
+        """
+        ...
+
+    async def obligation_context(self, solution_id: str) -> Sequence[ObligationCandidateRecord]:
+        """Resolve applicable PolicyRules for the given solution.
+
+        One single-store traversal (ADR-002 §6 check 4): from the solution's
+        `USES`/`FOLLOWS` entity set, every `PolicyRule` reached via outbound
+        `GOVERNED_BY` (entity to rule) or inbound `MANDATES` (rule to
+        Technology), current version only, with its own read-discipline
+        structure resolved alongside — never pre-excluded here. Performs no
+        read-discipline exclusion itself; that is the operation's job (the R2
+        core). Obligation closure (condition-triggered rules, the
+        satisfaction join) is out of scope — the constraint-validator's.
+
+        Args:
+            solution_id: The solution to resolve applicable PolicyRules for.
+
+        Returns:
+            One `ObligationCandidateRecord` per applicable PolicyRule. An
+            absent solution or a solution governed by nothing yields an
+            empty sequence, never an error.
         """
         ...
