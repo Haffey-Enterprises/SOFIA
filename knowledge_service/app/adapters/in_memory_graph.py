@@ -19,7 +19,9 @@
 #   sequence rather than returning it unconditionally. The caller supplies the
 #   full unpaginated set, pre-sorted by evidence_id; that ordering is a test
 #   setup responsibility, not something this double re-derives (it has no
-#   graph to derive it from).
+#   graph to derive it from). R6b's provenance_of is back to the plain
+#   controllable-record-store shape (§4.2 A3) — single-subject, unpaginated —
+#   set the whole `ProvenanceOfPage`, get it back unconditionally.
 ##############################################################################
 
 from collections.abc import Sequence
@@ -32,6 +34,7 @@ from app.ports.graph_store import (
     FindPrecedentsCandidateRecord,
     FindPrecedentsCriteria,
     ObligationCandidateRecord,
+    ProvenanceOfPage,
     ReadAsOfNodeKind,
     ReadAsOfResolvedRecord,
     ResolveTechnologyCandidateRecord,
@@ -81,6 +84,20 @@ class InMemoryGraphStore:
         self._citation_lookup_calls: list[
             tuple[ReadAsOfNodeKind, str, str | None, CitationMode, str | None, int]
         ] = []
+        self._provenance_of_result = ProvenanceOfPage(
+            entry_found=False,
+            is_promoted=False,
+            origin_mechanism=None,
+            is_superseded=False,
+            is_retracted=False,
+            is_conditional=False,
+            candidate=None,
+            governing_decision=None,
+            frozen_layer_present=False,
+            provenance_summary_id=None,
+            entries=(),
+        )
+        self._provenance_of_calls: list[tuple[ReadAsOfNodeKind, str, str]] = []
 
     @property
     def check_connectivity_calls(self) -> int:
@@ -158,6 +175,16 @@ class InMemoryGraphStore:
         already-resolved `limit` the API layer computed.
         """
         return self._citation_lookup_calls
+
+    @property
+    def provenance_of_calls(self) -> list[tuple[ReadAsOfNodeKind, str, str]]:
+        """The `(node_kind, business_key, version)` argument tuple of every
+        `provenance_of` call.
+
+        Lets a test assert the operation forwarded the caller's pin rather
+        than dropping or substituting it.
+        """
+        return self._provenance_of_calls
 
     def set_connectivity(self, *, healthy: bool) -> None:
         """Set the verdict subsequent connectivity checks will report.
@@ -264,6 +291,16 @@ class InMemoryGraphStore:
         self._citation_entry_found = entry_found
         self._citation_entry_statuses = list(entry_statuses)
         self._citation_all_citations = list(citations)
+
+    def set_provenance_of_result(self, page: ProvenanceOfPage) -> None:
+        """Set the page subsequent `provenance_of` calls return.
+
+        Args:
+            page: The full page to return, unconditionally on the requested
+                `(node_kind, business_key, version)` — this is a controllable
+                record store (SDD-001 §4.2 A3), not a graph-internals model.
+        """
+        self._provenance_of_result = page
 
     async def check_connectivity(self) -> bool:
         """Report the configured connectivity verdict.
@@ -428,3 +465,24 @@ class InMemoryGraphStore:
             citations=tuple(page),
             next_cursor=next_cursor,
         )
+
+    async def provenance_of(
+        self, node_kind: ReadAsOfNodeKind, business_key: str, version: str
+    ) -> ProvenanceOfPage:
+        """Report the configured page.
+
+        Args:
+            node_kind: Recorded for test assertion; does not affect the
+                configured result (a faithful port-level substitute per §4.2
+                need not model graph internals).
+            business_key: Recorded for test assertion; does not affect the
+                configured result.
+            version: Recorded for test assertion; does not affect the
+                configured result.
+
+        Returns:
+            The page currently set on this double — `entry_found=False` by
+            default, until `set_provenance_of_result` configures otherwise.
+        """
+        self._provenance_of_calls.append((node_kind, business_key, version))
+        return self._provenance_of_result

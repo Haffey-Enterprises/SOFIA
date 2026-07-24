@@ -10,15 +10,17 @@
 #   predicate-evaluator dependencies, the SDD-001 §3.2 typed-error handler, the
 #   §3.1 health and readiness routes, and the §3.3 read routes (RBT-78/R3a
 #   track-record-lookup, R3b resolve-technology, R3c select-patterns, R6a
-#   citation-lookup). Per SDD-001 §4.1 this module homes the routes directly;
-#   this service's tree has no separate api/ layer. The lifespan is the single
-#   place a Neo4j driver is opened in this platform (ADR-002 §2.5) and the
-#   place the schema-metadata registry is loaded (SDD-001 §3.1 check 2).
-#   citation_lookup_endpoint is the FIRST route with no `predicate_evaluator`
-#   dependency at all (the audit posture, SDD-001 §1/§3.2, runs no trio) and
-#   the FIRST to resolve a `SettingsDep` for its config-capped pagination
-#   default/clamp (R6a delta A2) — the only route-layer logic this build adds
-#   beyond wire<->domain type conversion.
+#   citation-lookup, R6b provenance-of). Per SDD-001 §4.1 this module homes
+#   the routes directly; this service's tree has no separate api/ layer. The
+#   lifespan is the single place a Neo4j driver is opened in this platform
+#   (ADR-002 §2.5) and the place the schema-metadata registry is loaded
+#   (SDD-001 §3.1 check 2). citation_lookup_endpoint is the FIRST route with
+#   no `predicate_evaluator` dependency at all (the audit posture, SDD-001
+#   §1/§3.2, runs no trio) and the FIRST to resolve a `SettingsDep` for its
+#   config-capped pagination default/clamp (R6a delta A2). provenance_of_
+#   endpoint shares the no-`predicate_evaluator` posture but needs no
+#   `SettingsDep` either — it is single-subject and unpaginated (P-D2), so
+#   its handler is pure wire<->domain type conversion.
 ##############################################################################
 
 from collections.abc import AsyncIterator
@@ -36,6 +38,7 @@ from app.domain.exceptions import GatewayError, resolve_http_status
 from app.domain.retrieval.citation_lookup import citation_lookup
 from app.domain.retrieval.find_precedents import find_precedents
 from app.domain.retrieval.obligation_context import obligation_context
+from app.domain.retrieval.provenance_of import provenance_of
 from app.domain.retrieval.read_as_of import read_as_of
 from app.domain.retrieval.resolve_technology import resolve_technology
 from app.domain.retrieval.select_patterns import select_patterns
@@ -53,6 +56,8 @@ from app.models import (
     HealthResponse,
     ObligationContextRequest,
     ObligationContextResult,
+    ProvenanceOfRequest,
+    ProvenanceOfResult,
     ReadAsOfRequest,
     ReadinessResponse,
     ReadResult,
@@ -563,4 +568,41 @@ async def citation_lookup_endpoint(
         request.mode,
         page,
         graph_store,
+    )
+
+
+@app.post(
+    "/api/v1/provenance-of",
+    response_model=ProvenanceOfResult,
+    tags=["retrieval"],
+)
+async def provenance_of_endpoint(
+    request: ProvenanceOfRequest,
+    graph_store: GraphStoreDep,
+) -> ProvenanceOfResult:
+    """The provenance-survival affordance for one promoted node (SDD-001 §3.3.8).
+
+    THE DISCLOSED AUDIT EXCEPTION (§1/§3.2), the audit set's second op: same
+    posture as `citation_lookup_endpoint` (no `predicate_evaluator`
+    dependency, no §4.4 trio), but single-subject and unpaginated — one
+    specific promoted node, keyed `(node_kind, business_key, version)`. A
+    retracted/superseded/conditional promoted node's provenance is returned
+    exactly as an active node's would be.
+
+    Args:
+        request: The entry pin.
+        graph_store: The graph port.
+
+    Returns:
+        The resolved provenance: entry markers, the originating candidate +
+        governing decision, and the frozen entry set (frozen floor always,
+        live overlay where extant).
+
+    Raises:
+        GatewayError: `TARGET_NOT_FOUND` (404) if the entry node does not
+            exist at all, or exists but was never promoted — handled by the
+            existing §3.2 exception handler.
+    """
+    return await provenance_of(
+        request.node_kind, request.business_key, request.version, graph_store
     )

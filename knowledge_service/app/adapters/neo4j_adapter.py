@@ -18,8 +18,12 @@
 #   sole enforcement point. R6a adds `citation_lookup` (SDD-001 §3.3.7) — the
 #   FIRST traversal under the audit posture (no HAS_CONDITION resolution, no
 #   Condition set built) and the FIRST paginated one (a limit+1 fetch drives
-#   the keyset `next_cursor`). Driver-level exceptions are translated at this
-#   boundary and never cross the port.
+#   the keyset `next_cursor`). R6b adds `provenance_of` (SDD-001 §3.3.8) —
+#   the audit set's second traversal: single-subject, unpaginated, zipping
+#   ProvenanceSummary's four index-aligned frozen_* arrays by position
+#   (standard Cypher `range()`, no APOC) with a live-Evidence overlay per
+#   entry. Driver-level exceptions are translated at this boundary and never
+#   cross the port.
 ##############################################################################
 
 from collections.abc import Callable, Sequence
@@ -40,6 +44,10 @@ from app.ports.graph_store import (
     FindPrecedentsCriteria,
     GateDecisionRecord,
     ObligationCandidateRecord,
+    ProvenanceOfCandidateRecord,
+    ProvenanceOfFrozenEntryRecord,
+    ProvenanceOfGoverningDecisionRecord,
+    ProvenanceOfPage,
     ReadAsOfNodeKind,
     ReadAsOfResolvedRecord,
     ResolvedConditionRecord,
@@ -581,6 +589,106 @@ RETURN
   size(entry_nodes) > 0 AS entry_found,
   entry_statuses,
   citation_rows
+"""
+
+# One traversal (ADR-002 §6 check 4): the provenance-of affordance (SDD-001
+# §3.3.8). Reuses _READ_AS_OF_NODE_KIND_MAP (same six labels; no second map).
+#
+# THE AUDIT POSTURE (SDD-001 §1/§3.2), same as _CITATION_LOOKUP_QUERY_TEMPLATE:
+# resolves the three marker facts raw but performs no read-discipline
+# exclusion. Unlike citation-lookup, this NEVER re-traverses to owning
+# ReasoningProgress/ReasoningSession (SUPPORTED_BY/CONTAINS absent by
+# design — citation-lookup's job) and is single-subject, unpaginated (P-D2).
+#
+# The entry match is OPTIONAL so a truly-absent entry is distinguishable
+# from an existing-but-never-promoted one (P-D3) — both collapse to
+# `entry_found`/`is_promoted` booleans the operation raises on, distinctly.
+# `promotion` is likewise OPTIONAL-matched, scoped to `proposal_kind:
+# 'promotion'` (P-D2 — 1:1, never the retraction-kind sibling).
+#
+# Governing-decision selection (DDR-002 §7 #15): latest decided_at, ANY
+# outcome — the true governing verdict per #15; may be rejected; the
+# approving invariant is #15's CHECK, not a selection filter (review fix
+# M3 — corrects the initial read-as-of-modeled filter-to-approving, which
+# would make a flipped-to-rejected governing verdict undetectable, exactly
+# the failure mode #15's own clarifying clause names: "a node whose
+# governing verdict has since flipped to rejected is detected even if a
+# stale earlier approved edge exists"). Wrapped in collect() + head() so a
+# promotion with no DECIDED_ON edge at all degrades to
+# `governing_decision = null` rather than dropping the whole row (the same
+# zero-row-absorption idiom read_as_of's HAS_CONDITION collect already
+# relies on) — the `WHERE decided IS NOT NULL` guard is a null-check only,
+# never an outcome filter.
+#
+# Frozen-array zip: the four index-aligned frozen_* arrays (DDR-002 §4) are
+# zipped by position via `range(0, size(...) - 1)` — no APOC dependency,
+# standard Cypher. `UNWIND CASE WHEN summary IS NULL THEN [] ELSE range(...)
+# END` keeps the same zero-row-absorption idiom safe when there is no
+# ProvenanceSummary at all (P-D4: frozen_layer_present=false, never raised).
+# Each zipped entry OPTIONAL-matches its live Evidence by evidence_id (the
+# correlation key, mechanical, never pin-matching) — no new index, the
+# Evidence PK uniqueness index already serves point lookups.
+_PROVENANCE_OF_QUERY_TEMPLATE = """
+OPTIONAL MATCH (n:__LABEL__ {__PK__: $business_key, version: $version})
+OPTIONAL MATCH (promotion:Reasoning:CandidatePromotion {proposal_kind: 'promotion'})
+  -[:PROMOTES_TO_KNOWLEDGE]->(n)
+CALL {
+  WITH promotion
+  OPTIONAL MATCH (promotion)<-[decided:DECIDED_ON]-(decision:Governance:PromotionDecision)
+  WHERE decided IS NOT NULL
+  WITH decision, decided
+  ORDER BY decision.decided_at DESC
+  LIMIT 1
+  RETURN collect({
+    decision_id: decision.decision_id,
+    outcome: decided.outcome,
+    decided_at: decision.decided_at
+  }) AS governing_decisions
+}
+OPTIONAL MATCH (summary:Reasoning:ProvenanceSummary)-[:MATERIALIZES_PROVENANCE_OF]->(promotion)
+CALL {
+  WITH summary
+  UNWIND CASE WHEN summary IS NULL THEN []
+    ELSE range(0, size(summary.frozen_evidence_ids) - 1) END AS i
+  WITH summary.frozen_evidence_ids[i] AS evidence_id,
+       summary.frozen_fact_summaries[i] AS frozen_fact_summary,
+       summary.frozen_source_version_pins[i] AS frozen_source_version_pin,
+       summary.frozen_source_node_refs[i] AS frozen_source_node_ref
+  OPTIONAL MATCH (ev:Reasoning:Evidence {evidence_id: evidence_id})
+  RETURN collect({
+    evidence_id: evidence_id,
+    frozen_fact_summary: frozen_fact_summary,
+    frozen_source_version_pin: frozen_source_version_pin,
+    frozen_source_node_ref: frozen_source_node_ref,
+    is_live: ev IS NOT NULL,
+    live_fact_summary: ev.fact_summary,
+    live_confidence: ev.confidence,
+    live_weight: ev.weight,
+    live_source_node_version: ev.source_node_version,
+    live_observed_at: ev.observed_at
+  }) AS frozen_entries
+}
+RETURN
+  n IS NOT NULL AS entry_found,
+  promotion IS NOT NULL AS is_promoted,
+  n.origin_mechanism AS origin_mechanism,
+  CASE WHEN promotion IS NULL THEN NULL ELSE {
+    candidate_id: promotion.candidate_id,
+    proposal_kind: promotion.proposal_kind,
+    status: promotion.status
+  } END AS candidate,
+  (n.superseded_by IS NOT NULL) AS is_superseded,
+  EXISTS {
+    MATCH (retraction:Reasoning:CandidatePromotion {proposal_kind: 'retraction'})
+      -[:RETRACTS]->(n)
+    MATCH (retraction)<-[retraction_decided:DECIDED_ON]-(:Governance:PromotionDecision)
+    WHERE retraction_decided.outcome IN ['approved', 'approved_conditional']
+  } AS is_retracted,
+  (coalesce(n.applicability_state, 'unconditional') = 'conditional') AS is_conditional,
+  head(governing_decisions) AS governing_decision,
+  summary.provenance_summary_id AS provenance_summary_id,
+  (summary IS NOT NULL) AS frozen_layer_present,
+  frozen_entries
 """
 
 
@@ -1177,4 +1285,97 @@ class Neo4jAdapter:
             entry_statuses=entry_statuses,
             citations=citations,
             next_cursor=next_cursor,
+        )
+
+    async def provenance_of(
+        self,
+        node_kind: ReadAsOfNodeKind,
+        business_key: str,
+        version: str,
+    ) -> ProvenanceOfPage:
+        """Resolve the provenance-survival affordance for one promoted node.
+
+        One single-store Cypher traversal (ADR-002 §6 check 4), the audit
+        posture (SDD-001 §1/§3.2, §3.3.8): resolves the three raw marker
+        facts and the candidate/governing-decision/frozen-summary chain but
+        performs no read-discipline exclusion.
+
+        Args:
+            node_kind: The entry node's versioned label.
+            business_key: The entry's PK value for that label.
+            version: The exact retained version.
+
+        Returns:
+            The resolved page.
+
+        Raises:
+            RuntimeError: If no driver is open — a data operation with no
+                driver must fail loud, never silently return an empty (and
+                misleading) result.
+        """
+        if self._driver is None:
+            raise RuntimeError("No graph driver is open: application startup did not complete")
+
+        label, pk_property, _plane_label = _READ_AS_OF_NODE_KIND_MAP[node_kind]
+        query = _PROVENANCE_OF_QUERY_TEMPLATE.replace("__LABEL__", label).replace(
+            "__PK__", pk_property
+        )
+        result = await self._driver.execute_query(
+            query,
+            {"business_key": business_key, "version": version},
+            routing_=RoutingControl.READ,
+            database_=self._settings.neo4j_database,
+        )
+        record = result.records[0]
+
+        candidate_row = record["candidate"]
+        candidate = (
+            ProvenanceOfCandidateRecord(
+                candidate_id=candidate_row["candidate_id"],
+                proposal_kind=candidate_row["proposal_kind"],
+                status=candidate_row["status"],
+            )
+            if candidate_row is not None
+            else None
+        )
+
+        decision_row = record["governing_decision"]
+        governing_decision = (
+            ProvenanceOfGoverningDecisionRecord(
+                decision_id=decision_row["decision_id"],
+                outcome=decision_row["outcome"],
+                decided_at=decision_row["decided_at"],
+            )
+            if decision_row is not None
+            else None
+        )
+
+        entries = tuple(
+            ProvenanceOfFrozenEntryRecord(
+                evidence_id=entry_row["evidence_id"],
+                frozen_fact_summary=entry_row["frozen_fact_summary"],
+                frozen_source_version_pin=entry_row["frozen_source_version_pin"],
+                frozen_source_node_ref=entry_row["frozen_source_node_ref"],
+                is_live=entry_row["is_live"],
+                live_fact_summary=entry_row["live_fact_summary"],
+                live_confidence=entry_row["live_confidence"],
+                live_weight=entry_row["live_weight"],
+                live_source_node_version=entry_row["live_source_node_version"],
+                live_observed_at=entry_row["live_observed_at"],
+            )
+            for entry_row in record["frozen_entries"]
+        )
+
+        return ProvenanceOfPage(
+            entry_found=record["entry_found"],
+            is_promoted=record["is_promoted"],
+            origin_mechanism=record["origin_mechanism"],
+            is_superseded=record["is_superseded"],
+            is_retracted=record["is_retracted"],
+            is_conditional=record["is_conditional"],
+            candidate=candidate,
+            governing_decision=governing_decision,
+            frozen_layer_present=record["frozen_layer_present"],
+            provenance_summary_id=record["provenance_summary_id"],
+            entries=entries,
         )

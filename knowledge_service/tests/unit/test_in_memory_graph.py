@@ -23,6 +23,10 @@ from app.ports.graph_store import (
     FindPrecedentsCriteria,
     GraphStoragePort,
     ObligationCandidateRecord,
+    ProvenanceOfCandidateRecord,
+    ProvenanceOfFrozenEntryRecord,
+    ProvenanceOfGoverningDecisionRecord,
+    ProvenanceOfPage,
     ReadAsOfResolvedRecord,
     ResolveTechnologyCandidateRecord,
     SelectPatternsCandidateRecord,
@@ -556,3 +560,71 @@ class TestInMemoryGraphStoreCitationLookup:
         assert store.citation_lookup_calls == [
             ("PolicyRule", "rule-1", None, "business_key_wide", "ev-9", 10)
         ]
+
+
+class TestInMemoryGraphStoreProvenanceOf:
+    """The controllable single-page store (§4.2 A3) — R6b, single-subject,
+    unpaginated."""
+
+    async def test_default_reports_entry_found_false(self) -> None:
+        # Arrange — no configuration yet.
+        store = InMemoryGraphStore()
+
+        # Act
+        page = await store.provenance_of("Technology", "tech-1", "1")
+
+        # Assert
+        assert page.entry_found is False
+        assert page.is_promoted is False
+
+    async def test_returns_the_configured_page(self) -> None:
+        # Arrange
+        store = InMemoryGraphStore()
+        page = ProvenanceOfPage(
+            entry_found=True,
+            is_promoted=True,
+            origin_mechanism="promoted",
+            is_superseded=False,
+            is_retracted=False,
+            is_conditional=False,
+            candidate=ProvenanceOfCandidateRecord(
+                candidate_id="cand-1", proposal_kind="promotion", status="promoted"
+            ),
+            governing_decision=ProvenanceOfGoverningDecisionRecord(
+                decision_id="dec-1", outcome="approved", decided_at="2026-07-01T00:00:00Z"
+            ),
+            frozen_layer_present=True,
+            provenance_summary_id="summary-1",
+            entries=(
+                ProvenanceOfFrozenEntryRecord(
+                    evidence_id="ev-1",
+                    frozen_fact_summary="a fact",
+                    frozen_source_version_pin="1",
+                    frozen_source_node_ref="tech-1",
+                    is_live=True,
+                    live_fact_summary="a fact",
+                    live_confidence=0.8,
+                    live_weight=1.0,
+                    live_source_node_version="1",
+                    live_observed_at="2026-07-01T00:00:00Z",
+                ),
+            ),
+        )
+        store.set_provenance_of_result(page)
+
+        # Act
+        result = await store.provenance_of("Technology", "tech-1", "1")
+
+        # Assert
+        assert result == page
+
+    async def test_records_the_requested_pin(self) -> None:
+        # Arrange
+        store = InMemoryGraphStore()
+
+        # Act
+        await store.provenance_of("Technology", "tech-42", "2")
+
+        # Assert — lets a test prove the operation forwarded the caller's
+        # pin rather than dropping or substituting it.
+        assert store.provenance_of_calls == [("Technology", "tech-42", "2")]

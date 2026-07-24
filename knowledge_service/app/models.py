@@ -19,7 +19,11 @@
 #   footing as CatalogEligibility. R6a adds citation-lookup (§3.3.7) — the
 #   first operation whose result is NOT the §3.2 envelope: it is the
 #   disclosed audit exception (§1), so CitationLookupResult carries raw RG
-#   facts and the three-marker CitationEntryStatus vocabulary instead.
+#   facts and the three-marker CitationEntryStatus vocabulary instead. R6b
+#   adds provenance-of (§3.3.8) — the audit set's second op: single-subject,
+#   unpaginated, reusing CitationEntryStatus for its own entry markers
+#   (the identical vocabulary, not a second one) and EvidenceFacts for its
+#   live-Evidence overlay.
 #   These typed models are the source of truth for the contract tests — when
 #   an implementation and a contract diverge, the contract wins.
 ##############################################################################
@@ -624,3 +628,96 @@ class CitationLookupRequest(BaseModel):
     mode: CitationLookupMode
     after_evidence_id: str | None = None
     limit: int | None = Field(default=None, ge=1)
+
+
+class CandidatePromotionContext(BaseModel):
+    """The originating `promotion`-kind `CandidatePromotion`'s own facts
+    (SDD-001 §3.3.8; DDR-002 §5). `proposal_kind` is always `"promotion"` —
+    provenance-of never resolves a `retraction`-kind candidate (P-D2: 1:1,
+    a promotion event per materialized node)."""
+
+    candidate_id: str
+    proposal_kind: str
+    status: str
+
+
+class GoverningDecisionContext(BaseModel):
+    """The governing (latest-`decided_at`, ANY outcome) `DECIDED_ON` edge's
+    facts (SDD-001 §3.3.8; DDR-002 §7 #15) — never a stale earlier approval.
+    `outcome` may be `approved`/`approved_conditional`/`rejected`: #15 fixes
+    "governing" as the latest edge regardless of outcome (its own clarifying
+    clause — a node whose governing verdict has flipped to `rejected` must
+    be detected despite a stale earlier `approved` edge, which a
+    filter-to-approving selection would hide). The `ProvenanceOfResult`
+    field this populates is `None` when the promoted node carries no
+    `DECIDED_ON` edge at all — an anomaly, surfaced, never raised (review
+    fix M3)."""
+
+    decision_id: str
+    outcome: str
+    decided_at: str
+
+
+class ProvenanceEntry(BaseModel):
+    """One frozen `ProvenanceSummary` entry, correlated to its live
+    `Evidence` (where it still exists) by `evidence_id` — mechanical, never
+    pin-matching (SDD-001 §3.3.8; DDR-002 §4's keyed structuring).
+
+    The frozen fields are the guaranteed audit floor (always present when
+    the entry itself resolves); `live_evidence` (citation-lookup's
+    `EvidenceFacts`, reused) is present iff `live`, so a caller can see
+    frozen-vs-live drift directly rather than it being hidden by an
+    always-populated field."""
+
+    evidence_id: str
+    frozen_fact_summary: str | None = None
+    frozen_source_version_pin: str | None = None
+    frozen_source_node_ref: str | None = None
+    live: bool
+    live_evidence: EvidenceFacts | None = None
+
+
+class ProvenanceOfResult(BaseModel):
+    """The provenance-of result (SDD-001 §3.3.8 P-D5) — the AUDIT-POSTURE
+    exception (§1/§3.2), same inversion as `CitationLookupResult`: NOT the
+    §3.2 envelope, no applicability/eligibility/deprecation/disclosure.
+
+    `entry_markers` reuses `CitationEntryStatus` — the identical
+    audit-disclosure vocabulary citation-lookup already established, never
+    exclusionary (empty = active). `frozen_layer_present=False` is the
+    honest P-D4 anomaly signal for a resolved candidate with no
+    `ProvenanceSummary` (a #20 violation reached pre-CI-catch) — the
+    response still carries `candidate`/`governing_decision` in that case;
+    only `provenance_summary_id`/`entries` go empty. `entries` is the WHOLE
+    frozen set, never paginated (P-D2 — bounded by the promotion's own
+    Evidence-span closure).
+
+    `governing_decision` is `None` iff the promoted node carries no
+    `DECIDED_ON` edge at all — a second, independent anomaly signal
+    (review fix M3), surfaced the same honest way as `frozen_layer_present`:
+    never raised. `candidate` stays required — a `promotion`-kind
+    `CandidatePromotion` is #5's own structural guarantee of a promoted
+    node, unlike its governing decision.
+    """
+
+    node_kind: ReadAsOfNodeKind
+    business_key: str
+    version: str
+    origin_mechanism: str
+    entry_markers: frozenset[CitationEntryStatus]
+    candidate: CandidatePromotionContext
+    governing_decision: GoverningDecisionContext | None = None
+    provenance_summary_id: str | None = None
+    frozen_layer_present: bool
+    entries: list[ProvenanceEntry]
+
+
+class ProvenanceOfRequest(BaseModel):
+    """The provenance-of request body (SDD-001 §3.3.8), the disclosed audit
+    exception (§1/§3.2). Deliberately carries NO `consuming_context` (no
+    trio to evaluate one against) and NO mode/pagination — one specific
+    promoted node, keyed `(node_kind, business_key, version)` (P-D2)."""
+
+    node_kind: ReadAsOfNodeKind
+    business_key: str
+    version: str

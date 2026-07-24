@@ -2122,3 +2122,311 @@ class TestNeo4jAdapterCitationLookup:
             await adapter.citation_lookup(
                 "Technology", "tech-1", "1", "per_version", None, 50
             )
+
+
+def _provenance_row(**overrides: object) -> dict[str, object]:
+    """One `RETURN` row for the provenance-of query, entry_found + promoted +
+    a minimal candidate/decision by default; empty frozen entries."""
+    base: dict[str, object] = {
+        "entry_found": True,
+        "is_promoted": True,
+        "origin_mechanism": "promoted",
+        "candidate": {
+            "candidate_id": "cand-1",
+            "proposal_kind": "promotion",
+            "status": "promoted",
+        },
+        "is_superseded": False,
+        "is_retracted": False,
+        "is_conditional": False,
+        "governing_decision": {
+            "decision_id": "dec-1",
+            "outcome": "approved",
+            "decided_at": "2026-07-01T00:00:00Z",
+        },
+        "provenance_summary_id": "summary-1",
+        "frozen_layer_present": True,
+        "frozen_entries": [],
+    }
+    base.update(overrides)
+    return base
+
+
+class TestNeo4jAdapterProvenanceOf:
+    """The provenance-of traversal (SDD-001 §3.3.8) — one Cypher call, the
+    audit posture, single-subject and unpaginated."""
+
+    async def test_provenance_of_queries_with_business_key_and_version(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(records=[_provenance_row()])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        await adapter.provenance_of("Technology", "tech-1", "3")
+
+        # Assert
+        params = driver.execute_query.call_args.args[1]
+        assert params == {"business_key": "tech-1", "version": "3"}
+
+    async def test_provenance_of_routes_read_and_targets_the_database(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(records=[_provenance_row()])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        await adapter.provenance_of("Technology", "tech-1", "3")
+
+        # Assert
+        kwargs = driver.execute_query.call_args.kwargs
+        assert kwargs["routing_"] is RoutingControl.READ
+        assert kwargs["database_"] == "sofia"
+
+    @pytest.mark.parametrize(
+        ("node_kind", "label", "pk_property"),
+        [
+            ("Pattern", "Catalog:Pattern", "pattern_id"),
+            ("Technology", "Catalog:Technology", "technology_id"),
+            ("Capability", "Catalog:Capability", "capability_id"),
+            ("IacTemplate", "Catalog:IacTemplate", "iac_template_id"),
+            ("Standard", "Standards:Standard", "standard_id"),
+            ("PolicyRule", "Standards:PolicyRule", "policy_rule_id"),
+        ],
+    )
+    async def test_provenance_of_query_matches_the_per_label_mapping_and_traversal_shape(
+        self,
+        node_kind: str,
+        label: str,
+        pk_property: str,
+        settings: Settings,
+        driver_factory: MagicMock,
+        driver: AsyncMock,
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(records=[_provenance_row()])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        await adapter.provenance_of(node_kind, "key-1", "1")  # type: ignore[arg-type]
+
+        # Assert — the reuse of the read-as-of label/PK map (no second map),
+        # the promotion/governing-decision/frozen-summary traversal, and NO
+        # re-traversal to owning reasoning (SUPPORTED_BY/CONTAINS absent —
+        # that is citation-lookup's job, not this op's).
+        query = driver.execute_query.call_args.args[0]
+        assert f"MATCH (n:{label} {{{pk_property}: $business_key, version: $version}})" in query
+        assert "PROMOTES_TO_KNOWLEDGE" in query
+        assert "MATERIALIZES_PROVENANCE_OF" in query
+        assert "DECIDED_ON" in query
+        assert "frozen_evidence_ids" in query
+        assert "RETRACTS" in query
+        assert "SUPPORTED_BY" not in query
+        assert "CONTAINS" not in query
+        assert "HAS_CONDITION" not in query
+
+    async def test_provenance_of_maps_entry_found_false(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange — a truly-absent entry.
+        driver.execute_query.return_value = SimpleNamespace(
+            records=[
+                _provenance_row(
+                    entry_found=False,
+                    is_promoted=False,
+                    origin_mechanism=None,
+                    candidate=None,
+                    governing_decision=None,
+                    provenance_summary_id=None,
+                    frozen_layer_present=False,
+                )
+            ]
+        )
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        page = await adapter.provenance_of("Technology", "tech-x", "1")
+
+        # Assert
+        assert page.entry_found is False
+        assert page.is_promoted is False
+        assert page.candidate is None
+        assert page.governing_decision is None
+
+    async def test_provenance_of_maps_existing_but_not_promoted(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange — the node exists (e.g. ingested) but was never promoted.
+        driver.execute_query.return_value = SimpleNamespace(
+            records=[
+                _provenance_row(
+                    is_promoted=False,
+                    origin_mechanism="ingested",
+                    candidate=None,
+                    governing_decision=None,
+                    provenance_summary_id=None,
+                    frozen_layer_present=False,
+                )
+            ]
+        )
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        page = await adapter.provenance_of("Technology", "tech-1", "1")
+
+        # Assert
+        assert page.entry_found is True
+        assert page.is_promoted is False
+        assert page.origin_mechanism == "ingested"
+
+    async def test_provenance_of_maps_candidate_and_governing_decision(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(records=[_provenance_row()])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        page = await adapter.provenance_of("Technology", "tech-1", "3")
+
+        # Assert
+        assert page.candidate is not None
+        assert page.candidate.candidate_id == "cand-1"
+        assert page.candidate.proposal_kind == "promotion"
+        assert page.candidate.status == "promoted"
+        assert page.governing_decision is not None
+        assert page.governing_decision.decision_id == "dec-1"
+        assert page.governing_decision.outcome == "approved"
+        assert page.governing_decision.decided_at == "2026-07-01T00:00:00Z"
+
+    async def test_provenance_of_maps_entry_markers(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(
+            records=[
+                _provenance_row(is_superseded=True, is_retracted=True, is_conditional=True)
+            ]
+        )
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        page = await adapter.provenance_of("Technology", "tech-1", "1")
+
+        # Assert
+        assert page.is_superseded is True
+        assert page.is_retracted is True
+        assert page.is_conditional is True
+
+    async def test_provenance_of_maps_frozen_layer_present_false(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange — the candidate resolves but no ProvenanceSummary exists.
+        driver.execute_query.return_value = SimpleNamespace(
+            records=[
+                _provenance_row(frozen_layer_present=False, provenance_summary_id=None)
+            ]
+        )
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        page = await adapter.provenance_of("Technology", "tech-1", "1")
+
+        # Assert — never raises; candidate/governing_decision untouched.
+        assert page.frozen_layer_present is False
+        assert page.provenance_summary_id is None
+        assert page.candidate is not None
+
+    async def test_provenance_of_maps_frozen_entries_with_live_overlay(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(
+            records=[
+                _provenance_row(
+                    frozen_entries=[
+                        {
+                            "evidence_id": "ev-1",
+                            "frozen_fact_summary": "frozen fact",
+                            "frozen_source_version_pin": "1",
+                            "frozen_source_node_ref": "tech-1",
+                            "is_live": True,
+                            "live_fact_summary": "live fact",
+                            "live_confidence": 0.9,
+                            "live_weight": 1.0,
+                            "live_source_node_version": "2",
+                            "live_observed_at": "2026-07-20T00:00:00Z",
+                        }
+                    ]
+                )
+            ]
+        )
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        page = await adapter.provenance_of("Technology", "tech-1", "1")
+
+        # Assert
+        assert len(page.entries) == 1
+        entry = page.entries[0]
+        assert entry.evidence_id == "ev-1"
+        assert entry.frozen_source_version_pin == "1"
+        assert entry.is_live is True
+        assert entry.live_source_node_version == "2"
+
+    async def test_provenance_of_maps_frozen_only_entries(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange — the originating Evidence has expired out of retention.
+        driver.execute_query.return_value = SimpleNamespace(
+            records=[
+                _provenance_row(
+                    frozen_entries=[
+                        {
+                            "evidence_id": "ev-1",
+                            "frozen_fact_summary": "frozen fact",
+                            "frozen_source_version_pin": "1",
+                            "frozen_source_node_ref": "tech-1",
+                            "is_live": False,
+                            "live_fact_summary": None,
+                            "live_confidence": None,
+                            "live_weight": None,
+                            "live_source_node_version": None,
+                            "live_observed_at": None,
+                        }
+                    ]
+                )
+            ]
+        )
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        page = await adapter.provenance_of("Technology", "tech-1", "1")
+
+        # Assert
+        assert len(page.entries) == 1
+        entry = page.entries[0]
+        assert entry.is_live is False
+        assert entry.live_source_node_version is None
+
+    async def test_provenance_of_before_connect_raises_runtime_error(
+        self, settings: Settings, driver_factory: MagicMock
+    ) -> None:
+        # Arrange
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+
+        # Act / Assert
+        with pytest.raises(RuntimeError, match="driver"):
+            await adapter.provenance_of("Technology", "tech-1", "1")

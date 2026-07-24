@@ -26,7 +26,13 @@
 #   is no trio for this op to enforce. It is also the FIRST paginated method:
 #   `CitationLookupPage` carries a keyset cursor (`next_cursor`), and callers
 #   pass an already-resolved `limit` (config-default-substituted, hard-capped)
-#   rather than a raw request value.
+#   rather than a raw request value. R6b adds `provenance_of` (SDD-001 §3.3.8)
+#   — the audit set's SECOND op, same posture as `citation_lookup`, but
+#   single-subject and unpaginated (P-D2: one promoted node, keyed
+#   `(node_kind, business_key, version)`, its Evidence-span frozen set
+#   returned whole). Reuses `CitationEntryStatusRecord`'s three-marker
+#   vocabulary for its own entry markers (the identical audit-disclosure set,
+#   not a new one) and `ReadAsOfNodeKind` for the entry-node label.
 ##############################################################################
 
 from collections.abc import Mapping, Sequence
@@ -413,6 +419,88 @@ class CitationLookupPage:
     next_cursor: str | None
 
 
+@dataclass(frozen=True)
+class ProvenanceOfCandidateRecord:
+    """The originating `promotion`-kind `CandidatePromotion`'s own facts
+    (SDD-001 §3.3.8). Port-level facts, not a domain type."""
+
+    candidate_id: str
+    proposal_kind: str
+    status: str
+
+
+@dataclass(frozen=True)
+class ProvenanceOfGoverningDecisionRecord:
+    """The governing (latest-`decided_at`, ANY outcome) `DECIDED_ON` edge's
+    facts (DDR-002 §7 #15) — never a stale earlier approval (SDD-001
+    §3.3.8). `outcome` may be `rejected`: #15 fixes "governing" as the
+    latest edge regardless of outcome, not the latest approving one (review
+    fix M3 — a filter-to-approving selection would hide a flipped-to-
+    rejected verdict behind a stale earlier approval, exactly the failure
+    #15's own clarifying clause names)."""
+
+    decision_id: str
+    outcome: str
+    decided_at: str
+
+
+@dataclass(frozen=True)
+class ProvenanceOfFrozenEntryRecord:
+    """One frozen `ProvenanceSummary` entry, zipped by position from the four
+    index-aligned `frozen_*` arrays (DDR-002 §4), with live `Evidence`
+    overlaid where it still exists (SDD-001 §3.3.8). Port-level facts.
+
+    `evidence_id` is the correlation key (mechanical, never pin-matching).
+    The `live_*` fields are populated only when `is_live` — carried flat
+    here rather than as a nested record so the operation can build
+    `EvidenceFacts` directly (citation-lookup's model, reused).
+    """
+
+    evidence_id: str
+    frozen_fact_summary: str | None
+    frozen_source_version_pin: str | None
+    frozen_source_node_ref: str | None
+    is_live: bool
+    live_fact_summary: str | None
+    live_confidence: float | None
+    live_weight: float | None
+    live_source_node_version: str | None
+    live_observed_at: str | None
+
+
+@dataclass(frozen=True)
+class ProvenanceOfPage:
+    """The resolved provenance-of facts for one specific promoted node
+    (SDD-001 §3.3.8). NOT paginated (P-D2 — one entry, the frozen set is
+    bounded by the promotion's own Evidence-span closure) — the name
+    parallels `CitationLookupPage` for consistency, not because this page
+    is keyset-paginated.
+
+    `entry_found`/`is_promoted` are the two independent P-D3 raise signals:
+    a truly-absent entry vs. an existing-but-never-promoted one — the
+    operation's error message distinguishes them, both raise
+    `TARGET_NOT_FOUND`. Two INDEPENDENT anomaly signals, neither ever
+    raised: `frozen_layer_present=False` with `candidate` still populated
+    (a #20 violation reached pre-CI-catch — no `ProvenanceSummary`), and
+    `governing_decision=None` (review fix M3 — a promoted node with no
+    `DECIDED_ON` edge at all). `entry_markers_*` are the three INDEPENDENT
+    audit-disclosure booleans citation-lookup already established (never
+    exclusionary — the inversion holds here too).
+    """
+
+    entry_found: bool
+    is_promoted: bool
+    origin_mechanism: str | None
+    is_superseded: bool
+    is_retracted: bool
+    is_conditional: bool
+    candidate: ProvenanceOfCandidateRecord | None
+    governing_decision: ProvenanceOfGoverningDecisionRecord | None
+    frozen_layer_present: bool
+    provenance_summary_id: str | None
+    entries: tuple[ProvenanceOfFrozenEntryRecord, ...]
+
+
 @runtime_checkable
 class GraphStoragePort(Protocol):
     """The graph system-of-record seam the gateway's domain code depends on.
@@ -618,5 +706,44 @@ class GraphStoragePort(Protocol):
             The resolved page. `entry_found=False` signals a truly-absent
             entry (the operation raises `TARGET_NOT_FOUND`); a `True` entry
             with empty `citations` is the zero-citations case, never an error.
+        """
+        ...
+
+    async def provenance_of(
+        self,
+        node_kind: ReadAsOfNodeKind,
+        business_key: str,
+        version: str,
+    ) -> ProvenanceOfPage:
+        """Resolve the provenance-survival affordance for one promoted node.
+
+        One single-store traversal (ADR-002 §6 check 4): the entry node —
+        OPTIONAL-matched so a truly-absent entry is distinguishable from an
+        existing-but-never-promoted one — reverse `PROMOTES_TO_KNOWLEDGE` to
+        its `promotion`-kind `CandidatePromotion`, then that candidate's
+        governing (latest-`decided_at`, ANY outcome) `DECIDED_ON` edge and
+        its `MATERIALIZES_PROVENANCE_OF`-linked `ProvenanceSummary`. THE
+        AUDIT-POSTURE EXCEPTION (SDD-001 §1/§3.2, §3.3.8): performs no
+        read-discipline exclusion — a retracted/superseded/conditional
+        promoted node's provenance is returned exactly as an active node's
+        would be. Frozen entries are the four index-aligned `frozen_*`
+        arrays zipped by position, each overlaid with its live `Evidence`
+        where it still exists — the whole (unpaginated) set, bounded by the
+        promotion's own Evidence-span closure.
+
+        Args:
+            node_kind: The entry node's versioned label (the six labels
+                `ReadAsOfNodeKind` enumerates).
+            business_key: The entry's PK value for that label.
+            version: The exact retained version — one specific promoted node,
+                never a business-key-wide resolution.
+
+        Returns:
+            The resolved page. `entry_found=False` or `is_promoted=False`
+            both signal the operation's `TARGET_NOT_FOUND` raise (distinct
+            messages, same error type) — an existing, currently-retracted or
+            -superseded promoted node still resolves normally.
+            `frozen_layer_present=False` is the honest anomaly signal for a
+            resolved candidate with no `ProvenanceSummary` — never raised.
         """
         ...
