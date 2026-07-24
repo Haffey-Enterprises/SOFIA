@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SOFIA</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+  :root{
+    --navy-950:#060C18; --navy-900:#0A1224; --navy-850:#0C1830; --navy-800:#102038;
+    --navy-300:#6E8299; --navy-200:#AABFD4; --navy-050:#EAF1F8;
+    --steel-300:#90C0DC; --steel-400:#6BA8CC;
+    --crimson-300:#E5484D; --crimson-400:#C81420;
+    --emerald:#3DBE7A; --amber:#E8A33D;
+    --border-subtle:#1A2C49;
+    --font-display:'Montserrat',sans-serif; --font-sans:'IBM Plex Sans',sans-serif; --font-mono:'IBM Plex Mono',monospace;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--navy-900);color:var(--navy-050);font-family:var(--font-sans);
+       -webkit-text-size-adjust:100%;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 clamp(16px,4vw,48px);}
+  .kicker{font-family:var(--font-mono);font-size:clamp(9px,2.4vw,11px);font-weight:500;letter-spacing:.14em;
+          text-transform:uppercase;color:var(--steel-300);}
+
+  /* HERO */
+  .hero{position:relative;overflow:hidden;padding:clamp(28px,7vw,80px) 0 clamp(20px,5vw,50px);}
+  .hero::before{content:"";position:absolute;inset:0;
+    background:radial-gradient(900px 620px at 74% 0%, rgba(79,195,255,0.08), transparent 62%),
+               radial-gradient(700px 560px at 6% 105%, rgba(255,182,72,0.06), transparent 62%);}
+  .hero-inner{position:relative;z-index:2;display:flex;flex-wrap:wrap-reverse;gap:clamp(16px,4vw,32px);
+              align-items:center;justify-content:center;}
+  .hero-text{flex:1 1 320px;min-width:260px;}
+  .hero h1{font-family:var(--font-display);font-weight:800;font-size:clamp(24px,5.4vw,44px);
+           line-height:1.08;letter-spacing:-.01em;margin:14px 0 14px;}
+  .hero h1 em{font-style:normal;color:var(--crimson-300);}
+  .hero p{font-size:clamp(12.5px,2.6vw,15px);line-height:1.6;color:var(--navy-200);max-width:440px;margin:0 0 20px;}
+  .btn{display:inline-flex;align-items:center;gap:6px;font-weight:600;font-size:clamp(11px,2.4vw,13px);
+       border-radius:8px;padding:9px 16px;text-decoration:none;color:#fff;background:var(--crimson-400);}
+  .hero-mark{flex:0 0 auto;width:clamp(150px,32vw,220px);}
+  .glow-blue{stroke:var(--steel-300);}
+  .glow-amber{stroke:var(--amber);}
+
+  /* ROSTER */
+  .cast-wrap{padding:clamp(28px,6vw,56px) 0;border-top:1px solid var(--border-subtle);}
+  .cast-head h2{font-family:var(--font-display);font-weight:700;font-size:clamp(16px,3.4vw,20px);margin:8px 0 6px;}
+  .cast-head p{color:var(--navy-300);font-size:clamp(11.5px,2.4vw,13px);max-width:600px;margin:0 0 20px;line-height:1.55;}
+  .cast-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(84px,1fr));gap:10px;}
+  .cast-card{background:var(--navy-800);border:1px solid var(--border-subtle);border-radius:10px;
+             padding:12px 6px;text-align:center;}
+  .cast-card svg{width:clamp(38px,9vw,54px);height:clamp(38px,9vw,54px);}
+  .cast-card h4{font-size:clamp(9.5px,2vw,11.5px);font-weight:600;margin:6px 0 1px;line-height:1.2;}
+  .cast-card .role{font-family:var(--font-mono);font-size:clamp(7.5px,1.6vw,8.5px);letter-spacing:.05em;
+                    text-transform:uppercase;color:var(--navy-300);}
+  .s-live .glow-blue{filter:drop-shadow(0 0 4px rgba(90,180,255,.5));}
+  .s-live .glow-amber{filter:drop-shadow(0 0 5px rgba(255,182,72,.7));}
+  .s-design .glow-blue{stroke:#3d5670;}
+  .s-design .glow-amber{stroke:#7a6248;}
+
+  /* MANIFESTO */
+  .manifesto{padding:clamp(36px,7vw,70px) 0;text-align:center;}
+  .manifesto blockquote{font-family:var(--font-display);font-weight:600;font-size:clamp(16px,3.6vw,24px);
+                         line-height:1.4;max-width:600px;margin:0 auto 12px;}
+  .manifesto blockquote em{font-style:normal;color:var(--crimson-300);}
+  .manifesto .attrib{font-family:var(--font-mono);font-size:clamp(9px,2vw,10.5px);letter-spacing:.1em;
+                      text-transform:uppercase;color:var(--navy-300);}
+
+  /* PROOF */
+  .proof{border-top:1px solid var(--border-subtle);border-bottom:1px solid var(--border-subtle);
+         padding:clamp(20px,4vw,36px) 0;}
+  .proof-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:14px;}
+  .stat .num{font-family:var(--font-mono);font-weight:600;font-size:clamp(18px,4vw,26px);color:var(--steel-300);}
+  .stat .lab{font-size:clamp(9.5px,2vw,11px);color:var(--navy-300);margin-top:4px;}
+
+  /* FRONTIER */
+  .frontier-wrap{padding:clamp(24px,5vw,50px) 0 clamp(30px,6vw,64px);}
+  .fcard{background:var(--navy-800);border:1px solid var(--border-subtle);border-left:3px solid var(--amber);
+         border-radius:10px;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;
+         flex-wrap:wrap;gap:10px;}
+  .fcard .val{font-size:clamp(11.5px,2.4vw,14px);font-weight:600;margin-top:4px;}
+  .dot{width:6px;height:6px;border-radius:50%;background:var(--emerald);display:inline-block;margin-right:6px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <div class="kicker">Semantic Orchestration for Intelligent Architecture</div>
+        <h1>Every decision,<br><em>held to account.</em></h1>
+        <p>SOFIA captures the reasoning behind every architectural choice your organization makes, in a graph that never lets ground truth mutate in the dark.</p>
+        <a class="btn" href="#">Explore the Register &rarr;</a>
+      </div>
+      <svg class="hero-mark" viewBox="0 0 200 100">
+        <circle class="glow-blue" cx="26" cy="50" r="18" fill="none" stroke-width="4" filter="drop-shadow(0 0 5px rgba(90,180,255,.5))"/>
+        <circle class="glow-blue" cx="174" cy="50" r="18" fill="none" stroke-width="4" filter="drop-shadow(0 0 5px rgba(90,180,255,.5))"/>
+        <line class="glow-blue" x1="50" y1="50" x2="78" y2="50" stroke-width="4" stroke-linecap="round" filter="drop-shadow(0 0 4px rgba(90,180,255,.5))"/>
+        <line class="glow-blue" x1="106" y1="50" x2="118" y2="50" stroke-width="4" stroke-linecap="round" filter="drop-shadow(0 0 4px rgba(90,180,255,.5))"/>
+        <path class="glow-amber" d="M 118 50 L 109 44 L 109 56 Z" fill="var(--amber)" filter="drop-shadow(0 0 6px rgba(255,182,72,.7))"/>
+        <polygon class="glow-amber" points="94,34 112,50 94,66 76,50" fill="none" stroke-width="4" filter="drop-shadow(0 0 7px rgba(255,182,72,.75))"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="cast-wrap">
+    <div class="cast-head">
+      <div class="kicker">The roster</div>
+      <h2>Nine specialists, one graph.</h2>
+      <p>Full color once it's built and live, muted while it's still on paper.</p>
+    </div>
+    <div class="cast-grid">
+      <div class="cast-card s-live"><svg viewBox="0 0 200 200" fill="none">
+        <path class="glow-blue" d="M100 20 L165 55 V125 C165 155 135 175 100 185 C65 175 35 155 35 125 V55 Z" stroke-width="3" stroke-linejoin="round"/>
+        <circle class="glow-amber" cx="100" cy="95" r="26" stroke-width="3"/>
+        <path class="glow-amber" d="M100 78 V95 L112 107" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg><h4>knowledge-service</h4><div class="role">Live</div></div>
+
+      <div class="cast-card s-design"><svg viewBox="0 0 200 200" fill="none">
+        <circle class="glow-blue" cx="100" cy="100" r="70" stroke-width="2.5" stroke-dasharray="6 6"/>
+        <circle class="glow-amber" cx="100" cy="100" r="16" stroke-width="3"/>
+        <circle class="glow-blue" cx="100" cy="30" r="8" stroke-width="2.5"/><circle class="glow-blue" cx="160" cy="65" r="8" stroke-width="2.5"/>
+        <circle class="glow-blue" cx="160" cy="135" r="8" stroke-width="2.5"/><circle class="glow-blue" cx="100" cy="170" r="8" stroke-width="2.5"/>
+        <circle class="glow-blue" cx="40" cy="135" r="8" stroke-width="2.5"/><circle class="glow-blue" cx="40" cy="65" r="8" stroke-width="2.5"/>
+        <path class="glow-blue" d="M100 100 L100 30 M100 100 L160 65 M100 100 L160 135 M100 100 L100 170 M100 100 L40 135 M100 100 L40 65" stroke-width="1.5" opacity="0.6"/>
+      </svg><h4>AOE</h4><div class="role">Design</div></div>
+
+      <div class="cast-card s-design"><svg viewBox="0 0 200 200" fill="none">
+        <path class="glow-blue" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"
+          d="M78 34 C60 34 46 46 42 62 C30 66 22 80 24 94 C18 100 16 112 22 122 C20 134 28 144 40 146 L40 172 L58 172 L58 152
+             C66 156 76 158 86 158 C110 158 132 144 140 122 C150 118 156 106 152 94 C156 82 150 68 136 62 C130 46 112 34 92 34 C87 34 82 34 78 34 Z"/>
+        <circle class="glow-amber" cx="84" cy="96" r="15" stroke-width="3"/>
+        <circle class="glow-amber" cx="112" cy="86" r="10" stroke-width="3"/>
+        <circle class="glow-amber" cx="108" cy="114" r="8" stroke-width="3"/>
+      </svg><h4>ASA</h4><div class="role">Design</div></div>
+
+      <div class="cast-card s-design"><svg viewBox="0 0 200 200" fill="none">
+        <path class="glow-blue" stroke-width="3" stroke-linecap="round" d="M40 175 V100 C40 60 66 35 100 35 C134 35 160 60 160 100 V175"/>
+        <line class="glow-blue" x1="40" y1="175" x2="70" y2="175" stroke-width="3" stroke-linecap="round"/>
+        <line class="glow-blue" x1="130" y1="175" x2="160" y2="175" stroke-width="3" stroke-linecap="round"/>
+        <path class="glow-amber" d="M100 60 V100 M100 60 L88 74 M100 60 L112 74" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle class="glow-amber" cx="100" cy="112" r="7" stroke-width="3"/>
+      </svg><h4>ai-gateway</h4><div class="role">Design</div></div>
+
+      <div class="cast-card s-design"><svg viewBox="0 0 200 200" fill="none">
+        <line class="glow-blue" x1="100" y1="35" x2="100" y2="150" stroke-width="3" stroke-linecap="round"/>
+        <line class="glow-blue" x1="55" y1="60" x2="145" y2="60" stroke-width="3" stroke-linecap="round"/>
+        <path class="glow-blue" d="M55 60 L35 95 A25 20 0 0 0 75 95 Z" stroke-width="2.5" stroke-linejoin="round"/>
+        <path class="glow-blue" d="M145 60 L125 95 A25 20 0 0 0 165 95 Z" stroke-width="2.5" stroke-linejoin="round"/>
+        <line class="glow-blue" x1="75" y1="160" x2="125" y2="160" stroke-width="3" stroke-linecap="round"/>
+        <path class="glow-amber" d="M88 42 L96 50 L114 30" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg><h4>constraint-validator</h4><div class="role">Design</div></div>
+
+      <div class="cast-card s-design"><svg viewBox="0 0 200 200" fill="none">
+        <path class="glow-blue" stroke-width="3" stroke-linecap="round" fill="none" d="M60 60 A56 56 0 1 1 55 145"/>
+        <path class="glow-blue" d="M60 60 L60 40 M60 60 L40 60" stroke-width="3" stroke-linecap="round"/>
+        <path class="glow-blue" d="M55 145 L55 165 M55 145 L75 150" stroke-width="3" stroke-linecap="round"/>
+        <path class="glow-amber" d="M100 88 L100 118 M90 105 L100 118 L110 105" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg><h4>detection-promotion</h4><div class="role">Design</div></div>
+
+      <div class="cast-card s-design"><svg viewBox="0 0 200 200" fill="none">
+        <rect class="glow-blue" x="45" y="45" width="110" height="130" rx="14" stroke-width="3"/>
+        <circle class="glow-amber" cx="100" cy="90" r="18" stroke-width="3"/>
+        <path class="glow-amber" d="M68 148 C68 126 128 126 132 148" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <line class="glow-blue" x1="60" y1="60" x2="90" y2="60" stroke-width="2.5" stroke-linecap="round"/>
+      </svg><h4>governance-state-mgr</h4><div class="role">Design</div></div>
+
+      <div class="cast-card s-design"><svg viewBox="0 0 200 200" fill="none">
+        <path class="glow-blue" d="M35 45 H165 L112 118 V150 L88 160 V118 Z" stroke-width="3" stroke-linejoin="round"/>
+        <circle class="glow-amber" cx="55" cy="30" r="6" stroke-width="3"/><circle class="glow-amber" cx="100" cy="24" r="6" stroke-width="3"/><circle class="glow-amber" cx="145" cy="30" r="6" stroke-width="3"/>
+        <path class="glow-amber" d="M55 36 L85 60 M100 30 L100 60 M145 36 L115 60" stroke-width="2" opacity="0.85"/>
+      </svg><h4>architecture-ingestion</h4><div class="role">Design</div></div>
+
+      <div class="cast-card s-design"><svg viewBox="0 0 200 200" fill="none">
+        <rect class="glow-blue" x="35" y="65" width="130" height="95" rx="12" stroke-width="3"/>
+        <path class="glow-blue" d="M75 65 L88 48 H112 L125 65" stroke-width="3" stroke-linejoin="round"/>
+        <circle class="glow-amber" cx="100" cy="112" r="28" stroke-width="3"/>
+        <path class="glow-amber" d="M100 96 V112 L114 122" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg><h4>snapshot-service</h4><div class="role">Design</div></div>
+    </div>
+  </div>
+
+  <div class="manifesto">
+    <div class="kicker">The constraint-binding rule</div>
+    <blockquote>&ldquo;If it binds, it's <em>in the graph.</em> If it's only in a prompt, it doesn't bind.&rdquo;</blockquote>
+    <div class="attrib">ADR-003 &middot; Platform Patterns</div>
+  </div>
+
+  <div class="proof">
+    <div class="proof-row">
+      <div class="stat"><div class="num">10</div><div class="lab">Design records ratified</div></div>
+      <div class="stat"><div class="num">0</div><div class="lab">Silent ground-truth mutations</div></div>
+      <div class="stat"><div class="num">1</div><div class="lab">Service live on Cloud Run</div></div>
+      <div class="stat"><div class="num">5</div><div class="lab">Planes of ground truth, one graph</div></div>
+    </div>
+  </div>
+
+  <div class="frontier-wrap">
+    <div class="fcard">
+      <div>
+        <div class="kicker"><span class="dot"></span>Right now, being built</div>
+        <div class="val">The KG-retrieval port &mdash; knowledge-service, leg 2 of 5</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
