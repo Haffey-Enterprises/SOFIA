@@ -1,0 +1,72 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References — forthcoming-record references",
+    "claim": "The Cross-References list two forthcoming records by concrete identifier: 'DDR-003 (Feedback Loop Governance, forthcoming)' and 'ADR-004 (file-driven ingestion, forthcoming)'. The body text at §1, §2.2, and §2.6 refers to these same records by subject-name ('the forthcoming feedback-loop governance design', 'the forthcoming ingestion decision record'), so the record decides both to name-only and to number these unauthored records — an internal inconsistency in what the record commits about forthcoming references.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §1/§2.2/§2.6 (subject-name form) in conflict with ADR-008 §7 Cross-References (concrete-identifier form: 'DDR-003', 'ADR-004')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 table + §2.2 Environment bullet + §2.2 Operational-distillation bullet — control-status claims",
+    "claim": "The Decision's per-class table asserts the Environment control is 'Built — the inherited-confidence derivation ruling's aging basis' and the Operational-distillation review realization 'routes to' downstream, with no maturity qualifier, while §5.3 (Risks) and §6 (Compliance) concede that constants are 'held contested and config-surfaced' and that the distillation review is 'aspirational pending their downstream design and mechanization.' The Decision surface claims a settledness the record's own Consequences and Compliance sections retract — the decision content does not consistently declare which controls are built versus forthcoming.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 (Environment 'Built'; distillation 'routes to') in conflict with ADR-008 §5.3 ('constants are held contested') and §6 ('aspirational pending their downstream design and mechanization')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.4 Provenance-survival commitment vs §5.3 Decision-provenance retention gap",
+    "claim": "§2.4 states as a committed decision: 'A design that relied on a lesson which later resolves, or on a promoted fact which is later retracted, must remain answerable by traversal to the fact as it stood when it was consumed.' §5.3 then concedes this guarantee 'is currently scoped to promoted facts' and that a decision consuming an un-promoted fact 'could age out the graph-native trace.' The decision as stated in §2.4 claims a survival guarantee broader than the mechanism the record acknowledges exists — the prose commits a consequence the substrate does not yet support.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.4 (unqualified provenance-survival commitment) in conflict with ADR-008 §5.3 ('scoped to promoted facts ... could age out the graph-native trace')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "Decision block §2 vs §2.4 revalidation and withdrawal rulings",
+    "claim": "The governing skill requires that an amendment adding a ruling update the Decision enumeration, and the record structures its decision as testable sub-decisions §2.1–§2.6. §2.4 introduces two substantive rulings — the withdrawal posture (read-exclusion and retention-demotion, never hard-deletion) and the revalidation obligation for distilled lessons — that are decision-bearing commitments not surfaced in the §2 Decision statement's enumerated sub-decision list, which the §2 preamble presents as 'The invariant, the accountability, and the control-type per class.' A reader treating the §2.1/§2.2/§2.3 enumeration as the contract index misses the §2.4 withdrawal and revalidation rulings.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "author-decision-record SKILL, Body integrity: 'An amendment that adds a ruling updates the Decision enumeration ... a ruling it doesn't enumerate is invisible to every reader who correctly treats the enumeration as complete' — applied to ADR-008 §2.4's withdrawal and revalidation rulings absent from the §2 enumeration"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "Metadata table — Supersedes: None",
+    "claim": "The record establishes ADR-008 as the general authority of which ADR-001 §2.5's EA-gated promotion is 'now the reasoning-consolidation sub-case' (§2.2). 'Supersedes: None' is stated, and §2.2/§2.3 explicitly assert §2.5 is 'cited, not superseded.' This is internally consistent, but the record decides a generalization-and-subsumption relationship to ADR-001 §2.5 without an explicit 'Relationship to ADR-001 §2.5' statement that records the position as a decision rather than asserting it in passing across §1, §2.2, and §2.3 — the subsumption is a consequence of the decision that is distributed rather than declared at one locus.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "adr-template §2 (Decision: 'expand into testable sub-decisions ... include only sub-decisions this ADR constrains') — the ADR-001 §2.5 generalization/subsumption is a decided relationship stated only in passing at ADR-008 §1, §2.2, §2.3, not surfaced as a decision"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.6 Governance boundary + §5/§6",
+    "claim": "Tested whether the record claims to decide more than it does — specifically whether it smuggles remedy-boundary, threshold, cadence, or role decisions under the accountability-principle frame. §2.6 explicitly fences the remedy boundary (supersede vs retract), criteria, thresholds, cadence, retention, roles, and multi-condition semantics to the forthcoming governance design and states 'The accountability principle this ADR commits holds identically whichever remedy applies, which is why the choice between them is policy, not principle, and is not ruled here.' The scope boundary held: no policy ruling is smuggled into the principle layer, and the Consequences and Compliance sections route the new commitments outward rather than deciding them here.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "triage-001 charter T-05 Leg 4 / RBT-59 Item 5: 'ADR owns invariant + accountability + control-type + lifecycle; remedy-boundary and all governance policy → DDR-003; the ADR never lists DDR-003 as an upstream it depends on' — ADR-008 §2.6 conforms"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.1 scope exclusion of Reasoning-Graph capture",
+    "claim": "Tested whether the record over-claims its scope onto Reasoning-Graph capture — which would collide with ADR-001 §2.2's reasoning-capture invariant and ADR-002 §2.6's write-authority assignment, both of which govern RG capture as captured judgment, not ground truth. §2.1 explicitly bounds the invariant to 'KG authoritative ground truth' and states 'Reasoning-Graph capture is not ground truth ... and is outside this record's scope,' citing the correct owning authorities. The scope claim is fidelity-clean: the record decides only ground-truth mutation and does not reach into the RG-capture domain it names as another authority's.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.1 scope exclusion vs ADR-001 §2.2 (reasoning-capture invariant) and ADR-002 §2.6 (RG write-authority) — no scope collision"
+    }
+  }
+]

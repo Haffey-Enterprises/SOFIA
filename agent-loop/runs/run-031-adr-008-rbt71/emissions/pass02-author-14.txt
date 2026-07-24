@@ -1,0 +1,11 @@
+The finding claims §7 contains the concrete identifiers, but the current §7 already uses subject-name forms ("The forthcoming feedback-loop governance design", "The forthcoming file-driven ingestion decision record"). The offending strings named by Ruling G do not appear in the document.
+
+{
+  "action": "close_satisfied",
+  "finding_id": "fcf948ed474269c9",
+  "evidence_present": "- **The forthcoming feedback-loop governance design** — downstream consumer of this ADR; owns the remedy boundary and all governance policy (§2.6). This ADR is its upstream authority; the obligation to resolve that record's pointer to this record's concrete document identifier lives in that record's definition of done.\n- **The forthcoming file-driven ingestion decision record** — owns the ingestion mechanics realizing the authoritative-source ingestion control (§2.2).",
+  "evidence_absent": "DDR-003 (Feedback Loop Governance, forthcoming)",
+  "authority_satisfied": "ADR-008-run-025-operator-rulings Ruling G (forthcoming-record references subject-named, never numbered)",
+  "rationale": "§7 already uses subject-name forms; the numbered forms 'DDR-003 (Feedback Loop Governance, forthcoming)' and 'ADR-004 (file-driven ingestion, forthcoming)' do not appear in the document.",
+  "confidence": "high"
+}

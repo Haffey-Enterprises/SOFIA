@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "b869e92dfee88da3",
+  "reason": "Ruling F names the conformance target — qualify §2.3's 'same control' head assertion to the §5.3 concession — but the §2.3 text already carries that qualification: the second sentence states the built instance 'traces to an approving decision, not the governing one, so it does not yet supply promotion's governing-verdict guarantee; the governing-verdict detection analogue ... is a named follow-up (§5.3).' The ruling does not specify wording that would scope the head 'governed by the same per-write, EA-gated, human-accountable control' clause any further, so any tightening of the head assertion itself would be an unratified authorial choice among conforming phrasings.",
+  "confidence": "medium"
+}

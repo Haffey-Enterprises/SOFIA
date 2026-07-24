@@ -1,0 +1,7 @@
+{
+  "finding_id": "9f7927c08d64bc52",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding targets ADR-003, an unauthored/forthcoming record (the KG-entry-governance ADR per triage Appendix A) whose scope, claims, and internal boundary between accountability-authority and remedy-governance are not yet ratified anywhere. Resolving the tension between the §3/§5.1 completeness claims and the §2.3 deferral requires an authoring choice about how much governance this ADR asserts versus routes to DDR-003 — a choice no existing authority disambiguates.",
+  "confidence": "high"
+}

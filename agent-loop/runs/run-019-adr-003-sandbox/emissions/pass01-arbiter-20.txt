@@ -1,0 +1,7 @@
+{
+  "finding_id": "d414d87901912982",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding exposes an internal conflict within ADR-003 itself: a universal quantifier ('every write ... passes a human-accountable checkpoint') against §2.2's explicit deferral of the Environment-plane posture. The KG-entry-governance charter (Appendix A, item 5) records the Environment-plane checkpoint posture as an open question the ADR must rule (per-write review vs. confidence-weighting, with a real volume/bottleneck constraint) and inherits R30's declined 'gate all KG writes' — so no ratified authority disambiguates whether the principle should be scoped or the Environment posture settled; both are live choices the substrate leaves open.",
+  "confidence": "high"
+}

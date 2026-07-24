@@ -1,0 +1,7 @@
+{
+  "finding_id": "5e4433c59810ddb5",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "DDR-002 §4 fixes only that the inheritance/rollup rule exists and its qualitative canon, explicitly routing the concrete function to the owning component's SDD; but whether the gateway SDD is the correct home for a platform-wide confidence-weighting primitive (versus its own record) is a placement/posture choice the substrate does not disambiguate, and the concrete base values, decay form, τ, and Extension-branch rule are new selections no cited authority determines.",
+  "confidence": "high"
+}

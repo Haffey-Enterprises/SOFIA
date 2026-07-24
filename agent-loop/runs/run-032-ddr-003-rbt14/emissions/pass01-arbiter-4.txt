@@ -1,0 +1,7 @@
+{
+  "finding_id": "a87a1919bd20f869",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record SKILL body-integrity rule ('an amendment that adds a ruling updates the Decision enumeration'); ratified deliberation Item M-8 ('config homes on detection-promotion mechanism')",
+  "rationale": "The placement ruling is already made (M-8, ratified); conforming means surfacing the existing §4.4 ruling in Decision.5's enumeration per the skill's amendment-discipline rule. No new choice.",
+  "confidence": "high"
+}

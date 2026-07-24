@@ -1,0 +1,1 @@
+{"finding_id":"c9e1741f67e41fa4","classification":"resolvable","authority_locus":"Operator Ruling G (ADR-008 run-025 rulings) + author-decision-record SKILL body-integrity forward-reference rule","rationale":"Ruling G directly mandates replacing the numbered forthcoming-ingestion reference with the subject-name form, eliminating the identifier collision.","confidence":"high"}

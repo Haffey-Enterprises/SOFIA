@@ -1,0 +1,7 @@
+{
+  "finding_id": "cee27acc9bd32e56",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "No ratified authority specifies how the inherited-confidence derivation should treat an Extension node that carries neither its own confidence nor an `observed_at` for the freshness term; DDR-002 §2.6 leaves Extension node properties to per-plane PlaneDefinition registration, so the gap admits multiple conforming resolutions (define a default confidence, require the registrant to supply observed_at, exclude such nodes from evidence, etc.) that no authority disambiguates.",
+  "confidence": "high"
+}

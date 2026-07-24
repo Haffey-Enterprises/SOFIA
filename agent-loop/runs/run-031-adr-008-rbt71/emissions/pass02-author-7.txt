@@ -1,0 +1,9 @@
+{
+  "action": "close_satisfied",
+  "finding_id": "561cdce9e2e40f9c",
+  "evidence_present": "A design that un-promotes authoritative ground truth routes to the EA-gated retraction shape and cites this ADR as its authority (§2.3).",
+  "evidence_absent": null,
+  "authority_satisfied": "author-decision-record body-integrity earned-tense / Ruling G (pointer binds at downstream landing) — the check states a forward obligation on future downstream designs, not a claim that current records already cite ADR-008",
+  "rationale": "The check is a conformance obligation on any future design that un-promotes ('routes to... and cites this ADR'); it makes no present-tense assertion that existing records already carry the citation, so it conforms to earned-tense/Ruling G already.",
+  "confidence": "medium"
+}

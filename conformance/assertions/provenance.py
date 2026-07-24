@@ -215,3 +215,71 @@ def evidence_dangling_version_pin(driver: Driver) -> list[Violation]:
         )
         for row in rows
     ]
+
+
+_INV_PROVENANCE_SUMMARY = "DDR-002 §7 #20"
+
+# #20 (existence + completeness): every durable terminal-promoted, PROMOTION-kind
+# CandidatePromotion carries a (:Reasoning:ProvenanceSummary) via
+# MATERIALIZES_PROVENANCE_OF, whose frozen_evidence_ids equals the §5 span — the
+# closure over PROPOSED_FROM Evidence-reaching targets. Scoped to
+# proposal_kind:promotion: a retraction reaches terminal status:promoted (the
+# un-promotion applied) but builds no ProvenanceSummary (SDD-001 §3.5.4 vs §3.5.3).
+#
+# The §5 span has two Evidence-reaching paths — PROPOSED_FROM directly to an
+# Evidence, and PROPOSED_FROM -> ReasoningProgress -> SUPPORTED_BY -> Evidence.
+# ObservedPattern / RejectedAlternative targets contribute no Evidence. The two
+# collects are DISTINCT-deduped (the OPTIONAL cross-product collapses); the
+# set-equality against frozen_evidence_ids is computed in Python (both directions
+# — missing and extra — are completeness failures). A candidate with no
+# ProvenanceSummary is the existence violation.
+_PROVENANCE_SUMMARY_SPAN = f"""
+MATCH (cp:{sc.RG_LABEL}:{sc.CANDIDATE_PROMOTION_LABEL})
+WHERE cp.{sc.PROP_PROPOSAL_KIND} = $promotion
+  AND cp.{sc.PROP_STATUS} = $promoted
+OPTIONAL MATCH (cp)-[:{sc.PROPOSED_FROM}]->(ed:{sc.RG_LABEL}:{sc.EVIDENCE_LABEL})
+OPTIONAL MATCH (cp)-[:{sc.PROPOSED_FROM}]->(:{sc.RG_LABEL}:{sc.REASONING_PROGRESS_LABEL})
+              -[:{sc.SUPPORTED_BY}]->(er:{sc.RG_LABEL}:{sc.EVIDENCE_LABEL})
+WITH cp,
+     collect(DISTINCT ed.{sc.PROP_EVIDENCE_ID}) AS direct_ids,
+     collect(DISTINCT er.{sc.PROP_EVIDENCE_ID}) AS via_rp_ids
+OPTIONAL MATCH (ps:{sc.RG_LABEL}:{sc.PROVENANCE_SUMMARY_LABEL})
+              -[:{sc.MATERIALIZES_PROVENANCE_OF}]->(cp)
+RETURN cp.{sc.PROP_CANDIDATE_ID} AS identity,
+       direct_ids, via_rp_ids,
+       ps IS NOT NULL AS has_summary,
+       ps.{sc.PROP_FROZEN_EVIDENCE_IDS} AS frozen_ids
+"""
+
+
+def provenance_summary_materialization(driver: Driver) -> list[Violation]:
+    """DDR-002 §7 #20: a promoted candidate carries a complete ProvenanceSummary."""
+    rows = query_rows(
+        driver,
+        _PROVENANCE_SUMMARY_SPAN,
+        {"promotion": sc.PROPOSAL_KIND_PROMOTION, "promoted": sc.CANDIDATE_STATUS_PROMOTED},
+    )
+    violations: list[Violation] = []
+    for row in rows:
+        span = set(row["direct_ids"]) | set(row["via_rp_ids"])
+        if not row["has_summary"]:
+            detail = (
+                "durable terminal-promoted CandidatePromotion carries no "
+                f"ProvenanceSummary (§5 span = {sorted(span)})"
+            )
+        else:
+            frozen = set(row["frozen_ids"] or [])
+            if frozen == span:
+                continue
+            missing = sorted(span - frozen)
+            extra = sorted(frozen - span)
+            detail = (
+                "ProvenanceSummary frozen_evidence_ids incomplete against the §5 span "
+                f"(missing={missing}, extra={extra})"
+            )
+        violations.append(
+            Violation(
+                invariant=_INV_PROVENANCE_SUMMARY, identity=str(row["identity"]), detail=detail
+            )
+        )
+    return violations

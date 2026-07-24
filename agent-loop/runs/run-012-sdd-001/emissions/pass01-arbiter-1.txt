@@ -1,0 +1,7 @@
+{
+  "finding_id": "092118bf4c4f0323",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "DDR-002 §4 fixes only that the confidence rollup exists, is upper-bounded by max supporting Evidence.confidence, and routes the source-authority×freshness derivation function to the SDD; it commits no concrete function form or constants, and the SDD itself routes that derivation's authority to a forthcoming decision record. Choosing whether to fix a concrete function (0.9 × exp(−Δt/τ), τ=90) as implemented behavior versus leaving it as a routed TODO is an unratified choice no cited authority disambiguates.",
+  "confidence": "high"
+}

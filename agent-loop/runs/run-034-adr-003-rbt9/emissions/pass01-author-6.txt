@@ -1,0 +1,10 @@
+{
+  "action": "edit",
+  "finding_id": "6e308c9386e3e77a",
+  "target": "ADR-003",
+  "old_string": "For work performed through the platform, enterprise constraints — standards, directives, policy — **bind agents from the Knowledge Graph**: they are graph-resident (the Standards plane, DDR-001), consulted through the sole-owner gateway,",
+  "new_string": "For work performed through the platform, enterprise constraints — standards, directives, policy — **bind agents from the Knowledge Graph** once the Standards-plane ingestion path lands (§5.3): they are graph-resident (the Standards plane, DDR-001), consulted through the sole-owner gateway,",
+  "authority_conformed": "author-decision-record-SKILL, Body integrity — 'Tense is earned by enforcement' (a property whose enforcing mechanism is forthcoming is stated in the conditional — 'holds once Condition N lands')",
+  "rationale": "The skill requires the conditional tense for a property whose enforcement is forthcoming; §5.3 names the ingestion path as the pending mechanism, so the qualifier points to it.",
+  "confidence": "medium"
+}

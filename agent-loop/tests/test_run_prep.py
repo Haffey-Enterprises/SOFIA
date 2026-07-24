@@ -36,6 +36,7 @@ from agent_loop.manifest import (
     per_site_token_totals,
     write_prep_manifest,
 )
+from agent_loop.prep import snapshot_documents
 from agent_loop.reviewers import (
     IDENTITY_LAA,
     IDENTITY_SA,
@@ -738,6 +739,45 @@ def test_anthropic_transport_wraps_sdk_errors() -> None:
         AnthropicTransport(client)("s", "u", "m", 10)
 
 
+# --- run-016 diagnosis rider: transport captures the API stop_reason ---------
+
+
+def test_anthropic_transport_captures_stop_reason() -> None:
+    message = SimpleNamespace(
+        content=[SimpleNamespace(text="ok")],
+        usage=SimpleNamespace(input_tokens=5, output_tokens=2),
+        stop_reason="end_turn",
+    )
+    client = SimpleNamespace(messages=SimpleNamespace(create=lambda **kw: message))
+    response = AnthropicTransport(client)("sys", "usr", "m", 10)
+    assert response.stop_reason == "end_turn"
+
+
+def test_anthropic_transport_stop_reason_absent_defaults_none() -> None:
+    message = SimpleNamespace(  # a response object with no stop_reason attribute
+        content=[SimpleNamespace(text="ok")],
+        usage=SimpleNamespace(input_tokens=5, output_tokens=2),
+    )
+    client = SimpleNamespace(messages=SimpleNamespace(create=lambda **kw: message))
+    response = AnthropicTransport(client)("sys", "usr", "m", 10)
+    assert response.stop_reason is None
+
+
+def test_llm_call_records_stop_reason() -> None:
+    log = ActionLog()
+
+    def transport(system, user, model, max_tokens, cache_prefix=None):  # noqa: ANN001
+        return LlmResponse(text="[]", input_tokens=10, output_tokens=2, stop_reason="end_turn")
+
+    emit = build_api_emitter(
+        site_label="antagonist-SA", model="m", max_tokens=10, log=log,
+        transport=transport, now=_counter_now(), sleeper=lambda s: None,
+    )
+    emit("sys", "user")
+    call = log.of_kind("llm_call")[0]
+    assert call.detail["stop_reason"] == "end_turn"
+
+
 # --- §10g: provenance + manifest ---------------------------------------------
 
 
@@ -752,6 +792,10 @@ def test_per_site_token_totals_aggregates() -> None:
         "output_tokens": 15,
         "cache_creation_input_tokens": 0,
         "cache_read_input_tokens": 0,
+        # The TTL-bucket split defaults to 0 for events emitted without it
+        # (RBT-69 review follow-up) — the sum stays additive.
+        "cache_creation_ephemeral_1h_input_tokens": 0,
+        "cache_creation_ephemeral_5m_input_tokens": 0,
         "calls": 2,
     }
     assert totals["arbiter"]["calls"] == 1
@@ -763,7 +807,7 @@ def test_manifest_prep_then_finalize(tmp_path) -> None:
         manifest_path,
         run_id="run-001",
         created="2026-07-02T00:00:00Z",
-        document_set={"ADR-001": "/docs/ADR-001.md"},
+        document_set={"ADR-001": {"snapshot_path": "documents/ADR-001-x.md", "sha256": "abc"}},
         head_sha="48e031a",
         prompt_hashes={"a.prompt.md": "hash"},
         substrate_manifest_ref="substrate/manifest.json",
@@ -840,6 +884,13 @@ def _prep_env(tmp_path: Path, doc_ids: list[str]):
         substrate_root,
         {"authorities": {"adr-template": "A"}, "design-intent": {"vision": "V"}},
     )
+    # RBT-51 Item 3: the runner consumes a frozen document snapshot, so a prepared
+    # folder carries one (produced here by the prep tool — the producer/consumer
+    # pair exercised together). gate 3 resolves within it and gate 8 verifies it.
+    snapshot_documents(
+        doc_ids, docs_root=docs, sofia_root=sofia_root, run_dir=runs_root / run_id,
+        run_id=run_id, sofia_head_sha="HEAD-SNAPSHOT", retrieved="2026-07-02",
+    )
     return {
         "run_id": run_id,
         "doc_ids": doc_ids,
@@ -864,10 +915,14 @@ def test_gates_only_with_key_passes_1_6_and_reports_probe_pending(tmp_path) -> N
         git_status=env["git_status"],
         env=env["env"],
     )
-    assert [r.number for r in report.results] == [1, 2, 3, 4, 5, 6, 7]
+    assert [r.number for r in report.results] == [1, 2, 3, 4, 5, 6, 7, 8]
     assert all(r.passed for r in report.results if r.number <= 6)
     gate7 = next(r for r in report.results if r.number == 7)
     assert gate7.pending and not gate7.passed
+    # Gate 8 (document snapshot) is a free local check that passes on a prepared
+    # folder, independent of the probe.
+    gate8 = next(r for r in report.results if r.number == 8)
+    assert gate8.passed and not gate8.pending
     assert not report.ok  # a pending probe means the run cannot launch yet
 
 
@@ -994,7 +1049,11 @@ def test_run_real_integration_writes_finalized_manifest_and_log(tmp_path) -> Non
     manifest = json.loads((run_dir / "manifest.json").read_text())
     assert manifest["finalized"] is True
     assert manifest["head_sha"] == "48e031a-descendant"
-    assert len(manifest["prompt_sha256"]) == 5
+    # Six prompts pinned: the four hats, the arbiter, and the author — the
+    # author's charter is what authored the run's edits, so its hash is
+    # provenance the trust ramp is scored against (run-supervision §9).
+    assert len(manifest["prompt_sha256"]) == 6
+    assert "author.prompt.md" in manifest["prompt_sha256"]
     assert set(manifest["per_site_tokens"]) >= {
         "antagonist-LAA",
         "antagonist-SA",
@@ -1005,6 +1064,15 @@ def test_run_real_integration_writes_finalized_manifest_and_log(tmp_path) -> Non
     assert manifest["passes_run"] == result.passes_run
     # Manifest parameters reflect the actual request payload: max_tokens only.
     assert manifest["parameters"] == {"max_tokens": 8192}
+    # Calibration record: the manifest pins the live prompt set's generation.
+    # gen-12 (RBT-71 Piece C): Contract rule 9 (live-text grounding) landed in all
+    # four reviewer prompts.
+    assert manifest["calibration"]["generation"] == 12
+    # §7/T6: document_set records the frozen snapshot provenance (path + sha256),
+    # not a working-tree path.
+    doc_entry = manifest["document_set"]["ADR-001"]
+    assert doc_entry["snapshot_path"] == "documents/ADR-001-distilled.md"
+    assert doc_entry["sha256"] == sha256_text("content of ADR-001")
     # The gate-7 probe made prep-time contact (system == "probe").
     assert any(c["system"] == "probe" for c in transport.calls)
 
@@ -1179,12 +1247,25 @@ def test_item_e_partial_drop_proceeds(tmp_path) -> None:
     assert len(result.log.of_kind("parse_dropped")) >= 1
 
 
-def test_item_e_empty_emission_proceeds_to_converged(tmp_path) -> None:
+def test_item_e_all_hats_null_aborts_no_false_converged(tmp_path) -> None:
+    # SUPERSEDES the prior "empty emission proceeds to converged" ruling
+    # (RBT-54 R-C; empirical basis: the run-016-ddr-002 fired draw). That run
+    # showed an all-hats-null draw is a FALSE CONVERGED from a wholly null
+    # instrument — every hat returned "[]", re-drew, "[]" again, hat_null, and
+    # the router declared CONVERGED with zero findings. A legitimate empty result
+    # is structurally impossible under the 2-POSITIVE floor, so the all-hats-null
+    # guard now fails such a draw loud. Applied learning, not contradiction.
+    from agent_loop.runner import InstrumentCompromisedError
+
     env = _prep_env(tmp_path, ["ADR-001", "ADR-002", "DDR-001", "DDR-002"])
-    transport = DispatchTransport(reviewer="[]")  # zero findings, zero drops
-    result = _dispatch_run(tmp_path, env, transport)
-    assert result.exit.kind == "CONVERGED"
-    assert result.log.of_kind("parse_dropped") == []
+    transport = DispatchTransport(reviewer="[]")  # every hat clean-null → hat_null
+    with pytest.raises(InstrumentCompromisedError):
+        _dispatch_run(tmp_path, env, transport)
+    run_dir = env["runs_root"] / env["run_id"]
+    kinds = [json.loads(x)["kind"] for x in (run_dir / "action-log.jsonl").read_text().splitlines()]
+    assert "run_aborted" in kinds
+    assert kinds.count("hat_null") == 4  # every hat went variance-to-zero
+    assert "converged" not in kinds  # the false CONVERGED is no longer reachable
 
 
 # --- RBT-49 Item 1: prompt caching — request structuring + accounting --------
@@ -1214,11 +1295,11 @@ def test_anthropic_transport_marks_system_and_cache_prefix_and_reads_cache_usage
 
     # System is a cache-marked content block.
     assert seen["system"] == [
-        {"type": "text", "text": "SYS", "cache_control": {"type": "ephemeral"}}
+        {"type": "text", "text": "SYS", "cache_control": {"type": "ephemeral", "ttl": "1h"}}
     ]
     # User splits at the prefix: cached head block + plain tail block.
     content = seen["messages"][0]["content"]
-    assert content[0] == {"type": "text", "text": "PREFIX", "cache_control": {"type": "ephemeral"}}
+    assert content[0] == {"type": "text", "text": "PREFIX", "cache_control": {"type": "ephemeral", "ttl": "1h"}}
     assert content[1] == {"type": "text", "text": "tail"}
     # The sent user content reconstructs the input byte-for-byte.
     assert content[0]["text"] + content[1]["text"] == "PREFIXtail"
@@ -1245,7 +1326,7 @@ def test_anthropic_transport_without_cache_prefix_sends_one_user_block() -> None
     response = AnthropicTransport(client)("SYS", "USER", "m", 10)  # cache_prefix defaults None
 
     assert seen["messages"][0]["content"] == [{"type": "text", "text": "USER"}]
-    assert seen["system"][0]["cache_control"] == {"type": "ephemeral"}
+    assert seen["system"][0]["cache_control"] == {"type": "ephemeral", "ttl": "1h"}
     assert response.cache_creation_input_tokens == 0
     assert response.cache_read_input_tokens == 0
 
@@ -1266,7 +1347,7 @@ def test_anthropic_transport_cache_prefix_covering_whole_user_drops_empty_tail()
     client = SimpleNamespace(messages=SimpleNamespace(create=create))
     AnthropicTransport(client)("SYS", "WHOLE", "m", 10, cache_prefix="WHOLE")
     assert seen["messages"][0]["content"] == [
-        {"type": "text", "text": "WHOLE", "cache_control": {"type": "ephemeral"}}
+        {"type": "text", "text": "WHOLE", "cache_control": {"type": "ephemeral", "ttl": "1h"}}
     ]
 
 
@@ -1363,22 +1444,61 @@ def _single_reviewer_run(tmp_path, transport, *, arbiter, name):
     return result, log
 
 
-def test_reviewer_below_floor_empty_redraw_records_hat_null_and_run_continues(tmp_path) -> None:
-    # Synthetic empty emission → exactly one re-draw → second empty → hat_null
-    # recorded → the run continues to completion (not aborted).
-    transport = ScriptedTransport(["[]", "[]"])  # first empty, re-draw empty
-    result, log = _single_reviewer_run(tmp_path, transport, arbiter=CannedArbiter(), name="hn")
+def _two_positives_json() -> str:
+    return json.dumps([
+        {
+            "severity": "POSITIVE",
+            "target": ["ADR-001"],
+            "locus": f"s{i}",
+            "claim": "a load-bearing surface held under attack",
+            "cited_authority": {"kind": "canonical", "ref": "AUTH-1 §2"},
+        }
+        for i in (1, 2)
+    ])
 
-    # Exactly one re-draw: two emits; a third would IndexError the script.
-    assert len(transport.calls) == 2
+
+def test_reviewer_below_floor_empty_redraw_records_hat_null_and_run_continues(tmp_path) -> None:
+    # RBT-49 Item 2 (ratified, content preserved): a single hat's below-floor
+    # empty re-draw records hat_null and the run CONTINUES — degraded recall is
+    # recoverable via union-over-runs. Moved to a MULTI-HAT harness (RBT-54 R-C):
+    # the "continues" contract holds precisely because the other hats carry the
+    # draw; an ALL-hats-null draw fails loud (its own test). Here LAA nulls while
+    # SA/EA/coherence meet the 2-POSITIVE floor.
+    from agent_loop.real_hats import build_real_reviewer, real_hat_plan
+    from agent_loop.reviewers import IDENTITY_COHERENCE, IDENTITY_EA, IDENTITY_SA
+
+    log = ActionLog()
+    laa_calls: list[int] = []
+
+    def laa_emit(system: str, user: str) -> str:  # empty both times → hat_null
+        laa_calls.append(1)
+        return "[]"
+
+    def floor_emit(system: str, user: str) -> str:  # meets floor → no re-draw
+        return _two_positives_json()
+
+    plan = real_hat_plan(
+        build_real_reviewer(IDENTITY_LAA, DESIGN_DIR / "antagonist-LAA.prompt.md", laa_emit),
+        build_real_reviewer(IDENTITY_SA, DESIGN_DIR / "antagonist-SA.prompt.md", floor_emit),
+        build_real_reviewer(IDENTITY_EA, DESIGN_DIR / "antagonist-EA.prompt.md", floor_emit),
+        build_real_reviewer(IDENTITY_COHERENCE, DESIGN_DIR / "coherence-sweep.prompt.md", floor_emit),
+    )
+    result = run_loop(
+        header=LedgerHeader(set=["ADR-001"], counted_severities=["BLOCKING", "MATERIAL"]),
+        plan=plan, arbiter=CannedArbiter(), store=LedgerStore(tmp_path / "hn.json"), log=log,
+    )
+
+    # LAA emitted exactly twice (one re-draw); its hat_null is the only one.
+    assert len(laa_calls) == 2
     redraws = [
         e for e in log.of_kind("llm_retry") if e.detail.get("retry_kind") == "reviewer_redraw"
     ]
-    assert len(redraws) == 1 and redraws[0].detail["positive_count"] == 0
+    assert [e.detail.get("site") for e in redraws] == [IDENTITY_LAA.label]
+    assert redraws[0].detail["positive_count"] == 0
 
     hat_nulls = log.of_kind("hat_null")
     assert len(hat_nulls) == 1 and hat_nulls[0].detail["reviewer"] == IDENTITY_LAA.label
-    # Run reached a real terminal exit, not an abort.
+    # The run CONTINUES to a real terminal exit — other hats carried the draw.
     assert result.exit.kind == "CONVERGED"
     assert log.of_kind("run_aborted") == []
 
@@ -1426,3 +1546,53 @@ def test_reviewer_meeting_floor_does_not_redraw(tmp_path) -> None:
     assert log.of_kind("hat_null") == []
     # POSITIVEs bypass the arbiter and neither count nor block → CONVERGED.
     assert result.exit.kind == "CONVERGED"
+
+
+# --- §10k: document-snapshot verification (RBT-51 Item 3) ---------------------
+
+
+def test_gate8_matching_snapshot_proceeds(tmp_path) -> None:
+    # A snapshot whose hashes match its provenance record lets the run proceed to
+    # a legitimate router exit; the reviewed content is read from the snapshot.
+    env = _prep_env(tmp_path, ["ADR-001", "ADR-002", "DDR-001", "DDR-002"])
+    transport = RoutingTransport(_VALID_FINDING_JSON, _VALID_CLASSIFICATION_JSON)
+    result = run_real(
+        env["run_id"], env["doc_ids"], sofia_root=env["sofia_root"],
+        runs_root=env["runs_root"], prompt_dir=env["prompt_dir"], transport=transport,
+        git_status=env["git_status"], head_sha="H", now=_counter_now(),
+        sleeper=lambda s: None, env=env["env"],
+    )
+    assert result.exit.kind == "HALT_DECISION"
+
+
+def test_gate8_missing_snapshot_aborts_and_never_falls_back_to_working_tree(tmp_path) -> None:
+    import shutil
+
+    env = _prep_env(tmp_path, ["ADR-001", "ADR-002", "DDR-001", "DDR-002"])
+    shutil.rmtree(env["runs_root"] / env["run_id"] / "documents")  # snapshot gone
+    # The working-tree docs still exist — the runner must NOT fall back to them.
+    assert (env["sofia_root"] / "docs" / "ADR-001-distilled.md").is_file()
+    transport = DispatchTransport()
+    with pytest.raises(PrepGateError):
+        run_real(
+            env["run_id"], env["doc_ids"], sofia_root=env["sofia_root"],
+            runs_root=env["runs_root"], prompt_dir=env["prompt_dir"], transport=transport,
+            git_status=env["git_status"], head_sha="H", now=_counter_now(),
+            sleeper=lambda s: None, env=dict(env["env"]),
+        )
+    assert transport.non_probe_calls() == []  # aborted before any reviewer/arbiter call
+
+
+def test_gate8_hash_mismatch_aborts_before_any_emitter_call(tmp_path) -> None:
+    env = _prep_env(tmp_path, ["ADR-001", "ADR-002", "DDR-001", "DDR-002"])
+    snap = env["runs_root"] / env["run_id"] / "documents" / "ADR-001-distilled.md"
+    snap.write_text("MUTATED AFTER PREP", encoding="utf-8")  # breaks the recorded pin
+    transport = DispatchTransport()
+    with pytest.raises(PrepGateError):
+        run_real(
+            env["run_id"], env["doc_ids"], sofia_root=env["sofia_root"],
+            runs_root=env["runs_root"], prompt_dir=env["prompt_dir"], transport=transport,
+            git_status=env["git_status"], head_sha="H", now=_counter_now(),
+            sleeper=lambda s: None, env=dict(env["env"]),
+        )
+    assert transport.non_probe_calls() == []

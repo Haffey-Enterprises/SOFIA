@@ -1,0 +1,32 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 per-source-class table, Environment row — 'under §6 calibration governance'",
+    "claim": "The Environment row's Control-type cell reads 'Per-policy capture-time-frozen aging (freshness-decayed confidence derived at capture, never recomputed at read) under §6 calibration governance; no per-write gate.' A bare '§6' within this record resolves to ADR-008's own §6, which is the Compliance section (three-hat review checks) — not calibration governance. The calibration governance the row means lives in DDR-004 §6 (Calibration and constant governance). The self-referential '§6' points at the wrong section within this document.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-008 §6 (Compliance — three-hat review) vs the calibration governance the row means (DDR-004 §6); author-decision-record SKILL 'Section citations are facts — fetch-verify them'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.4 Provenance-survival commitment vs §5.3 Decision-provenance retention gap",
+    "claim": "§2.4 commits without qualification: 'A design that relied on a promoted fact which is later retracted must remain answerable by traversal to the fact as it stood when it was consumed; the frozen-provenance survival guarantee is currently scoped to promoted facts, so a design that consumed a fact without promoting it relies on Reasoning-Graph evidence under bounded retention.' The first clause states a survival requirement broader than the substrate supplies, and §5.3 concedes the un-promoted-consumed case 'could age out the graph-native trace.' Verified against DDR-002 §7 #20 (at-promotion ProvenanceSummary materialization, promotion-kind scoped) and DDR-002 §5 (provenance-survival guarantee, promotion-scoped) and DDR-001 Versioning (bounded RG retention): no built mechanism preserves a consumed-but-unpromoted fact's trace. The §2.4 decision prose commits a consequence that would not hold if a design relied on a resolved lesson it did not promote.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.4 (provenance-survival commitment) in conflict with ADR-008 §5.3 ('scoped to promoted facts ... could age out the graph-native trace'); DDR-002 §7 #20 (ProvenanceSummary promotion-kind scoped) and §5 (promotion-scoped survival guarantee)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.4 Provenance-survival commitment — cross-reference to §5.3 scope caveat",
+    "claim": "§2.4 states 'the frozen-provenance survival guarantee is currently scoped to promoted facts (§5.3)'. The cited §5.3 (Risks) does carry the concession ('The frozen-provenance survival guarantee is currently scoped to promoted facts ... could age out the graph-native trace'), so this specific cross-reference resolves. Checked whether the scope caveat's own authority chain is grounded: DDR-002 §7 #20 explicitly scopes the ProvenanceSummary materialization to promotion-kind proposals, so the 'currently scoped to promoted facts' claim is substantiated in the substrate. The cross-reference and its grounding held.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.4 ('scoped to promoted facts (§5.3)') resolving to §5.3 concession, grounded in DDR-002 §7 #20 (promotion-kind scoping) and §5"
+    }
+  }
+]

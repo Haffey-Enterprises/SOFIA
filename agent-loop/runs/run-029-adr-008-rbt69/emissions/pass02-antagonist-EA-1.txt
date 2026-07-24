@@ -1,0 +1,62 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Environment row 'Realization routes to' + §2.2 Environment bullet — 'per-policy capture-time-frozen aging' with 'form built (DDR-004); constants contested/unvalidated (n=0)'",
+    "claim": "The Environment control-type is committed as a settled principle-layer decision — per-policy capture-time-frozen aging, no per-write gate — while the record concedes in the same cell and in §5.3 that the mechanism's constants are contested and unvalidated at zero traffic. This commits the platform to a reversibility posture whose justification depends on constants no one has calibrated: the decision that Environment needs *no human gate* rests on the claim that aging-decay confidence adequately governs over-reliance, which is exactly the property n=0 cannot yet substantiate. From EA altitude the question is whether committing 'no per-write gate' for a class at this altitude is proportionate to the risk of being wrong about the untested weighting, or whether the no-gate commitment should be qualified as provisional-pending-calibration.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "RBT-59 deliberation Item 3 (Environment control-type rests on the design-fixed form; constants held contested, n=0) — ADR-008 §2.2 commits the no-gate posture as settled while its enabling weighting is uncalibrated"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.5 Cross-class precedence + §2.2 Environment/distillation calibration",
+    "claim": "The cross-class precedence rule (withhold-and-escalate when a lighter control's mutation would override a heavier control's scope) integrates cleanly with the promotion class, but its interaction with the *ungated* Environment class is unstated. An Environment observation that structurally collides with an EA-set governance scope must, per §2.5, withhold and escalate — yet §2.2 commits Environment to no per-write gate and per-policy accountability only. The record does not reconcile how a continuous, ungated, high-volume observation stream is subjected to a per-write withhold-and-escalate on collision without reintroducing the per-write inspection §2.2 declines. This is a posture seam: the two decisions are each stated but their composition at the Environment/promotion boundary is left to the reader.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.5 (per-write withhold-and-escalate on cross-class collision) vs §2.2 Environment row (no per-write gate; per-policy accountability) — the composition at the Environment↔promoted-scope boundary is unspecified"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Authoritative-source ingestion row + §5.2 Constraints Imposed",
+    "claim": "The authoritative-source ingestion control commits a new, hard-to-reverse platform posture — that ingestion is no longer a direct write but must pass a pre-official-entry human fidelity verification introducing a provisional-versus-official distinction — while the record it depends on for realization (the forthcoming file-driven ingestion decision record) does not yet exist. This commits downstream ingestion design to a provisional/official dual-state model before the record that would decide that model's shape has been authored. A commitment of this reversibility cost (it reshapes every authoritative-source write path) taken ahead of the deciding record risks committing the project to a position that deserves its own decision record first.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "RBT-59 deliberation Item 3 (authoritative-source ingestion → pre-entry fidelity verification; mechanics routed to the forthcoming ingestion decision record) — ADR-008 §2.2/§5.2 commits the provisional/official dual-state before its deciding record exists"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "§6 Enforcement + §2.2 realization statuses",
+    "claim": "§6 states several control instances 'are already mechanized (the EA promotion gate ... the EA-gated retraction invariant ...)' without carrying the qualification the record applies elsewhere: the retraction invariant is conceded at §2.3/§5.3 to trace to an approving, not the governing, decision. Listing the retraction invariant flatly among 'already mechanized' instances in §6 restates a maturity the record's own §5.3 qualifies, mirroring the §2.3 overstatement at the enforcement-summary altitude.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §6 ('the EA-gated retraction invariant' listed among already-mechanized instances) vs §5.3 (retraction invariant traces to an approving, not the governing, decision — no standing detection analogue)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2 / §2.6 / §5.3 — decision-scope boundary against remedy-boundary and governance policy",
+    "claim": "I attacked the Decision from EA altitude for committing positions that deserve their own downstream decision record first — specifically whether the principle layer smuggles remedy-boundary or governance-policy rulings that pull authority from the forthcoming feedback-loop governance design. It held: §2 fixes invariant/accountability/control-type only, §2.6 explicitly withholds the remedy boundary, thresholds, cadence, retention, reviewer roles, and multi-condition semantics and routes them downstream, and §5.3 states control-types not calibrations. The altitude discipline is consistent across §2.2, §2.6, §5.3, and §6 check 5; the record decides at its altitude and no lower.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "RBT-59 deliberation Item 5 (ADR owns invariant/accountability/control-type/lifecycle; remedy-boundary and governance policy → forthcoming feedback-loop governance design), realized at ADR-008 §2/§2.6/§6"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.1 / §2.3 / §7 — un-promotion authority homing and Supersedes:None against ADR-001 §2.5's scope",
+    "claim": "I attacked the record's integration with the prior ratified ADR-001 §2.5 posture — whether it silently supersedes, over-reaches beyond §2.5's authority, or leaves un-promotion doubly-governed. It held: ADR-001 §2.5 authorizes only EA-gated promotion of SOFIA's own reasoning and is silent on un-promotion; ADR-008 generalizes it as the promotion sub-case and homes the un-promotion authority §2.5 does not reach, citing §2.5 as still-valid (Supersedes: None, house norm for a new principle). The generalization integrates with rather than pulls against the ratified substrate.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-001 §2.5 (EA-gated promotion of SOFIA's own reasoning; silent on un-promotion) — ADR-008 §2.1/§2.3/§7 generalizes and homes without supersession"
+    }
+  }
+]

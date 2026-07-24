@@ -69,6 +69,10 @@ The skeleton — and every run until the classifier earns unattended trust — r
 escalations, but nothing is applied to any real document and no real Linear ticket
 is opened. Intended actions are logged. Run one is not autonomous.
 
+On the real path the author writes its conforming edits to the run's own document
+copy (`runs/<run-id>/documents/`) and nowhere else — see
+`run-supervision.protocol.md` §9.
+
 ## Downstream flags
 
 - **Ledger home.** Recommendation: repo-local, git-versioned file (high-churn,

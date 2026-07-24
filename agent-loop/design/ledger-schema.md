@@ -23,13 +23,41 @@ functions over its state.
 | `pass_raised` | int | admission | pass number first admitted |
 | `pass_closed` | int \| null | author | pass number closed |
 | `recurrence_count` | int | admission | increments when a previously-`closed` `id` is re-admitted `open` |
-| `resolution_note` | string \| null | author | in dry mode: *proposed* only, not applied |
+| `resolution_note` | string \| null | author | in dry mode: *proposed* only, not applied. Variants: `conformed to <authority>` (edit) \| `satisfied: already conforms to <authority>` (satisfied-close, RBT-71 — see §Satisfied-close disposition) |
 
 `cited_authority` shape:
 ```
 { kind: "canonical" | "design-intent" | "coherence" | "soundness",
   ref:  "<named artifact + locus>" | "<quoted design-intent>" | "<target+locus in conflict>" | "<named defect>" }
 ```
+
+On `classification`: POSITIVE findings are never classified — the arbiter classifies defects only, so a POSITIVE remains `unclassified` for its whole life; an audit reading "N unclassified at halt" should reconcile it against the POSITIVE count first.
+
+### Satisfied-close disposition (RBT-71)
+
+The author's third action, `close_satisfied` (`author.py`; `author.prompt.md`),
+closes a finding whose demand the current document text *already* meets. It adds
+**no schema field and no status value** — a satisfied-close is an ordinary close
+(`status = "closed"`, `pass_closed` stamped), so `open_cbm`, plateau, and the
+router are arithmetically untouched (a satisfied-closed finding counts exactly as
+an edit-closed one). It is distinguished only by its `resolution_note` variant
+and its action-log events:
+
+- `resolution_note = "satisfied: already conforms to <authority_satisfied>"` — the
+  satisfied variant, parallel to the edit's `"conformed to <authority>"`.
+- Action-log event **`author_satisfied`** (`finding_id`, `evidence` — the kind(s)
+  checked, `["present"]` / `["absent"]` / both, `authority_satisfied`,
+  `confidence`) — emitted when the mechanical evidence check passes and the
+  finding closes.
+- Action-log event **`author_satisfied_evidence_fail`** (`finding_id`, `failed` —
+  which check(s) did not hold, `evidence_present_count`, `evidence_absent_count`)
+  — emitted when the evidence does not verify; the finding is **escalated**, never
+  closed. A malformed or unverified satisfied-close can never close a finding.
+
+Safety: a *wrong* satisfied-close is caught by the existing recurrence trigger — a
+reviewer re-raising the same identity next pass reopens the closed `id`,
+increments `recurrence_count`, and halts loudly as `oscillation` (§Identity;
+`mechanical-gates.md` §2).
 
 ## Pass record
 
@@ -88,16 +116,60 @@ recurs. The naive implementation — minting a fresh `id` every pass — silentl
 disables recurrence detection, because a reopened finding looks brand-new. That is a
 root-cause trap, not a cosmetic one.
 
-Rule: `id` is derived deterministically at first emission from
-`hash(target + locus + normalized(claim))` and **preserved** thereafter. When a
-reviewer emits a finding whose derived `id` already exists in the ledger:
-- if that `id` is currently `open` → it's the same standing finding, no new record;
+Rule (amended RBT-69): `id` is derived deterministically at first emission from
+`hash(sorted(target) + normalize_locus(locus) + altitude)` and **preserved**
+thereafter. **`altitude` is in the key; `claim` is not.** When a reviewer emits a
+finding whose derived `id` already exists in the ledger:
+- if that `id` is currently `open` → it's the same standing finding, no new record
+  (the claim-divergence guard below still fires on a materially-different claim);
 - if that `id` was `closed` → re-admit as `open` and increment `recurrence_count`
   (this is a reopen — a signal for the oscillation detector).
 
-`normalized(claim)` must strip formatting/wording noise so a genuinely-recurring
-finding hashes stably. Getting this normalization wrong breaks oscillation from
-below; it is the one place in the skeleton worth a test of its own.
+**Why altitude replaced claim (RBT-69, empirical driver run-028).** The prior key
+`hash(target + locus + normalize_claim(claim))` was too fine along the claim axis: a
+hat re-emitting substantively the same finding with the claim reworded each pass
+minted a fresh `id` every time and was admitted as net-new, inflating `open_cbm`
+(run-028: 18 → 24 → 41 → 55 with zero recurrences — identity-failure inflation, not
+coverage). Keying on locus alone is forbidden — one locus legitimately carries
+several *distinct* findings (LAA claim-fidelity, SA conformance, EA reversibility,
+coherence cross-reference), and merging them by locus would hide real findings.
+Adding **altitude** threads the needle: a hat's re-emission of its own finding is
+stable under wording drift (same target+locus+altitude), while two distinct-stance
+findings at one locus stay separate (different altitude). The discriminator moves
+from the brittle claim sentence to the stable stance-at-locus.
+
+`normalize_locus` is a deterministic normalizer analogous to `normalize_claim`:
+lowercase, strip markdown/punctuation/quoting noise, collapse whitespace. It
+**absorbs formatting drift only** — it does not semantically alter the locus (quoted
+section anchors are preserved). Kept conservative because over-normalizing a locus
+risks merging distinct loci. `normalize_claim` is **retained** (now used only by the
+claim-divergence guard below), never identity-bearing.
+
+**Counting-semantics note (ratified as a feature).** Because altitude is in the key,
+two hats raising the *identical* claim at one locus no longer dedup to one record —
+they are two records at two altitudes. This preserves cross-hat overlap as the
+roster-independence evidence the run protocol measures (run-supervision §5.3, §7),
+which the prior claim-only key destroyed by deduping. A defect independently found by
+two altitudes counts twice toward `open_cbm`; that is intended and is **not**
+double-counting of the *same* finding (distinct altitude = distinct instrument's
+finding). Do not "fix" this back to a single record.
+
+### Claim-divergence guard (RBT-69)
+
+The one residual risk of the coarser key is two genuinely-distinct findings sharing a
+single `(target, locus, altitude)`. The guard is the safety net: on the `dedup_open`
+path, if `normalize_claim(incoming) != normalize_claim(existing)`, the finding stays
+**open** (nothing hidden), the incoming claim is preserved in a new `claim_variants:
+list[str]` field on the existing record, and a `claim_divergence` action-log event is
+emitted (`finding_id`, `existing_claim`, `incoming_claim`). No new record is created;
+no claim is discarded. This guarantees the loop's safety property exactly — *a live
+finding is never hidden; it stays open, surfaces, and carries every divergent claim
+variant* — and routes the sole residual risk (under-counting two-as-one) to the cold
+hand-audit (run-supervision §5), which is equipped to split it. Under-govern until it
+hurts: no similarity apparatus, just never throw the variant away.
+
+`claim` remains a mandatory record field, now purely descriptive. `claim_variants`
+defaults to an empty list and round-trips through persistence.
 
 **`source` / `altitude` — "set by: reviewer," satisfied at the port boundary
 (ratified 2026-07-01).** For real LLM reviewers, the runner stamps both fields

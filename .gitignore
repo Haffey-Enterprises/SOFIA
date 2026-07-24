@@ -13,5 +13,14 @@ htmlcov/
 # Env / secrets
 .env
 
+# Terraform — real tfvars carry env-specific values (project_id, operator IP CIDR)
+*.auto.tfvars
+!*.auto.tfvars.example
+.terraform/
+tfplan
+*.tfplan
+*.tfstate
+*.tfstate.*
+
 # OS
 .DS_Store

@@ -1,0 +1,7 @@
+{
+  "finding_id": "21e2a2f86d083689",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding exposes that DDR-004's frozen/reconstructible commitment depends on a durable capture-instant persistence that DDR-002 §4's Evidence type (sole surrogate-only, no created_at) does not supply; the deliberation record itself leaves this unresolved (Item 8 offers a preferred mechanism — Evidence.observed_at *is* the capture instant — with a verify-intent gate and a derived-at fallback, plus a fallback field, none ratified and routed to RBT-54). Choosing among persist-via-observed_at / add derived field / accept the coherence gap is an unratified fork no cited authority disambiguates, and DDR-002 §4's actual text carries no capture-instant field to name as the determining locus.",
+  "confidence": "high"
+}

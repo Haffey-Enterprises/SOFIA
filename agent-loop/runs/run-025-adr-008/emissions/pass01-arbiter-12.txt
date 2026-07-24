@@ -1,0 +1,1 @@
+{"finding_id":"b55f71f6ce0f12d4","classification":"decision-bearing","authority_locus":null,"rationale":"How ADR-008 records its relation to ADR-001 \u00a72.5 (supersession vs amendment vs new-principle-plus-note) is a choice no ratified authority disambiguates; the deliberation frames it as homing/generalizing, not superseding.","confidence":"medium"}

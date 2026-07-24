@@ -1,0 +1,1 @@
+{"finding_id":"7084eb5383e55ee1","classification":"decision-bearing","authority_locus":null,"rationale":"Whether an ADR resting on an unauthored downstream schema amendment must declare itself CONDITIONAL/blocked is a status-lifecycle judgment no cited authority resolves for this dependency.","confidence":"medium"}

@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "2e42b3f929338337",
+  "reason": "The authority requires the Decision block to index every ruling, but §2's preamble is prose, not an enumerated index, and there are multiple conforming ways to surface §2.4's withdrawal-posture and revalidation rulings (amend the preamble sentence, add an enumerated list, add a subsection pointer). The authority establishes the defect but does not uniquely determine which conforming edit, or its exact wording, resolves it.",
+  "confidence": "medium"
+}

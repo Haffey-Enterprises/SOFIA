@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "ca92726f17c1ccb4",
+  "reason": "The named authority (RBT-59 Item 3: 'ADR commits the survival requirement; extending the mechanism → named DDR-002+DDR-003 follow-up') ratifies that the commitment is broader than the mechanism and that the gap is a named follow-up — it does not determine how §2.4's prose should be conformed. Multiple conforming edits exist (scope §2.4's traversal clause to promoted facts, add an explicit forward-referencing caveat, or leave both as-is since §5.3 already names the gap); the authority picks none, so this requires an unratified choice.",
+  "confidence": "medium"
+}

@@ -1,0 +1,7 @@
+{
+  "finding_id": "240668d1b7aa14c2",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §2.4 ('ADR-001 §2.5 authorizes promotion only and does not stretch to un-promotion') and ADR-003 §1 (routes un-promotion authority to ADR-003 for exactly that reason); ADR-003 §2.3's contrary claim that ADR-001 §2.5 supplies reversal authority is the internal contradiction to be removed.",
+  "rationale": "This is a self-contradiction within ADR-003 (§2.3 vs its own §1) against a ratified upstream authority (DDR-002 §2.4) that explicitly denies §2.5 covers un-promotion; the fix is determined — un-promotion authority is ADR-003's own ruling, not derived from §2.5 — and introduces no unmade choice.",
+  "confidence": "high"
+}

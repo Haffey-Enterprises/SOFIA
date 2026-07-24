@@ -1,0 +1,1 @@
+{"finding_id":"dc89a8952d52342d","classification":"decision-bearing","authority_locus":null,"rationale":"ADR-008 §2.2 scopes the distillation control to entry; §2.4 governs withdrawal but names no reviewer role; whether transitions ride the distillation control is an unresolved assignment.","confidence":"high"}

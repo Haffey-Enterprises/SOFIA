@@ -1,0 +1,14 @@
+The finding names two loci but Ruling G's conformance directs replacing both entries. I must produce a single minimal edit scoped to the finding's locus. The two bullet entries are separate; I need distinct edits. Rule 2 allows one minimal edit — but Ruling G directs both replacements as the fix for this forthcoming-reference class. However, I can only emit one find-replace. Each bullet is a distinct anchor. I'll refuse if a single edit can't cover both — but let me check whether the two are contiguous. The DDR-003 bullet and ADR-004 bullet are adjacent lines in §7.
+
+They are contiguous, so one find-replace can span both.
+
+{
+  "action": "edit",
+  "finding_id": "4bf908ece4133e63",
+  "target": "ADR-008",
+  "old_string": "- **DDR-003 (Feedback Loop Governance, forthcoming)** — downstream consumer of this ADR; owns the remedy boundary and all governance policy (§2.6). This ADR is its upstream authority; the obligation to resolve DDR-003's pointer to this record's concrete document identifier lives in DDR-003's definition of done.\n- **ADR-004 (file-driven ingestion, forthcoming)** — owns the ingestion mechanics realizing the authoritative-source ingestion control (§2.2).",
+  "new_string": "- **The forthcoming feedback-loop governance design** — downstream consumer of this ADR; owns the remedy boundary and all governance policy (§2.6). This ADR is its upstream authority; the obligation to resolve its pointer to this record's concrete document identifier lives in that design's definition of done.\n- **The forthcoming file-driven ingestion decision record** — owns the ingestion mechanics realizing the authoritative-source ingestion control (§2.2).",
+  "authority_conformed": "ADR-008-run-025-operator-rulings Ruling G — §7 forthcoming-record references replaced with subject-name forms, never concrete identifier",
+  "rationale": "Ruling G explicitly directs replacing the two §7 concrete-ID entries with the named subject-name forms; the two bullets are contiguous, allowing one exact anchor.",
+  "confidence": "high"
+}

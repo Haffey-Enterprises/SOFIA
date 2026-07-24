@@ -1,0 +1,7 @@
+{
+  "finding_id": "86a16eacd9b6a224",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §4 (confidence rollup — 'The rollup function itself → SDD') + §7 check #24 (ceiling = max supporting Evidence.confidence)",
+  "rationale": "The finding is an internal-consistency audit of a routing chain; DDR-002 §4 already fixes the ceiling invariant and routes the rollup function to the SDD, so any correction to which SDD/section the rollup routes to is dictated by the already-ratified routing — no new choice is introduced, and the finding itself reports the chain as self-consistent.",
+  "confidence": "high"
+}

@@ -1,0 +1,8 @@
+Ruling B has two conformance parts; part (1) — "add an explicit Relationship to ADR-001 §2.5 statement" — requires authoring the placement, section, heading, and prose of a new statement the ruling does not itself supply verbatim, which is designing, not deriving; multiple conforming placements/wordings exist.
+
+{
+  "action": "refuse",
+  "finding_id": "54063f5a556762f5",
+  "reason": "Ruling B directs adding an explicit 'Relationship to ADR-001 §2.5' statement recording generalization+subsumption+un-promotion-extension, but supplies no verbatim text, section, or placement; the record already states all three facts distributed across §2.2/§2.3/§7, so consolidating them into one surfaced statement requires choosing where and how to author it — multiple conforming edits exist, and no unique locus is determined.",
+  "confidence": "high"
+}

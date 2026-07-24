@@ -1,0 +1,72 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["ADR-004"],
+"locus": "§2.7 and Cross-References (ADR-008 §2.2, §5.2)",
+"claim": "§2.7 asserts the fidelity control is one 'the ground-truth-mutation governance record commits' with a 'provisional-versus-official distinction, where captured representations enter provisionally and official, consumable entry is gated behind a human fidelity verification.' ADR-008 §2.2's Authoritative-source ingestion row states the control-type as 'Pre-entry human fidelity verification of the captured representation, gating official (consumable) entry' but its 'Realization routes to' column reads 'The forthcoming ingestion decision record; the knowledge-service ingestion port' — ADR-008 commits the control-type but does not itself commit a 'provisional-versus-official' representation, which ADR-008 §5.2 phrases only as 'a provisional-versus-official distinction' that 'the ingestion path must introduce.' The claim that read-exclusion of provisional ground truth 'is a schema-level invariant ... homed in the schema's read-discipline invariant set' cites no locus in DDR-002 §7 where such a provisional read-exclusion invariant exists; DDR-002 §7's read-discipline invariants (#9 proposal-visibility, #19 conditional-consumption, retracted-node exclusion) contain no provisional-authoritative-source invariant, so the claimed schema home is unsubstantiated in the current corpus.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "DDR-002 §7 (CI-only conformance-invariant set — no provisional-source read-exclusion invariant present); ADR-008 §2.2 / §5.2 (control-type committed, provisional-vs-official routed downstream, not committed as a schema invariant)"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-004"],
+"locus": "§2.2 Schema provisioning",
+"claim": "§2.2 states 'knowledge-service ... owns a schema-provisioning capability exercised over the graph driver it already holds' and that the loader 'invokes this capability to bring an instance to schema-ready before it loads data; the service process can start and connect to an empty instance, so provisioning runs before readiness reports green (which checks that the schema is present).' SDD-001 §3.1 defines readiness check (2) as 'schema metadata loaded — the PlaneDefinition registry and constraint/validation metadata the write paths enforce against — critical, fails readiness (the gateway must not execute writes it cannot validate).' SDD-001 defines no schema-provisioning operation and no port for laying down DB constraints; §2.1 of SDD-001 enumerates owned responsibilities without a provisioning capability, and DDR-002 §7 states DB constraints are 'DB-enforced (Neo4j Enterprise)' with no cited component owning their application. ADR-004 §2.2 asserts a knowledge-service capability that no current design document establishes, and its cross-reference to SDD-001 §3.1 concedes SDD-001 'is to gain the schema-provisioning operation' — i.e., the capability the ADR relies on does not yet exist in the cited authority.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "SDD-001 §3.1 (readiness — schema-present check, no provisioning operation) and §2.1 (owned responsibilities, no schema-provisioning capability enumerated); ADR-004 §7 cross-reference concedes 'to gain the schema-provisioning operation'"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-004"],
+"locus": "§2.4 Additive by supersession",
+"claim": "§2.4 states instantiation 'is one operation whose behavior is selected per node by the graph's current state, not by a loader mode: against an empty instance every business key is new and is created; against a populated instance a changed business key supersedes its predecessor under the schema's supersession discipline.' DDR-002 §6 scopes 'Option A supersession' to 'versioned-ground-truth types (Catalog, Standards, RateCard, CostFactor, PlaneDefinition)' — not all KG node classes. Environment-plane nodes age via freshness (`observed_at`) and Operational `ObservedPattern`s distill update-in-place (DDR-002 §2.2, §2.3), which are not supersession under §6. The §2.4 claim that a changed business key 'supersedes its predecessor under the schema's supersession discipline' as the uniform instantiation behavior does not hold for the non-versioned planes the schema defines, and the ADR does not carve them out; the design as written would not apply supersession uniformly if implemented exactly against the schema's actual per-plane temporal model.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "DDR-002 §6 (Option A supersession scoped to versioned-ground-truth types only) and §2.2/§2.3 (Environment ages via freshness; Operational distills update-in-place — neither is supersession)"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["ADR-004"],
+"locus": "Cross-References — ADR-002 §5.2",
+"claim": "§2.5 and §5.3 rest RG durability across instance loss on 'instance-level backup and restore' that 'in the current development runtime ... sits with the managed graph provider,' cross-referenced to ADR-002 §5.2. ADR-002 §5.2 states the development managed-Aura runtime 'retires the self-managed operational burden — backup/restore, upgrade lifecycle, and cluster-health monitoring are the managed provider's responsibility' — this substantiates the development claim. However §2.5 asserts RG durability 'rests on instance-level backup and restore' as the RG's recovery mechanism without any cited authority establishing that managed-provider backup covers the RG specifically or that a restore preserves point-in-time RG↔KG version pinning; ADR-002 §5.2 addresses operational-burden retirement, not a committed RG-recovery guarantee. The dependency is asserted where no authority commits it.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "ADR-002 §5.2 (retires self-managed backup burden to managed provider — operational-burden scope, no committed RG-recovery / pin-preservation guarantee)"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["ADR-004"],
+"locus": "§2.7 / §6 check 6",
+"claim": "§2.7 states the fidelity gate is 'scoped to the authoritative-source class — it is not applied to the ungated observational stream or to externally-decided mirrored records.' ADR-008 §2.2's calibration table distinguishes four source classes (Promotion, Authoritative-source ingestion, Operational distillation, Environment), each with its own control-type; ADR-004 §2.7's binary framing (fidelity-gated authoritative-source vs 'ungated observational stream') collapses ADR-008's Operational-distillation class — which ADR-008 §2.2 gives a 'Substantive, evidence-visible human review' control, not 'ungated' — into the ungated bucket. For instantiation this may be within scope (distillation is a derived write, not a source-artifact load), but the ADR states the observational stream is 'ungated' without reconciling ADR-008's distillation-review control, leaving an apparent conflict with the cited governance record's own class calibration.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-004 §2.7 ('ungated observational stream') in tension with ADR-008 §2.2 (Operational distillation carries a substantive human review control, not ungated)"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-004"],
+"locus": "§2.1 / §2.2 sole-driver preservation",
+"claim": "Checked whether ADR-004's instantiation path breaches ADR-002 §2.5's sole-owner-of-the-driver principle (knowledge-service as sole Neo4j-driver holder). The design holds: §2.1 routes all instantiation data through the ingestion port with no direct-driver path, §2.2 holds schema provisioning inside knowledge-service over the driver it already holds, §2.8 makes the loader neither author nor executor (relay only), and §4.1/§4.2 explicitly reject the two bypass alternatives. No path in the design grants a second component a graph driver; the sole-driver line is preserved for both data-definition and data. The claimed conformance to ADR-002 §2.5 is substantiated in the text.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "ADR-002 §2.5 (knowledge-service sole holder of the Neo4j driver / single graph-access boundary)"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-004"],
+"locus": "§2.5 / §2.4 RG-preservation by construction",
+"claim": "Attacked the claim that instantiation cannot silently lose Reasoning-Graph state. The design withstands it: §2.4 removes any destructive-reset mode from the instantiation path, §2.5 scopes instantiation writes to the KG only and forbids the path from writing, reconstructing, or discarding RG state, and it honestly names the RG as not source-recoverable (recovery resting on instance-level backup, not the loader). This is internally consistent with ADR-001 §2.2's reasoning-capture invariant and DDR-002 §4's RG write-authority (ASA-authored, gateway-mediated) — instantiation asserts no authorship over RG nodes. The no-silent-RG-loss property is a structural consequence of the stated design, not an unsupported assertion.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "ADR-001 §2.2 (reasoning-capture invariant); DDR-002 §4 (RG write-authority — ASA-authored, not instantiation-written)"
+}
+}
+]

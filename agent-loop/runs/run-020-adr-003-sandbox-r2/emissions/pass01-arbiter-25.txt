@@ -1,0 +1,7 @@
+{
+  "finding_id": "d13f6292cfa176e5",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §2.4 — (:Governance:Decision:PromotionDecision) carries origin_mechanism: authored (human EA, SOFIA-issued, no source_record_ref); origin_mechanism: ingested is the GateDecision mirrored-external case",
+  "rationale": "ADR-003's retraction rides an EA-gated reversing CandidatePromotion approved by a PromotionDecision, and DDR-002 §2.4 already fixes that node-class's provenance value as `authored`; the fix (change `ingested` to `authored`) is dictated by the owning schema with no choice introduced.",
+  "confidence": "high"
+}

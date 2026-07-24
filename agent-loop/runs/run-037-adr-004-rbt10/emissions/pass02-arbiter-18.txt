@@ -1,0 +1,7 @@
+{
+  "finding_id": "8a533b566ba22861",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The provisioning-before-readiness window exposes an unratified gap: how a not-ready-but-provisioning service surfaces its API is unruled, and the D2 provisioning-operation/readiness-ordering home is a routed-forthcoming design, not settled authority.",
+  "confidence": "high"
+}

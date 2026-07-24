@@ -1,0 +1,7 @@
+{
+  "finding_id": "d5a165060ccda597",
+  "classification": "resolvable",
+  "authority_locus": "ADR-002 §5.2 (managed-Aura runtime retires self-managed backup/restore burden — managed provider's responsibility)",
+  "rationale": "Finding self-attests consistency; ADR-002 §5.2 dictates the backup-responsibility statement, so any conforming fix is determined, not chosen.",
+  "confidence": "high"
+}

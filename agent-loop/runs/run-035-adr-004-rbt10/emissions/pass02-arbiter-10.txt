@@ -1,0 +1,1 @@
+{"finding_id":"d97457455826cc81","classification":"decision-bearing","authority_locus":null,"rationale":"Finding targets ADR-004, absent from the ratified corpus; and no cited authority commits RG-recovery or version-pin-preservation at the asserted grain, so the fix requires a choice authority is silent on.","confidence":"high"}

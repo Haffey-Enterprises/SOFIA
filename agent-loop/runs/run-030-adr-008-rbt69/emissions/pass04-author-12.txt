@@ -1,0 +1,10 @@
+{
+  "action": "edit",
+  "finding_id": "bc334c81930de1de",
+  "target": "ADR-008",
+  "old_string": " | Form built (DDR-004); constants contested/unvalidated (n=0) — the inherited-confidence derivation ruling's aging basis and its §6 calibration governance |",
+  "new_string": " | The inherited-confidence derivation ruling's aging basis and its §6 calibration governance (DDR-004) |",
+  "authority_conformed": "Ruling D + DDR-004 §1/§3/§6, per the column's committed function (routing destination) uniform across the other four rows",
+  "rationale": "Ruling D names DDR-004 §6 calibration governance as the Environment control's routing destination; the column commits a destination per-row, so the status-label content is replaced with the destination it names.",
+  "confidence": "medium"
+}

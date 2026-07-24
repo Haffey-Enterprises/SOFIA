@@ -1,0 +1,1 @@
+{"finding_id":"ffd66bd2bdce4b97","classification":"resolvable","authority_locus":"ADR-008-run-025-operator-rulings Ruling D (relabel §2.2 status to 'form built (DDR-004); constants contested/unvalidated (n=0)')","rationale":"Operator Ruling D directly dictates the status relabel for this exact Environment 'Built' overstatement, determining the fix.","confidence":"high"}

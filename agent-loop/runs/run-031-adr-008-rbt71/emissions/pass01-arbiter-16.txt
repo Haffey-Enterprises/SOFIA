@@ -1,0 +1,1 @@
+{"finding_id":"ddf2fe59d9215ca7","classification":"resolvable","authority_locus":"ADR-008-run-025-operator-rulings Ruling E (earned tense: state candidate-ObservedPattern shape as forthcoming/additive, not present schema constraint)","rationale":"Operator Ruling E dictates the exact fix — restate the shape in forthcoming tense; no unmade choice remains.","confidence":"high"}

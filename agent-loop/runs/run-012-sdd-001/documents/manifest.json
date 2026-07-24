@@ -1,0 +1,16 @@
+{
+  "run_id": "run-012-sdd-001",
+  "sofia_head_sha": "8e6750cd140da0f9a5338349d91df7e9d3b55298",
+  "files": [
+    {
+      "doc_id": "SDD-001",
+      "snapshot_path": "documents/SDD-001-knowledge-service.md",
+      "origin": {
+        "source": "sofia-repo",
+        "canonical_path": "docs/sdd/SDD-001-knowledge-service.md"
+      },
+      "retrieved": "2026-07-09",
+      "sha256": "0e3375b1f78afb3b996c20d20798793734506a7e6127cb76872b887df2971fa7"
+    }
+  ]
+}

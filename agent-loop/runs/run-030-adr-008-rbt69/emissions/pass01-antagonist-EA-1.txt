@@ -1,0 +1,72 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References — forthcoming-record references by concrete identifier",
+    "claim": "The Cross-References list forward-references two unauthored records by concrete identifier — 'DDR-003 (Feedback Loop Governance, forthcoming)' and 'ADR-004 (file-driven ingestion, forthcoming)' — while the ledger substrate (R30-reboot ruling G) directs that forward references to unauthored records be subject-named only, never by concrete identifier, and while the body itself uses the subject-named form elsewhere ('the forthcoming feedback-loop governance design', 'the forthcoming ingestion decision record'). This mixed practice commits the ADR to concrete downstream identifiers before those records exist, creating a numbering-binding the operator's own governing intent reserves for the downstream record's landing; it pulls against the record-integrity posture the corpus enforces at its seam with the ADR ladder (ADR-003–007 already reserved by standing tickets, so 'ADR-004' as file-driven ingestion is itself a contested allocation).",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §7 (concrete IDs 'DDR-003'/'ADR-004') vs. ADR-008 body §2.2/§2.6 (subject-named forms) and Item 1 of the triage-001 charter (ADR ladder ADR-003–007 fully reserved by standing tickets)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 — Environment control-type: 'reliability-weighting at retrieval'",
+    "claim": "The Environment control-type is stated as 'per-policy reliability-weighting at retrieval', but the mechanism that realizes it (the inherited-confidence derivation ruling) fixes the weight as freshness-decayed confidence derived at Evidence capture and frozen — explicitly 'never recomputed at read'. Committing this ADR's principle to a 'weighting at retrieval' shape misdescribes the built posture it depends on and mis-times the accountability control: the human-accountable act for this class is the calibration of the aging constants by amendment, applied at capture time, not a retrieval-time weighting. Anchoring a platform-principle commitment to an integration posture the ratified substrate contradicts is a timing/integration defect at ADR altitude.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 Environment row ('reliability-weighting at retrieval') vs. DDR-004 §1/§3 (aging confidence derived at Evidence capture and frozen, 'never recomputed at read')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Operational distillation row and §5.2 — candidate-ObservedPattern shape presented as an existing constraint",
+    "claim": "§5.2 states distillation 'must pass a substantive, evidence-visible human review before it is consumable track-record, realized through a candidate-`ObservedPattern` shape excluded from ground-truth traversal until approved'. The candidate-`ObservedPattern` shape does not exist in the ratified schema — the graph-schema ruling records the distillation checkpoint as 'explicitly un-decided' and its `CandidatePromotion` class does not cover this case. Stating the realization in present/mandatory voice commits the platform to a schema constraint that is forthcoming/additive downstream, not a present posture — a premature commitment that deserves the earned-conditional tense.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §5.2 (candidate-`ObservedPattern` shape 'realized through ... excluded from ground-truth traversal') vs. DDR-002 §2.3 (distillation-write checkpoint posture 'explicitly un-decided'; CandidatePromotion does not cover distillation)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.3 — un-promotion 'same ... control as promotion'",
+    "claim": "§2.3 asserts un-promotion is governed by 'the same per-write, EA-gated, human-accountable control as promotion itself', naming the built retraction shape (retraction-gated invariant) as its instance. But that built instance traces to *an* approving decision, not the *governing* one, so it does not supply promotion's governing-verdict guarantee — a divergence §5.3 itself concedes. The unqualified 'same control' claim in §2.3 stands against the concession in §5.3 within the same record: the authority is homed, but the control is not yet equivalent to promotion's, and the principle-layer claim overstates the parity.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.3 ('same per-write, EA-gated ... control as promotion itself') vs. ADR-008 §5.3 (retraction invariant 'traces to an approving decision, not the governing one ... no standing detection analogue yet')"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Environment row 'Realization routes to' — status label",
+    "claim": "The Environment row's 'Realization routes to' cell reads 'Built — the inherited-confidence derivation ruling's aging basis', identical in status-weight to the Promotion row's 'Built'. Per the empirical-floor discipline the substrate applies to that ruling, the aging *form* is built but its *constants* are contested and unvalidated at zero capture traffic; labeling it a flat 'Built' overstates settledness for a control-type whose human-accountable act is precisely the (not-yet-performed) calibration of those constants.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 Environment row ('Built') vs. DDR-004 §2/§6 (Environment base/τ contested, unvalidated, n=0 capture traffic; calibration is ongoing governance)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2 Decision + §1 Context — relationship to ADR-001 §2.5 and Supersedes posture",
+    "claim": "Attacked the integration of the new general authority with ADR-001 §2.5's narrow promotion gate: whether ADR-008 should supersede §2.5 or leave a conflicting dual authority. It held — the record consistently frames §2.5 as the narrow sub-case ADR-008 generalizes and homes ('cited, not superseded'), scopes itself to ground-truth mutation while excluding RG capture (§2.1), and homes un-promotion as the authority §2.5 does not reach. 'Supersedes: None' is the correct posture for a new principle that subsumes rather than replaces, and the dependency direction (downstream records cite this ADR) is coherent with the substrate.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §1/§2.1/§2.3 vs. ADR-001 §2.5 (EA-gated promotion of SOFIA's own reasoning) — generalization/subsumption/un-promotion-extension is consistent, no authority conflict"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.6 + §5 — ADR/DDR-003 governance boundary",
+    "claim": "Attacked whether the ADR over-reaches into governance policy that deserves its own record first (the remedy boundary, thresholds, cadence). It held — §2.6 cleanly reserves the remedy boundary (supersede vs. retract), criteria, thresholds, cadence, retention, and multi-condition composition to the forthcoming feedback-loop governance design, and argues correctly that the accountability principle holds identically whichever remedy applies, so the choice is policy not principle. The record commits control-*types* and not calibrations, keeping the altitude line clean against the downstream ruling it is upstream of.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.6/§5.3 (remedy boundary and policy routed to feedback-loop governance design) vs. DDR-002 §2.4 (remedy boundary already routed downstream) — altitude line consistent, no premature policy commitment"
+    }
+  }
+]

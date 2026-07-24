@@ -1,0 +1,7 @@
+{
+  "finding_id": "7fce3fe0e14ef1f3",
+  "classification": "resolvable",
+  "authority_locus": "run-036 Docket Rulings D2 (schema-provisioning obligation home: name home and trigger in §2.2/§5.3) + author-decision-record SKILL ('an amendment that adds a ruling updates the Decision enumeration')",
+  "rationale": "Stated intent D2 already rules where the provisioning obligation is homed and surfaced; the enumeration-update convention determines the fix.",
+  "confidence": "high"
+}

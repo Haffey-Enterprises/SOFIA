@@ -1,0 +1,16 @@
+{
+  "run_id": "run-034-adr-003-rbt9",
+  "sofia_head_sha": "d7eb329985944154e31d5f9de60fa85095f2eccf",
+  "files": [
+    {
+      "doc_id": "ADR-003",
+      "snapshot_path": "documents/ADR-003-platform-patterns.md",
+      "origin": {
+        "source": "sofia-repo",
+        "canonical_path": "docs/adr/ADR-003-platform-patterns.md"
+      },
+      "retrieved": "2026-07-19",
+      "sha256": "9120d921fd1224b7520d427109143d45580b44eadb4ff794ee9ce0b86f0f486d"
+    }
+  ]
+}

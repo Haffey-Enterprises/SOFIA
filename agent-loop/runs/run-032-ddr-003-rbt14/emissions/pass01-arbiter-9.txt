@@ -1,0 +1,1 @@
+{"finding_id":"4a26fdbaa3e76d4a","classification":"decision-bearing","authority_locus":null,"rationale":"ADR-008 §2.2 fixes distillation control-type but not whether pre-review writes are barred vs permitted-pending-checkpoint; the schema calls it un-decided, so reconciling the two texts requires ruling the interim posture, a choice no cited authority makes.","confidence":"high"}

@@ -1,0 +1,8 @@
+The §2.3 text already contains the qualification Ruling F requires ("traces to *an* approving decision, not the *governing* one, so it does not yet supply promotion's governing-verdict guarantee"), but the opening clause still reads "the same per-write, EA-gated, human-accountable control *class*". The finding's claim targets the unqualified "same control" assertion; the ruling says qualify it to match the §5.3 concession. However, the text already reads "control *class*" (not "control"), which is itself the qualification distinguishing class-parity from instance-parity, and the sentence already carries the full §5.3 concession inline. Whether further edit is warranted, and what exact words, is not uniquely determined.
+
+{
+  "action": "refuse",
+  "finding_id": "964a9fe1cbfda9a3",
+  "reason": "The §2.3 passage already reads 'control *class*' (not bare 'same control') and already carries the full §5.3 concession inline ('traces to an approving decision, not the governing one ... governing-verdict detection analogue ... the named follow-up (§5.3)'). Ruling F requires qualification matching the §5.3 concession, which the text already supplies; it does not specify any further exact wording, so no unique conforming edit is determined.",
+  "confidence": "medium"
+}

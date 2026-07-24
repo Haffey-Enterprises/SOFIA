@@ -1,0 +1,8 @@
+The two §7 bullets each carry additional prose beyond the identifier. Ruling G determines the identifier-to-subject-name replacement but the DDR-003 bullet also contains a sentence referencing "DDR-003's pointer to this record's concrete document identifier" that would require rewriting to conform, which is not uniquely determined. However, the finding's locus is the two identifier labels specifically. I address each replaceable identifier label separately; but the finding names both in one locus and Ruling G specifies both replacements verbatim, so I conform the two label strings.
+
+{
+  "action": "refuse",
+  "finding_id": "ca98fb6db279def8",
+  "reason": "Ruling G determines replacing the two bold identifier labels with subject-name forms, but the DDR-003 bullet's trailing sentence ('the obligation to resolve DDR-003's pointer to this record's concrete document identifier lives in DDR-003's definition of done') also names DDR-003 by concrete identifier and describes a DDR-003-directional pointer resolution; conforming it fully requires a rewrite the ruling does not uniquely specify, and a partial label-only edit would leave the same identifier the ruling bars still present in the same bullet, making no single minimal edit uniquely determined for this locus.",
+  "confidence": "medium"
+}

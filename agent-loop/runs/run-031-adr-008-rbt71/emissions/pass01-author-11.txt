@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "150a22c29798f44d",
+  "reason": "The named rule (forthcoming records subject-named, never numbered) would resolve the inconsistency by de-numbering the §7 'ADR-004' anchor, but §7's entry has a specific list-anchor form '**ADR-004 (file-driven ingestion, forthcoming)**' and the DDR-003 sibling entry already carries a numbered forthcoming reference; the rule as stated does not uniquely determine whether §2.2's subject-name is bound to the number or §7's number is stripped, and picking either edit resolves a conflict the authority leaves open.",
+  "confidence": "medium"
+}

@@ -1,0 +1,1 @@
+{"finding_id":"3167c7068cc77e96","classification":"decision-bearing","authority_locus":null,"rationale":"ADR-008 §2.2 fixes distillation's control-type but routes mechanism/existence downstream; whether a conforming distillation write path exists yet is the un-decided checkpoint posture no authority resolves.","confidence":"medium"}

@@ -1,0 +1,8 @@
+The finding targets both the §2.2 table row and the prose. The table row already conforms (Ruling D fully applied there). The prose "a per-policy reliability weighting" retains the mis-timed characterization; the ruling requires "drop 'reliability-weighting at retrieval'; state capture-time-frozen aging." But the prose phrasing "a per-policy reliability weighting" is not "at retrieval." Let me check what needs conforming. The table row is already conformed. The prose still says "per-policy reliability weighting" which the ruling does not itself explicitly say to change beyond the "at retrieval" characterization. The ruling names two conformance items, both of which are already applied to the table. The prose remains uncorrected re: capture-time framing.
+
+{
+  "action": "refuse",
+  "finding_id": "0a781b91fcf5c061",
+  "reason": "The §2.2 table row already fully conforms to Ruling D (capture-time-frozen aging, §6 governance, relabeled status). The finding also targets the §2.2 prose, whose 'per-policy reliability weighting: the plane ages by construction' does not contain the offending 'at retrieval' string and is not the specific text Ruling D directs to change; whether/how to further amend the prose's timing framing is not uniquely determined by the ruling, which enumerates only the two edits already present in the table.",
+  "confidence": "medium"
+}

@@ -1,0 +1,7 @@
+{
+  "finding_id": "f29b52c117337a46",
+  "classification": "resolvable",
+  "authority_locus": "ADR-002 §2.6 — the general write-authority principle: 'The sole-owner gateway (§2.5) is the sole executor and enforcement boundary of all graph writes; it is never itself the authoring authority.'",
+  "rationale": "ADR-002 §2.6 is a higher-altitude, already-ratified principle that categorically prohibits the gateway from being the authoring authority; ADR-003 §2.4's assignment of authoring authority to the gateway directly contradicts it, and conforming to the ratified rule (gateway executes, some named non-gateway component authors) is the determined fix — no new choice among conforming options is introduced by the coherence requirement itself.",
+  "confidence": "high"
+}

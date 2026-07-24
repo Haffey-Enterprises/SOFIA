@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "f6c2434043a8b4cd",
+  "reason": "The named authority is an operator Ruling D compound instruction (drop the phrase, restate capture-time-frozen aging + §6 governance, AND relabel §2.2 status to 'form built; constants contested (n=0)'), but the current document contains no §2.2 status label to relabel and the ruling specifies no exact placement or wording for the substituted aging/governance text; conforming would require authoring new phrasing and choosing where to insert a status relabel — unratified drafting choices, not a determined single edit.",
+  "confidence": "medium"
+}

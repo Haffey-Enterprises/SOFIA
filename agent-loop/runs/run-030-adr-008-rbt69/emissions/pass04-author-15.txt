@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "a43352f504e161c7",
+  "reason": "The cited body-integrity rules ('tense is earned by enforcement' / 'status claims earned by the trail') establish that a PROPOSED record may not assert present-standing authority, but they do not uniquely determine the conforming edit: the Context describes a real dependency-and-gap state, and multiple conforming rewordings exist (qualify the blockage as pending-acceptance, reframe the dependency as prospective, or condition the authority-homing) — choosing among them is unratified authorial design, not derivation.",
+  "confidence": "medium"
+}

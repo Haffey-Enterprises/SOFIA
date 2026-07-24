@@ -1,0 +1,72 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References — forthcoming-record references and the ADR-004/DDR-004 numbering ambiguity",
+    "claim": "The body and cross-references cite unauthored forthcoming records by concrete identifier — '**DDR-003 (Feedback Loop Governance, forthcoming)**' and '**ADR-004 (file-driven ingestion, forthcoming)**' — in violation of the operator ruling (Ruling G) and the author-decision-record body-integrity forward-reference convention, which require forthcoming, unauthored records to be named by subject only ('the forthcoming feedback-loop governance design'; 'the forthcoming file-driven ingestion decision record'). §2.2's realization-route column and §2.6 already use the subject-name form correctly, so the document is internally inconsistent about which convention it follows. The concrete 'ADR-004' identifier for file-driven ingestion also collides with the existing DDR-004 (Inherited-Confidence Derivation) cited two lines above, reintroducing exactly the numbering ambiguity the subject-name form removes.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §7 (concrete 'DDR-003 (forthcoming)' / 'ADR-004 (file-driven ingestion, forthcoming)') in conflict with ADR-008 §2.2/§2.6 (subject-name form 'the forthcoming feedback-loop governance design' / 'the forthcoming file-driven ingestion decision record')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 per-source-class calibration table — Environment 'Realization routes to' cell vs. the Environment prose and Ruling D",
+    "claim": "The Environment row's calibration is stated as 'reliability-**weighting at retrieval**' (§2.2 table control-type). Per the operator ruling (Ruling D) and DDR-004, the Environment reliability control is capture-time-frozen, not retrieval-time: the aging derivation (base × exp(−Δt/τ)) is computed at Evidence capture and frozen, explicitly 'never recomputed at read' (DDR-004 §1/§3), and is merely consumed at reasoning time. The §2.2 Environment prose is even more internally contradictory — it says the plane 'ages by construction' (a capture-time-frozen basis) while the same row's control-type says the weighting happens 'at retrieval.' The phrase 'weighting at retrieval' describes a mechanism DDR-004 does not supply.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 Environment control-type 'per-policy reliability-weighting at retrieval' in conflict with DDR-004 §1/§3 (capture-time-derived, frozen, 'never recomputed at read') and with ADR-008 §2.2 Environment prose 'the plane ages by construction'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Environment row — 'Built' realization status vs. the empirical-floor concession in §5.3",
+    "claim": "The §2.2 table marks the Environment control 'Built — the inherited-confidence derivation ruling's aging basis.' Per the operator ruling (Ruling D) this should read 'form built (DDR-004); constants contested/unvalidated (n=0),' and the document's own §5.3 Risk concedes exactly this — 'calibration constants ... are held contested and config-surfaced.' The bare 'Built' status in §2.2 therefore overstates the maturity of the Environment control relative to the record's own §5.3 statement and the DDR-004 authority it cites, which holds base/τ as contested unvalidated defaults at n=0 (DDR-004 §2/§6).",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 Environment realization 'Built' in conflict with ADR-008 §5.3 ('calibration constants ... held contested') and DDR-004 §2/§6 (base/τ contested, unvalidated, n=0)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§5.2 Constraints Imposed — candidate-ObservedPattern shape stated as present schema mechanism",
+    "claim": "§5.2 describes Operational distillation as 'realized through a candidate-`ObservedPattern` shape excluded from ground-truth traversal until approved.' Per the operator ruling (Ruling E) and DDR-002 §2.3, this shape does not exist in the ratified schema — DDR-002 §2.3 leaves the distillation checkpoint 'explicitly un-decided,' and the promotion-boundary `CandidatePromotion` class does not cover it; the candidate-`ObservedPattern` shape is the additive shape a downstream design introduces (routed to the feedback-loop governance design plus a future DDR-002 amendment). The constraint clause reads as a present schema mechanism rather than a forthcoming/additive one. §5.2 does append '— a downstream governance design and an additive schema shape,' partially hedging it, but the leading 'realized through' still asserts present realization; earned tense requires the shape be stated as forthcoming.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §5.2 ('realized through a candidate-ObservedPattern shape excluded from ground-truth traversal until approved') in conflict with DDR-002 §2.3 (distillation checkpoint 'explicitly un-decided'; no schema shape present) — the shape is forthcoming/additive, not present"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "§2.3 Un-promotion authority — 'the same ... control as promotion' vs. §5.3 detection-gap concession",
+    "claim": "§2.3 states un-promotion is 'governed by the same per-write, EA-gated, human-accountable control as promotion itself,' citing the built retraction shape (DDR-002 §5, retraction-gated invariant) as its instance. Per the operator ruling (Ruling F), the built retraction instance (DDR-002 §7 #21) traces to *an* approving decision, not the *governing* one, so it does not yet supply promotion's governing-verdict guarantee (#15); the 'same control' claim is unqualified at §2.3 while §5.3 correctly concedes the executed-retraction detection analogue is a named follow-up. §2.3's 'same' claim overstates parity relative to the record's own §5.3 concession and the DDR-002 #21-vs-#15 asymmetry.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.3 ('the same per-write, EA-gated ... control as promotion itself') in conflict with ADR-008 §5.3 (executed-retraction detection analogue is a named follow-up) and DDR-002 §7 #21 vs #15 (retraction traces to an approving, not the governing, decision)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.1 / §2.3 / §7 — un-promotion authority homing against ADR-001 §2.5's scope",
+    "claim": "Checked the load-bearing claim that ADR-008 homes an authority ADR-001 §2.5 does not carry: §2.3 asserts §2.5 'authorizes promotion only and does not stretch to its reversal,' and §7 states 'Supersedes: None.' Fetch-verified against ADR-001 §2.5, which authorizes only EA-gated promotion of SOFIA's own reasoning into encoded knowledge and is silent on un-promotion; ADR-008 correctly generalizes/subsumes rather than contradicts §2.5, so no supersession is claimed. The relationship holds and is consistent with the Ruling B disposition (record the generalization + un-promotion extension; Supersedes: None stands).",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.1/§2.3/§7 checked against ADR-001 §2.5 (EA-gated promotion of SOFIA's own reasoning; silent on un-promotion) — generalization/subsumption, no supersession, consistent"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.1 scope exclusion — RG capture excluded from ground-truth mutation governance",
+    "claim": "Checked the boundary claim that the accountability invariant is scoped to KG authoritative ground truth and excludes Reasoning-Graph capture (§2.1: 'RG capture is not ground truth — it is captured judgment ... outside this record's scope'). Verified against ADR-002 §2.6 (RG write-authority: ASA authors ReasoningProgress, gateway executes) and ADR-001 §2.2 (capture invariant / reasoning-capture): the RG is governed by the reasoning-capture invariant and its write-authority assignment, not by ground-truth mutation controls, so ADR-008's exclusion does not collide with the RG's own governance and does not leave RG writes doubly-governed or ungoverned. The scope line holds.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.1 (RG capture excluded) checked against ADR-002 §2.6 (RG write-authority) and ADR-001 §2.2 (reasoning-capture invariant) — scope boundary consistent, no double-governance or gap"
+    }
+  }
+]

@@ -1,0 +1,1 @@
+{"finding_id":"e1413b55d1a05a40","classification":"decision-bearing","authority_locus":null,"rationale":"ADR-004 is not in the ratified corpus provided and no authority disambiguates whether the schema-provisioning obligation lands as an SDD amendment, a forward item, or elsewhere.","confidence":"high"}

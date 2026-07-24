@@ -1,0 +1,232 @@
+{
+ "ffd66bd2bdce4b97": [
+  "NOOP",
+  "-",
+  "Ruling D relabel; defect real at p1 raise (pristine had Built label); fixed mid-pass by edit 364b"
+ ],
+ "9024fba245cbf6ca": [
+  "NOOP",
+  "-",
+  "Ruling D at-retrieval; real at p1 raise; fixed mid-pass (364b/a227)"
+ ],
+ "39dab40a260f05f8": [
+  "NOOP",
+  "-",
+  "Ruling D relabel; real at p1 raise; fixed mid-pass"
+ ],
+ "964a9fe1cbfda9a3": [
+  "NOOP",
+  "-",
+  "Ruling F qualification; pristine lacked control-class + concession; added mid-pass by edit 1abb"
+ ],
+ "80b9808b87c5d223": [
+  "NOOP",
+  "-",
+  "Ruling G \u00a77 identifiers; real at p1 raise; fixed mid-pass by edit 4bf9"
+ ],
+ "450de2e072ac2022": [
+  "NOOP",
+  "-",
+  "Ruling F; \u00a72.3 qualified mid-pass by 1abb; residual \u00a77 locus not reached by Ruling F (arbiter authority misassignment noted)"
+ ],
+ "144d1f3e51b25557": [
+  "NOOP",
+  "-",
+  "Ruling D multi-locus; row+bullet fixed mid-pass (364b/c829); residue is phrasing"
+ ],
+ "a20309f94307fcad": [
+  "NOOP",
+  "-",
+  "Ruling E tense; three Ruling-E sibling edits landed mid-pass; residue authorial phrasing"
+ ],
+ "e5c5c45b33bd3ee1": [
+  "NOOP",
+  "-",
+  "Env cell inline-status; real at p2 raise; reshaped mid-pass by edit 9b66"
+ ],
+ "5fea9fe44b115986": [
+  "NOOP",
+  "-",
+  "Env cell; real at p3 raise; reshaped mid-pass by edit 87d6"
+ ],
+ "4f1c656b4b79177f": [
+  "NOOP",
+  "-",
+  "Env cell status-in-destination-column; real at p4 raise; fixed mid-pass by edit bc33"
+ ],
+ "5bf632100d3945c8": [
+  "STALE",
+  "-",
+  "Ruling F re-flag at p2 raise; \u00a72.3 already qualified at p2 START (1abb landed p1)"
+ ],
+ "66ef5ab4eb01cae2": [
+  "STALE",
+  "-",
+  "Ruling D relabel demanded at p3 raise; no Built label existed at p3 START (fixed p1)"
+ ],
+ "8dbbe46a59210885": [
+  "STALE",
+  "-",
+  "\u00a71 Context/status flag; cited authority ENDORSES existing text (non-defect)"
+ ],
+ "1a41a7fcb577b7c4": [
+  "RELIT",
+  "-",
+  "provenance-survival timing; ratified by RBT-59 Item 3 (commit now + named follow-up)"
+ ],
+ "f826dd16cdda2856": [
+  "RELIT",
+  "-",
+  "same ratified timing, re-raised p3"
+ ],
+ "4d63f1bfc0b6fa0b": [
+  "RELIT",
+  "-",
+  "same ratified timing, re-raised p4 (LAA)"
+ ],
+ "23a0feefd380c5bd": [
+  "RELIT",
+  "-",
+  "same ratified timing, re-raised p4 (EA)"
+ ],
+ "60f8dfe4b75fbed5": [
+  "TOOLING",
+  "-",
+  "Ruling G supplies exact replacements at 2 loci; single-find-replace limit forced escalation"
+ ],
+ "c96fac369e9a2a0e": [
+  "GENUINE",
+  "G-anchor",
+  "\u00a77 re-anchoring of ID-bound pointer sentence under subject-name rule"
+ ],
+ "21d4038c207cb4f6": [
+  "GENUINE",
+  "B-stmt",
+  "Ruling B: relationship-statement placement/wording"
+ ],
+ "316458c47d9af59e": [
+  "GENUINE",
+  "B-stmt",
+  "same decision, coherence hat"
+ ],
+ "54063f5a556762f5": [
+  "GENUINE",
+  "B-stmt",
+  "same decision, p2 LAA"
+ ],
+ "b38d64ba4c9ad7dc": [
+  "GENUINE",
+  "tense-5.2",
+  "\u00a75.2 distillation-bullet tense; multiple conforming rewrites"
+ ],
+ "6e8c4a6f1712f37c": [
+  "GENUINE",
+  "subj-name",
+  "which ingestion-record subject-name is canonical"
+ ],
+ "663c6d40c8803ce4": [
+  "GENUINE",
+  "subj-name",
+  "same decision p3 LAA"
+ ],
+ "0d911e824ee6f714": [
+  "GENUINE",
+  "subj-name",
+  "same decision p3 SA"
+ ],
+ "22874c7bd2040614": [
+  "GENUINE",
+  "subj-name",
+  "same decision p3 EA"
+ ],
+ "f6824f889db47582": [
+  "GENUINE",
+  "subj-name",
+  "same decision p3 coherence"
+ ],
+ "fa7b5013eb418401": [
+  "GENUINE",
+  "subj-name",
+  "same decision p4 LAA"
+ ],
+ "81f51ff9913d09b2": [
+  "GENUINE",
+  "subj-name",
+  "same decision p4 SA"
+ ],
+ "287f2bb428def037": [
+  "GENUINE",
+  "subj-name",
+  "same decision p4 coherence"
+ ],
+ "e34105868105294e": [
+  "GENUINE",
+  "n0-posture",
+  "Environment presented as satisfying invariant at n=0; posture judgment"
+ ],
+ "6a15b249a94b78d9": [
+  "GENUINE",
+  "n0-posture",
+  "same family p4 EA"
+ ],
+ "10905075422e560c": [
+  "GENUINE",
+  "n0-posture",
+  "same family p4 SA (disclosure of unperformable calibration act)"
+ ],
+ "f10615f773f71477": [
+  "GENUINE",
+  "tense-1",
+  "same decision p3 LAA"
+ ],
+ "59149a63de782f16": [
+  "GENUINE",
+  "tense-1",
+  "same decision p3 EA"
+ ],
+ "a43352f504e161c7": [
+  "GENUINE",
+  "tense-1",
+  "same decision p4 coherence"
+ ],
+ "4dc432e352adf86e": [
+  "GENUINE",
+  "perwrite-batch",
+  "per-write label vs batch PromotionDecision; label choice unratified"
+ ],
+ "6e36b669568c9d03": [
+  "GENUINE",
+  "perwrite-batch",
+  "same decision p3 coherence"
+ ],
+ "3c1f040b66402fdb": [
+  "GENUINE",
+  "perwrite-batch",
+  "same decision p4 LAA"
+ ],
+ "313683254e7c0205": [
+  "GENUINE",
+  "D-vs-column",
+  "Ruling D status label vs uniform-column contract \u2014 the churn conflict"
+ ],
+ "a9058eded6e1656c": [
+  "GENUINE",
+  "D-vs-column",
+  "same conflict p4 LAA (author later performed the refused conversion for sibling bc33)"
+ ],
+ "875a7ed223f27345": [
+  "GENUINE",
+  "role-name",
+  "which role holds per-policy Environment accountability; authority silent"
+ ],
+ "c8d45a0f66151ebf": [
+  "GENUINE",
+  "ddr2-22",
+  "DDR-002 \u00a77 #22 listing precision; corrective text unfixed"
+ ],
+ "705e12a9be414d6a": [
+  "GENUINE",
+  "tense-1",
+  "\u00a71 Context earned-tense; multiple conforming rewrites"
+ ]
+}

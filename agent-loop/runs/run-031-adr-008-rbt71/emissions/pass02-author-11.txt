@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "123fb4556ab69f89",
+  "reason": "The named authority establishes THAT §2.4's withdrawal/never-delete and revalidation rulings are ratified decision-bearing commitments, but it does not determine WHERE or HOW to surface them in the §2 enumeration — whether to amend the §2 preamble sentence, add a bullet list, extend the §2.1 lifecycle sentence, or otherwise index them. The body-integrity rule ('an amendment that adds a ruling updates the Decision enumeration') states an obligation but supplies no unique conforming text, and these are pre-existing rulings the preamble already gestures at ('control-type per class'), so multiple conforming edits exist. Choosing among them is unratified design.",
+  "confidence": "high"
+}

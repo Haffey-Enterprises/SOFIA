@@ -1,0 +1,7 @@
+{
+  "finding_id": "547f04e8a5209ae6",
+  "classification": "resolvable",
+  "authority_locus": "run-036-docket-rulings D5 (ratified): re-word to cite ADR-008's actual boundary language, fetch-verified, not as an implied fifth class",
+  "rationale": "Ratified operator ruling D5 determines the exact fix (re-word to cite ADR-008's real boundary language); no unmade choice remains.",
+  "confidence": "high"
+}

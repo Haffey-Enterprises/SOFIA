@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "be163e6772f59f53",
+  "reason": "The named authority ('an amendment that adds a ruling updates the Decision enumeration') establishes that the commitment must be surfaced as an enumerated ruling, but §2 is an unstructured prose block with no numbered sub-decision list, and §5.2 is a bullet list — so the authority does not uniquely determine where or how to enumerate (add a §2 bullet, add a §5.2 constraint bullet, or both, and with what wording); choosing among these conforming placements is an unratified design choice.",
+  "confidence": "medium"
+}

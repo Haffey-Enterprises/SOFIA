@@ -1,0 +1,1 @@
+{"finding_id":"35872de101b4023f","classification":"decision-bearing","authority_locus":null,"rationale":"Whether §2.4's per-stage capture-deferral provision extends to an intra-run coordination component is a scope question no cited authority resolves; picking the right routing is a choice.","confidence":"medium"}

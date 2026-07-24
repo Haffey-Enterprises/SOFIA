@@ -1,0 +1,7 @@
+{
+  "finding_id": "cda1b780e29eee48",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "How the SDD's BUILD-leg acceptance gate should be scoped against an amendable invariant universe (frozen enumeration at authoring vs. set-generic build-time derivation, and how forthcoming DDR-002 amendments bear on it) is a choice no cited authority disambiguates; the charter (§T-15) states the safety-critical-tier binding as a conformance requirement but is silent on whether the required-flip set may be defined generically against a moving universe, so resolving the finding requires selecting an acceptance-scope posture rather than conforming to a determined one.",
+  "confidence": "high"
+}

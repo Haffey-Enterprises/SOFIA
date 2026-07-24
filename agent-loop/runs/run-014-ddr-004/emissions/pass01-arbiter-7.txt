@@ -1,0 +1,7 @@
+{
+  "finding_id": "3ed68605a12fe318",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "Resolving the internal tension requires an unmade choice: fix Evidence.observed_at's semantic (which DDR-002 §4 leaves unstated) as the capture-instant persistence mechanism, or adopt the derived-at field fallback, or restate §3's Reconstructible as contingent rather than holding. The deliberation record explicitly routes this to RBT-54 Touch 3 as a 'verify-intent gate' with a fallback, meaning no ratified authority currently disambiguates which mechanism realizes reconstructibility.",
+  "confidence": "high"
+}

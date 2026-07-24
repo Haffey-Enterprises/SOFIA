@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "20b4fc0be9095ff0",
+  "reason": "The ratified ruling D2 says to 'name the home and trigger in §2.2/§5.3: a knowledge-service-design additive amendment enumerating the schema-provisioning administrative operation, subject-named,' but the document's §2.2 and §5.3 already carry schema-provisioning-capability language and forward-item framing in overlapping-but-differently-worded forms; conforming to D2 requires choosing exact wording and placement (which existing sentence to amend, how to phrase the named home/trigger) that neither D2's summary nor ADR-002 §2.5 uniquely determines. Multiple conforming edits exist.",
+  "confidence": "medium"
+}

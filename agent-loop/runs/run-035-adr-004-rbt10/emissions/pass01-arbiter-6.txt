@@ -1,0 +1,1 @@
+{"finding_id":"616f1dc652c36b5d","classification":"decision-bearing","authority_locus":null,"rationale":"ADR-004 is not in the ratified authority set, so the claim cannot be verified or the fix determined against any named locus; where a deferred item's tracking home lands is itself an unmade choice.","confidence":"medium"}

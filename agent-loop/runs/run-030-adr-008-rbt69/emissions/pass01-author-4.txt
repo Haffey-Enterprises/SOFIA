@@ -1,0 +1,10 @@
+{
+  "action": "edit",
+  "finding_id": "dc68682de19ce106",
+  "target": "ADR-008",
+  "old_string": "realized through a candidate-`ObservedPattern` shape excluded from ground-truth traversal until approved — a downstream governance design and an additive schema shape.",
+  "new_string": "realized through a forthcoming, additive candidate-`ObservedPattern` shape — introduced by a downstream governance design and schema amendment — that excludes it from ground-truth traversal until approved.",
+  "authority_conformed": "ADR-008-run-025-operator-rulings Ruling E (candidate-ObservedPattern shape is forthcoming/additive, not present) + DDR-002 §2.3 (distillation checkpoint 'explicitly un-decided')",
+  "rationale": "Ruling E's earned-tense conformance requires stating the candidate-`ObservedPattern` shape as forthcoming/additive rather than a present schema constraint.",
+  "confidence": "high"
+}

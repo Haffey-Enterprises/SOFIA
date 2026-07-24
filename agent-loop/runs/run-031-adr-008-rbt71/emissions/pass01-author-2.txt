@@ -1,0 +1,12 @@
+The finding names two loci needing correction. Ruling D determines the §2.2 table Environment "Built" relabel. Ruling E determines the distillation candidate-shape tense. But rule 2 requires one minimal edit to one locus; and Ruling E's target (candidate-`ObservedPattern` shape) is in §5.2, not the §2.2 table "routes to" cell. The finding's §2.2 table Environment relabel is the one uniquely determined table-cell edit; I conform that.
+
+{
+  "action": "edit",
+  "finding_id": "78d715043475fc96",
+  "target": "ADR-008",
+  "old_string": "| **Environment** — CMDB-observed deployed reality | Per-policy reliability-**weighting** at retrieval; **no** per-write gate | Per-policy | Built — the inherited-confidence derivation ruling's aging basis |",
+  "new_string": "| **Environment** — CMDB-observed deployed reality | Per-policy capture-time-frozen aging (freshness-decayed confidence derived at capture, never recomputed at read) under §6 calibration governance; **no** per-write gate | Per-policy | Form built (DDR-004); constants contested/unvalidated (n=0) |",
+  "authority_conformed": "ADR-008-run-025-operator-rulings Ruling D — drop 'reliability-weighting at retrieval', state capture-time-frozen aging + §6 governance; relabel §2.2 'Built' to 'form built (DDR-004); constants contested/unvalidated (n=0)'",
+  "rationale": "Ruling D verbatim prescribes both the retrieval→capture-time-frozen correction and the exact 'form built (DDR-004); constants contested/unvalidated (n=0)' relabel for this §2.2 Environment row.",
+  "confidence": "high"
+}

@@ -1,0 +1,1 @@
+{"finding_id":"ba2fd4e152d96ce2","classification":"resolvable","authority_locus":"author-decision-record SKILL, 'Every deferred obligation gets a home with a firing trigger' amendment-lifecycle rule","rationale":"The skill's deferred-obligation discipline determines the fix: route to a named backlog item with a firing trigger; no new choice is introduced.","confidence":"high"}

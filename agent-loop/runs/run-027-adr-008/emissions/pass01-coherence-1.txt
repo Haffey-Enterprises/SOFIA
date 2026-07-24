@@ -1,0 +1,82 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["ADR-008"],
+"locus": "§2.2 Per-source-class calibration table — Environment row",
+"claim": "The Environment control is stated as 'Per-policy reliability-**weighting** at retrieval' and its realization routes to 'the inherited-confidence derivation ruling's aging basis'. But the ruling it invokes fixes a capture-time-frozen mechanism, not a retrieval-time one: DDR-004 §1/§3 derives Environment confidence as base × exp(−Δt/τ) at Evidence capture and freezes it, explicitly 'never recomputed at read'. The ADR's own §2.2 Environment bullet then says the control 'is a per-policy reliability weighting... at retrieval' — the phrase 'at retrieval' contradicts the frozen-at-capture semantic of the cited realization.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-008 §2.2 (Environment control-type: 'reliability-**weighting** at retrieval') in conflict with DDR-004 §1/§3 (aging confidence 'derived at Evidence capture and frozen... never recomputed at read')"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-008"],
+"locus": "§2.2 Per-source-class calibration table — Environment 'Realization routes to: Built' column",
+"claim": "The Environment control is marked 'Built — the inherited-confidence derivation ruling's aging basis', asserting the control is realized. But DDR-004 states only the derivation *form* is built (ACCEPTED) while its constants (base, τ, and the DeploymentEnvironment flat base) are held contested and unvalidated at n=0 (DDR-004 §2 'Empirical floor: zero capture traffic to date; these values are unvalidated'; §6 'no calibration is possible until the platform runs'). An unqualified 'Built' status overstates what the cited authority supplies — the form is built; the calibrated control is not.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-008 §2.2 Environment row ('Built — the inherited-confidence derivation ruling's aging basis') in conflict with DDR-004 §2 ('zero capture traffic to date; these values are unvalidated') and §6 ('no calibration is possible until the platform runs')"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-008"],
+"locus": "§2.3 Un-promotion authority",
+"claim": "§2.3 states un-promotion is 'governed by the same per-write, EA-gated, human-accountable control as promotion itself' and that the built retraction shape 'is the instance of this authority.' But the built retraction shape does not supply the same control as promotion: DDR-002 §7 #21 (retraction-gated) traces to *an* approving decision, whereas the promotion control (§7 #15) keys off the *governing* approving edge (latest decided_at). §5.3 of this same ADR concedes exactly this — 'the retraction invariant traces to an approving decision, not the governing one, so a re-decided executed retraction has no standing detection analogue yet.' The §2.3 'same control' claim is thus internally inconsistent with §5.3's admission within the same document.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-008 §2.3 ('governed by the same per-write, EA-gated, human-accountable control as promotion itself'; 'the built retraction shape... is the instance of this authority') in conflict with ADR-008 §5.3 ('the retraction invariant traces to an approving decision, not the governing one') and DDR-002 §7 #21 vs #15"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-008"],
+"locus": "§5.2 Constraints Imposed — Operational distillation constraint",
+"claim": "§5.2 states the distillation review is 'realized through a candidate-`ObservedPattern` shape excluded from ground-truth traversal until approved — a downstream governance design and an additive schema shape,' and §2.2's Operational row routes realization to 'the detection-promotion service design.' Read against the substrate, the candidate-ObservedPattern shape does not exist in the ratified schema: DDR-002 §2.3 records the distillation-write checkpoint posture as 'explicitly un-decided,' and the promotion-boundary CandidatePromotion class (DDR-002 §5) covers promotion/retraction only, not distillation candidacy. The §5.2 text names it as a concrete additive schema shape without marking that no such shape is yet ratified — a present-vs-forthcoming tense hazard against the substrate.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-008 §5.2 ('a candidate-`ObservedPattern` shape excluded from ground-truth traversal until approved') in conflict with DDR-002 §2.3 (distillation-write checkpoint posture 'explicitly un-decided') and DDR-002 §5 (CandidatePromotion covers promotion/retraction only)"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-008"],
+"locus": "§7 Cross-References — 'ADR-004 (file-driven ingestion, forthcoming)' and 'DDR-003 (Feedback Loop Governance, forthcoming)'",
+"claim": "§7 references two unauthored records by concrete identifier — 'ADR-004 (file-driven ingestion, forthcoming)' and 'DDR-003 (Feedback Loop Governance, forthcoming)'. The author-decision-record body-integrity rule requires forward references to unauthored records be subject-named only, never by concrete identifier ('A forward reference in the body is subject-named only... Concrete identifiers bind only at the downstream record's landing'). ADR-002 §4.6 additionally shows 'ADR-004' is not established as the file-driven-ingestion slot in the ratified corpus, making the numbered reference an unresolvable/ambiguous hinge to a stranger reader.",
+"cited_authority": {
+"kind": "design-intent",
+"ref": "author-decision-record SKILL body-integrity: 'A forward reference in the body is subject-named only — genus plus what's unsettled... Concrete identifiers bind only at the downstream record's landing'"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["ADR-008"],
+"locus": "§2.5 Cross-class precedence vs §2.2 Environment ('no per-write gate')",
+"claim": "§2.2 commits that Environment mutation carries 'no per-write gate' and ages by construction, while §2.5 commits that any cross-class conflict 'withholds and escalates to human resolution' with 'observational or ingested reality never silently takes precedence over an EA-set governance scope.' A reader can take §2.5 as imposing a per-write conflict check on the observation stream that §2.2 declares ungated. The text does not state, within the ADR, that the §2.5 withhold is a gateway-mechanical collision detector firing only on structural collision (not a per-write human gate on the routine stream), leaving the two sections in apparent tension on the Environment class.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-008 §2.2 ('Per-policy reliability-weighting at retrieval; **no** per-write gate') in apparent conflict with ADR-008 §2.5 ('it withholds and escalates to human resolution; it does not silently win')"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-008"],
+"locus": "§2.1 scope exclusion of Reasoning-Graph capture",
+"claim": "Checked the claim that Reasoning-Graph capture is out of this ADR's scope ('Reasoning-Graph capture is not ground truth — it is captured judgment, governed by the reasoning-capture invariant and its write-authority assignment (ADR-001 §2.2; ADR-002 §2.6)') against the cited authorities. ADR-001 §2.2 does own the reasoning-capture invariant and ADR-002 §2.6 does assign RG write authority (ASA authors ReasoningProgress; AOE owns ReasoningSession lifecycle); DDR-002 §4 confirms RG nodes carry no KG plane label and are not ground truth. The scope boundary and its citations hold.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-008 §2.1 scope exclusion vs ADR-001 §2.2 (reasoning-capture invariant) + ADR-002 §2.6 (RG write authority) + DDR-002 §4 (RG carries no plane label) — consistent"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-008"],
+"locus": "§2.1 gateway executor-not-author claim",
+"claim": "Attacked the claim that 'the sole-owner graph gateway is the executor of every mutation and is never the authoring authority for it (ADR-002 §2.6)' by checking it against the cited authority and its realizations. ADR-002 §2.6 states the general author/executor/authorizer separation ('The sole-owner gateway (§2.5) is the sole executor... never itself the authoring authority'); SDD-001 §1/§2.1 confirms knowledge-service 'is the sole executor of every authoritative write and the author of none'; DDR-001 Decision.7 and its feedback-loop write-authority treatment carry the same. The claim held against every citation.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-008 §2.1 (gateway executes, never authors) vs ADR-002 §2.6 (author/executor/authorizer separation) + SDD-001 §1/§2.1 (sole executor, author of none) — consistent"
+}
+}
+]

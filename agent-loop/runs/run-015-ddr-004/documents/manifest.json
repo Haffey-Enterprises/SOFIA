@@ -1,0 +1,16 @@
+{
+  "run_id": "run-015-ddr-004",
+  "sofia_head_sha": "f377f625b65c9c1bb2a640929654522a835742b5",
+  "files": [
+    {
+      "doc_id": "DDR-004",
+      "snapshot_path": "documents/DDR-004-inherited-confidence-derivation.md",
+      "origin": {
+        "source": "sofia-repo",
+        "canonical_path": "docs/ddr/DDR-004-inherited-confidence-derivation.md"
+      },
+      "retrieved": "2026-07-11",
+      "sha256": "bc69dc6b58c7a45217e2286aebfbce17d2cee0c756e8bccdf57a5e3a16377827"
+    }
+  ]
+}

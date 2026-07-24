@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "3d3cd9a826d032c8",
+  "reason": "D4 rules only that the deferral is homed on the same knowledge-service-design amendment as D2 with the body subject-naming it — which §2.2 and §5.3 already do; it does not direct adding a §2 Decision-block enumeration entry, and no cited authority determines the wording, altitude, or exact locus of such an addition.",
+  "confidence": "high"
+}

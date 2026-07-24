@@ -1,0 +1,9 @@
+```json
+{
+  "finding_id": "225819e96f2a0b77",
+  "classification": "resolvable",
+  "authority_locus": "ADR-008-run-025-operator-rulings, Ruling B (findings b55f71f6 + 47aa7054): add explicit 'Relationship to ADR-001 §2.5' statement recording generalization+subsumption+un-promotion extension; Supersedes:None stands",
+  "rationale": "Operator Ruling B directly dictates the fix for this posture question, naming both the required in-body relationship statement and that Supersedes:None stands.",
+  "confidence": "high"
+}
+```

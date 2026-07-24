@@ -1,0 +1,12 @@
+The two §7 bullets each mix the numbered reference with additional distinct clauses (DDR-003's "downstream consumer... definition of done"; ADR-004's "owns the ingestion mechanics"). Ruling G determines only replacing the numbered identifier strings with subject-name forms, which are uniquely quoted.
+
+{
+  "action": "edit",
+  "finding_id": "a9318bf577e7dd4a",
+  "target": "ADR-008",
+  "old_string": "- **DDR-003 (Feedback Loop Governance, forthcoming)** — downstream consumer of this ADR; owns the remedy boundary and all governance policy (§2.6). This ADR is its upstream authority; the obligation to resolve DDR-003's pointer to this record's concrete document identifier lives in DDR-003's definition of done.\n- **ADR-004 (file-driven ingestion, forthcoming)** — owns the ingestion mechanics realizing the authoritative-source ingestion control (§2.2).",
+  "new_string": "- **The forthcoming feedback-loop governance design** — downstream consumer of this ADR; owns the remedy boundary and all governance policy (§2.6). This ADR is its upstream authority; the obligation to resolve that record's pointer to this record's concrete document identifier lives in that record's definition of done.\n- **The forthcoming file-driven ingestion decision record** — owns the ingestion mechanics realizing the authoritative-source ingestion control (§2.2).",
+  "authority_conformed": "ADR-008-run-025-operator-rulings Ruling G — replace numbered forthcoming-record identifiers with subject-name forms",
+  "rationale": "Ruling G directs replacing the two numbered forthcoming-record references in §7 with the exact subject-name forms it specifies; downstream pointers to those records reworded to match.",
+  "confidence": "high"
+}

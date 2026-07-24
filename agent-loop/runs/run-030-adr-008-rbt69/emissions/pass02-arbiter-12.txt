@@ -1,0 +1,7 @@
+{
+  "finding_id": "fe0a8ff6406a32eb",
+  "classification": "resolvable",
+  "authority_locus": "ADR-008-run-025-operator-rulings Ruling F (qualify §2.3's 'same control' claim to match the §5.3 concession; governing-verdict detection analogue is the named follow-up) + the author-decision-record pointer-not-mirror / earned-tense body-integrity discipline",
+  "rationale": "Ruling F already mandates the qualification; carrying it forward to the §7 cross-reference is an internal-consistency conformance edit, not a new choice.",
+  "confidence": "high"
+}

@@ -1,0 +1,7 @@
+{
+  "finding_id": "e3ba81262dbeda38",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The record itself declares (F-ii, F-iii) that whether Cross-References is a sanctioned home for ticket IDs is unsettled — the governing skill's three-homes rule is internally inconsistent with its own no-storytelling bullet, the promote-candidate shape is deliberately deferred to RBT-54 completion, and F-i explicitly routes the pre-existing out-of-home ticket-ID inventory to per-item disposition (relocate vs. named follow-up). No ratified authority determines whether these specific occurrences must move or may remain; the fix requires the very choice the deliberation record left open.",
+  "confidence": "high"
+}

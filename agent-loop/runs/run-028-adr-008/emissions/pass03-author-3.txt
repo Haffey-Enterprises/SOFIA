@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "b0cb097e5bb053b0",
+  "reason": "The cited authorities (RBT-59 routing + §2.4 forward-reference) establish that revalidation is routed to DDR-003, but they do not determine how the §2.6 enumeration or §2.2 Operational row must be amended — whether to add a distinct 'revalidation-surfacing mechanism' routed item to §2.6's list, to extend §2.2's Realization column, and with what exact wording. §2.4 already states the routing; multiple conforming ways to surface it at §2.6/§2.2 exist, so the fix requires an unratified drafting choice.",
+  "confidence": "high"
+}

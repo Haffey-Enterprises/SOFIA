@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "7fce3fe0e14ef1f3",
+  "reason": "The named authority (docket ruling D2) directs naming home and trigger of the provisioning obligation in §2.2/§5.3 — which §2.2's 'named obligation of this decision' and §5.3's constraint-versioning risk arguably already do; and the SKILL's 'amendment updates the Decision enumeration' does not dictate the specific §2/§5.2 wording, admitting multiple conforming phrasings and multiple insertion loci. The fix is not uniquely determined.",
+  "confidence": "medium"
+}

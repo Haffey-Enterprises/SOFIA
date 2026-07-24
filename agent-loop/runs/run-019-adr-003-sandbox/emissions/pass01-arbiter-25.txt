@@ -1,0 +1,7 @@
+{
+  "finding_id": "7ab40e06748e191c",
+  "classification": "resolvable",
+  "authority_locus": "ADR-001 §2.5 (scope: promotion mechanism only — EA-gated, encoding-density engine) as construed by DDR-002 §2.4 ('ADR-001 §2.5 authorizes promotion only and does not stretch to un-promotion; upstream authority for un-promotion routes to the forthcoming KG-entry-governance ADR') and by triage-001 T-05 Leg 4 (ratified: KG-entry-governance ADR scope = mutation of enterprise ground truth generally, entry AND un-promotion)",
+  "rationale": "The finding is an internal-inconsistency correction, not a choice: ADR-001 §2.5's own text does not carry un-promotion authority, and the ratified corpus (DDR-002 §2.4, triage T-05 Leg 4) already fixes where un-promotion authority lives — the KG-entry-governance ADR — so ADR-003 §2.3's contrary citation is determinately wrong against existing authority. No new decision is introduced.",
+  "confidence": "high"
+}

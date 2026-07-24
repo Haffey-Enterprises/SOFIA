@@ -1,0 +1,1 @@
+{"finding_id": "d61623f4f1e7d092", "classification": "resolvable", "authority_locus": "ADR-008-run-025-operator-rulings Ruling E (candidate-ObservedPattern shape stated as forthcoming/additive, not present)", "rationale": "Operator Ruling E directly determines the fix: earned tense, state the candidate-ObservedPattern shape as forthcoming/additive.", "confidence": "high"}

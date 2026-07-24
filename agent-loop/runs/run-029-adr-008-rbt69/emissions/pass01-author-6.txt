@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "a2879100b839ea27",
+  "reason": "The governing principle bars R30 as a 'durable in-body ADR citation' but does not determine whether the §7 'Deliberation substrate' entry — which frames R30 explicitly as substrate 'fetched verbatim as substrate,' not as a durable citation — is or is not the barred kind, nor whether the fix is to strike only the R30 clause, the whole substrate bullet, or leave it; the finding itself flags the boundary as an open question for the arbiter, so more than one conforming edit is admissible.",
+  "confidence": "high"
+}

@@ -1,0 +1,1 @@
+{"action": "refuse", "finding_id": "864db6d84ca5f555", "reason": "The finding is explicitly a held check confirming conformance ('This is a held check, not a defect'); it asserts the document already conforms to DDR-004 §1/§3 and names no discrepancy, so there is nothing for an edit to change.", "confidence": "high"}

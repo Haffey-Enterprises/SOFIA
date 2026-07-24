@@ -1,0 +1,11 @@
+Note: the finding targets ADR-004, which is not in the provided authority set (the ground-truth mutation ADR here is ADR-008). Regardless, the classification question stands on its own terms.
+
+The finding raises a real gap: an ingestion-fidelity read-discipline invariant that would need to enter DDR-002's schema read-discipline set. DDR-002 §7 carries #9, #19, retraction-exclusion — no provisional-exclusion invariant — and its Named Gaps do not enumerate one. Whether to home this as a new safety-critical schema invariant, and how (which node marker, which tier, what shape), is a choice no ratified authority determines. ADR-002 §2.6 and DDR-002's tiering govern *how* invariants are enforced, but neither dictates that this specific provisional-exclusion invariant exists or its schema form. This is an unratified addition — an incomplete decision, silence where a choice is needed.
+
+{
+  "finding_id": "cae70c9e80ed731e",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "Committing DDR-002 to a new safety-critical read-discipline invariant not present in its §7 set or Named Gaps is an unratified schema addition no existing authority determines.",
+  "confidence": "high"
+}

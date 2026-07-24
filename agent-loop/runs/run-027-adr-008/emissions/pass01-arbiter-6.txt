@@ -1,0 +1,7 @@
+{
+  "finding_id": "66ca22554942e035",
+  "classification": "resolvable",
+  "authority_locus": "Ruling B (RBT-59/ADR-008 operator rulings): 'fix the Promotion-class authority citation to the durable chain — ADR-001 §2.5 + DDR-002 §5 / §7 #15'",
+  "rationale": "Ruling B names the exact durable artifact+locus the promotion citation must resolve to, determining the fix without new choice.",
+  "confidence": "high"
+}

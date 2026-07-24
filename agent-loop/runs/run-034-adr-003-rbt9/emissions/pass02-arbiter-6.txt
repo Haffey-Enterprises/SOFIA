@@ -1,0 +1,1 @@
+{"finding_id":"6b5b38b1d70201f7","classification":"decision-bearing","authority_locus":null,"rationale":"Recursion clause commits sub-runs carrying ReasoningSession now, but ADR-002 §2.6 fixes AOE-only lifecycle and no schema nesting shape exists; resolving requires a choice no authority makes.","confidence":"high"}

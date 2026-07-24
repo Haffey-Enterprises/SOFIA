@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "b0e9a444ddfda141",
+  "reason": "The status-marker discipline is already satisfied at the §7 definition point ('The forthcoming file-driven ingestion decision record (unauthored)') and the subject is named ('the forthcoming file-driven ingestion decision record'); the finding's own body concedes §5.3's earned tense 'is proportionate.' The authority names a discipline (subject-named + status-marker) but does not uniquely determine what edit, if any, the §5.3 in-body use point requires — whether to add a parenthetical status marker, restate the earned tense, or leave it — leaving multiple conforming options and no ratified choice among them.",
+  "confidence": "medium"
+}

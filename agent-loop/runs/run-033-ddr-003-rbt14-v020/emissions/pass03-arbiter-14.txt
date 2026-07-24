@@ -1,0 +1,1 @@
+{"finding_id":"5d8a794dd30fd564","classification":"decision-bearing","authority_locus":null,"rationale":"Re-admission's interaction with the standing RETRACTS edge and what the re-promotion supersedes is unspecified; no authority disambiguates the retracted-node-vs-supersession-chain mechanics.","confidence":"medium"}

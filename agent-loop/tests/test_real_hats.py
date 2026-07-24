@@ -27,6 +27,7 @@ from agent_loop.ledger import (
 )
 from agent_loop.log import ActionLog
 from agent_loop.real_hats import (
+    _extract_json_array,
     assemble_user_prompt,
     build_real_hat_plan,
     build_real_reviewer,
@@ -49,6 +50,7 @@ from agent_loop.reviewers import (
 from agent_loop.runner import run_loop
 
 DESIGN_DIR = Path(__file__).resolve().parent.parent / "design"
+RUNS_DIR = Path(__file__).resolve().parent.parent / "runs"
 
 
 # --- helpers -----------------------------------------------------------------
@@ -170,7 +172,10 @@ def test_no_admission_occurs_until_all_reviewers_returned(tmp_path) -> None:
     def make(identity: ReviewerIdentity, claim: str) -> ScheduledReviewer:
         def run(pn, snap, recs, sub, log):  # noqa: ANN001
             seen.append(len(log.of_kind("admitted")))
-            return [_finding(claim)]
+            # Stamp each finding with its hat's altitude (as the real parse seam
+            # does): three distinct altitudes at one (target, locus) → three
+            # distinct ids, so all three remain distinct records post-RBT-69.
+            return [_finding(claim, altitude=identity.altitude)]
 
         return ScheduledReviewer(identity, run)
 
@@ -387,13 +392,161 @@ def test_bare_json_array_still_parses() -> None:
     assert len(findings) == 1
 
 
-def test_prose_preamble_still_drops() -> None:
+# --- RBT-70: reviewer parse-seam array salvage (envelope-tolerant, strict item)
+
+
+def test_extract_json_array_covers_the_scan_branches() -> None:
+    # Directly exercise the salvage helper's balanced, string/escape-aware scan.
+    # A clean '['-first emission has no surrounding text.
+    assert _extract_json_array('[{"a": 1}]') == ('[{"a": 1}]', False)
+    # Trailing commentary after a valid array is surrounding text (salvaged).
+    assert _extract_json_array('[{"a": 1}]  done') == ('[{"a": 1}]', True)
+    # Nested arrays plus '[' / ']' and an escaped quote INSIDE a string value
+    # must not throw off the depth count — the whole span is returned intact.
+    payload = '[{"claim": "has ] and [ and \\" quote", "n": [1, 2]}]'
+    assert _extract_json_array("preamble " + payload) == (payload, True)
+    real = '[{"a": 1}]'
+    # A stray UNCLOSED '[' in the preamble never balances; the real array is
+    # found at the next '[' (the `end is None` skip path).
+    assert _extract_json_array("see [ open note\n" + real) == (real, True)
+    # A stray BALANCED but non-JSON '[...]' in the preamble is skipped (the
+    # JSONDecodeError path), and the real array is found after it.
+    assert _extract_json_array("[not, json] then " + real) == (real, True)
+    # No array at all, a bare object, and a truncated array each salvage nothing.
+    assert _extract_json_array("pure prose, no array") == (None, False)
+    assert _extract_json_array('{"a": 1}') == (None, False)
+    assert _extract_json_array('[{"a": 1}') == (None, False)
+
+
+def test_prose_preamble_before_array_is_salvaged() -> None:
+    # RBT-70: a reviewer that narrates before its findings array no longer parse-
+    # drops — the array is salvaged, findings admitted, and the preamble-stripped
+    # event fires so the residual rate stays observable.
     log = ActionLog()
     raw = "Here are the findings:\n" + json.dumps([_json_finding("c", bad_source=False)])
     findings = parse_emissions(IDENTITY_LAA, raw, log, emission_path="e.txt")
+    assert len(findings) == 1 and findings[0].claim == "c"
+    assert log.of_kind("parse_dropped") == []
+    stripped = log.of_kind("reviewer_output_preamble_stripped")[0]
+    assert stripped.detail["reviewer"] == IDENTITY_LAA.label
+    assert stripped.detail["finding_count"] == 1
+
+
+def test_clean_first_char_array_emits_no_preamble_event() -> None:
+    # A '['-first emission is clean transport: parsed, no preamble event.
+    log = ActionLog()
+    findings = parse_emissions(
+        IDENTITY_LAA, json.dumps([_json_finding("c", bad_source=False)]), log
+    )
+    assert len(findings) == 1
+    assert log.of_kind("reviewer_output_preamble_stripped") == []
+    assert log.of_kind("parse_dropped") == []
+
+
+def test_fenced_array_is_transport_not_a_preamble() -> None:
+    # A well-formed code fence is transport unwrapping, not a prose envelope.
+    log = ActionLog()
+    raw = "```json\n" + json.dumps([_json_finding("c", bad_source=False)]) + "\n```"
+    findings = parse_emissions(IDENTITY_LAA, raw, log)
+    assert len(findings) == 1
+    assert log.of_kind("reviewer_output_preamble_stripped") == []
+
+
+def test_genuine_malformation_still_drops() -> None:
+    # No array to salvage → the drop path is unchanged in effect (RBT-70): pure
+    # prose, a bare '{...}' object, and a truncated array each parse-drop with
+    # the "no parseable JSON array" reason and no preamble-stripped event.
+    for raw in (
+        "I could not find anything to report.",          # pure prose
+        json.dumps({"severity": "MATERIAL"}),            # bare object, no array
+        '[{"severity": "MATERIAL", "target": "DOC-A"',   # truncated, never closes
+    ):
+        log = ActionLog()
+        findings = parse_emissions(IDENTITY_LAA, raw, log, emission_path="e.txt")
+        assert findings == []
+        drop = log.of_kind("parse_dropped")[0]
+        assert drop.detail["reason"] == "no parseable JSON array"
+        assert drop.detail["emission_path"] == "e.txt"  # drop references the raw file
+        assert log.of_kind("reviewer_output_preamble_stripped") == []
+
+
+def test_stray_bracket_preamble_and_bracketed_finding_are_salvaged() -> None:
+    # RBT-70: a non-parseable '[…]' in the preamble does not shadow the real
+    # array, and a finding whose locus/claim carries '[' or ']' does not break
+    # the balanced scan.
+    log = ActionLog()
+    finding = _json_finding("§2 held under attack [checked]", bad_source=False)
+    finding["locus"] = "table row [Environment]"
+    raw = "Note [unparseable stub]:\n" + json.dumps([finding])
+    findings = parse_emissions(IDENTITY_SA, raw, log)
+    assert len(findings) == 1
+    assert findings[0].locus == "table row [Environment]"
+    assert "[checked]" in findings[0].claim
+    assert log.of_kind("reviewer_output_preamble_stripped")[0].detail["finding_count"] == 1
+
+
+def test_mis_salvaged_wrong_array_drops_per_item_never_admits() -> None:
+    # Envelope-tolerant, schema-strict: a stray '[1, 2, 3]' salvaged from prose
+    # fails per-item validation and drops — a bad finding is never admitted.
+    log = ActionLog()
+    findings = parse_emissions(IDENTITY_LAA, "noise [1, 2, 3] tail", log)
     assert findings == []
-    drop = log.of_kind("parse_dropped")[0]
-    assert drop.detail["emission_path"] == "e.txt"  # drop references the raw file
+    assert len(log.of_kind("parse_dropped")) == 3  # one per non-object item
+    # The salvage happened (preamble stripped), but strictness caught the items.
+    assert log.of_kind("reviewer_output_preamble_stripped")[0].detail["finding_count"] == 3
+
+
+def test_run029_coherence_preamble_fixture_is_salvaged() -> None:
+    # The captured defect (RBT-70): run-029 pass-2 coherence narrated a
+    # reconciliation preamble before its findings array, parse-dropped, and
+    # tripped a false InstrumentCompromisedError. The seam now salvages it.
+    raw = (
+        RUNS_DIR / "run-029-adr-008-rbt69" / "emissions" / "pass02-coherence-1.txt"
+    ).read_text(encoding="utf-8")
+    log = ActionLog()
+    findings = parse_emissions(
+        IDENTITY_COHERENCE, raw, log, emission_path="pass02-coherence-1.txt"
+    )
+    assert len(findings) == 6  # all six captured findings are well-formed
+    assert log.of_kind("parse_dropped") == []
+    stripped = log.of_kind("reviewer_output_preamble_stripped")[0]
+    assert stripped.detail["reviewer"] == IDENTITY_COHERENCE.label
+    assert stripped.detail["finding_count"] == 6
+
+
+def test_salvaged_emission_meeting_floor_does_not_trigger_redraw() -> None:
+    # Guard non-regression: a preamble-wrapped emission that meets the POSITIVE
+    # floor behaves normally through build_real_reviewer — salvaged on the first
+    # draw, no below-floor re-draw, no hat_null, no spurious compromise.
+    emission = "Reading the current state first.\n\n" + json.dumps(
+        [
+            _json_finding("held under attack A", severity="POSITIVE"),
+            _json_finding("held under attack B", severity="POSITIVE"),
+            _json_finding("a real defect"),
+        ]
+    )
+    calls: list[str] = []
+
+    def emitter(system: str, user: str) -> str:
+        calls.append(user)
+        return emission
+
+    reviewer = build_real_reviewer(
+        IDENTITY_LAA, DESIGN_DIR / "antagonist-LAA.prompt.md", emitter
+    )
+    log = ActionLog()
+    findings = reviewer.run(
+        1,
+        Ledger(header=_header()),
+        DocumentSet(documents={"DOC-A": "x"}),
+        Substrate(authorities={}, design_intent={}),
+        log,
+    )
+    assert len(findings) == 3
+    assert len(calls) == 1  # met the floor on the first draw — no re-draw
+    assert log.of_kind("llm_retry") == []
+    assert log.of_kind("hat_null") == []
+    assert log.of_kind("reviewer_output_preamble_stripped")[0].detail["finding_count"] == 3
 
 
 # --- §9f: malformed-emission drop --------------------------------------------
@@ -525,6 +678,25 @@ def test_assemble_user_prompt_includes_docs_substrate_and_snapshot() -> None:
     assert "DOCUMENT SET" in user and "DOC-A" in user and "DOC-B" in user
     assert "AUTH-1" in user and "DI-1" in user
     assert "LEDGER SNAPSHOT" in user
+    # R-E2 recency directive: appended last, after the ledger snapshot.
+    assert "REVIEW DIRECTIVE (read last, applies now):" in user
+    assert user.index("REVIEW DIRECTIVE") > user.index("LEDGER SNAPSHOT")
+    assert user.rstrip().endswith("(Contract rule 7).")
+
+
+def test_assemble_user_prompt_recency_directive_is_static_verbatim() -> None:
+    # The directive is static assembly content — byte-identical regardless of the
+    # documents/substrate/snapshot (not per-run).
+    a = assemble_user_prompt(
+        DocumentSet(documents={"X": "x"}),
+        Substrate(authorities={"A": "a"}, design_intent={"D": "d"}), Ledger(header=_header()))
+    b = assemble_user_prompt(
+        DocumentSet(documents={"Y": "y"}),
+        Substrate(authorities={"B": "b"}, design_intent={"E": "e"}), Ledger(header=_header()))
+    directive_a = a[a.index("REVIEW DIRECTIVE"):]
+    directive_b = b[b.index("REVIEW DIRECTIVE"):]
+    assert directive_a == directive_b
+    assert "not a lawful response to a non-empty document set" in directive_a
 
 
 def test_default_fetchers_produce_placeholder_inputs() -> None:
@@ -626,3 +798,113 @@ def test_halt_payload_never_contains_a_positive(tmp_path) -> None:
     assert result.exit.reason == "decision-bearing"
     assert [f.severity for f in result.exit.payload] == ["MATERIAL"]
     assert all(f.severity != "POSITIVE" for f in result.exit.payload)
+
+
+# =============================================================================
+# RBT-54 / R-C — all-hats-null fail-loud + coherence brief-addendum mechanism
+# =============================================================================
+
+
+def test_all_hats_null_fails_loud(tmp_path) -> None:
+    # Every hat variance-to-zero (clean-empty twice -> hat_null) makes the WHOLE
+    # draw null; routing it would risk a false CONVERGED, so the runner refuses
+    # (RBT-54 R-C). Distinct from the parse-storm guard — these are clean nulls,
+    # not parse-dropped.
+    from agent_loop.runner import InstrumentCompromisedError
+
+    plan = real_hat_plan(
+        build_real_reviewer(IDENTITY_LAA, DESIGN_DIR / "antagonist-LAA.prompt.md", _emitter_returning("[]")),
+        build_real_reviewer(IDENTITY_SA, DESIGN_DIR / "antagonist-SA.prompt.md", _emitter_returning("[]")),
+        build_real_reviewer(IDENTITY_EA, DESIGN_DIR / "antagonist-EA.prompt.md", _emitter_returning("[]")),
+        build_real_reviewer(IDENTITY_COHERENCE, DESIGN_DIR / "coherence-sweep.prompt.md", _emitter_returning("[]")),
+    )
+    with pytest.raises(InstrumentCompromisedError):
+        run_loop(
+            header=_header(), plan=plan, arbiter=_AllDecisionBearing(),
+            store=LedgerStore(tmp_path / "allnull.json"),
+        )
+
+
+def test_partial_null_does_not_fail_loud(tmp_path) -> None:
+    # One hat emits (>= the 2-POSITIVE floor, so no re-draw), the rest null. Not
+    # ALL-null, so the run proceeds — a single hat's null is recoverable
+    # (degraded recall), only a whole-draw null is fatal.
+    two_positives = _emitter_returning(json.dumps([
+        _json_finding("p1", severity="POSITIVE"),
+        _json_finding("p2", severity="POSITIVE"),
+    ]))
+    plan = real_hat_plan(
+        build_real_reviewer(IDENTITY_LAA, DESIGN_DIR / "antagonist-LAA.prompt.md", two_positives),
+        build_real_reviewer(IDENTITY_SA, DESIGN_DIR / "antagonist-SA.prompt.md", _emitter_returning("[]")),
+        build_real_reviewer(IDENTITY_EA, DESIGN_DIR / "antagonist-EA.prompt.md", _emitter_returning("[]")),
+        build_real_reviewer(IDENTITY_COHERENCE, DESIGN_DIR / "coherence-sweep.prompt.md", _emitter_returning("[]")),
+    )
+    result = run_loop(
+        header=_header(), plan=plan, arbiter=_AllDecisionBearing(),
+        store=LedgerStore(tmp_path / "partial.json"),
+    )
+    assert result.exit.kind == "CONVERGED"  # POSITIVEs neither count nor block
+
+
+def _run_one_reviewer(reviewer) -> str:  # noqa: ANN001
+    """Invoke a reviewer once against minimal inputs; return the emitter's user."""
+    reviewer.run(
+        1, Ledger(header=_header()),
+        DocumentSet(documents={"DOC-A": "x"}),
+        Substrate(authorities={}, design_intent={}),
+        ActionLog(),
+    )
+
+
+def test_build_real_reviewer_appends_brief_addendum() -> None:
+    captured: dict[str, str] = {}
+
+    def capturing(system: str, user: str) -> str:
+        captured["user"] = user
+        return "[]"
+
+    reviewer = build_real_reviewer(
+        IDENTITY_COHERENCE, DESIGN_DIR / "coherence-sweep.prompt.md", capturing,
+        redraw=False, brief_addendum="SEAM 2 ↔ DDR-004 §4 per-class dispositions",
+    )
+    _run_one_reviewer(reviewer)
+    assert "COHERENCE BRIEF ADDENDUM" in captured["user"]
+    assert "SEAM 2 ↔ DDR-004 §4 per-class dispositions" in captured["user"]
+
+
+def test_build_real_reviewer_no_addendum_by_default() -> None:
+    captured: dict[str, str] = {}
+
+    def capturing(system: str, user: str) -> str:
+        captured["user"] = user
+        return "[]"
+
+    reviewer = build_real_reviewer(
+        IDENTITY_COHERENCE, DESIGN_DIR / "coherence-sweep.prompt.md", capturing, redraw=False,
+    )
+    _run_one_reviewer(reviewer)
+    assert "COHERENCE BRIEF ADDENDUM" not in captured["user"]
+
+
+def test_build_real_hat_plan_addendum_reaches_only_coherence() -> None:
+    calls: list[tuple[str, str]] = []
+
+    def capturing(system: str, user: str) -> str:
+        calls.append((system, user))
+        # >= floor so no re-draw: exactly one call per hat.
+        return json.dumps([
+            _json_finding("p1", severity="POSITIVE"),
+            _json_finding("p2", severity="POSITIVE"),
+        ])
+
+    plan = build_real_hat_plan(
+        DESIGN_DIR, capturing, coherence_addendum="SEAM 4 ↔ DDR-004 §3 Δt endpoints",
+    )
+    for scheduled in plan(1, Ledger(header=_header()), ActionLog()):
+        _run_one_reviewer(scheduled)
+
+    bearing = [(sysp, u) for sysp, u in calls if "SEAM 4 ↔ DDR-004 §3 Δt endpoints" in u]
+    assert len(bearing) == 1  # exactly one hat received the addendum
+    # ...and it is the coherence hat (its system prompt).
+    coherence_system = load_system_prompt(DESIGN_DIR / "coherence-sweep.prompt.md")
+    assert bearing[0][0] == coherence_system

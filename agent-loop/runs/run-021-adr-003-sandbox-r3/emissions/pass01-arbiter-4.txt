@@ -1,0 +1,7 @@
+{
+  "finding_id": "30147e3709c94641",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "ADR-002 \u00a72.6 fixes that the gateway is the sole executor and never the authoring authority, so it determines that ADR-003 \u00a72.4's gateway-as-authoring-authority statement is non-conforming \u2014 but it does not determine who the correct authoring authority for a checkpoint approval is; that assignment is an unmade choice (the approving human, a checkpoint-approval decision node, or another component), and no ratified authority disambiguates it. Additionally the finding raises an override-vs-slip ambiguity that only the operator can resolve.",
+  "confidence": "high"
+}

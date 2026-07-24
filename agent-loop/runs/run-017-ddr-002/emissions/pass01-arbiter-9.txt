@@ -1,0 +1,7 @@
+{
+  "finding_id": "0a1622fb19bf3e8b",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The deliberation record explicitly marks these pre-existing out-of-home ticket-ID occurrences (F-i) as requiring per-item disposition — relocation-rider vs. named follow-up — a choice not yet made; and the governing skill rule is itself flagged (F-iii) as internally inconsistent with a promote-candidate whose final shape is deliberately deferred, so the very authority that would 'determine' the fix is under open reconsideration.",
+  "confidence": "high"
+}

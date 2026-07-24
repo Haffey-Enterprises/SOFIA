@@ -1,0 +1,7 @@
+{
+  "finding_id": "13e08962f6c570d0",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §4 Confidence canonical definition + inheritance/rollup rule ('Evidence.confidence inherits from the SOURCED_FROM KG node's authority class at snapshot time' vs 'ReasoningProgress.confidence is a (SDD-defined) rollup'), read with ADR-002 §2.6 (gateway is executor, never author) and ADR-001 §2.3 (deterministic mechanically-computed facts are data, not authored conclusions)",
+  "rationale": "The distinction the finding says is unstated is in fact fixed by ratified authority: Evidence.confidence is an inherited value mechanically snapshotted from the cited KG node's authority class (deterministic data per ADR-001 §2.3, an execution mechanic the gateway performs), whereas ReasoningProgress.confidence is an SDD-defined rollup function (authored judgment). The coherence appearance dissolves by conforming to DDR-002 §4's own split; no new choice is introduced.",
+  "confidence": "high"
+}

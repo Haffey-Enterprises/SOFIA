@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "834eef90b97c01a9",
+  "reason": "§2.7 treats Operational distillation not as an exclusion-set member but as a parenthetical aside ('carries its own review control and is out of scope here'); it does not determine that §5.2's exclusion list must enumerate it, since §5.2 lists what is 'not gated' and the aside says distillation is out of scope, not that the fidelity gate declines to apply to it. Conforming would require deciding whether/how to phrase distillation into §5.2 — an unratified choice.",
+  "confidence": "medium"
+}

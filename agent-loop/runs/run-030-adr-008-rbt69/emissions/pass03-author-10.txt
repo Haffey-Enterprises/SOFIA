@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "59149a63de782f16",
+  "reason": "The authority ('tense is earned by enforcement') establishes that a PROPOSED record must not claim in present tense to already discharge dependencies, but it does not uniquely determine the conforming edit: the finding flags multiple present-tense claims ('ends that indecision,' 'homes the authority,' 'authority ... does not yet exist' vs. the fixes it purports) across several sentences, and correcting them to earned tense admits more than one wording and more than one locus, requiring an unratified drafting choice.",
+  "confidence": "medium"
+}

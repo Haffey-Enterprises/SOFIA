@@ -1,0 +1,7 @@
+{
+  "finding_id": "f7b79a35e6f90e1c",
+  "classification": "resolvable",
+  "authority_locus": "ADR-008-run-025-operator-rulings Ruling D (relabel §2.2 Environment status to 'form built (DDR-004); constants contested/unvalidated (n=0)')",
+  "rationale": "Ruling D dictates the exact status relabel, converting the coherence finding to a determined fix.",
+  "confidence": "high"
+}

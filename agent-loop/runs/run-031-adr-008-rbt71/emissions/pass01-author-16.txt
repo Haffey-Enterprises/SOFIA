@@ -1,0 +1,9 @@
+{
+  "action": "close_satisfied",
+  "finding_id": "af539a469f1e8578",
+  "evidence_present": "is the instance of this authority, with one qualification: the built instance traces to *an* approving decision, not the *governing* one, so it does not yet supply promotion's governing-verdict guarantee — the authority is homed, and the governing-verdict detection analogue for executed retractions is a named follow-up (§5.3).",
+  "evidence_absent": null,
+  "authority_satisfied": "ADR-008-run-025-operator-rulings Ruling F (qualify §2.3 'same control' to match the §5.3 governing-verdict concession; detection analogue is the named follow-up)",
+  "rationale": "§2.3 already carries the explicit qualification matching §5.3 — same-control authority homed, governing-verdict guarantee not yet supplied, detection analogue named as follow-up per Ruling F.",
+  "confidence": "high"
+}

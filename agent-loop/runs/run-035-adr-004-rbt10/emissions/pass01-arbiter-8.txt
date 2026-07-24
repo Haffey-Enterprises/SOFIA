@@ -1,0 +1,1 @@
+{"finding_id":"61d4c5c1a8de5781","classification":"decision-bearing","authority_locus":null,"rationale":"ADR-004 asserts a knowledge-service schema-provisioning capability SDD-001 does not yet define; who owns provisioning and its shape is an unmade design choice, not dictated by existing authority.","confidence":"high"}

@@ -1,0 +1,7 @@
+{
+  "finding_id": "287f2bb428def037",
+  "classification": "resolvable",
+  "authority_locus": "Ruling G (ADR-008 run-025/026 operator rulings) + author-decision-record SKILL body-integrity forward-reference rule (subject-name only)",
+  "rationale": "Ruling G fixes the subject-name form ('the forthcoming file-driven ingestion decision record') for this exact record; conforming loci to that single stable subject-name is determined, not a choice.",
+  "confidence": "high"
+}

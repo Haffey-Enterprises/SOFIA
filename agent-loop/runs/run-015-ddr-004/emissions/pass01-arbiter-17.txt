@@ -1,0 +1,7 @@
+{
+  "finding_id": "61f87db66e664384",
+  "classification": "resolvable",
+  "authority_locus": "DDR-004 §4 as ratified in the deliberation-record-ddr-004, Item 4 ruling: 'CONFIDENCE_UNDERIVABLE is demoted from primary control to defense-in-depth — unreachable for any well-formed plane'",
+  "rationale": "The substantive disposition is already ratified — Item 4 fixes per-class declared-basis totality and demotes CONFIDENCE_UNDERIVABLE to defense-in-depth (reachability flip from SDD-001's interim included); the finding is an internal self-contradiction in DDR-004's own Reconciliation prose (an item both 'confirmed unchanged' and 'superseded'), which the ratified §4/Item-4 ruling determines by removing the mislabeled 'confirmed unchanged' entry. No new choice is required.",
+  "confidence": "high"
+}

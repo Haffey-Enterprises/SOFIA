@@ -1,0 +1,10 @@
+{
+  "action": "edit",
+  "finding_id": "69d110ea2dcd1a91",
+  "target": "ADR-008",
+  "old_string": "| **Environment** — CMDB-observed deployed reality | Per-policy capture-time-frozen aging (the inherited-confidence derivation ruling's derivation, calibration-governed under its §6); **no** per-write gate | Per-policy | The inherited-confidence derivation ruling's aging basis (DDR-004) and its §6 calibration governance |",
+  "new_string": "| **Environment** — CMDB-observed deployed reality | Per-policy capture-time-frozen aging (the inherited-confidence derivation ruling's derivation, calibration-governed under its §6); **no** per-write gate | Per-policy | Form built (DDR-004); constants contested/unvalidated (n=0) — the inherited-confidence derivation ruling's aging basis and its §6 calibration governance |",
+  "authority_conformed": "ADR-008-run-025-operator-rulings Ruling D conformance (2): relabel §2.2 'Built' status to 'form built (DDR-004); constants contested/unvalidated (n=0)'",
+  "rationale": "Ruling D directs relabeling the §2.2 Environment realization status to the exact 'form built (DDR-004); constants contested/unvalidated (n=0)' string it specifies.",
+  "confidence": "high"
+}

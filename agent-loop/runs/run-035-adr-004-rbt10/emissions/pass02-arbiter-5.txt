@@ -1,0 +1,7 @@
+{
+  "finding_id": "734aa05422192243",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The claimed schema home for provisional-source read-exclusion does not exist in DDR-002 §7/§5; whether to add a provisional status/invariant or re-home the claim is an unratified schema choice no authority determines.",
+  "confidence": "high"
+}

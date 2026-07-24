@@ -1,0 +1,190 @@
+Total findings: 47
+
+[LAA      ] MATERIAL  decision-bearing status=open     id=808e75f185a955a0
+    locus: §2.2 Schema provisioning holds the sole-driver line
+    cited_authority: coherence — ADR-004 §2 Decision statement vs §2.2 provisioning-capability commitment + §3 'earlier practice ... is superseded'
+
+[LAA      ] MATERIAL  decision-bearing status=open     id=540251b0a7818e02
+    locus: §2.7 Authoritative-source fidelity control
+    cited_authority: coherence — ADR-004 §2.7 'homed in the schema's read-discipline invariant set' vs DDR-002 §7 invariant set (#1–#28) — no provisional-vs-official read-di
+
+[LAA      ] MATERIAL  decision-bearing status=open     id=19982c877157a262
+    locus: §2.7 / §7 Cross-References
+    cited_authority: coherence — ADR-004 §2.7 'home of the ingestion mechanics' vs §2.7 'The port-level mechanics ... are the knowledge-service design's' + ADR-008 §2.2 real
+
+[LAA      ] MATERIAL  decision-bearing status=open     id=0995ff8751917089
+    locus: §2.5 KG-scoped; RG preserved / §5.3 Risks
+    cited_authority: coherence — ADR-004 §5.1 'The Reasoning Graph is safe by construction' vs §2.5/§5.3 'the RG is not source-recoverable ... durability ... rests on instan
+
+[LAA      ] COSMETIC  decision-bearing status=open     id=616f1dc652c36b5d
+    locus: §2.2 constraint-versioning forward question
+    cited_authority: coherence — ADR-004 §2.2 'constraint versioning ... policy not settled here' vs §5.3 'named forward question, not a silent gap' — no tracking home or tr
+
+[LAA      ] POSITIVE  unclassified     status=open     id=4cf4cc5719450c28
+    locus: §2.8 Write authorship of instantiation
+    cited_authority: design-intent — ADR-002 §2.6 author/executor/authorizer separation — ADR-004 §2.8 realizes it for instantiation without relocating authorship onto the gatew
+
+[LAA      ] POSITIVE  unclassified     status=open     id=84a2ecc9a21c34d4
+    locus: §2.3–§2.4 Fresh-not-migrated / additive-by-supersession
+    cited_authority: coherence — ADR-004 §2.3 origin-binding vs §2.4 loader-behavior — decisions kept distinct and each surfaced in §2, §5.2, §6 checks 3 and 8
+
+[SA       ] MATERIAL  decision-bearing status=open     id=7929a9ae55f19ce7
+    locus: §2.7 and Cross-References (ADR-008 §2.2, §5.2)
+    cited_authority: canonical — DDR-002 §7 (CI-only conformance-invariant set — no provisional-source read-exclusion invariant present); ADR-008 §2.2 / §5.2 (control-type c
+
+[SA       ] MATERIAL  decision-bearing status=open     id=61d4c5c1a8de5781
+    locus: §2.2 Schema provisioning
+    cited_authority: canonical — SDD-001 §3.1 (readiness — schema-present check, no provisioning operation) and §2.1 (owned responsibilities, no schema-provisioning capabili
+
+[SA       ] MATERIAL  decision-bearing status=open     id=c90c1503a29e705d
+    locus: §2.4 Additive by supersession
+    cited_authority: canonical — DDR-002 §6 (Option A supersession scoped to versioned-ground-truth types only) and §2.2/§2.3 (Environment ages via freshness; Operational di
+
+[SA       ] COSMETIC  decision-bearing status=open     id=cedd5fb84c7f17b2
+    locus: Cross-References — ADR-002 §5.2
+    cited_authority: canonical — ADR-002 §5.2 (retires self-managed backup burden to managed provider — operational-burden scope, no committed RG-recovery / pin-preservation
+
+[SA       ] COSMETIC  decision-bearing status=open     id=2373e50eea6d3243
+    locus: §2.7 / §6 check 6
+    cited_authority: coherence — ADR-004 §2.7 ('ungated observational stream') in tension with ADR-008 §2.2 (Operational distillation carries a substantive human review cont
+
+[SA       ] POSITIVE  unclassified     status=open     id=eef7f46fe6ad55f4
+    locus: §2.1 / §2.2 sole-driver preservation
+    cited_authority: canonical — ADR-002 §2.5 (knowledge-service sole holder of the Neo4j driver / single graph-access boundary)
+
+[SA       ] POSITIVE  unclassified     status=open     id=7bbde33079cb9210
+    locus: §2.5 / §2.4 RG-preservation by construction
+    cited_authority: canonical — ADR-001 §2.2 (reasoning-capture invariant); DDR-002 §4 (RG write-authority — ASA-authored, not instantiation-written)
+
+[EA       ] MATERIAL  decision-bearing status=open     id=e1413b55d1a05a40
+    locus: §2.2 Schema provisioning holds the sole-driver line
+    cited_authority: coherence — ADR-004 §2.2 vs SDD-001 §3.1 (readiness checks presume schema present) and §2.2 Not-owned (no provisioning capability assigned)
+
+[EA       ] MATERIAL  decision-bearing status=open     id=2723dd4ddee0941e
+    locus: §2.7 Authoritative-source fidelity control; §6 check 6
+    cited_authority: coherence — ADR-004 §2.7 ('homed in the schema's read-discipline invariant set') vs DDR-002 §7 read-discipline invariants (#9/#19/#21 — no provisional-e
+
+[EA       ] MATERIAL  decision-bearing status=open     id=4ad091636e8b0261
+    locus: §2.7 / §7 cross-reference to ADR-008
+    cited_authority: coherence — ADR-004 §2.7 (claims home) vs §2.7 final sentence (mechanics routed to knowledge-service design) and ADR-008 §2.2/§7 (routes mechanics to 't
+
+[EA       ] MATERIAL  decision-bearing status=open     id=437da56d27c446c1
+    locus: §2.5 KG-scoped / RG preserved; §5.3 Risks
+    cited_authority: coherence — ADR-004 §2.5/§5.3 (RG recovery = instance backup, production posture deferred) vs ADR-002 §2.2/§5.2 (production deployment runtime and topol
+
+[EA       ] COSMETIC  decision-bearing status=open     id=012615aa7df5fd48
+    locus: §7 Cross-References — ADR-008 pin
+    cited_authority: coherence — ADR-004 §2.7 (read-exclusion attributed to governance record) vs ADR-008 §2.2/§5.2 (commits fidelity verification, not a read-exclusion inva
+
+[EA       ] POSITIVE  unclassified     status=open     id=02e5f5baae3d5983
+    locus: §2.1 / §2.2 / §4.2 — sole-driver line for instantiation
+    cited_authority: canonical — ADR-002 §2.5 (sole-owner gateway, single graph-access boundary) and §4.5 (diffuse-access rejection)
+
+[EA       ] POSITIVE  unclassified     status=open     id=044f8100eac390e5
+    locus: §2.3 / §2.4 — fresh-not-migrated vs additive-never-destructive
+    cited_authority: canonical — DDR-002 §6 (Option A supersession, never-delete) and §7 #8 (never-delete invariant)
+
+[cross-set] MATERIAL  decision-bearing status=open     id=65fe28b66243753d
+    locus: §2.7 Authoritative-source fidelity control — 'read-exclusion of provisional ground truth is a schema-level invariant … homed in the schema's read-discipline invariant set'
+    cited_authority: coherence — ADR-004 §2.7 vs DDR-002 §7 (read-discipline invariant set: #9, #19, retracted-node exclusion) and §5 (`applicability_state` ∈ {`unconditiona
+
+[cross-set] MATERIAL  decision-bearing status=open     id=8f0349b762d27f6c
+    locus: §2.2 Schema provisioning — 'knowledge-service … owns a schema-provisioning capability exercised over the graph driver it already holds … the service process can start and connect to an empty instance, so provisioning runs before readiness reports green (which checks that the schema is present)'
+    cited_authority: coherence — ADR-004 §2.2 vs SDD-001 §3.1 (readyz ordered checks 1–2, both critical, 'the gateway must not execute writes it cannot validate')
+
+[cross-set] MATERIAL  decision-bearing status=open     id=7e1d780436cded04
+    locus: §2.2 Schema provisioning — 'the earlier practice of applying constraints from a deploy-time script is superseded' (also §3 Rationale) vs §2.2 'no service is yet deployed' context and DDR-002 §7 harness state
+    cited_authority: coherence — ADR-004 §2.2/§3 'deploy-time script … superseded' vs DDR-002 §7 Current-state (conformance harness as constraint carrier; no deploy-time con
+
+[cross-set] COSMETIC  decision-bearing status=open     id=c9d9fad3f51663a5
+    locus: §2.5 KG-scoped — 'In the current development runtime that responsibility sits with the managed graph provider' + §7 Cross-References 'ADR-002 §5.2'
+    cited_authority: coherence — ADR-004 §2.5 ('rests on instance-level backup and restore') vs ADR-004 §5.3 ('production runtime and its backup posture are deferred') and A
+
+[cross-set] POSITIVE  unclassified     status=open     id=14859b5dea6c3853
+    locus: §2.1–§2.2 sole-driver-line preservation for instantiation vs ADR-002 §2.5 / DDR-001 gateway pattern
+    cited_authority: coherence — ADR-004 §2.1/§2.2/§5.2 vs ADR-002 §2.5 (sole-driver) / §4.5 (diffuse-access rejection); DDR-001 Graph-Gateway Pattern ('Prohibited: any othe
+
+[cross-set] POSITIVE  unclassified     status=open     id=739bf0d543173e1c
+    locus: §2.8 write authorship vs ADR-002 §2.6 author/executor/authorizer principle
+    cited_authority: coherence — ADR-004 §2.8 vs ADR-002 §2.6 (author/executor/authorizer separation); ADR-008 §2.1 (gateway executor-never-author)
+
+[LAA      ] MATERIAL  decision-bearing status=open     id=5df5cd80d6ff2df8
+    locus: §2.2 Schema provisioning holds the sole-driver line + §3 Rationale
+    cited_authority: coherence — ADR-004 §2 Decision statement (loader/leverages-ports scope) vs §2.2 (new provisioning capability) + §3 ('deploy-time script ... is supersed
+
+[LAA      ] MATERIAL  resolvable       status=closed   id=9fa53e38d0f702df
+    locus: §5.1 Positive Consequences vs §2.5 / §5.3
+    cited_authority: coherence — ADR-004 §5.1 'The Reasoning Graph is safe by construction' vs §2.5/§5.3 'the RG is not source-recoverable ... durability ... rests on instan
+
+[LAA      ] MATERIAL  decision-bearing status=open     id=3f9ff61dbd8620ff
+    locus: §2.4 Additive by supersession
+    cited_authority: coherence — ADR-004 §2.4 'a changed business key supersedes its predecessor under the schema's supersession discipline' vs DDR-002 §6 (supersession scop
+
+[LAA      ] COSMETIC  decision-bearing status=open     id=5d05c0e330c7d527
+    locus: §2.7 'ungated observational stream'
+    cited_authority: coherence — ADR-004 §2.7 'ungated observational stream' vs ADR-008 §2.2 (Operational distillation carries a substantive, evidence-visible human review c
+
+[SA       ] MATERIAL  decision-bearing status=open     id=734aa05422192243
+    locus: §2.7 Authoritative-source fidelity control / §2 Decision
+    cited_authority: canonical — DDR-002 §7 (read-discipline invariants #9, #19, retracted-node exclusion — no provisional-source read-exclusion invariant) and §5 (applicabi
+
+[SA       ] MATERIAL  decision-bearing status=open     id=28c1a26163a267a7
+    locus: §2.2 Schema provisioning holds the sole-driver line
+    cited_authority: canonical — SDD-001 §2.1 (Owned responsibilities — no schema-provisioning capability enumerated), §3.1 (readiness — schema-present check, no provisionin
+
+[SA       ] MATERIAL  decision-bearing status=open     id=cabe367687140947
+    locus: §2.7 / §7 Cross-References (claim to be home of ingestion mechanics)
+    cited_authority: canonical — ADR-004 §2.7 ('home of the ingestion mechanics') vs ADR-004 §2.7 final sentence (mechanics = knowledge-service design's) and ADR-008 §2.2/§7
+
+[SA       ] MATERIAL  decision-bearing status=open     id=f061c8e848d4101b
+    locus: §2.2 / §3 Rationale — 'the earlier practice of applying constraints from a deploy-time script is superseded'
+    cited_authority: coherence — ADR-004 §2.2/§3 'deploy-time script ... superseded' vs ADR-004 §1 ('the schema's data-definition half ... has not yet been applied') and DDR
+
+[SA       ] MATERIAL  decision-bearing status=open     id=35574ad3c1054fb4
+    locus: §2.2 Schema provisioning — provisioning-before-readiness vs write-path readiness gate
+    cited_authority: canonical — ADR-004 §2.2 (provisioning runs before readyz green) vs SDD-001 §3.1 (readyz ordered checks 1–2, both critical, 'the gateway must not execut
+
+[SA       ] COSMETIC  decision-bearing status=open     id=d97457455826cc81
+    locus: §2.5 KG-scoped / §5.3 Risks — RG backup dependency vs ADR-002 §5.2
+    cited_authority: canonical — ADR-002 §5.2 (retires self-managed backup burden to managed provider — operational-burden scope; no committed RG-recovery or version-pin-pre
+
+[SA       ] COSMETIC  decision-bearing status=open     id=bac8219078aab0d3
+    locus: §2.7 fidelity-gate scope vs ADR-008 §2.2 source-class calibration
+    cited_authority: canonical — ADR-008 §2.2 (four source classes; Operational distillation carries a substantive, evidence-visible human review control — not ungated)
+
+[SA       ] POSITIVE  unclassified     status=open     id=c283fd61f925e9c0
+    locus: §2.1 / §2.2 / §4.2 — sole-driver preservation for instantiation
+    cited_authority: canonical — ADR-002 §2.5 (sole holder of the Neo4j driver / single graph-access boundary), §4.5 (diffuse-access rejection); DDR-001 Graph-Gateway Patter
+
+[SA       ] POSITIVE  unclassified     status=open     id=0545b67a2959f975
+    locus: §2.5 / §2.4 — RG-preservation by construction
+    cited_authority: canonical — ADR-001 §2.2 (reasoning-capture invariant); DDR-002 §4 (RG write-authority — ASA-authored ReasoningProgress, AOE-owned ReasoningSession, gat
+
+[EA       ] MATERIAL  decision-bearing status=open     id=7e64a80ad29ad0ca
+    locus: §2.7 Authoritative-source fidelity control
+    cited_authority: coherence — ADR-004 §2.7 ('homed in the schema's read-discipline invariant set') vs DDR-002 §7 read-discipline invariants (#9/#19/retracted) and §5 appl
+
+[EA       ] MATERIAL  decision-bearing status=open     id=4037b0858f672891
+    locus: §2.5 KG-scoped / RG preserved by construction; §5.1 / §5.3
+    cited_authority: coherence — ADR-004 §5.1 ('safe by construction') / §2.5 / §5.3 (RG recovery = instance backup; production posture deferred) vs ADR-002 §2.2/§5.2 (produ
+
+[EA       ] MATERIAL  decision-bearing status=open     id=dd51402bb1b9f2cf
+    locus: §2.7 / §7 Cross-References — claim to home the ingestion mechanics
+    cited_authority: coherence — ADR-004 §2.7 ('home of the ingestion mechanics') vs §2.7 final sentence ('port-level mechanics ... are the knowledge-service design's') + AD
+
+[EA       ] MATERIAL  decision-bearing status=open     id=22e292c6afcbb8eb
+    locus: §2 Decision statement vs §2.2 provisioning capability + §3 superseded practice
+    cited_authority: coherence — ADR-004 §2 Decision statement vs §2.2 provisioning-capability commitment + §3 'earlier practice ... is superseded'
+
+[EA       ] COSMETIC  decision-bearing status=open     id=15cea119502be5a5
+    locus: §2.2 constraint-versioning forward question
+    cited_authority: coherence — ADR-004 §2.2 ('constraint versioning ... policy not settled here') vs §5.3 ('named forward question, not a silent gap') — no tracking home o
+
+[EA       ] POSITIVE  unclassified     status=open     id=feff8f7c0eff91c6
+    locus: §2.1 / §2.2 / §4.2 sole-driver-line preservation for instantiation
+    cited_authority: canonical — ADR-002 §2.5 (sole-owner gateway, single graph-access boundary) and §4.5 (diffuse-access rejection); ADR-004 §2.1/§2.2/§4.2
+
+[EA       ] POSITIVE  unclassified     status=open     id=810aa80d8a0e9d40
+    locus: §2.3 / §2.4 fresh-not-migrated vs additive-never-destructive
+    cited_authority: canonical — DDR-002 §6 (Option A supersession, never-delete) and §7 #8 (never-delete invariant); ADR-004 §2.3 origin-binding vs §2.4 loader-behavior
+

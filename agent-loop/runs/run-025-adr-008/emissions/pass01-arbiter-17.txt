@@ -1,0 +1,1 @@
+{"finding_id":"ef3f60e214d0df88","classification":"decision-bearing","authority_locus":null,"rationale":"The detection-symmetry gap (retraction traces to an approving, not governing, decision) is an unruled question DDR-002 §2.4 routes to DDR-003; no authority determines whether ADR-008 tightens the claim or the instance is fixed.","confidence":"high"}

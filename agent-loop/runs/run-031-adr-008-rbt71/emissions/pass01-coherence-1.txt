@@ -1,0 +1,62 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References — forthcoming records",
+    "claim": "§7 cites two unauthored forthcoming records by concrete numbered identifier — 'DDR-003 (Feedback Loop Governance, forthcoming)' and 'ADR-004 (file-driven ingestion, forthcoming)' — while the same body elsewhere refers to these by subject-name ('the forthcoming feedback-loop governance design' at §2.2/§2.6/§5.3; 'the forthcoming ingestion decision record' at §1/§2.2/§5.2). The numbered forms in §7 conflict with the subject-name forms in the body, and the operator ruling on this record (Ruling G) requires forthcoming unauthored records be stated by subject-name only, never by concrete identifier, until the downstream record lands.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §7 ('DDR-003 (Feedback Loop Governance, forthcoming)', 'ADR-004 (file-driven ingestion, forthcoming)') in conflict with ADR-008 §2.2/§2.6/§5.2/§5.3 subject-name references to the same forthcoming records; author-decision-record body-integrity forward-reference rule (subject-named only for unauthored records)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Environment row / §2.2 Environment paragraph",
+    "claim": "The Environment control is described as 'Per-policy reliability-weighting at retrieval' in the §2.2 table and 'a per-policy reliability weighting' in the prose, but the mechanism DDR-004 supplies is capture-time-frozen, not retrieval-time: DDR-004 derives the aging confidence 'at Evidence capture and frozen' and states it is 'never recomputed at read' (DDR-004 §1/§3). The 'at retrieval' characterization mis-states the built mechanism's timing.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 ('reliability-weighting at retrieval' / 'per-policy reliability weighting') in conflict with DDR-004 §1/§3 (aging derivation 'derived at Evidence capture and frozen', 'never recomputed at read') and DDR-004 §6 (two-tier calibration governance)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Environment row — 'Realization routes to'",
+    "claim": "The §2.2 Environment row labels its realization 'Built — the inherited-confidence derivation ruling's aging basis' without qualification, but DDR-004 itself states the Environment aging constants (base, τ) are '*(contested)*' tunables, 'unvalidated' at 'zero capture traffic to date' (DDR-004 §2). The form is built; the constants are not validated. The unqualified 'Built' overstates the state relative to the upstream record's own characterization.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 ('Built' for Environment) in conflict with DDR-004 §2 (Environment base/τ '*(contested)*' tunables, 'unvalidated', 'zero capture traffic to date')"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "§5.2 Constraints Imposed — distillation candidate shape",
+    "claim": "§5.2 states the distillation review is 'realized through a candidate-ObservedPattern shape excluded from ground-truth traversal until approved — a downstream governance design and an additive schema shape.' This candidate-ObservedPattern shape does not exist in the ratified schema: DDR-002 §2.3 leaves the distillation checkpoint 'explicitly un-decided,' and the promotion-boundary CandidatePromotion class does not cover it. §5.2 correctly frames it as a future 'additive schema shape,' so the tense is earned here — reported as a survived-attack-adjacent check that the wording stays forthcoming, not present.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §5.2 (candidate-ObservedPattern as 'additive schema shape') consistent with DDR-002 §2.3 ('explicitly un-decided' distillation checkpoint)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.3 / §5.3 — un-promotion 'same control' claim",
+    "claim": "Checked whether §2.3's claim that un-promotion is governed by 'the same per-write, EA-gated, human-accountable control as promotion itself' overstates the built retraction shape against DDR-002 §7's retraction-gated invariant, which traces to *an* approving decision, not the *governing* one (as promotion's #15 does). The claim held: §2.3 asserts authority-class equivalence only, and §5.3 explicitly concedes the gap — 'the retraction invariant traces to an approving decision, not the governing one' — naming the detection analogue as a follow-up. Authority is homed without over-claiming the built mechanism.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.3 ('same per-write, EA-gated control') reconciled by §5.3 concession against DDR-002 §7 #21 (retraction traces to an approving, not governing, decision) and #15 (promotion governing-verdict guarantee)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.6 / §7 — ADR ↔ feedback-loop-governance boundary",
+    "claim": "Checked the ADR/DDR-003 boundary against the deliberation-ruled altitude line and the citation-direction rule: the ADR fixes invariant + accountability + control-type; the remedy boundary and all governance policy route to the feedback-loop governance design, which cites this ADR as authority — not the reverse. The claim held: §2.6 explicitly withholds the remedy-boundary ruling and routes it downstream, and §7 states 'This ADR is its upstream authority' with the pointer-resolution obligation placed in DDR-003's definition of done, never listing DDR-003 as an upstream dependency of this ADR. Boundary and citation direction are consistent.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.6 (remedy boundary / policy routed to feedback-loop governance design) and §7 ('This ADR is its upstream authority'; obligation in DDR-003's definition of done) — consistent with DDR-002 §2.4 (remedy boundary routed to DDR-003)"
+    }
+  }
+]

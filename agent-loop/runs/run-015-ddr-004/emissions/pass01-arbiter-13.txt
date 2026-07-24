@@ -1,0 +1,7 @@
+{
+  "finding_id": "da6eccd69eaf1836",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "DDR-004 ratified both the coupling (Item 6: DeploymentEnvironment reuses the Environment base 0.9) and the calibration procedure (Item 8: base fit to fresh Environment facts via re-observation) but did not settle whether a non-aging flat base should share a constant whose calibration signal it cannot generate; resolving this requires a new choice — decouple the flat base into its own tunable, redefine the calibration scope, or ratify the coupling as intentional — none of which the ratified dispositions determine.",
+  "confidence": "high"
+}

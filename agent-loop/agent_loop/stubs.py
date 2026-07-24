@@ -68,7 +68,7 @@ class Plant:
 
     def plant_id(self) -> str:
         """The stable id this plant's finding will derive at admission."""
-        return derive_id(self.finding.target, self.finding.locus, self.finding.claim)
+        return derive_id(self.finding.target, self.finding.locus, self.finding.altitude)
 
 
 def plant_emitter(plants: list[Plant]) -> Reviewer:

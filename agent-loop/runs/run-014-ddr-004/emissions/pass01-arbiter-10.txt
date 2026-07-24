@@ -1,0 +1,7 @@
+{
+  "finding_id": "882de4e5adb82da5",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record skill, Authoring discipline: 'Process narrative, ticket IDs, and review history belong in the Change Log, Cross-References, or your tracker — not threaded through the body.'",
+  "rationale": "The cited house convention determines the fix directly and mechanically: instantiated run/ticket identifiers in normative body text must move to Change Log / Cross-References or be reduced to subject-name-only. No choice among conforming options is introduced, and the deliberation record already records the same disposition (move to Cross-References / subject-name-only) as the settled convention application.",
+  "confidence": "high"
+}

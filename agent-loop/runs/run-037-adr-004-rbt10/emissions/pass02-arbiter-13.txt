@@ -1,0 +1,7 @@
+{
+  "finding_id": "aa88d974893de47e",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "Whether a provisioning operation may reach a not-ready gateway conflicts with SDD-001 \u00a73.1's no-degraded-mode hard gate; no authority reconciles the schema-provisioning window, and D2's named-but-unauthored amendment does not settle it.",
+  "confidence": "high"
+}

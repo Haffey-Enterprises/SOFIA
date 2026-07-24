@@ -1,0 +1,92 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["DDR-003"],
+"locus": "§5.1 interim posture — 'no conforming distillation write path exists' vs DDR-002 §2.3",
+"claim": "§5.1 states 'until that shape and the review surface land, no conforming distillation write path into the Operational plane exists.' DDR-002 §2.3 (the cited authority) defines `(:Operational:ObservedPattern)` with `origin_mechanism: derived` / `derivation_class: distilled` as a live ratified schema shape and states verbatim: 'The distillation write's checkpoint posture is explicitly un-decided: whether writing a `derived` `ObservedPattern` into the Operational plane warrants a human-accountable checkpoint before entry is routed to ADR-008 ... not asserted here.' The ratified schema treats the checkpoint as un-decided (writes not prohibited); DDR-003 §5.1 asserts a bar the cited authority does not carry.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "DDR-002 §2.3 — `ObservedPattern` distillation write is a live ratified shape; checkpoint posture 'explicitly un-decided,' not prohibited"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-003"],
+"locus": "§8 conformance item 4 — 're-admission forward-act-only holds by construction'",
+"claim": "§8 item 4 asserts re-admission forward-act-only 'holds by construction' because 'no consumption path evaluates governing verdicts at read time; read-exclusion keys on the executed `RETRACTS` edge (§6.2).' §6.2 itself concedes 'a standing detection analogue for executed retractions whose governing verdict is non-approving ... is a named gap (§9); the forward-act rule is what makes that gap an audit-reconciliation concern rather than a consumption defect.' The property rests on a reviewed forward-act discipline (human behavior) plus the absence of any read-time verdict evaluation — but the record's own text routes the missing structural check to a future amendment. 'Holds by construction' overstates a guarantee that is partly behavioral and partly deferred.",
+"cited_authority": {
+"kind": "soundness",
+"ref": "DDR-003 §8 item 4 'holds by construction' vs §6.2/§9 admission that the executed-retraction detection analogue is an unbuilt named gap"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-003"],
+"locus": "§8 conformance item 1 — 'DDR-001 conformance check 4 ... mechanized'",
+"claim": "§8 item 1 classes the non-bypassable gates — including 'DDR-001 conformance check 4' — as '(safety-relevant; mechanized).' The cited authority DDR-001 heads its own check set 'Conformance Checks (aspirational; mechanization deferred)' and closes '*Aspirational checkpoints — mechanized enforcement is deferred, not CI-enforced at authoring.*' Labeling DDR-001 check 4 'mechanized' contradicts the live text of the authority it cites; the check is aspirational and not CI-enforced at authoring per DDR-001.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "DDR-001 'Conformance Checks (aspirational; mechanization deferred)' section header + closing italic line"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-003"],
+"locus": "§7.3 audit posture vs §2.2 / §8 item 6 — per-dimension verdict traversal-reachability",
+"claim": "§7.3 asserts the record of 'who ruled what, on which candidate, on what basis — including §2.2's per-dimension verdicts ... is reachable by traversal from the governed fact itself.' §2.2 states 'a structured queryable capture shape is a named gap realized by a future additive graph-schema amendment at first real use,' and §8 item 6 marks per-dimension capture '(follow; design-review-enforced, interim) ... mechanized capture arrives with the structured-capture gap (§9).' The interim carrier for per-dimension verdicts is unstructured decision rationale, which is not traversable-by-dimension. §7.3's traversal-reachability claim for per-dimension verdicts is not substantiated for the interim state the record occupies.",
+"cited_authority": {
+"kind": "soundness",
+"ref": "DDR-003 §7.3 traversal-reachability claim contradicted by §2.2 / §8 item 6 / §9 deferral of the structured-capture shape"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-003"],
+"locus": "References metadata table (ADR-002 v1.2.0) vs cited-substrate siblings",
+"claim": "The References table pins 'ADR-002 v1.2.0', and §1.1 / §6.1 / §6.4 lean load-bearingly on ADR-002 §2.6 (author/executor/authorizer separation) and §2.5 (cross-origin block). DDR-002 v1.6.0 (Change Log) and DDR-004 v1.4.0 (Change Log), both in this record's own References, pin ADR-002 at v1.1.0 and route the ADR-002 v1.1.0→v1.2.0 currency cascade to a separate open ticket (RBT-66) as not-yet-folded; SDD-001 v1.5.0 (also referenced) likewise still pins ADR-002 v1.1.0. A reader reconciling DDR-003 §1.1's ADR-002 §2.6 citation against SDD-001's ADR-002 v1.1.0 pin cannot confirm the same amended §2.6 text is referenced across the dependency chain the record cites.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "DDR-003 References (ADR-002 v1.2.0) + §1.1 in conflict with SDD-001 v1.5.0 References (ADR-002 v1.1.0), DDR-002 v1.6.0 Change Log (RBT-66 deferral), DDR-004 v1.4.0 References (ADR-002 v1.1.0)"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["DDR-003"],
+"locus": "Cross-References — DDR-002 invariant list (#20, #25)",
+"claim": "The Cross-References DDR-002 entry lists the cited invariant set as '§7 (the cited invariant set: #9, #15, #19, #20, #21, #22, #25).' The DDR-003 body cites #9 (§2.1, §5.1), #15 (§2.1, §6.2), #19 (§6.3), #21 (§6.1), and #22 (§6.1, §6.3), but #20 (at-promotion ProvenanceSummary materialization + completeness) and #25 (`proposal_kind` ↔ `RETRACTS` consistency) appear nowhere in the body by number or subject. The Cross-References enumeration overstates the invariant set the record actually leans on.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "DDR-003 Cross-References DDR-002 invariant list (#20, #25 enumerated) vs body (uncited)"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["DDR-003"],
+"locus": "§9 named gaps — 'executed-retraction detection analogue' ownership",
+"claim": "§9 names the executed-retraction detection analogue as a DDR-003 named gap ('a future additive graph-schema amendment plus conformance-harness entry, at first real retraction instance'). DDR-002 v1.6.0 §2.4 routes 'a post-materialization re-decision of an executed retraction ... is likewise remedy-boundary territory routed to DDR-003' with 'a standing detection analogue of #15 for executed retractions ... not authored here,' and ADR-008 §5.3 carries the same item as its own named follow-up. Three records reference the same schema gap without one designating the canonical owner of the amendment act; at first real retraction instance it is unresolved whether the amendment is DDR-002's, DDR-003's, or ADR-008's to open.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "DDR-003 §9 vs DDR-002 v1.6.0 §2.4 (retraction re-decision routed to DDR-003) and ADR-008 §5.3 (executed-retraction re-decision named follow-up) — unresolved amendment ownership"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["DDR-003"],
+"locus": "§6.1 remedy boundary + §6.2 re-admission",
+"claim": "Checked the remedy-boundary and re-admission rulings against their upstream authority and the landed schema mechanics for scope overreach and read-discipline conformance. §6.1's replaceability-first / conjunctive-retraction test matches ADR-008 §2.6's remedy-boundary framing (supersession replaceable vs retraction no-correct-replacement) and records the defect-at-promotion-vs-world-moved axis as informing-only ('never decides the remedy'); it executes on landed mechanics (DDR-002 §7 #21/#22, SDD-001 §3.5.3–§3.5.4) without re-authoring them. §6.2 keys read-exclusion on 'the executed `RETRACTS` edge exactly as landed' (DDR-002 §5) and routes re-admission through a fresh forward EA-gated re-promotion, adding no read-time verdict evaluation. Verified against ADR-008 §2.6 and DDR-002 §5/§7 #21 — conformant.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "ADR-008 §2.6 (remedy boundary routed here) + DDR-002 §5 / §7 #21 (retraction shape / read-exclusion)"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["DDR-003"],
+"locus": "§1.2 two-distinct-controls seam vs ADR-008 §2.2 / §2.6",
+"claim": "Attacked the derive/promote seam for asserting a gated/ungated split the upstream forbids or re-litigating ADR-008's fixed control-types. It held: §1.2 frames derive vs promote as an authority boundary between two human controls (ADR-008 §2.2's operational-distillation and promotion classes), states explicitly 'not a gated/ungated split,' and confines itself to policy (which control governs which write) rather than re-authoring the control-types ADR-008 fixes. Checked against ADR-008 §2.2 (per-source-class control-types) and §2.6 (governance policy routed to this record) — conformant.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "ADR-008 §2.2 (promotion + operational-distillation control-types) and §2.6 (governance-policy boundary routed to this record)"
+}
+}
+]

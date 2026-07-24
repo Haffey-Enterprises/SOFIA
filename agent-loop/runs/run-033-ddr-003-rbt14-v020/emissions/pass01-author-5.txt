@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "1d0c940d05ddb6b1",
+  "reason": "The named authority (an 'RBT-14 self-review addendum Leg 3' ruling §5.4's per-policy posture) does not appear in either fetched authority; the docket-rulings enumerate D1–D9 and D8 is explicitly declared not the driver, so no ratified authority determines re-casting §5.4's accountability-mode as a held constant rather than an asserted ruling.",
+  "confidence": "high"
+}

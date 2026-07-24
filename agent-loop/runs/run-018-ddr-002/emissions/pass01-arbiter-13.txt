@@ -1,0 +1,7 @@
+{
+  "finding_id": "b7bf345c804c61bd",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "Whether standing up the cost plane as the Extension exemplar pre-commits the unratified cost-as-platform-capability decision is a choice no existing authority resolves: DDR-002 §2.6 names the exemplar-vs-capability tension and routes the capability question to a forthcoming, unauthored cost-capability decision record, leaving the pre-commitment question open. No higher authority (ADR-001/002, DDR-001) dictates whether the exemplar may proceed ahead of that decision, so resolving the finding requires a ratified choice that does not yet exist.",
+  "confidence": "high"
+}

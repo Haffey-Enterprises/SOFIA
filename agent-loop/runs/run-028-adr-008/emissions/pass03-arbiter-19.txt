@@ -1,0 +1,1 @@
+{"finding_id": "d69fcec298baba71", "classification": "decision-bearing", "authority_locus": null, "rationale": "Ruling D relabels only the Environment row for its n=0 state; no ratified authority dictates whether or how the Promotion row's 'Built' label carries the same qualification, leaving the consistency treatment an unmade choice.", "confidence": "medium"}

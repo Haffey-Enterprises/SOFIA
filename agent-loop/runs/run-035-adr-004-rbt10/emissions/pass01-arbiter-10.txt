@@ -1,0 +1,1 @@
+{"finding_id": "cedd5fb84c7f17b2", "classification": "decision-bearing", "authority_locus": null, "rationale": "No cited authority commits an RG-recovery / pin-preservation guarantee; ADR-002 §5.2 covers only operational-burden retirement, so the recovery basis is a gap authority does not fill.", "confidence": "high"}

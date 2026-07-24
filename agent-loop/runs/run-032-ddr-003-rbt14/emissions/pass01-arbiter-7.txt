@@ -1,0 +1,1 @@
+{"finding_id":"1737273703690635","classification":"decision-bearing","authority_locus":null,"rationale":"The corpus shows an in-flight pin cascade (RBT-66 tracks ADR-002 v1.1.0→v1.2.0 separately, deliberately unfolded); which version DDR-003 should pin is an unresolved sequencing choice no authority settles.","confidence":"medium"}

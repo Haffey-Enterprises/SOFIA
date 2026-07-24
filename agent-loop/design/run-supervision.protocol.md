@@ -45,7 +45,19 @@ judgments and misses the run.
 
 1. Prep gates (run-prep contract §8) all passed — the runner enforces
    them, but confirm the manifest was written and records the expected
-   HEAD SHA (`48e031a` or its descendant) and all five prompt hashes.
+   HEAD SHA (`48e031a` or its descendant) and all six prompt hashes.
+
+**Spend discipline — does this run need to exist?** A live proving run is the last resort, not the default; clear these four before acknowledging the envelope.
+
+1. **Units before dollars.** Spend a live run only on what a unit test cannot answer. Mechanical behavior — routing, disposition, identity collapse, gate logic — proves out in the S-/T-suites for free; a determined-not-observed disposition (a deterministic gate over captured state) needs no live event at all. Reserve live runs for genuinely emergent, real-input questions: caching under real inter-pass gaps, reviewer output discipline, emergent finding volume and false-positive rate.
+2. **Bound to the minimum passes.** Set `max_passes` from what the target criterion needs, not a high ceiling. Most criteria prove out in 1–3 passes; a low bound also forces a disposition cheaply where a natural halt would otherwise run long.
+3. **Match the target to the question.** Decision-dense records (e.g. ADR-008) never exhaust and run long by nature — use them only when you need that behavior. Keep a small near-convergeable target on hand for CONVERGED / decision-bearing / disposition proofs.
+4. **Mine captured fixtures before spending.** A finalized run folder is a rich, free fixture; most what-happened / why questions — cold audits, defect triage, cost profiling — answer from captured artifacts at $0. Spend a new run only when no captured run can answer it.
+
+A run's pre-registration is satisfied by criteria committed to git before launch (e.g. a spec §-criteria + launch-prompt pair at a pre-run HEAD); a separate PRE-REGISTRATION.md is the conventional carrier, not the only lawful one.
+
+The Batch API (50%) and per-actor model-mix are architectural cost levers, tracked separately (RBT-72) — they change what a run costs; these four govern whether it runs.
+
 2. Cost envelope acknowledged. Order-of-magnitude, stated honestly as
    estimate not measurement: the four distilled docs are ~145 KB ≈ ~36k
    tokens; with substrate and snapshot, each reviewer call is roughly
@@ -140,11 +152,32 @@ honored? any false-resolvable is a serious miss), POSITIVE proportionality
 manifest (tokens per hat per pass — the denominator of the roster
 question).
 
+**Cross-pass edit-region overlap (RBT-71 D-2 audit watch).** Computed cold at $0
+from the captured author emissions: whether any two edits across passes have
+anchor regions that intersect in the document — the same span rewritten across
+passes even where the recurrence guard saw no reopen (the guard keys on identity
+and is blind to semantic trading arriving under differing locus wordings; run-030
+rewrote the §2.2 Environment cell in all five pass-states with recurrence = 0).
+This instruments the known semantic-churn gap rather than closing it. Promotion
+trigger: post-fix audits still showing cross-pass edit-region churn → a mechanical
+same-region re-edit trigger routed into the oscillation family, designed against
+post-fix data.
+
+**Docket-discipline surfacing (RBT-71 Piece B).** When a halt's decision set is
+surfaced to the operator it is presented **grouped by distinct underlying
+decision**, not one ask per finding record: each group is one ratification ask,
+its member finding-ids listed, with the body-evidence per group; ratification is
+per decision; groups are splittable on operator demand (the presentation shape is
+codified in the `design-review-loop` skill's triage section). The ledger records
+stay unbundled and distinct — RBT-69 counting semantics are preserved — this is a
+presentation shape, not a runner change; the audit records whether surfacing
+honored it.
+
 ## §6 — Baseline comparison set
 
 The human-review baseline for the four docs: the review records in
-`docs/reviews/` at HEAD, plus the cold-review artifacts in ~/Downloads
-(`COLD-REVIEW-Findings.md`, `COLD-REVIEW-2-Findings.md`) — assembled into
+`docs/reviews/` at HEAD, plus the cold-review baseline artifacts
+(`agent-loop/baselines/COLD-REVIEW-Findings.md`, `COLD-REVIEW-2-Findings.md`) — assembled into
 the run folder at audit time (not run time; the loop never sees them).
 Only **still-live** defects count as missable: a baseline finding that the
 distillation already resolved is out of scope for recall scoring.
@@ -180,3 +213,39 @@ audit's findings-about-the-instrument (prompt defects, seam blur, arbiter
 miscalibration) route to the design docs as amendments through the normal
 ratify-then-implement path; findings-about-the-documents route to the
 Notion frontier or Linear per the standing three-surface split.
+
+## §9 — The author step (sandbox-apply semantics, attended-first)
+
+Companion to `author.prompt.md`; extends what dry mode means for the author,
+and adds its supervision streams.
+
+**What dry mode means for the author.** The author applies its conforming edits
+to the run's document working copy — `runs/<run-id>/documents/` — and nowhere
+else. The reviewed document evolves inside the run folder across passes (the
+per-pass fresh re-read picks up the edit), which is what makes review-fix-review
+mechanical rather than operator-driven. Dry mode's prohibition is unchanged in
+force, re-scoped in target: no write to the canonical corpus (`docs/`), no real
+ticket, no network write. A run's document is a snapshot copy, so writing it is
+not a canonical edit — and the fetcher already reads only
+`runs/<run-id>/documents/` (run-prep §2), so the author's blast radius is
+bounded to the run folder by construction.
+
+**First-target discipline.** Until the author has earned trust, its runs target
+only a **sandbox draft** — a review fixture or an upcoming record not yet in the
+canonical corpus — never a live canonical record. The sandbox draft is the
+author's proving ground, exactly as dry mode is the classifier's.
+
+**Author watch streams (added to §3).**
+f. **Refusal stream** — each `refuse` is the arbiter↔author seam; score it cold,
+   no abort.
+g. **Edit-then-reopen stream** — a finding the author edited that a later pass
+   reopens is the load-bearing trust signal (the edit smuggled something; the
+   re-review caught it); no abort — the loop self-corrects and oscillation halts
+   it to the operator by design.
+Abort only on an **anchor-fail storm** (edits whose `old_string` never matches —
+a prompt/assembly defect, same posture as a parse-drop storm).
+
+**Trust ramp.** The author does not advance from sandbox-only to canonical
+writes until the edit-then-reopen stream is boring across attended runs — the
+author-side analog of the classifier's unattended-trust gate. n=1 is the floor;
+state it.

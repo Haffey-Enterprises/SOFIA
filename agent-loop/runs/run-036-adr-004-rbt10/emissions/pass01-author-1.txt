@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "52ca1e23119cc14d",
+  "reason": "The named authority ('an amendment that adds a ruling updates the Decision enumeration' + body-integrity) says a decision-bearing ruling must be surfaced in §2, but does not uniquely determine the conforming wording — whether to add a decision-sentence clause, whether to reframe scope, or how to phrase the standing read-discipline invariant. Multiple conforming edits exist, and choosing among them is an unratified authoring decision, so this belongs in escalation.",
+  "confidence": "medium"
+}

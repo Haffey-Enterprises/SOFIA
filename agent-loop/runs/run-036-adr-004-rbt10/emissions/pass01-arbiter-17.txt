@@ -1,0 +1,1 @@
+{"finding_id":"118c5884ea885d80","classification":"decision-bearing","authority_locus":null,"rationale":"The finding references an ADR-004 not present in the ratified authorities; the provisional/official read-exclusion invariant and its amendment obligation have no home in DDR-002's text, exposing a gap no cited authority resolves.","confidence":"high"}

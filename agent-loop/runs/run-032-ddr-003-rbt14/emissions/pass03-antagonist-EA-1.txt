@@ -1,0 +1,62 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "References metadata table + §1.1 authority chain — ADR-002 pin",
+    "claim": "The References table pins 'ADR-002 v1.2.0', and §1.1/§6.1/§6.4 lean load-bearingly on ADR-002 §2.6 (author/executor/authorizer separation). DDR-002 v1.6.0, DDR-004 v1.4.0, and SDD-001 v1.5.0 — all in this record's own reference set — each pin ADR-002 at v1.1.0 and route the ADR-002 v1.1.0→v1.2.0 currency cascade to a separate open ticket (RBT-66) as explicitly not-yet-folded. A new record entering the corpus at ADR-002 v1.2.0 while every cited sibling sits at v1.1.0 pending an unlanded cross-record cascade commits the set to a pin state ahead of a decision the corpus has explicitly not yet ratified across records. Whether DDR-003 should stand at v1.2.0 at this time or await the RBT-66 cascade is a posture/timing judgment: this record integrates against the broader corpus pin state, and it enters ahead of it.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 References (ADR-002 v1.2.0) vs DDR-002 v1.6.0 Change Log (RBT-66 cascade deferral) + DDR-004 v1.4.0 + SDD-001 v1.5.0 §10 (ADR-002 currency routed to RBT-66, not folded)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "§5.1 interim posture + Decision.6 — 'no conforming distillation write path exists'",
+    "claim": "§5.1 commits that 'until that shape and the review surface land, no conforming distillation write path into the Operational plane exists — a distillation writer designed before then fails ADR-008 §6's accountability check at design review.' This is a hard-to-reverse gating commitment: a PROPOSED record, at n=0 distillations, forecloses all Operational-plane distillation work until two forthcoming artifacts (the candidate-shape schema amendment and the review surface) — both routed to the still-unauthored detection-promotion service design (§9) — exist. DDR-001 v1.5.0 ratifies the Operational plane as a live durable-distilled-ObservedPattern data-path, and DDR-002 §2.3 carries the distillation write as a live ratified schema shape whose checkpoint posture is 'explicitly un-decided.' Whether a downstream-blocking dependency of this weight — gating a plane's write path on an unauthored sibling record's deliverables — belongs in this record's decision at this time, or is a premature commitment made ahead of the detection-promotion design's own authoring, is a posture judgment that should be surfaced as an explicit consequence rather than carried in a body section; the reversibility cost of the foreclosure is not proportionate to a PROPOSED record against zero traffic.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "ADR-008 §2.2 (operational-distillation control routed to the forthcoming detection-promotion service design) + DDR-001 v1.5.0 Two-Graph Model (Operational plane as live durable-distilled ObservedPattern source); DDR-003 §5.1 / Decision.6 vs §9 (candidate shape + review surface both routed to the unauthored detection-promotion design)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "§9 named gaps — 'executed-retraction detection analogue' ownership vs DDR-002 §2.4 / ADR-008 §5.3",
+    "claim": "§9 names 'the executed-retraction detection analogue' as a DDR-003 named gap ('a future additive graph-schema amendment plus conformance-harness entry, at first real retraction instance'). DDR-002 v1.6.0 §2.4 carries the same item as its own routed follow-up ('a standing detection analogue of #15 for executed retractions ... is not authored here'), and ADR-008 §5.3 carries it as a named ADR-008 follow-up. Three records each claim the same schema gap as their own deferral; DDR-003 §9 does not designate which record canonically owns the amendment act or point to the others as co-carriers. At first real retraction instance the ownership of the deferred work is unsettled — a decision (which record's amendment opens the gap) that should be fixed where the routing is authored, not left to resolve by collision across three routing lists. From the EA altitude this is a cross-record integration seam: the record commits the set to an ambiguous ownership posture on a deferred hard-to-reverse commitment.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §9 vs DDR-002 v1.6.0 §2.4 (retraction re-decision detection routed to DDR-003, 'not authored here') and ADR-008 §5.3 (executed-retraction re-decision detection, named follow-up)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["DDR-003"],
+    "locus": "§1.3 roles + Decision.3 — human-only distillation/promotion fence vs Position-4 trajectory",
+    "claim": "§1.3 states 'ADR-008 §2.2 fixes both controls as *human* review with a named human answerable; any future non-human role-holder is therefore an amendment question for that upstream authority.' This pins a standing human-in-the-loop posture on the two governance controls. ADR-001 §2.1 commits the platform to a Position-4 trajectory (SOFIA-as-reasoner, LLM-as-tool, encoding density grows over time), and §2.5's encoding-density-growth mechanism is precisely the promotion of recurring reasoning into encoded logic that the promotion gate governs. The record correctly routes the non-human-holder question upstream to ADR-008, so the fence is not itself unauthorized — but whether the human-only fence integrates with the committed direction of travel or stands as a reversibility cost against it is a posture question stated only by omission. Its relationship to the ratified Position-4 trajectory deserves an explicit sentence rather than silence.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "DDR-003 §1.3 / Decision.3 vs ADR-001 v1.2.0 §2.1 (Position-4 trajectory commitment) + §2.5 (encoding-density-growth promotion mechanism); ADR-008 §2.2 (both controls fixed as human review)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-003"],
+    "locus": "§6.1 remedy boundary + §6.2 re-admission",
+    "claim": "Attacked the remedy boundary as a candidate premature or over-authorized commitment: at n=0 wrong promotions, does DDR-003 over-commit a mechanism that belongs upstream, pull against ADR-008's routing, or take a reversibility cost the posture should not yet bear? It held. ADR-008 §2.6 routes the remedy boundary (supersede-vs-retract) to this record by name; §6.1's replaceability-first/conjunctive-retraction test is form-fixed on qualitative grounds with constants held, records the defect-at-promotion-vs-world-moved axis as informing-only ('never decides the remedy'), and executes on landed EA-gated mechanics (DDR-002 §7 #21/#22, SDD-001 §3.5.3–§3.5.4) without re-authoring them. §6.2's forward-act rule keys re-admission on the landed executed RETRACTS edge (DDR-002 §5) and routes un-retraction through a fresh forward gate, integrating with the ratified read-exclusion without re-opening it. The commitment stands in its correct shape, at its correct altitude, at the correct time.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "ADR-008 v1.0.0 §2.6 (remedy boundary routed to the feedback-loop governance design) + DDR-002 v1.6.0 §5 (retraction shape / read-exclusion)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-003"],
+    "locus": "Decision.5 + §4 calibration-parameter mechanism",
+    "claim": "Attacked the mechanism-now/values-deferred cut as a posture dodge — shipping an ungoverned loop under an empirical-floor banner, or committing structure prematurely against zero traffic. It held as proportionate to the n=0 floor. Every reversibility-expensive surface (the two-controls seam, diagnosis dimensions, role split, no-leak invariant, retention-class model, audit posture) is ruled now; every calibration value routes into one EA-owned, audit-logged, fresh-read mechanism whose two-tier governance is adopted by pointer (DDR-004 §6) rather than re-authored, and whose §4.3 retention≥lookback coherence invariant prevents a silent detection-degradation failure. No calibration value is asserted; each is a named gap with an owner. The cut integrates with the corpus's ratified mechanism-now/values-at-onboarding discipline and pulls against nothing upstream.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "DDR-003 §4.1 adopting DDR-004 v1.4.0 §6 two-tier calibration governance + ADR-008 §2.2 per-class control-type routing"
+    }
+  }
+]

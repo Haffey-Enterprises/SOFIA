@@ -1,0 +1,14 @@
+# File: terraform/dev/dev.auto.tfvars.example
+# Copy to dev.auto.tfvars and fill in. dev.auto.tfvars is git-ignored (repo
+# .gitignore: *.auto.tfvars). None of these values is a secret — the only
+# credential in this environment lives in Secret Manager and is never a
+# Terraform input.
+
+project_id = "haffey-sofia-dev" # REPLACE with the real dev project id
+
+region = "us-central1"
+
+# The owner/repo allowed to federate into this project. Bound into the OIDC
+# provider's attribute condition, so only this repository's workflows can mint
+# credentials against the pool.
+github_repository = "Haffey-Enterprises/SOFIA"

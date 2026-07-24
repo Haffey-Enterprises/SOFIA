@@ -1,0 +1,68 @@
+{
+  "run_id": "run-014-ddr-004",
+  "created": "2026-07-11T19:39:33.361567+00:00",
+  "document_set": {
+    "DDR-004": {
+      "snapshot_path": "documents/DDR-004-inherited-confidence-derivation.md",
+      "sha256": "bc69dc6b58c7a45217e2286aebfbce17d2cee0c756e8bccdf57a5e3a16377827"
+    }
+  },
+  "head_sha": "f377f625b65c9c1bb2a640929654522a835742b5",
+  "prompt_sha256": {
+    "antagonist-LAA.prompt.md": "b964d2f9f0e7cdaf1159d56ce22724b8d61a88c108231789ff1a56e2fe9b7ef1",
+    "antagonist-SA.prompt.md": "e77ffbc743b86391ed1b1231c8bc6c1d4ddddfc5cb02089f07db2c6ba9bf3859",
+    "antagonist-EA.prompt.md": "d440b7c2b19d7f6f69a42247413c124577d039eb5524bd9593e57fde428b53b0",
+    "coherence-sweep.prompt.md": "3a0ca3a14024a1c4b9b17f395c0c2510450df183adc663cfb04e53f310382299",
+    "arbiter-classifier.prompt.md": "e852036bd37b01a4db1f8116cfddac739577203843a262f30ae0aa06dc786043"
+  },
+  "substrate_manifest": "substrate/manifest.json",
+  "model": "claude-opus-4-8",
+  "parameters": {
+    "max_tokens": 8192
+  },
+  "finalized": true,
+  "calibration": {
+    "generation": 5,
+    "rationale": "gen-4: severity/cap discipline restated in-place in all four reviewer prompts \u2014 a held check is POSITIVE-class, never re-labeled a defect to fit the volume cap; gen-5: arbiter locus-attribution line appended \u2014 no locus extended beyond its document's stated scope, underivable locus classifies decision-bearing"
+  },
+  "router_exit": "HALT_DECISION:decision-bearing",
+  "passes_run": 1,
+  "per_site_tokens": {
+    "antagonist-LAA": {
+      "input_tokens": 105229,
+      "output_tokens": 3289,
+      "cache_creation_input_tokens": 2333,
+      "cache_read_input_tokens": 0,
+      "calls": 1
+    },
+    "antagonist-SA": {
+      "input_tokens": 105229,
+      "output_tokens": 3396,
+      "cache_creation_input_tokens": 2353,
+      "cache_read_input_tokens": 0,
+      "calls": 1
+    },
+    "antagonist-EA": {
+      "input_tokens": 210458,
+      "output_tokens": 8,
+      "cache_creation_input_tokens": 2293,
+      "cache_read_input_tokens": 2293,
+      "calls": 2
+    },
+    "coherence": {
+      "input_tokens": 105229,
+      "output_tokens": 2179,
+      "cache_creation_input_tokens": 2333,
+      "cache_read_input_tokens": 0,
+      "calls": 1
+    },
+    "arbiter": {
+      "input_tokens": 8247,
+      "output_tokens": 3841,
+      "cache_creation_input_tokens": 99098,
+      "cache_read_input_tokens": 1189176,
+      "calls": 13
+    }
+  },
+  "wall_clock_seconds": 199.30952574999537
+}

@@ -1,0 +1,1 @@
+{"finding_id":"d86ceb0a6eae0742","classification":"decision-bearing","authority_locus":null,"rationale":"Whether a model-access gateway exists as a canonical substrate service is an unratified component-posture choice; no upstream record in the set commits it, so the fix requires a decision not yet made.","confidence":"high"}

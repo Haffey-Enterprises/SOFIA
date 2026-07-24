@@ -1,0 +1,9 @@
+{
+  "action": "close_satisfied",
+  "finding_id": "0cc8bac235ec6d2f",
+  "evidence_present": "Form built (DDR-004); constants contested/unvalidated (n=0)",
+  "evidence_absent": null,
+  "authority_satisfied": "ADR-008-run-025-operator-rulings Ruling D (relabel §2.2 'Built' to 'form built (DDR-004); constants contested/unvalidated (n=0)')",
+  "rationale": "The §2.2 Environment 'Realization routes to' cell already reads the exact relabel Ruling D directs; the finding's targeted state is present verbatim.",
+  "confidence": "high"
+}

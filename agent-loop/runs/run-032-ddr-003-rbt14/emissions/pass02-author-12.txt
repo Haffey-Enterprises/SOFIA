@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "e42c2a362747dde5",
+  "reason": "The finding asks for an explicit sentence relating the human-only fence to ADR-001's Position-4 trajectory, but neither ADR-008 §2.2 nor ADR-001 §2.5 states that relationship — they fix the human gate and that SOFIA does not self-modify without EA approval, silent on whether the fence is an integration-with or a reversibility-cost-against the trajectory. Choosing how to characterize that relationship is an unratified posture call, admitting multiple conforming phrasings; the authority does not determine the added sentence.",
+  "confidence": "high"
+}

@@ -1,0 +1,11 @@
+ADR-004 is not in the provided authority set; I must classify based on the finding's coherence claim between ADR-004 and ADR-008. The finding asks whether ADR-004's exclusion of "externally-decided mirrored records" can be reconciled against ADR-008 §2.2. ADR-008 §2.2 enumerates four source classes and provides the calibration for each; whether the GateDecision mirror (DDR-002 §2.4, `origin_mechanism: ingested`, external SoR) falls under ingestion's fidelity gate or is a distinct exempt category is not disambiguated by ADR-008's four-class table — it names no mirrored-external-record class. Resolving this requires a choice: fold the mirror into ingestion's fidelity control, or ratify a new exclusion category. No authority disambiguates.
+
+```json
+{
+  "finding_id": "68df74197a06b16b",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "ADR-008 \u00a72.2's four-class table names no mirrored-external-record class; whether to fold it into ingestion or ratify a new exclusion is an unmade choice no authority disambiguates.",
+  "confidence": "high"
+}
+```

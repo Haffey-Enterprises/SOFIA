@@ -1,0 +1,7 @@
+{
+  "finding_id": "badeaf00443cb118",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §7 — #11 ('provenance distinguishability (DDR-001 check #6): promoted distinguishable from ingested via origin_mechanism') and the DB-enforced existence-constraints group (provenance-group existence on ingested nodes)",
+  "rationale": "DDR-002 §7 fixes exactly what #11 governs (distinguishability, not stamping-existence) and locates the stamping-existence obligation in the DB-enforced existence-constraints group; conforming the SDD's citation to those already-ratified loci is a determined correction with no choice introduced.",
+  "confidence": "high"
+}

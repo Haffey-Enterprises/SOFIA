@@ -1,0 +1,7 @@
+{
+  "finding_id": "9c7742025c9da116",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "DDR-002 §4 fixes only 'decayed by observed_at' and leaves the decay reference-time anchor (capture time vs. request time vs. fixed epoch) unspecified; no ratified authority names the second operand of Δt, and the choice among the conforming candidates materially changes both the determinism claim and the confidence values, so resolving it requires a decision not yet made.",
+  "confidence": "high"
+}

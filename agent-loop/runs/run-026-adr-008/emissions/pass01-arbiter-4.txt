@@ -1,0 +1,7 @@
+{
+  "finding_id": "73c1549a1b6b8778",
+  "classification": "resolvable",
+  "authority_locus": "Operator Ruling F (run-025 dispositions), finding ef3f60e2: qualify \u00a72.3 'same control' to match the \u00a75.3 concession \u2014 authority homed; governing-verdict analogue is the named follow-up (DDR-002 \u00a77 / DDR-003)",
+  "rationale": "Ratified Ruling F names the exact fix for this locus: qualify the 'same control' claim to the \u00a75.3 concession, authority-homed with the detection analogue as named follow-up.",
+  "confidence": "high"
+}

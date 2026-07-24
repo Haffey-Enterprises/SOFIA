@@ -1,0 +1,22 @@
+[
+  {
+    "severity": "POSITIVE",
+    "target": ["SDD-001"],
+    "locus": "§2.2 / §3.2 / §7.1 — gateway authors nothing (Species 1/2 split)",
+    "claim": "I attacked the design's central posture — that the gateway executes every write and authors none — for a place where it silently defaults authorship to itself. The two-species convention holds: Species-2 request schemas carry no author field (authorship-by-gateway unexpressible), unassigned Solution-lifecycle transitions are rejected rather than defaulted (§3.4.6), and operational events are kept out of the graph (§4.7). This integrates with ADR-002 §2.6's author/executor/authorizer separation without pulling against it.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-002 §2.6 (write-authorship general principle; gateway is sole executor, never authoring authority)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["SDD-001"],
+    "locus": "§2.2 / §3.5 / §9 — forthcoming-upstream dependencies routed, not pre-empted",
+    "claim": "I probed whether this SDD commits the project to positions that deserve their own decision record first — promotion governance, condition vocabulary, un-promotion authority, cross-origin disposition. Each is routed by name to DDR-003 or the KG-entry-governance ADR and answered by neither; the design's fail-closed and block-and-surface postures hold on ratified text alone, so no unratified downstream is load-bearing. The timing dependency on DDR-003 is neutralized by construction (conditional promotions arise only through the EA gate DDR-003 itself gates). No premature commitment survived.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "deliberation-record-sdd-001 Item 2d(v) / Item 2e(ii) — 'routed by name, never invented'; DDR-003 grammar-less window empty by construction"
+    }
+  }
+]

@@ -1,0 +1,1 @@
+{"finding_id":"28e81bf014583f49","classification":"decision-bearing","authority_locus":null,"rationale":"Whether the interim state is a categorical bar or an open/un-decided checkpoint is a governance posture DDR-003 is authoring; ADR-008 §2.2 and DDR-002 §2.3 leave the interim un-decided, so no authority dictates which phrasing is correct.","confidence":"medium"}

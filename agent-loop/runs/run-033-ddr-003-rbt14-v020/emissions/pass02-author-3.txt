@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "aed5116ba11ce853",
+  "reason": "The named authority (docket D-self-review Leg 3) ruled §5.4 posture as policy-scheduled retention demotion with reversibility preserved — which is exactly what the current §5.4 text asserts — but it does not prescribe adding any 'form-fixed/instance-absent' hedge to the per-policy accountability-mode characterization; the finding asks for a re-framing the authority is silent on, and ADR-008 §2.2 assigns per-policy accountability only to the Environment class, not to distillation archival, so it does not determine the hedge either. Which qualifying language to add, and whether to add any, is an unratified choice.",
+  "confidence": "high"
+}

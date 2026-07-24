@@ -1,0 +1,8 @@
+The document already reads exactly as Ruling D prescribes. The Environment row's "Realization routes to" cell is "Form built (DDR-004); constants contested/unvalidated (n=0) — the inherited-confidence derivation ruling's aging basis" — already the conformed label. No edit needed, but the finding names a specific target; since the text already conforms, there is nothing to find-replace toward.
+
+{
+  "action": "refuse",
+  "finding_id": "39dab40a260f05f8",
+  "reason": "The document already conforms to Ruling D: the Environment row's cell already reads 'Form built (DDR-004); constants contested/unvalidated (n=0) — the inherited-confidence derivation ruling's aging basis'. No 'Built'-only label remains to relabel; there is no non-conforming anchor to edit.",
+  "confidence": "high"
+}

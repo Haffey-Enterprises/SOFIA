@@ -1,0 +1,72 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References — DDR-003 and ADR-004 forthcoming entries",
+    "claim": "§7 references two unauthored records by concrete identifier: 'DDR-003 (Feedback Loop Governance, forthcoming)' and 'ADR-004 (file-driven ingestion, forthcoming)'. The operator ruling ratified for this record (Ruling G, run-025-operator-rulings) requires forthcoming-record references in the ADR body and cross-references be stated by subject-name only, never by concrete identifier, replacing precisely 'ADR-004 (file-driven ingestion, forthcoming)' and 'DDR-003 (Feedback Loop Governance, forthcoming)' with subject-name forms. The record decides its forward-reference discipline one way in its governing intent and the body contradicts that decided discipline.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "ADR-008-run-025-operator-rulings Ruling G: 'replace \"ADR-004 (file-driven ingestion, forthcoming)\" and \"DDR-003 (Feedback Loop Governance, forthcoming)\" with subject-name forms'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Per-source-class calibration — Environment row 'Realization routes to' + Control-type",
+    "claim": "The Environment control is stated as 'Per-policy reliability-weighting at retrieval' with realization 'Built — the inherited-confidence derivation ruling's aging basis'. Ruling D of the governing intent decides the Environment control's mechanism is capture-time-frozen, not at-retrieval ('drop \"reliability-weighting at retrieval\"; state capture-time-frozen aging'), and directs relabeling the 'Built' status to 'form built (DDR-004); constants contested/unvalidated (n=0)'. The record's own decided description of this control's mechanism and status is not what the body states.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "ADR-008-run-025-operator-rulings Ruling D: 'drop \"reliability-weighting at retrieval\"; state capture-time-frozen aging + §6 governance' and 'relabel the §2.2 \"Built\" status to \"form built (DDR-004); constants contested/unvalidated (n=0)\"'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Operational distillation row — 'Realization routes to' status column",
+    "claim": "The distillation control routes realization to 'The forthcoming feedback-loop governance design; the detection-promotion service design' and §5.2 states the candidate-`ObservedPattern` shape as a present downstream commitment. Ruling E of the governing intent decides this shape does not exist in the ratified schema and must be stated as forthcoming/additive, introduced downstream — not as a present schema constraint. §2.4 revalidation and §5.2 assert the candidate-shape mechanism without marking it forthcoming.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "ADR-008-run-025-operator-rulings Ruling E: 'state the candidate-`ObservedPattern` shape as forthcoming / additive (introduced downstream), not as a present schema constraint'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.1 / §2.5 Environment cross-class control — mechanism unclarified",
+    "claim": "§2.2 states Environment has 'no per-write gate' while §2.5 states a cross-class conflict 'withholds and escalates to human resolution' and is 'blocked and surfaced'. The body does not reconcile these into the decided shape: Ruling C rules the cross-class withhold is a mechanical conflict-detection at the graph gateway firing only on structural collision with an EA-set scope, with human accountability at the resolution step — NOT a per-write human gate on the observation stream. The record leaves the two claims stated side by side without the ruled clarification that both hold via a gateway-mechanical block.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "ADR-008-run-025-operator-rulings Ruling C: 'clarify §2.2/§2.5 so both hold — the cross-class withhold is gateway-mechanical on structural collision, human accountability at resolution, routine observation ungated'"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "§2.3 Un-promotion authority — 'the same per-write, EA-gated, human-accountable control'",
+    "claim": "§2.3 states un-promotion is 'governed by the same per-write, EA-gated, human-accountable control as promotion itself' and cites the built retraction shape as 'the instance of this authority'. Ruling F decides this 'same control' claim must be qualified to match the §5.3 concession — the built retraction instance (retraction-gated invariant) traces to *an* approving decision, not the *governing* one, so it does not yet supply promotion's governing-verdict guarantee. §2.3 asserts sameness without carrying the qualification the intent requires at that locus; §5.3 carries the concession but §2.3's authority claim does not defer to it.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "ADR-008-run-025-operator-rulings Ruling F: 'qualify §2.3's \"same control\" claim to match the §5.3 concession — the authority is homed; the governing-verdict detection analogue for executed retractions is the named follow-up'"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Operational distillation prose + Cross-References R30 handling",
+    "claim": "The distillation control (§2.2, §2.4 revalidation) is stated self-containedly, which conforms to Ruling A's requirement not to cite R30 in the ADR body — the body correctly names R30 only in §7 Cross-References as fetched substrate, not as an in-body reconciliation citation. This surface was attacked against the governing-principle 'an ADR is standalone; R30 rulings are substrate, never durable in-body citations' and the distillation-supersession rationale is stated on its own terms (self-assigned confidence cannot gate its own soundness) without leaning on R30 as authority. The attack failed: the standalone-record discipline holds at this locus.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "ADR-008-run-025-operator-rulings Ruling A + governing principle: 'state the distillation control-type and this rationale self-containedly in the ADR body; do not name or cite R30 in the ADR'"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2 Decision + §2.1 accountability invariant scope",
+    "claim": "Checked whether the record decides what its title and summary claim — a human-accountable control on every ground-truth mutation, calibrated per source class, homing the un-promotion authority — no more and no less. The Decision states one invariant sentence, decomposes it into scoped sub-decisions (invariant/scope, per-class calibration, un-promotion, withdrawal, cross-class precedence, governance boundary), explicitly fences RG capture out of scope (§2.1), and explicitly disclaims policy/threshold/remedy-boundary rulings to the downstream governance design (§2.6). The claim-fidelity attack — that the record smuggles a governance-policy or remedy-boundary decision, or over-claims authority it does not hold — held: §2.6 and the §5.2/§5.3 named follow-ups keep the record's decided scope matched to its stated scope.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "RBT-59-ADR-008-deliberation-record Item 5 (ADR ↔ DDR-003 boundary: 'ADR does not rule the remedy-boundary'; 'DDR-003 is a downstream consumer citing this ADR') + Item 2 altitude line ('ADR fixes invariant + accountability + control-type per class; downstream fixes control form + mechanics')"
+    }
+  }
+]

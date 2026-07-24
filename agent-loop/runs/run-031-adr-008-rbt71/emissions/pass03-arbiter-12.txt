@@ -1,0 +1,7 @@
+{
+  "finding_id": "3a29368893598624",
+  "classification": "resolvable",
+  "authority_locus": "ADR-008-run-025-operator-rulings Ruling B — add an explicit 'Relationship to ADR-001 §2.5' statement recording generalization + subsumption + un-promotion extension",
+  "rationale": "Operator Ruling B directly mandates a single explicit locus stating this decided relationship; the fix is dictated, not chosen.",
+  "confidence": "high"
+}

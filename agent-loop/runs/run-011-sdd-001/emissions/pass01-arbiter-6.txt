@@ -1,0 +1,7 @@
+{
+  "finding_id": "ce68153ca30482a9",
+  "classification": "resolvable",
+  "authority_locus": "ADR-002 v1.1.0 — §6 (Compliance checks 1–7) as the compliance-check locus; §2.5/§2.6/§5.2 as the substantive-decision loci the SDD leans on",
+  "rationale": "The finding is a citation-precision note: the correct loci already exist and are fixed in the ratified ADR-002 structure, so conforming the SDD's §7.1/§9 references to the actual section numbers is determined by that authority — no choice is introduced.",
+  "confidence": "high"
+}

@@ -1,0 +1,1 @@
+{"finding_id":"c0804b5d7555e994","classification":"decision-bearing","authority_locus":null,"rationale":"ADR-004 commits a schema-level provisional read-exclusion invariant DDR-002 does not carry; realizing it requires a new schema amendment (provisional-state concept, read-discipline invariant) no ratified authority specifies.","confidence":"high"}

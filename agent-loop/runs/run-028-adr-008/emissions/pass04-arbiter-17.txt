@@ -1,0 +1,7 @@
+{
+  "finding_id": "2af87b7fa5774abb",
+  "classification": "resolvable",
+  "authority_locus": "RBT-59 deliberation record Item 2 (frame: invariant = human accountability over ground-truth mutation; general authority, of which un-promotion is a sub-case) + Item 1 slug ruling (ground-truth-mutation-governance) + Ruling B (general authority, un-promotion the extension)",
+  "rationale": "Ratified intent fixes the general-invariant framing as principal; aligning Description/§1 to it is a determined edit introducing no new choice.",
+  "confidence": "high"
+}

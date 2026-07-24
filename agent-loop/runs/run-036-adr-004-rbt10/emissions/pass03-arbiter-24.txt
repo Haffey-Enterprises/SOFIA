@@ -1,0 +1,1 @@
+{"finding_id":"80fc5fa4d3ebbca5","classification":"decision-bearing","authority_locus":null,"rationale":"ADR-004 exempts a 'mirrored externally-decided records' class that ADR-008 §2.2's four-class calibration does not enumerate; no authority resolves whether such a class exists or is exempt.","confidence":"high"}

@@ -1,0 +1,1 @@
+{"finding_id": "3f9ff61dbd8620ff", "classification": "decision-bearing", "authority_locus": null, "rationale": "ADR-004 does not exist in the ratified set; the claim rests on an unauthored record, so no authority determines whether the invoked supersession discipline was meant KG-uniform or plane-scoped.", "confidence": "medium"}

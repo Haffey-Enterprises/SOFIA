@@ -1,0 +1,92 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.4 The checkpoint executor",
+    "claim": "§2.4 states 'the graph gateway is the authoring authority for each checkpoint approval: the approval is recorded as the gateway's own act at the write boundary.' This contradicts the ratified ADR-002 §2.6 general write-authority principle, which states the sole-owner gateway 'is the sole executor and enforcement boundary of all graph writes; it is never itself the authoring authority.' ADR-002 §2.6 is explicit that for EA-gated materializations the authoring authority is the approving decision, and the gateway only executes. ADR-003 assigns the gateway the authoring role that its cited upstream authority reserves for the approving decision.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-002 §2.6 (general write-authority principle: gateway is sole executor, never the authoring authority) — deviated from at ADR-003 §2.4"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.3 Un-promotion authority / §6 Compliance",
+    "claim": "ADR-003 §2.3 asserts DDR-002 §5, §7 #21 supply the retraction mechanism as an 'EA-gated reversing CandidatePromotion whose approving PromotionDecision carries origin_mechanism: ingested.' DDR-002 §5 defines the reversing CandidatePromotion as carrying proposal_kind: retraction, and DDR-002 §2.4/§1 fix a PromotionDecision's origin_mechanism as 'authored' (SOFIA-issued, EA is the approving human Actor), never 'ingested.' The record attributes origin_mechanism: ingested to the approving PromotionDecision, which conflicts with the ratified schema's provenance assignment for PromotionDecision.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §2.4 (PromotionDecision origin_mechanism: authored) and §1 provenance matrix — deviated from at ADR-003 §2.3"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§7 Cross-References — DDR-002 §7 #21",
+    "claim": "§2.3 and §7 cite 'DDR-002 §5, §7 #21' as the retraction shape. DDR-002 §7 #21 (retraction-gated) requires the reversing CandidatePromotion trace to an approving PromotionDecision — but the record characterizes the retraction shape's approving decision as carrying origin_mechanism: ingested (see prior finding). Independently, ADR-003 relies on DDR-002 §7 #21 to substantiate that un-promotion is already schema-governed, yet DDR-002 §2.4 states #21 'traces to an approving decision, not the governing one' and explicitly routes the un-promotion upstream authority to 'the forthcoming KG-entry-governance ADR' — i.e., DDR-002 names ADR-003 as the source of the authority ADR-003 claims to already find substantiated in DDR-002. The cross-reference does not fully resolve: the authority ADR-003 supplies and the shape DDR-002 defines are cross-dependent, and the record's claim that the mechanism is fully specified upstream is unsubstantiated.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.3/§7 vs DDR-002 §2.4 (un-promotion authority routed to KG-entry-governance ADR) + §7 #21 (traces to an approving, not governing, decision)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§6 Compliance",
+    "claim": "§6 claims the distillation substantive-review checkpoint 'is mechanized per the DDR-002 §7 harness pattern — a 1b gateway-behavioral check whose required-flip is reserved to the gateway build, joining that harness increment.' This is an unsubstantiated substantiation claim: no §7 check number is named, no harness increment is identified, and DDR-002 §7's CI-only invariant set (28 checks) contains no distillation-checkpoint check. DDR-002 §2.3 explicitly leaves the distillation-write checkpoint posture 'un-decided' and routes it to the forthcoming KG-entry-governance ADR — it commits no harness mechanization for it. The record asserts a mechanization that its cited authority does not carry.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §7 (CI-only invariant set — no distillation-checkpoint check) and §2.3 (distillation checkpoint posture un-decided) — deviated from at ADR-003 §6"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2 Decision / §2.2 Environment plane vs §5.2 Constraints",
+    "claim": "§2 and §2.1 define the checkpoint 'form' as 'a per-write gate, or retrieval-time confidence-weighting.' §5.2 restates the imposed constraint as 'a per-write gate for authored and distilled entry; retrieval-time weighting for the Environment plane.' But §2.1 assigns authoritative-source ingestion a 'verification-weight checkpoint on the captured representation' — the term 'verification-weight' is introduced without definition and is not clearly either a per-write gate or retrieval-time weighting; §5.2 then silently collapses ingestion into 'authored and distilled entry / a per-write gate,' a category the record never established (ingestion is not 'authored'). The internal mapping between §2.1's three source-class forms and §5.2's two-bucket restatement is inconsistent.",
+    "cited_authority": {
+      "kind": "soundness",
+      "ref": "ADR-003 §2.1 (three source-class forms incl. undefined 'verification-weight') vs §5.2 (two-bucket restatement: per-write gate for 'authored and distilled')"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-003"],
+    "locus": "§1 Context / §7 Cross-References — DDR-002 §7 #21",
+    "claim": "The record repeatedly cites 'DDR-002 §7 #21' and 'DDR-002 §5, §7 #21' as the retraction-shape locus. The cited loci exist in the current DDR-002, but the record also cites 'DDR-002 §2.4' obligations only via §2.3/§2.4 routing labels; §7 references resolve, but the record does not cite DDR-002 §2.4's Decision.7 (the Decision-block enumeration of the retraction shape), leaving the strongest enumerated authority for the shape uncited while relying on the narrower check-locus.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §7 Cross-References citing DDR-002 §7 #21 without DDR-002 Decision.7 (retraction shape enumeration)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.5 Distillation entry / §2.1",
+    "claim": "§2.5 states a distillation write 'produces an ObservedPattern in the Operational plane carrying a flat_base confidence.' DDR-002 §2.3 assigns the Operational plane's confidence-derivation basis as native_confidence (basis 1, the node's own confidence = lesson reliability), explicitly, at the plane level. ADR-003 assigns ObservedPattern a flat_base confidence, contradicting the ratified per-class confidence-derivation basis for the Operational plane.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §2.3 (Operational plane confidence-derivation basis: native_confidence) — deviated from at ADR-003 §2.5"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-003"],
+    "locus": "§2.2 Environment plane",
+    "claim": "Checked ADR-003's Environment-plane posture (confidence-weighting at retrieval, no per-write checkpoint, citing freshness aging DDR-002 §2.2) against the ratified KG-Entry-Governance Rulings (Ruling 1) and DDR-002 §2.2's aging-basis assignment for the Environment plane. The posture conforms: Ruling 1 ratifies exactly this disposition, and DDR-002 §2.2 assigns the Environment plane the aging (freshness/observed_at) basis the record relies on. The attack — that the Environment posture deviated from its cited authority — failed; the citations align.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "KG-Entry-Governance Rulings Ruling 1 + DDR-002 §2.2 (Environment aging basis) — conformance held at ADR-003 §2.2"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-003"],
+    "locus": "§2.1 Promotion path",
+    "claim": "Checked ADR-003's claim that the promotion path introduces 'no new mechanism' and reuses 'the existing EA gate committed at ADR-001 §2.5' against ADR-001 §2.5 and DDR-001 Decision.5. The claim conforms: ADR-001 §2.5 commits the EA-gated promotion mechanism, and DDR-001 Decision.5 explicitly routes the broader all-KG-entry checkpoint to a forthcoming KG-entry-governance ADR while scoping its own self-modification clause to ADR-001 §2.5's object. ADR-003 correctly identifies itself as that forthcoming record and does not re-author the promotion gate. The attack that the promotion-path claim over-reached its cited authority failed.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-001 §2.5 (EA-gated promotion) + DDR-001 Decision.5 (broader checkpoint routed to KG-entry-governance ADR) — conformance held at ADR-003 §2.1"
+    }
+  }
+]

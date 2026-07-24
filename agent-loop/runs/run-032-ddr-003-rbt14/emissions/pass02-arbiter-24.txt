@@ -1,0 +1,7 @@
+{
+  "finding_id": "3aa43dd3cb5b0b19",
+  "classification": "resolvable",
+  "authority_locus": "DDR-001 'Conformance Checks (aspirational; mechanization deferred)' header + closing line, and DDR-002 §7 #9 (follow-tier, gateway-enforced read-discipline, not landed) — both dictate the corrected enforcement-state label",
+  "rationale": "The cited authorities state the enforcement posture verbatim; conforming DDR-003 §8's label to them is determined, introducing no choice.",
+  "confidence": "high"
+}

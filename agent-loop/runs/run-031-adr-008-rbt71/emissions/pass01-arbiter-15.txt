@@ -1,0 +1,1 @@
+{"finding_id": "b1176e142d545d67", "classification": "resolvable", "authority_locus": "ADR-008-run-025-operator-rulings Ruling D (design intent): relabel §2.2 Environment 'Built' to 'form built (DDR-004); constants contested/unvalidated (n=0)'", "rationale": "Ruling D dictates the exact relabel verbatim; the fix is determined, no choice remains.", "confidence": "high"}

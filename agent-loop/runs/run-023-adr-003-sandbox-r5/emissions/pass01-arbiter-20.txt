@@ -1,0 +1,7 @@
+{
+  "finding_id": "9bebc8cee31d1905",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §2.4 (PromotionDecision definition: `origin_mechanism: authored`; no `source_record_ref`) — the owning schema for the node type ADR-003 §2.3 mis-values",
+  "rationale": "DDR-002 §2.4 is the ratified owning definition of PromotionDecision and fixes its origin_mechanism at `authored`; ADR-003's `ingested` value simply contradicts that fixed value, so the fix is determined by conforming ADR-003 to the owning schema — no unratified choice is introduced.",
+  "confidence": "high"
+}

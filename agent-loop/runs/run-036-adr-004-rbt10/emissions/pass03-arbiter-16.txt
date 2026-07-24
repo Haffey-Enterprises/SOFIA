@@ -1,0 +1,1 @@
+{"finding_id":"19069fca6a8638e3","classification":"decision-bearing","authority_locus":null,"rationale":"ADR-004 text is not in the fetched authorities; the ADR-008 vs ADR-004 scope tension over what ingestion-mechanics ownership the forward reference assigned is not disambiguated by any higher authority.","confidence":"medium"}

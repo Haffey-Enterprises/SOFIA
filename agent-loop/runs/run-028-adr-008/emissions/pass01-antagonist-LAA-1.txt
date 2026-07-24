@@ -1,0 +1,82 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 per-source-class calibration table — Environment row 'Realization routes to: Built — the inherited-confidence derivation ruling's aging basis'",
+    "claim": "The Environment row's 'Realization routes to' cell states the control is 'Built' via DDR-004's aging basis, but the control-type cell describes it as 'Per-policy reliability-weighting at retrieval.' The realized DDR-004 mechanism is capture-time-frozen (DDR-004 §1/§3: 'never recomputed at read'), not a retrieval-time weighting. The record decides a control-type ('weighting at retrieval') that the artifact it names as its realization does not implement — the decision content does not match the cited built instance.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 Environment control-type ('reliability-weighting at retrieval') vs DDR-004 §1/§3 (derived-at-capture, frozen, never recomputed at read) named as its realization route"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 table Environment row + §2.3 body ('Built' status labels)",
+    "claim": "The Environment and Promotion rows are labeled 'Built' without qualification, but §5.3 Risks concedes the constants underlying the Environment control are 'held contested and config-surfaced' and n=0 traffic has run. A decision claiming a control is 'Built' while its own consequences section concedes the mechanism's calibration is unvalidated is a claim-fidelity defect: the status asserted in the decision body overstates what the substrate supports.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.2 'Built' label vs ADR-008 §5.3 'calibration constants ... held contested and config-surfaced by the inherited-confidence derivation ruling' and 'No promotion, ingestion, or capture traffic has run'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.3 Un-promotion authority — 'governed by the same per-write, EA-gated, human-accountable control as promotion itself'",
+    "claim": "§2.3 claims un-promotion is governed by 'the same' control as promotion, and names the built retraction shape (DDR-002 §7 #21) as 'the instance of this authority.' But §5.3 Risks concedes the retraction invariant '#21 traces to an approving decision, not the governing one,' so it does not supply promotion's governing-verdict guarantee (#15). The 'same control' claim in the decision body is contradicted by the record's own risk concession — the decision claims a fidelity of control the named instance does not deliver.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.3 'the same per-write, EA-gated, human-accountable control' vs ADR-008 §5.3 Executed-retraction re-decision risk ('#21 traces to an approving decision, not the governing one')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§7 Cross-References — 'ADR-004 (file-driven ingestion, forthcoming)' and 'DDR-003 (Feedback Loop Governance, forthcoming)'",
+    "claim": "The record names two forthcoming, unauthored records by concrete document identifier (ADR-004, DDR-003) in the body/cross-references. The author-decision-record forward-reference rule requires forthcoming unauthored records to be named by subject only, with concrete identifiers binding at the downstream record's landing. Using concrete IDs here decides a numbering allocation the record has no authority to fix and creates a standing pointer hazard (ADR-004 vs DDR-004 collision territory).",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "author-decision-record SKILL, body-integrity forward-reference rule: 'A forward reference in the body is subject-named only ... Concrete identifiers bind only at the downstream record's landing'; ADR-008-run-025-operator-rulings Ruling G"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-008"],
+    "locus": "§2.2 Operational distillation row — 'Realization routes to: The forthcoming feedback-loop governance design; the detection-promotion service design' + §5.2 Constraints 'realized through a candidate-ObservedPattern shape excluded from ground-truth traversal until approved'",
+    "claim": "§5.2 states the distillation control is realized through a candidate-ObservedPattern shape 'excluded from ground-truth traversal until approved,' phrased as a present realization mechanism. Per the substrate this shape does not exist in the ratified schema (DDR-002 §2.3 leaves the distillation checkpoint 'explicitly un-decided'; the promotion-boundary CandidatePromotion class does not cover it) — it is an additive downstream shape. The consequence prose claims a realization the decision substrate does not yet support.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §5.2 'realized through a candidate-ObservedPattern shape' (present tense) vs DDR-002 §2.3 distillation-write checkpoint 'explicitly un-decided' / routed forward"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-008"],
+    "locus": "Metadata table 'Description' + §1 closing ('homes the upstream authority for un-promotion that ADR-001 §2.5 does not reach') vs title/summary scope",
+    "claim": "The title and §2 frame the record's decision as 'a human-accountable control on every mutation of enterprise ground truth,' while the Description and §1 foreground the narrower un-promotion homing. The record's stated decided scope (full-lifecycle mutation governance across four source classes) is broader than what the Supersedes field ('None — establishes new platform principle') and the ADR-001 §2.5 relationship narration surface as the ADR's discrete decision act; a reader must reconcile whether the record decides the general invariant or primarily homes the un-promotion gap. The claim-vs-content match is defensible but the two framings sit in tension.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 metadata Description (un-promotion homing emphasis) vs §2 Decision ('every mutation ... calibrated per source class') — title/summary/decision-content scope alignment"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.6 Governance boundary — remedy-boundary and policy routed to the forthcoming feedback-loop governance design",
+    "claim": "I attacked the boundary between what this ADR decides and what it defers as a possible scope-creep surface (a smuggled remedy-boundary or policy ruling riding under the principle). The record holds: §2.6 explicitly disclaims ruling the remedy boundary (supersede vs retract), thresholds, cadence, retention, and reviewer-role assignments, and §2 states the ADR fixes 'no policy, threshold, cadence, or mechanism.' The Compliance §5 boundary-check reinforces it. The decided scope is bounded to invariant + accountability + control-type; no downstream policy is smuggled in as a decision.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.6 + §2 ('fixes no policy, threshold, cadence, or mechanism') + §6 Compliance check 5 (boundary check) — decided scope confined to the principle layer"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-008"],
+    "locus": "§2.1 scope exclusion — Reasoning-Graph capture declared outside this record's scope",
+    "claim": "I attacked the mutation-scope boundary for over-reach — whether the record quietly extends its control over Reasoning-Graph capture (captured judgment), which would be a scope defect. The record holds: §2.1 explicitly declares RG capture out of scope, names its governing authority (ADR-001 §2.2; ADR-002 §2.6), and confines the invariant to KG authoritative ground truth. The gateway executor-vs-author distinction is also declared and cited, foreclosing an accidental relocation of authorship onto the gateway. The dependency and its named authorities are declared, not assumed.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-008 §2.1 ('Reasoning-Graph capture is not ground truth ... outside this record's scope', ADR-001 §2.2 / ADR-002 §2.6) — declared scope boundary and named dependency"
+    }
+  }
+]

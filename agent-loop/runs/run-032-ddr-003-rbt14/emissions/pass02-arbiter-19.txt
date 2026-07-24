@@ -1,0 +1,7 @@
+{
+  "finding_id": "e42c2a362747dde5",
+  "classification": "resolvable",
+  "authority_locus": "ADR-008 §2.2 (both governance controls fixed as human review, named human answerable) + ADR-001 §2.5 (EA-gated promotion, SOFIA does not self-modify encoded reasoning without EA approval)",
+  "rationale": "Both authorities already fix human accountability on the promotion gate and route non-human-holder to ADR-008; the requested sentence merely restates ratified posture, adding no choice.",
+  "confidence": "high"
+}

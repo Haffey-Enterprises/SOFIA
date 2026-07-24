@@ -1,0 +1,7 @@
+{
+  "finding_id": "35b9a7fc1305a943",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "§2.6 defines property_schema and confidence_basis as two independent node-label-keyed declarations and supplies no invariant that their label sets coincide; #26's formulation assumes coincidence that no ratified authority states. Resolving the gap requires a choice (bind the two sets, re-key #26 to a single canonical label set, or make one derive from the other) that the substrate is silent on — an incomplete decision, not a fix determined by existing authority.",
+  "confidence": "high"
+}

@@ -1,0 +1,72 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "References metadata table vs. body citations of ADR-002",
+    "claim": "The References table pins 'ADR-002 v1.2.0', but the substrate copy of ADR-002 provided is at Version 1.2.0 — consistent. However Decision.1's parenthetical expands ADR-008 as 'Architecture Decision Record 008 — Ground-Truth Mutation Governance' while the record elsewhere and its own References line title ADR-008 as 'Ground-Truth Mutation Governance'; the record decides it consumes ADR-008 as upstream authority, and the title-expansion inconsistency is minor, but the substantive scope question is whether DDR-003 claims to decide only what its Decision block enumerates. This finding flags a claim-fidelity gap: §6.1 introduces the 'defect-at-promotion versus world-moved' classification as a recorded, durable determination axis, but the Decision block (Decision.7) states the remedy boundary as 'replaceability-first' and does not surface that a second durable classification axis is being committed as a recording obligation.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 Decision.7 vs §6.1 — the defect-at-promotion/world-moved recording obligation is a committed determination in §6.1 not surfaced in the Decision enumeration"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "Decision.5 / §4.3 (retention ≥ lookback coherence validation)",
+    "claim": "§4.3 commits a binding coherence rule — 'Every §7.1 working-tier retention window must be greater than or equal to every detection lookback window' with configuration-time rejection of incoherent pairs — and §8 item 8 lists it as a conformance check. This is a substantive validation ruling with an enforcement consequence, but Decision.5 states only that 'One EA-owned, data-configured, audit-logged, fresh-read parameter mechanism governs every tunable value' and does not enumerate the retention≥lookback coherence constraint as a decided component. A reader treating the Decision block as the contract's complete index (per the record's own citation-convention stance) would miss a decided validation rule.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 Decision.5 vs §4.3 + §8 item 8 — the binding retention≥lookback validation is a decided rule absent from the Decision enumeration"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "Decision.3 / §1.3 — the ADR-008 human-review amendment boundary",
+    "claim": "Decision.3 rules the two roles and states the holder set is a role-assignment act 'save that a non-human role-holder is an amendment question for ADR-008 §2.2.' §1.3 restates this. The record thereby decides that widening role-holdership to a non-human actor is out of its own scope and requires an upstream ADR-008 amendment. This is a real scope commitment — the record is declining authority it might otherwise be read to hold — and it is stated in the Decision block, which is correct; but the finding is that §3 (signals/detection) and §5 (distillation) both assign governed judgments to human roles while §3.4 permits detection as deterministic encoded logic, and no locus reconciles whether the detection mechanism surfacing a candidate to the distillation-reviewer is itself constrained by the human-review boundary. The consequence of the ADR-008 human-only fence on the loop's automation surface is not fully declared.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §1.3 / Decision.3 vs §3.4 / §5.1 — the human-review boundary's scope over the detection/candidate-surfacing automation is under-declared"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["DDR-003"],
+    "locus": "§8 item 4 vs §8 preamble tiering",
+    "claim": "§8 item 4 ('Re-admission forward-act-only') is labelled '(safety-relevant; holds by construction on the read path)' and the claim body itself concedes 'by-construction is a read-path claim, not an audit-completeness claim — audit-side detection of a contested executed retraction is the named gap.' The label 'holds by construction' therefore carries a scope qualifier that partially retracts the strength the label asserts; the conformance item's status is stated as stronger than the accompanying prose supports for the audit dimension.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §8 item 4 — the 'holds by construction' status label overstates coverage relative to its own audit-side concession"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["DDR-003"],
+    "locus": "Change Log 0.2.0 row + §5.4 archival posture",
+    "claim": "The Change Log 0.2.0 row narrates that the §5.4 archival-demotion posture 'surfaced as decision-bearing' and was 'ruled (a) by Tad' in solo self-review; §5.4 states archival after a reviewed terminal transition is 'a policy-scheduled act under per-policy accountability.' The record decides §5.4 as ruled, but §5.4's status as a per-policy (not per-write) accountability act is a calibration/accountability-mode assignment whose driving instance (n=0 distillations, n=0 archivals) is absent — the record correctly holds constants but the per-policy-vs-per-write accountability mode for archival is asserted definitively rather than surfaced as a form-fixed/constant-held distinction the way §4 handles its values.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §5.4 vs the mechanism-now/values-at-onboarding cut stated in Rationale — archival accountability-mode is asserted, not held, under the same empirical floor"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-003"],
+    "locus": "Decision block completeness vs the body's decided rulings",
+    "claim": "Checked the Decision block (Decisions 1–10) against the substantive rulings in §§1–7 for the record's own stated obligation that 'an amendment that adds a ruling updates the Decision enumeration' (author-decision-record skill). The centerpiece rulings — two-controls seam (Decision.1/§1.2), five diagnosis dimensions (Decision.2/§2.2), role split with the human-review amendment boundary (Decision.3/§1.3), no-leak invariant (Decision.4/§3.2), parameter mechanism (Decision.5/§4), distillation candidate/lifecycle/revalidation/archival (Decision.6/§5), remedy boundary (Decision.7/§6.1), conditional-scope (Decision.8/§6.3), cross-class four-outcome resolution (Decision.9/§6.4), retention-class model and audit posture (Decision.10/§7) — each trace to their body sections and back. The enumeration is substantially complete; the attack found only two under-surfaced components (the §6.1 classification axis and the §4.3 coherence rule, reported above), and the load-bearing decisions all resolve. The Decision-block-as-contract-index discipline held under attack.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 Decision block ↔ §§1–7 — enumeration traced against decided rulings; substantially complete, two under-surfaced items excepted"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-003"],
+    "locus": "§9 named gaps + Pre-Acceptance Conditions vs the record's declared deferrals",
+    "claim": "Attacked the record for smuggled or undeclared deferrals — commitments made in body prose that ride along without being surfaced as a decision or a named gap. Traced every deferral: candidate-ObservedPattern shape (§5.1→§9), executed-retraction detection analogue (§6.2→§9), structured diagnosis capture (§2.2→§9), decision-consumed survival mechanism (§7.2→§9), multi-condition composition (§6.3→§9), all §4 calibration values (§4→§9), batch guardrails (§2.3→§9), access-model surface (§1.3→§9), retrieval affordance (§7.2→§9). Each body deferral has a matching §9 entry with an owner and a reversal path, and the Pre-Acceptance section correctly states 'every deferral above is a named gap with an owner, not a condition on acceptance.' The scope of what the record defers is declared, not smuggled; the deferral-declaration discipline held.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §9 + Pre-Acceptance Conditions ↔ body deferrals — every deferral surfaced as a named gap with owner and reversal path"
+    }
+  }
+]

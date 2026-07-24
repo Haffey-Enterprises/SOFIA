@@ -1,0 +1,9 @@
+There is no ADR-004 in the corpus — the target does not exist among the ratified authorities (ADR-004 is not present; DDR-004 exists and is unrelated). The finding cites §2.5/§5.3 of an "ADR-004" whose content cannot be verified against any authority. Whether an RG-durability guarantee resting on a deferred production backup posture is acceptable-as-designed, or a defect requiring the production posture to be settled now, is a choice ADR-002's deliberate topology/runtime deferral (§5.2) does not disambiguate — it explicitly weighs that burden "at the production-environment build," leaving the timing open rather than dictating a fix.
+
+{
+  "finding_id": "f0db91021949dc3a",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "Target ADR-004 absent from the corpus and unverifiable; the deferred production runtime/backup posture (ADR-002 §5.2) is silent on whether the durability backstop must be resolved now.",
+  "confidence": "high"
+}

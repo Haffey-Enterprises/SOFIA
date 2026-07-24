@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "8aafbd9b7a45a1b3",
+  "reason": "The finding identifies an overclaim ('holds by construction') but neither internal consistency nor Obligation 7's ratified rule fixes the replacement enforcement-state label. §8 uses several distinct tier tags (aspirational, design-review-enforced/interim, holds by construction); which label conforms — and whether to add caveating text vs. relabel — is an unratified choice among conforming options, so the authority does not uniquely determine the edit.",
+  "confidence": "medium"
+}

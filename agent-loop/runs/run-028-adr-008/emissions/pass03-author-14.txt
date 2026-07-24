@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "7bf98259f37e4362",
+  "reason": "The named authority establishes DDR-004 §6's two-tier governance (a tuned value ratifies by amendment) and the n=0 empirical floor, but it does not dictate a single conforming rephrasing of the Environment-row prose. Multiple edits could reconcile the 'ratified act' claim with the enabling-condition timing (e.g., recast as the governance regime that governs calibration, note the amendment act has not yet occurred, or qualify against n=0), and choosing among them is an unratified drafting decision.",
+  "confidence": "high"
+}

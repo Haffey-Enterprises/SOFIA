@@ -1,0 +1,7 @@
+{
+  "finding_id": "8c502c3c72dacc64",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "Whether SDD-001's by-name authority route is satisfied without SDD content change is genuinely contestable here: DDR-004 replaces the SDD's single-named CONFIDENCE_UNDERIVABLE interim with a four-basis totality model that demotes that error to defense-in-depth and reachable only for malformed planes, so 'no SDD content change' is a conformance determination, not a fix dictated by a nameable authority. The deliberation record asserts route-satisfaction-by-name and demotes the interim's divergence to a change-log amendment, but no ratified authority locus establishes that a subject-name route stays satisfied when the routed record materially supersedes the interim behavior the SDD documents \u2014 that is an unresolved choice about the SDD's amendment obligations.",
+  "confidence": "medium"
+}

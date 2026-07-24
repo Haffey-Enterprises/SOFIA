@@ -1,0 +1,7 @@
+{
+  "finding_id": "ca92726f17c1ccb4",
+  "classification": "resolvable",
+  "authority_locus": "RBT-59 deliberation record Item 3 (provenance-survives-mutation caveat: 'ADR commits the survival requirement; extending the mechanism → named DDR-002 + DDR-003 follow-up') + Standing to-do 2(a)",
+  "rationale": "Ratified intent already fixes the fix: commit the survival requirement while stating the decision-consumed extension as a named forthcoming follow-up, matching the §5.3 concession in earned tense.",
+  "confidence": "high"
+}

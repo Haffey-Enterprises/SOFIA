@@ -1,0 +1,62 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["DDR-003"],
+"locus": "§5.1 interim posture + §8 conformance item 2",
+"claim": "§5.1 rules 'until that shape and the review surface land, no distillation write into the Operational plane is conforming,' enforced only at ADR-008 §6's review checkpoint pending mechanization in the detection-promotion service design (forthcoming). This forecloses a committed lifecycle-spanning KG plane — the Operational plane is unwritable in any conforming way — with reversibility resting on two forthcoming, unauthored designs (the candidate shape via a future graph-schema amendment; the review surface via the detection-promotion service design) whose dependency timing the record does not state. A hard-to-reverse foreclosure of a committed lifecycle stage gated on unscheduled work requires justification proportionate to the cost of undoing it; the record supplies 'no distillation traffic runs' (cost-currently-zero) but does not establish the timing is proportionate.",
+"cited_authority": {
+"kind": "design-intent",
+"ref": "ADR-001 §2.4 — 'The reasoning-capture invariant binds across the full enterprise SDLC ... plus an always-on operational feedback substrate'; the Operational plane and its distillation are a committed lifecycle stage rendered non-conforming-by-default with no scoped exit (DDR-003 §5.1)"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-003"],
+"locus": "§7.2 survival exemptions + §4 parameter mechanism",
+"claim": "§7.2 commits two interim survival exemptions (decision-consumed Evidence; promotion-consumed substrate) 'held until their deferred survival mechanism lands,' where the decision-consumed survival mechanism is itself a named-but-unscheduled §9 graph-schema gap. The record states the exemptions are reversible at zero traffic but names no event that forces them to resolve into a real mechanism — the interim is a standing commitment with no defined exit, not a bounded bridge. Once traffic begins, the never-expiring exemption accumulates with every gated promotion; a commitment whose undoing-cost grows unboundedly requires justification proportionate to that cost, which the record supplies only as 'non-load-bearing meanwhile' and the zero-traffic floor — neither of which bounds the interim's duration or defines its exit.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "ADR-008 §2.4 — 'the traceable rationale of a decision that consumed a ground-truth fact must survive that fact's later mutation'; DDR-003 §7.2 discharges this via an exemption whose resolution trigger is unstated"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-003"],
+"locus": "§6.2 + §9 executed-retraction detection analogue vs ADR-008 §5.3",
+"claim": "DDR-003 §6.2/§9 rules the executed-retraction detection analogue as deferred-with-trigger, justifying the deferral as safe because §6.2's forward-act-only rule makes the missing detection 'an audit-reconciliation concern rather than a consumption defect.' ADR-008 §5.3 already named this exact gap as a standing Risk requiring tracking ('a re-decided executed retraction has no standing detection analogue yet'). As the governance authority ADR-008 §2.6 routes this to, DDR-003 should stand as the record that re-weighs whether an unreconcilable governance ledger for the entire pre-first-retraction lifecycle is an acceptable posture; instead it accepts the deferral with 'non-load-bearing meanwhile,' addressing the read-path dimension while not addressing the audit-integrity dimension the upstream risk raised. Whether the platform should stand while carrying an un-detectable contested-retraction audit gap is a posture question deserving justification proportionate to the ledger-reconciliation cost.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "ADR-008 §5.3 Risks — 'Executed-retraction re-decision detection ... the detection mechanics are a named schema / governance follow-up'; DDR-003 §6.2/§9 defers without re-weighing the ledger-reconciliation cost the risk names"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-003"],
+"locus": "§6.4 hold-for-investigation + §6.4 standing-conflict visibility vs the platform-posture cost of a held-out KG",
+"claim": "§6.4 rules that an unresolved cross-class scope conflict 'means the platform knowingly holds observed reality out of the KG — the fail-safe direction, but only while visible,' with open conflicts re-surfaced each detection cycle 'until ruled; no auto-timeout, no auto-precedence.' The hold-for-investigation disposition is 'explicitly non-terminal, named owner' but carries no bound on how long observed reality may be held out. This commits the platform to a position — CMDB-observed deployed reality can be indefinitely absent from the Knowledge Graph pending an EA resolution — whose reversibility is bounded only by human resolution cadence, with no escalation, staleness bound, or forced-disposition trigger. For a plane whose whole value is tracking deployed reality, an unbounded held-out interval is a standing posture cost the record surfaces but does not weigh.",
+"cited_authority": {
+"kind": "design-intent",
+"ref": "ADR-008 §2.5 (cross-class precedence: withhold-and-escalate to human resolution, fail-safe to withhold) — the resolution step is committed to a human with no bound; DDR-003 §6.4 fixes the disposition space but leaves the held-out duration unbounded, a posture cost for a lifecycle-committed plane (ADR-001 §2.4)"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["DDR-003", "ADR-008"],
+"locus": "Decision block + §1.1 authority chain — altitude integration",
+"claim": "Checked whether DDR-003 pulls against ADR-008's ratified principle layer by re-deciding what ADR-008 already fixed, or authors above its altitude. It held: the record consistently cites ADR-008 §2.2/§2.3/§2.4/§2.5/§2.6 as upstream authority, authors only the policy layer ADR-008 §2.6 explicitly routes to the feedback-loop governance design (remedy boundary, diagnosis dimensions, roles, calibration, retention, audit), converts landed schema commitments (the gate invariants, the retraction shape, the supersession model) to citations rather than re-rulings, and states the one premise ADR-008 superseded (the formerly-ungated distillation write becoming the reviewed distillation class) as an applied learning. It does not re-litigate the entry-checkpoint principle or the promotion-class control-type; it instantiates them. The integration with prior ratified decisions is sound at this altitude.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "ADR-008 §2.6 governance boundary — 'the remedy boundary ... together with promotion and review criteria ... is owned by the forthcoming feedback-loop governance design, which cites this ADR as authority'; DDR-003 fills exactly that boundary without altitude leakage"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["DDR-003"],
+"locus": "§6.1 remedy boundary + §6.2 re-admission — reversibility-proportionality",
+"claim": "Attacked the retraction/supersession split for reversibility-proportionality — whether it commits a hard-to-reverse position without proportionate justification. It held at the boundary level: supersession is the default (reversible by lineage retention), retraction is the conjunctive narrow exception (should-never-have-been-promoted AND no correct replacement) carrying a durable why-no-replacement record, and re-admission is ruled as always a forward EA-gated act so no ledger side-effect can silently re-admit ground truth. The irreversible-feeling act is the narrow, well-documented exception with an explicit forward reversal path. The posture is proportionate to risk and grounded in ADR-008 §2.6's replaceable-vs-retracted boundary. (The soundness gap in the re-admission execution mechanism — 'via the supersession path' — is a distinct internal-correctness question outside this altitude.)",
+"cited_authority": {
+"kind": "canonical",
+"ref": "ADR-008 §2.6 remedy boundary + §2.3 un-promotion authority; DDR-003 §6.1/§6.2 instantiates the boundary with a proportionate reversibility posture"
+}
+}
+]

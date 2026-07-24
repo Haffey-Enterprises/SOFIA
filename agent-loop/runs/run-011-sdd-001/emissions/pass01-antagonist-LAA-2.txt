@@ -1,0 +1,52 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["SDD-001"],
+"locus": "§3.4.3 capture-evidence — inherited-confidence derivation",
+"claim": "The record claims to merely 'realize' DDR-002 §4's inheritance rule 'which fixes the rule and the qualitative canon, not a concrete function,' but §3.4.3 fixes a concrete numeric derivation — Environment base 0.9, τ=90 days, class bases of 1.0, an Extension-plane default — at SDD altitude. This is a decision the record decides (a confidence-derivation function with specific constants) beyond what the cited upstream authorizes as an SDD-level determination; the decision content exceeds the 'executed identically thereafter' framing that presents it as mechanical realization.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "DDR-002 §4 ('DDR-002 fixes that the rollup exists' / inheritance rule fixed, concrete function → SDD) vs SDD-001 §3.4.3 fixing concrete derivation constants"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["SDD-001"],
+"locus": "§2.2 / §3.4.3 — ReasoningProgress.confidence rollup routed away, but capture-evidence confidence derivation retained",
+"claim": "§2.2 routes `ReasoningProgress.confidence` rollup and the zero-evidence posture to the solutioning-agent SDD on the stated ground that authoring conclusion confidence is not this gateway's (sole executor, never author). Yet §3.4.3 has the gateway compute and stamp `Evidence.confidence` (inherited value) at capture-evidence write. The record does not surface as a decision why authoring one confidence value is executor-mechanics while authoring the other is authorship — the boundary claim carries a decision (Evidence-confidence authorship belongs to the gateway) that is asserted, not declared as a decided scope commitment.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "SDD-001 §2.2 (rollup routed away, 'never author') vs §3.4.3 (gateway computes/stamps Evidence.confidence at write)"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["SDD-001"],
+"locus": "§3.5.4 materialize-retraction — #25 ratified-text conflict",
+"claim": "The record states plainly that under materialization-time RETRACTS writing, '#25's biconditional as ratified is unsatisfied during a retraction proposal's pre-decision window,' and that the scoping clause reconciling this is only 'proposed additive DDR-002 amendment content' while 'the harness implements from ratified text.' This is a self-declared consequence — a known conflict between this SDD's timing decision and ratified upstream #25 — surfaced but left standing as a live side effect of the §3.5.4 decision.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "SDD-001 §3.5.4 timing decision vs DDR-002 §7 #25 ratified biconditional"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["SDD-001"],
+"locus": "§2.1 / §2.2 — sole-executor-never-author claim",
+"claim": "I attacked the §1/§2 claim that the service 'executes everything and authors nothing' looking for a smuggled authorship decision. The record consistently routes every unassigned authorship (PromotionDecision transport, Attestation/Actor/Role, ingestion source authorship, Solution lifecycle transitions) by name rather than defaulting authorship to the gateway (§3.4.6 unassigned→rejected; §2.2 not-owned list; §4.7 operational-events-not-graph-citizens). The claim-fidelity between the stated scope and the decision content held: no operation defaults its author to this service.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "SDD-001 §1 not-owned clause + §2.2 + §3.4.6 + §4.7 vs ADR-002 §2.6 write-authorship principle"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["SDD-001"],
+"locus": "§2g / §3.3.8 provenance-of — NO-CI-invariant determination",
+"claim": "I attacked the §3.3.8 determination that the provenance-survival affordance warrants no CI invariant of its own, testing whether it retracts or under-declares a consequence the substrate requires. The record grounds the determination in #20 already guaranteeing frozen-layer reachability (existence/completeness/at-promotion binding) and declares the read-operation correctness as service-test discipline (§6), while explicitly stating the Named Gap pruning is a DDR-002 amendment not performed here. The scope boundary between what this SDD decides and what it routes held.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "SDD-001 §3.3.8 determination vs DDR-002 §7 #20 + Named Gap (provenance-survival retrieval affordance)"
+}
+}
+]

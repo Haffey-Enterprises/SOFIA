@@ -1,0 +1,7 @@
+{
+  "finding_id": "4ab8d42c7e445980",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "DDR-002 §4 fixes that ObservedPattern carries two distinct confidence surfaces (node lesson-reliability + per-target OBSERVED_IN edge) 'composed at rollup,' but the corpus fixes only the ReasoningProgress rollup ceiling (§4 check #24) and defers the rollup function itself to the SDD; it supplies no rule for how Evidence inheritance from a dual-surface Operational node should compose or select between the two, so resolving which value the inherited Evidence takes requires a choice authority does not disambiguate.",
+  "confidence": "medium"
+}

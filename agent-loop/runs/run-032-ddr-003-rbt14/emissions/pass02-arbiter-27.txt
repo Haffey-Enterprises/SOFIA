@@ -1,0 +1,1 @@
+{"finding_id":"962bfde4f59bceca","classification":"decision-bearing","authority_locus":null,"rationale":"No cited authority designates a canonical owner among the three records for the executed-retraction detection gap; assigning ownership is an unratified choice.","confidence":"high"}

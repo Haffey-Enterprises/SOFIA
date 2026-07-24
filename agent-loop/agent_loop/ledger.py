@@ -78,6 +78,10 @@ class Finding:
     pass_closed: int | None = None
     recurrence_count: int = 0
     resolution_note: str | None = None
+    # Materially-different claims that admitted to this open id (RBT-69 claim-
+    # divergence guard, admission.py). Purely descriptive/audit — never
+    # identity-bearing. Round-trips through _finding_from_dict / asdict.
+    claim_variants: list[str] = field(default_factory=list)
 
 
 @dataclass

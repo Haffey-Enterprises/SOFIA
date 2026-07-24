@@ -1,0 +1,7 @@
+{
+  "finding_id": "574527e6a7e68746",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record SKILL — Cross-References / forthcoming-referent discipline (\"real, planned, unauthored referent lacking a status marker\") + triage-001 T-05 Leg 2 established practice (forthcoming/unauthored status markers on cited-but-unauthored records)",
+  "rationale": "The finding describes the ordinary, sanctioned pattern already ratified across this corpus: an upstream authority commits a principle and defers instantiation to a forthcoming, unauthored downstream record that cites it as authority (T-05 Leg 2, T-23 delegation pattern). The fix is determined \u2014 mark DDR-003 as forthcoming/unauthored and phrase the deferral as such \u2014 with no new choice; the deliberation gate and status-marker discipline dictate it.",
+  "confidence": "medium"
+}

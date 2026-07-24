@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "5bf632100d3945c8",
+  "reason": "Ruling F directs qualifying §2.3's 'same control' claim to match the §5.3 concession, but §2.3 already carries that qualification verbatim (the trailing 'traces to an approving decision, not the governing one... named follow-up (§5.3)' clause); the authority names no specific residual wording to change in the opening clause, so any further edit would require me to choose how to soften 'the same... control class as promotion itself'—an unratified drafting choice.",
+  "confidence": "medium"
+}

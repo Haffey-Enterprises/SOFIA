@@ -1,0 +1,7 @@
+{
+  "finding_id": "1112007b4a10517f",
+  "classification": "resolvable",
+  "authority_locus": "ADR-003 §1 (distillation entry path has 'no equivalent human-accountable checkpoint today') and §2.1 (distillation → 'a substantive review ... before entry'), reinforced by triage-001 T-02, which fixed the intent: distillation is currently un-checkpointed and the checkpoint is a new decision routed to the KG-entry-governance ADR",
+  "rationale": "This is an internal self-contradiction within a single record: §2.5's claim that distillation is 'already EA-gated today' contradicts §1 and §2.1's decided content that distillation currently lacks a checkpoint. The record's own decided intent (corroborated by the ratified triage-001 T-02 ruling that distillation's checkpoint is un-decided/new) determines that §2.5's assertion is the erroneous statement to conform; no unmade choice is introduced.",
+  "confidence": "high"
+}

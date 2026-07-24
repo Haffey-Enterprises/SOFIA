@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "2f98cfbffe6305b2",
+  "reason": "The SKILL 'Tense is earned by enforcement / state forthcoming claims conditionally' does not uniquely determine how Decision.10 should surface the interim-exemption dependency: it fixes that a conditional claim must be marked conditional but leaves the wording, placement, and which of the two exemptions to qualify as authorial choices — multiple conforming edits exist, so this is an unratified drafting decision, not a determined conformance.",
+  "confidence": "high"
+}

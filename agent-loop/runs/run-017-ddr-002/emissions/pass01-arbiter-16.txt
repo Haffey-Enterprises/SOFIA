@@ -1,0 +1,7 @@
+{
+  "finding_id": "2b91586c99b0ba34",
+  "classification": "resolvable",
+  "authority_locus": "deliberation-record-ddr-002 Item C1 (shape A) — 'add frozen_evidence_ids (correlation key) + frozen_source_node_refs; declare index-alignment across the four frozen_* arrays'; and the author-decision-record skill Change Log discipline (most-recent-first, records what the touch changed)",
+  "rationale": "The ratified deliberation record fixes exactly which arrays this touch added (the two named) versus which four are declared index-aligned; correcting the Change Log row to distinguish added-vs-re-declared is a documentation-fidelity fix dictated by that ratified intent, introducing no new choice.",
+  "confidence": "high"
+}

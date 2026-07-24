@@ -1,0 +1,72 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2.7 / §7 check 6 / §5.3 — fidelity-gate read-exclusion invariant",
+    "claim": "§2.7 states 'read-exclusion of provisional ground truth is committed as a schema-level invariant' and calls it 'a *forthcoming* addition to the schema's read-discipline invariant set (a named amendment obligation), not one the schema already carries.' DDR-002 §7 (the cited authority) enumerates its read-discipline invariant set (#9 proposal-visibility, #19 conditional-consumption, retracted-node exclusion) and carries no provisional-authoritative-source read-exclusion invariant. The ADR commits an invariant to a named authority (DDR-002) that does not yet contain it and names no ticket, backlog item, or firing trigger for the amendment obligation against DDR-002 in §7 Cross-References or elsewhere — the amendment obligation is asserted but its home is unlocated.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.7 'read-exclusion of provisional ground truth is committed as a schema-level invariant ... a forthcoming addition to the schema's read-discipline invariant set' vs DDR-002 §7 (read-discipline invariant set: #9, #19, retracted-node exclusion — no provisional-source exclusion)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2.2 — schema provisioning ahead of readiness",
+    "claim": "§2.2 states 'it is ordered ahead of the readiness schema-present check' and 'provisioning runs before readiness reports green (which checks that the schema is present).' SDD-001 §3.1 (the cited readiness authority) states readiness check (2) is 'schema metadata loaded — the PlaneDefinition registry and constraint/validation metadata the write paths enforce against — critical, fails readiness (the gateway must not execute writes it cannot validate).' §3.1 also states 'There is no degraded mode: this service has exactly one backing store, and every operation requires it' and readiness check (1) requires 'Neo4j connectivity and authentication — critical, fails readiness.' The ADR asserts a provisioning capability executes over the driver while the service is not ready (schema-present check failing), but SDD-001 §3.1 makes schema-metadata-loaded a hard readiness gate with no stated carve-out for a provisioning operation that runs pre-readiness — the ADR relies on a not-ready-but-operating window the cited readiness contract does not sanction.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "SDD-001 §3.1 'schema metadata loaded ... critical, fails readiness (the gateway must not execute writes it cannot validate)' + 'There is no degraded mode ... every operation requires it'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2.2 — knowledge-service schema-provisioning capability not enumerated",
+    "claim": "§2.2 commits knowledge-service 'to expose a schema-provisioning capability — an addition its service design does not yet enumerate, gained as a named obligation of this decision.' SDD-001 (the cited service design) §2.1 'Owned' and §3.6 (ingestion port) enumerate no schema-provisioning / DDL operation; §2.1 lists driver lifecycle and write execution but no constraint-provisioning capability. The ADR names the obligation but provides no ticket, backlog home, or firing trigger for the SDD-001 amendment that would enumerate the operation — §7 Cross-References says SDD-001 'is to gain the schema-provisioning operation' without a locus that carries the obligation to resolve. The deferred obligation lacks a home with a firing trigger.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-004 §2.2 'a schema-provisioning capability — an addition its service design does not yet enumerate' vs SDD-001 §2.1/§3.6 (no schema-provisioning operation enumerated; no amendment obligation homed with a trigger)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-004"],
+    "locus": "§2.7 — Operational distillation class scope",
+    "claim": "§2.7 states the gate 'is not applied to the ungated Environment observation stream or to externally-decided mirrored records (the Operational distillation class carries its own review control and is out of scope here)', but the parenthetical treatment enumerates the three non-authoritative-source classes (Environment, mirrored, Operational distillation) as exclusions from the authoritative-source gate while §5.2 Constraints Imposed states only 'the ungated Environment observation stream and mirrored externally-decided records are not gated' — omitting the Operational distillation class named in §2.7. The constraint statement and the decision statement enumerate different exclusion sets for the same gate scope.",
+    "cited_authority": {
+      "kind": "soundness",
+      "ref": "ADR-004 §2.7 (exclusion set: Environment, mirrored, Operational distillation) vs §5.2 (exclusion set: Environment, mirrored — Operational distillation omitted)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-004"],
+    "locus": "§2.5 — RG durability across instance loss vs deferred production runtime",
+    "claim": "§2.5 states RG 'durability across instance loss rests on instance-level backup and restore. In the current development runtime that responsibility sits with the managed graph provider; the production runtime, and therefore its backup posture, is deferred.' ADR-002 §5.2 (the cited backup authority per §7) commits the development managed-Aura runtime 'retires the self-managed operational burden — backup/restore, upgrade lifecycle, and cluster-health monitoring are the managed provider's responsibility.' ADR-002 §2.2 states 'the production deployment runtime is deferred.' The ADR-004 claim that the RG's only recovery path across instance loss rests on backup/restore is sound for development, but for production the backup posture is deferred — meaning ADR-004 commits, as a load-bearing durability guarantee for the reasoning-capture invariant it exists to protect, a recovery mechanism whose production form does not yet exist and is not committed by any accepted record. §5.3 flags this as a risk but §2.5 states the durability rest as present fact ('rests on instance-level backup and restore') rather than in the conditional tense the deferred production posture supports.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-002 §2.2 'the production deployment runtime is deferred' + §5.2 (backup/restore is the managed provider's responsibility for development; production burden 'weighed at the production-environment build')"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-004"],
+    "locus": "§2.1 / §2.2 — sole-driver-line conformance to ADR-002 §2.5",
+    "claim": "Attacked the schema-provisioning decision (§2.2) as a potential violation of ADR-002 §2.5's sole-owner-gateway principle ('knowledge-service is the sole holder of the Neo4j driver'). The ADR holds: it routes DDL provisioning through knowledge-service's existing driver rather than granting a second component a driver (Alternative B explicitly rejected on exactly the diffuse-driver hazard ADR-002 §4.5 names), and the loader utility is committed driver-less (§2.1, §2.8). The conformance to ADR-002 §2.5 and §2.6 (author/executor separation, gateway never author) is internally consistent and correctly cited. Checked against ADR-002 §2.5/§2.6/§4.5 — held.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "ADR-002 §2.5 (sole-owner gateway) + §2.6 (author/executor/authorizer) + §4.5 (diffuse-access rejection); ADR-004 §2.1/§2.2/§2.8 conform"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-004"],
+    "locus": "§2.4 / §2.5 — additive-by-supersession conformance to DDR-002 §6 and ADR-001 RG durability",
+    "claim": "Attacked §2.4's 'additive by supersession, never destructive' and §2.5's KG-scoped/RG-preserving claims for conflict with the never-delete and supersession disciplines. The ADR holds: §2.4 correctly binds to DDR-002 §6's Option-A supersession (retained version nodes + effective-dating + superseded_by) and the never-delete posture, and §2.5's structural guarantee that no instantiation path can discard RG state is consistent with ADR-001 §2.2's reasoning-capture invariant and DDR-002 §4's Evidence version-pinning (point-in-time fidelity preserved across re-ingestion). The claim is neither over-stated nor self-contradicting — §2.5 is honest that RG durability against instance loss is a separate matter (§5.3). Checked against DDR-002 §6, DDR-002 §4, ADR-001 §2.2 — held.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 §6 (Option-A supersession, never-delete) + §4 (Evidence version-pinning) + ADR-001 §2.2 (reasoning-capture invariant); ADR-004 §2.4/§2.5 conform"
+    }
+  }
+]

@@ -1,0 +1,12 @@
+The finding says the transition-control home is asserted without a granting upstream locus at §5.2. The determining authority is ADR-008 §2.4, which states resolution/supersession is "itself a distillation judgment under §2.2." §5.2 currently cites only §1.2. The minimal conforming edit is adding the §2.4 citation at the assigning section.
+
+{
+  "action": "edit",
+  "finding_id": "974cd1c5f58dca48",
+  "target": "DDR-003",
+  "old_string": "**5.2 Lifecycle transitions are distillation judgments.** Resolving, superseding, or re-activating a distilled lesson is itself a distillation judgment under the same distillation-class review (§1.2), ruled by the distillation-reviewer role.",
+  "new_string": "**5.2 Lifecycle transitions are distillation judgments.** Resolving, superseding, or re-activating a distilled lesson is itself a distillation judgment under the same distillation-class review (ADR-008 §2.4, which fixes a lesson's governed transition — a resolution or supersession — as itself a distillation judgment under §2.2; §1.2), ruled by the distillation-reviewer role.",
+  "authority_conformed": "ADR-008 §2.4 (Revalidation obligation, distillation): 'its governed transition (a resolution or supersession, itself a distillation judgment under §2.2)'",
+  "rationale": "ADR-008 §2.4 grants the transition-as-distillation-judgment home; adding that citation at the assigning section supplies the upstream locus the finding names as missing.",
+  "confidence": "high"
+}

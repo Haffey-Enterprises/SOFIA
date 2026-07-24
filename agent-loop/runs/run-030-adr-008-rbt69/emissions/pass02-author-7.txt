@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "705e12a9be414d6a",
+  "reason": "The tense-earned-by-enforcement principle requires deferring earned claims to acceptance, but the sentences flagged span multiple assertions (blockage claim, dependency claim, 'authority does not yet exist') and the authority does not dictate which precise phrasing conforms — inserting 'pending acceptance', rewording the blockage, or qualifying the dependency are all distinct conforming edits, so no unique minimal edit is determined.",
+  "confidence": "medium"
+}

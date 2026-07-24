@@ -1,0 +1,1 @@
+{"finding_id":"5d8876563a31cdb0","classification":"decision-bearing","authority_locus":null,"rationale":"ADR-008 §2.2 enumerates four mutation classes with no 'mirrored externally-decided records' class; whether that class exists and how its fidelity gate is calibrated is an unmade choice, not resolvable by existing authority.","confidence":"medium"}

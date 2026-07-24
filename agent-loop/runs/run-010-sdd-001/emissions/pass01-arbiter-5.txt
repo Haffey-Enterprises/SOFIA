@@ -1,0 +1,7 @@
+{
+  "finding_id": "6e21f037c1864e14",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "DDR-002 §4 fixes only the qualitative canon ('authoritative Catalog above aging Environment') and the mechanism ('Evidence.confidence inherits from the SOURCED_FROM KG node's authority class at snapshot time') but does not fix the numeric mapping from authority class to a confidence value; assigning the base 1.0 to Catalog/Standards/Governance is a value choice the authority is silent on, and no cited locus determines that 1.0 is the ratified anchor.",
+  "confidence": "high"
+}

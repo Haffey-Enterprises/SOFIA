@@ -1,0 +1,10 @@
+{
+  "action": "edit",
+  "finding_id": "4cc29287a567ed48",
+  "target": "ADR-008",
+  "old_string": "This ADR commits that the obligation exists; its cadence and trigger are governance policy (§2.6).",
+  "new_string": "This ADR commits that the obligation exists; its revalidation cadence and trigger for stale distilled lessons are routed to the forthcoming feedback-loop governance design (DDR-003), as is the mechanism that realizes the surfacing (§2.6).",
+  "authority_conformed": "RBT-59 Standing to-dos 2(c) + Item 3 distillation additions ('Cadence/trigger → DDR-003'); ADR-008-run-025 Carried follow-ups ('Revalidation cadence/trigger for stale distilled lessons → DDR-003')",
+  "rationale": "Named authority routes revalidation cadence/trigger and its surfacing mechanism to DDR-003; edit declares that realization route at the committed-obligation locus.",
+  "confidence": "medium"
+}

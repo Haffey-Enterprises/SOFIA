@@ -1,0 +1,7 @@
+{
+  "finding_id": "9e710b13223b6172",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The author-decision-record skill offers ACCEPTED-WITH-CONDITIONS and 'stands as authored' as two conforming postures but does not dictate which one DDR-004 must take given conditions that are tracked yet gate on unauthored upstream DDR-002 amendments; selecting the acceptance posture (and whether to re-pose the reversibility question) is an unratified choice the skill's text does not disambiguate.",
+  "confidence": "high"
+}

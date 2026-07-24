@@ -1,0 +1,1 @@
+{"finding_id":"979ec95554d89e7d","classification":"decision-bearing","authority_locus":null,"rationale":"ADR-008 §2.2's four classes enumerate no mirrored-external-record ingestion class; whether such records are subject to or exempt from the fidelity control is a gap no cited authority resolves.","confidence":"high"}

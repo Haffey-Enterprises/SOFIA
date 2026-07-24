@@ -1,0 +1,7 @@
+{
+  "finding_id": "95d6f02073edc831",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding exposes a gap: whether the Evidence-confidence derivation is total for the base-1.0 (Catalog/Standards/Governance) branches is not settled by any ratified authority. DDR-002 §4 fixes the ceiling (max of supporting Evidence.confidence) and canonical confidence definition but does not specify the per-plane class-base×freshness derivation or its totality; that derivation was constructed in SDD-001 §3.4.3 and no cited authority determines whether/how the base-1.0 branches are total or what error surfaces when they are not. Resolving requires a design choice (define the base-1.0 branch's totality, or admit an additional underivable case), which no locus dictates.",
+  "confidence": "high"
+}

@@ -1,0 +1,1 @@
+{"finding_id":"5f0860656e7459bd","classification":"decision-bearing","authority_locus":null,"rationale":"ADR-008 routes ingestion-mechanics realization to the named record; the authority-vs-mechanics split ADR-004 asserts to reconcile the divergence is not drawn by any cited authority, requiring a scope choice.","confidence":"high"}

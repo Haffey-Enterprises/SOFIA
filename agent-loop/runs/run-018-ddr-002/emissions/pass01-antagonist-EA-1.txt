@@ -1,0 +1,62 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-002"],
+    "locus": "Change Log — Touch 2 (RBT-54); Rationale (empirical-warrant discipline)",
+    "claim": "Touch 2 (ProvenanceSummary internal structuring) is recorded as opened on economy with an honest floor of 'no valid finding forced this touch' and 'zero materializations to date' — it locks internal schema structure (index-aligned frozen_* arrays keyed by evidence_id) ahead of any empirical instance. This is a decision to lock a mechanism the DDR's own Rationale says should be named as a gap rather than carried, admitted as a 'ruled exception' to that discipline. Whether a reversibility-scoped schema layer should commit T2 internal structure ahead of the first real instance, on an economy warrant alone, is a posture question about what deserves to stand at this time.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "DDR-002 Rationale: 'Where the design cycle surfaced a mechanism with no empirical instance yet — and locking it would over-specify — the capability is named as a gap ... rather than carried speculatively. This is the empirical-warrant discipline that governs what is locked versus named.'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-002"],
+    "locus": "§2.6 / §7 #26 / #27 — confidence-derivation basis carriage (Touch 3)",
+    "claim": "DDR-002 v1.3.0 commits the confidence_basis declaration, the four-basis enumeration, the declared-totality registration rule, and checks #26/#27 as its own schema contract while DDR-004 (the authority that these carriers implement) is ACCEPTED only WITH-CONDITIONS whose discharge is asserted to ride this very DDR-002 landing. The two records are cross-conditioned: DDR-004's Pre-Acceptance Conditions 1–2 discharge on DDR-002 v1.3.0 landing, and DDR-002 carries basis machinery whose semantics/values are DDR-004's. A hard-to-reverse schema commitment (T2 declarations, two new CI checks, PlaneDefinition field) is being ratified against an upstream that was not itself unconditionally standing at author time — the reversibility of the basis-carriage commitment is not proportionate to the still-conditional status of its governing authority.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-002 References ('DDR-004 §4's commissioned schema carriage (DDR-004 Pre-Acceptance Conditions 1–2 discharged at v1.3.0)') vs. DDR-004 metadata Status ACCEPTED with standing constants condition and conditions-discharge-rides-DDR-002-landing"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-002"],
+    "locus": "§2.6 — cost-capability routing; Named Gaps / Cross-References (forthcoming KG-entry-governance ADR, DDR-003)",
+    "claim": "DDR-002 commits the cost plane as the first Extension registration and worked validation exemplar, while routing 'whether and why SOFIA models cost at all' to a forthcoming, unauthored cost-capability decision record. The schema thereby stands up a concrete, permanent-retention node family (CapabilityCostEstimate 'justifiably permanent') and its edges before the platform-capability decision that would justify modeling cost exists. This commits the project to a cost-modeling position — permanent as-of-decision records, a dedicated Cost label set — that arguably deserves its own ratified decision record first; the exemplar-vs-capability split names the tension but does not resolve whether standing up the exemplar pre-commits the capability.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "DDR-002 §2.6: 'the separate question of cost as a platform capability (whether and why SOFIA models cost at all) is routed to the forthcoming cost-capability decision record, not asserted in this schema.'"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["DDR-002"],
+    "locus": "Cross-References — DDR-003 and KG-entry-governance ADR (both forthcoming, unauthored)",
+    "claim": "A material volume of DDR-002's own decisions are held together by routing to two forthcoming, unauthored records (DDR-003 governance and the KG-entry-governance ADR): remedy-boundary governance, archival policy, retention windows, distillation-checkpoint posture, un-promotion upstream authority, multi-condition semantics, condition-set lifecycle. The schema commits shapes (archived status value, RETRACTS shape, applicability_state, ProvenanceSummary) whose governing authority does not yet exist. This is a timing/dependency-density posture: the shape half is ratified now against a governance half that is entirely pending, concentrating integration risk on records that cannot yet be checked against.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-002 Cross-References: '→ DDR-003 (forthcoming, unauthored)' and '→ KG-entry-governance ADR (forthcoming, unauthored)' carrying remedy-boundary, retention, archival-policy, and un-promotion-authority obligations for shapes committed in §2.3/§2.4/§5"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-002"],
+    "locus": "§2.2 / §2.6 — DeploymentEnvironment observed_at absence and cost basis-4 dispositions vs. ADR-002 §2.2 Enterprise-edition posture",
+    "claim": "Attacked the reversibility of the per-class basis commitments against the substrate's own stated empirical floor: DDR-002 states citation reachability for DeploymentEnvironment, RateCard, and CostFactor is unverified, yet commits per-class bases now. Checked whether this over-commits ahead of evidence. It holds: the bases are declared basis-kind-only (no values), fail-closed-safe regardless of reachability, and are re-instatable by additive amendment per the named-gaps discipline — the commitment is proportionate to its reversibility, and the honest floor is carried in-body rather than hidden.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "DDR-002 §2 preamble ('Declarations carry basis kind ... only — no values') + Layer/Substrate-Stability note ('re-instating one is an additive amendment, not a breaking change')"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-002"],
+    "locus": "§7 — safety-critical vs. follow tier sequencing and the precede-gateway conformance requirement",
+    "claim": "Attacked the tiering as a premature/mis-proportioned commitment — whether classifying invariants safety-critical vs. follow ahead of the gateway build over-commits a sequencing the build should decide. It holds: DDR-002 binds only the classification (which properties guard ground-truth integrity) as a stated conformance requirement ('the gateway must not operate against an unenforced safety-critical tier') and explicitly routes realization sequencing (CI-job mapping, within-tier ordering, required-flips) to build planning, subject to the non-downgrade binding. The reversibility split is proportionate: the integrity-critical classification is locked, the mechanization schedule stays deferred.",
+    "cited_authority": {
+      "kind": "design-intent",
+      "ref": "DDR-002 §7 Authority split: 'DDR-002 binds the safety-critical classification ... realization sequencing ... is routed to build planning / conformance-mechanization, subject to that binding.'"
+    }
+  }
+]

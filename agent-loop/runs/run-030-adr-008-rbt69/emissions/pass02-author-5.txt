@@ -1,0 +1,10 @@
+{
+  "action": "edit",
+  "finding_id": "9b6658cb214b29bb",
+  "target": "ADR-008",
+  "old_string": "| Per-policy | form built (DDR-004); constants contested/unvalidated (n=0) — the inherited-confidence derivation ruling's aging basis |",
+  "new_string": "| Per-policy | The inherited-confidence derivation ruling's aging basis (DDR-004) and its §6 calibration governance — form built (DDR-004); constants contested/unvalidated (n=0) |",
+  "authority_conformed": "ADR-008-run-025-operator-rulings Ruling D + DDR-004 §6 (capture-time-frozen aging + §6 calibration-governance home as the Environment realization route)",
+  "rationale": "Ruling D fixes DDR-004's aging basis and §6 calibration governance as the realization home; edit names that destination in the routing cell while keeping the ruling-mandated status label.",
+  "confidence": "medium"
+}

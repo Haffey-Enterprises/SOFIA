@@ -1,0 +1,7 @@
+{
+  "finding_id": "9b7c24d918d1ffcd",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §2.3 (distillation-write checkpoint posture 'explicitly un-decided,' routed to the KG-entry-governance ADR) + Triage-001 Appendix A (KG-entry-governance ADR charter, item 3: distillation → 'substantive review of the distilled judgment,' the checkpoint the ADR must design, not one it may assert as pre-existing)",
+  "rationale": "The substrate authority DDR-002 §2.3 explicitly declares the distillation-write checkpoint open and routes it to this ADR; ADR-003 §2.5's factual claim of an 'already EA-gated today' distillation gate directly contradicts its own cited substrate, and the fix is determined by conforming to that substrate — no unmade choice is introduced, since the ADR must design the checkpoint per its charter rather than assert it exists.",
+  "confidence": "high"
+}

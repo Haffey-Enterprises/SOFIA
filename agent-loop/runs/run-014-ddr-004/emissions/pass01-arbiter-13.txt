@@ -1,0 +1,7 @@
+{
+  "finding_id": "ada0828dde9166b0",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record skill, Authoring discipline: 'Process narrative, ticket IDs, and review history belong in the Change Log, Cross-References, or your tracker — not threaded through the body. A stranger with no access to your tracker should be able to build from the record.'",
+  "rationale": "The cited authoring-discipline rule determines the fix — instantiated ticket/run identifiers must move out of the normative body into Change Log/Cross-References; the deliberation record's own authoring notes already identify the same six-identifier miss and its remedy (relocate to Cross-References / subject-name-only), introducing no new choice.",
+  "confidence": "high"
+}

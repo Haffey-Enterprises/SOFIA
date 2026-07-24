@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "46df99fd938f664e",
+  "reason": "D6 determines only ownership and the deferral shape (forward-act-only re-admission; deferral with first-real-retraction trigger; realization deferred) — it ratifies the deferral rather than requiring the added ledger-reconciliation-cost justification the finding asks for; the authority does not entail any specific edit, and choosing how to re-weigh ADR-008 §5.3's audit-integrity cost would be an unratified authorial choice.",
+  "confidence": "high"
+}

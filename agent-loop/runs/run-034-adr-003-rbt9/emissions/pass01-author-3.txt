@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "c6fbd56689553a99",
+  "reason": "The named authority is a status-marker convention, but neither the SKILL text nor a corpus exemplar of the exact marker form is supplied, and the referent already carries 'forthcoming' plus a full descriptive gloss in both §5.3 and §7; the finding itself concedes the referent resolves and is 'live-but-unenforceable rather than dangling.' What marker string to add, and whether one is even owed given the existing 'forthcoming' qualifier, is undetermined here — multiple conforming phrasings exist.",
+  "confidence": "medium"
+}

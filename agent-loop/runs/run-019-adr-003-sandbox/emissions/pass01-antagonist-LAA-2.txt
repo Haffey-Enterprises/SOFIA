@@ -1,0 +1,92 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.5 Distillation entry today",
+    "claim": "§2.5 asserts distillation writes are 'already EA-gated today via the feedback loop' and that this ADR 'formalizes the existing gate rather than introducing a new one.' This claim directly contradicts §2.1, which decides distillation gets a NEW 'substantive review' checkpoint, and contradicts §1 context, which states the distillation entry path has 'no equivalent human-accountable checkpoint today.' The record's own decision content asserts distillation is currently un-checkpointed while §2.5 asserts it is already gated — the record does not decide what it claims consistently across its own decision body.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.5 ('already EA-gated today ... formalizes the existing gate') vs ADR-003 §1 ('The other two entry paths ... have no equivalent human-accountable checkpoint today') and §2.1 (distillation → 'a substantive review ... before entry')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.5 vs substrate DDR-002 §2.3",
+    "claim": "§2.5 claims distillation writes are 'already EA-gated today' as an existing gate this ADR merely formalizes. The substrate it depends on says the opposite: DDR-002 §2.3 states the distillation-write checkpoint posture is 'explicitly un-decided' and routes it to this very ADR. The ADR retracts (by asserting a pre-existing gate) a gap the substrate declares open and routes here — a claim the decision substrate does not support.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.5 vs DDR-002 §2.3 ('The distillation write's checkpoint posture is explicitly un-decided ... routed to the forthcoming KG-entry-governance ADR')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.2 Environment plane",
+    "claim": "The title, the metadata, and §2 top-line decision all claim 'Every write to the knowledge graph passes a human-accountable checkpoint before it takes effect.' §2.2 then defers the Environment plane's checkpoint posture entirely ('is deferred to a named follow-up ... this ADR does not rule it here'). The universally-quantified decision ('Every write') is not the decision the body delivers — one entire source class (Environment, explicitly 'CMDB-observed deployed reality [entering] continuously at high volume') is carved out and undecided. The claim overreaches the decision content.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 title + §2 ('Every write to the knowledge graph passes a human-accountable checkpoint') vs §2.2 ('The checkpoint posture for the Environment plane ... is deferred to a named follow-up ... this ADR does not rule it here')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "Metadata / §7 / §2.1",
+    "claim": "The record depends on DDR-003 §4 for its promotion-gate checkpoint (§2.1 'the existing EA gate (ADR-001 §2.5)'; §7 first bullet: 'DDR-003 §4 — defines the promotion-gate criteria this ADR relies on for the promotion-path checkpoint'). But §1 states 'DDR-003 (Feedback Loop Governance) is blocked on this ADR' — i.e. DDR-003 is unauthored and downstream of this record. The ADR both relies on DDR-003 §4 as a named authority and declares DDR-003 blocked on itself: a circular/unresolvable declared dependency, and a dangling reference to a §4 that does not yet exist.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §7 ('DDR-003 §4 — defines the promotion-gate criteria this ADR relies on') and §2.1 vs §1 ('DDR-003 ... is blocked on this ADR') — dependency declared in both directions; DDR-003 absent from the substrate set"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.4 The checkpoint executor",
+    "claim": "§2.4 decides 'the graph gateway is the authoring authority for each checkpoint approval' and that 'the gateway both decides and executes the admission.' This is a smuggled decision that contradicts the author/executor separation ratified in the substrate: ADR-002 §2.6 fixes that the sole-owner gateway 'is the sole executor and enforcement boundary ... it is never itself the authoring authority.' Assigning authoring authority to the gateway is a scope commitment riding along in an executor clause, never surfaced or reconciled as a departure from ADR-002 §2.6.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.4 ('the graph gateway is the authoring authority ... the gateway both decides and executes') vs ADR-002 §2.6 ('The sole-owner gateway (§2.5) is the sole executor and enforcement boundary of all graph writes; it is never itself the authoring authority')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.3 Un-promotion authority",
+    "claim": "§2.3 decides un-promotion's upstream authority 'is ADR-001 §2.5, which governs the promotion mechanism and therefore its reversal.' The substrate explicitly rejects this derivation: DDR-002 §2.4 states 'ADR-001 §2.5 authorizes promotion only and does not stretch to un-promotion,' and §1 of this same ADR narrates that DDR-002 §2.4 routed un-promotion authority here 'because ADR-001 §2.5 authorizes promotion only.' The decision claims ADR-001 §2.5 as the authority for a reversal the substrate says §2.5 does not cover — an authority the citation does not support, and self-contradictory with the record's own §1 framing of the forcing function.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.3 ('Its upstream authority is ADR-001 §2.5 ... and therefore its reversal') vs DDR-002 §2.4 ('ADR-001 §2.5 authorizes promotion only and does not stretch to un-promotion') and ADR-003 §1 (same, as the forcing function routing authority here)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-003"],
+    "locus": "§5.1 Positive consequences",
+    "claim": "§5.1 lists as a consequence that 'DDR-003 gains the promotion-gate authority it is blocked on.' This restates a dependency claim (DDR-003 blocked on this ADR) that §7 and §2.1 simultaneously invert (this ADR relies on DDR-003 §4). The consequence asserts a side effect that the record's own dependency declarations render circular; a declared consequence resting on an unresolved dependency direction.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §5.1 ('DDR-003 gains the promotion-gate authority it is blocked on') vs §7 first bullet ('DDR-003 §4 ... this ADR relies on')"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-003"],
+    "locus": "§2.1 Per-source-class calibration",
+    "claim": "I attacked the top-line decision ('Every write ... passes a human-accountable checkpoint') as an over-claim relative to what the body decides for each source class. For the three enumerated classes in §2.1 (authoritative ingestion → verification-weight; distillation → substantive review; promotion → existing EA gate), the calibration content genuinely matches the per-class decision each names — the claim-to-content fidelity holds for the enumerated classes, and the calibration decision is delivered as titled for those three. (The over-claim survives only at the Environment carve-out and the distillation-already-gated contradiction, filed separately.)",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 title/§2 top-line vs §2.1 three-class calibration — decision content matches the claim for the three enumerated source classes"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-003"],
+    "locus": "§2.3 / §7 retraction-shape dependency",
+    "claim": "I checked whether the retraction mechanism this ADR rules on ('retraction, not supersession, is the remedy for an incorrect promoted fact') names and declares the artifacts it depends on. It does: §2.3 and §7 cite DDR-002 §5, §7 #21 as the retraction shape (reversing CandidatePromotion + RETRACTS edge), which is present and load-bearing in the substrate. The dependency on the concrete retraction schema is correctly declared and resolves in the artifact set — the mechanism-dependency declaration held.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.3/§7 ('the retraction shape (DDR-002 §5, §7 #21)') vs DDR-002 §5 + §7 #21 (reversing CandidatePromotion, proposal_kind: retraction, RETRACTS edge) — declared dependency resolves"
+    }
+  }
+]

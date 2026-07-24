@@ -1,0 +1,62 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-002"],
+    "locus": "§7 check #26 vs §2.6 Cost plane first-registration literal",
+    "claim": "Check #26 (basis-declaration totality) requires that a PlaneDefinition's `confidence_basis` declare the SAME label set as its `property_schema` — 'no basis for an undeclared label, no label without a basis'. The §2.6 cost-plane exemplar literal declares `confidence_basis: {CapabilityCostEstimate, RateCard, CostFactor}` but the accompanying gloss states `property_schema` is 'elided in this illustration'. Because #26 keys the basis label set to the property_schema key set, the exemplar as written cannot be checked for the very key-set-equality invariant it is meant to demonstrate: the reader is told the two sets must be equal and simultaneously shown only one of them, with the parenthetical '#26 keys the basis label set to its key set' asserting a match against an elided operand.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-002 §7 #26 (confidence_basis label set = property_schema label set) in conflict with DDR-002 §2.6 cost-plane registration literal (property_schema elided while confidence_basis enumerated)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-002", "DDR-004"],
+    "locus": "PlaneDefinition confidence-derivation basis disposition",
+    "claim": "DDR-002 §2.6 declares `PlaneDefinition`'s own basis as `flat_base` (basis 2), and the Touch-3 Change Log row states this is 'a batch ruling, adjudication A-3 — a disposition DDR-004 §4's table does not yet carry; alignment noted for that record's next touch.' DDR-004 §4's per-class disposition table (the owning enumeration of confidence-derivation bases by node-class) does NOT list PlaneDefinition. DDR-002 asserts a concrete basis property for an entity while conceding the owning record's basis table does not supply it — the disposition is carried in the downstream document ahead of the authority that DDR-002 §2 preamble names as the value/semantics owner ('Derivation semantics and values are DDR-004's').",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-002 §2.6 (PlaneDefinition = flat_base) + Change Log Touch-3 row ('DDR-004 §4's table does not yet carry') in conflict with DDR-004 §4 per-class disposition table (PlaneDefinition absent)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-002"],
+    "locus": "Named gaps — 'Gate-decision origin evolution' governing-verdict clause vs §2.4 verdict-precedence scope",
+    "claim": "The Named Gap 'Gate-decision origin evolution' states (v1.3.0 cold-read addition) that 'which gate verdict governs a Solution carrying conflicting DECIDED_ON outcomes is unruled.' Yet §2.4's verdict-precedence rule (latest `decided_at`, monotonicity-backed) is written on the `Decision` supertype's `DECIDED_ON {outcome}` edge and §7 #15's well-definedness clause grounds 'latest decided_at' on per-candidate monotonicity enforced 'on DECIDED_ON writes' generally. §3.6.3 (`mirror-gate-decision`, in SDD-001) explicitly excludes GateDecision DECIDED_ON edges from monotonicity ('decided_at monotonicity is not extended to this edge'). The gap-naming claims the GateDecision governing verdict is unruled, but §2.4's precedence prose is not visibly scoped away from GateDecision — the supertype-level statement and the gap-level 'unruled' claim cannot both be read literally without contradiction.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-002 §2.4 verdict-precedence (Decision-supertype DECIDED_ON, latest decided_at) in conflict with Named Gaps 'Gate-decision origin evolution' (GateDecision governing verdict unruled) and SDD-001 §3.6.3 (monotonicity not extended to GateDecision edge)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["DDR-002"],
+    "locus": "§4 ProvenanceSummary vs Named Gaps 'Provenance-survival retrieval index/affordance'",
+    "claim": "§4's ProvenanceSummary paragraph states the affordance 'warrants no CI invariant of its own' and that 'What remains deferred is the reverse-lookup index / query-pattern optimization.' The Named Gaps entry for the same subject repeats the no-CI-invariant determination and the narrowed residue. The two passages are consistent in substance but the §4 text still carries the closed-clause narration ('the CI-invariant clauses closed at v1.3.0') via the knowledge-service SDD cross-reference bullet, which restates a change-event ('closed at v1.3.0') inside contract-adjacent prose — a residual storytelling fragment the body-integrity discipline routes to the Change Log.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-002 §4 ProvenanceSummary + Named Gaps entry + Cross-References knowledge-service SDD bullet ('closed at v1.3.0') — version-stamp narration in contract prose"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-002", "DDR-004", "SDD-001"],
+    "locus": "Evidence.observed_at Δt-anchor semantic across the landing set",
+    "claim": "Checked seam 4: DDR-002 §4 glosses Evidence.observed_at as 'the capture/snapshot instant ... the Δt reference to point — the cited node's own observed_at, the from point, is recovered via SOURCED_FROM + the version pin, never mirrored here; DDR-004 §3'. DDR-004 §3 defines Δt = capture_instant − cited_node.observed_at with the capture instant persisted as Evidence.observed_at, gateway-clocked and frozen. SDD-001 §3.4.3 executes with 'Δt = the capture instant − the cited node's declared freshness operand, the capture instant gateway-clocked and frozen as Evidence.observed_at (DDR-004 §3; never caller-supplied).' The 'to'/'from' endpoint assignment, the gateway-clocked-and-frozen property, and the no-new-field discharge path are consistent across all three documents; the attack (that the two observed_at fields — Environment source's and Evidence's — might be conflated or that the anchor could be caller-influenceable) failed at every locus.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-002 §4 Evidence.observed_at gloss ↔ DDR-004 §3 Δt endpoints ↔ SDD-001 §3.4.3 capture-instant execution — endpoint assignment and freezing property held consistent"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-002", "SDD-001"],
+    "locus": "#25 executed-proposal scoping ↔ retraction lifecycle ↔ harness ordering",
+    "claim": "Checked seam 1: DDR-002 §7 #25 as amended scopes the forward direction to executed proposals (terminal status: promoted), and §5/§2.4 confirm #21 (retraction-gated, safety-critical) writes the RETRACTS edge only at the EA-gated materialization act. SDD-001 §3.5.4 (materialize-retraction) writes RETRACTS at materialization and advances to terminal status:promoted in one transaction, with a conformance note stating #25 'is scoped to executed proposals as of v1.3.0 ... so this operation's materialization-time RETRACTS writing satisfies #25 across the proposal's entire lifecycle; no pre-decision window remains, and the harness implements from the ratified text.' The prior #21/#25 joint-unsatisfiability in the pre-decision retraction window is dissolved: a proposed/rejected retraction carries no RETRACTS edge and violates neither check. The attack (that #25's biconditional still demands an edge on a rejected retraction, or that #21 forbids what #25 requires) failed — the scoping and the SDD timing agree.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-002 §7 #25 (scoped to executed proposals) + #21 (retraction-gated) ↔ §5 retraction shape ↔ SDD-001 §3.5.4 materialize-retraction conformance note — joint-satisfiability held"
+    }
+  }
+]

@@ -1,0 +1,1 @@
+{"finding_id": "68df74197a06b16b", "classification": "decision-bearing", "authority_locus": null, "rationale": "ADR-008 §2.2 enumerates four source classes with no 'mirrored externally-decided records' class; whether that exclusion conforms or introduces an unratified category is a gap no cited authority resolves.", "confidence": "medium"}

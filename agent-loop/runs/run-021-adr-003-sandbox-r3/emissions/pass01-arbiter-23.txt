@@ -1,0 +1,7 @@
+{
+  "finding_id": "831649c9697806fa",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding is a dangling-hinge cold-read failure: ADR-003 cites 'R30' as deliberation substrate but R30 exists only as narrated-but-absent text (triage charter marks it 'to be supplied' / mandatory but not present in the set). Resolving it requires an unratified choice among conforming options that no authority disambiguates \u2014 e.g. supply R30's text, re-ground the citation on a present authority, restate the substrate inline, or downgrade the pointer \u2014 and the skill's cold-read/verified-citation discipline names the defect but does not dictate which remedy applies.",
+  "confidence": "high"
+}

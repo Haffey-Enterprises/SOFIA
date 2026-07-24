@@ -1,0 +1,1 @@
+{"finding_id":"01867665260f6cb5","classification":"decision-bearing","authority_locus":null,"rationale":"R30 (ratified) permits non-gated distillation writes; ADR-008 reverses this on criterion-shift grounds — no higher authority disambiguates the conflict, so the supersession is an unratified choice.","confidence":"high"}

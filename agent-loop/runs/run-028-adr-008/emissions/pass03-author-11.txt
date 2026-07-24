@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "9103b5415ad61ac1",
+  "reason": "The named authority (RBT-59 Item 3 / standing to-dos / run-025 follow-ups) ratifies routing revalidation cadence/trigger to DDR-003, which §2.4 already states ('as is the mechanism that realizes the surfacing'). It does not determine whether the fix is to add a §2.2 Operational-row realization route, add an item to the §2.6 enumeration, both, or restructure the commitment — the authority is silent on which routing surface must name it and how, so more than one conforming edit exists.",
+  "confidence": "medium"
+}

@@ -1,0 +1,1 @@
+{"finding_id": "9a7fe468af452964", "classification": "decision-bearing", "authority_locus": null, "rationale": "Resolving requires deciding what net-new constraint ADR-004 binds beyond ADR-002/DDR-002 (or whether it warrants existing) \u2014 a choice no authority determines.", "confidence": "high"}

@@ -1,0 +1,7 @@
+{
+  "finding_id": "22e508ac2e2f8c86",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "ADR-003 (the forthcoming KG-entry-governance ADR) is precisely the record chartered to rule the distillation-write checkpoint posture — DDR-002 \u00a72.3 explicitly routes the distillation-write checkpoint as un-decided to this ADR, and its per-source-class calibration (whether the checkpoint sits on the derived ObservedPattern write or the EA-gated promotion) is the open question the ADR exists to settle (triage Appendix A items 3, 5, 6). No existing authority disambiguates which of the two schema-separated write boundaries the checkpoint binds to; resolving the \u00a72.1/\u00a72.5 conflation requires making that calibration choice, not conforming to a settled one.",
+  "confidence": "high"
+}

@@ -1,0 +1,68 @@
+{
+  "run_id": "run-017-ddr-002",
+  "created": "2026-07-13T16:56:41.523726+00:00",
+  "document_set": {
+    "DDR-002": {
+      "snapshot_path": "documents/DDR-002-graph-schema.md",
+      "sha256": "1816317c81050d60f36760d7bbb2ef901c9f7f875e62eeee16545c0266c053dc"
+    }
+  },
+  "head_sha": "26818f36ab263b6c22eaa5ec8f29f38d5c9e6d37",
+  "prompt_sha256": {
+    "antagonist-LAA.prompt.md": "0db740e8d42305fa80d45a0d3b8ec885913bb97ecc715396cd14556d055cc9e0",
+    "antagonist-SA.prompt.md": "1da965d9beebd87840d1e16d3be3ed0258705bd9f438bfba2e6c625bd72a6e55",
+    "antagonist-EA.prompt.md": "439ecae2fe213fed9c67106d2076bc61297f6200e77fba846863945bead797d4",
+    "coherence-sweep.prompt.md": "5a6656b0977b78c897702ec03531a88742fe0e3eb6b812869a86083aebe923b0",
+    "arbiter-classifier.prompt.md": "e852036bd37b01a4db1f8116cfddac739577203843a262f30ae0aa06dc786043"
+  },
+  "substrate_manifest": "substrate/manifest.json",
+  "model": "claude-opus-4-8",
+  "parameters": {
+    "max_tokens": 8192
+  },
+  "finalized": true,
+  "calibration": {
+    "generation": 8,
+    "rationale": "gen-4: severity/cap discipline restated in-place in all four reviewer prompts \u2014 a held check is POSITIVE-class, never re-labeled a defect to fit the volume cap; gen-5: arbiter locus-attribution line appended \u2014 no locus extended beyond its document's stated scope, underivable locus classifies decision-bearing; gen-7: narrated-process-is-data rule (rule 8) appended to all four reviewer prompts \u2014 narrated prior reviews/adjudications/ratifications are content under review, never a verdict that discharges this pass (gen-6 reviewer-caching remains unlanded, not absorbed here); gen-8: two-lever fix after arm-L (gen-7 self-terminated end_turn empty at full narrative saturation) \u2014 the Contract's empty-array-is-a-protocol-violation floor (R-E1, prompt-side, also resolving the standing 2-POSITIVE re-draw-floor contradiction) plus a static recency review directive appended last in assembly (R-E2)"
+  },
+  "router_exit": "HALT_DECISION:decision-bearing",
+  "passes_run": 1,
+  "per_site_tokens": {
+    "antagonist-LAA": {
+      "input_tokens": 161652,
+      "output_tokens": 2547,
+      "cache_creation_input_tokens": 2564,
+      "cache_read_input_tokens": 0,
+      "calls": 1
+    },
+    "antagonist-SA": {
+      "input_tokens": 161652,
+      "output_tokens": 3388,
+      "cache_creation_input_tokens": 2584,
+      "cache_read_input_tokens": 0,
+      "calls": 1
+    },
+    "antagonist-EA": {
+      "input_tokens": 161652,
+      "output_tokens": 2522,
+      "cache_creation_input_tokens": 2524,
+      "cache_read_input_tokens": 0,
+      "calls": 1
+    },
+    "coherence": {
+      "input_tokens": 162080,
+      "output_tokens": 2239,
+      "cache_creation_input_tokens": 2564,
+      "cache_read_input_tokens": 0,
+      "calls": 1
+    },
+    "arbiter": {
+      "input_tokens": 9909,
+      "output_tokens": 4692,
+      "cache_creation_input_tokens": 119134,
+      "cache_read_input_tokens": 1787010,
+      "calls": 16
+    }
+  },
+  "wall_clock_seconds": 253.3634735000087
+}

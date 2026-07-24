@@ -1,0 +1,7 @@
+{
+  "finding_id": "0d3b0fe32bfd813e",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding exposes a genuine gap: DDR-002 #25's ratified biconditional (proposal_kind:retraction ⇔ RETRACTS edge) is unsatisfied during the pre-decision window of a retraction proposal under the SDD's materialization-time RETRACTS-writing decision. The deliberation record itself flags this as unresolved harness-implementation nuance (Item 2a-ii) — whether to scope #25 to executed proposals, add a status-guard, or amend #25's text — and no ratified authority disambiguates among these conforming options; #25's own text as authored conflicts with the SDD's timing choice.",
+  "confidence": "high"
+}

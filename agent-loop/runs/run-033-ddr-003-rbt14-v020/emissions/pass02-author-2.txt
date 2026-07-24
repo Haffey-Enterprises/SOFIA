@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "57751e05312faa0c",
+  "reason": "The 'fetch-verify' convention determines that a section citation must point at content it carries, but §6.3 does in fact carry the gate-time Condition authoring ('the predicate is EA-authored in the approval act') — so §6.3 is not a false citation. Whether to keep §6.3, narrow the anchor, or add another target is a wording choice the convention does not uniquely determine.",
+  "confidence": "high"
+}

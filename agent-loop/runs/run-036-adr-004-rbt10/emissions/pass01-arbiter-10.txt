@@ -1,0 +1,1 @@
+{"finding_id": "5a99d269f18fc884", "classification": "decision-bearing", "authority_locus": null, "rationale": "Finding targets ADR-004, a document absent from the ratified authority set; its §2.4/§2.5/§7 loci cannot be verified and no authority determines the fix.", "confidence": "high"}

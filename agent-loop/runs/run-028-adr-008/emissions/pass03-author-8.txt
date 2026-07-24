@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "f243b6c6f7bb0427",
+  "reason": "Ruling G names two §7 bullets to replace, but each bullet carries appended clauses (DDR-003's 'This ADR is its upstream authority; ... lives in DDR-003's definition of done'; ADR-004's 'owns the ingestion mechanics...') referring to those records by the same concrete identifiers within the bullet body — the ruling specifies only the subject-name substitution for the two quoted parenthetical strings and is silent on whether/how the surrounding in-bullet references convert, so a single conforming edit is not uniquely determined without an unratified choice about the remaining identifier uses.",
+  "confidence": "medium"
+}

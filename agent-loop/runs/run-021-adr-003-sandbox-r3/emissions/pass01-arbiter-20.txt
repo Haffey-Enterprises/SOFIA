@@ -1,0 +1,7 @@
+{
+  "finding_id": "fa2ea7c54745b500",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §2.3 — (:Operational:ObservedPattern) confidence-derivation basis: 'native_confidence (basis 1), plane-level'",
+  "rationale": "DDR-002 §2.3 is the ratified owning definition of the ObservedPattern confidence-derivation basis, and it dictates native_confidence; ADR-003's flat_base assertion is a straightforward conformance error against that named, higher-owning authority, with no competing choice to make.",
+  "confidence": "high"
+}

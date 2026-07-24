@@ -1,0 +1,68 @@
+{
+  "run_id": "run-012-sdd-001",
+  "created": "2026-07-09T01:21:04.354465+00:00",
+  "document_set": {
+    "SDD-001": {
+      "snapshot_path": "documents/SDD-001-knowledge-service.md",
+      "sha256": "0e3375b1f78afb3b996c20d20798793734506a7e6127cb76872b887df2971fa7"
+    }
+  },
+  "head_sha": "8e6750cd140da0f9a5338349d91df7e9d3b55298",
+  "prompt_sha256": {
+    "antagonist-LAA.prompt.md": "b964d2f9f0e7cdaf1159d56ce22724b8d61a88c108231789ff1a56e2fe9b7ef1",
+    "antagonist-SA.prompt.md": "e77ffbc743b86391ed1b1231c8bc6c1d4ddddfc5cb02089f07db2c6ba9bf3859",
+    "antagonist-EA.prompt.md": "d440b7c2b19d7f6f69a42247413c124577d039eb5524bd9593e57fde428b53b0",
+    "coherence-sweep.prompt.md": "3a0ca3a14024a1c4b9b17f395c0c2510450df183adc663cfb04e53f310382299",
+    "arbiter-classifier.prompt.md": "e852036bd37b01a4db1f8116cfddac739577203843a262f30ae0aa06dc786043"
+  },
+  "substrate_manifest": "substrate/manifest.json",
+  "model": "claude-opus-4-8",
+  "parameters": {
+    "max_tokens": 8192
+  },
+  "finalized": true,
+  "calibration": {
+    "generation": 5,
+    "rationale": "gen-4: severity/cap discipline restated in-place in all four reviewer prompts \u2014 a held check is POSITIVE-class, never re-labeled a defect to fit the volume cap; gen-5: arbiter locus-attribution line appended \u2014 no locus extended beyond its document's stated scope, underivable locus classifies decision-bearing"
+  },
+  "router_exit": "HALT_DECISION:decision-bearing",
+  "passes_run": 1,
+  "per_site_tokens": {
+    "antagonist-LAA": {
+      "input_tokens": 202676,
+      "output_tokens": 2142,
+      "cache_creation_input_tokens": 2333,
+      "cache_read_input_tokens": 2333,
+      "calls": 2
+    },
+    "antagonist-SA": {
+      "input_tokens": 101338,
+      "output_tokens": 1897,
+      "cache_creation_input_tokens": 2353,
+      "cache_read_input_tokens": 0,
+      "calls": 1
+    },
+    "antagonist-EA": {
+      "input_tokens": 202676,
+      "output_tokens": 8,
+      "cache_creation_input_tokens": 2293,
+      "cache_read_input_tokens": 2293,
+      "calls": 2
+    },
+    "coherence": {
+      "input_tokens": 202676,
+      "output_tokens": 8,
+      "cache_creation_input_tokens": 2333,
+      "cache_read_input_tokens": 2333,
+      "calls": 2
+    },
+    "arbiter": {
+      "input_tokens": 3338,
+      "output_tokens": 1407,
+      "cache_creation_input_tokens": 81504,
+      "cache_read_input_tokens": 407520,
+      "calls": 6
+    }
+  },
+  "wall_clock_seconds": 219.87881749999997
+}

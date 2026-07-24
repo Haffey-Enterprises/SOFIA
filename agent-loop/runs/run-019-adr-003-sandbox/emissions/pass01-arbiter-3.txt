@@ -1,0 +1,7 @@
+{
+  "finding_id": "e50c1f53563a821a",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "The finding exposes a genuine internal contradiction between ADR-003's universally-quantified top-line ('Every write ... passes a human-accountable checkpoint') and §2.2's explicit deferral of the Environment plane posture. Resolving it requires a choice the substrate has not made: either narrow the decision's scope (and how — the KG-entry charter, Appendix A item 5, records the Environment posture as an explicitly open question of per-write review vs. confidence-weighting, deferred, not settled) or commit an Environment checkpoint posture now. No ratified authority disambiguates which; the charter deliberately leaves it open.",
+  "confidence": "high"
+}

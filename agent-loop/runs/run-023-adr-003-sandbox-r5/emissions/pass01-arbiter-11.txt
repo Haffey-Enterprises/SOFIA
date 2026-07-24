@@ -1,0 +1,11 @@
+The finding targets ADR-003, which is not present in the ratified authorities or provided documents — I must classify based on whether the fix is determined by named authority regardless of the target's absence. The finding is a citation-completeness/coherence claim: ADR-003 cites DDR-002 §7 #21 for the retraction shape but not DDR-002's Decision.7, which enumerates the retraction shape. DDR-002 Decision.7 exists and verifiably states the retraction shape. The record-authoring discipline (author-decision-record SKILL: "Section citations are facts — fetch-verify them," "point, don't mirror," and the pointer-to-strongest-authority convention) plus DDR-002 Decision.7 being the enumerated home of the retraction shape means adding the citation is a determined conformance fix — no design choice is introduced by naming the existing stronger enumerated authority.
+
+However, whether ADR-003 *should* cite Decision.7 in addition to §7 #21, or whether the existing check-locus citation is sufficient, is a matter of authoring judgment the SKILL states as a convention but does not mechanically dictate which locus is "strongest" for a given claim — and the target document (ADR-003) is not available to verify the citation actually needs this. The finding names a real, existing authority (DDR-002 Decision.7) whose text carries the retraction-shape enumeration. Adding it is conformance to the pointer-to-authority discipline. This is resolvable.
+
+{
+  "finding_id": "7f6a2bbd9b7fb98a",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 Decision.7 (retraction shape: EA-gated reversing CandidatePromotion `proposal_kind: retraction` + `RETRACTS` edge) as the enumerated authority; author-decision-record SKILL 'point, don't mirror' / verified-citation discipline",
+  "rationale": "DDR-002 Decision.7 verifiably enumerates the retraction shape and is the Decision-block (strongest enumerated) home the finding says is uncited; the authoring discipline determines that a record should cite the enumerated authority, so adding the citation is a determined conformance fix introducing no new choice.",
+  "confidence": "medium"
+}

@@ -1,0 +1,1 @@
+{"finding_id":"2399be6e00c5e105","classification":"decision-bearing","authority_locus":null,"rationale":"ADR-008 §2.2's four source classes do not enumerate 'mirrored externally-decided records'; whether that category is an exempt mutation class is a gap no cited authority resolves.","confidence":"high"}

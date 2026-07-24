@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "ba2fd4e152d96ce2",
+  "reason": "The cited amendment-lifecycle rule requires a home with a firing trigger, but choosing which artifact is the home (SDD-001 §3.6 vs. the architecture-ingestion design) and what concrete trigger fires the re-surfacing is an unratified authorial choice the rule does not itself determine.",
+  "confidence": "high"
+}

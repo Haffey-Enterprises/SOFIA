@@ -1,0 +1,7 @@
+{
+  "finding_id": "3805a80db890ecf7",
+  "classification": "resolvable",
+  "authority_locus": "ADR-008-run-025-operator-rulings Ruling D (form-built-vs-constants-contested tense discipline) + Ruling B (Promotion authority = durable built chain: ADR-001 §2.5 + DDR-002 §5/§7 #15), applied to the §2.2 Promotion row",
+  "rationale": "The operator rulings fix the claim-fidelity tense convention (Ruling D) and the Promotion row's built-chain citation (Ruling B); conforming the Promotion row's status to that convention is determined, not a new choice.",
+  "confidence": "high"
+}

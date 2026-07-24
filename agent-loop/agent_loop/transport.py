@@ -61,6 +61,18 @@ class LlmResponse:
             cache write occurred or the response carries no cache usage.
         cache_read_input_tokens: Tokens read from the prompt cache on this call
             (a small fraction of base input; repeated prefixes). 0 otherwise.
+        cache_creation_ephemeral_1h_input_tokens: The share of
+            `cache_creation_input_tokens` written to the **1-hour** TTL bucket
+            (RBT-69 Piece 2 marks the run-frozen breakpoints `ttl:"1h"`). Captured
+            so a supervised run can prove the writes landed in the 1h bucket, not
+            the default 5m one — the TTL application becomes a logged fact, not an
+            assumption. 0 when the response carries no `cache_creation` sub-object.
+        cache_creation_ephemeral_5m_input_tokens: The share written to the
+            **5-minute** TTL bucket (the two sum to `cache_creation_input_tokens`).
+        stop_reason: Why the model stopped (`end_turn`, `max_tokens`, …), from
+            the API response, or None when the response carries none (run-016
+            diagnosis rider — distinguishes a self-terminated empty emission from
+            a truncated one).
     """
 
     text: str
@@ -69,6 +81,9 @@ class LlmResponse:
     request_id: str | None = None
     cache_creation_input_tokens: int = 0
     cache_read_input_tokens: int = 0
+    cache_creation_ephemeral_1h_input_tokens: int = 0
+    cache_creation_ephemeral_5m_input_tokens: int = 0
+    stop_reason: str | None = None
 
 
 class Transport(Protocol):
@@ -135,8 +150,20 @@ class AnthropicTransport:
         receives is byte-identical to the uncached path regardless of what
         `cache_prefix` is. A sub-minimum prefix is simply not cached by the API
         (no error), so marking is always safe.
+
+        Cache TTL (RBT-69 Piece 2): both cache breakpoints — the run-frozen system
+        block and the run-frozen leading substrate/document head — carry the
+        1-hour TTL, so the cache survives the multi-minute gaps between passes
+        (the default 5-minute ephemeral TTL expired *between* passes, giving the
+        once-per-pass hats ≈0 cache_read; run-028). The 1-hour TTL is GA on the
+        first-party Messages API via `cache_control.ttl` — no beta header. The
+        morphing surface (document set, growing ledger snapshot) is never marked,
+        so it stays the uncached tail. Cost trade (stated honestly): a 1-hour
+        write is priced above a 5-minute write; reads are equally cheap —
+        net-positive whenever a prefix is re-read across ≥2 passes, mildly
+        wasteful on a single-pass run (which is cheap regardless).
         """
-        ephemeral = {"type": "ephemeral"}
+        ephemeral = {"type": "ephemeral", "ttl": "1h"}
         system_blocks = [{"type": "text", "text": system, "cache_control": ephemeral}]
         content = _user_content_blocks(user, cache_prefix, ephemeral)
         try:
@@ -152,6 +179,11 @@ class AnthropicTransport:
             getattr(block, "text", "") for block in getattr(message, "content", [])
         )
         usage = message.usage
+        # The 1h/5m split lives in a `cache_creation` sub-object that is absent or
+        # partial on a no-cache response — extract it with the same defensive
+        # `getattr(..., 0) or 0` pattern as the totals above, so a response with no
+        # cache usage yields 0/0 rather than raising.
+        cache_creation = getattr(usage, "cache_creation", None)
         return LlmResponse(
             text=text,
             input_tokens=usage.input_tokens,
@@ -159,6 +191,15 @@ class AnthropicTransport:
             request_id=getattr(message, "_request_id", None),
             cache_creation_input_tokens=getattr(usage, "cache_creation_input_tokens", 0) or 0,
             cache_read_input_tokens=getattr(usage, "cache_read_input_tokens", 0) or 0,
+            cache_creation_ephemeral_1h_input_tokens=getattr(
+                cache_creation, "ephemeral_1h_input_tokens", 0
+            )
+            or 0,
+            cache_creation_ephemeral_5m_input_tokens=getattr(
+                cache_creation, "ephemeral_5m_input_tokens", 0
+            )
+            or 0,
+            stop_reason=getattr(message, "stop_reason", None),
         )
 
 
@@ -224,8 +265,11 @@ def _timed_call(
         output_tokens=response.output_tokens,
         cache_creation_input_tokens=response.cache_creation_input_tokens,
         cache_read_input_tokens=response.cache_read_input_tokens,
+        cache_creation_ephemeral_1h_input_tokens=response.cache_creation_ephemeral_1h_input_tokens,
+        cache_creation_ephemeral_5m_input_tokens=response.cache_creation_ephemeral_5m_input_tokens,
         latency_ms=latency_ms,
         request_id=response.request_id,
+        stop_reason=response.stop_reason,
         emission_path=emission_path,
     )
     return response
@@ -280,23 +324,32 @@ def build_api_emitter(
     sleeper: Callable[[float], None] = time.sleep,
     backoff_seconds: float = 30.0,
     capture: object | None = None,
+    cache_prefix_of: Callable[[str], str | None] | None = None,
 ) -> LlmEmitter:
     """Build a per-call-site emitter binding a hat's label to the transport.
 
     Per-call-site construction is what lands token attribution per hat: every
     call this emitter makes logs an `llm_call` under `site_label`. The emitter's
-    signature is the unchanged `LlmEmitter` port; content-level malformation is
-    returned as-is for the parse seam, never retried here. Only `max_tokens` is
-    sent — no sampling parameters (run-prep §6). When `capture` is supplied, the
-    raw body is written before parsing and its path lands on the `llm_call`.
+    signature is the unchanged `LlmEmitter` port `(system, user) -> str`;
+    content-level malformation is returned as-is for the parse seam, never
+    retried here. Only `max_tokens` is sent — no sampling parameters (run-prep
+    §6). When `capture` is supplied, the raw body is written before parsing and
+    its path lands on the `llm_call`.
 
-    Caching (RBT-49 Item 1): no user-level `cache_prefix` is passed — each hat's
-    system prompt differs, so cross-hat prefix sharing is not chased (the arbiter
-    carries the cost target alone). The transport still marks the system block
-    cacheable, so a hat's repeated system across passes reads from cache.
+    Caching (RBT-49 Item 1 / RBT-69 Piece 2): `cache_prefix_of` is an optional
+    splitter that, given the call's own assembled `user`, returns the leading
+    run-frozen prefix to cache (the hat substrate; the author's run document) —
+    or `None` for no user-level caching. It is applied to `user` *inside* this
+    closure, so the `LlmEmitter` port stays `(system, user) -> str` and the
+    prefix is a genuine slice of the sent bytes (the content-neutrality guarantee
+    of `_user_content_blocks` — never a hand-built substrate string that could
+    diverge from what is sent). When omitted, no user-level `cache_prefix` is
+    passed; the transport still marks the system block cacheable, so a hat's
+    repeated system across passes reads from cache.
     """
 
     def emit(system: str, user: str) -> str:
+        cache_prefix = cache_prefix_of(user) if cache_prefix_of is not None else None
         response = _call_with_transport_retry(
             transport,
             system,
@@ -309,6 +362,7 @@ def build_api_emitter(
             backoff_seconds,
             now,
             capture,
+            cache_prefix,
         )
         return response.text
 

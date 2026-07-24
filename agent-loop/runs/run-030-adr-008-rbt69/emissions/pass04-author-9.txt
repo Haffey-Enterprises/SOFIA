@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "8dbbe46a59210885",
+  "reason": "The named authority (adr-template §1 says Context states current-state/forcing-function; author-decision-record says PROPOSED is correct while review is open) confirms the status is correct and the Context genre is right, but does not uniquely determine any specific edit — it endorses the existing text rather than mandating a conforming rewrite, and the finding names no wording the template requires changed. Choosing whether/how to add a pending-acceptance caveat is an unratified authorial choice.",
+  "confidence": "high"
+}

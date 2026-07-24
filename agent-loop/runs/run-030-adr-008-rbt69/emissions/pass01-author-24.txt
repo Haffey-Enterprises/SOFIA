@@ -1,0 +1,8 @@
+The finding's locus is §7's DDR-002 flat constraint listing, but Ruling F's conformance directs qualifying §2.3's "same control" claim. §2.3 already carries the full qualification ("traces to *an* approving decision, not the *governing* one, so it does not yet supply promotion's governing-verdict guarantee — that governing-verdict detection analogue... is the named follow-up (§5.3)"). Ruling F is silent on adding a qualifier to the §7 flat listing, which is the actual locus named.
+
+{
+  "action": "refuse",
+  "finding_id": "450de2e072ac2022",
+  "reason": "Ruling F directs qualifying §2.3's 'same control' claim — already fully qualified in the current §2.3 text ('traces to an approving decision, not the governing one... named follow-up (§5.3)'). The finding's actual locus is §7's flat constraint listing, on which Ruling F is silent; it prescribes no §7 edit and does not determine what qualifier text to insert there.",
+  "confidence": "high"
+}

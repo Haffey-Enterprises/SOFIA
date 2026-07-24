@@ -1,6 +1,6 @@
 # CLAUDE.md — SOFIA
 
-Repo-root orientation for Claude (auto-loaded by Claude Code). This file is **context, not conventions** — what SOFIA is, its stack, and where things live. The engineering conventions are not here: they live in the `bedrock:` skills (`application-code`, `testing`, `code-review`, `author-decision-record`, `debug`), which trigger on their own. Keep this file lean; prune as it grows.
+Repo-root orientation for Claude (auto-loaded by Claude Code). This file is **context, not conventions** — what SOFIA is, its stack, and where things live. The engineering conventions are not here: they live in the installed `bedrock` plugin's skills, which trigger on their own; the plugin owns the current skill list — this file does not mirror it. Keep this file lean; prune as it grows.
 
 ## What this is
 
@@ -19,15 +19,15 @@ The platform operates with **hybrid reasoning** (LLM and SOFIA) within encoded b
 
 - **Language / runtime:** Python 3.11+
 - **Framework:** FastAPI (async)
-- **System of record:** graph database (Neo4j Enterprise, self-managed on GKE) — per ADR-002 / DDR-002
+- **System of record:** graph database (Neo4j Enterprise; deployment runtime environment-differentiated per ADR-002 §2.2 — dev on managed Aura, prod deferred) — per ADR-002 / DDR-002
 - **Persistence backbone:** Neo4j (architecture + reasoning state), PostgreSQL (workflow/audit/staging), Firestore (immutable snapshots) — no vector store
 - **Cloud / host:** GCP / GitHub
 
-A materially different choice on any axis is a **rebind**, not a substitution — re-derive the conventions for that stack and capture it as an ADR (see the `application-code` skill). The `bedrock:` skills assume the stack above.
+The `bedrock:` corpus is multi-stack: each skill declares its own binding, and that declaration — not this list — governs what it assumes. The service-side skills bind to the stack above; others bind to their own, and some are stack-independent. Wherever a skill's binding is the stack above, a materially different choice on any axis is a **rebind**, not a substitution — re-derive the conventions for that stack and capture it as an ADR.
 
 ## Branch model
 
-`feature/*` → `develop` → `main`, via PRs; never commit directly to `develop` or `main`. Confirm the current branch before any git operation.
+`feature/*` → `develop` → `main`, via PRs; never commit directly to `main`. All agent-loop deliberation/run artifacts (`agent-loop/deliberation/`, `agent-loop/runs/`) land via PR to `develop` like every other change — the prior direct-commit exemption is retired (ruled RBT-10 session, 2026-07-22, resolving the RBT-77-named conflict with branch protection). Confirm the current branch before any git operation.
 
 ## Services
 

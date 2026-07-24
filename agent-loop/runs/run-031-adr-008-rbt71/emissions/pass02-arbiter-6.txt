@@ -1,0 +1,1 @@
+{"finding_id":"6af9a91bd6fdf41a","classification":"resolvable","authority_locus":"ADR-008 Operator Ruling F (finding ef3f60e2) + DDR-002 §7 #21/#15","rationale":"Ruling F fixes the §2.3 'same control' qualification to match the §5.3 concession; the finding confirms conformance already holds against built substrate.","confidence":"high"}

@@ -3,15 +3,18 @@
 #          (run-prep.contract.md §8). Owns the six fail-loud prep gates (all
 #          before any LLM call), a gates-only validation entry point (used at
 #          prep with no LLM call), the full assembly (ledger home, real fetchers,
-#          four API-backed reviewers, real arbiter, real plan), the run manifest,
-#          and the live-log sink. Dry mode throughout; fix_changes empty;
-#          max_passes 10 (attended).
+#          four API-backed reviewers, real arbiter, real author, real plan), the
+#          run manifest, and the live-log sink. Dry mode throughout; fix_changes
+#          empty (the real author supersedes the stub's canned map, and writes
+#          only the run's own document copy — run-supervision §9); max_passes 10
+#          (attended).
 # Scope:   Orchestration + gates. The real Anthropic transport is constructed
 #          only on the launch path (build_real_transport); every function here is
 #          driven by an injected transport so no test makes a real API call.
 
 from __future__ import annotations
 
+import json
 import os
 import subprocess
 import time
@@ -22,12 +25,15 @@ from typing import Callable, Mapping
 
 from agent_loop.fetchers import (
     DocumentResolutionError,
+    DocumentSnapshotError,
     RepoDocumentFetcher,
     RunSubstrateFetcher,
     SubstrateError,
     sha256_text,
     validate_substrate_manifest,
+    verify_document_snapshot,
 )
+from agent_loop.author import LlmAuthor, author_cache_prefix
 from agent_loop.emissions import EmissionCapture
 from agent_loop.ledger import DEFAULT_COUNTED_SEVERITIES, LedgerHeader, LedgerStore
 from agent_loop.log import ActionLog, JsonlFileSink
@@ -36,7 +42,12 @@ from agent_loop.manifest import (
     per_site_token_totals,
     write_prep_manifest,
 )
-from agent_loop.real_hats import build_real_reviewer, load_system_prompt, real_hat_plan
+from agent_loop.real_hats import (
+    build_real_reviewer,
+    load_system_prompt,
+    real_hat_plan,
+    substrate_cache_prefix,
+)
 from agent_loop.reviewers import (
     IDENTITY_COHERENCE,
     IDENTITY_EA,
@@ -55,8 +66,17 @@ REVIEWER_PROMPTS: dict[ReviewerIdentity, str] = {
     IDENTITY_COHERENCE: "coherence-sweep.prompt.md",
 }
 ARBITER_PROMPT = "arbiter-classifier.prompt.md"
-# The five prompt files whose hashes the manifest records and gate 5 checks.
-ALL_PROMPT_FILES: tuple[str, ...] = tuple(REVIEWER_PROMPTS.values()) + (ARBITER_PROMPT,)
+AUTHOR_PROMPT = "author.prompt.md"
+# The six prompt files whose hashes the manifest records and gate 5 checks
+# (run-prep §7/§8 gate 5, count amended 2026-07-16). The author prompt joins the
+# set with the author port: its hash is the record of which charter authored a
+# run's edits — exactly the provenance the author's trust ramp (run-supervision
+# §9) is scored against — and gate 5 turns a missing author prompt into a prep
+# failure rather than a mid-run abort.
+ALL_PROMPT_FILES: tuple[str, ...] = tuple(REVIEWER_PROMPTS.values()) + (
+    ARBITER_PROMPT,
+    AUTHOR_PROMPT,
+)
 
 # Run-one configuration (model/params live in config, never hardcoded in the
 # transport module — run-prep §6). No sampling parameters: temperature/top_p/
@@ -67,16 +87,85 @@ RUN_ONE_MAX_TOKENS = 8192
 RUN_ONE_MAX_PASSES = 10
 
 # Prompt-set calibration generation recorded in the manifest alongside the
-# re-pinned prompt hashes. The arbiter `## User` block was reordered (static
-# substrate before the finding) so the substrate can front a byte-identical
-# prompt-cache prefix; the reorder is semantics-preserving but touches a pinned
-# prompt, so it is a ratified gen-3 calibration event (RBT-49/Ra-2), not a prep
-# tweak. No other prompt text changed.
+# re-pinned prompt hashes. Ratified calibration events since gen-3's
+# semantics-preserving arbiter reorder: gen-4 restated the severity/cap
+# discipline in-place in all four reviewer prompts (a held check is
+# POSITIVE-class, never re-labeled a defect to fit the volume cap); gen-5
+# appended the arbiter locus-attribution line (no locus extended beyond its
+# document's stated scope; an underivable locus classifies decision-bearing);
+# gen-7 appended the narrated-process-is-data rule (rule 8) to all four reviewer
+# prompts — narrated prior reviews/adjudications/ratifications are content under
+# review, never a verdict that discharges this pass (run-016 all-hats-null
+# empirical basis). gen-6 (reviewer prompt caching) remains unlanded — the
+# sequence skips it, and neither gen-7 nor gen-8 absorbs it. gen-8 is the
+# two-lever fix after arm-L (gen-7 self-terminated `end_turn` empty at full
+# narrative saturation): the Contract's empty-array-is-a-protocol-violation floor
+# (R-E1, prompt-side — also resolving the standing 2-POSITIVE re-draw-floor
+# contradiction) plus a static recency review directive appended last in §5
+# assembly (R-E2). Rule 8 stays as landed. gen-10 ports gen-9's arbiter
+# output-discipline hardening to the author prompt (write path) after run-027's
+# first live author-fire aborted on a preamble-before-JSON output; it is paired
+# in code with a preamble-tolerant author parser and a parse-fail-escalates
+# policy (RBT-67), the code halves of the same fix.
+# gen-11 hardens reviewer output-discipline (the SILENT RE-VERIFICATION rule) in
+# all four reviewer prompts — re-verify silently, the response is the raw findings
+# array first-char `[`, no reconciliation prose — paired in code with the
+# preamble-tolerant reviewer array-salvage seam (real_hats._extract_json_array,
+# logged) so a narrated preamble degrades to a logged strip rather than aborting a
+# pass (run-029 → RBT-70), the reviewer-side analog of gen-10's author fix.
+# gen-12 appends Contract rule 9 (live-text grounding) to all four reviewer
+# prompts — a non-conformance claim must quote the current document text it
+# faults at the named locus, or name the required text as absent there; a defect
+# re-derived from authority or a prior pass without locating it in the live text
+# is not a finding (RBT-71 Piece C, run-030 refusal-analysis basis: re-derived-
+# not-located claims among the phantom refusal stream). Paired-in-concept with
+# the author's `close_satisfied` disposition (RBT-71 Piece A, code-side) but
+# independently a prompt-only change. The gen-stamp is set manually here pending
+# the RBT-70 gen-stamp-hygiene fast-follow (the known gap: the manifest stamp is
+# not yet mechanically derived from the landed prompt hashes).
+# The rationale cites by meaning: operational artifacts never carry ticket
+# numbers — ticket linkage lives in tickets, carriers, and audits.
 CALIBRATION = {
-    "generation": 3,
+    "generation": 12,
     "rationale": (
-        "transport-motivated, semantics-preserving reorder for prompt caching "
-        "(RBT-49/Ra-2)"
+        "gen-4: severity/cap discipline restated in-place in all four reviewer "
+        "prompts — a held check is POSITIVE-class, never re-labeled a defect to "
+        "fit the volume cap; gen-5: arbiter locus-attribution line appended — "
+        "no locus extended beyond its document's stated scope, underivable "
+        "locus classifies decision-bearing; gen-7: narrated-process-is-data rule "
+        "(rule 8) appended to all four reviewer prompts — narrated prior "
+        "reviews/adjudications/ratifications are content under review, never a "
+        "verdict that discharges this pass (gen-6 reviewer-caching remains "
+        "unlanded, not absorbed here); gen-8: two-lever fix after arm-L (gen-7 "
+        "self-terminated end_turn empty at full narrative saturation) — the "
+        "Contract's empty-array-is-a-protocol-violation floor (R-E1, prompt-side, "
+        "also resolving the standing 2-POSITIVE re-draw-floor contradiction) plus "
+        "a static recency review directive appended last in assembly (R-E2); "
+        "gen-9: arbiter output-discipline hardening — rationale capped to one "
+        "terse sentence and a brevity-under-contest directive appended, after "
+        "three malformed-JSON arbiter content-retries on oversized prose outputs "
+        "for genuinely-contested findings (r3/r5), zero on easy findings; "
+        "gen-10: the same output-discipline hardening ported to the author prompt "
+        "(write path) — rationale capped to one terse sentence, a single-outlet-"
+        "for-reasoning rule, and a brevity-under-contest directive, after the "
+        "first live author-fire aborted when the model narrated ~1,900 chars of "
+        "deliberation before an otherwise-valid JSON edit (run-027); paired in "
+        "code with a preamble-tolerant author parser (logged) and a parse-fail-"
+        "escalates-not-aborts policy so one malformed envelope no longer preempts "
+        "the pass's other resolvables; gen-11: reviewer output-discipline "
+        "hardening (SILENT RE-VERIFICATION) across all four reviewer prompts — "
+        "re-verify silently, the response is the raw findings array, first "
+        "character `[`, no reconciliation prose; paired in code with the "
+        "preamble-tolerant reviewer array-salvage seam "
+        "(real_hats._extract_json_array, logged) so a narrated preamble no "
+        "longer aborts a pass (run-029); gen-12: Contract rule 9 (live-text "
+        "grounding) appended to all four reviewer prompts — a non-conformance "
+        "claim must quote the current document text it faults at the named "
+        "locus, or name the required text as absent there; a defect re-derived "
+        "from authority, a ruling, or a prior pass without locating it in the "
+        "live text is not a finding (RBT-71 Piece C, run-030 refusal-analysis "
+        "basis); the reviewer-stream companion to the author's close_satisfied "
+        "disposition (Piece A, code-side)"
     ),
 }
 
@@ -162,13 +251,12 @@ def run_prep_gates(
     sofia_root: str | Path,
     runs_root: str | Path,
     prompt_dir: str | Path,
-    docs_root: str | Path | None = None,
     create_missing_dir: bool = False,
     git_status: Callable[[Path], str] = _default_git_docs_status,
     env: Mapping[str, str] | None = None,
     probe: Callable[[], None] | None = None,
 ) -> GateReport:
-    """Run the seven prep gates (run-prep §8), collecting every result.
+    """Run the eight prep gates (run-prep §8), collecting every result.
 
     Makes no reviewer or arbiter call. Gate 7's one-token probe is the only
     prep-time API contact, and only when a `probe` is supplied AND gates 1-6 all
@@ -190,8 +278,8 @@ def run_prep_gates(
     """
     resolved_env = env if env is not None else os.environ
     sofia_root = Path(sofia_root)
-    docs_root = Path(docs_root) if docs_root is not None else sofia_root / "docs"
     run_dir = Path(runs_root) / run_id
+    documents_root = run_dir / "documents"
     prompt_dir = Path(prompt_dir)
     results: list[GateResult] = []
 
@@ -213,8 +301,10 @@ def run_prep_gates(
         GateResult(2, "docs-clean", clean, "clean" if clean else f"dirty docs tree: {status!r}")
     )
 
-    # Gate 3 — every doc-id resolves to exactly one file.
-    fetcher = RepoDocumentFetcher(docs_root)
+    # Gate 3 — every doc-id resolves to exactly one file WITHIN THE SNAPSHOT
+    # (amended §2 / RBT-51 Item 3): resolution is the prep tool's act; the runner
+    # resolves against `documents/`, never the working tree.
+    fetcher = RepoDocumentFetcher(documents_root)
     unresolved: list[str] = []
     for doc_id in doc_ids:
         try:
@@ -278,6 +368,19 @@ def run_prep_gates(
         except Exception as exc:  # noqa: BLE001 — any probe failure is a prep failure
             results.append(GateResult(7, "probe", False, f"probe failed: {exc}"))
 
+    # Gate 8 — the frozen document snapshot verifies against its provenance
+    # record (amended §8 gate 8 / RBT-51 Item 3): `documents/` is present,
+    # non-empty, and every file's SHA-256 matches the prep-written manifest.
+    # Absence or any mismatch aborts before the first reviewer call; the runner
+    # never falls back to the working tree. Gate 2 keeps its prep-time role: the
+    # snapshot was taken from a clean docs tree, so the HEAD SHA stamp is
+    # meaningful for the snapshotted bytes.
+    try:
+        verify_document_snapshot(run_dir)
+        results.append(GateResult(8, "doc-snapshot", True, "snapshot verified"))
+    except DocumentSnapshotError as exc:
+        results.append(GateResult(8, "doc-snapshot", False, str(exc)))
+
     return GateReport(results=results)
 
 
@@ -288,7 +391,6 @@ def validate_prep(
     sofia_root: str | Path,
     runs_root: str | Path,
     prompt_dir: str | Path,
-    docs_root: str | Path | None = None,
     git_status: Callable[[Path], str] = _default_git_docs_status,
     env: Mapping[str, str] | None = None,
 ) -> GateReport:
@@ -303,7 +405,6 @@ def validate_prep(
         sofia_root=sofia_root,
         runs_root=runs_root,
         prompt_dir=prompt_dir,
-        docs_root=docs_root,
         create_missing_dir=False,
         git_status=git_status,
         env=env,
@@ -331,13 +432,15 @@ def run_real(
     sleeper: Callable[[float], None] = time.sleep,
     backoff_seconds: float = 30.0,
     env: Mapping[str, str] | None = None,
+    coherence_addendum: str | None = None,
 ) -> RunResult:
     """Assemble and run the supervised dry run against an injected transport.
 
     Runs the prep gates fail-loud (gate 7's one-token probe is the only prep-time
     API contact, before any reviewer or arbiter call), then assembles the ledger
-    home, real fetchers, four per-call-site API reviewers, the real arbiter, and
-    the real plan; writes the prep manifest; streams the action log to
+    home, real fetchers, four per-call-site API reviewers, the real arbiter, the
+    real author, and the real plan; writes the prep manifest; streams the action
+    log to
     `action-log.jsonl`; runs the loop (dry, fix_changes empty); and finalizes the
     manifest. On any run-path abort a `run_aborted` event is logged (and streamed)
     before the exception propagates, and the manifest is left unfinalized.
@@ -366,11 +469,13 @@ def run_real(
     sofia_root = Path(sofia_root)
     prompt_dir = Path(prompt_dir)
     run_dir = Path(runs_root) / run_id
-    docs_root = sofia_root / "docs"
+    documents_root = run_dir / "documents"
     substrate_root = run_dir / "substrate"
 
     store = LedgerStore(run_dir / "ledger.json")
-    doc_fetcher = RepoDocumentFetcher(docs_root)
+    # §2 as amended: the fetcher reads the run's frozen document snapshot each
+    # pass — never the working tree (live-read removed, not gated).
+    doc_fetcher = RepoDocumentFetcher(documents_root)
     substrate_fetcher = RunSubstrateFetcher(substrate_root)
     substrate = substrate_fetcher(doc_ids)  # arbiter's authorities/design-intent
 
@@ -390,15 +495,39 @@ def run_real(
             sleeper=sleeper,
             backoff_seconds=backoff_seconds,
             capture=capture,
+            # Cache the frozen substrate prefix once per hat per run (RBT-69 §2).
+            cache_prefix_of=substrate_cache_prefix,
         )
         reviewers[identity] = build_real_reviewer(
-            identity, prompt_dir / prompt_name, emitter, capture, redraw=True
+            identity, prompt_dir / prompt_name, emitter, capture, redraw=True,
+            brief_addendum=(coherence_addendum if identity == IDENTITY_COHERENCE else None),
         )
     plan = real_hat_plan(
         reviewers[IDENTITY_LAA],
         reviewers[IDENTITY_SA],
         reviewers[IDENTITY_EA],
         reviewers[IDENTITY_COHERENCE],
+    )
+    # The author (run-supervision §9): its own call site, its own emitter, and a
+    # blast radius bounded to the run's document snapshot by construction.
+    author = LlmAuthor(
+        prompt_path=prompt_dir / AUTHOR_PROMPT,
+        emitter=build_api_emitter(
+            site_label="author",
+            model=model,
+            max_tokens=max_tokens,
+            log=log,
+            transport=transport,
+            now=now,
+            sleeper=sleeper,
+            backoff_seconds=backoff_seconds,
+            capture=capture,
+            # Cache the stable run-document prefix per finding (RBT-69 §2).
+            cache_prefix_of=author_cache_prefix,
+        ),
+        documents_root=documents_root,
+        substrate_fetcher=substrate_fetcher,
+        doc_ids=list(doc_ids),
     )
     arbiter = ApiArbiter(
         prompt_path=prompt_dir / ARBITER_PROMPT,
@@ -419,7 +548,17 @@ def run_real(
         mode="dry",
     )
 
-    resolved_docs = {doc_id: str(doc_fetcher.resolve(doc_id)) for doc_id in doc_ids}
+    # §7/T6 as amended: the manifest records the frozen snapshot provenance —
+    # doc-id → run-folder-relative snapshot path + content SHA-256 (what was
+    # actually reviewed) — read from the prep-written provenance record, alongside
+    # the top-level HEAD SHA.
+    snapshot_provenance = json.loads(
+        (documents_root / "manifest.json").read_text(encoding="utf-8")
+    )
+    resolved_docs = {
+        entry["doc_id"]: {"snapshot_path": entry["snapshot_path"], "sha256": entry["sha256"]}
+        for entry in snapshot_provenance["files"]
+    }
     prompt_hashes = {
         name: sha256_text((prompt_dir / name).read_text(encoding="utf-8"))
         for name in ALL_PROMPT_FILES
@@ -446,6 +585,7 @@ def run_real(
             arbiter=arbiter,
             store=store,
             fix_changes={},
+            author=author,
             authorities=substrate.authorities,
             design_intent=substrate.design_intent,
             fetch_documents=doc_fetcher,
@@ -484,9 +624,23 @@ def main() -> None:  # pragma: no cover
     parser.add_argument("run_id")
     parser.add_argument("doc_ids", nargs="+", help="e.g. ADR-001 ADR-002 DDR-001 DDR-002")
     parser.add_argument("--sofia-root", default=str(Path(__file__).resolve().parents[2]))
+    parser.add_argument(
+        "--max-passes", type=int, default=RUN_ONE_MAX_PASSES,
+        help=f"loud pass bound for this attended run (default {RUN_ONE_MAX_PASSES}); "
+             "lower it to cap an attended convergence run",
+    )
+    parser.add_argument(
+        "--coherence-addendum-file", default=None,
+        help="file whose text is appended to the coherence hat's brief (RBT-54 R-C seam list)",
+    )
     args = parser.parse_args()
 
     agent_loop_root = Path(args.sofia_root) / "agent-loop"
+    coherence_addendum = (
+        Path(args.coherence_addendum_file).read_text(encoding="utf-8")
+        if args.coherence_addendum_file
+        else None
+    )
     result = run_real(
         args.run_id,
         args.doc_ids,
@@ -494,6 +648,8 @@ def main() -> None:  # pragma: no cover
         runs_root=agent_loop_root / "runs",
         prompt_dir=agent_loop_root / "design",
         transport=build_real_transport(),
+        max_passes=args.max_passes,
+        coherence_addendum=coherence_addendum,
     )
     print(f"{args.run_id}: {result.exit.kind} in {result.passes_run} pass(es)")
 

@@ -1,0 +1,1 @@
+{"finding_id":"f40ddafa21a46f8a","classification":"decision-bearing","authority_locus":null,"rationale":"Whether the working tier has one window or many, and whether class-2 exemption is a tunable or fixed interim, is unsettled within DDR-003 itself; no ratified authority disambiguates the cardinality or the exemption's parameter status.","confidence":"high"}

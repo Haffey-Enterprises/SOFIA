@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "ee124bdf297af123",
+  "reason": "The named authority is coherence of an internal cross-reference, but §6.3 does contain gate-time Condition authoring ('the predicate is EA-authored in the approval act'), so the reference is not simply broken. Fixing the imprecision requires choosing among several conforming remedies — retarget the pointer, add a clause to §6.3, reword dimension 5 — none uniquely determined by the cited coherence relation.",
+  "confidence": "high"
+}

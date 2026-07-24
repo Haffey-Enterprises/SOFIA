@@ -1,0 +1,52 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["SDD-001"],
+"locus": "§9 Cross-References / Metadata References vs body citations",
+"claim": "The metadata References field and §9 declare the SDD is built against ADR-001 v1.1.0, ADR-002 v1.1.0, DDR-001 v1.3.0, DDR-002 v1.2.0, yet the document's descriptive header (File/Description line) and title metadata claim the record decides the full gateway design while the §7.2 1b required-flip obligation is declared as this build's act — a build-completion decision. The SDD's Status is PROPOSED and Supersedes None, but §7.2 commits a BUILD-leg gating act ('the knowledge-service build is complete only when...') that is a build/CI sequencing decision, not a design decision the SDD's own scope claims to hold. This commitment rides along in a design record whose stated purpose is service design, never surfaced as a decision the record is authorized to make.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "SDD-001 §7.2 (1b required-flip obligation binding the BUILD leg) vs §1 Purpose + metadata Status PROPOSED — a build-gating commitment carried in a design-scope record"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["SDD-001"],
+"locus": "§3.4.3 capture-evidence inherited-confidence derivation",
+"claim": "The §3.4.3 inherited-confidence derivation asserts a concrete authority-class function — Environment base 0.9 × exp(−Δt/τ), τ=90 days, class bases 1.0, Extension-class treatment — as 'an SDD-level determination realizing DDR-002 §4's inheritance rule.' DDR-002 §4 fixes that the rollup/inheritance exists and its qualitative canon, and routes the concrete function to the SDD of the component that authors conclusion confidence. But DDR-002 §2.2 and §4 route ReasoningProgress.confidence rollup to the solutioning-agent SDD (sole executor, never author), and this SDD itself routes that rollup away (§2.2, §3.3.3). The SDD decides a concrete confidence-derivation function while simultaneously disclaiming authorship of confidence composition — the record decides more than its own not-owned boundary permits.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "SDD-001 §3.4.3 (declares inherited-confidence derivation function) vs §2.2 / §3.3.3 (routes confidence composition/rollup to solutioning-agent SDD, 'composing here would author a reasoning weight this gateway holds no authority to fix')"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["SDD-001"],
+"locus": "§9 Cross-References — Proposed DDR-002 additive amendments",
+"claim": "§3.5.3 and §3.5.4 declare specific amendment content ('per-Evidence entries keyed by evidence_id, each carrying fact summary + version pin + source-node reference' for ProvenanceSummary structuring; the #25 executed-proposal scoping clause) as 'recorded as proposed amendment content.' The change log states these 'supersede deliberation Items 2g(iii)/2a(ii) on those two points.' A design record proposing concrete amendment content to an upstream ratified authority (DDR-002) is a commitment surfaced only in routing notes and the change log, not declared as a decision the SDD makes; its consequence — that the SDD now carries proposed edits to a document it depends on — is under-surfaced against the record's stated design scope.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "SDD-001 §3.5.3 / §3.5.4 routing notes + §9 'Proposed DDR-002 additive amendments' + §10 change log — proposed upstream-amendment content carried as a side effect of a design record"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["SDD-001"],
+"locus": "§2.1 / §2.2 owned-vs-not-owned boundary and §1 not-owned list",
+"claim": "Attacked the record's core claim-fidelity: does the SDD decide only what a gateway design decides, without smuggling authorship it disclaims? The sole-executor-never-author line is held consistently — every write operation names a Species-1 component author or a Species-2 authorizing decision; unassigned authorities (Attestation/Actor/Role, Solution lifecycle transitions, PromotionDecision transport) are routed by name and explicitly declared unexecutable-not-defaulted (§3.4.6), never invented. The retrieves-never-recommends boundary (§3.3.3 track-record uncomposed, §2.2) holds against the temptation to compose confidence at the gateway. The boundary claim survived the attack.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "SDD-001 §1 not-owned list + §2.2 + §3.4.6 against ADR-002 §2.6 (gateway sole executor, never authoring authority; unassigned authorities unexecutable not defaulted)"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["SDD-001"],
+"locus": "§7.1 / §7.2 Upstream Compliance Checklist — declared dependencies and consequences",
+"claim": "Attacked whether the record declares the artifacts and consequences each decision depends on. Every §7 check names its upstream locus (ADR-001 §6.x, ADR-002 §6.x, DDR-001 checks 1–7, DDR-002 §7 #1–#25) and states the gateway's runtime relationship without overclaiming — #15's enforcement split (precondition by-construction, invariant CI-detected), #12's presence/verification split (verification routed to snapshot-service, no Firestore client held), and #24's harness-only posture with the honest transient-window consequence disclosed. The dependency declarations and side-effect disclosures held; no undeclared consequence surfaced under attack.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "SDD-001 §7.1 enforcement mapping + §7.2 against DDR-002 §7 tiering and DDR-001 conformance checks — declared dependencies and stated consequences of each enforcement decision"
+}
+}
+]

@@ -1,0 +1,7 @@
+{
+  "finding_id": "28ba7634fd7a3d05",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 Rationale (empirical-warrant / reversibility-scoped completeness posture) + author-decision-record SKILL 'Under an empirical floor, fix the form and hold the constants' + the architecture/schema/governance split ratified in DDR-001 Decision.6 and DDR-002 Decision.6",
+  "rationale": "The shape-now/governance-later split is not a gap requiring a new choice — it is the ratified authoring posture itself: DDR-002 owns the schema contract and explicitly routes governance/policy to DDR-003 and the KG-entry-governance ADR (Decision.6), and each forthcoming record is already named and marked forthcoming/unauthored with its obligations enumerated. Conforming to the existing split (and the SKILL's fix-the-form/hold-what-only-governance-settles discipline) determines the disposition; no unratified fork is introduced.",
+  "confidence": "high"
+}

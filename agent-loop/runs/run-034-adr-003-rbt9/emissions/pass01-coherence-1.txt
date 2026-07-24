@@ -1,0 +1,52 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.4 vs §7 Cross-References (constraint-validator routing)",
+    "claim": "§2.4 states predicate-evaluation semantics are 'routed to the forthcoming constraint-validator service design (per DDR-003's routing)', and §7 cites DDR-003 as source of 'the routing of predicate-evaluation semantics onward to the forthcoming constraint-validator service design.' DDR-003's live text routes the condition predicate vocabulary to the constraint-validator, but the predicate-evaluation *semantics* are already owned and hosted: SDD-001 §4.2 states 'Evaluation semantics are single-sourced from the constraint-validator SDD's shared predicate component' and DDR-002 §7 #19 / SDD-001 §3.3 place conditional-consumption predicate evaluation in the built gateway. The ADR-003 characterization that predicate-evaluation semantics await a forthcoming design conflicts with the constraint-validator being the already-cited single source referenced by the accepted SDD-001.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.4/§7 (predicate-evaluation semantics 'forthcoming') vs SDD-001 §4.2 ('Evaluation semantics are single-sourced from the constraint-validator SDD's shared predicate component') + DDR-003 §9 (condition predicate vocabulary routed to the constraint-validator service design (forthcoming))"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.4 constraints-from-graph — Standards-plane binding claim",
+    "claim": "§2.4 commits that constraints 'bind agents from the Knowledge Graph' as 'graph-resident (the Standards plane, DDR-001), consulted through the sole-owner gateway.' DDR-001's Standards-plane definition names its source-class as 'EA standards repository' with cadence 'on-publish / versioned' — but DDR-001 commits no ingestion path, and ADR-003 §5.3 concedes 'The Standards plane has no ingestion path until the forthcoming file-driven ingestion decision record and its port land.' The binding pattern is asserted as a present platform invariant in §2.4 while §5.3 states the enforcing substrate does not yet exist; the §2.4 text does not carry the earned-tense qualifier §5.3 supplies, so read at §2.4 the binding reads as presently operative against a plane with no committed entry mechanism.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.4 (constraints 'bind agents from the Knowledge Graph … the Standards plane, DDR-001') vs ADR-003 §5.3 ('The Standards plane has no ingestion path until the forthcoming file-driven ingestion decision record and its port land')"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-003"],
+    "locus": "§2.6 component taxonomy — model-access gateway naming",
+    "claim": "§2.6 names 'the model-access gateway' as a substrate-service instance ('the model-access gateway is of this class'), and §7 Cross-References lists 'ai-gateway-service' among forthcoming designs. The deliberation record (Item 5) records 'ai-gateway here too' as the substrate instance. The body uses the descriptive 'model-access gateway' while the sole canonical service identifier appears only in §7 as 'ai-gateway-service' — the substrate-service instance is named two ways across the record without either being tied to the other at the point of introduction, a minor first-use identifier looseness.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.6 ('the model-access gateway is of this class') vs ADR-003 §7 ('ai-gateway-service')"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-003"],
+    "locus": "§2.6 taxonomy vs ADR-002 §2.6 / ADR-001 §2.2 authorship discipline",
+    "claim": "Checked the four-class component taxonomy's authorship discriminator against the upstream authorship canon it claims to apply. The 'substrate services … execute, enforce, store, or mediate without authoring' class with knowledge-service as canonical instance is consistent with ADR-002 §2.6's author/executor/authorizer separation ('the sole-owner gateway … is never itself the authoring authority') and SDD-001 §1 ('sole executor … author of none'); the 'specialized agents' agenthood test (judgments captured as attributed reasoning, source category specialized agent) maps exactly to ADR-001 §2.2's specialized-agent capture case; the orchestrator/AOE run-lifecycle ownership matches ADR-002 §2.6's AOE assignment. The taxonomy holds against its cited authorities — attack found no drift.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.6 vs ADR-002 §2.6 (author/executor/authorizer) + ADR-001 §2.2 (source-attribution categories) + SDD-001 §1"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-003"],
+    "locus": "§2.7 coordination trajectory vs ADR-002 §2.6 write-authority anchoring",
+    "claim": "Attacked the §2.7 trajectory clause for the failure mode of a downstream record silently widening an upstream authority (the UPSTREAM-AUTHORITY rule). §2.7 explicitly routes future coordination-authority widenings 'through the upstream authority structure, never around it … as a named, additive authority assignment under the owning record's own amendment process,' naming run-lifecycle authorship beyond the AOE (ADR-002 §2.6) as the exemplar and stating the record 'neither blocks nor pre-empts them.' This does not rescue an upstream invariant by downstream qualifier — it defers to the upstream amendment process rather than carving one out. The clause held.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.7 vs ADR-002 §2.6 (run-lifecycle authorship = AOE); ADR-003 §2.9 boundary ('gates in runs instantiate those controls and never re-author them')"
+    }
+  }
+]

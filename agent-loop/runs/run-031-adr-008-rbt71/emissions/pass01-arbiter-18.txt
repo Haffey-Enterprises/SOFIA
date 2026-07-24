@@ -1,0 +1,7 @@
+{
+  "finding_id": "6a5a1ad7d548cc78",
+  "classification": "resolvable",
+  "authority_locus": "ADR-008-run-025-operator-rulings Ruling B (conformance clause 1: add an explicit 'Relationship to ADR-001 §2.5' statement recording generalization + subsumption + un-promotion extension)",
+  "rationale": "Ruling B dictates the exact fix — a dedicated labeled statement of the recorded position; no unmade choice remains.",
+  "confidence": "high"
+}

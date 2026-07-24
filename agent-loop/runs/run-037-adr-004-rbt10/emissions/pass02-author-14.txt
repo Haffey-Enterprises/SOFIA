@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "edbeae66485c2f0d",
+  "reason": "§2.7 parenthetically notes the Operational distillation class 'carries its own review control and is out of scope here' — a distinct rationale from the two ungated exclusions, not a member of the 'not gated' set §5.2 restates; folding it into §5.2's enumeration would require deciding what phrasing captures 'own review control, out of scope' rather than 'not gated', which the authority does not uniquely determine.",
+  "confidence": "medium"
+}

@@ -1,0 +1,7 @@
+{
+  "finding_id": "4bf908ece4133e63",
+  "classification": "resolvable",
+  "authority_locus": "ADR-008-run-025-operator-rulings Ruling G (forthcoming-record references subject-named, not numbered) + author-decision-record body-integrity forward-reference rule",
+  "rationale": "Operator Ruling G directly determines the fix: replace concrete IDs with subject-name forms for both forthcoming records; no unmade choice remains.",
+  "confidence": "high"
+}

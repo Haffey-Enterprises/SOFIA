@@ -1,0 +1,1 @@
+{"finding_id":"7e440c4a7a696b1c","classification":"decision-bearing","authority_locus":null,"rationale":"Whether the ADR may stand ACCEPTED before its committed safety-critical schema amendment lands or is tracked is an unratified timing choice no cited authority disambiguates.","confidence":"high"}

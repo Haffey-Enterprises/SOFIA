@@ -1,0 +1,1 @@
+{"finding_id":"51ff8f79847e5070","classification":"decision-bearing","authority_locus":null,"rationale":"Three records name the same schema gap without any authority designating which owns the amendment act; selecting the canonical owner is an unratified choice.","confidence":"high"}

@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "5df5cd80d6ff2df8",
+  "reason": "The finding requires surfacing two commitments (the schema-provisioning capability and the deploy-time-script supersession) into the §2 Decision enumeration, but the authority does not determine the exact wording, placement, or degree of elaboration of the added Decision text — that is an authoring choice among multiple conforming phrasings, not a uniquely-determined edit.",
+  "confidence": "medium"
+}

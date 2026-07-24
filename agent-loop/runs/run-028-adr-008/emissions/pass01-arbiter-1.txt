@@ -1,0 +1,7 @@
+{
+  "finding_id": "c2711f5868a6d6ee",
+  "classification": "resolvable",
+  "authority_locus": "ADR-008-run-025-operator-rulings Ruling D (Environment control is capture-time-frozen, not 'at retrieval'; drop 'reliability-weighting at retrieval', state capture-time-frozen aging + DDR-004 §6 governance; relabel status)",
+  "rationale": "Ruling D directly dictates the fix: correct the Environment control description to capture-time-frozen and relabel the status, converting this finding to resolvable.",
+  "confidence": "high"
+}

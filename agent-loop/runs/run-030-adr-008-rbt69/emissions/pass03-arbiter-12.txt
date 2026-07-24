@@ -1,0 +1,1 @@
+{"finding_id": "5a2688a41a30f811", "classification": "decision-bearing", "authority_locus": null, "rationale": "Which role holds per-policy Environment weighting accountability is unfixed; DDR-004 §6 governs constant calibration but names no accountable role, so resolution requires an unmade choice.", "confidence": "medium"}

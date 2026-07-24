@@ -1,0 +1,7 @@
+{
+  "finding_id": "e52613dde7837caa",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "Naming a resolution trigger for the open-ended survival exemption is a governance choice no ratified authority or docket ruling supplies; ADR-008 §2.4 mandates survival but not the bridge's exit condition.",
+  "confidence": "high"
+}

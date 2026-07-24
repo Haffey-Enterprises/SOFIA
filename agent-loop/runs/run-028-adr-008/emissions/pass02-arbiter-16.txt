@@ -1,0 +1,7 @@
+{
+  "finding_id": "4cb80011223cdffd",
+  "classification": "resolvable",
+  "authority_locus": "ADR-008-run-025-operator-rulings, Ruling F ('qualify §2.3's \"same control\" claim to match the §5.3 concession — authority homed; governing-verdict detection analogue is the named follow-up')",
+  "rationale": "Ruling F directly dictates the fix: qualify §2.3's same-control claim to the §5.3 concession, converting this finding to resolvable.",
+  "confidence": "high"
+}

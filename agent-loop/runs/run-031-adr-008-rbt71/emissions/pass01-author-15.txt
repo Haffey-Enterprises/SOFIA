@@ -1,0 +1,10 @@
+{
+  "action": "edit",
+  "finding_id": "ddf2fe59d9215ca7",
+  "target": "ADR-008",
+  "old_string": "realized through a forthcoming candidate-`ObservedPattern` shape, introduced downstream, that is excluded from ground-truth traversal until approved — a downstream governance design and an additive schema shape.",
+  "new_string": "to be realized through a forthcoming candidate-`ObservedPattern` shape, introduced downstream, that is to be excluded from ground-truth traversal until approved — a downstream governance design and an additive schema shape.",
+  "authority_conformed": "ADR-008-run-025-operator-rulings Ruling E (earned tense: state candidate-ObservedPattern shape as forthcoming/additive, not present schema constraint)",
+  "rationale": "Ruling E directs earned/forthcoming tense; converting 'realized'/'is excluded' present phrasing to 'to be realized'/'to be excluded' states the additive shape as forthcoming, not a present schema constraint.",
+  "confidence": "medium"
+}

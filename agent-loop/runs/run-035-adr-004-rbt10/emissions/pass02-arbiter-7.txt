@@ -1,0 +1,1 @@
+{"finding_id": "cabe367687140947", "classification": "decision-bearing", "authority_locus": null, "rationale": "The authority-vs-mechanics split ADR-004 asserts is internal to ADR-004, which is not in the ratified set; no cited authority determines whether ADR-004 must decide the routed ingestion mechanics or may re-route them onward.", "confidence": "medium"}

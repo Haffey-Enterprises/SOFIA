@@ -1,0 +1,1 @@
+{"finding_id": "a0d4159de86e6148", "classification": "decision-bearing", "authority_locus": null, "rationale": "Naming which human role holds per-policy accountability for the Environment control and cross-class resolution is a choice (EA vs config/governance owner) no ratified authority fixes; DDR-004 §6 names calibration governance but not the role.", "confidence": "medium"}

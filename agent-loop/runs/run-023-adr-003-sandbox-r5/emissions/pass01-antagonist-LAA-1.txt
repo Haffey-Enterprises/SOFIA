@@ -1,0 +1,72 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2 Decision + §2.2 Environment plane",
+    "claim": "The one-sentence Decision states the checkpoint is 'a human-accountable checkpoint calibrated to the source class of the write' and enumerates 'a per-write gate, or retrieval-time confidence-weighting' as its forms. But §2.2 rules the Environment plane uses retrieval-time confidence-weighting and explicitly 'not a per-write checkpoint' — a non-checkpoint. The title ('A Human-Accountable Checkpoint Governs Mutation of Enterprise Ground Truth') and the Decision sentence claim a checkpoint governs mutation, yet the Environment path is decided to have no checkpoint on mutation at all; weighting at read is not a checkpoint on the write. The record's headline claim overreaches the decision content of its own §2.2.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 title/§2 Decision vs ADR-003 §2.2 ('uses confidence-weighting at retrieval, not a per-write checkpoint')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§6 Compliance",
+    "claim": "The distillation substantive-review checkpoint that this ADR designs is stated to be mechanized 'per the DDR-002 §7 harness pattern — a 1b gateway-behavioral check whose required-flip is reserved to the gateway build, joining that harness increment.' This commits a conformance-mechanization consequence (a new harness check joining an increment) that is never surfaced as a decision in §2 and whose consequences are not declared in §5. A commitment riding along in the Compliance section — the creation of a new gateway-behavioral conformance check — is a decision the record makes without deciding it in its Decision block.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §6 (gateway-behavioral 1b check commitment) vs ADR-003 §2 Decision + §5 Consequences (no such decision or consequence surfaced)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§2.4 The checkpoint executor",
+    "claim": "§2.4 decides 'the graph gateway is the authoring authority for each checkpoint approval: the approval is recorded as the gateway's own act at the write boundary.' This contradicts ADR-002 §2.6's ratified general write-authority principle, which the substrate states verbatim: 'The sole-owner gateway (§2.5) is the sole executor and enforcement boundary of all graph writes; it is never itself the authoring authority.' ADR-003 names the gateway as the *authoring authority* for checkpoint approvals — the precise role ADR-002 §2.6 says the gateway is never. This is a decision claiming authority the substrate does not support and directly retracts.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.4 ('graph gateway is the authoring authority') vs ADR-002 §2.6 ('the sole-owner gateway ... is never itself the authoring authority')"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["ADR-003"],
+    "locus": "§1 Context / §2.3 / Cross-References",
+    "claim": "The record repeatedly depends on 'the KG-Entry-Governance Rulings' as ratified authority (§2.2 'Ruling 1', §2.5 'Ruling 2', §7 'closing charter Appendix A #4 and #5') and treats them as design substrate that settles the Environment-plane posture and the distillation-checkpoint scope. But the record's own Status is DRAFT and these rulings are cited as already-ratified inputs the ADR merely restates. The dependency the record leans on for its two most load-bearing sub-decisions (§2.2, §2.5) is a substrate artifact whose ratification the record asserts rather than the ADR itself deciding — i.e., the two calibration sub-decisions are declared to be resolved by an external ruling set, leaving unclear what §2.2/§2.5 of this ADR actually decide versus merely transcribe.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.2/§2.5 (marked 'Ratified — KG-Entry-Governance Rulings') vs ADR-003 metadata Status: DRAFT — decision content vs transcribed prior ruling"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["ADR-003"],
+    "locus": "§4.1 Alternative A",
+    "claim": "Alternative A is described as 'obviously wrong and nobody would defend it — ungoverned writes to an enterprise system of record are indefensible.' Per the doctype's own authoring discipline, an alternative must be described as its proponents would state it and then rejected on specific grounds; a strawman with no proponent framing is the failure mode the template names. This is a claim-fidelity defect: the Alternatives section claims to have considered an alternative it did not genuinely weigh.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "adr-template.md §4 ('Describe each as its proponents would, then give a specific rejection rationale ... one means it wasn't a real choice')"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-003"],
+    "locus": "§2.3 Un-promotion authority",
+    "claim": "I attacked §2.3 as a possible circular dependency between ADR-003 and DDR-003 (ADR-003 depends on DDR-003 for the remedy boundary while DDR-003 is blocked on ADR-003). The section decides only the un-promotion *authority* and explicitly routes the *remedy boundary* policy to DDR-003, naming the two as distinct roles with one-directional authority flow. The scope split holds: this ADR decides upstream authority and no more; the remedy policy is declared as DDR-003's, not smuggled here. The claim-fidelity of the decision matches its stated scope.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §2.3 authority-vs-remedy split vs DDR-002 §2.4 ('upstream authority routes to the forthcoming KG-entry-governance ADR ... remedy boundary is DDR-003 governance')"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["ADR-003"],
+    "locus": "§1 Context — routed gaps",
+    "claim": "I attacked the forcing-function claim that 'two canonical records route named gaps here' as possibly overstated. Both cited routings verify against the substrate: DDR-002 §2.3 explicitly leaves the distillation-write checkpoint posture 'un-decided ... routed to the forthcoming KG-entry-governance ADR,' and DDR-002 §2.4 routes the un-promotion upstream authority to the same forthcoming ADR because ADR-001 §2.5 authorizes promotion only. The named dependencies this record claims are declared and accurate.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "ADR-003 §1 vs DDR-002 §2.3 (distillation checkpoint un-decided, routed) and DDR-002 §2.4 (un-promotion authority routed; ADR-001 §2.5 promotion-only)"
+    }
+  }
+]

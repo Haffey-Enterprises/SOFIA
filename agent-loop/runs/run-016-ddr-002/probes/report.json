@@ -1,0 +1,200 @@
+{
+  "run_id": "run-016-ddr-002",
+  "reviewer": "antagonist-SA",
+  "model": "claude-opus-4-8",
+  "max_tokens": 8192,
+  "arm_C_status_flip": {
+    "from": "ACCEPTED",
+    "to": "PROPOSED"
+  },
+  "arms": [
+    {
+      "arm": "B",
+      "output_tokens": 4,
+      "llm_call_count": 1,
+      "llm_retry_count": 0,
+      "parse_dropped_count": 0,
+      "finding_count": 0,
+      "positive_count": 0,
+      "severity_breakdown": {
+        "BLOCKING": 0,
+        "MATERIAL": 0,
+        "COSMETIC": 0,
+        "POSITIVE": 0
+      }
+    },
+    {
+      "arm": "C",
+      "output_tokens": 4,
+      "llm_call_count": 1,
+      "llm_retry_count": 0,
+      "parse_dropped_count": 0,
+      "finding_count": 0,
+      "positive_count": 0,
+      "severity_breakdown": {
+        "BLOCKING": 0,
+        "MATERIAL": 0,
+        "COSMETIC": 0,
+        "POSITIVE": 0
+      }
+    },
+    {
+      "arm": "D",
+      "output_tokens": 4,
+      "llm_call_count": 1,
+      "llm_retry_count": 0,
+      "parse_dropped_count": 0,
+      "finding_count": 0,
+      "positive_count": 0,
+      "severity_breakdown": {
+        "BLOCKING": 0,
+        "MATERIAL": 0,
+        "COSMETIC": 0,
+        "POSITIVE": 0
+      }
+    },
+    {
+      "arm": "E",
+      "output_tokens": 4,
+      "llm_call_count": 1,
+      "llm_retry_count": 0,
+      "parse_dropped_count": 0,
+      "finding_count": 0,
+      "positive_count": 0,
+      "severity_breakdown": {
+        "BLOCKING": 0,
+        "MATERIAL": 0,
+        "COSMETIC": 0,
+        "POSITIVE": 0
+      }
+    },
+    {
+      "arm": "F",
+      "held": true,
+      "reason": "held \u2014 fires only when D-silent AND E-wakes (this fire: D-silent=True, E-wakes=False)"
+    },
+    {
+      "arm": "G",
+      "output_tokens": 4,
+      "llm_call_count": 1,
+      "llm_retry_count": 0,
+      "parse_dropped_count": 0,
+      "finding_count": 0,
+      "positive_count": 0,
+      "severity_breakdown": {
+        "BLOCKING": 0,
+        "MATERIAL": 0,
+        "COSMETIC": 0,
+        "POSITIVE": 0
+      }
+    },
+    {
+      "arm": "H",
+      "output_tokens": 4,
+      "llm_call_count": 1,
+      "llm_retry_count": 0,
+      "parse_dropped_count": 0,
+      "finding_count": 0,
+      "positive_count": 0,
+      "severity_breakdown": {
+        "BLOCKING": 0,
+        "MATERIAL": 0,
+        "COSMETIC": 0,
+        "POSITIVE": 0
+      }
+    },
+    {
+      "arm": "I",
+      "output_tokens": 4,
+      "llm_call_count": 1,
+      "llm_retry_count": 0,
+      "parse_dropped_count": 0,
+      "finding_count": 0,
+      "positive_count": 0,
+      "severity_breakdown": {
+        "BLOCKING": 0,
+        "MATERIAL": 0,
+        "COSMETIC": 0,
+        "POSITIVE": 0
+      }
+    },
+    {
+      "arm": "J",
+      "user_sha256": "2e327b4c75aea61e5282b330fd0e9d463228e1f2ef6f4db806f8f7f6aa95690f",
+      "output_tokens": 2353,
+      "llm_call_count": 1,
+      "llm_retry_count": 0,
+      "parse_dropped_count": 0,
+      "finding_count": 6,
+      "positive_count": 2,
+      "severity_breakdown": {
+        "BLOCKING": 0,
+        "MATERIAL": 3,
+        "COSMETIC": 1,
+        "POSITIVE": 2
+      }
+    },
+    {
+      "arm": "K",
+      "user_sha256": "c55b348826448bd78c22fa47e5472393c5a79ee95c6442390a79e2f3c54dc357",
+      "output_tokens": 2958,
+      "llm_call_count": 1,
+      "llm_retry_count": 0,
+      "parse_dropped_count": 0,
+      "finding_count": 6,
+      "positive_count": 2,
+      "severity_breakdown": {
+        "BLOCKING": 0,
+        "MATERIAL": 3,
+        "COSMETIC": 1,
+        "POSITIVE": 2
+      }
+    },
+    {
+      "arm": "L",
+      "user_sha256": "563415c7fdd266f201d109fd927d47ad35a95252de1483ccc2bc65899c639158",
+      "output_tokens": 4,
+      "llm_call_count": 1,
+      "llm_retry_count": 0,
+      "parse_dropped_count": 0,
+      "finding_count": 0,
+      "positive_count": 0,
+      "severity_breakdown": {
+        "BLOCKING": 0,
+        "MATERIAL": 0,
+        "COSMETIC": 0,
+        "POSITIVE": 0
+      }
+    },
+    {
+      "arm": "M",
+      "user_sha256": "7a4afc0b8a90bb53a89e1f3813f07e091550733a0d827360e2ca3bd72ff9099d",
+      "output_tokens": 3973,
+      "llm_call_count": 1,
+      "llm_retry_count": 0,
+      "parse_dropped_count": 0,
+      "finding_count": 8,
+      "positive_count": 2,
+      "severity_breakdown": {
+        "BLOCKING": 0,
+        "MATERIAL": 5,
+        "COSMETIC": 1,
+        "POSITIVE": 2
+      },
+      "pre_trailer_base_sha256": "563415c7fdd266f201d109fd927d47ad35a95252de1483ccc2bc65899c639158",
+      "final_assembled_sha256": "7a4afc0b8a90bb53a89e1f3813f07e091550733a0d827360e2ca3bd72ff9099d"
+    }
+  ],
+  "arm_notes": {
+    "arm_D": "design-intent minus deliberation-record-ddr-002; authorities + document intact",
+    "arm_E": "authorities minus {DDR-002, SDD-001, DDR-004} + design-intent minus the record; document untouched (run-015-equivalent length)",
+    "arm_F": "E's authorities trim with the deliberation record restored; HELD \u2014 fires only on D-silent AND E-wakes",
+    "arm_G": "author-decision-record-SKILL authority -> installed 1.0.0 bytes (sha256 f0ef38da\u2026); document + rest intact",
+    "arm_H": "three 1.3.0 Change Log rows stripped from the DOCUMENT SET copy (document otherwise byte-intact); authorities intact",
+    "arm_I": "DOCUMENT SET copy -> DDR-002 v1.2.0 (git blob 8dbabefa, content sha256 4a373f2e\u2026); authorities intact (still v1.3.0)",
+    "arm_J": "Arm E substrate trim (authorities minus {DDR-002,SDD-001,DDR-004}, record out) + Arm H document row-strip \u2014 zero ratification narrative (assembled prompt verified free of 'ratified per item' and 'A-1')",
+    "arm_K": "run-015 SA call reconstructed byte-for-byte from its committed run folder (documents/DDR-004 + substrate/ + pass-1 snapshot on its ledger header) and re-fired as-is today \u2014 healthy-baseline control; SA prompt + gen-5 verified identical; assembled-prompt sha256 in user_sha256",
+    "arm_L": "remedy acceptance gate \u2014 full, unmodified run-016 input (every narrative copy intact) against the gen-7 SA prompt (rule 8). PASS iff L wakes (findings >= 1, POSITIVEs per contract); silence means the clause wording iterates.",
+    "arm_M": "gen-8 remedy acceptance gate \u2014 full, unmodified run-016 input (pre-trailer base == baseline 563415c7\u2026, every narrative copy intact) against the gen-8 SA prompt: R-E1 empty-array floor (system) + R-E2 recency directive (assembly). PASS iff M wakes (findings >= 1, POSITIVEs per contract); silence => structural redesign, no further prompt iteration without a ruling."
+  }
+}

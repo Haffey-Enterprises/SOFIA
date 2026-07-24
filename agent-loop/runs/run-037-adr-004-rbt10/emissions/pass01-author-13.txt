@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "1488c877b8716b38",
+  "reason": "The ratified ruling directs re-wording to cite ADR-008's actual scope-boundary language, but ADR-008 §2.2 enumerates four classes (Promotion, Authoritative-source ingestion, Operational distillation, Environment) with no 'externally-decided mirrored records' text anywhere; there is no verbatim ADR-008 language for 'mirrored records' to substitute in, so which of ADR-008's four classes (if any) the phrase should map to — or whether it should be struck entirely — is an unratified choice the authority does not determine.",
+  "confidence": "high"
+}

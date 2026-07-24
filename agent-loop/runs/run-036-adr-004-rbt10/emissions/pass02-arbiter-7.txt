@@ -1,0 +1,1 @@
+{"finding_id":"bc6532111468301c","classification":"resolvable","authority_locus":"author-decision-record SKILL, amendment-lifecycle rule: 'Every deferred obligation gets a home with a firing trigger'","rationale":"Skill mandates every deferred obligation carry a home naming the re-surfacing event; the fix is determined, no choice among conforming options.","confidence":"high"}

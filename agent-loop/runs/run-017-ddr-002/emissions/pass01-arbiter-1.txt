@@ -1,0 +1,7 @@
+{
+  "finding_id": "a74450034ddd6a2a",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "Whether a schema-structuring amendment the record itself calls 'opened on economy — no valid finding forced this touch' should be locked as binding contract, kept, or reverted is a scope choice the ratified authorities do not determine: the deliberation record (Item C1–C3) already deliberately ratified fixing this structuring on economy grounds, so the finding contests a made decision, and the author-decision-record SKILL's 'omit what doesn't apply' guidance is a judgment principle that does not disambiguate keep-vs-revert for an already-ratified economy touch.",
+  "confidence": "medium"
+}

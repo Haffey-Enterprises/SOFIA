@@ -1,0 +1,7 @@
+{
+  "finding_id": "fa7b5013eb418401",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record SKILL body-integrity forward-reference rule (subject-named, stable, standalone-buildable) + Ruling G (subject-name-only); the record's own \u00a72.2/\u00a75.2/\u00a77 loci determine one consistent subject-name",
+  "rationale": "Naming one forthcoming referent consistently is dictated by the standalone-buildable subject-name rule; no choice among options is introduced, only conforming the loci to one name.",
+  "confidence": "high"
+}

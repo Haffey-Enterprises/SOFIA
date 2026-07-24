@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "694210186cc3b2f4",
+  "reason": "The named authority ('an amendment that adds a ruling updates the Decision enumeration') governs amendments that add rulings, not the indexing of already-authored named gaps into a Decision bullet. No ratified rule fixes that each §9 named gap must be surfaced in its topically-adjacent Decision item; deriving the exact insertion point, wording, and which gaps warrant Decision-level indexing is an unratified drafting choice — the finding itself concedes this is enumeration-completeness drift, not a contradiction.",
+  "confidence": "high"
+}

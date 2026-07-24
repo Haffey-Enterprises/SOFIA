@@ -1,0 +1,7 @@
+{
+  "finding_id": "9b8cfdf654a9f854",
+  "classification": "resolvable",
+  "authority_locus": "kg-entry-rulings Ruling 2 (distillation checkpoint scope: applies to the distinct durable lesson, bounded-by-distinctness per DDR-002 §2.3, not the per-event stream; satisfies the R30 bottleneck constraint by construction)",
+  "rationale": "The stated design intent explicitly rules that the distillation checkpoint targets the small set of distinct durable ObservedPatterns, not continuous per-event volume, and states this satisfies the R30 no-bottleneck constraint by construction \u2014 exactly the reconciliation the finding says the ADR asserts without demonstrating; conforming the ADR text to Ruling 2 determines the fix with no new choice.",
+  "confidence": "high"
+}

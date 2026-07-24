@@ -1,0 +1,1 @@
+{"finding_id":"7dd80a9964496d30","classification":"decision-bearing","authority_locus":null,"rationale":"D2 ratifies naming a provisioning/readiness-ordering home but leaves the pre-readiness provisioning-vs-hard-readiness-gate reconciliation unspecified; no authority disambiguates how provisioning operates while readiness fails.","confidence":"medium"}

@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "755ec745d37b6854",
+  "reason": "The authority ratifies the general invariant as the decided scope but does not prescribe how the metadata Description's un-promotion clause should be reconciled — whether to delete it, subordinate it, add balancing text, or reword the §1 closing. Multiple conforming edits exist; the fix is not uniquely determined.",
+  "confidence": "high"
+}

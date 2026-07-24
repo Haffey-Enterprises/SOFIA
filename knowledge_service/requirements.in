@@ -1,0 +1,30 @@
+# File: knowledge_service/requirements.in
+# Service: knowledge-service
+# Author: Haffey Enterprises LLC
+# Created: 2026-07-21
+# Revised: 2026-07-21
+# Description: Runtime dependency floors for knowledge-service. Floors follow
+#   the house approved-library table (application-code 01-code-structure §1);
+#   compiled to a hash-pinned requirements.txt with pip-compile
+#   --generate-hashes. Scope is deliberately minimal for the RBT-77 scaffold —
+#   nothing speculative is admitted ahead of the story that needs it.
+#
+#   Deliberate exclusions, each with its authority:
+#     - sqlalchemy / asyncpg / alembic — knowledge-service holds no PostgreSQL
+#       client by design (SDD-001 §4.1: "No vector, embedding, task-queue,
+#       PostgreSQL, or Firestore module exists in this service by design").
+#     - httpx / tenacity / circuitbreaker — no outbound service calls exist in
+#       this story; they land with the first inter-service call, not before.
+#
+#   Recorded reach outside the approved-library table: `neo4j`. The graph driver
+#   is not in the house table (which binds a PostgreSQL/SQLAlchemy persistence
+#   leg); it is mandated here by ADR-002's graph system-of-record decision and
+#   SDD-001 §4.2, which makes this service the platform's only driver holder.
+#   The floor matches the conformance harness's pinned server line (5.26).
+
+fastapi>=0.110.0
+uvicorn[standard]>=0.27.0
+pydantic>=2.6.0
+pydantic-settings>=2.2.0
+structlog>=24.1.0
+neo4j>=5.26,<6

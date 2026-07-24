@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "366320c59db73572",
+  "reason": "The named authority (§2.2 / §8 item 6 / §9) establishes that structured per-dimension capture is deferred and the interim carrier is unstructured rationale, but it does not uniquely determine how to conform §7.3 — whether to strike 'per-dimension verdicts' from the traversal claim, qualify it as interim-content-not-shape, scope it to the post-amendment state, or reword the reachability assertion. Multiple conforming edits exist; the choice among them is unratified and belongs to the operator.",
+  "confidence": "high"
+}

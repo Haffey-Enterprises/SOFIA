@@ -1,0 +1,72 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["DDR-004"],
+"locus": "§4 Per-class dispositions — Environment DeploymentEnvironment (basis 2)",
+"claim": "The disposition assigns DeploymentEnvironment the Environment base 0.9 as a non-aging flat base, but §2 fixes 0.9 as a contested Environment tunable defined only in the context of the decay function base × exp(−Δt/τ). Applied with no decay term, 0.9 is a bare confidence floor for a structurally-stable authoritative environment identity, yet the record supplies no rationale for why a non-aging authoritative environment identity should inherit 0.9 rather than 1.0 — the value the record's own §2 argument reserves for definitionally-authoritative ground truth whose staleness is governed by supersession/lifecycle rather than decay. DeploymentEnvironment is described in §4 as exactly such a structurally-stable identity governed by lifecycle, not decay, which is the §2 criterion for the 1.0 invariant base, creating an unresolved internal tension between the basis-2 value chosen and the §2 basis-selection reasoning.",
+"cited_authority": {
+"kind": "soundness",
+"ref": "DDR-004 §4 (DeploymentEnvironment basis-2, flat base 0.9) contradicts DDR-004 §2 (0.9 defined only as the Environment decay base; 1.0 reserved for authoritative ground truth whose staleness is supersession/lifecycle-governed) — the §2 criterion for 1.0 matches §4's stated DeploymentEnvironment nature"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-004"],
+"locus": "§6 Reconstructibility / Pre-Acceptance Condition 2 — Evidence.observed_at semantic",
+"claim": "The totality/frozen-Δt contract (§3 Reconstructible; §6 Reconstructibility) is asserted to hold 'either way' — via the preferred Evidence.observed_at=capture-instant reading or a dedicated derived-at field fallback — but the record simultaneously states in §6 that Evidence.observed_at's intended meaning 'must be confirmed against DDR-002 before adoption' and DDR-002 §4 defines Evidence with an observed_at field whose meaning is not stated there. The claim that the capture instant is 'durably recoverable' and that Δt is 'reconstructible' (§3) is thus contingent on an unresolved semantic that the record itself flags as unconfirmed; §3's Reconstructible property is stated as a present property ('Both Δt endpoints are durably recoverable') while §6 concedes the mechanism realizing it is not yet fixed. The Reconstructible property in §3 is not substantiated at the time it is asserted.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "DDR-004 §3 (Reconstructible stated as a holding property — 'Both Δt endpoints are durably recoverable') vs DDR-004 §6 + Pre-Acceptance Condition 2 (the recovering mechanism is unconfirmed against DDR-002 and gated on RBT-54 Touch 3)"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-004"],
+"locus": "§4 declared-basis carriers — DDR-002 §2.6 PlaneDefinition registration contract",
+"claim": "The record asserts that Extension-plane declared bases are carried in 'the PlaneDefinition registration contract (§2.6)' and that 'a plane declaring a citable node with no basis fails registration.' DDR-002 §2.6's PlaneDefinition schema (plane_id, plane_name, version, status, attaches_to, property_schema, provenance) carries no per-node-label derivation-basis field, and no registration-time basis-existence constraint exists in DDR-002 §7. The cited carrier does not currently exist; the record treats it as a present locus for the totality guarantee while §4 and Pre-Acceptance Condition 1 also route it as a forthcoming DDR-002 amendment (RBT-54 Touch 3). The totality-by-construction claim ('a plane declaring a citable node with no basis fails registration') is therefore unsubstantiated against the ratified DDR-002 §2.6/§7 as they stand.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "DDR-002 §2.6 (PlaneDefinition node schema — no derivation-basis field) and §7 (constraint set — no basis-existence constraint); DDR-004 §4 cites §2.6 as the existing carrier while Pre-Acceptance Condition 1 concedes it is a forthcoming amendment"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["DDR-004"],
+"locus": "§4 Per-class dispositions — Cost RateCard/CostFactor basis 4 (non-citable)",
+"claim": "The record rules RateCard and CostFactor 'basis 4 (non-citable)' — 'not a valid Evidence source; citation rejected, knowable at the definition boundary.' But the totality mechanism (§4) makes non-citability a declared basis carried in the schema, and DDR-002 §5's SOURCED_FROM edge grammar and §7 check #14 (atomic capture-unit: Evidence + SOURCED_FROM to a provenance-bearing KG node) do not encode a citability predicate per node-class — any KG node carrying provenance is a structurally valid SOURCED_FROM target under DDR-002 as ratified. The record states citation of a basis-4 class is 'rejected' but does not identify where that rejection is enforced given DDR-002 §5/§7 permit SOURCED_FROM to any provenance-bearing KG node; the enforcement locus for basis-4 rejection is unspecified and not substantiated against the ratified edge/constraint contract.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "DDR-002 §5 (SOURCED_FROM → KG node, no per-class citability predicate) + §7 #14 (atomic capture-unit permits SOURCED_FROM to any provenance-bearing KG node); DDR-004 §4 asserts basis-4 citation is 'rejected' without a ratified enforcement locus"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["DDR-004"],
+"locus": "Rationale + Reconciliation with the SDD-001 interim",
+"claim": "The Rationale and Reconciliation sections carry instantiated run/ticket identifiers (run-009 R6, runs 010/011/012, union disposition Item 1, RBT-53) in normative body text rather than confining them to the Change Log and Cross-References. The deliberation record itself flags this exact condition as a known docs-structure validator finding (check D, contract-purity) held for the review cycle. Cited here from the SA altitude only as a conformance-to-house-authoring-convention observation surfaced at a seam already visible in the record's own provenance.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "author-decision-record skill, Authoring discipline ('Process narrative, ticket IDs, and review history belong in the Change Log, Cross-References, or your tracker — not threaded through the body'); DDR-004 Rationale/Reconciliation sections"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["DDR-004"],
+"locus": "§5 Composition boundary — branch (i) × the #24 ceiling",
+"claim": "Checked the branch-(i)-inherits-node-authority-only boundary against DDR-002 §4's #24 ceiling (ReasoningProgress.confidence ≤ max supporting Evidence.confidence) and §3/§4's node-vs-edge confidence split (OBSERVED_IN per-target certainty is edge confidence, distinct from ObservedPattern node lesson-reliability). Attacked it as a silent loss of the per-target certainty surface: the claim holds — DDR-002 §4 explicitly routes the node×edge composition to the ReasoningProgress rollup and §3 fixes per-target certainty on the OBSERVED_IN edge, reachable by the rollup independent of Evidence.confidence. The boundary is consistent with the ratified confidence-surface split and the ceiling's weakest-link semantics; not inheriting edge certainty into Evidence does not foreclose the rollup's downstream access to it.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "DDR-002 §4 (#24 ceiling; node/edge confidence composition routed to the ReasoningProgress rollup) + §3 (OBSERVED_IN per-target certainty = edge confidence, distinct from node lesson-reliability)"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["DDR-004"],
+"locus": "§3 Δt reference anchor — gateway-clocked, frozen",
+"claim": "Checked the capture-instant anchor against DDR-002 §4's 'snapshot time' inheritance rule and §6/§3's derived-at-creation freezing and version-pinning discipline. Attacked it for replayability and read-drift: the claim holds — gateway-clocking (never caller-supplied) and freeze-at-capture with no read-recompute are consistent with DDR-002 §6 point-in-time fidelity (source_node_version pin, fact_summary immunity to KG drift) and SDD-001 §3.4.3's derive-at-capture/frozen behavior. The anchor treatment does not contradict the ratified snapshot-time/version-pin canon.",
+"cited_authority": {
+"kind": "canonical",
+"ref": "DDR-002 §4 (snapshot-time inheritance) + §6 (version-pinning, point-in-time fidelity); SDD-001 §3.4.3 (derive-at-capture, frozen)"
+}
+}
+]

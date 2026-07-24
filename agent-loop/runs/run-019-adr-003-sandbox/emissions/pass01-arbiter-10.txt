@@ -1,0 +1,7 @@
+{
+  "finding_id": "497dfbf4fb8776ed",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §2.3 (distillation-write checkpoint posture explicitly un-decided, routed to the forthcoming KG-entry-governance ADR); DDR-001 Decision.5 (self-modify scoped to SOFIA's own reasoning entering encoded knowledge)",
+  "rationale": "The finding is a factual contradiction between ADR-003's §2.5 claim ('already EA-gated today; this ADR formalizes the existing gate') and the ratified substrate, which explicitly states the distillation-write checkpoint posture is un-decided and routed to this ADR — meaning no existing gate exists to formalize. The fix (remove the false 'existing gate' assertion) is determined by conforming to the cited authorities; that ADR-003 is the record now deciding this posture is itself the design intent per DDR-002 §2.3's routing.",
+  "confidence": "high"
+}

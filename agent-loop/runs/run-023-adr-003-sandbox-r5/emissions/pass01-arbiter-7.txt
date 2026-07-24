@@ -1,0 +1,7 @@
+{
+  "finding_id": "1bb985a964b1cbe0",
+  "classification": "resolvable",
+  "authority_locus": "DDR-002 §2.4 (PromotionDecision origin_mechanism: authored — SOFIA-issued, human EA is the approving Actor, no source_record_ref) and §1 provenance matrix (authored → primary; the SOFIA-recorded human decision case)",
+  "rationale": "The ratified schema fixes PromotionDecision.origin_mechanism as 'authored' unconditionally; ADR-003's assertion of 'ingested' contradicts a settled, named locus, and conforming the record to that authority is determined (there is no alternative provenance assignment the authority admits).",
+  "confidence": "high"
+}

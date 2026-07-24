@@ -1,0 +1,82 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "Decision.3 / §1.3 — distillation-reviewer role holder-set",
+    "claim": "Decision.3 states 'the holder set of each role is a role-assignment act under the platform's access model (§1.3), not an amendment to this record'; §1.3 then states 'ADR-008 §2.2 fixes both controls as *human* review with a named human answerable; any future non-human role-holder is therefore an amendment question for that upstream authority.' The record decides that role-holder assignment is a non-amendment act, but the very same decision carves an unbounded exception (non-human holders require upstream amendment) — the Decision line's flat claim overreaches what §1.3 actually supports, so the decision does not decide what it claims to decide.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 Decision.3 vs DDR-003 §1.3"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "§2.2 — per-dimension recording requirement vs Decision block",
+    "claim": "§2.2 rules a binding decision — 'each candidate's decision records a verdict on each dimension, durably, as part of the decision act' — and §8 conformance check 6 enforces it as 'Per-dimension diagnosis recorded.' This is a distinct decision content (a durable recording obligation on every promotion decision) beyond the enumerated Decision.2 ('a per-dimension verdict, recorded durably'). Decision.2 does surface it, but the record also asserts (Rationale) 'DDR-003 owns the governance policy' and structures recording as a bound requirement with an interim design-review enforcement — the claim that weights/rules are 'not ruled here' while the recording obligation IS ruled is a scope split that the Decision block states but the §2.2 body expands into an enforcement regime not fully declared as a decision component.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §2.2 vs Decision.2 vs §8 check 6"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "§5.1 interim posture — 'no conforming distillation write path exists'",
+    "claim": "§5.1 states 'until that shape and the review surface land, no conforming distillation write path into the Operational plane exists — a distillation writer designed before then fails ADR-008 §6's accountability check at design review.' This is a decision with a live consequence (it forecloses any Operational-plane distillation write until forthcoming work lands), but the record's title, summary, and Decision block frame DDR-003 as governance *policy*, not as a gating precondition that blocks a plane's write path. The foreclosure is a consequence riding along in a body section; it is not surfaced as a declared consequence or decision of the record.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §5.1 vs Decision block / Consequences (absent)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "§4 / Decision.5 — parameter placement decision",
+    "claim": "§4.4 decides 'The parameter store homes with the detection-promotion mechanism' and §4 decides the mechanism is 'EA-owned', 'audit-logged', 'read fresh per run'. These are concrete design rulings about a component's ownership and behavior. Decision.5 claims to fix 'one EA-owned, data-configured, audit-logged, fresh-read parameter mechanism' but does not surface the placement ruling (§4.4) — where the store homes is a decision content in the body absent from the decision's own enumeration.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §4.4 vs Decision.5"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-003"],
+    "locus": "§7.1 class 4 vs Decision.10 — retention 'four-class' claim",
+    "claim": "Decision.10 states retention is a 'four-class, role-based model (§7.1)', and §7.1 enumerates four classes. But §7.1 itself concedes class (4) 'Operational track-record — not an RG class; its posture is §5.4's archival demotion.' The Decision claims a four-class Reasoning-Graph retention model; the body reveals only three are RG retention classes and the fourth is explicitly not an RG class. The Decision's own count overstates what the body supports.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 Decision.10 ('four-class') vs §7.1 class (4) ('not an RG class')"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["DDR-003"],
+    "locus": "§8 conformance check 5 — no-leak invariant severity vs enforcement",
+    "claim": "Check 5 labels the no-leak invariant 'safety-relevant; aspirational → detection-promotion service design' — an invariant classed safety-relevant is stated to have no enforcement locus beyond a forthcoming design and three-hat review. The record decides the invariant exists (§3.2) but leaves its safety-relevant enforcement wholly deferred; the consequence that a safety-relevant control is unenforced at authoring is noted but not surfaced as a risk or consequence of the decision.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §8 check 5 (safety-relevant + aspirational) vs §3.2"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-003"],
+    "locus": "§6.1 / §6.2 — remedy boundary and re-admission",
+    "claim": "Attacked the remedy-boundary decision for scope overreach — whether it smuggles supersession/retraction mechanics that belong upstream. It held: §6.1 decides only the replaceability-first *policy test* and explicitly cites the landed schema mechanics (DDR-002 §7 #21, #22; SDD-001 §3.5.3–§3.5.4) as executing, not re-authored; §6.2 decides the re-admission *policy* and points to DDR-002 §5 for the read-exclusion mechanism. The decision stays at policy altitude and names its dependencies; consequences (durable determination content) are declared.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §6.1/§6.2 vs ADR-008 §2.6 routing + DDR-002 §7 #21/#22"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-003"],
+    "locus": "§9 — named gaps and routed forward dependencies",
+    "claim": "Attacked the record for smuggled or undeclared commitments — decisions riding along without being surfaced. It held for the deferral surface: §9 declares each in-scope-but-unlocked item with a named owner and reversal path, and each is consistent with a Decision-block or body reference. The record's dependencies (candidate shape, structured diagnosis capture, executed-retraction analogue, decision-consumed survival mechanism) are named and routed rather than quietly assumed decided.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-003 §9 vs Decision block + §5.1/§6.2/§7.2 body references"
+    }
+  }
+]

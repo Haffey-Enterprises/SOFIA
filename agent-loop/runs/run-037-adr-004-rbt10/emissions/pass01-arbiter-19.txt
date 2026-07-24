@@ -1,0 +1,7 @@
+{
+  "finding_id": "e37a5bc61a5ec921",
+  "classification": "resolvable",
+  "authority_locus": "author-decision-record SKILL, body-integrity: 'An amendment that adds a ruling updates the Decision enumeration' + 'restate a disclosure grown by ad-hoc appends by its membership principle'",
+  "rationale": "Fix is determined: surface the already-ruled §2.7/§5.2 class carve-outs in the Decision index per the enumeration-completeness convention; no new choice introduced.",
+  "confidence": "high"
+}

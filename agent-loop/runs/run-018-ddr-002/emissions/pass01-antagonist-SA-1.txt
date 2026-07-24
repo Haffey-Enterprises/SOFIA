@@ -1,0 +1,82 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-002"],
+    "locus": "§7 check #26 vs §2.6 Declared-totality registration rule / DeploymentEnvironment override",
+    "claim": "Check #26 requires 'a declared freshness operand is present iff — and only iff — the label's basis is aging.' §2.1–2.5 declare core-plane bases (e.g. Environment `aging` with operand `observed_at`) in prose annotations, not in `PlaneDefinition.confidence_basis`. But §2.6 states core planes are 'fixed by DDR-001' and the `confidence_basis` declaration is described only as the Extension-plane carrier ('for Extension planes in the PlaneDefinition registration contract (§2.6)'). Check #26 is written 'every PlaneDefinition declares ... per declared node-label' — for core planes no PlaneDefinition-carried confidence_basis is specified to exist, so the invariant as written either has no core-plane subject or presupposes core-plane PlaneDefinition nodes the schema never defines.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-002 §7 #26 (PlaneDefinition-scoped totality) vs DDR-002 §2 preamble + §2.6 (core-plane bases declared in §2.1–2.5 annotations, not in confidence_basis)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-002"],
+    "locus": "§7 #27 basis-admissibility vs §2.4 Governance flat_base",
+    "claim": "Check #27 states 'a non_citable-class label carries no inbound SOURCED_FROM' and that every SOURCED_FROM terminates at a node declaring native_confidence/flat_base/aging. §2.4 declares the Governance plane basis flat_base (basis 2) plane-level. But §4 and §2 preamble assert 'SOURCED_FROM targets KG nodes only' and the citable universe is 'exact.' Governance nodes (Decision, PromotionDecision, Actor, Role, Attestation, Condition) are KG plane nodes carrying flat_base — hence declared citable — yet no design text anywhere describes an Evidence citing a Governance node, and the accountability model (§4) treats PromotionDecision as the accountable-consolidation control, not an evidence source. The schema declares the entire Governance plane citable by giving it flat_base, with no stated intent that decision/audit records be cited as evidence; this is an unexamined citability grant the confidence model does not substantiate.",
+    "cited_authority": {
+      "kind": "soundness",
+      "ref": "DDR-002 §2.4 Governance flat_base declaration + §7 #27 basis-admissibility — Governance nodes declared citable without design substantiation"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-002"],
+    "locus": "§5 Provenance-survival span vs §7 #20 completeness (RejectedAlternative contribution)",
+    "claim": "§5 defines the span as the closure over PROPOSED_FROM targets, stating 'a RejectedAlternative target contributes no Evidence (WOULD_HAVE_USED is not Evidence-mediated).' PROPOSED_FROM legally targets RejectedAlternative (§5 promotion edges). A promotion PROPOSED_FROM a RejectedAlternative therefore has no Evidence-reaching path and contributes nothing to the frozen span. But §4 RejectedAlternative carries no source-version pin and its WOULD_HAVE_USED target is a live KG node with no snapshot. If such a promotion's provenance rests on a RejectedAlternative whose WOULD_HAVE_USED KG node later supersedes, the post-expiry audit trail preserves nothing about what that rejected alternative actually referenced — the ProvenanceSummary is empty for this case, yet #20 declares the guarantee 'complete against the §5-defined span' and satisfied by construction. Completeness against an empty span is vacuous coverage presented as a survival guarantee.",
+    "cited_authority": {
+      "kind": "soundness",
+      "ref": "DDR-002 §5 span definition (RejectedAlternative contributes no Evidence) vs §7 #20 completeness guarantee — vacuous coverage for RejectedAlternative-sourced promotions"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-002"],
+    "locus": "§2.4 PromotionDecision verdict precedence vs §7 #15 governing-edge + Change Log Touch-1 retraction re-decision",
+    "claim": "§2.4 rules the governing verdict is the DECIDED_ON edge whose PromotionDecision has the latest decided_at, enforced by per-candidate strict decided_at monotonicity. §2.4 also names 'a post-materialization re-decision of an executed retraction ... routed to DDR-003' recording the re-decision append-only 'under §2.4's verdict precedence.' For a retraction candidate, terminal status:promoted means the un-promotion was materialized (RETRACTS written). A later re-decision flipping the governing verdict to rejected leaves the RETRACTS edge in place (schema records append-only, un-retraction remedy deferred). But §5 Retracted-node read-discipline keys exclusion on 'an EA-approved reversing CandidatePromotion' via the RETRACTS edge structurally — not on the governing DECIDED_ON verdict. So after a governing-verdict flip to rejected on a retraction, the node stays read-excluded (edge present) while the governing verdict says the retraction is rejected: the read-discipline and the verdict-precedence rule contradict for this case, and no invariant reconciles them.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-002 §5 Retracted-node read-discipline (keyed on RETRACTS edge) vs §2.4 verdict precedence (governing = latest decided_at) — retraction re-decision leaves edge-keyed exclusion contradicting the flipped governing verdict"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-002"],
+    "locus": "Change Log Touch-2 row / Rationale empirical-warrant discipline",
+    "claim": "The Rationale states the governing discipline: a mechanism with 'no empirical instance yet' is 'named as a gap ... rather than carried speculatively.' The Touch-2 Change Log row concedes 'no valid finding forced this touch — opened on economy ... zero materializations to date — form-fixing pre-traffic' and calls it 'a ruled exception to the Rationale's empirical-warrant discipline.' A ruling that fixes internal schema structure (index-aligned frozen_* arrays keyed by evidence_id) with zero instances, self-described as an exception to the document's own stated discipline, is an internal contradiction between the Rationale's binding empirical-warrant rule and the amendment that overrides it — the exception is asserted, not derived from any authority the Rationale admits.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-002 Rationale (empirical-warrant discipline: no-empirical-instance → name as gap, not carry) vs Change Log Touch-2 row (form-fixing at zero instances, self-declared exception)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["DDR-002"],
+    "locus": "§2.6 cost-plane exemplar literal vs §4 basis enumeration",
+    "claim": "The §2.6 cost-plane registration literal `confidence_basis: {CapabilityCostEstimate: native_confidence, RateCard: non_citable, CostFactor: non_citable}` omits the `property_schema` key, glossed as 'elided in this illustration.' Check #26 requires confidence_basis's label set to equal property_schema's label set. The illustration cannot be checked against #26 as written because the keying operand is elided; a reader verifying the exemplar against the invariant has no way to confirm the label sets match. The gloss acknowledges the elision but the exemplar then cannot serve as the 'worked validation exemplar' §2.6 claims it to be for the #26 key-set-equality property specifically.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-002 §2.6 cost-plane exemplar (property_schema elided) vs §7 #26 (confidence_basis label set = property_schema label set) — exemplar cannot demonstrate the key-set-equality it is offered as validating"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-002"],
+    "locus": "§2.4 verdict precedence well-definedness + §7 #15",
+    "claim": "Attacked the 'governing verdict = latest decided_at' rule for the tie/underdetermination hole: two DECIDED_ON edges on one candidate with equal decided_at would make the governing verdict ambiguous and #15 underdetermined. The design closes this by construction — §2.4 enforces per-candidate strict decided_at monotonicity at the gateway (a new edge must carry decided_at strictly greater than any existing edge's on that candidate), so ties are structurally excluded and 'latest decided_at' is total. The well-definedness clause in #15 correctly cites this. The attack failed; the surface holds.",
+    "cited_authority": {
+      "kind": "soundness",
+      "ref": "DDR-002 §2.4 strict decided_at monotonicity + §7 #15 well-definedness clause — governing edge total, ties structurally excluded"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-002"],
+    "locus": "§4 rollup ceiling + §7 #24",
+    "claim": "Attacked the confidence rollup for an unbounded-inheritance hole: whether weight or aggregation could let a ReasoningProgress conclusion exceed the reliability of its strongest evidence. §4 fixes the ceiling = max of supporting Evidence.confidence and explicitly confines weight to operate only below the ceiling, never raising it; #24 enforces the ceiling as a CI check scoped to conclusions with supporting evidence, and the zero-evidence case is honestly routed to the SDD rather than silently defaulted. The comparator is pinned to §4's canon and declared to amend with the SDD's rollup function. The attack found no path to over-confidence; the bound holds as specified.",
+    "cited_authority": {
+      "kind": "soundness",
+      "ref": "DDR-002 §4 rollup upper-bound (ceiling = max supporting Evidence.confidence; weight below ceiling only) + §7 #24 — conclusion cannot exceed strongest evidence path"
+    }
+  }
+]

@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "6a5a1ad7d548cc78",
+  "reason": "Ruling B directs adding an explicit, labeled 'Relationship to ADR-001 §2.5' statement recording generalization + subsumption + un-promotion extension, but it fixes neither the section's placement, heading level, nor its prose — authoring that statement requires composing new content and choosing where to home it, an unratified design choice, not a determinate find-replace.",
+  "confidence": "high"
+}

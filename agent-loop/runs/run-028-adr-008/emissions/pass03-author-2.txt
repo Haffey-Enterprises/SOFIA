@@ -1,0 +1,8 @@
+The finding names three loci but the §2.2 Environment bullet's "weighting policy" is the singular unique anchor; the §5.3 "Environment weighting parameters" and §2.2 control-cell must all conform, but Ruling D determines the noun for the bullet.
+
+{
+  "action": "refuse",
+  "finding_id": "a2c7733e7e458d47",
+  "reason": "Ruling D fixes the mechanism (capture-time-frozen aging, §6 two-tier calibration governance) but does not prescribe a single unique replacement noun to reconcile 'weighting policy' (§2.2 bullet) and 'weighting parameters' (§5.3) with 'aging' — the finding names three loci across two documents (one edit cannot span them), and choosing the conforming wording (e.g. 'aging basis' vs 'aging-confidence calibration' vs 'aging parameters') among several vocabularies Ruling D leaves open is an unratified drafting choice, not one the authority uniquely determines.",
+  "confidence": "medium"
+}

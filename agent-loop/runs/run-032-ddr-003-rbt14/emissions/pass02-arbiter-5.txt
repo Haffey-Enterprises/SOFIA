@@ -1,0 +1,7 @@
+{
+  "finding_id": "06480c0a6478972d",
+  "classification": "resolvable",
+  "authority_locus": "DDR-003 §2.2 / §8 check 6 / §9 (structured per-dimension capture deferred to a named gap; interim carrier is unstructured decision rationale) vs §7.3's over-broad traversal-reachability claim",
+  "rationale": "The record's own already-ratified interim posture determines the fix: §7.3's claim must conform to §2.2/§8/§9's deferral; no new choice is introduced.",
+  "confidence": "high"
+}

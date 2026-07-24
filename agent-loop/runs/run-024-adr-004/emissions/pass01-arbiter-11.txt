@@ -1,0 +1,7 @@
+{
+  "finding_id": "923c7c6c2e2868c3",
+  "classification": "resolvable",
+  "authority_locus": "adr-template \u00a74 (\"Describe each as its proponents would, then give a specific rejection rationale\") + author-decision-record-SKILL (\"A strawman is worse than a gap\"; \"'Doesn't scale' is not a rejection rationale\")",
+  "rationale": "Authority mandates the alternative-disposition construction directly; conforming means rewriting the strawman to a proponent framing plus a specific rejection rationale, no unmade choice.",
+  "confidence": "high"
+}

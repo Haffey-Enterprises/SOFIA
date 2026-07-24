@@ -1,0 +1,1 @@
+{"finding_id":"3d1aed4a75f35f2e","classification":"decision-bearing","authority_locus":null,"rationale":"No authority defines a pre-readiness schema-provisioning operation mode; reconciling ADR-004's DDL-before-readiness order with SDD-001's no-degraded-mode contract requires an unratified design choice.","confidence":"high"}

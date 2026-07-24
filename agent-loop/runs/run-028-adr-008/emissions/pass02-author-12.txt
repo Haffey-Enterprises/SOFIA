@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "77f3c42f370ab58c",
+  "reason": "Ruling F directs qualifying §2.3's 'same control' claim to match the §5.3 concession, but §2.3 as it currently stands already carries that qualification verbatim ('it traces to *an* approving decision, not the *governing* one, so it does not yet supply promotion's governing-verdict guarantee; the governing-verdict detection analogue for executed retractions is a named follow-up (§5.3)'). The ruling does not determine any specific further edit to text that already conforms; producing one would require choosing wording the authority does not entail.",
+  "confidence": "high"
+}

@@ -1,0 +1,690 @@
+{
+  "header": {
+    "set": [
+      "ADR-003"
+    ],
+    "counted_severities": [
+      "BLOCKING",
+      "MATERIAL"
+    ],
+    "plateau_N": 3,
+    "mode": "dry"
+  },
+  "findings": [
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-003"
+      ],
+      "locus": "\u00a72 Decision + \u00a72.2 Environment plane",
+      "claim": "The one-sentence Decision states the checkpoint is 'a human-accountable checkpoint calibrated to the source class of the write' and enumerates 'a per-write gate, or retrieval-time confidence-weighting' as its forms. But \u00a72.2 rules the Environment plane uses retrieval-time confidence-weighting and explicitly 'not a per-write checkpoint' \u2014 a non-checkpoint. The title ('A Human-Accountable Checkpoint Governs Mutation of Enterprise Ground Truth') and the Decision sentence claim a checkpoint governs mutation, yet the Environment path is decided to have no checkpoint on mutation at all; weighting at read is not a checkpoint on the write. The record's headline claim overreaches the decision content of its own \u00a72.2.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-003 title/\u00a72 Decision vs ADR-003 \u00a72.2 ('uses confidence-weighting at retrieval, not a per-write checkpoint')"
+      },
+      "id": "b1dcbc85806da7e1",
+      "classification": "resolvable",
+      "authority_locus": "kg-entry-rulings Ruling 1 (Environment-plane confidence-weighting at retrieval, not per-write checkpoint) \u2014 the ratified design intent the ADR-003 \u00a72.2 text realizes; the fix is aligning the \u00a72 Decision sentence/title framing to the already-ratified per-source-class calibration, in which retrieval-time weighting is an admitted form.",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-003"
+      ],
+      "locus": "\u00a76 Compliance",
+      "claim": "The distillation substantive-review checkpoint that this ADR designs is stated to be mechanized 'per the DDR-002 \u00a77 harness pattern \u2014 a 1b gateway-behavioral check whose required-flip is reserved to the gateway build, joining that harness increment.' This commits a conformance-mechanization consequence (a new harness check joining an increment) that is never surfaced as a decision in \u00a72 and whose consequences are not declared in \u00a75. A commitment riding along in the Compliance section \u2014 the creation of a new gateway-behavioral conformance check \u2014 is a decision the record makes without deciding it in its Decision block.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-003 \u00a76 (gateway-behavioral 1b check commitment) vs ADR-003 \u00a72 Decision + \u00a75 Consequences (no such decision or consequence surfaced)"
+      },
+      "id": "9175fc9a4ecbb0fa",
+      "classification": "resolvable",
+      "authority_locus": "author-decision-record-SKILL, body-integrity discipline: \"An amendment that adds a ruling updates the Decision enumeration\" \u2014 the Decision block is the contract's index, and a ruling it doesn't enumerate is invisible to readers who treat the enumeration as complete.",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-003"
+      ],
+      "locus": "\u00a72.4 The checkpoint executor",
+      "claim": "\u00a72.4 decides 'the graph gateway is the authoring authority for each checkpoint approval: the approval is recorded as the gateway's own act at the write boundary.' This contradicts ADR-002 \u00a72.6's ratified general write-authority principle, which the substrate states verbatim: 'The sole-owner gateway (\u00a72.5) is the sole executor and enforcement boundary of all graph writes; it is never itself the authoring authority.' ADR-003 names the gateway as the *authoring authority* for checkpoint approvals \u2014 the precise role ADR-002 \u00a72.6 says the gateway is never. This is a decision claiming authority the substrate does not support and directly retracts.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-003 \u00a72.4 ('graph gateway is the authoring authority') vs ADR-002 \u00a72.6 ('the sole-owner gateway ... is never itself the authoring authority')"
+      },
+      "id": "930beb1eea24a49d",
+      "classification": "resolvable",
+      "authority_locus": "ADR-002 \u00a72.6 general write-authority principle: 'The sole-owner gateway (\u00a72.5) is the sole executor and enforcement boundary of all graph writes; it is never itself the authoring authority. For EA-gated materializations, the authoring authority is the approving decision.'",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-003"
+      ],
+      "locus": "\u00a71 Context / \u00a72.3 / Cross-References",
+      "claim": "The record repeatedly depends on 'the KG-Entry-Governance Rulings' as ratified authority (\u00a72.2 'Ruling 1', \u00a72.5 'Ruling 2', \u00a77 'closing charter Appendix A #4 and #5') and treats them as design substrate that settles the Environment-plane posture and the distillation-checkpoint scope. But the record's own Status is DRAFT and these rulings are cited as already-ratified inputs the ADR merely restates. The dependency the record leans on for its two most load-bearing sub-decisions (\u00a72.2, \u00a72.5) is a substrate artifact whose ratification the record asserts rather than the ADR itself deciding \u2014 i.e., the two calibration sub-decisions are declared to be resolved by an external ruling set, leaving unclear what \u00a72.2/\u00a72.5 of this ADR actually decide versus merely transcribe.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-003 \u00a72.2/\u00a72.5 (marked 'Ratified \u2014 KG-Entry-Governance Rulings') vs ADR-003 metadata Status: DRAFT \u2014 decision content vs transcribed prior ruling"
+      },
+      "id": "6e59787821db1d89",
+      "classification": "resolvable",
+      "authority_locus": "kg-entry-rulings.md (STATED DESIGN INTENT) \u2014 the two rulings are explicitly ratified 2026-07-17 as 'authoritative design intent' closing charter Appendix A #4 and #5",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "COSMETIC",
+      "target": [
+        "ADR-003"
+      ],
+      "locus": "\u00a74.1 Alternative A",
+      "claim": "Alternative A is described as 'obviously wrong and nobody would defend it \u2014 ungoverned writes to an enterprise system of record are indefensible.' Per the doctype's own authoring discipline, an alternative must be described as its proponents would state it and then rejected on specific grounds; a strawman with no proponent framing is the failure mode the template names. This is a claim-fidelity defect: the Alternatives section claims to have considered an alternative it did not genuinely weigh.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "adr-template.md \u00a74 ('Describe each as its proponents would, then give a specific rejection rationale ... one means it wasn't a real choice')"
+      },
+      "id": "b995bcccc50afa22",
+      "classification": "resolvable",
+      "authority_locus": "adr-template.md \u00a74 Alternatives Considered ('Describe each as its proponents would, then give a specific rejection rationale') and the author-decision-record SKILL deliberation-gate / authoring-discipline ('a strawman is worse than a gap'; 'Describe each as its proponents would')",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-003"
+      ],
+      "locus": "\u00a72.3 Un-promotion authority",
+      "claim": "I attacked \u00a72.3 as a possible circular dependency between ADR-003 and DDR-003 (ADR-003 depends on DDR-003 for the remedy boundary while DDR-003 is blocked on ADR-003). The section decides only the un-promotion *authority* and explicitly routes the *remedy boundary* policy to DDR-003, naming the two as distinct roles with one-directional authority flow. The scope split holds: this ADR decides upstream authority and no more; the remedy policy is declared as DDR-003's, not smuggled here. The claim-fidelity of the decision matches its stated scope.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-003 \u00a72.3 authority-vs-remedy split vs DDR-002 \u00a72.4 ('upstream authority routes to the forthcoming KG-entry-governance ADR ... remedy boundary is DDR-003 governance')"
+      },
+      "id": "e182ac764e8a4387",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-LAA",
+      "altitude": "LAA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-003"
+      ],
+      "locus": "\u00a71 Context \u2014 routed gaps",
+      "claim": "I attacked the forcing-function claim that 'two canonical records route named gaps here' as possibly overstated. Both cited routings verify against the substrate: DDR-002 \u00a72.3 explicitly leaves the distillation-write checkpoint posture 'un-decided ... routed to the forthcoming KG-entry-governance ADR,' and DDR-002 \u00a72.4 routes the un-promotion upstream authority to the same forthcoming ADR because ADR-001 \u00a72.5 authorizes promotion only. The named dependencies this record claims are declared and accurate.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-003 \u00a71 vs DDR-002 \u00a72.3 (distillation checkpoint un-decided, routed) and DDR-002 \u00a72.4 (un-promotion authority routed; ADR-001 \u00a72.5 promotion-only)"
+      },
+      "id": "c37fc0e3a023cccc",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-003"
+      ],
+      "locus": "\u00a72.4 The checkpoint executor",
+      "claim": "\u00a72.4 states 'the graph gateway is the authoring authority for each checkpoint approval: the approval is recorded as the gateway's own act at the write boundary.' This contradicts the ratified ADR-002 \u00a72.6 general write-authority principle, which states the sole-owner gateway 'is the sole executor and enforcement boundary of all graph writes; it is never itself the authoring authority.' ADR-002 \u00a72.6 is explicit that for EA-gated materializations the authoring authority is the approving decision, and the gateway only executes. ADR-003 assigns the gateway the authoring role that its cited upstream authority reserves for the approving decision.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "ADR-002 \u00a72.6 (general write-authority principle: gateway is sole executor, never the authoring authority) \u2014 deviated from at ADR-003 \u00a72.4"
+      },
+      "id": "96c594e6788d3c65",
+      "classification": "resolvable",
+      "authority_locus": "ADR-002 \u00a72.6 \u2014 general write-authority principle: the sole-owner gateway is the sole executor and enforcement boundary of all graph writes and is never itself the authoring authority; for EA-gated materializations the authoring authority is the approving decision, which the gateway then executes.",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-003"
+      ],
+      "locus": "\u00a72.3 Un-promotion authority / \u00a76 Compliance",
+      "claim": "ADR-003 \u00a72.3 asserts DDR-002 \u00a75, \u00a77 #21 supply the retraction mechanism as an 'EA-gated reversing CandidatePromotion whose approving PromotionDecision carries origin_mechanism: ingested.' DDR-002 \u00a75 defines the reversing CandidatePromotion as carrying proposal_kind: retraction, and DDR-002 \u00a72.4/\u00a71 fix a PromotionDecision's origin_mechanism as 'authored' (SOFIA-issued, EA is the approving human Actor), never 'ingested.' The record attributes origin_mechanism: ingested to the approving PromotionDecision, which conflicts with the ratified schema's provenance assignment for PromotionDecision.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "DDR-002 \u00a72.4 (PromotionDecision origin_mechanism: authored) and \u00a71 provenance matrix \u2014 deviated from at ADR-003 \u00a72.3"
+      },
+      "id": "1bb985a964b1cbe0",
+      "classification": "resolvable",
+      "authority_locus": "DDR-002 \u00a72.4 (PromotionDecision origin_mechanism: authored \u2014 SOFIA-issued, human EA is the approving Actor, no source_record_ref) and \u00a71 provenance matrix (authored \u2192 primary; the SOFIA-recorded human decision case)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-003"
+      ],
+      "locus": "\u00a77 Cross-References \u2014 DDR-002 \u00a77 #21",
+      "claim": "\u00a72.3 and \u00a77 cite 'DDR-002 \u00a75, \u00a77 #21' as the retraction shape. DDR-002 \u00a77 #21 (retraction-gated) requires the reversing CandidatePromotion trace to an approving PromotionDecision \u2014 but the record characterizes the retraction shape's approving decision as carrying origin_mechanism: ingested (see prior finding). Independently, ADR-003 relies on DDR-002 \u00a77 #21 to substantiate that un-promotion is already schema-governed, yet DDR-002 \u00a72.4 states #21 'traces to an approving decision, not the governing one' and explicitly routes the un-promotion upstream authority to 'the forthcoming KG-entry-governance ADR' \u2014 i.e., DDR-002 names ADR-003 as the source of the authority ADR-003 claims to already find substantiated in DDR-002. The cross-reference does not fully resolve: the authority ADR-003 supplies and the shape DDR-002 defines are cross-dependent, and the record's claim that the mechanism is fully specified upstream is unsubstantiated.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-003 \u00a72.3/\u00a77 vs DDR-002 \u00a72.4 (un-promotion authority routed to KG-entry-governance ADR) + \u00a77 #21 (traces to an approving, not governing, decision)"
+      },
+      "id": "378a55fdbfdcd068",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-003"
+      ],
+      "locus": "\u00a76 Compliance",
+      "claim": "\u00a76 claims the distillation substantive-review checkpoint 'is mechanized per the DDR-002 \u00a77 harness pattern \u2014 a 1b gateway-behavioral check whose required-flip is reserved to the gateway build, joining that harness increment.' This is an unsubstantiated substantiation claim: no \u00a77 check number is named, no harness increment is identified, and DDR-002 \u00a77's CI-only invariant set (28 checks) contains no distillation-checkpoint check. DDR-002 \u00a72.3 explicitly leaves the distillation-write checkpoint posture 'un-decided' and routes it to the forthcoming KG-entry-governance ADR \u2014 it commits no harness mechanization for it. The record asserts a mechanization that its cited authority does not carry.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "DDR-002 \u00a77 (CI-only invariant set \u2014 no distillation-checkpoint check) and \u00a72.3 (distillation checkpoint posture un-decided) \u2014 deviated from at ADR-003 \u00a76"
+      },
+      "id": "1b5290ae283c106e",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-003"
+      ],
+      "locus": "\u00a72 Decision / \u00a72.2 Environment plane vs \u00a75.2 Constraints",
+      "claim": "\u00a72 and \u00a72.1 define the checkpoint 'form' as 'a per-write gate, or retrieval-time confidence-weighting.' \u00a75.2 restates the imposed constraint as 'a per-write gate for authored and distilled entry; retrieval-time weighting for the Environment plane.' But \u00a72.1 assigns authoritative-source ingestion a 'verification-weight checkpoint on the captured representation' \u2014 the term 'verification-weight' is introduced without definition and is not clearly either a per-write gate or retrieval-time weighting; \u00a75.2 then silently collapses ingestion into 'authored and distilled entry / a per-write gate,' a category the record never established (ingestion is not 'authored'). The internal mapping between \u00a72.1's three source-class forms and \u00a75.2's two-bucket restatement is inconsistent.",
+      "cited_authority": {
+        "kind": "soundness",
+        "ref": "ADR-003 \u00a72.1 (three source-class forms incl. undefined 'verification-weight') vs \u00a75.2 (two-bucket restatement: per-write gate for 'authored and distilled')"
+      },
+      "id": "87cab78deba7f21d",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "COSMETIC",
+      "target": [
+        "ADR-003"
+      ],
+      "locus": "\u00a71 Context / \u00a77 Cross-References \u2014 DDR-002 \u00a77 #21",
+      "claim": "The record repeatedly cites 'DDR-002 \u00a77 #21' and 'DDR-002 \u00a75, \u00a77 #21' as the retraction-shape locus. The cited loci exist in the current DDR-002, but the record also cites 'DDR-002 \u00a72.4' obligations only via \u00a72.3/\u00a72.4 routing labels; \u00a77 references resolve, but the record does not cite DDR-002 \u00a72.4's Decision.7 (the Decision-block enumeration of the retraction shape), leaving the strongest enumerated authority for the shape uncited while relying on the narrower check-locus.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-003 \u00a77 Cross-References citing DDR-002 \u00a77 #21 without DDR-002 Decision.7 (retraction shape enumeration)"
+      },
+      "id": "7f6a2bbd9b7fb98a",
+      "classification": "resolvable",
+      "authority_locus": "DDR-002 Decision.7 (retraction-shape enumeration) and DDR-002 \u00a75 / \u00a77 #21 (retraction shape), plus the author-decision-record SKILL body-integrity rule 'Section citations are facts \u2014 fetch-verify them' and 'point, don't mirror'",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-003"
+      ],
+      "locus": "\u00a72.5 Distillation entry / \u00a72.1",
+      "claim": "\u00a72.5 states a distillation write 'produces an ObservedPattern in the Operational plane carrying a flat_base confidence.' DDR-002 \u00a72.3 assigns the Operational plane's confidence-derivation basis as native_confidence (basis 1, the node's own confidence = lesson reliability), explicitly, at the plane level. ADR-003 assigns ObservedPattern a flat_base confidence, contradicting the ratified per-class confidence-derivation basis for the Operational plane.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "DDR-002 \u00a72.3 (Operational plane confidence-derivation basis: native_confidence) \u2014 deviated from at ADR-003 \u00a72.5"
+      },
+      "id": "3a92193eb519bd04",
+      "classification": "resolvable",
+      "authority_locus": "DDR-002 \u00a72.3 \u2014 Operational plane confidence-derivation basis declared native_confidence (basis 1) at the plane level, plane-level declaration governs every node-label absent a per-label override (DDR-002 \u00a72 preamble resolution rule)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-003"
+      ],
+      "locus": "\u00a72.2 Environment plane",
+      "claim": "Checked ADR-003's Environment-plane posture (confidence-weighting at retrieval, no per-write checkpoint, citing freshness aging DDR-002 \u00a72.2) against the ratified KG-Entry-Governance Rulings (Ruling 1) and DDR-002 \u00a72.2's aging-basis assignment for the Environment plane. The posture conforms: Ruling 1 ratifies exactly this disposition, and DDR-002 \u00a72.2 assigns the Environment plane the aging (freshness/observed_at) basis the record relies on. The attack \u2014 that the Environment posture deviated from its cited authority \u2014 failed; the citations align.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "KG-Entry-Governance Rulings Ruling 1 + DDR-002 \u00a72.2 (Environment aging basis) \u2014 conformance held at ADR-003 \u00a72.2"
+      },
+      "id": "80ccb6fd00bc23b0",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-SA",
+      "altitude": "SA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-003"
+      ],
+      "locus": "\u00a72.1 Promotion path",
+      "claim": "Checked ADR-003's claim that the promotion path introduces 'no new mechanism' and reuses 'the existing EA gate committed at ADR-001 \u00a72.5' against ADR-001 \u00a72.5 and DDR-001 Decision.5. The claim conforms: ADR-001 \u00a72.5 commits the EA-gated promotion mechanism, and DDR-001 Decision.5 explicitly routes the broader all-KG-entry checkpoint to a forthcoming KG-entry-governance ADR while scoping its own self-modification clause to ADR-001 \u00a72.5's object. ADR-003 correctly identifies itself as that forthcoming record and does not re-author the promotion gate. The attack that the promotion-path claim over-reached its cited authority failed.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "ADR-001 \u00a72.5 (EA-gated promotion) + DDR-001 Decision.5 (broader checkpoint routed to KG-entry-governance ADR) \u2014 conformance held at ADR-003 \u00a72.1"
+      },
+      "id": "063752061cc96ce1",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-003"
+      ],
+      "locus": "\u00a72.3 / \u00a75.2 / Cross-References \u2014 DDR-003 dependency direction and blocking posture",
+      "claim": "ADR-003 asserts authority flows to a forthcoming, unauthored DDR-003 that owns the remedy-boundary policy (\u00a72.3), and simultaneously names DDR-003 as blocked on this ADR (\u00a71). The record commits ratified rulings (Rulings 1 and 2, \u00a72.2/\u00a72.5) and a decision-bearing un-promotion authority (\u00a72.3) whose only downstream discharge \u2014 the remedy-boundary policy distinguishing supersession from retraction \u2014 resides in a document that does not yet exist. Whether un-promotion authority can stand at this altitude before its remedy policy is authored is a timing/reversibility posture question: the ADR commits the project to un-promotion as a governed act while the governing remedy policy is deferred to an unwritten record.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-003 \u00a72.3 (this ADR is un-promotion's upstream authority; remedy boundary is DDR-003's policy) vs \u00a71 (DDR-003 blocked on this ADR) vs Cross-References (DDR-003 forthcoming, unauthored)"
+      },
+      "id": "166eda4cda161c1a",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-003"
+      ],
+      "locus": "\u00a72.2 / \u00a72.5 \u2014 reliance on 'KG-Entry-Governance Rulings' as ratified substrate for a DRAFT ADR",
+      "claim": "The two load-bearing calibrations \u2014 Environment-plane confidence-weighting (\u00a72.2) and distillation substantive-review scope (\u00a72.5) \u2014 are each stamped '(Ratified \u2014 KG-Entry-Governance Rulings, Ruling 1 / Ruling 2)' and the rulings artifact declares itself ratified 2026-07-17, the same date as this DRAFT ADR (v0.1.0). A DRAFT record embedding already-ratified sub-decisions as settled inverts the normal posture: the ADR that is supposed to establish the checkpoint principle presents its two central calibrations as pre-decided by a separate rulings artifact that closes the charter items this very ADR was chartered to rule (triage-001 Appendix A #4, #5). This commits the ADR to positions ratified outside the ADR's own review, at the moment of its first draft.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-003 \u00a72.2/\u00a72.5 ('Ratified \u2014 KG-Entry-Governance Rulings') + metadata Status DRAFT/v0.1.0 vs kg-entry-rulings (self-dated ratified 2026-07-17, closing triage-001 charter Appendix A #4/#5)"
+      },
+      "id": "48806ddf17a81e21",
+      "classification": "resolvable",
+      "authority_locus": "kg-entry-rulings (Ruling 1 and Ruling 2), stated design intent: 'authoritative design intent superseding those items' open status,' closing triage-001 charter Appendix A #4 and #5",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-003"
+      ],
+      "locus": "\u00a72.4 \u2014 graph gateway as authoring authority for checkpoint approval",
+      "claim": "\u00a72.4 states 'the graph gateway is the authoring authority for each checkpoint approval: the approval is recorded as the gateway's own act at the write boundary.' This pulls against the ratified write-authority posture that the sole-owner gateway is the sole executor and enforcement boundary and is NEVER itself the authoring authority; for gated materializations the authoring authority is the approving decision (the human EA's gate). Naming the gateway as the authoring authority for a human-accountable checkpoint approval integrates against that platform-direction commitment and against ADR-003's own \u00a73 rationale that every ground-truth mutation carries a named accountable party.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "ADR-002 \u00a72.6 (general write-authority principle: gateway is sole executor, never the authoring authority; EA-gated materialization authority is the approving decision)"
+      },
+      "id": "bb2d71c05a99690e",
+      "classification": "resolvable",
+      "authority_locus": "ADR-002 \u00a72.6 (general write-authority principle: the sole-owner gateway is the sole executor and enforcement boundary and is never the authoring authority; for EA-gated materializations the authoring authority is the approving decision)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-003"
+      ],
+      "locus": "\u00a72.5 / \u00a76 \u2014 distillation checkpoint designed as a graph write-time gate vs Operational plane as derived-not-authored",
+      "claim": "\u00a72.5 designs a substantive-review checkpoint that governs a distillation write producing a `derived` `ObservedPattern` in the Operational plane before entry, and \u00a76 characterizes it as a gateway-behavioral contract with a required-flip reserved to the gateway build. This commits the platform to a per-write human-accountable gate on `origin_mechanism: derived` Operational writes. DDR-002 \u00a72.3 explicitly left the distillation-write checkpoint posture un-decided and routed it here, but the DDR also frames distillation as update-in-place bounded by distinctness and Operational as staying writable; whether a substantive-review gate on the distinct durable lesson is reconcilable with the update-in-place, no-bottleneck constraint R30 imposed is a posture the ADR asserts without demonstrating it clears the very bottleneck constraint \u00a72.2 cites as the reason the Environment plane was NOT gated.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-003 \u00a72.5/\u00a76 (substantive-review checkpoint on distillation write, gateway-behavioral) vs \u00a72.2 (per-write review of continuous volume is the bottleneck R30 declined) + DDR-002 \u00a72.3 (distillation update-in-place, Operational stays writable)"
+      },
+      "id": "9b8cfdf654a9f854",
+      "classification": "resolvable",
+      "authority_locus": "kg-entry-rulings Ruling 2 (distillation checkpoint scope: applies to the distinct durable lesson, bounded-by-distinctness per DDR-002 \u00a72.3, not the per-event stream; satisfies the R30 bottleneck constraint by construction)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "COSMETIC",
+      "target": [
+        "ADR-003"
+      ],
+      "locus": "\u00a77 Cross-References \u2014 reliance on ADR-001 \u00a72.5 scope",
+      "claim": "\u00a71 and \u00a72.3 rest the un-promotion authority gap on the claim that ADR-001 \u00a72.5 authorizes promotion only and does not stretch to un-promotion. ADR-001 \u00a72.5 commits an EA-gated promotion mechanism and states SOFIA does not self-modify its encoded reasoning without EA approval; it is silent on un-promotion, which is consistent with the ADR-003 reading but the ADR presents the scope-limit as a positive textual fact ('authorizes promotion only') rather than as an absence \u2014 a citation asserting what an authority does not say deserves the weaker framing.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "ADR-001 \u00a72.5 (EA-gated encoding-density promotion mechanism; silent on un-promotion/retraction)"
+      },
+      "id": "2ca84a19d2e3a6a4",
+      "classification": "resolvable",
+      "authority_locus": "ADR-001 \u00a72.5 (text: commits EA-gated promotion mechanism, silent on un-promotion) + author-decision-record SKILL, 'Body integrity' \u2014 status/claim discipline: assertions must be earned by the text they cite",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-003"
+      ],
+      "locus": "\u00a71 / \u00a72.3 \u2014 routing of named canonical gaps and the authority-vs-policy split",
+      "claim": "Checked whether the ADR's claim to resolve two routed canonical gaps (DDR-002 \u00a72.3 distillation checkpoint, \u00a72.4 un-promotion authority) is a genuine seam-fit or a circular dependency against DDR-003. The routing holds at the authority level: DDR-002 \u00a72.3 and \u00a72.4 do route these gaps forward by name, and \u00a72.3's authority-flows-to-DDR-003 / DDR-003-owns-remedy-policy split is a coherent non-circular division (authority downward, policy at the delegate). The attack on the split as circular failed \u2014 the two roles are distinct.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-003 \u00a72.3 (authority/remedy-policy split) vs DDR-002 \u00a72.3/\u00a72.4 (gaps routed to KG-entry-governance ADR by name)"
+      },
+      "id": "4df61d0960e17ffe",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "antagonist-EA",
+      "altitude": "EA",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-003"
+      ],
+      "locus": "\u00a72.1 / \u00a72.2 \u2014 per-source-class calibration against the platform's declined uniform-gate posture",
+      "claim": "Checked the calibrated-not-uniform checkpoint decision against the platform's ratified posture that per-write review of CMDB-volume ingestion is the bottleneck R30 declined and that Environment ages via freshness. The Environment-plane confidence-weighting-at-retrieval choice (\u00a72.2) integrates with DDR-002 \u00a72.2's freshness/aging model and ADR-002's deterministic-retrieval ethos rather than pulling against them; the attack that the ADR over-gates the high-volume path failed for the Environment plane specifically.",
+      "cited_authority": {
+        "kind": "canonical",
+        "ref": "DDR-002 \u00a72.2 (Environment aging via freshness) + kg-entry-rulings Ruling 1 (Environment confidence-weighting, R30 bottleneck rationale)"
+      },
+      "id": "d10b76abdf255451",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-003"
+      ],
+      "locus": "\u00a72.5 Distillation entry \u2014 'carrying a flat_base confidence'",
+      "claim": "ADR-003 \u00a72.5 asserts a distillation write produces an ObservedPattern 'carrying a flat_base confidence'. DDR-002 \u00a72.3 owns the ObservedPattern definition and declares its confidence-derivation basis as native_confidence (basis 1) \u2014 'the plane's authority measure is the node's own confidence (lesson reliability)'; flat_base (basis 2) is the basis DDR-002 assigns to Catalog, Standards, Governance, and PlaneDefinition, not to Operational. The property ADR-003 asserts of the owning document's entity is not supplied \u2014 it is contradicted \u2014 by that entity's canonical definition.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-003 \u00a72.5 'ObservedPattern ... carrying a flat_base confidence' in conflict with DDR-002 \u00a72.3 Operational-plane 'Confidence-derivation basis: native_confidence (basis 1), plane-level'"
+      },
+      "id": "8758009bdb7ddcd3",
+      "classification": "resolvable",
+      "authority_locus": "DDR-002 \u00a72.3 (Operational plane) \u2014 'Confidence-derivation basis: native_confidence (basis 1), plane-level', the canonical owner of the ObservedPattern confidence-derivation basis per DDR-002 \u00a72 preamble and Decision.11",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-003"
+      ],
+      "locus": "\u00a72.3 Un-promotion authority \u2014 'origin_mechanism: ingested'",
+      "claim": "ADR-003 \u00a72.3 describes the retraction mechanism as 'an EA-gated reversing CandidatePromotion whose approving PromotionDecision carries origin_mechanism: ingested'. DDR-002 \u00a72.4 \u2014 the owning definition of PromotionDecision \u2014 fixes PromotionDecision at origin_mechanism: authored ('the approving Actor is a human EA; SOFIA is the issuing authority') and states it therefore carries no source_record_ref, with \u00a77 check #17 exempting authored. Asserting origin_mechanism: ingested on the approving PromotionDecision contradicts the owning schema's fixed value for that node type.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-003 \u00a72.3 'approving PromotionDecision carries origin_mechanism: ingested' in conflict with DDR-002 \u00a72.4 PromotionDecision 'origin_mechanism: authored ... therefore no source_record_ref'"
+      },
+      "id": "9bebc8cee31d1905",
+      "classification": "resolvable",
+      "authority_locus": "DDR-002 \u00a72.4 (PromotionDecision definition: `origin_mechanism: authored`; no `source_record_ref`) \u2014 the owning schema for the node type ADR-003 \u00a72.3 mis-values",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-003"
+      ],
+      "locus": "\u00a72.4 The checkpoint executor",
+      "claim": "ADR-003 \u00a72.4 states 'the graph gateway is the authoring authority for each checkpoint approval: the approval is recorded as the gateway's own act at the write boundary.' ADR-002 \u00a72.6 (the owning general write-authority principle) fixes that the sole-owner gateway 'is the sole executor and enforcement boundary of all graph writes; it is never itself the authoring authority', and that for EA-gated materializations the authoring authority is the approving decision, which the gateway then executes. Naming the gateway the 'authoring authority' inverts the author/executor separation the upstream ADR-002 commits.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-003 \u00a72.4 'graph gateway is the authoring authority' in conflict with ADR-002 \u00a72.6 'The sole-owner gateway (\u00a72.5) is the sole executor and enforcement boundary of all graph writes; it is never itself the authoring authority'"
+      },
+      "id": "a7df8e488a5df665",
+      "classification": "resolvable",
+      "authority_locus": "ADR-002 \u00a72.6 \u2014 the general write-authority principle: 'The sole-owner gateway (\u00a72.5) is the sole executor and enforcement boundary of all graph writes; it is never itself the authoring authority... For EA-gated materializations, the authoring authority is the approving decision, which the gateway then executes.'",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "MATERIAL",
+      "target": [
+        "ADR-003"
+      ],
+      "locus": "\u00a71 Context / \u00a77 Cross-References \u2014 DDR-003 blocked-on relationship",
+      "claim": "ADR-003 asserts (\u00a71, \u00a75.1, \u00a77) that 'DDR-003 (Feedback Loop Governance) is blocked on this ADR for its promotion-gate criteria' and that this ADR supplies 'the promotion-gate authority it is blocked on'. But \u00a72.1 and \u00a72.3 also state the promotion path introduces no new mechanism \u2014 'the existing EA gate committed at ADR-001 \u00a72.5 is the already-built instance of this principle; no new mechanism is introduced for the promotion path'. If promotion is fully governed by the pre-existing ADR-001 \u00a72.5 EA gate and this ADR adds nothing to it, the claim that DDR-003 is blocked on this ADR *for its promotion-gate criteria* is not supported by any promotion-path content this ADR contributes.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-003 \u00a71/\u00a75.1/\u00a77 'DDR-003 blocked on this ADR for its promotion-gate criteria' in conflict with ADR-003 \u00a72.1/\u00a72.3 'the existing EA gate ... no new mechanism is introduced for the promotion path'"
+      },
+      "id": "561aa0cb2c090170",
+      "classification": "decision-bearing",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "COSMETIC",
+      "target": [
+        "ADR-003"
+      ],
+      "locus": "\u00a72.3 Un-promotion authority vs \u00a77 DDR-003 remedy-boundary",
+      "claim": "ADR-003 \u00a72.3 states DDR-003 'owns only the remedy policy' and calls the authority-vs-remedy relationship 'distinct roles, not a circular dependency: authority flows from this ADR to DDR-003'. DDR-002 \u00a72.4 (owning the retraction schema) routes the un-promotion upstream authority to 'the forthcoming KG-entry-governance ADR' \u2014 i.e. this ADR \u2014 while assigning the remedy boundary to DDR-003 governance; the two documents agree on the split. The finding: ADR-003's Status is DRAFT (\u00a7metadata, v0.1.0), yet \u00a71 and \u00a75.1 assert DDR-003 'is blocked on this ADR' as settled fact \u2014 the blocking relationship is narrated as established while the blocking document itself is still an unratified draft.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-003 metadata 'Status: DRAFT / Version 0.1.0' in tension with ADR-003 \u00a71/\u00a75.1 asserting DDR-003 blocked-on relationship as settled"
+      },
+      "id": "79bc03a083e7d99d",
+      "classification": "resolvable",
+      "authority_locus": "author-decision-record SKILL, 'Body integrity' \u2014 'Tense is earned by enforcement' / 'Status claims are earned by the trail' (a property whose enforcing/blocking relationship rests on a forthcoming or unratified artifact is stated in the conditional, not as settled present fact); reinforced by the adr-template \u00a7Status guidance (PROPOSED/DRAFT records do not assert downstream relationships as established)",
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-003"
+      ],
+      "locus": "\u00a72.1 / \u00a72.2 / \u00a72.5 \u2014 per-source-class calibration against Environment-plane retrieval-weighting",
+      "claim": "Checked ADR-003's per-source-class calibration against the ratified KG-Entry-Governance Rulings and DDR-002's Environment-plane treatment. \u00a72.2 commits Environment-plane confidence-weighting at retrieval (not a per-write checkpoint), matching Ruling 1 verbatim and DDR-002 \u00a72.2's aging/freshness basis; \u00a72.5 scopes the distillation substantive review to the distinct durable lesson bounded by distinctness, matching Ruling 2 and DDR-002 \u00a72.3's update-in-place/bounded-by-distinctness posture. The R30 bottleneck constraint is honored on both paths. This surface held against attack.",
+      "cited_authority": {
+        "kind": "design-intent",
+        "ref": "KG-Entry-Governance Rulings Ruling 1 (Environment confidence-weighting at retrieval) and Ruling 2 (distillation checkpoint scoped to distinct durable lesson) \u2014 realized consistently in ADR-003 \u00a72.2 and \u00a72.5"
+      },
+      "id": "df21f5e4d8029094",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    },
+    {
+      "source": "coherence",
+      "altitude": "cross-set",
+      "severity": "POSITIVE",
+      "target": [
+        "ADR-003"
+      ],
+      "locus": "\u00a72.3 / \u00a77 \u2014 un-promotion authority routing against DDR-002 \u00a72.4 and DDR-001",
+      "claim": "Attacked the claim that ADR-003 supplies the un-promotion upstream authority DDR-002 \u00a77 #21 lacks. DDR-002 \u00a72.4 explicitly routes 'the un-promotion / retraction upstream authority ... to the forthcoming KG-entry-governance ADR' because 'ADR-001 \u00a72.5 authorizes promotion only and does not stretch to un-promotion', and DDR-001 Decision.5 likewise routes the broader all-KG-entry checkpoint to this forthcoming ADR. ADR-003 \u00a72.3 accepts exactly that role (authority here; remedy boundary to DDR-003). The authority-supply role and its downstream/upstream direction are consistent across the three documents; the retraction *shape* stays owned by DDR-002 \u00a75. This routing held.",
+      "cited_authority": {
+        "kind": "coherence",
+        "ref": "ADR-003 \u00a72.3 un-promotion authority consistent with DDR-002 \u00a72.4 routing to 'forthcoming KG-entry-governance ADR' and DDR-001 Decision.5 broader-checkpoint routing"
+      },
+      "id": "d9e373b01fbb0d01",
+      "classification": "unclassified",
+      "authority_locus": null,
+      "status": "open",
+      "pass_raised": 1,
+      "pass_closed": null,
+      "recurrence_count": 0,
+      "resolution_note": null
+    }
+  ],
+  "passes": [
+    {
+      "pass_number": 1,
+      "open_cbm_count": 18,
+      "agents_run": [
+        "antagonist-LAA",
+        "antagonist-SA",
+        "antagonist-EA",
+        "coherence",
+        "arbiter"
+      ],
+      "timestamp": "2026-07-17T11:12:00.421317+00:00"
+    }
+  ],
+  "doc_changes": []
+}

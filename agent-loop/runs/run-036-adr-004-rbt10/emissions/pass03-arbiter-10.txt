@@ -1,0 +1,1 @@
+{"finding_id":"8b5d56c2099e43ce","classification":"resolvable","authority_locus":"DDR-002 §2.1 / DDR-001 Decision.2 — canonical plane name 'Catalog'","rationale":"Canonical plane name is fixed as 'Catalog' by the owning authorities; conforming the non-canonical 'selection-catalog' to it introduces no choice.","confidence":"high"}

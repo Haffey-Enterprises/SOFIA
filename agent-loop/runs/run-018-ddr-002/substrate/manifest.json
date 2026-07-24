@@ -1,0 +1,122 @@
+{
+  "files": [
+    {
+      "logical_id": "ADR-001",
+      "category": "authorities",
+      "origin": {
+        "source": "sofia-repo",
+        "path": "docs/adr/ADR-001-reasoning-architecture.md"
+      },
+      "retrieved": "2026-07-13",
+      "sha256": "ecbea69ce4396ce7edc5f5196c794790edb3ead32b2c999ec5506616aca102dd"
+    },
+    {
+      "logical_id": "ADR-002",
+      "category": "authorities",
+      "origin": {
+        "source": "sofia-repo",
+        "path": "docs/adr/ADR-002-graph-system-of-record.md"
+      },
+      "retrieved": "2026-07-13",
+      "sha256": "6ffdc714ea606feaed8d1553f978274dc19bb48b867fa1c4368c377a5c35e463"
+    },
+    {
+      "logical_id": "DDR-001",
+      "category": "authorities",
+      "origin": {
+        "source": "sofia-repo",
+        "path": "docs/ddr/DDR-001-data-architecture.md"
+      },
+      "retrieved": "2026-07-13",
+      "sha256": "0fa0945e082bdb7441947907ee3619ae851137923cc4ce28b477189bf9484c15"
+    },
+    {
+      "logical_id": "DDR-002",
+      "category": "authorities",
+      "origin": {
+        "source": "sofia-repo",
+        "path": "docs/ddr/DDR-002-graph-schema.md"
+      },
+      "retrieved": "2026-07-13",
+      "sha256": "9bb0f9b3d9c9b08e44d5ca5a8fa807d67869f15fa18e285c963750232848e6a3"
+    },
+    {
+      "logical_id": "SDD-001",
+      "category": "authorities",
+      "origin": {
+        "source": "sofia-repo",
+        "path": "docs/sdd/SDD-001-knowledge-service.md"
+      },
+      "retrieved": "2026-07-13",
+      "sha256": "a6a9ddaad6a50f76d35768959d18efb7cb15df50eb1185ce294514694c579950"
+    },
+    {
+      "logical_id": "ddr-template",
+      "category": "authorities",
+      "origin": {
+        "source": "bedrock",
+        "path": "plugins/bedrock/skills/author-decision-record/templates/ddr-template.md"
+      },
+      "retrieved": "2026-07-13",
+      "sha256": "59068b3a2741f497e92bff240da238d4f8b6b57471c8ff7a76ab8c09ba9668f9",
+      "verified_against": {
+        "path": "plugins/bedrock/skills/author-decision-record/templates/ddr-template.md",
+        "sha256": "59068b3a2741f497e92bff240da238d4f8b6b57471c8ff7a76ab8c09ba9668f9",
+        "source": "installed-cache",
+        "verified_at": "2026-07-13"
+      }
+    },
+    {
+      "logical_id": "author-decision-record-SKILL",
+      "category": "authorities",
+      "origin": {
+        "source": "bedrock",
+        "path": "plugins/bedrock/skills/author-decision-record/SKILL.md"
+      },
+      "retrieved": "2026-07-13",
+      "sha256": "28a7696576cc6c2d2f2a313f812e3696bdcf3468ebade9bcb485fca71c012afe",
+      "verified_against": {
+        "path": "plugins/bedrock/skills/author-decision-record/SKILL.md",
+        "sha256": "28a7696576cc6c2d2f2a313f812e3696bdcf3468ebade9bcb485fca71c012afe",
+        "source": "installed-cache",
+        "verified_at": "2026-07-13"
+      }
+    },
+    {
+      "logical_id": "deliberation-record-ddr-002",
+      "category": "design-intent",
+      "origin": {
+        "source": "sofia-repo",
+        "path": "agent-loop/deliberation/ddr-002-amendment-batch/record.md"
+      },
+      "retrieved": "2026-07-13",
+      "sha256": "b6e0bf93fba017af45cbe80f96f419e994d1b95dfe65c1572d3d3217d7a6ab0e"
+    },
+    {
+      "logical_id": "sofia-vision",
+      "category": "design-intent",
+      "origin": {
+        "source": "notion",
+        "page_title": "SOFIA",
+        "page_id": "370caeea-1325-8069-893f-c829d0f01551",
+        "url": "https://app.notion.com/p/370caeea13258069893fc829d0f01551",
+        "content_as_of": "2026-07-03T21:32:38Z",
+        "scope": "vision block only (above the Roadmap divider)",
+        "snapshotted_from": "agent-loop/runs/run-012-sdd-001/substrate/design-intent/sofia-vision.md",
+        "note": "Current ratified vision (b499614d\u2026, runs 008-012). Runs 004-007 carried a superseded copy (0cd7fd84\u2026) \u2014 excluded to avoid drift."
+      },
+      "retrieved": "2026-07-13",
+      "sha256": "b499614d51fc30aba7d6f7d264b49dfe612c0ee67df82f2bcea87c08b5bf05bc"
+    },
+    {
+      "logical_id": "DDR-004",
+      "category": "authorities",
+      "origin": {
+        "source": "sofia-repo",
+        "path": "docs/ddr/DDR-004-inherited-confidence-derivation.md"
+      },
+      "retrieved": "2026-07-13",
+      "sha256": "fbab79ce832daedb958eaeb496092bc861dbc44e3613dbc423163653992079a1"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+The finding names two loci in §7 but Ruling G directs replacing both numbered forms. However, an exact find-replace requires one unique old_string; the two DDR-003/ADR-004 bullets are separate. I must target the whole §7 block containing both, but the finding locus is the two forthcoming-record bullets. Ruling G gives exact replacement strings. The DDR-003 bullet also contains "DDR-003's" references which Ruling G does not explicitly instruct converting beyond the identifier. This introduces ambiguity in how much of the DDR-003 bullet to rewrite. I'll handle each bullet separately requires two edits, but I may only emit one.
+
+{
+  "action": "refuse",
+  "finding_id": "2ce1458eaeb1ed41",
+  "reason": "Ruling G directs replacing two distinct, non-adjacent §7 bullets (the DDR-003 line and the ADR-004 line), which cannot be conformed by a single minimal find-replace; moreover the DDR-003 bullet contains further self-referential 'DDR-003's pointer'/'DDR-003's definition of done' identifier uses whose disposition Ruling G does not uniquely determine, so no single conforming edit is entailed.",
+  "confidence": "medium"
+}

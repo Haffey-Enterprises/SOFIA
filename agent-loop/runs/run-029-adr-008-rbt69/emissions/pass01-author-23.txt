@@ -1,0 +1,8 @@
+The finding's cited locus is the §2.2 table's Environment realization cell. But that cell already reads "Form built (DDR-004); constants contested/unvalidated (n=0)" — exactly Ruling D's prescribed text. The finding's claim quotes an old state ("Built — the inherited-confidence derivation ruling's aging basis") that no longer exists in the fetched document.
+
+{
+  "action": "refuse",
+  "finding_id": "e01fbbc1fb4e197d",
+  "reason": "The §2.2 Environment realization cell already reads 'Form built (DDR-004); constants contested/unvalidated (n=0) — the inherited-confidence derivation ruling's aging basis,' which is exactly the text Ruling D prescribes. The bare 'Built' status the finding quotes does not exist in the current document, so no conforming edit remains and no exact anchor for the claimed defect can be located.",
+  "confidence": "high"
+}

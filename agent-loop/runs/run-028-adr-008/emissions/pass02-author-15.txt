@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "038114ff339d21f6",
+  "reason": "Ruling D corrects the §2.2 control description from 'at retrieval' to capture-time-frozen aging, which the current text already reflects; it does not rule on the residual 'weighting' vocabulary in §5.3 or §2.2's Environment bullet ('weighting policy'). Whether to relabel those to 'aging' vocabulary, and to what exact phrasing, is not determined by Ruling D or DDR-004 — DDR-004 itself uses 'weighting' loosely and does not mandate the noun, so the conforming replacement wording is underdetermined.",
+  "confidence": "medium"
+}

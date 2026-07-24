@@ -1,0 +1,7 @@
+{
+  "finding_id": "3921aaa2622d50ff",
+  "classification": "resolvable",
+  "authority_locus": "RBT-59 deliberation record Item 2 (frame: invariant = human accountability over enterprise ground-truth mutation, un-promotion is the withdrawal-leg sub-case, Item 4) + author-decision-record SKILL cold-read / contract-clarity discipline",
+  "rationale": "Ratified frame fixes the general four-class invariant as the decision, with un-promotion as a homed sub-case; the summary-surface tension is a wording alignment the fix conforms to, no new choice.",
+  "confidence": "high"
+}

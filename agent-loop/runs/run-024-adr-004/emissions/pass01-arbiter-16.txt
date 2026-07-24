@@ -1,0 +1,1 @@
+{"finding_id": "a6fb1e1686ca28f7", "classification": "decision-bearing", "authority_locus": null, "rationale": "Whether ADR-004 should stand now or defer to the unauthored KG-entry-governance ADR is an authoring/sequencing choice no ratified authority settles.", "confidence": "high"}

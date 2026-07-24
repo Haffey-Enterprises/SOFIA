@@ -1,0 +1,7 @@
+{
+  "finding_id": "945a8fb08b56c14f",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "DDR-004 introduces a basis-4 (non-citable) node-class and asserts citation is 'rejected,' but DDR-002 §5's SOURCED_FROM grammar and §7 #14's capture-unit permit SOURCED_FROM to any provenance-bearing KG node with no per-class citability predicate; no ratified authority names where basis-4 rejection is enforced, so closing the gap requires a new mechanism choice (a schema constraint, a gateway read-discipline check, or a DDR-002 amendment) that no existing authority disambiguates.",
+  "confidence": "high"
+}

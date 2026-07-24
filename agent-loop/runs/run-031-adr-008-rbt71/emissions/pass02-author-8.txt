@@ -1,0 +1,10 @@
+{
+  "action": "edit",
+  "finding_id": "bbb0327ca99ce47c",
+  "target": "ADR-008",
+  "old_string": "A design that relied on a lesson which later resolves, or on a promoted fact which is later retracted, must remain answerable by traversal to the fact as it stood when it was consumed.",
+  "new_string": "A design that relied on a promoted fact which is later retracted must remain answerable by traversal to the fact as it stood when it was consumed; the frozen-provenance survival guarantee is currently scoped to promoted facts (§5.3), so a design that consumed a fact without promoting it relies on Reasoning-Graph evidence under bounded retention.",
+  "authority_conformed": "ADR-008 §5.3 concession + DDR-002 §7 #20 (ProvenanceSummary at-promotion, promotion-kind scoped) and §8 provenance-survival guarantee (promotion-scoped)",
+  "rationale": "§5.3 and DDR-002 §7 #20 fix the survival guarantee as promotion-scoped; §2.4's unqualified claim is conformed to that scope, matching the §5.3 concession.",
+  "confidence": "medium"
+}

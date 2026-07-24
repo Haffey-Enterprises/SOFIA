@@ -1,0 +1,7 @@
+{
+  "finding_id": "354e92daf5d7f435",
+  "classification": "decision-bearing",
+  "authority_locus": null,
+  "rationale": "DDR-002 §4 defines Evidence.observed_at (T2) as the owning schema field but supplies no capture-instant meaning; the derivation record itself flags this semantic as unconfirmed against DDR-002 (Pre-Acceptance Condition 2) and the deliberation record routes the mechanism choice (observed_at-is-capture-instant vs. verify-intent vs. a new derived field) to RBT-54 Touch 3 as an unratified fork. No existing authority disambiguates whether Evidence.observed_at may carry the capture-instant meaning, and resolving the finding requires selecting among those options.",
+  "confidence": "high"
+}

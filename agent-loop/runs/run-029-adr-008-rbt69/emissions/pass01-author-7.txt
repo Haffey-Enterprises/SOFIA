@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "a483c8cbf8962cc2",
+  "reason": "Ruling G ('subject-named, not numbered') establishes the target form but not the exact replacement wording for two §7 bullets, whose surrounding text (the DDR-003 entry's 'DDR-003's pointer', 'DDR-003's definition of done'; the bullets' bolded lead-ins and ordering) would each require an authored subject-name phrasing the authority does not supply verbatim — more than one conforming rewrite exists.",
+  "confidence": "medium"
+}

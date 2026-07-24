@@ -1,0 +1,1 @@
+{"finding_id":"5df7afd38c9f9a2e","classification":"decision-bearing","authority_locus":null,"rationale":"Three records each defer the same schema gap; no cited authority designates which record canonically owns the amendment act, so fixing ownership is an unratified choice.","confidence":"high"}

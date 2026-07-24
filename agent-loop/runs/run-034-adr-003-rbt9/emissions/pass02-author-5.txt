@@ -1,0 +1,6 @@
+{
+  "action": "refuse",
+  "finding_id": "972b81cca5a9aba1",
+  "reason": "The named authority (body-integrity: 'an amendment that adds a ruling updates the Decision enumeration') establishes that the Decision block should surface the never-preclude ruling, but it does not uniquely determine the conforming wording of a new sub-decision entry — where it sits, how it is phrased, and whether the fix is instead to soften §2.2/§5.2 all remain unratified choices. Deliberation Item 2 ratifies the commitment's substance but not its Decision-block surfacing form.",
+  "confidence": "medium"
+}

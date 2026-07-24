@@ -1,0 +1,7 @@
+{
+  "finding_id": "f6c2434043a8b4cd",
+  "classification": "resolvable",
+  "authority_locus": "ADR-008 operator rulings, Ruling D (findings db343ac9 + 9d7e8220): drop 'reliability-weighting at retrieval'; state capture-time-frozen aging (DDR-004 §1/§3) + §6 governance; relabel §2.2 status to 'form built; constants contested (n=0)'",
+  "rationale": "Ruling D directly dictates the correction, naming the exact edit and the DDR-004 §1/§3 capture-time mechanism as authority.",
+  "confidence": "high"
+}

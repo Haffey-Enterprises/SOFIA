@@ -1,0 +1,10 @@
+{
+  "action": "edit",
+  "finding_id": "6036639653237d09",
+  "target": "ADR-008",
+  "old_string": "Un-promotion — retraction of a fact that was promoted into authoritative selection knowledge — is the **withdrawal-leg of the promotion class**, governed by the same per-write, EA-gated, human-accountable control as promotion itself. This ADR is the **upstream authority** for un-promotion: ADR-001 §2.5 authorizes promotion only and does not stretch to its reversal. The built retraction shape — the EA-gated reversing `CandidatePromotion` with its `RETRACTS` edge (the graph-schema ruling's §5 and its retraction-gated invariant) — is the instance of this authority.",
+  "new_string": "Un-promotion — retraction of a fact that was promoted into authoritative selection knowledge — is the **withdrawal-leg of the promotion class**, governed by the same per-write, EA-gated, human-accountable control as promotion itself. This ADR is the **upstream authority** for un-promotion: ADR-001 §2.5 authorizes promotion only and does not stretch to its reversal. The built retraction shape — the EA-gated reversing `CandidatePromotion` with its `RETRACTS` edge (the graph-schema ruling's §5 and its retraction-gated invariant) — is the instance of this authority, with one qualification: the built instance traces to *an* approving decision, not the *governing* one, so it does not yet supply promotion's governing-verdict guarantee — the authority is homed, and the governing-verdict detection analogue for executed retractions is a named follow-up (§5.3).",
+  "authority_conformed": "ADR-008-run-025-operator-rulings Ruling F (qualify §2.3 'same control' to match the §5.3 concession; DDR-002 §7 #21 traces to an approving, not governing, decision)",
+  "rationale": "Ruling F directs qualifying §2.3's 'instance of this authority' claim to match §5.3's concession that #21 traces to an approving, not governing, decision, naming the detection analogue as follow-up.",
+  "confidence": "high"
+}

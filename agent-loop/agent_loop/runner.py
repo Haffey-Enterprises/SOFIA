@@ -5,12 +5,15 @@
 #          admits them through the admission gate in a fixed deterministic order
 #          (§3) — no admission interleaves with any review. It then runs the
 #          arbiter on open/unclassified findings, snapshots the pass record at
-#          routing time, and routes; on CONTINUE the author stub acts. Dry mode
-#          throughout: resolutions and escalations are proposed and logged.
+#          routing time, and routes; on CONTINUE the author acts — the canned
+#          stub by default, the injected port on the real path. Dry mode
+#          throughout: escalations are proposed and logged, and the real author
+#          writes only the run's own document copy (run-supervision §9).
 # Scope:   Orchestration only. Judgment about "done" is in gates.route (no LLM).
-#          The only LLM judgment (the arbiter) is injected as a port; reviewers
-#          are injected via a Plan. Author, arbiter position, gates, router, the
-#          schema enums, and mode are untouched by the real-hats contract (§8).
+#          The LLM judgments (the arbiter on the exit path, the author on the
+#          write path) are injected as ports; reviewers are injected via a Plan.
+#          Arbiter position, gates, router, the schema enums, and mode are
+#          untouched by the real-hats contract (§8).
 
 from __future__ import annotations
 
@@ -21,6 +24,7 @@ from typing import Callable
 
 from agent_loop.admission import admit
 from agent_loop.arbiter import Arbiter
+from agent_loop.author import AuthorPort
 from agent_loop.gates import RouterExit, open_cbm, route
 from agent_loop.ledger import Ledger, LedgerHeader, LedgerStore, PassRecord
 from agent_loop.log import ActionLog
@@ -115,7 +119,8 @@ def _gather_then_admit(
     guard (mechanical-gates §3) can fire.
 
     Returns:
-        (agents_run labels in admission order, compromised-reviewer labels).
+        (agents_run labels in admission order, compromised-reviewer labels,
+        all_null — every scheduled reviewer produced a clean null this pass).
     """
     # The plan's scheduling view is its own isolated copy of the state.
     scheduled = plan(pass_number, copy.deepcopy(snapshot_state), log)
@@ -157,7 +162,21 @@ def _gather_then_admit(
         for identity, _, parse_drops in gathered
         if parse_drops >= 1 and reached_ledger[identity.label] == 0
     ]
-    return agents_run, compromised
+
+    # All-hats-null guard (RBT-54 R-C): a CLEAN null from one hat degrades recall
+    # and is recoverable (union-over-runs), so it continues; but if EVERY
+    # scheduled reviewer went variance-to-zero this pass, the whole draw is null
+    # and routing it would reach a false CONVERGED. Detected off the per-pass
+    # hat_null events (the clean-empty species), distinct from the parse-storm
+    # `compromised` set above (a parse-dropped hat never emits hat_null).
+    scheduled_labels = {reviewer.identity.label for reviewer in scheduled}
+    hat_nulled = {
+        event.detail.get("reviewer")
+        for event in log.of_kind("hat_null")
+        if event.detail.get("pass_number") == pass_number
+    }
+    all_null = bool(scheduled_labels) and scheduled_labels <= hat_nulled
+    return agents_run, compromised, all_null
 
 
 def run_loop(
@@ -167,6 +186,7 @@ def run_loop(
     store: LedgerStore,
     *,
     fix_changes: dict[str, str] | None = None,
+    author: AuthorPort | None = None,
     authorities: object = None,
     design_intent: object = None,
     fetch_documents: DocumentFetcher = default_document_fetcher,
@@ -190,6 +210,11 @@ def run_loop(
         arbiter: The arbiter port (the only LLM judgment).
         store: The file-backed ledger store (fresh-fetched each pass).
         fix_changes: Author fix→doc-change map (stub path); empty by default.
+        author: The author port (the LLM on the write path). None — the default
+            — keeps the stub path exactly as it was: the canned `author_pass`
+            closes open resolvable findings against `fix_changes`, applying
+            nothing. The real path injects `LlmAuthor`, which conforms the run's
+            own document copy per run-supervision.protocol.md §9.
         authorities: Substrate passed to the arbiter (unchanged position, §8).
         design_intent: Design intent passed to the arbiter (§8).
         fetch_documents: Fresh document-set fetch (§5); placeholder by default.
@@ -236,7 +261,7 @@ def run_loop(
         substrate = fetch_substrate(list(header.set))
 
         # §3: gather all emissions, then admit in fixed order.
-        agents_run, compromised = _gather_then_admit(
+        agents_run, compromised, all_null = _gather_then_admit(
             ledger, snapshot_state, plan, pass_number, records, substrate, log
         )
 
@@ -250,6 +275,18 @@ def run_loop(
             raise InstrumentCompromisedError(
                 f"{label} pass {pass_number}: reviewer(s) {compromised} produced "
                 "parse-dropped emissions and admitted no findings — instrument "
+                "compromised, refusing to route (would risk a false CONVERGED)"
+            )
+
+        # All-hats-null guard (RBT-54 R-C): a whole-draw clean null is not a
+        # legitimate empty result (the POSITIVE floor makes that structurally
+        # impossible) — it is variance-to-zero across every hat, and routing it
+        # would reach a false CONVERGED. Fail loud, same posture as above.
+        if all_null:
+            store.save(ledger)
+            raise InstrumentCompromisedError(
+                f"{label} pass {pass_number}: every scheduled reviewer produced a "
+                "clean-null emission (variance-to-zero across all hats) — instrument "
                 "compromised, refusing to route (would risk a false CONVERGED)"
             )
 
@@ -305,8 +342,13 @@ def run_loop(
                 reason=exit_.reason,
                 pass_number=pass_number,
                 payload=[f.id for f in exit_.payload],
+                # The non-convergence context line (RBT-69 Piece 3) rides on the
+                # halt event so the operator sees the non-exhausted resolvable
+                # surface + plateaued open_cbm; None on every other disposition.
+                context=exit_.context,
             )
-            # Dry mode: one proposed escalation per finding, unbundled. Bundling
+            # Dry mode: one proposed escalation per finding, unbundled — for the
+            # non-convergence payload exactly as for decision-bearing. Bundling
             # multiple decisions into one escalation is prohibited.
             for finding in exit_.payload:
                 log.emit(
@@ -317,9 +359,14 @@ def run_loop(
                 )
             return RunResult(exit_, pass_number, ledger, log)
 
-        # CONTINUE → back to the author.
+        # CONTINUE → back to the author. The port is injected on the real path
+        # (LlmAuthor, which conforms the run's document copy and escalates what
+        # it refuses); the stub path's canned author is unchanged.
         log.emit("continue", pass_number=pass_number, open_cbm=cbm)
-        author_pass(ledger, pass_number, effective_fix_changes, log)
+        if author is None:
+            author_pass(ledger, pass_number, effective_fix_changes, log)
+        else:
+            author(ledger, pass_number, log)
         store.save(ledger)
 
 

@@ -1,0 +1,72 @@
+[
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-004"],
+    "locus": "§6 Reconciliation — Δt reconstructibility / Evidence.observed_at semantic",
+    "claim": "The record's calibration reconstructibility rests on the claim that Evidence.observed_at 'is' the capture instant, but DDR-002 §4 defines Evidence.observed_at within the Evidence node schema without stating it is the capture instant, and §3 of this record independently defines Δt's 'from' point as the cited node's observed_at (source freshness), not Evidence's own observed_at. The record itself flags this as unconfirmed ('Evidence.observed_at's intended meaning must be confirmed against DDR-002 before adoption'), so the durable-recoverability property the calibration path (§6) depends on is asserted against an authority the record concedes it has not verified.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 v1.2.0 §4 (:Reasoning:Evidence schema — observed_at property, no capture-instant definition)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-004"],
+    "locus": "§4 Per-class declared-basis totality — DeploymentEnvironment basis-2 assignment",
+    "claim": "§4 assigns Environment DeploymentEnvironment basis 2 with 'the Environment base 0.9, contested per §2, decay term dropped.' But §2 defines base=0.9 as the Environment aging constant paired with τ, calibrated 'to the baseline reliability of fresh Environment facts' decayed over time (§6). Reusing 0.9 as a flat, non-decaying base for a structurally-stable node applies a constant whose entire calibration rationale (§6: base fit to fresh-fact reliability against outcomes, τ fit to staleness timescale) presupposes the decay term the assignment drops — the value's substantiation in §2/§6 does not cover a non-aging use, leaving the DeploymentEnvironment base uncalibrated by any stated basis.",
+    "cited_authority": {
+      "kind": "soundness",
+      "ref": "internal inconsistency between §4 DeploymentEnvironment basis-2 use of 0.9 and §2/§6 calibration rationale for base=0.9 (aging-only)"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-004"],
+    "locus": "Cross-References / normative body — instantiated identifiers in contract sections",
+    "claim": "Normative body sections (Rationale, Reconciliation with the SDD-001 interim, Pre-Acceptance/Migration Conditions) carry instantiated run/ticket identifiers (run-009 R6, runs 010/011/012, RBT-53, RBT-54 Touch 3, union disposition Item 1) rather than confining them to Change Log / Cross-References, deviating from the authoring-discipline convention that process narrative, ticket IDs, and review history belong in the Change Log, Cross-References, or tracker — not threaded through the body.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "author-decision-record-SKILL — Authoring discipline: 'Keep the record's body to the contract. Process narrative, ticket IDs, and review history belong in the Change Log, Cross-References, or your tracker — not threaded through the body.'"
+    }
+  },
+  {
+    "severity": "MATERIAL",
+    "target": ["DDR-004"],
+    "locus": "§4 / Pre-Acceptance Conditions — DDR-002 amendments as pre-mechanization dependency",
+    "claim": "The record fixes per-class declared-basis totality (§4) and states the declared basis 'is carried in the schema … These are DDR-002 amendments (Pre-Acceptance Conditions),' yet the totality property the derivation's soundness rests on ('For every citable node-class exactly one branch yields a value, because every citable class carries a declared basis (§4)', §1) is unenforceable until those DDR-002 amendments land. The record claims totality is 'total by construction' and 'established at each citable node-class's definition boundary,' but the carriers that would make it so are un-ratified forward dependencies on RBT-54 — the claimed by-construction guarantee is not substantiated in the ratified schema as it stands.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-004 §1 'total by construction' + §4 'established at each citable node-class's definition boundary' vs. DDR-004 Pre-Acceptance Condition 1 (declared-basis carriers are un-ratified DDR-002 amendments on RBT-54 Touch 3)"
+    }
+  },
+  {
+    "severity": "COSMETIC",
+    "target": ["DDR-004"],
+    "locus": "References header — DDR-002 §2.2/§2.6 vs §2.2–2.5 citation",
+    "claim": "The References field and Cross-References cite 'DDR-002 §2.2/§2.6 plane schemas' and '§2.2 / §2.6 (Environment and Extension plane schemas),' but §4's declared-basis carriers span §2.2–§2.5 (core planes) per Pre-Acceptance Condition 1 ('core-plane bases are annotated in §2.2–2.5'). The header citation understates the loci the record actually amends, so a reader resolving cross-references from the header alone will not find the Catalog/Standards/Governance/Operational plane sections the ruling touches.",
+    "cited_authority": {
+      "kind": "coherence",
+      "ref": "DDR-004 References/Cross-References (§2.2/§2.6) vs. DDR-004 Pre-Acceptance Condition 1 (§2.2–2.5 core-plane annotations)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-004"],
+    "locus": "§5 Composition boundary — branch (i) × #24 ceiling",
+    "claim": "Checked the branch-(i)-inherits-node-authority-only boundary against DDR-002 §4's #24 ceiling (conclusion bounded at max of supporting Evidence.confidence, weight below the ceiling only). Attacked it as a silent loss of the OBSERVED_IN per-target edge certainty: the record correctly locates that certainty on the edge (DDR-002 §3, node vs edge confidence split), routes its composition to the ReasoningProgress rollup (SDD-001 §2.2/§3.3.3 returns the two uncomposed), and the weakest-link ceiling direction (foreclose upward, permit downward via weight) is consistent with DDR-002 §4's stated bound. The boundary holds without deviation from the cited canon.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "DDR-002 v1.2.0 §4 (#24 ceiling = max supporting Evidence.confidence; weight below ceiling) + §3 (node/edge confidence split)"
+    }
+  },
+  {
+    "severity": "POSITIVE",
+    "target": ["DDR-004"],
+    "locus": "§1 / §4 Totality — derive-or-reject fail-closed against CONFIDENCE_UNDERIVABLE",
+    "claim": "Checked the total-by-construction / derive-or-reject invariant against SDD-001 §3.4.3 (the implemented derivation) and §3.2 (CONFIDENCE_UNDERIVABLE typed, fail-closed). Attacked it for a defaulting gap — a citation reaching no branch. The record's four-basis enumeration plus the fail-closed CONFIDENCE_UNDERIVABLE backstop matches SDD-001's implemented behavior exactly (branch (i) native, branch (ii) class base × freshness, reject typed otherwise), and the demotion of CONFIDENCE_UNDERIVABLE to defense-in-depth is consistent with the per-class basis declaration closing the reachable cases named in SDD-001 §3.4.3. No default-a-value path exists in the specified behavior.",
+    "cited_authority": {
+      "kind": "canonical",
+      "ref": "SDD-001 v1.0.0 §3.4.3 (capture-evidence derivation, total by construction) + §3.2 (CONFIDENCE_UNDERIVABLE typed fail-closed)"
+    }
+  }
+]

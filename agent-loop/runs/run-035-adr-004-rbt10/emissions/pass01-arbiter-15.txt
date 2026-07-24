@@ -1,0 +1,1 @@
+{"finding_id":"437da56d27c446c1","classification":"decision-bearing","authority_locus":null,"rationale":"The finding targets ADR-004, which is not among the ratified authorities supplied; and the underlying gap (RG-recovery guarantee pinned to ADR-002 §5.2's deferred production runtime/backup posture) is an explicit silence no ratified authority resolves.","confidence":"high"}

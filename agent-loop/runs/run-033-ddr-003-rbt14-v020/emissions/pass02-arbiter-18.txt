@@ -1,0 +1,1 @@
+{"finding_id":"957737fa8279f834","classification":"decision-bearing","authority_locus":null,"rationale":"How a cross-role lookback's retention floor resolves against per-role windows is a choice no ratified authority or docket ruling makes; D7 fixes per-role windows but not the multi-role reconciliation.","confidence":"high"}

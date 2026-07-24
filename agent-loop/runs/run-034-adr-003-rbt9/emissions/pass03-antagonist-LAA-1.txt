@@ -1,0 +1,82 @@
+[
+{
+"severity": "MATERIAL",
+"target": ["ADR-003"],
+"locus": "§2.6 Component taxonomy — 'the model-access gateway (the forthcoming ai-gateway-service, §7) is of this class'",
+"claim": "§2.6 fixes the class of a named component — 'the model-access gateway (the forthcoming ai-gateway-service, §7) is of this class (infrastructure facade — model access, no judgment of record)' — and §5.1 lists 'the model-access gateway design' among the designs this record unblocks, and the metadata Description names 'the model-access gateway' as an unblocked design. This is a component-existence-and-classification decision riding in taxonomy prose. §2.6's own rule immediately follows: 'This record enumerates no agent roster ... Components are named above only where existing canon already names them.' No cited authority in the set establishes a model-access gateway / ai-gateway-service: SDD-001 §2.2 states 'LLM access and prompt assembly — no model client exists in this service' and names no downstream gateway; ADR-001 §2.3 commits LLM-as-renderer without naming a gateway component; §7 lists 'ai-gateway-service' only as forthcoming. The record names a not-yet-canonical component while claiming to name only canon-named ones — a scope defect against its own stated rule, and a smuggled component-existence commitment.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-003 §2.6 self-imposed rule ('Components are named above only where existing canon already names them') in conflict with the same section naming 'the model-access gateway (the forthcoming ai-gateway-service)' as a class instance and §5.1 naming its design as unblocked; no upstream record in the set (SDD-001 §2.2 'no model client exists in this service'; ADR-001 §2.3) establishes that component"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-003"],
+"locus": "§2.6 recursion clause ('A sub-run is a run: the §2.5 anatomy invariants apply at every level') vs §2.5 property 1 and §2.7's own amendment rule",
+"claim": "§2.6 states 'A sub-run is a run: the §2.5 anatomy invariants apply at every level' with 'the composing agent as orchestrator of its sub-run.' §2.5 property 1 requires for every run 'the run's ReasoningSession and its captured reasoning (ADR-001 §2.2; ADR-002 §2.6). No run is unrecorded.' A sub-run whose composing agent (not the AOE) acts as orchestrator therefore requires either a ReasoningSession whose lifecycle is owned by a non-AOE agent, or a session-nesting shape the schema does not carry. §2.7's own trajectory rule states that widening run-lifecycle authorship beyond the AOE 'arrives as a named, additive authority assignment under the owning record's own amendment process.' The recursion clause commits sub-runs-carry-the-ReasoningSession-invariant now, ahead of that assignment — a consequence the record does not declare and a position §2.7 says requires an upstream amendment first. The record decides more than it declares: it binds a standing invariant (non-AOE-orchestrated runs carrying the §2.5 record) whose enabling authority its own §2.7 defers.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-003 §2.5 property 1 ('the run's ReasoningSession ... No run is unrecorded') + §2.6 ('A sub-run is a run ... with the composing agent as orchestrator of its sub-run') vs ADR-003 §2.7's own rule routing run-lifecycle-authorship widening through the owning record's amendment process"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-003"],
+"locus": "§2.2 Specialized agents and collaboration — 'no architectural mechanism may exist whose function depends on preventing it'",
+"claim": "§2.2 commits, in prose, an absolute foreclosure — 'no architectural mechanism may exist whose function depends on preventing it' — and §5.2 restates it as a hard constraint on all future designs ('or introduce a mechanism whose function depends on preventing it'). This is a strictly broader, harder-to-reverse commitment than the never-preclude posture the §2 Decision statement carries (agents that 'collaborate on any route'). An absolute never-a-preventing-mechanism rule forecloses design space across every downstream SDD/DDR for the platform's life, and rides only in §2.2/§5.2 prose — it is not surfaced as its own sub-decision in the §2 enumeration. The deliberation record's own self-review (Leg 3) flags §2.2's 'no mechanism whose function depends on preventing it' as a 'conformance-shaped operationalization' of the ratified never-preclude commitment, whose ratified text was narrower ('agent-to-agent communication is first-class and never precluded'). A foreclosing commitment of this reversibility cost, riding as an operationalizing gloss rather than a first-class Decision, is a scope defect: the Decision block is the contract's index, and this ruling is invisible to a reader who treats the enumeration as complete.",
+"cited_authority": {
+"kind": "design-intent",
+"ref": "Deliberation record Item 2 ratified commitment ('agent-to-agent communication is first-class and never precluded') and its Leg-3 self-review note flagging §2.2's 'no mechanism whose function depends on preventing it' as a conformance-shaped operationalization; ADR-003 §2 Decision ('collaborate on any route') does not surface the strictly broader absolute form"
+}
+},
+{
+"severity": "MATERIAL",
+"target": ["ADR-003"],
+"locus": "§2.3 Governance anchors to the graph — 'no routing choice can bypass a gate'",
+"claim": "§2.3 asserts, as a load-bearing invariant, that checkpoint gates 'anchor to checkpoints in the run and the graph, not to positions in a call graph; no routing choice can bypass a gate.' §2.2 makes direct agent-to-agent communication first-class ('Direct interaction between agents is permitted on the same terms as orchestrator-mediated interaction'), and §2.8 commits that 'opening a direct agent-to-agent route requires no ratification act; the §2.3 invariants are the entire control.' The unbypassability is graph-anchored — gates 'anchor to checkpoints in the run and the graph.' A direct agent-to-agent interaction that performs no graph write reaches neither the sole-owner gateway (ADR-002 §2.5) nor a graph-anchored checkpoint. The declared consequence of §2.2/§2.8's route freedom — that some interactions touch no graph checkpoint — is not surfaced against the §2.3 universal ('no routing choice can bypass a gate'), which is stated as a governance guarantee the same record's first-class direct-route case does not support. The record claims a property (universal gate-unbypassability) the substrate it commits does not carry for the direct, no-write route.",
+"cited_authority": {
+"kind": "soundness",
+"ref": "ADR-003 §2.3 ('no routing choice can bypass a gate') unsubstantiated against §2.2 (first-class direct agent-to-agent interaction) + §2.8 ('opening a direct agent-to-agent route requires no ratification act; the §2.3 invariants are the entire control'); gates anchor to graph checkpoints, a direct no-graph-write route reaches none"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["ADR-003"],
+"locus": "§7 Cross-References — 'DDR-003 ... the routing of predicate-evaluation semantics onward to the forthcoming constraint-validator service design'",
+"claim": "§2.4's body correctly routes predicate-evaluation semantics 'per DDR-002 §3's obligation-closure assignment,' but §7 still reads 'DDR-003 (Feedback Loop Governance) ... the routing of predicate-evaluation semantics onward to the forthcoming constraint-validator service design.' DDR-003 §9's routed item is narrower than the §7 characterization: 'Condition predicate vocabulary — the predicate grammar for scope conditions ... routed onward to the constraint-validator service design' — a promotion-scoped Condition object. §2.4 governs enterprise standards/directives/policy binding agents from the Standards plane, a different and broader object. The §7 cross-reference attributes to DDR-003 a general predicate-evaluation-semantics routing DDR-003 does not perform; the §2.4 body and §7 entry now name different routing authorities for the same commitment, and the §7 characterization overstates DDR-003's routed object.",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-003 §7 ('DDR-003 ... the routing of predicate-evaluation semantics onward to the forthcoming constraint-validator service design') vs DDR-003 §9 (routed item is promotion-scoped 'Condition predicate vocabulary — the predicate grammar for scope conditions') and ADR-003 §2.4 body ('per DDR-002 §3's obligation-closure assignment')"
+}
+},
+{
+"severity": "COSMETIC",
+"target": ["ADR-003"],
+"locus": "§7 Cross-References — 'The forthcoming file-driven ingestion decision record'",
+"claim": "§2.4's committed constraint-binding pattern rests its enforceability on 'the forthcoming file-driven ingestion decision record' (§5.3: 'The Standards plane has no ingestion path until the forthcoming file-driven ingestion decision record and its port land'). §5.3 states this in earned tense. The §7 cross-reference entry — 'The forthcoming file-driven ingestion decision record (unauthored) — the Standards-plane entry path on which §2.4's enforcement stages depend' — carries an unauthored marker and the referent resolves within the set (ADR-008 §7 names the same forthcoming record). The residue is that the §7 entry does not carry a resolution locus (ticket-home / definition-of-done pointer) for the load-bearing dependency on which the record's central new commitment rests, whereas the corpus convention carries navigability toward such referents; a consequence of this magnitude (when/whether §2.4 becomes enforceable) is declared at §5.3 but its resolution path is not tied at the §7 point of introduction.",
+"cited_authority": {
+"kind": "design-intent",
+"ref": "ADR-003 §5.3 / §7 (constraint-binding enforcement depends on 'the forthcoming file-driven ingestion decision record'); Item 4 (ratified): 'committed now, enforced in stages; earned tense mandatory' — the §7 entry names the referent without a resolution locus"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-003"],
+"locus": "§2 Decision and §2.1–§2.8 sub-decisions vs deliberation record Items 2–8",
+"claim": "Attacked the record for claim-fidelity between its §2 Decision statement and body against the eight ratified deliberation items — hunting smuggled commitments and dropped ratifications. Each ratified item is decided at matching altitude: the orchestration model (§2.1–§2.3), run anatomy including expressible isolation and the honest-halt posture (§2.5), constraints-from-graph (§2.4), the four-class taxonomy with recursion (§2.6), the non-ruling boundary (§2.9), and the RBT-11 directives-bridge fold correctly landed as a rejected alternative (§4.3) rather than a smuggled standalone decision. The trajectory clause (§2.7) advances 'through' upstream amendment rather than pre-empting ADR-002 §2.6. The attack held except for the §2.2, §2.6-model-gateway, and recursion scope defects reported separately.",
+"cited_authority": {
+"kind": "design-intent",
+"ref": "Deliberation record Items 2–8, ratified per item 2026-07-20; ADR-003 §2.1–§2.8 and §4.3 decide each ratified item at matching altitude"
+}
+},
+{
+"severity": "POSITIVE",
+"target": ["ADR-003"],
+"locus": "§2.7 coordination trajectory + §2.9 boundary vs ADR-002 §2.6 write-authority principle",
+"claim": "Attacked §2.7 for quietly widening or retracting ADR-002 §2.6's write-authority assignments (AOE owns run/ReasoningSession lifecycle; the author/executor/authorizer principle) via the coordination trajectory. The record does not: §2.7 explicitly advances 'through the upstream authority structure, never around it,' names run-lifecycle-authorship widening beyond the AOE as a future item requiring the owning record's own amendment process, and §2.9 disclaims re-authoring ADR-002 §2.5/§2.6. §2.6 retains the orchestrator as a distinct class rather than collapsing it into 'just another agent,' preserving ADR-002 §2.6 lifecycle clarity. The consequence and deferral are declared; no unsupported retraction of upstream authority was found at the trajectory clause (the recursion clause's premature commitment is a distinct defect reported separately).",
+"cited_authority": {
+"kind": "coherence",
+"ref": "ADR-002 §2.6 (write-authority general principle; AOE ReasoningSession-lifecycle assignment) vs ADR-003 §2.7 / §2.9, which route any coordination-authority widening through the owning record's amendment process"
+}
+}
+]

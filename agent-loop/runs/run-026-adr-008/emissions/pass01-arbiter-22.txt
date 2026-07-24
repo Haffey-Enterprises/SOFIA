@@ -1,0 +1,1 @@
+{"finding_id": "4c460bf718a283de", "classification": "decision-bearing", "authority_locus": null, "rationale": "The ingestion-authority pointer's correct referent is unfixed: the triage ADR ladder reserves ADR-003\u2013007 by RBT tickets, none named 'file-driven ingestion', and no authority names which record owns authoritative-source ingestion.", "confidence": "medium"}

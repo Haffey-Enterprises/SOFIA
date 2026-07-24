@@ -1,0 +1,10 @@
+{
+  "action": "edit",
+  "finding_id": "b2c041400546497f",
+  "target": "ADR-004",
+  "old_string": "Instantiation writes the Knowledge Graph only and preserves the Reasoning Graph by construction.",
+  "new_string": "Instantiation writes the Knowledge Graph only and preserves the Reasoning Graph by construction. Read-exclusion of provisional authoritative-source ground truth from ground-truth synthesis until officially entered is committed as a schema-level read-discipline invariant (§2.7).",
+  "authority_conformed": "author-decision-record-SKILL, 'An amendment that adds a ruling updates the Decision enumeration' — §2.7's standing schema-level read-exclusion invariant is a ruling not surfaced in the §2 Decision enumeration.",
+  "rationale": "The skill requires a ruling to be enumerated in the Decision block; §2.7's standing read-exclusion invariant is unenumerated, so it is added to §2's decision statement pointing to §2.7.",
+  "confidence": "medium"
+}
