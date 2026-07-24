@@ -23,7 +23,10 @@
 #   adds provenance-of (§3.3.8) — the audit set's second op: single-subject,
 #   unpaginated, reusing CitationEntryStatus for its own entry markers
 #   (the identical vocabulary, not a second one) and EvidenceFacts for its
-#   live-Evidence overlay.
+#   live-Evidence overlay. R6c adds session-trace (§3.3.9) — the audit set's
+#   THIRD and LAST op: trio-free by INAPPLICABILITY (its entities are RG,
+#   not the §1 disclosed exception), reusing EvidenceFacts + CitationEntryStatus
+#   again (CitedNodeRef's markers) rather than authoring new vocabulary.
 #   These typed models are the source of truth for the contract tests — when
 #   an implementation and a contract diverge, the contract wins.
 ##############################################################################
@@ -721,3 +724,104 @@ class ProvenanceOfRequest(BaseModel):
     node_kind: ReadAsOfNodeKind
     business_key: str
     version: str
+
+
+class CitedNodeRef(BaseModel):
+    """The resolved cited KG node's IDENTITY + status (SDD-001 §3.3.9) — NOT
+    its full live content (the citing `Evidence.fact_summary` is the
+    point-in-time content snapshot, DDR-002 §4/§6).
+
+    `node_kind` is the cited node's own entity label — ANY citable label,
+    not only the six `ReadAsOfNodeKind` versioned ones (Evidence/
+    RejectedAlternative may cite Environment/Operational/Cost nodes too,
+    DDR-002 §5). `node_id` is `None` for a cited label outside
+    session-trace's own scoped PK-property map (relay delta resolution) —
+    the citation still surfaces in full, `node_id` alone goes unresolved,
+    never guessed. `version` is `None` for a non-versioned cited label.
+    `markers` reuses `CitationEntryStatus` — the cited node's CURRENT
+    disclosure-only state, shown regardless of the citing Evidence's own
+    point-in-time pin."""
+
+    node_kind: str
+    node_id: str | None = None
+    version: str | None = None
+    markers: frozenset[CitationEntryStatus]
+
+
+class TraceEvidence(BaseModel):
+    """One `Evidence` a `ReasoningProgress` `SUPPORTED_BY`-cites (SDD-001
+    §3.3.9), with its resolved point-in-time pin.
+
+    `evidence` reuses `EvidenceFacts` (citation-lookup's model). `resolved_pin`
+    is `None` only when the `Evidence` carries no `SOURCED_FROM` edge at all
+    — a schema-legal edge case, surfaced honestly, never a crash."""
+
+    evidence: EvidenceFacts
+    resolved_pin: CitedNodeRef | None = None
+
+
+class TraceRejectedAlternative(BaseModel):
+    """One `RejectedAlternative` a `ReasoningProgress` `REJECTED` (SDD-001
+    §3.3.9). Only `rejected_id` (T1 PK) is required — the rest are T2/T3
+    (DDR-002 §4) with no existence constraint, surfaced honestly rather than
+    assumed. `would_have_used` is every KG node the alternative's
+    `WOULD_HAVE_USED` edges reference — zero or more."""
+
+    rejected_id: str
+    candidate_type: str | None = None
+    rejection_reason: str | None = None
+    score_delta: float | None = None
+    human_accepted: bool | None = None
+    would_have_used: list[CitedNodeRef]
+
+
+class TraceConclusion(BaseModel):
+    """One `ReasoningProgress` a `ReasoningSession` `CONTAINS` (SDD-001
+    §3.3.9). Only `progress_id` (T1 PK) is required — the rest are T2
+    (DDR-002 §4) with no existence constraint, the same principle R6a's M1
+    review fix established for citation-lookup's owner surface, applied
+    here to the identical RG node class."""
+
+    progress_id: str
+    conclusion_type: str | None = None
+    reasoner_category: str | None = None
+    authoritative: bool | None = None
+    confidence: float | None = None
+    overridden_by_human: bool | None = None
+    created_at: str | None = None
+    evidence: list[TraceEvidence]
+    rejected_alternatives: list[TraceRejectedAlternative]
+
+
+class LedToLink(BaseModel):
+    """One `LED_TO` edge between two conclusions in the same session
+    (SDD-001 §3.3.9) — flat adjacency over the DAG, not a nested tree."""
+
+    from_progress_id: str
+    to_progress_id: str
+
+
+class SessionTraceResult(BaseModel):
+    """The session-trace result (SDD-001 §3.3.9 ST-D5) — NOT the §3.2
+    envelope: TRIO-FREE BY INAPPLICABILITY (ST-D1), not the §1 disclosed
+    exception — every entity here is RG (no KG plane label), so
+    proposal/retraction/conditional exclusion is structurally N/A. No
+    applicability/eligibility/deprecation/disclosure surface.
+
+    `conclusions` is the whole set, never paginated (bounded by the
+    session's own reasoning run). An existing session with zero conclusions
+    is `conclusions=[]` — a legal non-blocking capture state (DDR-001),
+    never an error.
+    """
+
+    session_id: str
+    conclusions: list[TraceConclusion]
+    led_to: list[LedToLink]
+
+
+class SessionTraceRequest(BaseModel):
+    """The session-trace request body (SDD-001 §3.3.9). Deliberately carries
+    NO `consuming_context` — trio-free by inapplicability (ST-D1), not
+    something to evaluate a context against."""
+
+    session_id: str

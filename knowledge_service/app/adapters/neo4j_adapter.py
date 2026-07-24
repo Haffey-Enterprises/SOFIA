@@ -22,8 +22,14 @@
 #   the audit set's second traversal: single-subject, unpaginated, zipping
 #   ProvenanceSummary's four index-aligned frozen_* arrays by position
 #   (standard Cypher `range()`, no APOC) with a live-Evidence overlay per
-#   entry. Driver-level exceptions are translated at this boundary and never
-#   cross the port.
+#   entry. R6c adds `session_trace` (SDD-001 §3.3.9) — the audit set's THIRD
+#   and LAST traversal, trio-free by INAPPLICABILITY rather than the R6a/R6b
+#   audit-exception route: a pure RG walk (CONTAINS/SUPPORTED_BY/REJECTED/
+#   LED_TO) resolving each cited KG node's identity via its OWN scoped
+#   label->PK map (`_CITED_NODE_PK_PROPERTY_BY_LABEL`) — deliberately not
+#   consolidated with the two other per-label maps this file already carries
+#   (RBT-83 item j). Driver-level exceptions are translated at this boundary
+#   and never cross the port.
 ##############################################################################
 
 from collections.abc import Callable, Sequence
@@ -40,9 +46,11 @@ from app.ports.graph_store import (
     CitationMode,
     CitationOwnerRecord,
     CitationRecord,
+    CitedNodeRefRecord,
     FindPrecedentsCandidateRecord,
     FindPrecedentsCriteria,
     GateDecisionRecord,
+    LedToRecord,
     ObligationCandidateRecord,
     ProvenanceOfCandidateRecord,
     ProvenanceOfFrozenEntryRecord,
@@ -53,8 +61,12 @@ from app.ports.graph_store import (
     ResolvedConditionRecord,
     ResolveTechnologyCandidateRecord,
     SelectPatternsCandidateRecord,
+    SessionTracePage,
     TargetEntityKind,
     TargetEntityRef,
+    TraceConclusionRecord,
+    TraceEvidenceRecord,
+    TraceRejectedAlternativeRecord,
     TrackRecordCandidateRecord,
 )
 
@@ -690,6 +702,265 @@ RETURN
   (summary IS NOT NULL) AS frozen_layer_present,
   frozen_entries
 """
+
+# session-trace's OWN scoped cited-node label -> PK-property map (SDD-001
+# §3.3.9; relay-delta resolution). A cited KG node's PK property is per-label
+# and irregular — not mechanically derivable from the label (DDR-002 §1's
+# `<entity>_id` convention names a hand-chosen short name, not the label
+# itself: e.g. DeploymentEnvironment -> environment_id, NOT
+# deployment_environment_id). Every property name below is fresh-fetched from
+# DDR-002 §2 (§2.1 Catalog, §2.2 Environment, §2.3 Operational, §2.5
+# Standards, §2.6 Cost), not taken on faith. Scope = the citable
+# ground-truth-source labels only; RateCard/CostFactor are `non_citable`
+# (§7 #27, no inbound SOURCED_FROM) and excluded, as is Governance/RG (not
+# Evidence-fact sources). A cited label outside this map still surfaces
+# (node_kind/version/markers) — only node_id goes unresolved, never guessed,
+# never dropped. Deliberately NOT consolidated with `_ID_PROPERTY_BY_KIND`
+# (track-record's 4-kind OBSERVED_IN map) or `_READ_AS_OF_NODE_KIND_MAP` (the
+# 6-label read-as-of/citation-lookup/provenance-of map) — the 3-way
+# consolidation into one shared label->PK registry is a deferred refactor
+# (RBT-83 item j), never bundled into an op build.
+_CITED_NODE_PK_PROPERTY_BY_LABEL: dict[str, str] = {
+    "Pattern": "pattern_id",
+    "Technology": "technology_id",
+    "Capability": "capability_id",
+    "IacTemplate": "iac_template_id",
+    "Standard": "standard_id",
+    "PolicyRule": "policy_rule_id",
+    "ComplianceControl": "control_id",
+    "DeployedService": "deployed_service_id",
+    "DeploymentEnvironment": "environment_id",
+    "ConfigurationItem": "ci_id",
+    "ObservedPattern": "observed_pattern_id",
+    "CapabilityCostEstimate": "estimate_id",
+}
+
+# Every plane secondary-label a KG node may carry (DDR-002 §1 hybrid plane
+# membership + §2.6 Extension/Cost) — excluded when deriving a cited node's
+# own ENTITY label (`labels(n)` carries exactly one plane label + one entity
+# label per node; the entity label is the one NOT in this set).
+_PLANE_LABELS: tuple[str, ...] = (
+    "Catalog",
+    "Environment",
+    "Operational",
+    "Governance",
+    "Standards",
+    "Extension",
+    "Cost",
+)
+
+
+def _cited_node_kind_expr(var: str) -> str:
+    """Build the Cypher expression resolving `var`'s own entity label.
+
+    Args:
+        var: The Cypher variable name of the cited node.
+
+    Returns:
+        A `head([...])` expression over `labels(var)` filtered to exclude
+        every known plane label — the remaining (single) label is the
+        node's own entity label.
+    """
+    plane_list = ", ".join(f"'{label}'" for label in _PLANE_LABELS)
+    return f"head([lbl IN labels({var}) WHERE NOT lbl IN [{plane_list}]])"
+
+
+def _cited_node_id_case(var: str) -> str:
+    """Build the Cypher CASE resolving `var`'s PK value via the scoped map.
+
+    Args:
+        var: The Cypher variable name of the cited node.
+
+    Returns:
+        A `CASE ... END` expression: one `WHEN '<label>' IN labels(var)
+        THEN var.<pk_property>` branch per mapped label, `ELSE NULL` for
+        every out-of-scope citable label — never a raw `properties(var)`
+        dump (identity only, never full node content).
+    """
+    branches = "\n".join(
+        f"        WHEN '{label}' IN labels({var}) THEN {var}.{prop}"
+        for label, prop in _CITED_NODE_PK_PROPERTY_BY_LABEL.items()
+    )
+    return f"CASE\n{branches}\n        ELSE NULL\n      END"
+
+
+def _cited_node_ref_fields(var: str) -> str:
+    """Build the Cypher `WITH`-bound scalar fields for one cited-node `var`.
+
+    Args:
+        var: The Cypher variable name of the cited node (`cited` or `used`).
+
+    Returns:
+        The comma-joined `<var>_node_kind`/`<var>_node_id`/`<var>_version`/
+        `<var>_is_superseded`/`<var>_is_retracted`/`<var>_is_conditional`
+        binding fragment, meant to follow a `WITH <var>,` clause.
+    """
+    return f"""{_cited_node_kind_expr(var)} AS {var}_node_kind,
+      {_cited_node_id_case(var)} AS {var}_node_id,
+      {var}.version AS {var}_version,
+      ({var}.superseded_by IS NOT NULL) AS {var}_is_superseded,
+      EXISTS {{
+        MATCH (retraction:Reasoning:CandidatePromotion {{proposal_kind: 'retraction'}})
+          -[:RETRACTS]->({var})
+        MATCH (retraction)<-[retraction_decided:DECIDED_ON]-(:Governance:PromotionDecision)
+        WHERE retraction_decided.outcome IN ['approved', 'approved_conditional']
+      }} AS {var}_is_retracted,
+      (coalesce({var}.applicability_state, 'unconditional') = 'conditional')
+        AS {var}_is_conditional"""
+
+
+def _cited_node_ref_map(var: str) -> str:
+    """Build the Cypher map literal for one resolved `CitedNodeRef`.
+
+    Args:
+        var: The Cypher variable name of the cited node.
+
+    Returns:
+        A `{node_kind: ..., node_id: ..., ...}` map literal referencing the
+        `<var>_*` scalars `_cited_node_ref_fields` bound.
+    """
+    return f"""{{
+        node_kind: {var}_node_kind,
+        node_id: {var}_node_id,
+        version: {var}_version,
+        is_superseded: {var}_is_superseded,
+        is_retracted: {var}_is_retracted,
+        is_conditional: {var}_is_conditional
+      }}"""
+
+
+# One traversal (ADR-002 §6 check 4): the session-trace explainability
+# affordance (SDD-001 §3.3.9). TRIO-FREE BY INAPPLICABILITY (ST-D1) — every
+# entity here is RG, no read-discipline resolution at all (no HAS_CONDITION,
+# no RETRACTS check on the SESSION/PROGRESS/EVIDENCE/REJECTED nodes
+# themselves — only on a CITED KG node's CURRENT marker state, which is
+# disclosure, not admission).
+#
+# The session entry is OPTIONAL-matched so a truly-absent session is
+# distinguishable from an existing-but-empty one (collect()'s zero-row-
+# absorption idiom, used throughout this file, makes both degrade to empty
+# lists rather than dropping the row). Conclusions, their evidence, and
+# their rejected alternatives are each resolved in their own nested CALL{}
+# subquery, correlated by `progress`/`rej` — ordered by PK for determinism.
+# Each cited-node resolution (`cited` via Evidence's SOURCED_FROM, `used`
+# via RejectedAlternative's WOULD_HAVE_USED) shares the identical fragment
+# (`_cited_node_ref_fields`/`_cited_node_ref_map`) generated once per call
+# site from `_CITED_NODE_PK_PROPERTY_BY_LABEL` — never a raw content dump.
+_SESSION_TRACE_QUERY = f"""
+OPTIONAL MATCH (session:Reasoning:ReasoningSession {{session_id: $session_id}})
+CALL {{
+  WITH session
+  OPTIONAL MATCH (session)-[:CONTAINS]->(progress:Reasoning:ReasoningProgress)
+  WHERE progress IS NOT NULL
+  WITH progress
+  ORDER BY progress.progress_id
+  CALL {{
+    WITH progress
+    OPTIONAL MATCH (progress)-[:SUPPORTED_BY]->(ev:Reasoning:Evidence)
+    WHERE ev IS NOT NULL
+    WITH ev
+    ORDER BY ev.evidence_id
+    OPTIONAL MATCH (ev)-[:SOURCED_FROM]->(cited)
+    WITH ev, cited,
+      {_cited_node_ref_fields("cited")}
+    RETURN collect({{
+      evidence_id: ev.evidence_id,
+      fact_summary: ev.fact_summary,
+      confidence: ev.confidence,
+      weight: ev.weight,
+      source_node_version: ev.source_node_version,
+      observed_at: ev.observed_at,
+      resolved_pin: CASE WHEN cited IS NULL THEN NULL ELSE {_cited_node_ref_map("cited")} END
+    }}) AS evidence_rows
+  }}
+  CALL {{
+    WITH progress
+    OPTIONAL MATCH (progress)-[:REJECTED]->(rej:Reasoning:RejectedAlternative)
+    WHERE rej IS NOT NULL
+    WITH rej
+    ORDER BY rej.rejected_id
+    CALL {{
+      WITH rej
+      OPTIONAL MATCH (rej)-[:WOULD_HAVE_USED]->(used)
+      WHERE used IS NOT NULL
+      WITH used,
+        {_cited_node_ref_fields("used")}
+      RETURN collect({_cited_node_ref_map("used")}) AS would_have_used_rows
+    }}
+    RETURN collect({{
+      rejected_id: rej.rejected_id,
+      candidate_type: rej.candidate_type,
+      rejection_reason: rej.rejection_reason,
+      score_delta: rej.score_delta,
+      human_accepted: rej.human_accepted,
+      would_have_used: would_have_used_rows
+    }}) AS rejected_rows
+  }}
+  RETURN collect({{
+    progress_id: progress.progress_id,
+    conclusion_type: progress.conclusion_type,
+    reasoner_category: progress.reasoner_category,
+    authoritative: progress.authoritative,
+    confidence: progress.confidence,
+    overridden_by_human: progress.overridden_by_human,
+    created_at: progress.created_at,
+    evidence: evidence_rows,
+    rejected_alternatives: rejected_rows
+  }}) AS conclusion_rows
+}}
+CALL {{
+  WITH session
+  OPTIONAL MATCH (session)-[:CONTAINS]->(from_progress:Reasoning:ReasoningProgress)
+    -[:LED_TO]->(to_progress:Reasoning:ReasoningProgress)
+  WHERE from_progress IS NOT NULL AND to_progress IS NOT NULL
+  WITH from_progress, to_progress
+  ORDER BY from_progress.progress_id, to_progress.progress_id
+  RETURN collect({{
+    from_progress_id: from_progress.progress_id,
+    to_progress_id: to_progress.progress_id
+  }}) AS led_to_rows
+}}
+RETURN
+  session IS NOT NULL AS session_found,
+  conclusion_rows,
+  led_to_rows
+"""
+
+
+def _to_cited_node_ref_record_required(row: dict[str, Any]) -> CitedNodeRefRecord:
+    """Translate one driver-returned cited-node map into its record.
+
+    Args:
+        row: The `{node_kind, node_id, version, is_superseded, is_retracted,
+            is_conditional}` map the query returns.
+
+    Returns:
+        The `CitedNodeRefRecord`.
+    """
+    return CitedNodeRefRecord(
+        node_kind=row["node_kind"],
+        node_id=row["node_id"],
+        version=row["version"],
+        is_superseded=row["is_superseded"],
+        is_retracted=row["is_retracted"],
+        is_conditional=row["is_conditional"],
+    )
+
+
+def _to_cited_node_ref_record(row: dict[str, Any] | None) -> CitedNodeRefRecord | None:
+    """Translate one driver-returned cited-node map into its record.
+
+    Args:
+        row: The `{node_kind, node_id, version, is_superseded, is_retracted,
+            is_conditional}` map the query returns, or `None` when the
+            citing edge (`SOURCED_FROM`) resolved nothing.
+
+    Returns:
+        The `CitedNodeRefRecord`, or `None` when `row` is `None`.
+    """
+    if row is None:
+        return None
+    return _to_cited_node_ref_record_required(row)
 
 
 class Neo4jAdapter:
@@ -1378,4 +1649,88 @@ class Neo4jAdapter:
             frozen_layer_present=record["frozen_layer_present"],
             provenance_summary_id=record["provenance_summary_id"],
             entries=entries,
+        )
+
+    async def session_trace(self, session_id: str) -> SessionTracePage:
+        """Resolve the explainability trace over one `ReasoningSession`.
+
+        One single-store Cypher traversal (ADR-002 §6 check 4), trio-free by
+        inapplicability (SDD-001 §3.3.9 ST-D1): every entity is RG, so no
+        read-discipline resolution runs on the session/conclusions/evidence/
+        rejected-alternatives themselves — only each cited KG node's raw,
+        CURRENT marker facts (disclosure, not admission).
+
+        Args:
+            session_id: The `ReasoningSession`'s PK value.
+
+        Returns:
+            The resolved page.
+
+        Raises:
+            RuntimeError: If no driver is open — a data operation with no
+                driver must fail loud, never silently return an empty (and
+                misleading) result.
+        """
+        if self._driver is None:
+            raise RuntimeError("No graph driver is open: application startup did not complete")
+
+        result = await self._driver.execute_query(
+            _SESSION_TRACE_QUERY,
+            {"session_id": session_id},
+            routing_=RoutingControl.READ,
+            database_=self._settings.neo4j_database,
+        )
+        record = result.records[0]
+
+        conclusions = tuple(
+            TraceConclusionRecord(
+                progress_id=conclusion_row["progress_id"],
+                conclusion_type=conclusion_row["conclusion_type"],
+                reasoner_category=conclusion_row["reasoner_category"],
+                authoritative=conclusion_row["authoritative"],
+                confidence=conclusion_row["confidence"],
+                overridden_by_human=conclusion_row["overridden_by_human"],
+                created_at=conclusion_row["created_at"],
+                evidence=tuple(
+                    TraceEvidenceRecord(
+                        evidence_id=evidence_row["evidence_id"],
+                        fact_summary=evidence_row["fact_summary"],
+                        confidence=evidence_row["confidence"],
+                        weight=evidence_row["weight"],
+                        source_node_version=evidence_row["source_node_version"],
+                        observed_at=evidence_row["observed_at"],
+                        resolved_pin=_to_cited_node_ref_record(evidence_row["resolved_pin"]),
+                    )
+                    for evidence_row in conclusion_row["evidence"]
+                ),
+                rejected_alternatives=tuple(
+                    TraceRejectedAlternativeRecord(
+                        rejected_id=rejected_row["rejected_id"],
+                        candidate_type=rejected_row["candidate_type"],
+                        rejection_reason=rejected_row["rejection_reason"],
+                        score_delta=rejected_row["score_delta"],
+                        human_accepted=rejected_row["human_accepted"],
+                        would_have_used=tuple(
+                            _to_cited_node_ref_record_required(used_row)
+                            for used_row in rejected_row["would_have_used"]
+                        ),
+                    )
+                    for rejected_row in conclusion_row["rejected_alternatives"]
+                ),
+            )
+            for conclusion_row in record["conclusion_rows"]
+        )
+
+        led_to = tuple(
+            LedToRecord(
+                from_progress_id=led_to_row["from_progress_id"],
+                to_progress_id=led_to_row["to_progress_id"],
+            )
+            for led_to_row in record["led_to_rows"]
+        )
+
+        return SessionTracePage(
+            session_found=record["session_found"],
+            conclusions=conclusions,
+            led_to=led_to,
         )

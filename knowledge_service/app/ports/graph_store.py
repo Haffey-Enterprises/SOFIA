@@ -32,7 +32,20 @@
 #   `(node_kind, business_key, version)`, its Evidence-span frozen set
 #   returned whole). Reuses `CitationEntryStatusRecord`'s three-marker
 #   vocabulary for its own entry markers (the identical audit-disclosure set,
-#   not a new one) and `ReadAsOfNodeKind` for the entry-node label.
+#   not a new one) and `ReadAsOfNodeKind` for the entry-node label. R6c adds
+#   `session_trace` (SDD-001 §3.3.9) — the audit set's THIRD and LAST op,
+#   trio-free by a DIFFERENT route than R6a/R6b: not the §1 disclosed
+#   exception, but trio-INAPPLICABILITY (its entities are all RG, no KG
+#   plane label, so proposal/retraction/conditional exclusion is
+#   structurally N/A). `CitedNodeRefRecord.node_id` is `str | None` — a
+#   cited KG node's PK property is per-label and irregular (no mechanical
+#   derivation from the label; DDR-002 §1's `<entity>_id` convention names a
+#   hand-chosen short name, not the label itself — e.g. `DeploymentEnvironment`
+#   -> `environment_id`), so this op authors its OWN scoped label->PK map
+#   (Catalog/Standards/Environment/Operational/Cost's citable labels) rather
+#   than consolidating with `_ID_PROPERTY_BY_KIND`/`_READ_AS_OF_NODE_KIND_MAP`
+#   (deferred 3-way consolidation, RBT-83) — an out-of-map cited label still
+#   surfaces (`node_kind`/`version`/`markers`), `node_id` alone goes `None`.
 ##############################################################################
 
 from collections.abc import Mapping, Sequence
@@ -501,6 +514,111 @@ class ProvenanceOfPage:
     entries: tuple[ProvenanceOfFrozenEntryRecord, ...]
 
 
+@dataclass(frozen=True)
+class CitedNodeRefRecord:
+    """The resolved cited KG node's IDENTITY + status (SDD-001 §3.3.9) —
+    NEVER its full live content (the citing `Evidence.fact_summary` is the
+    point-in-time content snapshot, DDR-002 §4/§6). Port-level facts.
+
+    `node_kind` is the cited node's own entity label (the non-plane label —
+    every KG node carries exactly one under the §1 hybrid plane-membership
+    convention). `node_id` is `None` for a cited label outside
+    session-trace's own PK-property map (relay delta scope: Catalog
+    Pattern/Technology/Capability/IacTemplate, Standards
+    Standard/PolicyRule/ComplianceControl, Environment
+    DeployedService/DeploymentEnvironment/ConfigurationItem, Operational
+    ObservedPattern, Cost CapabilityCostEstimate) — the citation still
+    surfaces in full (`node_kind`/`version`/`markers`), never dropped, and
+    `node_id` is never guessed. `version` is `None` for a non-versioned
+    cited label. `is_superseded`/`is_retracted`/`is_conditional` are the
+    cited node's CURRENT raw marker facts, disclosure only — resolved
+    regardless of the citing Evidence's own point-in-time pin, per ST-D1's
+    sub-point.
+    """
+
+    node_kind: str
+    node_id: str | None
+    version: str | None
+    is_superseded: bool
+    is_retracted: bool
+    is_conditional: bool
+
+
+@dataclass(frozen=True)
+class TraceEvidenceRecord:
+    """One `Evidence` a `ReasoningProgress` `SUPPORTED_BY`-cites (SDD-001
+    §3.3.9), with its resolved point-in-time pin. Port-level facts.
+
+    `resolved_pin` is `None` only when the `Evidence` carries no
+    `SOURCED_FROM` edge at all — a schema-legal edge case, surfaced
+    honestly, never a crash.
+    """
+
+    evidence_id: str
+    fact_summary: str | None
+    confidence: float | None
+    weight: float | None
+    source_node_version: str | None
+    observed_at: str | None
+    resolved_pin: CitedNodeRefRecord | None
+
+
+@dataclass(frozen=True)
+class TraceRejectedAlternativeRecord:
+    """One `RejectedAlternative` a `ReasoningProgress` `REJECTED` (SDD-001
+    §3.3.9). Port-level facts. `would_have_used` is every KG node the
+    alternative's `WOULD_HAVE_USED` edges reference — zero or more."""
+
+    rejected_id: str
+    candidate_type: str | None
+    rejection_reason: str | None
+    score_delta: float | None
+    human_accepted: bool | None
+    would_have_used: tuple[CitedNodeRefRecord, ...]
+
+
+@dataclass(frozen=True)
+class TraceConclusionRecord:
+    """One `ReasoningProgress` a `ReasoningSession` `CONTAINS` (SDD-001
+    §3.3.9). Port-level facts — only `progress_id` (T1 PK) is required; the
+    rest are T2 (DDR-002 §4) with no existence constraint, so this is an
+    explainability traversal that must surface a null honestly (the same
+    principle R6a's M1 review fix established for citation-lookup's owner
+    surface, applied here to the identical RG node class)."""
+
+    progress_id: str
+    conclusion_type: str | None
+    reasoner_category: str | None
+    authoritative: bool | None
+    confidence: float | None
+    overridden_by_human: bool | None
+    created_at: str | None
+    evidence: tuple[TraceEvidenceRecord, ...]
+    rejected_alternatives: tuple[TraceRejectedAlternativeRecord, ...]
+
+
+@dataclass(frozen=True)
+class LedToRecord:
+    """One `LED_TO` edge between two `ReasoningProgress` conclusions in the
+    same session (SDD-001 §3.3.9) — flat adjacency, not a nested tree."""
+
+    from_progress_id: str
+    to_progress_id: str
+
+
+@dataclass(frozen=True)
+class SessionTracePage:
+    """The resolved explainability trace for one `ReasoningSession` (SDD-001
+    §3.3.9). NOT paginated — bounded by the session's own reasoning run
+    (ST-D2). `session_found=False` is the operation's sole raise signal; an
+    existing session with zero conclusions returns `conclusions=()`, never
+    an error (a legal non-blocking capture state, DDR-001)."""
+
+    session_found: bool
+    conclusions: tuple[TraceConclusionRecord, ...]
+    led_to: tuple[LedToRecord, ...]
+
+
 @runtime_checkable
 class GraphStoragePort(Protocol):
     """The graph system-of-record seam the gateway's domain code depends on.
@@ -745,5 +863,31 @@ class GraphStoragePort(Protocol):
             -superseded promoted node still resolves normally.
             `frozen_layer_present=False` is the honest anomaly signal for a
             resolved candidate with no `ProvenanceSummary` — never raised.
+        """
+        ...
+
+    async def session_trace(self, session_id: str) -> SessionTracePage:
+        """Resolve the explainability trace over one `ReasoningSession`.
+
+        One single-store traversal (ADR-002 §6 check 4): the session —
+        OPTIONAL-matched so a truly-absent session is distinguishable from
+        an existing-but-empty one — `CONTAINS` every `ReasoningProgress`
+        conclusion, each `SUPPORTED_BY` its `Evidence` (resolved to its
+        point-in-time `SOURCED_FROM` pin) and `REJECTED` its
+        `RejectedAlternative`s (each resolved to its `WOULD_HAVE_USED`
+        refs), plus the `LED_TO` adjacency across the session's conclusions.
+        TRIO-FREE BY INAPPLICABILITY (SDD-001 §3.3.9 ST-D1) — not the §1
+        disclosed exception: every entity here is RG (no KG plane label),
+        so proposal/retraction/conditional exclusion is structurally N/A.
+        Resolved-pin status markers are the cited node's CURRENT state,
+        disclosure only, shown regardless of the point-in-time pin.
+
+        Args:
+            session_id: The `ReasoningSession`'s PK value.
+
+        Returns:
+            The resolved page. `session_found=False` signals the
+            operation's `TARGET_NOT_FOUND` raise; an existing session with
+            no conclusions returns `conclusions=()`, never an error.
         """
         ...

@@ -21,7 +21,9 @@
 #   setup responsibility, not something this double re-derives (it has no
 #   graph to derive it from). R6b's provenance_of is back to the plain
 #   controllable-record-store shape (§4.2 A3) — single-subject, unpaginated —
-#   set the whole `ProvenanceOfPage`, get it back unconditionally.
+#   set the whole `ProvenanceOfPage`, get it back unconditionally. R6c's
+#   session_trace is the same plain shape — single-subject, unpaginated —
+#   set the whole `SessionTracePage`, get it back unconditionally.
 ##############################################################################
 
 from collections.abc import Sequence
@@ -39,6 +41,7 @@ from app.ports.graph_store import (
     ReadAsOfResolvedRecord,
     ResolveTechnologyCandidateRecord,
     SelectPatternsCandidateRecord,
+    SessionTracePage,
     TargetEntityRef,
     TrackRecordCandidateRecord,
 )
@@ -98,6 +101,10 @@ class InMemoryGraphStore:
             entries=(),
         )
         self._provenance_of_calls: list[tuple[ReadAsOfNodeKind, str, str]] = []
+        self._session_trace_result = SessionTracePage(
+            session_found=False, conclusions=(), led_to=()
+        )
+        self._session_trace_calls: list[str] = []
 
     @property
     def check_connectivity_calls(self) -> int:
@@ -185,6 +192,15 @@ class InMemoryGraphStore:
         than dropping or substituting it.
         """
         return self._provenance_of_calls
+
+    @property
+    def session_trace_calls(self) -> list[str]:
+        """The `session_id` argument of every `session_trace` call.
+
+        Lets a test assert the operation forwarded the caller's session id
+        rather than dropping or substituting it.
+        """
+        return self._session_trace_calls
 
     def set_connectivity(self, *, healthy: bool) -> None:
         """Set the verdict subsequent connectivity checks will report.
@@ -301,6 +317,16 @@ class InMemoryGraphStore:
                 record store (SDD-001 §4.2 A3), not a graph-internals model.
         """
         self._provenance_of_result = page
+
+    def set_session_trace_result(self, page: SessionTracePage) -> None:
+        """Set the page subsequent `session_trace` calls return.
+
+        Args:
+            page: The full page to return, unconditionally on the requested
+                `session_id` — this is a controllable record store (SDD-001
+                §4.2 A3), not a graph-internals model.
+        """
+        self._session_trace_result = page
 
     async def check_connectivity(self) -> bool:
         """Report the configured connectivity verdict.
@@ -486,3 +512,18 @@ class InMemoryGraphStore:
         """
         self._provenance_of_calls.append((node_kind, business_key, version))
         return self._provenance_of_result
+
+    async def session_trace(self, session_id: str) -> SessionTracePage:
+        """Report the configured page.
+
+        Args:
+            session_id: Recorded for test assertion; does not affect the
+                configured result (a faithful port-level substitute per §4.2
+                need not model graph internals).
+
+        Returns:
+            The page currently set on this double — `session_found=False` by
+            default, until `set_session_trace_result` configures otherwise.
+        """
+        self._session_trace_calls.append(session_id)
+        return self._session_trace_result

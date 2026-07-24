@@ -19,9 +19,11 @@ from app.ports.graph_store import (
     CitationEntryStatusRecord,
     CitationOwnerRecord,
     CitationRecord,
+    CitedNodeRefRecord,
     FindPrecedentsCandidateRecord,
     FindPrecedentsCriteria,
     GraphStoragePort,
+    LedToRecord,
     ObligationCandidateRecord,
     ProvenanceOfCandidateRecord,
     ProvenanceOfFrozenEntryRecord,
@@ -30,7 +32,11 @@ from app.ports.graph_store import (
     ReadAsOfResolvedRecord,
     ResolveTechnologyCandidateRecord,
     SelectPatternsCandidateRecord,
+    SessionTracePage,
     TargetEntityRef,
+    TraceConclusionRecord,
+    TraceEvidenceRecord,
+    TraceRejectedAlternativeRecord,
     TrackRecordCandidateRecord,
 )
 
@@ -628,3 +634,93 @@ class TestInMemoryGraphStoreProvenanceOf:
         # Assert — lets a test prove the operation forwarded the caller's
         # pin rather than dropping or substituting it.
         assert store.provenance_of_calls == [("Technology", "tech-42", "2")]
+
+
+class TestInMemoryGraphStoreSessionTrace:
+    """The controllable single-page store (§4.2 A3) — R6c, single-subject,
+    unpaginated."""
+
+    async def test_default_reports_session_found_false(self) -> None:
+        # Arrange — no configuration yet.
+        store = InMemoryGraphStore()
+
+        # Act
+        page = await store.session_trace("sess-1")
+
+        # Assert
+        assert page.session_found is False
+        assert page.conclusions == ()
+
+    async def test_returns_the_configured_page(self) -> None:
+        # Arrange
+        store = InMemoryGraphStore()
+        page = SessionTracePage(
+            session_found=True,
+            conclusions=(
+                TraceConclusionRecord(
+                    progress_id="prog-1",
+                    conclusion_type="TechnologySelection",
+                    reasoner_category="encoded_reasoning",
+                    authoritative=True,
+                    confidence=0.9,
+                    overridden_by_human=False,
+                    created_at="2026-07-01T00:00:00Z",
+                    evidence=(
+                        TraceEvidenceRecord(
+                            evidence_id="ev-1",
+                            fact_summary="a fact",
+                            confidence=0.8,
+                            weight=1.0,
+                            source_node_version="1",
+                            observed_at="2026-07-01T00:00:00Z",
+                            resolved_pin=CitedNodeRefRecord(
+                                node_kind="Technology",
+                                node_id="tech-1",
+                                version="1",
+                                is_superseded=False,
+                                is_retracted=False,
+                                is_conditional=False,
+                            ),
+                        ),
+                    ),
+                    rejected_alternatives=(
+                        TraceRejectedAlternativeRecord(
+                            rejected_id="rej-1",
+                            candidate_type="Technology",
+                            rejection_reason="cost",
+                            score_delta=-0.2,
+                            human_accepted=False,
+                            would_have_used=(
+                                CitedNodeRefRecord(
+                                    node_kind="Technology",
+                                    node_id="tech-2",
+                                    version="1",
+                                    is_superseded=False,
+                                    is_retracted=False,
+                                    is_conditional=False,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+            led_to=(LedToRecord(from_progress_id="prog-1", to_progress_id="prog-2"),),
+        )
+        store.set_session_trace_result(page)
+
+        # Act
+        result = await store.session_trace("sess-1")
+
+        # Assert
+        assert result == page
+
+    async def test_records_the_requested_session_id(self) -> None:
+        # Arrange
+        store = InMemoryGraphStore()
+
+        # Act
+        await store.session_trace("sess-42")
+
+        # Assert — lets a test prove the operation forwarded the caller's
+        # session id rather than dropping or substituting it.
+        assert store.session_trace_calls == ["sess-42"]

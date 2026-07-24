@@ -8,19 +8,22 @@
 #   construction, lifespan-owned driver wiring, the in-process schema-metadata
 #   registry, correlation-ID middleware, the graph-store/schema-registry/
 #   predicate-evaluator dependencies, the SDD-001 §3.2 typed-error handler, the
-#   §3.1 health and readiness routes, and the §3.3 read routes (RBT-78/R3a
-#   track-record-lookup, R3b resolve-technology, R3c select-patterns, R6a
-#   citation-lookup, R6b provenance-of). Per SDD-001 §4.1 this module homes
-#   the routes directly; this service's tree has no separate api/ layer. The
-#   lifespan is the single place a Neo4j driver is opened in this platform
-#   (ADR-002 §2.5) and the place the schema-metadata registry is loaded
-#   (SDD-001 §3.1 check 2). citation_lookup_endpoint is the FIRST route with
-#   no `predicate_evaluator` dependency at all (the audit posture, SDD-001
-#   §1/§3.2, runs no trio) and the FIRST to resolve a `SettingsDep` for its
-#   config-capped pagination default/clamp (R6a delta A2). provenance_of_
-#   endpoint shares the no-`predicate_evaluator` posture but needs no
-#   `SettingsDep` either — it is single-subject and unpaginated (P-D2), so
-#   its handler is pure wire<->domain type conversion.
+#   §3.1 health and readiness routes, and the §3.3 read routes — ALL NINE,
+#   as of R6c (RBT-78/R3a track-record-lookup, R3b resolve-technology, R3c
+#   select-patterns, R4a obligation-context, R4b find-precedents, R5a
+#   read-as-of, R6a citation-lookup, R6b provenance-of, R6c session-trace).
+#   Per SDD-001 §4.1 this module homes the routes directly; this service's
+#   tree has no separate api/ layer. The lifespan is the single place a
+#   Neo4j driver is opened in this platform (ADR-002 §2.5) and the place the
+#   schema-metadata registry is loaded (SDD-001 §3.1 check 2).
+#   citation_lookup_endpoint is the FIRST route with no `predicate_evaluator`
+#   dependency at all (the audit posture, SDD-001 §1/§3.2, runs no trio) and
+#   the FIRST to resolve a `SettingsDep` for its config-capped pagination
+#   default/clamp (R6a delta A2). provenance_of_endpoint and
+#   session_trace_endpoint share the no-`predicate_evaluator` posture but
+#   need no `SettingsDep` either — both are single-subject/unpaginated, so
+#   their handlers are pure wire<->domain type conversion (session-trace by
+#   ST-D2's session-run bound, provenance-of by P-D2's Evidence-span bound).
 ##############################################################################
 
 from collections.abc import AsyncIterator
@@ -42,6 +45,7 @@ from app.domain.retrieval.provenance_of import provenance_of
 from app.domain.retrieval.read_as_of import read_as_of
 from app.domain.retrieval.resolve_technology import resolve_technology
 from app.domain.retrieval.select_patterns import select_patterns
+from app.domain.retrieval.session_trace import session_trace
 from app.domain.retrieval.track_record_lookup import track_record_lookup
 from app.domain.retrieval.types import CitationPage, ConsumingContext
 from app.domain.shared.predicate_evaluators import FailClosedPredicateEvaluator
@@ -64,6 +68,8 @@ from app.models import (
     ResolveTechnologyRequest,
     SelectPatternsRequest,
     SelectPatternsResult,
+    SessionTraceRequest,
+    SessionTraceResult,
     TrackRecordLookupRequest,
 )
 from app.observability.correlation_id import CorrelationIdMiddleware
@@ -606,3 +612,39 @@ async def provenance_of_endpoint(
     return await provenance_of(
         request.node_kind, request.business_key, request.version, graph_store
     )
+
+
+@app.post(
+    "/api/v1/session-trace",
+    response_model=SessionTraceResult,
+    tags=["retrieval"],
+)
+async def session_trace_endpoint(
+    request: SessionTraceRequest,
+    graph_store: GraphStoreDep,
+) -> SessionTraceResult:
+    """The explainability traversal over one `ReasoningSession` (SDD-001 §3.3.9).
+
+    TRIO-FREE BY INAPPLICABILITY (ST-D1), the audit set's third and last op
+    — NOT the §1 disclosed exception: every entity here is RG, so
+    proposal/retraction/conditional exclusion is structurally N/A. No
+    `predicate_evaluator` dependency, same as `provenance_of_endpoint`. A
+    now-retracted or -superseded cited node still surfaces with its marker
+    — the point-in-time fidelity point this op exists to serve.
+
+    Args:
+        request: The session id.
+        graph_store: The graph port.
+
+    Returns:
+        The resolved trace: every conclusion with its evidence (resolved to
+        its point-in-time pin) and rejected alternatives, plus the flat
+        `LED_TO` adjacency.
+
+    Raises:
+        GatewayError: `TARGET_NOT_FOUND` (404) if the `ReasoningSession`
+            does not exist at all — handled by the existing §3.2 exception
+            handler. An existing session with zero conclusions is never
+            this case; it returns an empty trace.
+    """
+    return await session_trace(request.session_id, graph_store)

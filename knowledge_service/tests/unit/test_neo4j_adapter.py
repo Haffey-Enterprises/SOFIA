@@ -2430,3 +2430,271 @@ class TestNeo4jAdapterProvenanceOf:
         # Act / Assert
         with pytest.raises(RuntimeError, match="driver"):
             await adapter.provenance_of("Technology", "tech-1", "1")
+
+
+def _cited_node_row(**overrides: object) -> dict[str, object]:
+    """One `resolved_pin`/`would_have_used` entry map for the session-trace
+    query, a mapped-label citation by default."""
+    base: dict[str, object] = {
+        "node_kind": "Technology",
+        "node_id": "tech-1",
+        "version": "1",
+        "is_superseded": False,
+        "is_retracted": False,
+        "is_conditional": False,
+    }
+    base.update(overrides)
+    return base
+
+
+def _evidence_row(**overrides: object) -> dict[str, object]:
+    base: dict[str, object] = {
+        "evidence_id": "ev-1",
+        "fact_summary": "a fact",
+        "confidence": 0.8,
+        "weight": 1.0,
+        "source_node_version": "1",
+        "observed_at": "2026-07-01T00:00:00Z",
+        "resolved_pin": _cited_node_row(),
+    }
+    base.update(overrides)
+    return base
+
+
+def _rejected_row(**overrides: object) -> dict[str, object]:
+    base: dict[str, object] = {
+        "rejected_id": "rej-1",
+        "candidate_type": "Technology",
+        "rejection_reason": "cost",
+        "score_delta": -0.2,
+        "human_accepted": False,
+        "would_have_used": [],
+    }
+    base.update(overrides)
+    return base
+
+
+def _conclusion_row(**overrides: object) -> dict[str, object]:
+    base: dict[str, object] = {
+        "progress_id": "prog-1",
+        "conclusion_type": "TechnologySelection",
+        "reasoner_category": "encoded_reasoning",
+        "authoritative": True,
+        "confidence": 0.9,
+        "overridden_by_human": False,
+        "created_at": "2026-07-01T00:00:00Z",
+        "evidence": [_evidence_row()],
+        "rejected_alternatives": [_rejected_row()],
+    }
+    base.update(overrides)
+    return base
+
+
+def _session_row(**overrides: object) -> dict[str, object]:
+    base: dict[str, object] = {
+        "session_found": True,
+        "conclusion_rows": [_conclusion_row()],
+        "led_to_rows": [{"from_progress_id": "prog-1", "to_progress_id": "prog-2"}],
+    }
+    base.update(overrides)
+    return base
+
+
+class TestNeo4jAdapterSessionTrace:
+    """The session-trace traversal (SDD-001 §3.3.9) — one Cypher call, the
+    RG explainability traversal, and the scoped cited-node PK map (relay
+    delta resolution)."""
+
+    async def test_session_trace_queries_with_session_id(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(records=[_session_row()])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        await adapter.session_trace("sess-1")
+
+        # Assert
+        params = driver.execute_query.call_args.args[1]
+        assert params == {"session_id": "sess-1"}
+
+    async def test_session_trace_routes_read_and_targets_the_database(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(records=[_session_row()])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        await adapter.session_trace("sess-1")
+
+        # Assert
+        kwargs = driver.execute_query.call_args.kwargs
+        assert kwargs["routing_"] is RoutingControl.READ
+        assert kwargs["database_"] == "sofia"
+
+    async def test_session_trace_query_matches_the_rg_traversal_shape(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(records=[_session_row()])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        await adapter.session_trace("sess-1")
+
+        # Assert — the full RG traversal (ST-D2), no read-discipline
+        # resolution (no HAS_CONDITION — trio-free by inapplicability).
+        query = driver.execute_query.call_args.args[0]
+        assert "ReasoningSession {session_id: $session_id}" in query
+        assert "CONTAINS" in query
+        assert "SUPPORTED_BY" in query
+        assert "SOURCED_FROM" in query
+        assert "REJECTED" in query
+        assert "WOULD_HAVE_USED" in query
+        assert "LED_TO" in query
+        assert "HAS_CONDITION" not in query
+
+    async def test_session_trace_query_embeds_the_scoped_cited_node_pk_map(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(records=[_session_row()])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        await adapter.session_trace("sess-1")
+
+        # Assert — every relay-delta-scoped label's PK property is embedded,
+        # confirming node_id resolution covers the full ratified scope
+        # (Catalog/Standards/Environment/Operational/Cost citable labels).
+        query = driver.execute_query.call_args.args[0]
+        for pk_property in (
+            "pattern_id",
+            "technology_id",
+            "capability_id",
+            "iac_template_id",
+            "standard_id",
+            "policy_rule_id",
+            "control_id",
+            "deployed_service_id",
+            "environment_id",
+            "ci_id",
+            "observed_pattern_id",
+            "estimate_id",
+        ):
+            assert pk_property in query
+
+    async def test_session_trace_maps_session_found_false(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange — a truly-absent session.
+        driver.execute_query.return_value = SimpleNamespace(
+            records=[_session_row(session_found=False, conclusion_rows=[], led_to_rows=[])]
+        )
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        page = await adapter.session_trace("sess-x")
+
+        # Assert
+        assert page.session_found is False
+        assert page.conclusions == ()
+        assert page.led_to == ()
+
+    async def test_session_trace_maps_a_full_conclusion_tree(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(records=[_session_row()])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        page = await adapter.session_trace("sess-1")
+
+        # Assert
+        assert page.session_found is True
+        assert len(page.conclusions) == 1
+        conclusion = page.conclusions[0]
+        assert conclusion.progress_id == "prog-1"
+        assert conclusion.conclusion_type == "TechnologySelection"
+        assert len(conclusion.evidence) == 1
+        evidence = conclusion.evidence[0]
+        assert evidence.evidence_id == "ev-1"
+        assert evidence.resolved_pin is not None
+        assert evidence.resolved_pin.node_kind == "Technology"
+        assert evidence.resolved_pin.node_id == "tech-1"
+        assert len(conclusion.rejected_alternatives) == 1
+        assert conclusion.rejected_alternatives[0].rejected_id == "rej-1"
+        assert len(page.led_to) == 1
+        assert page.led_to[0].from_progress_id == "prog-1"
+        assert page.led_to[0].to_progress_id == "prog-2"
+
+    async def test_session_trace_maps_resolved_pin_none_when_no_sourced_from(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(
+            records=[
+                _session_row(
+                    conclusion_rows=[
+                        _conclusion_row(evidence=[_evidence_row(resolved_pin=None)])
+                    ]
+                )
+            ]
+        )
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        page = await adapter.session_trace("sess-1")
+
+        # Assert
+        assert page.conclusions[0].evidence[0].resolved_pin is None
+
+    async def test_session_trace_maps_would_have_used_refs(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(
+            records=[
+                _session_row(
+                    conclusion_rows=[
+                        _conclusion_row(
+                            rejected_alternatives=[
+                                _rejected_row(
+                                    would_have_used=[_cited_node_row(node_id="tech-2")]
+                                )
+                            ]
+                        )
+                    ]
+                )
+            ]
+        )
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        page = await adapter.session_trace("sess-1")
+
+        # Assert
+        would_have_used = page.conclusions[0].rejected_alternatives[0].would_have_used
+        assert len(would_have_used) == 1
+        assert would_have_used[0].node_id == "tech-2"
+
+    async def test_session_trace_before_connect_raises_runtime_error(
+        self, settings: Settings, driver_factory: MagicMock
+    ) -> None:
+        # Arrange
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+
+        # Act / Assert
+        with pytest.raises(RuntimeError, match="driver"):
+            await adapter.session_trace("sess-1")

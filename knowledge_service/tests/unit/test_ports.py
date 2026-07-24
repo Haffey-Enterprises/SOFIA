@@ -11,10 +11,10 @@
 #   later adapter from being wired in half-implemented. GraphStoragePort grows
 #   additively (RBT-78/R3a find_track_record, R3b resolve_technology_options,
 #   R3c select_patterns, R4a obligation_context, R4b find_precedents, R5a
-#   read_as_of, R6a citation_lookup, R6b provenance_of) — the minimal fixture
-#   below grows with it, since isinstance() against a runtime_checkable
-#   Protocol checks every declared member, not just the ones a test happens
-#   to exercise.
+#   read_as_of, R6a citation_lookup, R6b provenance_of, R6c session_trace —
+#   the ninth and last read op) — the minimal fixture below grows with it,
+#   since isinstance() against a runtime_checkable Protocol checks every
+#   declared member, not just the ones a test happens to exercise.
 ##############################################################################
 
 from collections.abc import Mapping, Sequence
@@ -31,6 +31,7 @@ from app.ports.graph_store import (
     ReadAsOfResolvedRecord,
     ResolveTechnologyCandidateRecord,
     SelectPatternsCandidateRecord,
+    SessionTracePage,
     TargetEntityRef,
     TrackRecordCandidateRecord,
 )
@@ -268,6 +269,76 @@ class TestGraphStoragePortDeclaration:
         # Act / Assert
         assert not isinstance(PartialGraphStore(), GraphStoragePort)
 
+    def test_object_missing_session_trace_does_not_satisfy_the_port(self) -> None:
+        # Arrange — R6c grew the port again; provenance_of alone no longer
+        # suffices.
+        class PartialGraphStore:
+            async def check_connectivity(self) -> bool:
+                return True
+
+            async def find_track_record(
+                self, target_refs: Sequence[TargetEntityRef]
+            ) -> Sequence[TrackRecordCandidateRecord]:
+                return []
+
+            async def resolve_technology_options(
+                self, capability_id: str
+            ) -> Sequence[ResolveTechnologyCandidateRecord]:
+                return []
+
+            async def select_patterns(
+                self, capability_ids: Sequence[str]
+            ) -> Sequence[SelectPatternsCandidateRecord]:
+                return []
+
+            async def obligation_context(
+                self, solution_id: str
+            ) -> Sequence[ObligationCandidateRecord]:
+                return []
+
+            async def find_precedents(
+                self, criteria: FindPrecedentsCriteria
+            ) -> Sequence[FindPrecedentsCandidateRecord]:
+                return []
+
+            async def read_as_of(
+                self, node_kind: ReadAsOfNodeKind, business_key: str, version: str
+            ) -> ReadAsOfResolvedRecord | None:
+                return None
+
+            async def citation_lookup(
+                self,
+                node_kind: ReadAsOfNodeKind,
+                business_key: str,
+                version: str | None,
+                mode: CitationMode,
+                after_evidence_id: str | None,
+                limit: int,
+            ) -> CitationLookupPage:
+                return CitationLookupPage(
+                    entry_found=False, entry_statuses=(), citations=(), next_cursor=None
+                )
+
+            async def provenance_of(
+                self, node_kind: ReadAsOfNodeKind, business_key: str, version: str
+            ) -> ProvenanceOfPage:
+                return ProvenanceOfPage(
+                    entry_found=False,
+                    is_promoted=False,
+                    origin_mechanism=None,
+                    is_superseded=False,
+                    is_retracted=False,
+                    is_conditional=False,
+                    candidate=None,
+                    governing_decision=None,
+                    frozen_layer_present=False,
+                    provenance_summary_id=None,
+                    entries=(),
+                )
+
+        # Act / Assert
+        assert not isinstance(PartialGraphStore(), GraphStoragePort)
+
     def test_object_with_the_full_surface_satisfies_the_port(self) -> None:
         # Arrange
         class MinimalGraphStore:
@@ -333,6 +404,9 @@ class TestGraphStoragePortDeclaration:
                     provenance_summary_id=None,
                     entries=(),
                 )
+
+            async def session_trace(self, session_id: str) -> SessionTracePage:
+                return SessionTracePage(session_found=False, conclusions=(), led_to=())
 
         # Act / Assert
         assert isinstance(MinimalGraphStore(), GraphStoragePort)
