@@ -25,7 +25,7 @@ from neo4j.exceptions import AuthError, ServiceUnavailable
 
 from app.adapters.neo4j_adapter import Neo4jAdapter
 from app.config import Settings
-from app.ports.graph_store import GraphStoragePort, TargetEntityRef
+from app.ports.graph_store import FindPrecedentsCriteria, GraphStoragePort, TargetEntityRef
 
 # mypy note: pydantic-settings accepts `_env_file` at runtime, but the model's
 # generated __init__ signature does not declare it, so `--strict` flags every
@@ -1319,3 +1319,275 @@ class TestNeo4jAdapterObligationContext:
         # Act / Assert
         with pytest.raises(RuntimeError, match="driver"):
             await adapter.obligation_context("sol-1")
+
+
+class TestNeo4jAdapterFindPrecedents:
+    """The find-precedents traversal (SDD-001 §3.3.5) — one Cypher call."""
+
+    async def test_find_precedents_queries_with_the_criteria(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(records=[])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+        criteria = FindPrecedentsCriteria(
+            capability_ids=("cap-1",),
+            pattern_ids=("pattern-1",),
+            technology_ids=("tech-1",),
+            target_environment="production",
+            gate_outcome="approved",
+        )
+
+        # Act
+        await adapter.find_precedents(criteria)
+
+        # Assert
+        params = driver.execute_query.call_args.args[1]
+        assert params == {
+            "technology_ids": ["tech-1"],
+            "pattern_ids": ["pattern-1"],
+            "capability_ids": ["cap-1"],
+            "target_environment": "production",
+            "gate_outcome": "approved",
+        }
+
+    async def test_find_precedents_routes_read_and_targets_the_database(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(records=[])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        await adapter.find_precedents(
+            FindPrecedentsCriteria(
+                capability_ids=(),
+                pattern_ids=(),
+                technology_ids=("tech-1",),
+                target_environment=None,
+                gate_outcome=None,
+            )
+        )
+
+        # Assert
+        kwargs = driver.execute_query.call_args.kwargs
+        assert kwargs["routing_"] is RoutingControl.READ
+        assert kwargs["database_"] == "sofia"
+
+    async def test_find_precedents_query_matches_the_traversal_shape(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(records=[])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        await adapter.find_precedents(
+            FindPrecedentsCriteria(
+                capability_ids=(),
+                pattern_ids=(),
+                technology_ids=("tech-1",),
+                target_environment=None,
+                gate_outcome=None,
+            )
+        )
+
+        # Assert — the single-store traversal (ADR-002 §6 check 4): USES/
+        # FOLLOWS entity resolution, the capability 2-hop FOLLOWS ->
+        # REQUIRES_CAPABILITY path (never USES -> APPROVED_OPTION_FOR),
+        # target_environment/gate_outcome filters, and every GateDecision via
+        # DECIDED_ON.
+        query = driver.execute_query.call_args.args[0]
+        assert "Artifact:Solution" in query
+        assert "[:USES]->(tech:Catalog:Technology)" in query
+        assert "[:FOLLOWS]->(pat:Catalog:Pattern)" in query
+        assert "[:FOLLOWS]->(:Catalog:Pattern)-[:REQUIRES_CAPABILITY]->" in query
+        assert "target_environment" in query
+        assert "DECIDED_ON" in query
+        assert "GateDecision" in query
+        assert "EXISTS {" in query
+        # AND-across dimensions: every non-empty-dimension filter is joined
+        # by AND in the WHERE clause, so a Solution failing any one is
+        # excluded from the result set.
+        assert query.count("AND (") >= 3
+
+    async def test_find_precedents_with_empty_criteria_still_queries(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange — the at-least-one-linkage guard is the OPERATION's job
+        # (F4); the adapter has no opinion and queries whatever it is asked.
+        driver.execute_query.return_value = SimpleNamespace(records=[])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        results = await adapter.find_precedents(
+            FindPrecedentsCriteria(
+                capability_ids=(),
+                pattern_ids=(),
+                technology_ids=(),
+                target_environment=None,
+                gate_outcome=None,
+            )
+        )
+
+        # Assert
+        assert results == []
+        driver.execute_query.assert_awaited_once()
+
+    async def test_find_precedents_maps_a_single_solution_row(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(
+            records=[
+                {
+                    "node_id": "sol-1",
+                    "version": "2",
+                    "origin_mechanism": "authored",
+                    "target_environment": "production",
+                    "gate_decisions": [
+                        {"outcome": "approved", "gate": "gate_1", "decision_id": "gd-1"}
+                    ],
+                }
+            ]
+        )
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        results = await adapter.find_precedents(
+            FindPrecedentsCriteria(
+                capability_ids=(),
+                pattern_ids=(),
+                technology_ids=("tech-1",),
+                target_environment=None,
+                gate_outcome=None,
+            )
+        )
+
+        # Assert
+        assert len(results) == 1
+        sol = results[0]
+        assert sol.node_id == "sol-1"
+        assert sol.version == "2"
+        assert sol.origin_mechanism == "authored"
+        assert sol.target_environment == "production"
+        assert len(sol.gate_decisions) == 1
+        gd = sol.gate_decisions[0]
+        assert gd.outcome == "approved"
+        assert gd.gate == "gate_1"
+        assert gd.decision_id == "gd-1"
+
+    async def test_find_precedents_maps_a_solution_with_no_gate_decisions(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange — the CASE-guarded collect() must yield [], never one
+        # all-null entry, when a Solution has no GateDecision at all.
+        driver.execute_query.return_value = SimpleNamespace(
+            records=[
+                {
+                    "node_id": "sol-1",
+                    "version": "1",
+                    "origin_mechanism": "authored",
+                    "target_environment": None,
+                    "gate_decisions": [],
+                }
+            ]
+        )
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        results = await adapter.find_precedents(
+            FindPrecedentsCriteria(
+                capability_ids=(),
+                pattern_ids=(),
+                technology_ids=("tech-1",),
+                target_environment=None,
+                gate_outcome=None,
+            )
+        )
+
+        # Assert
+        assert results[0].gate_decisions == ()
+
+    async def test_find_precedents_maps_multiple_gate_decisions(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(
+            records=[
+                {
+                    "node_id": "sol-1",
+                    "version": "1",
+                    "origin_mechanism": "authored",
+                    "target_environment": "production",
+                    "gate_decisions": [
+                        {"outcome": "rejected", "gate": "gate_0", "decision_id": "gd-0"},
+                        {"outcome": "approved", "gate": "gate_1", "decision_id": "gd-1"},
+                    ],
+                }
+            ]
+        )
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        results = await adapter.find_precedents(
+            FindPrecedentsCriteria(
+                capability_ids=(),
+                pattern_ids=(),
+                technology_ids=("tech-1",),
+                target_environment=None,
+                gate_outcome=None,
+            )
+        )
+
+        # Assert
+        assert len(results[0].gate_decisions) == 2
+        outcomes = {gd.outcome for gd in results[0].gate_decisions}
+        assert outcomes == {"rejected", "approved"}
+
+    async def test_find_precedents_with_no_matches_returns_empty(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(records=[])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        results = await adapter.find_precedents(
+            FindPrecedentsCriteria(
+                capability_ids=(),
+                pattern_ids=(),
+                technology_ids=("tech-nonexistent",),
+                target_environment=None,
+                gate_outcome=None,
+            )
+        )
+
+        # Assert
+        assert results == []
+
+    async def test_find_precedents_before_connect_raises_runtime_error(
+        self, settings: Settings, driver_factory: MagicMock
+    ) -> None:
+        # Arrange
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+
+        # Act / Assert
+        with pytest.raises(RuntimeError, match="driver"):
+            await adapter.find_precedents(
+                FindPrecedentsCriteria(
+                    capability_ids=(),
+                    pattern_ids=(),
+                    technology_ids=("tech-1",),
+                    target_environment=None,
+                    gate_outcome=None,
+                )
+            )

@@ -28,6 +28,7 @@ from starlette.requests import Request
 from app.adapters.neo4j_adapter import Neo4jAdapter
 from app.config import Settings, get_settings
 from app.domain.exceptions import GatewayError, resolve_http_status
+from app.domain.retrieval.find_precedents import find_precedents
 from app.domain.retrieval.obligation_context import obligation_context
 from app.domain.retrieval.resolve_technology import resolve_technology
 from app.domain.retrieval.select_patterns import select_patterns
@@ -38,6 +39,8 @@ from app.domain.shared.schema_metadata import SchemaRegistry, load_core_registry
 from app.models import (
     CheckStatus,
     ErrorResponse,
+    FindPrecedentsRequest,
+    FindPrecedentsResult,
     HealthResponse,
     ObligationContextRequest,
     ObligationContextResult,
@@ -50,7 +53,7 @@ from app.models import (
 )
 from app.observability.correlation_id import CorrelationIdMiddleware
 from app.observability.logging import configure_logging
-from app.ports.graph_store import GraphStoragePort, TargetEntityRef
+from app.ports.graph_store import FindPrecedentsCriteria, GraphStoragePort, TargetEntityRef
 from app.ports.predicate_eval import PredicateEvaluationPort
 
 log = structlog.get_logger()
@@ -408,3 +411,47 @@ async def obligation_context_endpoint(
         declared_fields=request.consuming_context.declared_fields,
     )
     return await obligation_context(request.solution_id, context, graph_store, predicate_evaluator)
+
+
+@app.post(
+    "/api/v1/find-precedents",
+    response_model=FindPrecedentsResult,
+    tags=["retrieval"],
+)
+async def find_precedents_endpoint(
+    request: FindPrecedentsRequest,
+    graph_store: GraphStoreDep,
+    predicate_evaluator: PredicateEvaluatorDep,
+) -> FindPrecedentsResult:
+    """Prior produced Solutions matching structural criteria (SDD-001 §3.3.5).
+
+    Deterministic structural match by shared capability/pattern/technology
+    linkage, target_environment, and gate outcome — no similarity scoring, no
+    ranking. The schema-metadata registry is not consulted here (this
+    operation performs no write-path validation), and this route raises no
+    TARGET_NOT_FOUND — an all-empty linkage criteria set, or no matching
+    Solution, yields an empty result.
+
+    Args:
+        request: The structural match criteria and the §3.2 consuming-context
+            payload.
+        graph_store: The graph port.
+        predicate_evaluator: The predicate port (production: fail-closed).
+
+    Returns:
+        The matching precedents, each with its envelope, target_environment,
+        and gate-decision context.
+    """
+    criteria = FindPrecedentsCriteria(
+        capability_ids=tuple(request.capability_ids),
+        pattern_ids=tuple(request.pattern_ids),
+        technology_ids=tuple(request.technology_ids),
+        target_environment=request.target_environment,
+        gate_outcome=request.gate_outcome,
+    )
+    context = ConsumingContext(
+        environment_class=request.consuming_context.environment_class,
+        data_classification=request.consuming_context.data_classification,
+        declared_fields=request.consuming_context.declared_fields,
+    )
+    return await find_precedents(criteria, context, graph_store, predicate_evaluator)

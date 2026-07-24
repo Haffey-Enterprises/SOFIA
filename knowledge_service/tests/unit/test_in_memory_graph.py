@@ -16,6 +16,8 @@
 
 from app.adapters.in_memory_graph import InMemoryGraphStore
 from app.ports.graph_store import (
+    FindPrecedentsCandidateRecord,
+    FindPrecedentsCriteria,
     GraphStoragePort,
     ObligationCandidateRecord,
     ResolveTechnologyCandidateRecord,
@@ -285,3 +287,67 @@ class TestInMemoryGraphStoreObligationContext:
         # Assert — lets a test prove the operation forwarded the caller's
         # solution id rather than dropping or substituting it.
         assert store.obligation_context_calls == ["sol-42"]
+
+
+class TestInMemoryGraphStoreFindPrecedents:
+    """The controllable candidate-record store (§4.2 A3)."""
+
+    async def test_find_precedents_with_no_candidates_set_returns_empty(self) -> None:
+        # Arrange
+        store = InMemoryGraphStore()
+        criteria = FindPrecedentsCriteria(
+            capability_ids=(),
+            pattern_ids=(),
+            technology_ids=("tech-1",),
+            target_environment=None,
+            gate_outcome=None,
+        )
+
+        # Act
+        result = await store.find_precedents(criteria)
+
+        # Assert
+        assert result == []
+
+    async def test_find_precedents_returns_the_configured_candidates(self) -> None:
+        # Arrange
+        store = InMemoryGraphStore()
+        candidate = FindPrecedentsCandidateRecord(
+            node_id="sol-1",
+            version="1",
+            origin_mechanism="authored",
+            target_environment="production",
+            gate_decisions=(),
+        )
+        store.set_precedent_candidates([candidate])
+        criteria = FindPrecedentsCriteria(
+            capability_ids=(),
+            pattern_ids=(),
+            technology_ids=("tech-1",),
+            target_environment=None,
+            gate_outcome=None,
+        )
+
+        # Act
+        result = await store.find_precedents(criteria)
+
+        # Assert
+        assert result == [candidate]
+
+    async def test_find_precedents_records_the_requested_criteria(self) -> None:
+        # Arrange
+        store = InMemoryGraphStore()
+        criteria = FindPrecedentsCriteria(
+            capability_ids=("cap-1",),
+            pattern_ids=(),
+            technology_ids=(),
+            target_environment="production",
+            gate_outcome="approved",
+        )
+
+        # Act
+        await store.find_precedents(criteria)
+
+        # Assert — lets a test prove the operation forwarded the caller's
+        # criteria rather than dropping or substituting them.
+        assert store.find_precedents_calls == [criteria]

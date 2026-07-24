@@ -403,3 +403,52 @@ class ObligationContextRequest(BaseModel):
 
     solution_id: str
     consuming_context: ConsumingContextPayload
+
+
+class GateDecisionContext(BaseModel):
+    """One `GateDecision` on a precedent Solution (SDD-001 §3.3.5; DDR-002
+    §2.4). `outcome` rides the `DECIDED_ON` edge (approved / approved_conditional
+    / rejected); `gate` is the SDLC gate discriminator; `decision_id` is the
+    `GateDecision` node's own identity."""
+
+    outcome: str
+    gate: str | None = None
+    decision_id: str | None = None
+
+
+class PrecedentEntry(BaseModel):
+    """One prior produced Solution matching the requested structural criteria
+    (SDD-001 §3.3.5). `envelope` carries node_kind="Solution" with
+    plane_labels=() (a Solution is an Artifact, DDR-002 §5 — it carries no KG
+    plane label) and origin_mechanism="authored"; the applicability block's
+    conditional_admission is the only populated surface, always UNCONDITIONAL
+    (a Solution is never a promotion/conditional/retraction subject).
+    `gate_decisions` carries every `GateDecision` on this Solution as context —
+    deterministic structural match, never a similarity score or ranking."""
+
+    envelope: ResultEnvelope
+    target_environment: str | None
+    gate_decisions: list[GateDecisionContext]
+
+
+class FindPrecedentsResult(BaseModel):
+    """The find-precedents result (SDD-001 §3.3.5). Deterministic structural
+    match only — no ranking or scoring. A Solution is never conditionally
+    excluded (it carries no read-discipline surfaces beyond the fixed
+    constants), so this result carries no disclosure channel."""
+
+    precedents: list[PrecedentEntry]
+
+
+class FindPrecedentsRequest(BaseModel):
+    """The find-precedents request body (SDD-001 §3.3.5). At least one linkage
+    criterion (`capability_ids`/`pattern_ids`/`technology_ids`) is required —
+    an all-empty linkage set yields an empty result rather than an
+    unconstrained scan."""
+
+    capability_ids: list[str] = []
+    pattern_ids: list[str] = []
+    technology_ids: list[str] = []
+    target_environment: str | None = None
+    gate_outcome: str | None = None
+    consuming_context: ConsumingContextPayload

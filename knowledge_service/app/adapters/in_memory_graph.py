@@ -18,6 +18,8 @@
 from collections.abc import Sequence
 
 from app.ports.graph_store import (
+    FindPrecedentsCandidateRecord,
+    FindPrecedentsCriteria,
     ObligationCandidateRecord,
     ResolveTechnologyCandidateRecord,
     SelectPatternsCandidateRecord,
@@ -56,6 +58,8 @@ class InMemoryGraphStore:
         self._select_patterns_calls: list[Sequence[str]] = []
         self._obligation_candidates: list[ObligationCandidateRecord] = []
         self._obligation_context_calls: list[str] = []
+        self._precedent_candidates: list[FindPrecedentsCandidateRecord] = []
+        self._find_precedents_calls: list[FindPrecedentsCriteria] = []
 
     @property
     def check_connectivity_calls(self) -> int:
@@ -101,6 +105,15 @@ class InMemoryGraphStore:
         rather than dropping or substituting it.
         """
         return self._obligation_context_calls
+
+    @property
+    def find_precedents_calls(self) -> list[FindPrecedentsCriteria]:
+        """The `criteria` argument of every `find_precedents` call.
+
+        Lets a test assert the operation forwarded the caller's structural
+        match criteria rather than dropping or substituting them.
+        """
+        return self._find_precedents_calls
 
     def set_connectivity(self, *, healthy: bool) -> None:
         """Set the verdict subsequent connectivity checks will report.
@@ -152,6 +165,19 @@ class InMemoryGraphStore:
                 store (SDD-001 §4.2 A3), not a graph-internals model.
         """
         self._obligation_candidates = list(candidates)
+
+    def set_precedent_candidates(self, candidates: Sequence[FindPrecedentsCandidateRecord]) -> None:
+        """Set the candidate records subsequent `find_precedents` calls return.
+
+        Args:
+            candidates: The records to return, unconditionally on the
+                requested `criteria` — this is a controllable record store
+                (SDD-001 §4.2 A3), not a graph-internals model. The AND-
+                across/OR-within linkage matching is a graph-traversal
+                concern (the Neo4j adapter's Cypher query); this double
+                simply reports whatever was configured.
+        """
+        self._precedent_candidates = list(candidates)
 
     async def check_connectivity(self) -> bool:
         """Report the configured connectivity verdict.
@@ -223,3 +249,19 @@ class InMemoryGraphStore:
         """
         self._obligation_context_calls.append(solution_id)
         return list(self._obligation_candidates)
+
+    async def find_precedents(
+        self, criteria: FindPrecedentsCriteria
+    ) -> Sequence[FindPrecedentsCandidateRecord]:
+        """Report the configured precedent candidate records.
+
+        Args:
+            criteria: Recorded for test assertion; does not filter the
+                configured candidates (a faithful port-level substitute per
+                §4.2 need not model graph internals).
+
+        Returns:
+            The candidates currently set on this double.
+        """
+        self._find_precedents_calls.append(criteria)
+        return list(self._precedent_candidates)

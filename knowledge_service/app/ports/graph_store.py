@@ -213,6 +213,62 @@ class ObligationCandidateRecord:
     domain: str | None
 
 
+@dataclass(frozen=True)
+class FindPrecedentsCriteria:
+    """The structural match criteria for find-precedents (SDD-001 §3.3.5).
+
+    Matching is AND-across the non-empty dimensions here and OR-within a
+    given dimension's own list — an empty tuple on any one dimension is a
+    no-op filter on that dimension, never a rejection. Capability linkage is
+    the 2-hop `FOLLOWS` ∘ `REQUIRES_CAPABILITY` path only (DDR-001's gap
+    model: the capability a Solution's Pattern *requires*, distinct from
+    what its Technology choices *resolve*).
+    """
+
+    capability_ids: tuple[str, ...]
+    pattern_ids: tuple[str, ...]
+    technology_ids: tuple[str, ...]
+    target_environment: str | None
+    gate_outcome: str | None
+
+
+@dataclass(frozen=True)
+class GateDecisionRecord:
+    """One `GateDecision` on a candidate precedent Solution (port-level).
+
+    Structurally identical to `app.models.GateDecisionContext`, but declared
+    separately here so the port stays domain-agnostic.
+    """
+
+    outcome: str
+    gate: str | None
+    decision_id: str | None
+
+
+@dataclass(frozen=True)
+class FindPrecedentsCandidateRecord:
+    """One prior produced `(:Artifact:Solution)` matching the requested
+    structural criteria (SDD-001 §3.3.5). Port-level facts, not a
+    `CandidateNode`.
+
+    Carries no read-discipline flags: a Solution is an Artifact (DDR-002 §5)
+    — it carries no KG plane label and is never a promotion/conditional/
+    retraction subject, so the operation supplies fixed read-discipline
+    constants rather than reading them from this record (unlike
+    `ResolveTechnologyCandidateRecord`/`SelectPatternsCandidateRecord`/
+    `ObligationCandidateRecord`, whose flags are REAL traversal-resolved
+    values). `origin_mechanism` is carried so the operation can verify the
+    Solution invariant (`authored`, §5) as a local, fail-closed defense-in-
+    depth check.
+    """
+
+    node_id: str
+    version: str
+    origin_mechanism: str
+    target_environment: str | None
+    gate_decisions: tuple[GateDecisionRecord, ...]
+
+
 @runtime_checkable
 class GraphStoragePort(Protocol):
     """The graph system-of-record seam the gateway's domain code depends on.
@@ -325,5 +381,28 @@ class GraphStoragePort(Protocol):
             One `ObligationCandidateRecord` per applicable PolicyRule. An
             absent solution or a solution governed by nothing yields an
             empty sequence, never an error.
+        """
+        ...
+
+    async def find_precedents(
+        self, criteria: FindPrecedentsCriteria
+    ) -> Sequence[FindPrecedentsCandidateRecord]:
+        """Resolve prior produced Solutions matching the given structural criteria.
+
+        One single-store traversal (ADR-002 §6 check 4): every
+        `(:Artifact:Solution)` matching the AND-across/OR-within linkage,
+        `target_environment`, and `gate_outcome` filters, with every
+        `GateDecision` on each matching Solution resolved alongside.
+        Deterministic structural match only — no similarity scoring or
+        ranking, and no read-discipline exclusion performed here (the
+        operation supplies fixed constants; that is its job, not this port's).
+
+        Args:
+            criteria: The structural match criteria.
+
+        Returns:
+            One `FindPrecedentsCandidateRecord` per matching Solution. No
+            matching criteria configured, or no Solution matching the given
+            criteria, yields an empty sequence, never an error.
         """
         ...

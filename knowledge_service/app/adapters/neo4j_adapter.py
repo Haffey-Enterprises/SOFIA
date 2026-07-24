@@ -28,6 +28,9 @@ from neo4j import AsyncDriver, AsyncGraphDatabase, RoutingControl
 from app.config import Settings
 from app.ports.graph_store import (
     CapabilityBlockRecord,
+    FindPrecedentsCandidateRecord,
+    FindPrecedentsCriteria,
+    GateDecisionRecord,
     ObligationCandidateRecord,
     ResolvedConditionRecord,
     ResolveTechnologyCandidateRecord,
@@ -336,6 +339,81 @@ RETURN
   rule.enforcement_level AS enforcement_level,
   rule.enforced_at_gate AS enforced_at_gate,
   rule.domain AS domain
+ORDER BY node_id
+"""
+
+# One traversal (ADR-002 §6 check 4): every produced (:Artifact:Solution)
+# matching the requested structural criteria (SDD-001 §3.3.5) — AND-across
+# the non-empty linkage/target_environment/gate_outcome dimensions, OR-within
+# a given dimension's own list (an empty list parameter is a no-op filter on
+# that dimension via `size(...) = 0 OR EXISTS {...}`). Deterministic
+# structural match only; no similarity scoring, no ranking.
+#
+# Capability linkage is the 2-hop FOLLOWS -> REQUIRES_CAPABILITY path ONLY
+# (DDR-001's gap model: "gap = required capability with no resolving
+# technology" — the capability a Solution's Pattern *requires*, not what its
+# Technology choices *resolve* via USES -> APPROVED_OPTION_FOR, which would
+# conflate a different question).
+#
+# No active/version scoping is invented here. USES/FOLLOWS are traversed
+# unfiltered (DDR-002 §3: "a solution's use of a version" is rebind:pinned,
+# same precedent as R4a's obligation-context traversal). REQUIRES_CAPABILITY
+# is traversed unfiltered too (rebind:current, the SAME precedent
+# _RESOLVE_TECHNOLOGY_QUERY/_SELECT_PATTERNS_QUERY already establish for this
+# exact edge type — supersession re-points it, so it structurally targets the
+# current Capability already). Solution itself carries no supersession
+# concept at all: DDR-002 §6 scopes Option-A version supersession to Catalog/
+# Standards/RateCard/CostFactor/PlaneDefinition only — Solutions/Artifacts are
+# "dual-home" (§6 preamble), each node its own permanent record, with no
+# `status`/`superseded_by` field to filter on (§5's Solution property list).
+# Matching by artifact_id/pattern_id/technology_id/capability_id equality
+# against the caller's lists is therefore unambiguous regardless of any
+# business-key-wide version question: each MATCH above reaches one specific
+# node (via the Solution's own pinned or self-maintaining edge), never an
+# open business-key-wide lookup across versions.
+#
+# Every GateDecision on a matching Solution is collected in a dedicated
+# CALL{} (isolating the aggregation from the other returned scalar fields,
+# the same idiom _SELECT_PATTERNS_QUERY/_OBLIGATION_CONTEXT_QUERY use): the
+# CASE-wrapped OPTIONAL MATCH lets collect() correctly yield [] for a
+# Solution with no GateDecision at all, rather than one all-null entry.
+_FIND_PRECEDENTS_QUERY = """
+MATCH (sol:Artifact:Solution)
+WHERE
+  (size($technology_ids) = 0 OR EXISTS {
+    MATCH (sol)-[:USES]->(tech:Catalog:Technology)
+    WHERE tech.technology_id IN $technology_ids
+  })
+  AND (size($pattern_ids) = 0 OR EXISTS {
+    MATCH (sol)-[:FOLLOWS]->(pat:Catalog:Pattern)
+    WHERE pat.pattern_id IN $pattern_ids
+  })
+  AND (size($capability_ids) = 0 OR EXISTS {
+    MATCH (sol)-[:FOLLOWS]->(:Catalog:Pattern)-[:REQUIRES_CAPABILITY]->(cap:Catalog:Capability)
+    WHERE cap.capability_id IN $capability_ids
+  })
+  AND ($target_environment IS NULL OR sol.target_environment = $target_environment)
+  AND ($gate_outcome IS NULL OR EXISTS {
+    MATCH (:Governance:Decision:GateDecision)-[filter_decided:DECIDED_ON]->(sol)
+    WHERE filter_decided.outcome = $gate_outcome
+  })
+CALL {
+  WITH sol
+  OPTIONAL MATCH (gate_decision:Governance:Decision:GateDecision)-[decided:DECIDED_ON]->(sol)
+  RETURN collect(
+    CASE WHEN gate_decision IS NULL THEN NULL ELSE {
+      outcome: decided.outcome,
+      gate: gate_decision.gate,
+      decision_id: gate_decision.decision_id
+    } END
+  ) AS gate_decision_maps
+}
+RETURN
+  sol.artifact_id AS node_id,
+  sol.version AS version,
+  sol.origin_mechanism AS origin_mechanism,
+  sol.target_environment AS target_environment,
+  [g IN gate_decision_maps WHERE g IS NOT NULL] AS gate_decisions
 ORDER BY node_id
 """
 
@@ -714,6 +792,59 @@ class Neo4jAdapter:
                 enforcement_level=record["enforcement_level"],
                 enforced_at_gate=record["enforced_at_gate"],
                 domain=record["domain"],
+            )
+            for record in result.records
+        ]
+
+    async def find_precedents(
+        self, criteria: FindPrecedentsCriteria
+    ) -> Sequence[FindPrecedentsCandidateRecord]:
+        """Resolve prior produced Solutions matching the given structural criteria.
+
+        One single-store Cypher traversal (ADR-002 §6 check 4). Structural
+        match only — no read-discipline exclusion happens here (SDD-001 §4.4
+        is the operation's job alone, via fixed constants).
+
+        Args:
+            criteria: The structural match criteria.
+
+        Returns:
+            One `FindPrecedentsCandidateRecord` per matching Solution.
+
+        Raises:
+            RuntimeError: If no driver is open — a data operation with no
+                driver must fail loud, never silently return an empty (and
+                misleading) result.
+        """
+        if self._driver is None:
+            raise RuntimeError("No graph driver is open: application startup did not complete")
+
+        result = await self._driver.execute_query(
+            _FIND_PRECEDENTS_QUERY,
+            {
+                "technology_ids": list(criteria.technology_ids),
+                "pattern_ids": list(criteria.pattern_ids),
+                "capability_ids": list(criteria.capability_ids),
+                "target_environment": criteria.target_environment,
+                "gate_outcome": criteria.gate_outcome,
+            },
+            routing_=RoutingControl.READ,
+            database_=self._settings.neo4j_database,
+        )
+        return [
+            FindPrecedentsCandidateRecord(
+                node_id=record["node_id"],
+                version=record["version"],
+                origin_mechanism=record["origin_mechanism"],
+                target_environment=record["target_environment"],
+                gate_decisions=tuple(
+                    GateDecisionRecord(
+                        outcome=gate_decision["outcome"],
+                        gate=gate_decision["gate"],
+                        decision_id=gate_decision["decision_id"],
+                    )
+                    for gate_decision in record["gate_decisions"]
+                ),
             )
             for record in result.records
         ]
