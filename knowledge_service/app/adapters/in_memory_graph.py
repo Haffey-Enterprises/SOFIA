@@ -12,12 +12,23 @@
 #   R3b added resolve_technology_options, and R3c adds select_patterns — all
 #   controllable candidate-record stores (§4.2 A3): tests set the exact records
 #   each returns, so the operation and read-discipline layers can be exercised
-#   without modelling graph internals.
+#   without modelling graph internals. R6a's citation_lookup is DIFFERENT: it
+#   is the first paginated method, and keyset-pagination correctness (no dup,
+#   no skip across pages, cap honored) is genuine behavior under test — so
+#   this double performs REAL keyset pagination over the configured citation
+#   sequence rather than returning it unconditionally. The caller supplies the
+#   full unpaginated set, pre-sorted by evidence_id; that ordering is a test
+#   setup responsibility, not something this double re-derives (it has no
+#   graph to derive it from).
 ##############################################################################
 
 from collections.abc import Sequence
 
 from app.ports.graph_store import (
+    CitationEntryStatusRecord,
+    CitationLookupPage,
+    CitationMode,
+    CitationRecord,
     FindPrecedentsCandidateRecord,
     FindPrecedentsCriteria,
     ObligationCandidateRecord,
@@ -64,6 +75,12 @@ class InMemoryGraphStore:
         self._find_precedents_calls: list[FindPrecedentsCriteria] = []
         self._read_as_of_result: ReadAsOfResolvedRecord | None = None
         self._read_as_of_calls: list[tuple[ReadAsOfNodeKind, str, str]] = []
+        self._citation_entry_found = False
+        self._citation_entry_statuses: list[CitationEntryStatusRecord] = []
+        self._citation_all_citations: list[CitationRecord] = []
+        self._citation_lookup_calls: list[
+            tuple[ReadAsOfNodeKind, str, str | None, CitationMode, str | None, int]
+        ] = []
 
     @property
     def check_connectivity_calls(self) -> int:
@@ -128,6 +145,19 @@ class InMemoryGraphStore:
         than dropping or substituting it.
         """
         return self._read_as_of_calls
+
+    @property
+    def citation_lookup_calls(
+        self,
+    ) -> list[tuple[ReadAsOfNodeKind, str, str | None, CitationMode, str | None, int]]:
+        """The `(node_kind, business_key, version, mode, after_evidence_id,
+        limit)` argument tuple of every `citation_lookup` call.
+
+        Lets a test assert the operation forwarded the caller's pin/mode/page
+        rather than dropping or substituting them — including the
+        already-resolved `limit` the API layer computed.
+        """
+        return self._citation_lookup_calls
 
     def set_connectivity(self, *, healthy: bool) -> None:
         """Set the verdict subsequent connectivity checks will report.
@@ -204,6 +234,36 @@ class InMemoryGraphStore:
                 nothing).
         """
         self._read_as_of_result = record
+
+    def set_citation_lookup_result(
+        self,
+        *,
+        entry_found: bool,
+        entry_statuses: Sequence[CitationEntryStatusRecord] = (),
+        citations: Sequence[CitationRecord] = (),
+    ) -> None:
+        """Configure the full, unpaginated dataset `citation_lookup` draws from.
+
+        Unlike the other doubles' unconditional-return pattern, `citations`
+        IS filtered/paginated by subsequent `citation_lookup` calls — that
+        pagination behavior (keyset cursor, no dup, no skip, cap) is itself
+        under test here, not graph-internals modelling. Callers must supply
+        `citations` pre-sorted by `evidence_id` ascending; this double does
+        not re-sort (a real Neo4j `ORDER BY evidence_id` would, but sorting
+        here would mask a caller building an unsorted fixture by accident).
+
+        Args:
+            entry_found: Whether the entry node(s) exist at all. `False`
+                stands in for a truly-absent entry (the operation raises
+                `TARGET_NOT_FOUND`); `citations`/`entry_statuses` are ignored
+                in that case.
+            entry_statuses: The per-version audit-disclosure marker facts —
+                0-or-1 for `per_version`, 0-or-more for `business_key_wide`.
+            citations: The full citation set, pre-sorted by `evidence_id`.
+        """
+        self._citation_entry_found = entry_found
+        self._citation_entry_statuses = list(entry_statuses)
+        self._citation_all_citations = list(citations)
 
     async def check_connectivity(self) -> bool:
         """Report the configured connectivity verdict.
@@ -314,3 +374,57 @@ class InMemoryGraphStore:
         """
         self._read_as_of_calls.append((node_kind, business_key, version))
         return self._read_as_of_result
+
+    async def citation_lookup(
+        self,
+        node_kind: ReadAsOfNodeKind,
+        business_key: str,
+        version: str | None,
+        mode: CitationMode,
+        after_evidence_id: str | None,
+        limit: int,
+    ) -> CitationLookupPage:
+        """Report a real keyset page over the configured citation sequence.
+
+        Args:
+            node_kind: Recorded for test assertion; does not affect the
+                configured result (a faithful port-level substitute per §4.2
+                need not model graph internals).
+            business_key: Recorded for test assertion; does not affect the
+                configured result.
+            version: Recorded for test assertion; does not affect the
+                configured result.
+            mode: Recorded for test assertion; does not affect the configured
+                result — mode/version pairing validation is the operation's
+                job (SDD-001 §3.3.7 D3), not this double's.
+            after_evidence_id: The keyset cursor — genuinely filters the
+                configured sequence to strictly-greater `evidence_id`s.
+            limit: The page size — genuinely caps the returned page, with a
+                real `next_cursor` when more remain.
+
+        Returns:
+            `entry_found=False` (citations/entry_statuses empty) when the
+            double was configured not-found; otherwise a real page of the
+            configured citation sequence.
+        """
+        self._citation_lookup_calls.append(
+            (node_kind, business_key, version, mode, after_evidence_id, limit)
+        )
+        if not self._citation_entry_found:
+            return CitationLookupPage(
+                entry_found=False, entry_statuses=(), citations=(), next_cursor=None
+            )
+
+        pool = self._citation_all_citations
+        if after_evidence_id is not None:
+            pool = [c for c in pool if c.evidence_id > after_evidence_id]
+        fetched = pool[: limit + 1]
+        has_more = len(fetched) > limit
+        page = fetched[:limit]
+        next_cursor = page[-1].evidence_id if has_more and page else None
+        return CitationLookupPage(
+            entry_found=True,
+            entry_statuses=tuple(self._citation_entry_statuses),
+            citations=tuple(page),
+            next_cursor=next_cursor,
+        )

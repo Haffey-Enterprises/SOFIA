@@ -16,7 +16,10 @@
 #   SDD-001 v1.7.0 adds the applicability block's deprecation notice
 #   (DeprecationNotice) — marker-presence only (set iff the resolved Catalog
 #   node carries a deprecation_date), on the same annotation-never-exclusion
-#   footing as CatalogEligibility.
+#   footing as CatalogEligibility. R6a adds citation-lookup (§3.3.7) — the
+#   first operation whose result is NOT the §3.2 envelope: it is the
+#   disclosed audit exception (§1), so CitationLookupResult carries raw RG
+#   facts and the three-marker CitationEntryStatus vocabulary instead.
 #   These typed models are the source of truth for the contract tests — when
 #   an implementation and a contract diverge, the contract wins.
 ##############################################################################
@@ -478,3 +481,146 @@ class ReadAsOfRequest(BaseModel):
     business_key: str
     version: str
     consuming_context: ConsumingContextPayload
+
+
+CitationLookupMode = Literal["per_version", "business_key_wide"]
+
+
+class CitationEntryStatus(StrEnum):
+    """The three INDEPENDENT audit-disclosure markers for a citation-lookup
+    entry version (SDD-001 §3.3.7 D1/D4; R6a delta A3 — supersedes the
+    single-value reading D1/D4's prose otherwise suggests). NOT a
+    read-discipline exclusion vocabulary — contrast `DisclosureReason`
+    (§3.2), which names WHY a node is excluded. These never exclude: the
+    audit inversion (§1) holds regardless of which markers are set. There is
+    no `ACTIVE` member — an entry with none of these three markers set is
+    active by the absence of markers, not by a fourth value.
+    """
+
+    SUPERSEDED = "superseded"
+    RETRACTED = "retracted"
+    CONDITIONAL = "conditional"
+
+
+class CitationEntryStatusEntry(BaseModel):
+    """One entry version's marker set (SDD-001 §3.3.7; R6a delta A3).
+
+    `per_version` mode's result carries exactly one of these (`version`
+    echoes the pinned version); `business_key_wide` carries one per version in
+    the chain — the uniform per-version-keyed shape both bullets in the
+    contract describe (a bare marker set is the `per_version` case's
+    single-element instance of this same shape).
+    """
+
+    version: str
+    markers: frozenset[CitationEntryStatus]
+
+
+class EvidenceFacts(BaseModel):
+    """One cited `Evidence`'s content facts (SDD-001 §3.3.7 D4; DDR-002 §4).
+
+    Denormalized snapshot fields, carried verbatim — never interpreted here.
+    """
+
+    evidence_id: str
+    fact_summary: str | None = None
+    confidence: float | None = None
+    weight: float | None = None
+    source_node_version: str | None = None
+    observed_at: str | None = None
+
+
+class CitationOwnerProgress(BaseModel):
+    """The owning `ReasoningProgress`'s attribution facts (SDD-001 §3.3.7 D4;
+    DDR-002 §4). `reasoner_category`/`authoritative` are ADR-001 §2.2's
+    per-artifact source-attribution surface, carried raw — this op performs
+    no admission or filtering on them.
+
+    Only `progress_id` (T1 PK) is required. The rest are T2 properties with
+    no DDR-002 existence constraint (review fix M1) — this is the audit op
+    that deliberately reaches read-excluded, possibly malformed reasoning
+    nodes; a null here must surface honestly, never 500 the request.
+    """
+
+    progress_id: str
+    conclusion_type: str | None = None
+    reasoner_category: str | None = None
+    authoritative: bool | None = None
+    confidence: float | None = None
+
+
+class CitationOwnerSession(BaseModel):
+    """The owning `ReasoningSession` identity (SDD-001 §3.3.7 D4).
+
+    `session_id` Optional (review fix M1): the traversal's `CONTAINS` hop to
+    `sess` is itself `OPTIONAL MATCH`, so an owning `ReasoningProgress` with
+    no resolvable session yields a null here even though `session_id` is
+    `ReasoningSession`'s own T1 PK when the node exists — the null is
+    node-absence, not a malformed PK, but this surface must honor it either
+    way, never crash."""
+
+    session_id: str | None = None
+
+
+class CitationOwner(BaseModel):
+    """One `ReasoningProgress` (+ its `ReasoningSession`) a cited `Evidence`
+    `SUPPORTED_BY`-supports (SDD-001 §3.3.7 D4). One `Evidence` may support
+    more than one conclusion, so `CitationEntry.owners` carries a list of
+    these, never a single owner."""
+
+    progress: CitationOwnerProgress
+    session: CitationOwnerSession
+
+
+class CitationEntry(BaseModel):
+    """One citation: a cited `Evidence` plus every conclusion it supports
+    (SDD-001 §3.3.7 D4)."""
+
+    evidence: EvidenceFacts
+    owners: list[CitationOwner]
+
+
+class CitationLookupResult(BaseModel):
+    """The citation-lookup result (SDD-001 §3.3.7 D4) — the AUDIT-POSTURE
+    exception (§1/§3.2): NOT the §3.2 result envelope. No applicability
+    block, no eligibility, no deprecation, no disclosure channel — this
+    operation returns raw RG facts, never a `CandidateNode`, and runs no
+    part of the §4.4 trio.
+
+    `entry_status` carries the entry version(s)' audit-disclosure markers
+    (R6a delta A3) — never exclusionary: a retracted/superseded/conditional
+    entry's `citations` are returned exactly as an active entry's would be.
+    `next_cursor` is the keyset cursor for the next page, `None` on the
+    final page.
+    """
+
+    mode: CitationLookupMode
+    node_kind: ReadAsOfNodeKind
+    business_key: str
+    version: str | None = None
+    entry_status: list[CitationEntryStatusEntry]
+    citations: list[CitationEntry]
+    next_cursor: str | None = None
+
+
+class CitationLookupRequest(BaseModel):
+    """The citation-lookup request body (SDD-001 §3.3.7), the disclosed audit
+    exception (§1/§3.2). Deliberately carries NO `consuming_context` — this
+    operation runs none of the §4.4 trio, so there is no conditional
+    admission to evaluate a context against.
+
+    `version` is required for `per_version`, forbidden for
+    `business_key_wide`; a presence mismatch raises
+    `GatewayError(ErrorType.SCHEMA_VIOLATION)` (R6a delta A1, 400). `limit`
+    omitted uses the configured default; a supplied value below 1 is
+    rejected 422 by Pydantic (R6a delta A2) — it never reaches a domain
+    error; above the configured hard max it is silently clamped, never
+    rejected.
+    """
+
+    node_kind: ReadAsOfNodeKind
+    business_key: str
+    version: str | None = None
+    mode: CitationLookupMode
+    after_evidence_id: str | None = None
+    limit: int | None = Field(default=None, ge=1)

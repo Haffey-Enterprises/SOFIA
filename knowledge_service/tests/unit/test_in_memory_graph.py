@@ -16,6 +16,9 @@
 
 from app.adapters.in_memory_graph import InMemoryGraphStore
 from app.ports.graph_store import (
+    CitationEntryStatusRecord,
+    CitationOwnerRecord,
+    CitationRecord,
     FindPrecedentsCandidateRecord,
     FindPrecedentsCriteria,
     GraphStoragePort,
@@ -26,6 +29,27 @@ from app.ports.graph_store import (
     TargetEntityRef,
     TrackRecordCandidateRecord,
 )
+
+
+def _citation(evidence_id: str) -> CitationRecord:
+    return CitationRecord(
+        evidence_id=evidence_id,
+        fact_summary="a fact",
+        confidence=0.8,
+        weight=1.0,
+        source_node_version="1",
+        observed_at="2026-07-24T00:00:00Z",
+        owners=(
+            CitationOwnerRecord(
+                progress_id="prog-1",
+                conclusion_type="TechnologySelection",
+                reasoner_category="encoded_reasoning",
+                authoritative=True,
+                progress_confidence=0.9,
+                session_id="sess-1",
+            ),
+        ),
+    )
 
 
 class TestInMemoryGraphStoreSubstitutability:
@@ -400,3 +424,135 @@ class TestInMemoryGraphStoreReadAsOf:
         # Assert — lets a test prove the operation forwarded the caller's
         # pin rather than dropping or substituting it.
         assert store.read_as_of_calls == [("Technology", "tech-42", "2")]
+
+
+class TestInMemoryGraphStoreCitationLookup:
+    """R6a: the ONE double with real behavior — genuine keyset pagination
+    (§4.2 A3 note: pagination correctness is under test, not graph-internals
+    modelling, so this double must actually paginate)."""
+
+    async def test_not_found_reports_entry_found_false(self) -> None:
+        # Arrange — the double defaults to not-found until configured.
+        store = InMemoryGraphStore()
+
+        # Act
+        page = await store.citation_lookup("Technology", "tech-x", "1", "per_version", None, 50)
+
+        # Assert
+        assert page.entry_found is False
+        assert page.citations == ()
+        assert page.entry_statuses == ()
+        assert page.next_cursor is None
+
+    async def test_found_with_zero_citations_is_not_an_error(self) -> None:
+        # Arrange
+        store = InMemoryGraphStore()
+        store.set_citation_lookup_result(entry_found=True, citations=())
+
+        # Act
+        page = await store.citation_lookup("Technology", "tech-1", "1", "per_version", None, 50)
+
+        # Assert
+        assert page.entry_found is True
+        assert page.citations == ()
+        assert page.next_cursor is None
+
+    async def test_page_under_the_limit_has_no_next_cursor(self) -> None:
+        # Arrange
+        store = InMemoryGraphStore()
+        store.set_citation_lookup_result(
+            entry_found=True, citations=[_citation("ev-1"), _citation("ev-2")]
+        )
+
+        # Act
+        page = await store.citation_lookup("Technology", "tech-1", "1", "per_version", None, 50)
+
+        # Assert
+        assert [c.evidence_id for c in page.citations] == ["ev-1", "ev-2"]
+        assert page.next_cursor is None
+
+    async def test_pagination_across_pages_has_no_duplication_and_no_skip(self) -> None:
+        # Arrange — 5 citations, page size 2: exercises the full keyset walk.
+        store = InMemoryGraphStore()
+        all_ids = ["ev-1", "ev-2", "ev-3", "ev-4", "ev-5"]
+        store.set_citation_lookup_result(
+            entry_found=True, citations=[_citation(eid) for eid in all_ids]
+        )
+
+        # Act — walk every page via the returned cursor.
+        collected: list[str] = []
+        cursor: str | None = None
+        for _ in range(10):  # bounded: a stuck cursor must not hang the test
+            page = await store.citation_lookup(
+                "Technology", "tech-1", "1", "per_version", cursor, 2
+            )
+            collected.extend(c.evidence_id for c in page.citations)
+            if page.next_cursor is None:
+                break
+            cursor = page.next_cursor
+
+        # Assert — every id exactly once, in order: no dup, no skip.
+        assert collected == all_ids
+
+    async def test_limit_caps_the_returned_page_and_sets_next_cursor(self) -> None:
+        # Arrange
+        store = InMemoryGraphStore()
+        store.set_citation_lookup_result(
+            entry_found=True, citations=[_citation("ev-1"), _citation("ev-2"), _citation("ev-3")]
+        )
+
+        # Act
+        page = await store.citation_lookup("Technology", "tech-1", "1", "per_version", None, 2)
+
+        # Assert
+        assert [c.evidence_id for c in page.citations] == ["ev-1", "ev-2"]
+        assert page.next_cursor == "ev-2"
+
+    async def test_after_evidence_id_filters_to_strictly_greater_ids(self) -> None:
+        # Arrange
+        store = InMemoryGraphStore()
+        store.set_citation_lookup_result(
+            entry_found=True, citations=[_citation("ev-1"), _citation("ev-2"), _citation("ev-3")]
+        )
+
+        # Act
+        page = await store.citation_lookup(
+            "Technology", "tech-1", "1", "per_version", "ev-1", 50
+        )
+
+        # Assert
+        assert [c.evidence_id for c in page.citations] == ["ev-2", "ev-3"]
+
+    async def test_reports_the_configured_entry_statuses(self) -> None:
+        # Arrange
+        store = InMemoryGraphStore()
+        statuses = [
+            CitationEntryStatusRecord(
+                version="2", is_superseded=True, is_retracted=False, is_conditional=True
+            )
+        ]
+        store.set_citation_lookup_result(entry_found=True, entry_statuses=statuses, citations=())
+
+        # Act
+        page = await store.citation_lookup(
+            "Technology", "tech-1", "2", "per_version", None, 50
+        )
+
+        # Assert — co-occurring markers both survive; nothing excludes.
+        assert page.entry_statuses == tuple(statuses)
+        assert page.citations == ()
+
+    async def test_records_the_requested_pin_mode_and_page(self) -> None:
+        # Arrange
+        store = InMemoryGraphStore()
+
+        # Act
+        await store.citation_lookup(
+            "PolicyRule", "rule-1", None, "business_key_wide", "ev-9", 10
+        )
+
+        # Assert — lets a test prove the operation forwarded the caller's
+        # pin/mode/page rather than dropping or substituting them.
+        assert store.citation_lookup_calls == [
+            ("PolicyRule", "rule-1", None, "business_key_wide", "ev-9", 10)
+        ]

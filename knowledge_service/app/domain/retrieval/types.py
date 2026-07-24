@@ -10,7 +10,10 @@
 #   marker, its resolved `HAS_CONDITION` set, and the envelope attribution
 #   (app.domain.shared.envelope) — so the read-discipline core never touches
 #   the graph itself; operations do the traversal (R3+) and hand candidates in.
-#   `ConsumingContext` is the §3.2 consuming-context payload. Pure data — no
+#   `ConsumingContext` is the §3.2 consuming-context payload. `CitationPage`
+#   (R6a) is unrelated to the trio — citation-lookup is the audit-posture
+#   exception (§1) and never builds a `CandidateNode` — it lives here only as
+#   the shared home for retrieval-operation input shapes. Pure data — no
 #   behavior lives here.
 ##############################################################################
 
@@ -70,3 +73,16 @@ class CandidateNode:
     retracted: bool
     applicability_state: Literal["unconditional", "conditional"]
     conditions: tuple[ConditionRef, ...] = ()
+
+
+@dataclass(frozen=True)
+class CitationPage:
+    """The §3.3.7 keyset-pagination request (SDD-001 D5; R6a).
+
+    `limit` arrives PRE-RESOLVED — default-substituted and hard-capped by the
+    API layer (which holds the `Settings` this domain function does not) —
+    never a raw, possibly-absent or unclamped request value.
+    """
+
+    after_evidence_id: str | None
+    limit: int

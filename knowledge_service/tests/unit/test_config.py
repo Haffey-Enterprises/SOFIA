@@ -40,6 +40,8 @@ class TestSettingsDefaults:
         assert settings.log_level == "INFO"
         assert settings.neo4j_database == "neo4j"
         assert settings.neo4j_max_connection_pool_size == 50
+        assert settings.citation_page_size_default == 50
+        assert settings.citation_page_size_max == 200
 
 
 class TestSettingsEnvironmentBinding:
@@ -92,6 +94,32 @@ class TestSettingsEnvironmentBinding:
     ) -> None:
         # Arrange
         monkeypatch.setenv("KS_LOG_LEVEL", "CHATTY")
+
+        # Act / Assert
+        with pytest.raises(ValidationError):
+            Settings(_env_file=None)  # type: ignore[call-arg]
+
+    def test_settings_reads_citation_page_size_tunables_from_the_environment(
+        self, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        # Arrange
+        monkeypatch.setenv("KS_CITATION_PAGE_SIZE_DEFAULT", "25")
+        monkeypatch.setenv("KS_CITATION_PAGE_SIZE_MAX", "100")
+
+        # Act
+        settings = Settings(_env_file=None)  # type: ignore[call-arg]
+
+        # Assert
+        assert settings.citation_page_size_default == 25
+        assert settings.citation_page_size_max == 100
+
+    def test_settings_with_default_above_max_raises_validation_error(
+        self, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        # Arrange — review fix M2: the cross-field invariant a field-level
+        # `ge=1` bound cannot express on its own.
+        monkeypatch.setenv("KS_CITATION_PAGE_SIZE_DEFAULT", "300")
+        monkeypatch.setenv("KS_CITATION_PAGE_SIZE_MAX", "200")
 
         # Act / Assert
         with pytest.raises(ValidationError):

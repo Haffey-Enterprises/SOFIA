@@ -9,11 +9,16 @@
 #   registry, correlation-ID middleware, the graph-store/schema-registry/
 #   predicate-evaluator dependencies, the SDD-001 §3.2 typed-error handler, the
 #   §3.1 health and readiness routes, and the §3.3 read routes (RBT-78/R3a
-#   track-record-lookup, R3b resolve-technology, R3c select-patterns). Per
-#   SDD-001 §4.1 this module homes the routes directly; this service's tree has
-#   no separate api/ layer. The lifespan is the single place a Neo4j driver is
-#   opened in this platform (ADR-002 §2.5) and the place the schema-metadata
-#   registry is loaded (SDD-001 §3.1 check 2).
+#   track-record-lookup, R3b resolve-technology, R3c select-patterns, R6a
+#   citation-lookup). Per SDD-001 §4.1 this module homes the routes directly;
+#   this service's tree has no separate api/ layer. The lifespan is the single
+#   place a Neo4j driver is opened in this platform (ADR-002 §2.5) and the
+#   place the schema-metadata registry is loaded (SDD-001 §3.1 check 2).
+#   citation_lookup_endpoint is the FIRST route with no `predicate_evaluator`
+#   dependency at all (the audit posture, SDD-001 §1/§3.2, runs no trio) and
+#   the FIRST to resolve a `SettingsDep` for its config-capped pagination
+#   default/clamp (R6a delta A2) — the only route-layer logic this build adds
+#   beyond wire<->domain type conversion.
 ##############################################################################
 
 from collections.abc import AsyncIterator
@@ -28,17 +33,20 @@ from starlette.requests import Request
 from app.adapters.neo4j_adapter import Neo4jAdapter
 from app.config import Settings, get_settings
 from app.domain.exceptions import GatewayError, resolve_http_status
+from app.domain.retrieval.citation_lookup import citation_lookup
 from app.domain.retrieval.find_precedents import find_precedents
 from app.domain.retrieval.obligation_context import obligation_context
 from app.domain.retrieval.read_as_of import read_as_of
 from app.domain.retrieval.resolve_technology import resolve_technology
 from app.domain.retrieval.select_patterns import select_patterns
 from app.domain.retrieval.track_record_lookup import track_record_lookup
-from app.domain.retrieval.types import ConsumingContext
+from app.domain.retrieval.types import CitationPage, ConsumingContext
 from app.domain.shared.predicate_evaluators import FailClosedPredicateEvaluator
 from app.domain.shared.schema_metadata import SchemaRegistry, load_core_registry
 from app.models import (
     CheckStatus,
+    CitationLookupRequest,
+    CitationLookupResult,
     ErrorResponse,
     FindPrecedentsRequest,
     FindPrecedentsResult,
@@ -500,4 +508,59 @@ async def read_as_of_endpoint(
         context,
         graph_store,
         predicate_evaluator,
+    )
+
+
+@app.post(
+    "/api/v1/citation-lookup",
+    response_model=CitationLookupResult,
+    tags=["retrieval"],
+)
+async def citation_lookup_endpoint(
+    request: CitationLookupRequest,
+    graph_store: GraphStoreDep,
+    settings: SettingsDep,
+) -> CitationLookupResult:
+    """The reverse cross-graph citation affordance (SDD-001 §3.3.7).
+
+    THE DISCLOSED AUDIT EXCEPTION (§1/§3.2): deliberately reaches
+    read-excluded nodes and runs none of the §4.4 trio — there is no
+    `predicate_evaluator` dependency on this route at all, and the response
+    is raw RG facts, never the §3.2 envelope. A retracted/superseded/
+    conditional-but-existing entry's citations are returned exactly as an
+    active entry's would be.
+
+    This route performs the ONE piece of logic beyond wire<->domain
+    conversion any route in this module does: resolving `limit` from the
+    request against the configured pagination tunables (R6a delta A2) — an
+    omitted value uses `citation_page_size_default`; a supplied value above
+    `citation_page_size_max` is silently clamped, never rejected (a value
+    below 1 is rejected 422 by Pydantic before this handler ever runs).
+
+    Args:
+        request: The entry pin, mode, and keyset-pagination request.
+        graph_store: The graph port.
+        settings: The service configuration, for the pagination tunables.
+
+    Returns:
+        The resolved citations, with per-version audit-disclosure markers.
+
+    Raises:
+        GatewayError: `SCHEMA_VIOLATION` (400) on a mode/version presence
+            mismatch; `TARGET_NOT_FOUND` (404) if the entry node does not
+            exist at all — handled by the existing §3.2 exception handler.
+    """
+    limit = (
+        settings.citation_page_size_default
+        if request.limit is None
+        else min(request.limit, settings.citation_page_size_max)
+    )
+    page = CitationPage(after_evidence_id=request.after_evidence_id, limit=limit)
+    return await citation_lookup(
+        request.node_kind,
+        request.business_key,
+        request.version,
+        request.mode,
+        page,
+        graph_store,
     )

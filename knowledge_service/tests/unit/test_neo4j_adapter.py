@@ -1819,3 +1819,306 @@ class TestNeo4jAdapterReadAsOf:
         # Act / Assert
         with pytest.raises(RuntimeError, match="driver"):
             await adapter.read_as_of("Technology", "tech-1", "1")
+
+
+def _row(**overrides: object) -> dict[str, object]:
+    """One `RETURN` row for the citation-lookup query, entry_found + empty by
+    default — tests override only what they exercise."""
+    base: dict[str, object] = {
+        "entry_found": True,
+        "entry_statuses": [],
+        "citation_rows": [],
+    }
+    base.update(overrides)
+    return base
+
+
+class TestNeo4jAdapterCitationLookup:
+    """The citation-lookup traversal (SDD-001 §3.3.7) — one Cypher call, the
+    audit posture (no read-discipline resolution beyond the raw marker
+    facts), and keyset pagination via a limit+1 fetch."""
+
+    async def test_citation_lookup_queries_with_the_full_parameter_set(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(records=[_row()])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        await adapter.citation_lookup(
+            "Technology", "tech-1", "3", "per_version", "ev-5", 25
+        )
+
+        # Assert — fetch_limit is limit+1, the has-more probe.
+        params = driver.execute_query.call_args.args[1]
+        assert params == {
+            "business_key": "tech-1",
+            "version": "3",
+            "after_evidence_id": "ev-5",
+            "fetch_limit": 26,
+        }
+
+    async def test_citation_lookup_business_key_wide_passes_no_version(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(records=[_row()])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        await adapter.citation_lookup(
+            "Technology", "tech-1", None, "business_key_wide", None, 50
+        )
+
+        # Assert
+        params = driver.execute_query.call_args.args[1]
+        assert params["version"] is None
+        assert params["after_evidence_id"] is None
+
+    async def test_citation_lookup_routes_read_and_targets_the_database(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(records=[_row()])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        await adapter.citation_lookup("Technology", "tech-1", "3", "per_version", None, 50)
+
+        # Assert
+        kwargs = driver.execute_query.call_args.kwargs
+        assert kwargs["routing_"] is RoutingControl.READ
+        assert kwargs["database_"] == "sofia"
+
+    @pytest.mark.parametrize(
+        ("node_kind", "label", "pk_property"),
+        [
+            ("Pattern", "Catalog:Pattern", "pattern_id"),
+            ("Technology", "Catalog:Technology", "technology_id"),
+            ("Capability", "Catalog:Capability", "capability_id"),
+            ("IacTemplate", "Catalog:IacTemplate", "iac_template_id"),
+            ("Standard", "Standards:Standard", "standard_id"),
+            ("PolicyRule", "Standards:PolicyRule", "policy_rule_id"),
+        ],
+    )
+    async def test_citation_lookup_query_matches_the_per_label_mapping_and_traversal_shape(
+        self,
+        node_kind: str,
+        label: str,
+        pk_property: str,
+        settings: Settings,
+        driver_factory: MagicMock,
+        driver: AsyncMock,
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(records=[_row()])
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        await adapter.citation_lookup(node_kind, "key-1", "1", "per_version", None, 50)  # type: ignore[arg-type]
+
+        # Assert — the reuse of the read-as-of label/PK map (no second map),
+        # the reverse SOURCED_FROM/SUPPORTED_BY/CONTAINS traversal (no new
+        # index — DDR-002 §7's reverse-lookup note, SDD-001 §3.3.7), and the
+        # audit posture: RETRACTS/DECIDED_ON existence for the marker facts,
+        # but no HAS_CONDITION resolution (no Condition set is built).
+        query = driver.execute_query.call_args.args[0]
+        assert f"MATCH (n:{label} {{{pk_property}: $business_key}})" in query
+        assert "SOURCED_FROM" in query
+        assert "SUPPORTED_BY" in query
+        assert "CONTAINS" in query
+        assert "RETRACTS" in query
+        assert "HAS_CONDITION" not in query
+
+    async def test_citation_lookup_maps_entry_found_false(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange — a truly-absent entry.
+        driver.execute_query.return_value = SimpleNamespace(
+            records=[_row(entry_found=False)]
+        )
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        page = await adapter.citation_lookup(
+            "Technology", "tech-x", "1", "per_version", None, 50
+        )
+
+        # Assert
+        assert page.entry_found is False
+        assert page.citations == ()
+        assert page.entry_statuses == ()
+
+    async def test_citation_lookup_maps_entry_statuses(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(
+            records=[
+                _row(
+                    entry_statuses=[
+                        {
+                            "version": "2",
+                            "is_superseded": True,
+                            "is_retracted": False,
+                            "is_conditional": True,
+                        }
+                    ]
+                )
+            ]
+        )
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        page = await adapter.citation_lookup(
+            "Technology", "tech-1", "2", "per_version", None, 50
+        )
+
+        # Assert
+        assert len(page.entry_statuses) == 1
+        status = page.entry_statuses[0]
+        assert status.version == "2"
+        assert status.is_superseded is True
+        assert status.is_retracted is False
+        assert status.is_conditional is True
+
+    async def test_citation_lookup_maps_citations_with_owners(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange
+        driver.execute_query.return_value = SimpleNamespace(
+            records=[
+                _row(
+                    citation_rows=[
+                        {
+                            "evidence_id": "ev-1",
+                            "fact_summary": "a fact",
+                            "confidence": 0.8,
+                            "weight": 1.0,
+                            "source_node_version": "1",
+                            "observed_at": "2026-07-24T00:00:00Z",
+                            "owners": [
+                                {
+                                    "progress_id": "prog-1",
+                                    "conclusion_type": "TechnologySelection",
+                                    "reasoner_category": "encoded_reasoning",
+                                    "authoritative": True,
+                                    "confidence": 0.9,
+                                    "session_id": "sess-1",
+                                },
+                                {
+                                    "progress_id": "prog-2",
+                                    "conclusion_type": "RiskSignal",
+                                    "reasoner_category": "llm_advisory",
+                                    "authoritative": False,
+                                    "confidence": None,
+                                    "session_id": "sess-2",
+                                },
+                            ],
+                        }
+                    ]
+                )
+            ]
+        )
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        page = await adapter.citation_lookup(
+            "Technology", "tech-1", "1", "per_version", None, 50
+        )
+
+        # Assert
+        assert len(page.citations) == 1
+        citation = page.citations[0]
+        assert citation.evidence_id == "ev-1"
+        assert citation.fact_summary == "a fact"
+        assert len(citation.owners) == 2
+        assert {owner.progress_id for owner in citation.owners} == {"prog-1", "prog-2"}
+
+    async def test_citation_lookup_page_at_the_limit_has_no_next_cursor(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange — fetch_limit rows returned == limit + 1 NOT reached: no more.
+        driver.execute_query.return_value = SimpleNamespace(
+            records=[
+                _row(
+                    citation_rows=[
+                        {
+                            "evidence_id": eid,
+                            "fact_summary": None,
+                            "confidence": None,
+                            "weight": None,
+                            "source_node_version": None,
+                            "observed_at": None,
+                            "owners": [],
+                        }
+                        for eid in ["ev-1", "ev-2"]
+                    ]
+                )
+            ]
+        )
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        page = await adapter.citation_lookup(
+            "Technology", "tech-1", "1", "per_version", None, 2
+        )
+
+        # Assert
+        assert [c.evidence_id for c in page.citations] == ["ev-1", "ev-2"]
+        assert page.next_cursor is None
+
+    async def test_citation_lookup_page_over_the_limit_sets_next_cursor(
+        self, settings: Settings, driver_factory: MagicMock, driver: AsyncMock
+    ) -> None:
+        # Arrange — 3 rows returned for limit=2 (fetch_limit=3): one more page.
+        driver.execute_query.return_value = SimpleNamespace(
+            records=[
+                _row(
+                    citation_rows=[
+                        {
+                            "evidence_id": eid,
+                            "fact_summary": None,
+                            "confidence": None,
+                            "weight": None,
+                            "source_node_version": None,
+                            "observed_at": None,
+                            "owners": [],
+                        }
+                        for eid in ["ev-1", "ev-2", "ev-3"]
+                    ]
+                )
+            ]
+        )
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+        await adapter.connect()
+
+        # Act
+        page = await adapter.citation_lookup(
+            "Technology", "tech-1", "1", "per_version", None, 2
+        )
+
+        # Assert — the 3rd row is truncated off the page, never surfaced.
+        assert [c.evidence_id for c in page.citations] == ["ev-1", "ev-2"]
+        assert page.next_cursor == "ev-2"
+
+    async def test_citation_lookup_before_connect_raises_runtime_error(
+        self, settings: Settings, driver_factory: MagicMock
+    ) -> None:
+        # Arrange
+        adapter = Neo4jAdapter(settings, driver_factory=driver_factory)
+
+        # Act / Assert
+        with pytest.raises(RuntimeError, match="driver"):
+            await adapter.citation_lookup(
+                "Technology", "tech-1", "1", "per_version", None, 50
+            )

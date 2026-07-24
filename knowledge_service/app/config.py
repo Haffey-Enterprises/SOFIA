@@ -5,18 +5,24 @@
 # Created: 2026-07-21
 # Revised: 2026-07-21
 # Description: Typed runtime configuration for knowledge-service (SDD-001
-#   §4.6) — service identity, the platform-injected listen port, log level, and
-#   the Neo4j URI/database/credential/pool-sizing surface. Every value arrives
-#   from the environment through this class; no module elsewhere reads
-#   os.environ directly. The graph credential is held as a SecretStr so the
-#   Tier 4 value cannot reach a log line, an error message, or a response by
-#   accident.
+#   §4.6) — service identity, the platform-injected listen port, log level, the
+#   Neo4j URI/database/credential/pool-sizing surface, and (RBT-78/R6a) the
+#   citation-lookup keyset-pagination cap. Every value arrives from the
+#   environment through this class; no module elsewhere reads os.environ
+#   directly. The graph credential is held as a SecretStr so the Tier 4 value
+#   cannot reach a log line, an error message, or a response by accident.
+#   `citation_page_size_default`/`_max` are deliberately op-scoped, not a
+#   general pagination framework — generalizing rides the next paginated op
+#   (operator-ratified, RBT-78 R6a delta A2). Review fix M2 adds a
+#   model_validator enforcing default <= max: main.py's clamp only bounds a
+#   caller-supplied `limit`, never the default path, so a misconfigured
+#   default > max would silently bypass the hard cap.
 ##############################################################################
 
 from functools import lru_cache
 from typing import Literal
 
-from pydantic import Field, SecretStr
+from pydantic import Field, SecretStr, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 LogLevel = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
@@ -61,6 +67,35 @@ class Settings(BaseSettings):
     neo4j_password: SecretStr = SecretStr("")
     neo4j_max_connection_pool_size: int = Field(default=50, ge=1)
     neo4j_connection_acquisition_timeout_seconds: float = Field(default=60.0, gt=0)
+
+    # --- Retrieval pagination (op-scoped; generalize at the next paginated op)
+    citation_page_size_default: int = Field(default=50, ge=1)
+    citation_page_size_max: int = Field(default=200, ge=1)
+
+    @model_validator(mode="after")
+    def _citation_page_size_default_within_max(self) -> "Settings":
+        """Enforce `citation_page_size_default <= citation_page_size_max`.
+
+        Field-level `ge=1` bounds cannot express a cross-field invariant.
+        Without this, a misconfigured default above the max would silently
+        bypass the hard cap on the omitted-limit path — main.py's clamp
+        (`min(request.limit, settings.citation_page_size_max)`) only runs
+        when the caller supplies a `limit`, never on the default.
+
+        Returns:
+            `self`, unchanged, when the invariant holds.
+
+        Raises:
+            ValueError: If `citation_page_size_default` exceeds
+                `citation_page_size_max`.
+        """
+        if self.citation_page_size_default > self.citation_page_size_max:
+            raise ValueError(
+                "citation_page_size_default must not exceed citation_page_size_max "
+                f"(got default={self.citation_page_size_default}, "
+                f"max={self.citation_page_size_max})"
+            )
+        return self
 
 
 @lru_cache

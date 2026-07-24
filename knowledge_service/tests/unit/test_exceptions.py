@@ -58,6 +58,12 @@ class TestResolveHttpStatus:
         # client fault; the default fails loud rather than guessing a 4xx.
         assert resolve_http_status(ErrorType.AUTHOR_VIOLATION) == 500
 
+    def test_resolve_http_status_schema_violation_is_400(self) -> None:
+        # Act / Assert — R6a's first raising site (citation-lookup's
+        # mode/version presence-mismatch rule): a client-caused contract
+        # violation, 400, not the FastAPI 422 body-validation path.
+        assert resolve_http_status(ErrorType.SCHEMA_VIOLATION) == 400
+
 
 class TestErrorResponseContract:
     """The §3.2 error envelope renders the taxonomy member as error_code."""

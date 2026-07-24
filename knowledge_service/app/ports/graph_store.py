@@ -18,7 +18,15 @@
 #   `Condition` set travel on its record, for the R2 core to enforce. Both are
 #   one named, single-store traversal per operation (ADR-002 §6 check 4: no
 #   application-layer join), never a generic/raw query surface (SDD-001 §3.2
-#   "No raw access").
+#   "No raw access"). R6a adds `citation_lookup` (SDD-001 §3.3.7) — the
+#   platform's FIRST audit-posture read: it deliberately reaches
+#   read-excluded nodes and returns raw RG facts, never a `CandidateNode`, so
+#   its record types (`CitationRecord`/`CitationLookupPage`/
+#   `CitationEntryStatusRecord`) carry no read-discipline fields at all — there
+#   is no trio for this op to enforce. It is also the FIRST paginated method:
+#   `CitationLookupPage` carries a keyset cursor (`next_cursor`), and callers
+#   pass an already-resolved `limit` (config-default-substituted, hard-capped)
+#   rather than a raw request value.
 ##############################################################################
 
 from collections.abc import Mapping, Sequence
@@ -312,6 +320,99 @@ class ReadAsOfResolvedRecord:
     conditions: tuple[ResolvedConditionRecord, ...]
 
 
+# The two citation-lookup modes (SDD-001 §3.3.7 D3): per_version requires an
+# exact pinned version; business_key_wide unions citations across the entire
+# (node_kind, business_key) version chain and forbids a version.
+CitationMode = Literal["per_version", "business_key_wide"]
+
+
+@dataclass(frozen=True)
+class CitationEntryStatusRecord:
+    """The three INDEPENDENT audit-disclosure markers for one entry version
+    (SDD-001 §3.3.7 D1/D4, R6a delta A3 — supersedes a single-value reading).
+
+    Not a read-discipline exclusion surface: `citation_lookup` never admits or
+    excludes on these — the inversion (SDD-001 §1) holds regardless of which
+    markers are set. An empty marker set means "active"; "active" is not its
+    own enum member, it is the absence of markers (app.models.
+    CitationEntryStatus carries the same three-member vocabulary).
+
+    `is_superseded`: this version is no longer current (`superseded_by`
+    non-null). `is_retracted`: an EA-approved inbound `RETRACTS` targets this
+    version (same existence pattern as read_as_of/obligation_context).
+    `is_conditional`: `applicability_state = 'conditional'` on this version,
+    read raw — never resolved to an actual `Condition` set, since this is
+    disclosure only, not admission.
+    """
+
+    version: str
+    is_superseded: bool
+    is_retracted: bool
+    is_conditional: bool
+
+
+@dataclass(frozen=True)
+class CitationOwnerRecord:
+    """One `ReasoningProgress` (+ its owning `ReasoningSession`) that a cited
+    `Evidence` `SUPPORTED_BY`-supports (SDD-001 §3.3.7). Port-level facts —
+    one `Evidence` may support more than one conclusion, so a `CitationRecord`
+    carries a sequence of these, never a single owner.
+
+    Only `progress_id` (T1 PK) is required. The rest are Optional (review fix
+    M1) — this is the audit op that deliberately reaches read-excluded,
+    possibly malformed reasoning nodes (no DDR-002 existence constraint on
+    these T2 fields), and `session_id` is additionally null whenever the
+    traversal's `OPTIONAL MATCH` to the owning session resolves nothing. A
+    null here must surface honestly on the wire model, never 500.
+    """
+
+    progress_id: str
+    conclusion_type: str | None
+    reasoner_category: str | None
+    authoritative: bool | None
+    progress_confidence: float | None
+    session_id: str | None
+
+
+@dataclass(frozen=True)
+class CitationRecord:
+    """One `Evidence` `SOURCED_FROM` a citation-lookup entry node, with every
+    owning `ReasoningProgress`/`ReasoningSession` (SDD-001 §3.3.7). Port-level
+    facts, not a domain type — this operation builds no `CandidateNode` at
+    all (R6a delta A3; the audit posture, SDD-001 §1/§3.2).
+    """
+
+    evidence_id: str
+    fact_summary: str | None
+    confidence: float | None
+    weight: float | None
+    source_node_version: str | None
+    observed_at: str | None
+    owners: tuple[CitationOwnerRecord, ...]
+
+
+@dataclass(frozen=True)
+class CitationLookupPage:
+    """One keyset page of `citation_lookup` results (SDD-001 §3.3.7 D3/D5/D7).
+
+    `entry_found` distinguishes a truly-absent entry (the operation raises
+    `TARGET_NOT_FOUND`) from an existing entry with zero citations (empty
+    `citations`, `next_cursor=None`, never an error) — the reason the
+    traversal OPTIONAL-matches the entry node(s) rather than requiring a hit.
+    `entry_statuses` carries one record per resolved entry version: 0-or-1 for
+    `per_version` (absent entirely when `entry_found` is False), 0-or-more for
+    `business_key_wide` (one per version in the chain). `next_cursor` is the
+    last returned `evidence_id`, or `None` on the final page — evidence_id is
+    globally unique (PK), so it paginates uniformly across both modes without
+    a new index (DDR-002 §7's reverse-lookup note; SDD-001 §3.3.7).
+    """
+
+    entry_found: bool
+    entry_statuses: tuple[CitationEntryStatusRecord, ...]
+    citations: tuple[CitationRecord, ...]
+    next_cursor: str | None
+
+
 @runtime_checkable
 class GraphStoragePort(Protocol):
     """The graph system-of-record seam the gateway's domain code depends on.
@@ -472,5 +573,50 @@ class GraphStoragePort(Protocol):
         Returns:
             The resolved record, or `None` if the pin resolves nothing (the
             operation raises `TARGET_NOT_FOUND`).
+        """
+        ...
+
+    async def citation_lookup(
+        self,
+        node_kind: ReadAsOfNodeKind,
+        business_key: str,
+        version: str | None,
+        mode: CitationMode,
+        after_evidence_id: str | None,
+        limit: int,
+    ) -> CitationLookupPage:
+        """Resolve the reverse cross-graph citation affordance for an entry node.
+
+        One single-store traversal (ADR-002 §6 check 4): the entry node(s) —
+        OPTIONAL-matched so a truly-absent entry is distinguishable from zero
+        citations — reverse `SOURCED_FROM` to every citing `Evidence`, each
+        with every owning `ReasoningProgress`/`ReasoningSession` via reverse
+        `SUPPORTED_BY`/`CONTAINS`. Keyset-paginated by `evidence_id`. THE
+        AUDIT-POSTURE EXCEPTION (SDD-001 §1/§3.2, §3.3.7): performs no
+        read-discipline exclusion and resolves no `Condition` set — a
+        retracted/superseded/conditional entry's citations are returned
+        exactly as an active entry's would be; the three markers on
+        `CitationEntryStatusRecord` are disclosure only.
+
+        Args:
+            node_kind: The entry node's versioned label (the six labels
+                `ReadAsOfNodeKind` enumerates).
+            business_key: The entry's PK value for that label.
+            version: The exact retained version to resolve — required for
+                `per_version`, forbidden for `business_key_wide`. Presence
+                validation against `mode` is the operation's job, not this
+                port's.
+            mode: `per_version` (one entry version) or `business_key_wide`
+                (every version sharing `business_key`).
+            after_evidence_id: The keyset cursor — citations with a strictly
+                greater `evidence_id`, or every citation from the start when
+                `None`.
+            limit: The already-resolved page size (config-default-substituted,
+                hard-capped) — never a raw, unclamped request value.
+
+        Returns:
+            The resolved page. `entry_found=False` signals a truly-absent
+            entry (the operation raises `TARGET_NOT_FOUND`); a `True` entry
+            with empty `citations` is the zero-citations case, never an error.
         """
         ...

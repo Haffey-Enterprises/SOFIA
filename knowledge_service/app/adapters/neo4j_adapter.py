@@ -15,7 +15,10 @@
 #   Catalog-eligibility-adjacent field. Both traversals are one single-store
 #   query each (ADR-002 §6 check 4), no application-layer join, and neither
 #   pre-excludes — the R2 core (app.domain.retrieval.read_discipline) is the
-#   sole enforcement point. Driver-level exceptions are translated at this
+#   sole enforcement point. R6a adds `citation_lookup` (SDD-001 §3.3.7) — the
+#   FIRST traversal under the audit posture (no HAS_CONDITION resolution, no
+#   Condition set built) and the FIRST paginated one (a limit+1 fetch drives
+#   the keyset `next_cursor`). Driver-level exceptions are translated at this
 #   boundary and never cross the port.
 ##############################################################################
 
@@ -28,6 +31,11 @@ from neo4j import AsyncDriver, AsyncGraphDatabase, RoutingControl
 from app.config import Settings
 from app.ports.graph_store import (
     CapabilityBlockRecord,
+    CitationEntryStatusRecord,
+    CitationLookupPage,
+    CitationMode,
+    CitationOwnerRecord,
+    CitationRecord,
     FindPrecedentsCandidateRecord,
     FindPrecedentsCriteria,
     GateDecisionRecord,
@@ -484,6 +492,95 @@ RETURN
   } AS retracted,
   [c IN governing_conditions WHERE c IS NOT NULL |
     {predicate: c.predicate, dependency_manifest: c.dependency_manifest}] AS conditions
+"""
+
+# One traversal (ADR-002 §6 check 4): the citation-lookup reverse affordance
+# (SDD-001 §3.3.7). Reuses _READ_AS_OF_NODE_KIND_MAP — the entry domain is the
+# SAME six versioned labels, so no second map is declared.
+#
+# THE AUDIT POSTURE (SDD-001 §1/§3.2): unlike _READ_AS_OF_QUERY_TEMPLATE, this
+# query resolves the three marker facts RAW (superseded_by presence, an
+# EXISTS-based approving-RETRACTS check identical to read-as-of's, and a raw
+# applicability_state comparison) but never resolves HAS_CONDITION into an
+# actual Condition set — there is no read-discipline trio for this op to feed
+# (contrast read_as_of's governing-PromotionDecision -> HAS_CONDITION
+# sub-pattern, absent here by design).
+#
+# `n.version` is unconstrained in the entry MATCH — the WHERE clause applies
+# the pin only for per_version ($version supplied); business_key_wide passes
+# $version=null and matches every version sharing $business_key. The entry
+# match is OPTIONAL so a truly-absent entry (entry_nodes=[]) is
+# distinguishable from an existing entry with zero citations — collect()
+# over zero rows still yields one aggregated row (entry_found=false), never a
+# missing result row.
+#
+# The citation traversal reuses the DDR-002 §7 reverse-SOURCED_FROM
+# affordance (no new index, SDD-001 §3.3.7): reverse SOURCED_FROM to Evidence
+# (keyset-filtered + ordered by evidence_id, its own uniqueness-PK index),
+# then reverse SUPPORTED_BY/CONTAINS to collect every owning
+# ReasoningProgress/ReasoningSession per Evidence (OPTIONAL — an Evidence
+# with no SUPPORTED_BY owner yet still surfaces, with an empty owners list,
+# never a dropped row). `$fetch_limit` is the caller's limit+1 (the has-more
+# probe); pagination truncation to `limit` happens in Python, alongside
+# `next_cursor` derivation.
+_CITATION_LOOKUP_QUERY_TEMPLATE = """
+OPTIONAL MATCH (n:__LABEL__ {__PK__: $business_key})
+WHERE $version IS NULL OR n.version = $version
+WITH n ORDER BY n.version
+WITH collect(n) AS entry_nodes
+CALL {
+  WITH entry_nodes
+  UNWIND entry_nodes AS entry
+  WITH entry,
+    (entry.superseded_by IS NOT NULL) AS is_superseded,
+    EXISTS {
+      MATCH (retraction:Reasoning:CandidatePromotion {proposal_kind: 'retraction'})
+        -[:RETRACTS]->(entry)
+      MATCH (retraction)<-[retraction_decided:DECIDED_ON]-(:Governance:PromotionDecision)
+      WHERE retraction_decided.outcome IN ['approved', 'approved_conditional']
+    } AS is_retracted,
+    (coalesce(entry.applicability_state, 'unconditional') = 'conditional') AS is_conditional
+  RETURN collect({
+    version: entry.version,
+    is_superseded: is_superseded,
+    is_retracted: is_retracted,
+    is_conditional: is_conditional
+  }) AS entry_statuses
+}
+CALL {
+  WITH entry_nodes
+  UNWIND entry_nodes AS entry
+  MATCH (entry)<-[:SOURCED_FROM]-(ev:Reasoning:Evidence)
+  WHERE $after_evidence_id IS NULL OR ev.evidence_id > $after_evidence_id
+  WITH DISTINCT ev
+  ORDER BY ev.evidence_id
+  LIMIT $fetch_limit
+  OPTIONAL MATCH (ev)<-[:SUPPORTED_BY]-(prog:Reasoning:ReasoningProgress)
+  OPTIONAL MATCH (prog)<-[:CONTAINS]-(sess:Reasoning:ReasoningSession)
+  WITH ev, collect(
+    CASE WHEN prog IS NULL THEN NULL ELSE {
+      progress_id: prog.progress_id,
+      conclusion_type: prog.conclusion_type,
+      reasoner_category: prog.reasoner_category,
+      authoritative: prog.authoritative,
+      confidence: prog.confidence,
+      session_id: sess.session_id
+    } END
+  ) AS owner_rows
+  RETURN collect({
+    evidence_id: ev.evidence_id,
+    fact_summary: ev.fact_summary,
+    confidence: ev.confidence,
+    weight: ev.weight,
+    source_node_version: ev.source_node_version,
+    observed_at: ev.observed_at,
+    owners: [o IN owner_rows WHERE o IS NOT NULL]
+  }) AS citation_rows
+}
+RETURN
+  size(entry_nodes) > 0 AS entry_found,
+  entry_statuses,
+  citation_rows
 """
 
 
@@ -978,4 +1075,106 @@ class Neo4jAdapter:
                 )
                 for condition in record["conditions"]
             ),
+        )
+
+    async def citation_lookup(
+        self,
+        node_kind: ReadAsOfNodeKind,
+        business_key: str,
+        version: str | None,
+        mode: CitationMode,
+        after_evidence_id: str | None,
+        limit: int,
+    ) -> CitationLookupPage:
+        """Resolve the reverse cross-graph citation affordance for an entry node.
+
+        One single-store Cypher traversal (ADR-002 §6 check 4), the audit
+        posture (SDD-001 §1/§3.2, §3.3.7): resolves the three raw marker
+        facts per entry version but performs no read-discipline exclusion and
+        resolves no `Condition` set — that trio simply does not run on this
+        path. Fetches `limit + 1` citation rows to detect a further page
+        without a second round-trip; the extra row is truncated here, never
+        surfaced.
+
+        Args:
+            node_kind: The entry node's versioned label.
+            business_key: The entry's PK value for that label.
+            version: The exact retained version, or `None` for
+                `business_key_wide` — mode/version presence validation is the
+                operation's job, not this adapter's.
+            mode: Recorded on the call for observability only; the traversal
+                itself is driven by `version`'s presence, not `mode` directly.
+            after_evidence_id: The keyset cursor.
+            limit: The already-resolved page size.
+
+        Returns:
+            The resolved page.
+
+        Raises:
+            RuntimeError: If no driver is open — a data operation with no
+                driver must fail loud, never silently return an empty (and
+                misleading) result.
+        """
+        if self._driver is None:
+            raise RuntimeError("No graph driver is open: application startup did not complete")
+
+        label, pk_property, _plane_label = _READ_AS_OF_NODE_KIND_MAP[node_kind]
+        query = _CITATION_LOOKUP_QUERY_TEMPLATE.replace("__LABEL__", label).replace(
+            "__PK__", pk_property
+        )
+        result = await self._driver.execute_query(
+            query,
+            {
+                "business_key": business_key,
+                "version": version,
+                "after_evidence_id": after_evidence_id,
+                "fetch_limit": limit + 1,
+            },
+            routing_=RoutingControl.READ,
+            database_=self._settings.neo4j_database,
+        )
+        record = result.records[0]
+
+        entry_statuses = tuple(
+            CitationEntryStatusRecord(
+                version=status["version"],
+                is_superseded=status["is_superseded"],
+                is_retracted=status["is_retracted"],
+                is_conditional=status["is_conditional"],
+            )
+            for status in record["entry_statuses"]
+        )
+
+        fetched_rows = record["citation_rows"]
+        has_more = len(fetched_rows) > limit
+        page_rows = fetched_rows[:limit]
+        next_cursor = page_rows[-1]["evidence_id"] if has_more and page_rows else None
+        citations = tuple(
+            CitationRecord(
+                evidence_id=row["evidence_id"],
+                fact_summary=row["fact_summary"],
+                confidence=row["confidence"],
+                weight=row["weight"],
+                source_node_version=row["source_node_version"],
+                observed_at=row["observed_at"],
+                owners=tuple(
+                    CitationOwnerRecord(
+                        progress_id=owner["progress_id"],
+                        conclusion_type=owner["conclusion_type"],
+                        reasoner_category=owner["reasoner_category"],
+                        authoritative=owner["authoritative"],
+                        progress_confidence=owner["confidence"],
+                        session_id=owner["session_id"],
+                    )
+                    for owner in row["owners"]
+                ),
+            )
+            for row in page_rows
+        )
+
+        return CitationLookupPage(
+            entry_found=record["entry_found"],
+            entry_statuses=entry_statuses,
+            citations=citations,
+            next_cursor=next_cursor,
         )

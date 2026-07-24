@@ -11,9 +11,14 @@
 #   SDD-001 §3.2 error taxonomy (`ErrorType`, defined in app.models as the wire
 #   vocabulary). The taxonomy is enumerated whole there; the HTTP-status map
 #   below grows additively — a type gains its status when the operation that
-#   raises it is built. RBT-78 seeds only TARGET_NOT_FOUND (the read-side miss,
-#   ratified per the point-2b disposition); every other type maps when its
-#   write-side raising site lands (RBT-79+).
+#   raises it is built. RBT-78 seeded TARGET_NOT_FOUND (the read-side miss,
+#   ratified per the point-2b disposition); R6a adds SCHEMA_VIOLATION -> 400,
+#   its FIRST raising site being READ-side (citation-lookup's mode/version
+#   pairing rule, SDD-001 §3.3.7 D3) rather than write-side — a client-caused
+#   contract violation rendered through this same typed-rejection path, not
+#   FastAPI body validation (operator-ratified, RBT-78 R6a delta A1). The
+#   additive rule itself is unchanged: every other type maps when its raising
+#   site lands (RBT-79+).
 ##############################################################################
 
 from app.models import ErrorType
@@ -61,12 +66,15 @@ class GatewayError(DomainError):
 _DEFAULT_STATUS = 500
 
 # ErrorType -> HTTP status. Grows additively: a type is added here when the
-# operation that raises it is built. RBT-78 raises only TARGET_NOT_FOUND
+# operation that raises it is built. RBT-78 raises TARGET_NOT_FOUND
 # (SDD-001 §3.3 explicit-subject / supplied-pin misses; the point-2b
-# disposition); every other member gains its status with its write-side
-# raising site (RBT-79+).
+# disposition) and, from R6a, SCHEMA_VIOLATION (citation-lookup's mode/version
+# presence-mismatch rule, SDD-001 §3.3.7 D3) — a client-caused contract
+# violation, 400, not the FastAPI 422 body-validation path. Every other member
+# gains its status with its own raising site (RBT-79+).
 _HTTP_STATUS_BY_ERROR_TYPE: dict[ErrorType, int] = {
     ErrorType.TARGET_NOT_FOUND: 404,
+    ErrorType.SCHEMA_VIOLATION: 400,
 }
 
 
